@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <vector>
 #include "Vector3.h"
@@ -6,129 +6,129 @@
 
 struct AttackType
 {
-	std::string m_Name;	//§ðÀ»ºØÃþ¦W
-	size_t	m_TypeHash;	//¦W¦rªº Hash
+	std::string m_Name;	//æ”»æ“Šç¨®é¡žå
+	size_t	m_TypeHash;	//åå­—çš„ Hash
 	/*
-	* Punsh ®±À»
-	* Knife ¤M
-	* Fire  ¤õ
-	* Freeze ¦B
-	* Burst  Ãzµõ
+	* Punsh æ‹³æ“Š
+	* Knife åˆ€
+	* Fire  ç«
+	* Freeze å†°
+	* Burst  çˆ†è£‚
 	*/
-	float	m_HealablePercent;	//¥i³Q§MÂ¡ªº¦Ê¤À¤ñ
-	std::string	m_ShaderName;	//¨Ï¥Îªº¯S®Ä¤å¥ó¦W
+	float	m_HealablePercent;	//å¯è¢«å†¶ç™’çš„ç™¾åˆ†æ¯”
+	std::string	m_ShaderName;	//ä½¿ç”¨çš„ç‰¹æ•ˆæ–‡ä»¶å
 };
 
-//¨C¤@­Ó§ðÀ»§P©w©Ò§tªº¸ê°T
+//æ¯ä¸€å€‹æ”»æ“Šåˆ¤å®šæ‰€å«çš„è³‡è¨Š
 struct Attack
 {
-	Polygon	m_Area;		//½d³ò
-	int	m_Damage,	//¶Ë®`
-		m_FixDamage,	//µ´¹ï¶Ë®`
-		m_Strength;	//§P©w±j«×
-	size_t	m_TypeHash;	//¶Ë®`ºØÃþ Hash ¥Ñ¦r¦ê²£¥Í
+	Polygon	m_Area;		//ç¯„åœ
+	int	m_Damage,	//å‚·å®³
+		m_FixDamage,	//çµ•å°å‚·å®³
+		m_Strength;	//åˆ¤å®šå¼·åº¦
+	size_t	m_TypeHash;	//å‚·å®³ç¨®é¡ž Hash ç”±å­—ä¸²ç”¢ç”Ÿ
 };
 typedef std::vector<Attack> Attacks;
 
-//¨C¤@­Ó°Ê§@ Frame ©Ò§tªº¸ê°T
+//æ¯ä¸€å€‹å‹•ä½œ Frame æ‰€å«çš„è³‡è¨Š
 struct FrameInfo
 {
-	int	m_OffsetX,	//¤Hª«X¤è¦V°¾²¾­×¥¿¶q
-		m_OffsetY,	//¤Hª«Y¤è¦V°¾²¾­×¥¿¶q
-		m_ConsumeMP,	//®ø¯ÓMP
-		m_ConsumeHP,	//®ø¯ÓHP
-		m_ZMove,	//¤W¤Uªº²¾°Ê¥i¯à
-		m_Defend;	//³o­Ó°Ê§@ªº¨¾¿m¤O
-	float	m_FrameTime;	//³o­Ó Frame °õ¦æªº®É¶¡
-	Vector3	m_Acceleration,	//¥[³t«×
-		m_FixMove;	//©T©w²¾°Ê¶q
-	Polygons	m_Bodys;	//¨­Åé
+	int	m_OffsetX,	//äººç‰©Xæ–¹å‘åç§»ä¿®æ­£é‡
+		m_OffsetY,	//äººç‰©Yæ–¹å‘åç§»ä¿®æ­£é‡
+		m_ConsumeMP,	//æ¶ˆè€—MP
+		m_ConsumeHP,	//æ¶ˆè€—HP
+		m_ZMove,	//ä¸Šä¸‹çš„ç§»å‹•å¯èƒ½
+		m_Defend;	//é€™å€‹å‹•ä½œçš„é˜²ç¦¦åŠ›
+	float	m_FrameTime;	//é€™å€‹ Frame åŸ·è¡Œçš„æ™‚é–“
+	Vector3	m_Acceleration,	//åŠ é€Ÿåº¦
+		m_FixMove;	//å›ºå®šç§»å‹•é‡
+	Polygons	m_Bodys;	//èº«é«”
 	Attacks		
 };
 
-//¨C¤@¦ìª±®a©Ò­n°O¿ýªº¸ê°T
+//æ¯ä¸€ä½çŽ©å®¶æ‰€è¦è¨˜éŒ„çš„è³‡è¨Š
 struct PlayerRecord{
-	std::string	m_Name;	//ª±®a¦WºÙ
-	int	m_KilledSum,	//±þ¤H¼Æ
-		m_AttackSum,	//Á`¶Ë®`
-		m_HPLostSum,	//Á`¥¢¦å¶q
-		m_MPUsageSum,	//Á`MP¨Ï¥Î¶q
-		m_HealSum,	//Á`¦^¦å¶q
-		m_Picking;	//Á`¾ßª««~¼Æ
-	bool	m_Win;		//¦³¨S¦³Ä¹
+	std::string	m_Name;	//çŽ©å®¶åç¨±
+	int	m_KilledSum,	//æ®ºäººæ•¸
+		m_AttackSum,	//ç¸½å‚·å®³
+		m_HPLostSum,	//ç¸½å¤±è¡€é‡
+		m_MPUsageSum,	//ç¸½MPä½¿ç”¨é‡
+		m_HealSum,	//ç¸½å›žè¡€é‡
+		m_Picking;	//ç¸½æ’¿ç‰©å“æ•¸
+	bool	m_Win;		//æœ‰æ²’æœ‰è´
 };
 
-//¨C¤@­Ó­^¶¯»Ý­n¥Î¨ìªº¸ê°T
+//æ¯ä¸€å€‹è‹±é›„éœ€è¦ç”¨åˆ°çš„è³‡è¨Š
 struct HeroInfo
 {
-	//¥²­nªº°ò¥»°Ê§@©w¸q
+	//å¿…è¦çš„åŸºæœ¬å‹•ä½œå®šç¾©
 	enum Action
 	{
-		STANDING,		//¯¸¥ß
-		WALKING,		//¨«¸ô
-		RUNNING,		//¶]¨B
-		STOP_RUNNING,		//°±¤î¶]¨B
-		HEAVY_WEAPON_WALK,	//­t­«¦æ¨«
-		HEAVY_WEAPON_RUN,	//­t­«¶]¨B
-		LIGHT_WEAPON_STAND_ATTACK,	//»´ªZ¾¹¯¸§ð
-		LIGHT_WEAPON_JUMP_ATTACK,	//»´ªZ¾¹¸õ§ð
-		LIGHT_WEAPON_RUN_ATTACK,	//»´ªZ¾¹¶]§ð
-		LIGHT_WEAPON_DASH_ATTACK,	//»´ªZ¾¹½Ä§ð
-		LIGHT_WEAPON_THROW,		//»´ªZ¾¹¥á¥X
-		HEAVY_WEAPON_THROW,		//­«ªZ¾¹¥á¥X
-		LIGHT_WEAPON_JUMP_THROW,	//»´ªZ¾¹¸õ°_®É¥á¥X
-		HEAVY_WEAPON_JUMP_THROW,	//­«ªZ¾¹¸õ°_®É¥á¥X
-		DRINK,			//³Ü¶¼®Æ
-		LIGHT_PUNCH,		//»´®±
-		LIGHT_KICK,		//»´¸}
-		HEAVY_PUNCH,		//­«®±
-		HEAVY_KICK,		//­«¸}
-		SUPER_PUNCH,		//²×µ²®±
-		SUPER_PUNCH,		//²×µ²¸}
-		JUMP_PUNCH,		//¸õ®±
-		JUMP_KICK,		//¸õ¸}
-		RUN_PUNCH,		//¶]®±
-		RUN_KICK,		//¶]¸}
-		FORWARD_FLY_ROWING,	//«eªÅÂ½
-		BACKWARD_FLY_ROWING,	//«áªÅÂ½
-		FORWARD_ROWING,		//«eºu
-		BACKWARD_ROWING,	//«áºu
-		DEFEND,			//¨¾¿m
-		DEFEND_PUNCH,		//¤ÏÀ»®±
-		DEFEND_KICK,		//¤ÏÀ»¸}
-		CATCHING,		//§ì¤H
-		CAUGHT,			//³Q§ì
-		FALLING,		//¶^­Ë
-		JUMP,			//¸õ
-		CROUCH,			//ÃÛ
-		INJURED,		//¨ü¶Ë
-		FORWARD_LYING,		//­w¦b¦a¤W
-		BACKWARD_LYING,		//½ö¦b¦a¤W
-		BASIC_ACTION_END	//°ò¥»°Ê§@µ²§ô­È
+		STANDING,		//ç«™ç«‹
+		WALKING,		//èµ°è·¯
+		RUNNING,		//è·‘æ­¥
+		STOP_RUNNING,		//åœæ­¢è·‘æ­¥
+		HEAVY_WEAPON_WALK,	//è² é‡è¡Œèµ°
+		HEAVY_WEAPON_RUN,	//è² é‡è·‘æ­¥
+		LIGHT_WEAPON_STAND_ATTACK,	//è¼•æ­¦å™¨ç«™æ”»
+		LIGHT_WEAPON_JUMP_ATTACK,	//è¼•æ­¦å™¨è·³æ”»
+		LIGHT_WEAPON_RUN_ATTACK,	//è¼•æ­¦å™¨è·‘æ”»
+		LIGHT_WEAPON_DASH_ATTACK,	//è¼•æ­¦å™¨è¡æ”»
+		LIGHT_WEAPON_THROW,		//è¼•æ­¦å™¨ä¸Ÿå‡º
+		HEAVY_WEAPON_THROW,		//é‡æ­¦å™¨ä¸Ÿå‡º
+		LIGHT_WEAPON_JUMP_THROW,	//è¼•æ­¦å™¨è·³èµ·æ™‚ä¸Ÿå‡º
+		HEAVY_WEAPON_JUMP_THROW,	//é‡æ­¦å™¨è·³èµ·æ™‚ä¸Ÿå‡º
+		DRINK,			//å–é£²æ–™
+		LIGHT_PUNCH,		//è¼•æ‹³
+		LIGHT_KICK,		//è¼•è…³
+		HEAVY_PUNCH,		//é‡æ‹³
+		HEAVY_KICK,		//é‡è…³
+		SUPER_PUNCH,		//çµ‚çµæ‹³
+		SUPER_PUNCH,		//çµ‚çµè…³
+		JUMP_PUNCH,		//è·³æ‹³
+		JUMP_KICK,		//è·³è…³
+		RUN_PUNCH,		//è·‘æ‹³
+		RUN_KICK,		//è·‘è…³
+		FORWARD_FLY_ROWING,	//å‰ç©ºç¿»
+		BACKWARD_FLY_ROWING,	//å¾Œç©ºç¿»
+		FORWARD_ROWING,		//å‰æ»¾
+		BACKWARD_ROWING,	//å¾Œæ»¾
+		DEFEND,			//é˜²ç¦¦
+		DEFEND_PUNCH,		//åæ“Šæ‹³
+		DEFEND_KICK,		//åæ“Šè…³
+		CATCHING,		//æŠ“äºº
+		CAUGHT,			//è¢«æŠ“
+		FALLING,		//è·Œå€’
+		JUMP,			//è·³
+		CROUCH,			//è¹²
+		INJURED,		//å—å‚·
+		FORWARD_LYING,		//è¶´åœ¨åœ°ä¸Š
+		BACKWARD_LYING,		//èººåœ¨åœ°ä¸Š
+		BASIC_ACTION_END	//åŸºæœ¬å‹•ä½œçµæŸå€¼
 	};
-	std::string	m_Name;		//¤Hª«¦WºÙ
+	std::string	m_Name;		//äººç‰©åç¨±
 	Action		m_Status;
-	int		m_MP,		//¥Ø«eÅ]¶q
+	int		m_MP,		//ç›®å‰é­”é‡
 			m_Visable,	//-1:invisible 0:flash 1:visible
-			m_MaxMP,	//³Ì¤jÅ]¶q
-			m_HP,		//¥Ø«e¦å¶q
-			m_MaxHP,	//³Ì¤j¦å¶q
-			m_Shield,	//¥Ø«eÅ@¬Þ­È
-			m_Fall,		//À»­Ë­È¡A·|¼vÅT¥i§_±Â¨­
-			m_MaxFall,	//³Ì¤jÀ»­Ë­È
-			m_Defend,	//¨¾¿m­È
-			m_MaxDefend,	//³Ì¤j¨¾¿m­È
-			m_Alive,	//¨¤¦â¬O§_ÁÙ¬¡µÛ
-			m_Life,		//¥Ø«e³Ñ¤Uªº´X±ø©R
-			m_PhysicsDefense,	//ª«²z¨¾¿m¤O
-			m_MagicDefense;		//Å]ªk¨¾¿m¤O
-	float		m_RemainTime,	//¥Ø«eframeÁÙ³Ñ¤Uªº®É¶¡
-			m_FlashTime,	//°{Ã{®É¶¡
-			m_InvincibleTime,	//µL¼Ä®É¶¡
-			m_InvisibleTime,	//Áô§Î®É¶¡
-			m_AntiPhysicsPercent,	//ª«²z´î¶Ë
-			m_AntiPhysicsPercent,	//ª«²z´î¶Ë%¼Æ
-			m_AntiMagicPercent,	//Å]ªk´î¶Ë
-			m_AntiMagicPercent;	//Å]ªk´î¶Ë%¼Æ
+			m_MaxMP,	//æœ€å¤§é­”é‡
+			m_HP,		//ç›®å‰è¡€é‡
+			m_MaxHP,	//æœ€å¤§è¡€é‡
+			m_Shield,	//ç›®å‰è­·ç›¾å€¼
+			m_Fall,		//æ“Šå€’å€¼ï¼Œæœƒå½±éŸ¿å¯å¦æŽˆèº«
+			m_MaxFall,	//æœ€å¤§æ“Šå€’å€¼
+			m_Defend,	//é˜²ç¦¦å€¼
+			m_MaxDefend,	//æœ€å¤§é˜²ç¦¦å€¼
+			m_Alive,	//è§’è‰²æ˜¯å¦é‚„æ´»è‘—
+			m_Life,		//ç›®å‰å‰©ä¸‹çš„å¹¾æ¢å‘½
+			m_PhysicsDefense,	//ç‰©ç†é˜²ç¦¦åŠ›
+			m_MagicDefense;		//é­”æ³•é˜²ç¦¦åŠ›
+	float		m_RemainTime,	//ç›®å‰frameé‚„å‰©ä¸‹çš„æ™‚é–“
+			m_FlashTime,	//é–ƒçˆæ™‚é–“
+			m_InvincibleTime,	//ç„¡æ•µæ™‚é–“
+			m_InvisibleTime,	//éš±å½¢æ™‚é–“
+			m_AntiPhysicsPercent,	//ç‰©ç†æ¸›å‚·
+			m_AntiPhysicsPercent,	//ç‰©ç†æ¸›å‚·%æ•¸
+			m_AntiMagicPercent,	//é­”æ³•æ¸›å‚·
+			m_AntiMagicPercent;	//é­”æ³•æ¸›å‚·%æ•¸
 };
 
