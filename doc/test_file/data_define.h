@@ -2,9 +2,10 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <deque>
 #include "math/Vector3.h"
 #include "math/Polygon2D.h"
-#include <deque>
+
 
 class Hero;
 
