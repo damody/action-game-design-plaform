@@ -25,7 +25,7 @@ Hero::Hero()
 
 }
 
-Hero::Hero( std::string h ):hero(h),m_Position(Vector3())
+Hero::Hero( std::string h ):hero(h),m_Position(Vector3()),m_Team(0)
 {
 	m_HeroInfo = g_HeroInfoMG.GetHeroInfo(hero);
 	if(m_HeroInfo.get())
@@ -78,13 +78,13 @@ void Hero::UpdateDataToDraw()
 	m_Pic.position.y = m_Position.y -m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY;
 	m_Pic.position.z = 0;
 	m_Pic.angle = m_Angle;
-	m_Pic.size.x = m_HeroInfo->m_PictureDatas[m_PicID].m_Width *2 ;
-	m_Pic.size.y = m_HeroInfo->m_PictureDatas[m_PicID].m_Height *2 ;
+	m_Pic.size.x = m_HeroInfo->m_PictureDatas[m_PicID].m_Width *2.0f ;
+	m_Pic.size.y = m_HeroInfo->m_PictureDatas[m_PicID].m_Height *2.0f ;
 
-	m_Pic.picpos.x = m_PicX;
-	m_Pic.picpos.y = m_PicY;
-	m_Pic.picpos.z = m_PicH;
-	m_Pic.picpos.w = m_PicW;
+	m_Pic.picpos.x = (float)m_PicX;
+	m_Pic.picpos.y = (float)m_PicY;
+	m_Pic.picpos.z = (float)m_PicH;
+	m_Pic.picpos.w = (float)m_PicW;
 	
 }
 
@@ -129,8 +129,20 @@ void Hero::Position( Vector3 pos )
 	m_Position =pos;
 }
 
+void Hero::SetRecord( Record_Sptr r )
+{
+	m_Record = r;
+}
 
+void Hero::PushKey( KeyInfo k )
+{
+	m_KeyQue.push_back(k);
+}
 
+void Hero::SetTeam( int team )
+{
+	m_Team = team;
+}
 
 
 bool SortHero( Hero_RawPtr a,Hero_RawPtr b )

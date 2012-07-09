@@ -17,6 +17,17 @@
 #include "HeroAction.h"
 #include <string>
 
+struct Record
+{
+	int Kill;    //殺敵數
+	int Attack;  //攻擊
+	int HPLost;  //損血量
+	int MPUsage; //耗魔量
+	int Picking; //拾起物品數目
+	bool Status; //true: win false: lose
+};
+SHARE_PTR(Record)
+
 class Hero
 {
 private:
@@ -42,6 +53,7 @@ private:
 	int		m_MaxRecoverHP;//最大恢復血量
 	int		m_HP;
 	int		m_MP;
+	Record_Sptr     m_Record;
 
 	KeyQue		m_KeyQue;
 
@@ -55,6 +67,9 @@ public:
 	Texture_Sptr GetTexture();
 	int GetTextureID();
 	ClipVertex GetPic();
+	void SetRecord(Record_Sptr r);
+	void SetTeam(int team);
+	void PushKey(KeyInfo k);
 	void Position(Vector3 pos);
 protected:
 	void Init();

@@ -167,6 +167,9 @@
     <ClCompile Include="HeroInfoManager.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">

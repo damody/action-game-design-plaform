@@ -262,20 +262,7 @@ void InitDirect3DApp::LoadHero()
 
 int InitDirect3DApp::UpdateInput()
 {
-	InputStateS::instance().GetInput();
-	static int sound = -2000;
-	if (InputStateS::instance().isKeyDown(KEY_NUMPAD1))
-	{
-		sound += 500;
-		WavSoundS::instance().SetVolume(sound);
-		printf("%d\n", sound);
-	}
-	if (InputStateS::instance().isKeyDown(KEY_NUMPAD2))
-	{
-		sound -= 500;
-		WavSoundS::instance().SetVolume(sound);
-		printf("%d\n", sound);
-	}
+	
 	return 0;
 }
 

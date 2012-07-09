@@ -1,5 +1,7 @@
 #pragma once
+#include <deque>
 
+#define KEYUP 7
 
 struct KeyInfo{
 	enum CtrlKey{
