@@ -186,7 +186,6 @@ public:
 			x * fInv,
 			y * fInv,
 			z * fInv);
-
 	}
 
 	inline Vector3 operator / ( const Vector3& rhs) const
@@ -310,9 +309,9 @@ public:
 
 	inline Vector3& operator /= ( const float fScalar )
 	{
-		assert( fScalar != 0.0f );
+		assert( fScalar != 0.0 );
 
-		float fInv = 1.0f / fScalar;
+		float fInv = 1.0 / fScalar;
 
 		x *= fInv;
 		y *= fInv;
@@ -434,7 +433,7 @@ public:
 		// Will also work for zero-sized vectors, but will change nothing
 		if ( fLength > 1e-08 )
 		{
-			float fInvLength = 1.0f / fLength;
+			float fInvLength = 1.0 / fLength;
 			x *= fInvLength;
 			y *= fInvLength;
 			z *= fInvLength;
@@ -577,7 +576,7 @@ public:
 
 		float f = dotProduct(dest) / lenProduct;
 
-		f = Math::Clamp(f, (float)-1.0f, (float)1.0f);
+		f = Math::Clamp(f, (float)-1.0, (float)1.0);
 		return Math::ACos(f);
 
 	}

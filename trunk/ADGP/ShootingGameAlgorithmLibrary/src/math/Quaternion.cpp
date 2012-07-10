@@ -99,15 +99,15 @@ void Quaternion::ToRotationMatrix (Matrix3& kRot) const
 	float fTyz = fTz*y;
 	float fTzz = fTz*z;
 
-	kRot[0][0] = 1.0f-(fTyy+fTzz);
+	kRot[0][0] = 1.0-(fTyy+fTzz);
 	kRot[0][1] = fTxy-fTwz;
 	kRot[0][2] = fTxz+fTwy;
 	kRot[1][0] = fTxy+fTwz;
-	kRot[1][1] = 1.0f-(fTxx+fTzz);
+	kRot[1][1] = 1.0-(fTxx+fTzz);
 	kRot[1][2] = fTyz-fTwx;
 	kRot[2][0] = fTxz-fTwy;
 	kRot[2][1] = fTyz+fTwx;
-	kRot[2][2] = 1.0f-(fTxx+fTyy);
+	kRot[2][2] = 1.0-(fTxx+fTyy);
 }
 //-----------------------------------------------------------------------
 void Quaternion::FromAngleAxis (const Radian& rfAngle,
