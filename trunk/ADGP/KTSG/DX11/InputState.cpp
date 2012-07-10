@@ -152,3 +152,19 @@ int InputState::GetMouseWheel()
 {
 	return m_MouseInfo.z;
 }
+
+std::queue<int> InputState::GetKeyDownQue()
+{
+	std::queue<int> keyDownQue;
+	for (int i=0; i<256; i++)
+	{
+		if ( m_NowKeyState[i] && !m_LastKeyState[i] )
+		{
+			keyDownQue.push(i);
+		}
+	}
+	
+	return keyDownQue;
+}
+
+

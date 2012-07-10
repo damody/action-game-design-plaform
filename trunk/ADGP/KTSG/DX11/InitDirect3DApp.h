@@ -14,6 +14,7 @@
 #include "Lua/LuaCell.h"
 #include "TextureManager.h"
 #include "game/Hero.h"
+#include "Player.h"
 
 class InitDirect3DApp : public D3DApp
 {
@@ -71,8 +72,8 @@ private:
 	ID3D11DepthStencilState *m_pDepthStencil_ZWriteOFF;
 
 	LuaCell			m_Lua;
-	
-	
+	Player			m_Player;
+
 	std::vector<Hero_RawPtr>	m_Heroes;
 	ClipVertexs			m_HeroVertex;
 	DrawVertexGroups		m_DrawVertexGroups;
@@ -85,6 +86,8 @@ private:
 	int			m_GameProcess;		//遊戲流程,表示目前執行的畫面
 	int			m_LastGameProcess;	//前一個遊戲流程
 	int			m_Last2GameProcess;	//前前一個遊戲流程
+
+	
 	
 };
 

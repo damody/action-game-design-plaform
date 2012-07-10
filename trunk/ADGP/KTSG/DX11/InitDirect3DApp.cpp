@@ -254,15 +254,21 @@ void InitDirect3DApp::LoadHero()
 	temp->LoadHeroData(davis);
 	g_HeroInfoMG.AddHeroInfo(temp->m_Name,temp);
 
-	Hero_RawPtr TestHero = Hero_RawPtr(new Hero("Davis"));
-	TestHero->Position(Vector3(200,200,0));
-	m_Heroes.push_back(TestHero);
+	//player init
+	int key[8] = {KEY_UP,KEY_DOWN,KEY_RIGHT,KEY_LEFT,KEY_Q,KEY_W,KEY_E,KEY_R};
+	m_Player.SetCtrlKey(key);
+
+	m_Player.SetHero("Davis");
+	m_Player.SetTeam(0);
+
+	m_Heroes.push_back(m_Player.CreateHero(Vector3(200,200,0)));
+	
 }
 
 
 int InitDirect3DApp::UpdateInput()
 {
-	
+	m_Player.UpdateInput();
 	return 0;
 }
 

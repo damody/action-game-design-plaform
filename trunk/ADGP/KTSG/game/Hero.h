@@ -75,6 +75,7 @@ protected:
 	void Init();
 	void NextFrame();
 	bool ScanKeyQue();//false無控制動作
+	void ClearKeyQue();
 	void Flicker();//閃爍
 	void Recover();//回血、氣、破防值.....
 	void UpdateDataToDraw();//Data To m_Pic

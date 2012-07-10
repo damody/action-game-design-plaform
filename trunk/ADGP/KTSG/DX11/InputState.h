@@ -8,6 +8,7 @@
 #define INPUTSTATE_H
 
 #include "GetDirectXInput.h"
+#include <queue>
 #include <boost/thread/detail/singleton.hpp>
 
 class InputState
@@ -59,6 +60,8 @@ public:
 	POINT GetMousePos();
 	/// 得到滾輪動量
 	int  GetMouseWheel();
+	/// 取得所有按下的鍵值
+	std::queue<int> GetKeyDownQue();
 private:
 	char m_NowKeyState[256],m_LastKeyState[256];
 	GetDirectXInput *m_lpDxInput;
