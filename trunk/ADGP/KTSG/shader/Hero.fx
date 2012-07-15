@@ -47,7 +47,7 @@ VS_OUT VS(VS_IN vIn)
 					     cLookAt.y + cPolarCoord.x * sin(thita),
 						 cLookAt.z + cPolarCoord.x * cos(thita) * cos(alpha));	
 	
-	vIn.position= float4(2*vIn.position.xyz-camera,1.0);		 
+	vIn.position= float4(2*vIn.position.xy-camera.xy,0.0,1.0);		 
 	vIn.position.xy= (vIn.position.xy)/float2(width,height);
 	
 	vOut.pos =float4(vIn.position,1.0) ;
@@ -69,9 +69,9 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	float2x2 mat = {cos(x), -sin(x), sin(x), cos(x)};
 	float2 size = {1/(width*(1+cPolarCoord.x*0.01)),1/(height*(1+cPolarCoord.x*0.01))};
 	float3x3 view;
-	view[0]=float4(cos(thita) 	, -sin(-cPolarCoord.y) * -sin(alpha) , -sin(thita) * cos(alpha) ,0);
-	view[1]=float4(	0			,  cos(alpha) 				      	 ,  sin(alpha)				,0);
-	view[2]=float4(sin(thita) 	,  cos(-cPolarCoord.y) * -sin(alpha) ,  cos(thita) * cos(alpha) ,0);
+	view[0]=float3(cos(thita) 	, -sin(thita) * -sin(alpha) , -sin(thita) * cos(alpha) );
+	view[1]=float3(	0			,  cos(alpha) 				,  sin(alpha)	           );
+	view[2]=float3(sin(thita) 	,  cos(thita) * -sin(alpha) ,  cos(thita) * cos(alpha) );
 	float2 texsize = {1/input[0].picpos.z, 1/input[0].picpos.w};
 	
 	GS_OUT out5;
