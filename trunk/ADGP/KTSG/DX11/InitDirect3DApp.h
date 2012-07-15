@@ -15,6 +15,8 @@
 #include "TextureManager.h"
 #include "game/Hero.h"
 #include "Player.h"
+#include "Camera.h"
+#include "cameraclass.h"
 
 class InitDirect3DApp : public D3DApp
 {
@@ -36,7 +38,6 @@ private:
 	void UpdateScene(float dt);
 	int  UpdateInput();
 	int  UpdateUI();
-	void SetCtrlKey();
 	void PrintInfo();
 
 	//UI處理
@@ -56,38 +57,38 @@ private:
 	ID3D11ShaderResourceView* SRVViewRes;
 	ID3D11RenderTargetView* RTVViewRes;
 
-
-	ID3DX11EffectShaderResourceVariable*  m_PMap_Heroes;
-
-	ID3D11Buffer* m_Buffer_Heroes;
-	ID3DX11Effect* m_Effect_Heroes;
-	ID3DX11EffectTechnique* m_PTech_Heroes;
-	ID3D11InputLayout* m_PLayout_Heroes;
-	ID3DX11EffectScalarVariable* m_Heroes_Width;
-	ID3DX11EffectScalarVariable* m_Heroes_Height;
-
 	ID3D11BlendState*	m_pBlendState_ADD;
 	ID3D11BlendState*	m_pBlendState_BLEND;
 	ID3D11DepthStencilState *m_pDepthStencil_ZWriteON;
 	ID3D11DepthStencilState *m_pDepthStencil_ZWriteOFF;
 
+	D3D11_BUFFER_DESC	m_vbd;
+
 	LuaCell			m_Lua;
 	Player			m_Player;
+	Camera_Sptr		m_Camera;
 
 	std::vector<Hero_RawPtr>	m_Heroes;
 	ClipVertexs			m_HeroVertex;
 	DrawVertexGroups		m_DrawVertexGroups;
 	
-	std::vector<int>	m_CtrlKey;		//control key array
+	ID3D11Buffer* m_Buffer_Heroes;
+	ID3DX11Effect* m_Effect_Heroes;
+	ID3DX11EffectTechnique* m_PTech_Heroes;
+	ID3D11InputLayout* m_PLayout_Heroes;
+	ID3DX11EffectVariable *m_Heroes_cLootAt;
+	ID3DX11EffectVariable *m_Heroes_cPos;
+	ID3DX11EffectScalarVariable* m_Heroes_Width;
+	ID3DX11EffectScalarVariable* m_Heroes_Height;
+	ID3DX11EffectShaderResourceVariable*  m_PMap_Heroes;
+
 	
-	D3D11_BUFFER_DESC	m_vbd;
 	int			m_SettingKeyID;		//目前要設定的按鍵的id
 	int			m_SettingKeyTextID;	//目前要設定的按鍵的text物件的id
 	int			m_GameProcess;		//遊戲流程,表示目前執行的畫面
 	int			m_LastGameProcess;	//前一個遊戲流程
 	int			m_Last2GameProcess;	//前前一個遊戲流程
 
-	
 	
 };
 

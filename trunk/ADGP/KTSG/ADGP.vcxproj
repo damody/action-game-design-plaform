@@ -188,6 +188,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConvStr.cpp" />
     <ClCompile Include="FrameInfo.cpp" />
     <ClCompile Include="game\Hero.cpp" />
@@ -259,6 +260,7 @@
     <ClCompile Include="memory\BitSet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CtrlKey.h" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="BeCatch.h" />

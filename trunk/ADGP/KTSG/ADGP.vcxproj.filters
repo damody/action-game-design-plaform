@@ -170,6 +170,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>src\DX11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -330,6 +333,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>inc\DX11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -35,15 +35,8 @@ void InitDirect3DApp::initApp()
 	m_DeviceContext->OMSetBlendState(m_pBlendState_BLEND, BlendFactor, 0xffffffff);
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
-
-	//init control key
-	m_CtrlKey.resize(CTRL_KEY_MAX);
-	m_CtrlKey[0] = DEFAULT_CTRL_KEY_UP;
-	m_CtrlKey[1] = DEFAULT_CTRL_KEY_DOWN;
-	m_CtrlKey[2] = DEFAULT_CTRL_KEY_LEFT;
-	m_CtrlKey[3] = DEFAULT_CTRL_KEY_RIGHT;
-	m_CtrlKey[4] = DEFAULT_CTRL_KEY_SKILL;
-	m_CtrlKey[5] = DEFAULT_CTRL_KEY_TIMECHENGE;
+	//init Camera
+	m_Camera = Camera_Sptr(new Camera(0,0,0,0,0,0));
 }
 
 
@@ -54,6 +47,26 @@ void InitDirect3DApp::UpdateScene(float dt)
 	D3DApp::DrawScene(); // clear window
 	PrintInfo();
 	UpdateInput();
+
+	//*test camera
+		//InputStateS::instance().GetInput();
+		if (InputStateS::instance().isKeyDown(KEY_Z))
+		{
+			
+			m_Camera->MoveX(-0.1);
+			std::cout<<m_Camera->GetLookAt()[0];
+		}
+		if (InputStateS::instance().isKeyDown(KEY_X))
+		{
+			m_Camera->MoveX(0.1);
+		}
+		
+	//*/
+	//std::cout<<m_Camera->GetLookAt()[0]<<m_Camera->GetLookAt()[1]<<std::endl;
+	m_Heroes_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Heroes_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+
+	//Hero Update
 	static float timp_count = dt;
 	if (timp_count > 1/60.0f)
 	{
@@ -64,6 +77,9 @@ void InitDirect3DApp::UpdateScene(float dt)
 		timp_count = 0;
 	}
 	timp_count+=dt;
+
+
+
 	UpdateUI();
 	buildPoint();
 }
@@ -103,6 +119,8 @@ void InitDirect3DApp::DrawScene()
 			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
 		}
 	}
+	
+	
 }
 
 void InitDirect3DApp::buildPointFX()
@@ -110,7 +128,7 @@ void InitDirect3DApp::buildPointFX()
 	ID3D10Blob* pCode;
 	ID3D10Blob* pError;
 	HRESULT hr = 0;
-	hr=D3DX11CompileFromFile(_T("shader\\bullet.fx"), NULL, NULL, NULL, 
+	hr=D3DX11CompileFromFile(_T("shader\\Hero.fx"), NULL, NULL, NULL, 
 		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
 	if(FAILED(hr))
 	{
@@ -125,6 +143,8 @@ void InitDirect3DApp::buildPointFX()
 	m_PTech_Heroes = m_Effect_Heroes->GetTechniqueByName("PointTech");
 	m_Heroes_Width = m_Effect_Heroes->GetVariableByName("width")->AsScalar();
 	m_Heroes_Height =m_Effect_Heroes->GetVariableByName("height")->AsScalar();
+	m_Heroes_cLootAt = m_Effect_Heroes->GetVariableByName("cameraLookAt");
+	m_Heroes_cPos = m_Effect_Heroes->GetVariableByName("cameraPos");
 	m_PMap_Heroes =m_Effect_Heroes->GetVariableByName("gMap")->AsShaderResource();
 
 	D3DX11_PASS_DESC PassDesc;
@@ -371,6 +391,7 @@ void InitDirect3DApp::InitTexture()
 	HR(m_d3dDevice->CreateDepthStencilView(tex12, 0, &m_DepthStencilView2));
 }
 
+/*
 void InitDirect3DApp::SetCtrlKey()
 {
 	if (InputStateS::instance().isKeyPress(KEY_A))
@@ -679,9 +700,9 @@ void InitDirect3DApp::SetCtrlKey()
 		m_SettingKeyID=-1; 
 		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "Right");
 	}
-	/*if (m_SettingKeyID==-1)
-		m_TestHero.m_CtrlKeys = m_CtrlKey;*/
-}
+	/ *if (m_SettingKeyID==-1)
+		m_TestHero.m_CtrlKeys = m_CtrlKey;* /
+}*/
 
 void InitDirect3DApp::DealMainMenu()
 {
@@ -709,8 +730,8 @@ void InitDirect3DApp::DealOptionPage()
 	int val;
 	std::vector<CmdState> cmdstate = m_DXUT_UI->GetCmdState();
 
-	if (m_SettingKeyID>=0)
-		SetCtrlKey();		//砞﹚北龄矪瞶ㄧ计
+// 	if (m_SettingKeyID>=0)
+// 		SetCtrlKey();		//砞﹚北龄矪瞶ㄧ计
 
 	for (size_t i=0; i<cmdstate.size(); i++)
 	{
