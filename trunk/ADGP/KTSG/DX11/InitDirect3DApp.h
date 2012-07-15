@@ -88,7 +88,7 @@ private:
 	int			m_LastGameProcess;	//前一個遊戲流程
 	int			m_Last2GameProcess;	//前前一個遊戲流程
 
-	
+	void TestCamera();
 };
 
 struct CD3D11_BLEND_DESCX : public D3D11_BLEND_DESC

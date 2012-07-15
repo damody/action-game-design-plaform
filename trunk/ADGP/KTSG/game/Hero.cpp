@@ -74,8 +74,10 @@ void Hero::Update(float dt)
 
 void Hero::UpdateDataToDraw()
 {
-	m_Pic.position.x = m_Position.x -m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX;
-	m_Pic.position.y = m_Position.y -m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY;
+// 	m_Pic.position.x = m_Position.x - (m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX / 1280);
+// 	m_Pic.position.y = m_Position.y - (m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY / 800);
+	m_Pic.position.x = m_Position.x;
+	m_Pic.position.y = m_Position.y;
 	m_Pic.position.z = 0;
 	m_Pic.angle = m_Angle;
 	m_Pic.size.x = m_HeroInfo->m_PictureDatas[m_PicID].m_Width *2.0f ;

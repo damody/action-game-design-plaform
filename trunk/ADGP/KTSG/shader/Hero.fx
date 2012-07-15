@@ -40,33 +40,18 @@ VS_OUT VS(VS_IN vIn)
 {
 	VS_OUT vOut;
 	
-	//World  
-	vOut.pos = float4(vIn.position*2-1,1);
+	float thita = cPolarCoord.y *3.14159/180;
+	float alpha = cPolarCoord.z *3.14159/180;
 	
-	//View
-	//Rotation
-	float4x4 view;
-	view[0]=float4(cos(-cPolarCoord.y) 	, -sin(-cPolarCoord.y) * -sin(-cPolarCoord.z) , -sin(-cPolarCoord.y) * cos(-cPolarCoord.z) ,0);
-	view[1]=float4(	0					,  cos(-cPolarCoord.z) 				          ,  sin(-cPolarCoord.z)					   ,0);
-	view[2]=float4(	sin(-cPolarCoord.y) ,  cos(-cPolarCoord.y) * -sin(-cPolarCoord.z) ,  cos(-cPolarCoord.y) * cos(-cPolarCoord.z) ,0);
-	//Translate
+	float3 camera=float3(cLookAt.x + cPolarCoord.x * cos(thita) * sin(alpha),
+					     cLookAt.y + cPolarCoord.x * sin(thita),
+						 cLookAt.z + cPolarCoord.x * cos(thita) * cos(alpha));	
 	
-	float3 camera=float3(cLookAt.x + cPolarCoord.x * cos(cPolarCoord.y) * sin(cPolarCoord.z),
-					     cLookAt.y + cPolarCoord.x * sin(cPolarCoord.y),
-						 cLookAt.z + cPolarCoord.x * cos(cPolarCoord.y) * cos(cPolarCoord.z));
-	camera = float4(camera*2-1,1);					 
-	view[3]=float4(vOut.pos.xyz-camera.xyz , 1.0);
-	vOut.pos = mul(float4(vOut.pos.xyz,1.0) ,view);
+	vIn.position= float4(2*vIn.position.xyz-camera,1.0);		 
+	vIn.position.xy= (vIn.position.xy)/float2(width,height);
 	
-	//Project
-	float4x4 porj;
-	porj[0]=float4(1.0/width,0.0,0.0,0.0);
-	porj[1]=float4(0.0,1.0/height,0.0,0.0);
-	porj[2]=float4(0.0,0.0,1.0,0.0);
-	porj[3]=float4(0.0,0.0,0.0,1.0);
+	vOut.pos =float4(vIn.position,1.0) ;
 	
-	vOut.pos = mul(float4(vOut.pos.xyz,1.0) ,porj);
-	vOut.pos.x += cLookAt.x;
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
 	vOut.picpos = vIn.picpos;
@@ -77,28 +62,37 @@ VS_OUT VS(VS_IN vIn)
 [maxvertexcount (6)]
 void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 {
+	float thita = -cPolarCoord.y *3.14159/180;
+	float alpha = -cPolarCoord.z *3.14159/180;
+
 	float x = input[0].angle*3.14159/180;
 	float2x2 mat = {cos(x), -sin(x), sin(x), cos(x)};
-	float2 size = {1/(width*(1+cPolarCoord.x)),1/(height*(1+cPolarCoord.x))};
+	float2 size = {1/(width*(1+cPolarCoord.x*0.01)),1/(height*(1+cPolarCoord.x*0.01))};
+	float3x3 view;
+	view[0]=float4(cos(thita) 	, -sin(-cPolarCoord.y) * -sin(alpha) , -sin(thita) * cos(alpha) ,0);
+	view[1]=float4(	0			,  cos(alpha) 				      	 ,  sin(alpha)				,0);
+	view[2]=float4(sin(thita) 	,  cos(-cPolarCoord.y) * -sin(alpha) ,  cos(thita) * cos(alpha) ,0);
 	float2 texsize = {1/input[0].picpos.z, 1/input[0].picpos.w};
+	
 	GS_OUT out5;
-	out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,-input[0].size.y), mat)*size ,0,1);
+	out5.posH=float4(mul(float3(input[0].pos.xy-mul(float2(-input[0].size.x,-2*input[0].size.y), mat)*size,0),view),1);
+	
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y-1));
 	triStream.Append( out5 );
-	out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat)*size,0,1);
+	out5.posH=float4(mul(float3(input[0].pos.xy-mul(float2(-input[0].size.x,0), mat)*size,0),view),1);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
 	triStream.Append( out5 );
-	out5.posH=float4(input[0].pos.xy-mul(float2(input[0].size.x,-input[0].size.y), mat)*size,0,1);
+	out5.posH=float4(mul(float3(input[0].pos.xy-mul(float2( input[0].size.x,-2*input[0].size.y), mat)*size,0),view),1);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
 	triStream.Append( out5 );
 	
-	out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat)*size,0,1);
+	out5.posH=float4(mul(float3(input[0].pos.xy-mul(float2(-input[0].size.x,0), mat)*size,0),view),1);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
 	triStream.Append( out5 );
-	out5.posH=float4(input[0].pos.xy-mul(float2(input[0].size.x,-input[0].size.y), mat)*size,0,1);
+	out5.posH=float4(mul(float3(input[0].pos.xy-mul(float2( input[0].size.x,-2*input[0].size.y), mat)*size,0),view),1);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
 	triStream.Append( out5 );
-	out5.posH=float4(input[0].pos.xy-mul(float2(input[0].size.x,input[0].size.y), mat)*size,0,1);
+	out5.posH=float4(mul(float3(input[0].pos.xy-mul(float2( input[0].size.x,0), mat)*size,0),view),1);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y));
 	triStream.Append( out5 );
 

@@ -49,43 +49,9 @@ void InitDirect3DApp::UpdateScene(float dt)
 	UpdateInput();
 
 	//*test camera
+	TestCamera();
 	//InputStateS::instance().GetInput();
-	if (InputStateS::instance().isKeyDown(KEY_Z))
-	{
-		m_Camera->Zoom(-1);
-		//m_Camera->SurroundX(-10);
-		//m_Camera->MoveX(-1);
-	}
-	if (InputStateS::instance().isKeyDown(KEY_X))
-	{
-		//m_Camera->SurroundX(10);
-		m_Camera->Zoom(1); 
-		//m_Camera->MoveX(1);
-	}
-	if (InputStateS::instance().isKeyDown(KEY_A))
-	{
-		//m_Camera->Zoom(-1);
-		//m_Camera->SurroundX(-10);
-		m_Camera->MoveX(-1);
-	}
-	if (InputStateS::instance().isKeyDown(KEY_S))
-	{
-		//m_Camera->SurroundX(10);
-		//m_Camera->Zoom(1); 
-		m_Camera->MoveX(1); 
-	}
-	if (InputStateS::instance().isKeyDown(KEY_F))
-	{
-		//m_Camera->Zoom(-1);
-		m_Camera->SurroundX(-10);
-		//m_Camera->MoveX(-1);
-	}
-	if (InputStateS::instance().isKeyDown(KEY_G))
-	{
-		m_Camera->SurroundX(10);
-		//m_Camera->Zoom(1);
-		//m_Camera->MoveX(1);
-	}
+	
 	m_Heroes_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
 	m_Heroes_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 
@@ -303,7 +269,7 @@ void InitDirect3DApp::LoadHero()
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
 
-	m_Heroes.push_back(m_Player.CreateHero(Vector3(200,200,0)));
+	m_Heroes.push_back(m_Player.CreateHero(Vector3(100,100,0)));
 	
 }
 
@@ -875,4 +841,68 @@ void InitDirect3DApp::GoBackUI()
 void InitDirect3DApp::ReflashTowerState()
 {
 	
+}
+
+void InitDirect3DApp::TestCamera()
+{
+	if (InputStateS::instance().isKeyDown(KEY_Z))
+	{
+		m_Camera->Zoom(-10);
+		//m_Camera->SurroundX(-10);
+		//m_Camera->MoveX(-1);
+	}
+	if (InputStateS::instance().isKeyDown(KEY_X))
+	{
+		//m_Camera->SurroundX(10);
+		m_Camera->Zoom(10); 
+		//m_Camera->MoveX(1);
+	}
+	if (InputStateS::instance().isKeyDown(KEY_4))
+	{
+		//m_Camera->Zoom(-1);
+		//m_Camera->SurroundX(-10);
+		m_Camera->MoveX(-10);
+	}
+	if (InputStateS::instance().isKeyDown(KEY_6))
+	{
+		//m_Camera->SurroundX(10);
+		//m_Camera->Zoom(1); 
+		m_Camera->MoveX(10); 
+	}
+	if (InputStateS::instance().isKeyDown(KEY_2))
+	{
+		//m_Camera->Zoom(-1);
+		//m_Camera->SurroundX(-10);
+		m_Camera->MoveY(-10);
+	}
+	if (InputStateS::instance().isKeyDown(KEY_8))
+	{
+		//m_Camera->SurroundX(10);
+		//m_Camera->Zoom(1); 
+		m_Camera->MoveY(10); 
+	}
+	if (InputStateS::instance().isKeyDown(KEY_K))
+	{
+		//m_Camera->Zoom(-1);
+		m_Camera->SurroundX(-10);
+		//m_Camera->MoveX(-1);
+	}
+	if (InputStateS::instance().isKeyDown(KEY_I))
+	{
+		m_Camera->SurroundX(10);
+		//m_Camera->Zoom(1);
+		//m_Camera->MoveX(1);
+	}
+	if (InputStateS::instance().isKeyDown(KEY_J))
+	{
+		//m_Camera->Zoom(-1);
+		m_Camera->SurroundY(-10);
+		//m_Camera->MoveX(-1);
+	}
+	if (InputStateS::instance().isKeyDown(KEY_L))
+	{
+		m_Camera->SurroundY(10);
+		//m_Camera->Zoom(1);
+		//m_Camera->MoveX(1);
+	}
 }

@@ -49,12 +49,14 @@ void Camera::Zoom( float index )
 
 void Camera::SurroundX( float index )
 {
-	m_Alpha += index* (float)PI / 180.0f;
+	m_Alpha += index;
+	std::cout<<"Alpha: "<<-m_Alpha<<std::endl;
 }
 
 void Camera::SurroundY( float index )
 {
-	m_Thita += index* (float)PI / 180.0f;
+	m_Thita += index;
+	std::cout<<"Thita:"<<-m_Thita<<std::endl;
 }
 
 float* Camera::GetLookAt()
