@@ -33,7 +33,6 @@ struct ClipVertex
 typedef std::vector<ClipVertex> ClipVertexs;
 // 
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_DXVertex[];
-extern D3D11_INPUT_ELEMENT_DESC VertexDesc_BulletVertex[];
-extern D3D11_INPUT_ELEMENT_DESC VertexDesc_SVertex[];
+extern D3D11_INPUT_ELEMENT_DESC VertexDesc_HeroVertex[];
 
 #endif // VERTEX_H

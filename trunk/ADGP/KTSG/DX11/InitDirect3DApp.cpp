@@ -36,7 +36,7 @@ void InitDirect3DApp::initApp()
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
 	//init Camera
-	m_Camera = Camera_Sptr(new Camera(0,0,0,0,0,0));
+	m_Camera = Camera_Sptr(new Camera(0,0,0,1,0,0));
 }
 
 
@@ -52,17 +52,40 @@ void InitDirect3DApp::UpdateScene(float dt)
 		//InputStateS::instance().GetInput();
 		if (InputStateS::instance().isKeyDown(KEY_Z))
 		{
-			
-			m_Camera->MoveX(-0.1);
-			std::cout<<m_Camera->GetLookAt()[0];
+			m_Camera->Zoom(-1);
+			//m_Camera->SurroundX(-10);
+			//m_Camera->MoveX(-1);
 		}
 		if (InputStateS::instance().isKeyDown(KEY_X))
 		{
-			m_Camera->MoveX(0.1);
+			//m_Camera->SurroundX(10);
+			m_Camera->Zoom(1); 
+			//m_Camera->MoveX(1);
 		}
-		
-	//*/
-	//std::cout<<m_Camera->GetLookAt()[0]<<m_Camera->GetLookAt()[1]<<std::endl;
+		if (InputStateS::instance().isKeyDown(KEY_A))
+		{
+			//m_Camera->Zoom(-1);
+			//m_Camera->SurroundX(-10);
+			m_Camera->MoveX(-1);
+		}
+		if (InputStateS::instance().isKeyDown(KEY_S))
+		{
+			//m_Camera->SurroundX(10);
+			//m_Camera->Zoom(1); 
+			m_Camera->MoveX(1); 
+		}
+		if (InputStateS::instance().isKeyDown(KEY_F))
+		{
+			//m_Camera->Zoom(-1);
+			m_Camera->SurroundX(-10);
+			//m_Camera->MoveX(-1);
+		}
+		if (InputStateS::instance().isKeyDown(KEY_G))
+		{
+			m_Camera->SurroundX(10);
+			//m_Camera->Zoom(1);
+			//m_Camera->MoveX(1);
+		}
 	m_Heroes_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
 	m_Heroes_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 
@@ -77,8 +100,6 @@ void InitDirect3DApp::UpdateScene(float dt)
 		timp_count = 0;
 	}
 	timp_count+=dt;
-
-
 
 	UpdateUI();
 	buildPoint();
@@ -143,13 +164,13 @@ void InitDirect3DApp::buildPointFX()
 	m_PTech_Heroes = m_Effect_Heroes->GetTechniqueByName("PointTech");
 	m_Heroes_Width = m_Effect_Heroes->GetVariableByName("width")->AsScalar();
 	m_Heroes_Height =m_Effect_Heroes->GetVariableByName("height")->AsScalar();
-	m_Heroes_cLootAt = m_Effect_Heroes->GetVariableByName("cameraLookAt");
-	m_Heroes_cPos = m_Effect_Heroes->GetVariableByName("cameraPos");
+	m_Heroes_cLootAt = m_Effect_Heroes->GetVariableByName("cLookAt");
+	m_Heroes_cPos = m_Effect_Heroes->GetVariableByName("cPolarCoord");
 	m_PMap_Heroes =m_Effect_Heroes->GetVariableByName("gMap")->AsShaderResource();
 
 	D3DX11_PASS_DESC PassDesc;
 	m_PTech_Heroes->GetPassByIndex(0)->GetDesc(&PassDesc);
-	HR(m_d3dDevice->CreateInputLayout(VertexDesc_BulletVertex, 4, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Heroes));
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_HeroVertex, 4, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Heroes));
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;

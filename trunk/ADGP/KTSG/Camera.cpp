@@ -43,7 +43,8 @@ void Camera::Rotate( float inX,float inY )
 
 void Camera::Zoom( float index )
 {
-	m_Radius += index;
+	if((m_Radius+index)<0)return;
+	else m_Radius += index;
 }
 
 void Camera::SurroundX( float index )

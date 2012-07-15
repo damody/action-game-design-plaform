@@ -43,7 +43,7 @@ struct GS_OUT
 VS_OUT VS(VS_IN vIn)
 {
 	VS_OUT vOut;
-	/*
+	
 	//World  
 	vOut.pos = float4(vIn.position*2-1,1);
 	
@@ -54,6 +54,7 @@ VS_OUT VS(VS_IN vIn)
 	view[1]=float4(	0					,  cos(-cPolarCoord.z) 				          ,  sin(-cPolarCoord.z)					   ,0);
 	view[2]=float4(	sin(-cPolarCoord.y) ,  cos(-cPolarCoord.y) * -sin(-cPolarCoord.z) ,  cos(-cPolarCoord.y) * cos(-cPolarCoord.z) ,0);
 	//Translate
+	
 	float3 camera=float3(cLookAt.x + cPolarCoord.x * cos(cPolarCoord.y) * sin(cPolarCoord.z),
 					     cLookAt.y + cPolarCoord.x * sin(cPolarCoord.y),
 						 cLookAt.z + cPolarCoord.x * cos(cPolarCoord.y) * cos(cPolarCoord.z));
@@ -63,14 +64,14 @@ VS_OUT VS(VS_IN vIn)
 	
 	//Project
 	float4x4 porj;
-	porj[0]=float4(1.0/(width*(1+cPolarCoord.x)),0,0.0,0.0);
-	porj[1]=float4(0.0,1.0/(height*(1+cPolarCoord.x)),0.0,0.0);
-	porj[2]=float4(0.0,0.0,1.0,0.0);
+	porj[0]=float4(1.0/width,0.0,0.0,0.0);
+	porj[1]=float4(0.0,1.0/height,0.0,0.0);
+	porj[2]=float4(0.0,0.0,0.0,0.0);
 	porj[3]=float4(0.0,0.0,0.0,1.0);
 	
 	vOut.pos = mul(float4(vOut.pos.xyz,1.0) ,porj);
-	*/
-	vOut.pos = float4(cLookAt.xyz,1.0);
+	
+	
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
 	vOut.picpos = vIn.picpos;
@@ -83,7 +84,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 {
 	float x = input[0].angle*3.14159/180;
 	float2x2 mat = {cos(x), -sin(x), sin(x), cos(x)};
-	float2 size = {1/width,1/height};
+	float2 size = {1/(width*(1+cPolarCoord.x)),1/(height*(1+cPolarCoord.x))};
 	float2 texsize = {1/input[0].picpos.z, 1/input[0].picpos.w};
 	GS_OUT out5;
 	out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,-input[0].size.y), mat)*size ,0,1);
