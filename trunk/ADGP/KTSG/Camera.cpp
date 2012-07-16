@@ -59,13 +59,11 @@ void Camera::SurroundY( float index )
 
 float* Camera::GetLookAt()
 {
-	float lookAt[3] = {m_LookAT.x,m_LookAT.y,m_LookAT.z};
-	return lookAt;
+	return &m_LookAT[0];
 }
 
 float* Camera::GetCPos()
 {
-	float pos[3] = {m_Radius,m_Thita,m_Alpha};
-	return pos;
+	return m_Pos;
 }
 

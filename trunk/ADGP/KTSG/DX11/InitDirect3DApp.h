@@ -16,7 +16,6 @@
 #include "game/Hero.h"
 #include "Player.h"
 #include "Camera.h"
-#include "cameraclass.h"
 
 class InitDirect3DApp : public D3DApp
 {

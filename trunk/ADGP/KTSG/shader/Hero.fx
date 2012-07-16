@@ -2,13 +2,9 @@ cbuffer cbPerFrame
 {
 	float width;
 	float height;
+	float3 cLookAt;
+	float3 cPolarCoord;
 };
- 
-
-
-float3 cLookAt;
-float3 cPolarCoord;
-
  
 Texture2D gMap;
 SamplerState gTriLinearSam
@@ -66,12 +62,11 @@ VS_OUT VS(VS_IN vIn)
 	float4x4 porj;
 	porj[0]=float4(1.0/width,0.0,0.0,0.0);
 	porj[1]=float4(0.0,1.0/height,0.0,0.0);
-	porj[2]=float4(0.0,0.0,0.0,0.0);
+	porj[2]=float4(0.0,0.0,1.0,0.0);
 	porj[3]=float4(0.0,0.0,0.0,1.0);
 	
 	vOut.pos = mul(float4(vOut.pos.xyz,1.0) ,porj);
-	
-	
+	vOut.pos.x += cLookAt.x;
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
 	vOut.picpos = vIn.picpos;

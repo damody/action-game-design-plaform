@@ -49,57 +49,58 @@ void InitDirect3DApp::UpdateScene(float dt)
 	UpdateInput();
 
 	//*test camera
-		//InputStateS::instance().GetInput();
-		if (InputStateS::instance().isKeyDown(KEY_Z))
-		{
-			m_Camera->Zoom(-1);
-			//m_Camera->SurroundX(-10);
-			//m_Camera->MoveX(-1);
-		}
-		if (InputStateS::instance().isKeyDown(KEY_X))
-		{
-			//m_Camera->SurroundX(10);
-			m_Camera->Zoom(1); 
-			//m_Camera->MoveX(1);
-		}
-		if (InputStateS::instance().isKeyDown(KEY_A))
-		{
-			//m_Camera->Zoom(-1);
-			//m_Camera->SurroundX(-10);
-			m_Camera->MoveX(-1);
-		}
-		if (InputStateS::instance().isKeyDown(KEY_S))
-		{
-			//m_Camera->SurroundX(10);
-			//m_Camera->Zoom(1); 
-			m_Camera->MoveX(1); 
-		}
-		if (InputStateS::instance().isKeyDown(KEY_F))
-		{
-			//m_Camera->Zoom(-1);
-			m_Camera->SurroundX(-10);
-			//m_Camera->MoveX(-1);
-		}
-		if (InputStateS::instance().isKeyDown(KEY_G))
-		{
-			m_Camera->SurroundX(10);
-			//m_Camera->Zoom(1);
-			//m_Camera->MoveX(1);
-		}
+	//InputStateS::instance().GetInput();
+	if (InputStateS::instance().isKeyDown(KEY_Z))
+	{
+		m_Camera->Zoom(-1);
+		//m_Camera->SurroundX(-10);
+		//m_Camera->MoveX(-1);
+	}
+	if (InputStateS::instance().isKeyDown(KEY_X))
+	{
+		//m_Camera->SurroundX(10);
+		m_Camera->Zoom(1); 
+		//m_Camera->MoveX(1);
+	}
+	if (InputStateS::instance().isKeyDown(KEY_A))
+	{
+		//m_Camera->Zoom(-1);
+		//m_Camera->SurroundX(-10);
+		m_Camera->MoveX(-1);
+	}
+	if (InputStateS::instance().isKeyDown(KEY_S))
+	{
+		//m_Camera->SurroundX(10);
+		//m_Camera->Zoom(1); 
+		m_Camera->MoveX(1); 
+	}
+	if (InputStateS::instance().isKeyDown(KEY_F))
+	{
+		//m_Camera->Zoom(-1);
+		m_Camera->SurroundX(-10);
+		//m_Camera->MoveX(-1);
+	}
+	if (InputStateS::instance().isKeyDown(KEY_G))
+	{
+		m_Camera->SurroundX(10);
+		//m_Camera->Zoom(1);
+		//m_Camera->MoveX(1);
+	}
 	m_Heroes_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
 	m_Heroes_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 
 	//Hero Update
-	static float timp_count = dt;
+	static float timp_count = 0;
+	timp_count+=dt;
 	if (timp_count > 1/60.0f)
 	{
 		for(std::vector<Hero_RawPtr>::iterator it = m_Heroes.begin();it != m_Heroes.end(); it++)
 		{
 			(*it)->Update(dt);
 		}
-		timp_count = 0;
+		timp_count -= 1/60.0f;
 	}
-	timp_count+=dt;
+	
 
 	UpdateUI();
 	buildPoint();

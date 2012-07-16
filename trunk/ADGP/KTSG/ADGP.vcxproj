@@ -317,6 +317,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\bullet.fx" />
+    <None Include="shader\Hero.fx" />
     <None Include="shader\point.fx" />
     <None Include="screen.fx" />
   </ItemGroup>

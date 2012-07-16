@@ -10,10 +10,15 @@ class Camera
 {
 	private:
 		Vector3 m_LookAT;//註: Shader 採用Othogonal 所以 z 不影響
-
-		float m_Radius;//極座標 p(半徑,z軸-x軸 角度, y軸-xz平面 角度)
-		float m_Thita;
-		float m_Alpha;
+		union {
+			float m_Pos[3];
+			struct
+			{
+				float m_Radius;//極座標 p(半徑,z軸-x軸 角度, y軸-xz平面 角度)
+				float m_Thita;
+				float m_Alpha;
+			};
+		};
 	public:
 		Camera();
 		Camera(float xlook,float ylook,float zlook,float r,float thita,float alpha);
