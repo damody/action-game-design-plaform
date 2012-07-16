@@ -149,29 +149,32 @@
     <ClCompile Include="memory\BitSet.cpp">
       <Filter>memory</Filter>
     </ClCompile>
+    <ClCompile Include="DX11\Vertex.cpp">
+      <Filter>src\DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>src\DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="game\FrameInfo.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
     <ClCompile Include="game\Hero.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
     <ClCompile Include="game\HeroInfo.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="game\HeroInfoManager.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
     <ClCompile Include="game\PictureData.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
-    <ClCompile Include="DX11\Vertex.cpp">
-      <Filter>src\DX11</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameInfo.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="HeroInfoManager.cpp">
+    <ClCompile Include="game\Player.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="game\BackGround.cpp">
       <Filter>src\game</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>src\DX11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -289,53 +292,56 @@
     <ClInclude Include="memory\VMemPool.h">
       <Filter>memory</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>inc\DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="game\BeCatch.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\BloodInfo.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Body.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\CatchInfo.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Consume.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\CtrlKey.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\FrameInfo.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
     <ClInclude Include="game\Hero.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\HeroAction.h">
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\HeroInfo.h">
       <Filter>inc\game</Filter>
     </ClInclude>
+    <ClInclude Include="game\HeroInfoManager.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\HitData.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
     <ClInclude Include="game\PictureData.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="FrameInfo.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="HeroAction.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Consume.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Attack.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="HitData.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="BeCatch.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="BloodInfo.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Body.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="CatchInfo.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="CtrlKey.h">
+    <ClInclude Include="game\Player.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="HeroInfoManager.h">
+    <ClInclude Include="game\Attack.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="game\BackGround.h">
       <Filter>inc\game</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>inc\DX11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

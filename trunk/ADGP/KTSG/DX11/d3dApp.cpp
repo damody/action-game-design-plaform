@@ -285,7 +285,7 @@ int D3DApp::run()
 			if( !m_AppPaused )
 				UpdateScene(m_Timer.getDeltaTime());	
 			else
-				Sleep(50);
+				Sleep(1);
 
 			DrawScene();
 		}

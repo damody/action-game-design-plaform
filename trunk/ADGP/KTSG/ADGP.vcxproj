@@ -190,18 +190,19 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConvStr.cpp" />
-    <ClCompile Include="FrameInfo.cpp" />
+    <ClCompile Include="game\BackGround.cpp" />
+    <ClCompile Include="game\FrameInfo.cpp" />
     <ClCompile Include="game\Hero.cpp" />
     <ClCompile Include="game\HeroInfo.cpp" />
+    <ClCompile Include="game\HeroInfoManager.cpp" />
     <ClCompile Include="game\PictureData.cpp" />
+    <ClCompile Include="game\Player.cpp" />
     <ClCompile Include="global.cpp" />
-    <ClCompile Include="HeroInfoManager.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdAfx.h</PrecompiledHeaderFile>
@@ -261,24 +262,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CtrlKey.h" />
-    <ClInclude Include="Attack.h" />
-    <ClInclude Include="BeCatch.h" />
-    <ClInclude Include="BloodInfo.h" />
-    <ClInclude Include="Body.h" />
-    <ClInclude Include="CatchInfo.h" />
-    <ClInclude Include="Consume.h" />
     <ClInclude Include="ConvStr.h" />
-    <ClInclude Include="FrameInfo.h" />
+    <ClInclude Include="game\Attack.h" />
+    <ClInclude Include="game\BackGround.h" />
+    <ClInclude Include="game\BeCatch.h" />
+    <ClInclude Include="game\BloodInfo.h" />
+    <ClInclude Include="game\Body.h" />
+    <ClInclude Include="game\CatchInfo.h" />
+    <ClInclude Include="game\Consume.h" />
+    <ClInclude Include="game\CtrlKey.h" />
+    <ClInclude Include="game\FrameInfo.h" />
     <ClInclude Include="game\Hero.h" />
+    <ClInclude Include="game\HeroAction.h" />
     <ClInclude Include="game\HeroInfo.h" />
+    <ClInclude Include="game\HeroInfoManager.h" />
+    <ClInclude Include="game\HitData.h" />
     <ClInclude Include="game\PictureData.h" />
+    <ClInclude Include="game\Player.h" />
     <ClInclude Include="global.h" />
-    <ClInclude Include="HeroAction.h" />
-    <ClInclude Include="HeroInfoManager.h" />
-    <ClInclude Include="HitData.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Lua\CreateLua.h" />
     <ClInclude Include="Lua\LuaCell.h" />

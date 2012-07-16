@@ -46,7 +46,7 @@ bool HeroInfo::CheckHeroDataVaild( LuaCell_Sptr luadata )
 	}
 	strings actions;
 	actions = luadata->GetLuaTableKeys("frame");
-	for (int i=0;i<actions.size();++i)
+	for (int i=0;i<(int)actions.size();++i)
 	{
 		for (int frames=1;;frames++)
 		{
@@ -114,11 +114,11 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 
 	strings actions;
 	actions = luadata->GetLuaTableKeys("frame");
-	for (int i=0;i<actions.size();++i)
+	for (int i=0;i<(int)actions.size();++i)
 	{
 		m_FramesMap[actions[i]] = FrameInfos();
 	}
-	for (int i=0;i<actions.size();++i)
+	for (int i=0;i<(int)actions.size();++i)
 	{
 		for (int frameCount=0;;frameCount++)
 		{

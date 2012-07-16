@@ -14,7 +14,7 @@
 #include "Lua/LuaCell.h"
 #include "TextureManager.h"
 #include "game/Hero.h"
-#include "Player.h"
+#include "game/Player.h"
 #include "Camera.h"
 
 class InitDirect3DApp : public D3DApp

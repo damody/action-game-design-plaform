@@ -66,7 +66,6 @@ void InitDirect3DApp::UpdateScene(float dt)
 		}
 		timp_count -= 1/60.0f;
 	}
-	
 
 	UpdateUI();
 	buildPoint();
