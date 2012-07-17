@@ -77,8 +77,7 @@ void D3DApp::initApp()
 	initMainWindow();
 	initDirect3D();
 
-	DirectXIS::instance().InputInit(m_hMainWnd, m_hAppInst);
-	InputStateS::instance().SetDirectXInput(&DirectXIS::instance());
+	InputStateS::instance().InputInit(m_hMainWnd, m_hAppInst);
 }
 
 void D3DApp::initDirect3D()

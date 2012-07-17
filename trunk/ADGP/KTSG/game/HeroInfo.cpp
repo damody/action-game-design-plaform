@@ -68,31 +68,33 @@ bool HeroInfo::CheckHeroDataVaild( LuaCell_Sptr luadata )
 			testOK &= luadata->HasValue("frame/%s/%d/clear_key_queue", frameName, frames);
 		}
 	}
+	return testOK;
 }
 
 void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 {
+	m_LuaCell	= luadata;
 	m_Name		= luadata->GetLua<const char*>("name");
 	m_Headpic	= luadata->GetLua<const char*>("head");
 	//g_TextureManager.AddTexture(m_Headpic);
 	m_Smallpic	= luadata->GetLua<const char*>("small");
 	//g_TextureManager.AddTexture(m_Smallpic);
-	m_WalkingSpeed	= luadata->GetLua<double>("walking_speed");
-	m_WalkingSpeedZ	= luadata->GetLua<double>("walking_speedz");
-	m_RunningSpeed	= luadata->GetLua<double>("running_speed");
-	m_RunningSpeedZ	= luadata->GetLua<double>("running_speedz");
-	m_HeavyWalkingSpeed	= luadata->GetLua<double>("heavy_walking_speed");
-	m_HeavyWalkingSpeedZ	= luadata->GetLua<double>("heavy_walking_speedz");
-	m_HeavyRunningSpeed	= luadata->GetLua<double>("heavy_running_speed");
-	m_HeavyRunningSpeedZ	= luadata->GetLua<double>("heavy_running_speedz");
-	m_JumpHeight	= luadata->GetLua<double>("jump_height");
-	m_JumpDistance	= luadata->GetLua<double>("jump_distance");
-	m_JumpDistanceZ	= luadata->GetLua<double>("jump_distancez");
-	m_DashHeight	= luadata->GetLua<double>("dash_height");
-	m_DashDistance	= luadata->GetLua<double>("dash_distance");
-	m_DashDistanceZ	= luadata->GetLua<double>("dash_distancez");
-	m_RowingHeight	= luadata->GetLua<double>("rowing_height");
-	m_RowingDistance= luadata->GetLua<double>("rowing_distance");
+	m_WalkingSpeed	= (float)luadata->GetLua<double>("walking_speed");
+	m_WalkingSpeedZ	= (float)luadata->GetLua<double>("walking_speedz");
+	m_RunningSpeed	= (float)luadata->GetLua<double>("running_speed");
+	m_RunningSpeedZ	= (float)luadata->GetLua<double>("running_speedz");
+	m_HeavyWalkingSpeed	= (float)luadata->GetLua<double>("heavy_walking_speed");
+	m_HeavyWalkingSpeedZ	= (float)luadata->GetLua<double>("heavy_walking_speedz");
+	m_HeavyRunningSpeed	= (float)luadata->GetLua<double>("heavy_running_speed");
+	m_HeavyRunningSpeedZ	= (float)luadata->GetLua<double>("heavy_running_speedz");
+	m_JumpHeight	= (float)luadata->GetLua<double>("jump_height");
+	m_JumpDistance	= (float)luadata->GetLua<double>("jump_distance");
+	m_JumpDistanceZ	= (float)luadata->GetLua<double>("jump_distancez");
+	m_DashHeight	= (float)luadata->GetLua<double>("dash_height");
+	m_DashDistance	= (float)luadata->GetLua<double>("dash_distance");
+	m_DashDistanceZ	= (float)luadata->GetLua<double>("dash_distancez");
+	m_RowingHeight	= (float)luadata->GetLua<double>("rowing_height");
+	m_RowingDistance= (float)luadata->GetLua<double>("rowing_distance");
 	// read picture file
 	for (int i=1;;++i)
 	{
@@ -133,11 +135,11 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 			newData.m_Wait		= luadata->GetLua<int>("frame/%s/%d/wait", frameName, frameCount);
 			newData.m_NextFrameName	= luadata->GetLua<const char*>("frame/%s/%d/next/1", frameName, frameCount);
 			newData.m_NextFrameIndex= luadata->GetLua<int>("frame/%s/%d/next/2", frameName, frameCount);
-			newData.m_DVX		= luadata->GetLua<double>("frame/%s/%d/dvx", frameName, frameCount);
-			newData.m_DVY		= luadata->GetLua<double>("frame/%s/%d/dvy", frameName, frameCount);
-			newData.m_DVZ		= luadata->GetLua<double>("frame/%s/%d/dvz", frameName, frameCount);
-			newData.m_CenterX	= luadata->GetLua<double>("frame/%s/%d/centerx", frameName, frameCount);
-			newData.m_CenterY	= luadata->GetLua<double>("frame/%s/%d/centery", frameName, frameCount);
+			newData.m_DVX		= (float)luadata->GetLua<double>("frame/%s/%d/dvx", frameName, frameCount);
+			newData.m_DVY		= (float)luadata->GetLua<double>("frame/%s/%d/dvy", frameName, frameCount);
+			newData.m_DVZ		= (float)luadata->GetLua<double>("frame/%s/%d/dvz", frameName, frameCount);
+			newData.m_CenterX	= (float)luadata->GetLua<double>("frame/%s/%d/centerx", frameName, frameCount);
+			newData.m_CenterY	= (float)luadata->GetLua<double>("frame/%s/%d/centery", frameName, frameCount);
 			newData.m_ClearKeyQueue	= luadata->GetLua<int>("frame/%s/%d/clear_key_queue", frameName, frameCount);
 			for (int hitCount=1;;++hitCount)
 			{
@@ -160,10 +162,10 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 				if (luadata->HasValue("frame/%s/%d/blood/%d/size", frameName, frameCount, bloodCount))
 				{
 					BloodInfo	bloodInfo;
-					bloodInfo.m_Scale	= luadata->GetLua<double>("frame/%s/%d/blood/%d/size", frameName, frameCount, bloodCount);
-					bloodInfo.m_Position.x	= luadata->GetLua<double>("frame/%s/%d/blood/%d/x", frameName, frameCount, bloodCount);
-					bloodInfo.m_Position.y	= luadata->GetLua<double>("frame/%s/%d/blood/%d/y", frameName, frameCount, bloodCount);
-					bloodInfo.m_EnableValue	= luadata->GetLua<double>("frame/%s/%d/blood/%d/value", frameName, frameCount, bloodCount);
+					bloodInfo.m_Scale	= (float)luadata->GetLua<double>("frame/%s/%d/blood/%d/size", frameName, frameCount, bloodCount);
+					bloodInfo.m_Position.x	= (float)luadata->GetLua<double>("frame/%s/%d/blood/%d/x", frameName, frameCount, bloodCount);
+					bloodInfo.m_Position.y	= (float)luadata->GetLua<double>("frame/%s/%d/blood/%d/y", frameName, frameCount, bloodCount);
+					bloodInfo.m_EnableValue	= (float)luadata->GetLua<double>("frame/%s/%d/blood/%d/value", frameName, frameCount, bloodCount);
 					newData.m_BloodInfos.push_back(bloodInfo);
 				}
 				else
@@ -182,9 +184,9 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 							frameName, frameCount, bodyCount, pointCount))
 						{
 							Vector2 vec2;
-							vec2.x = luadata->GetLua<double>("frame/%s/%d/body/%d/points/%d/1", 
+							vec2.x = (float)luadata->GetLua<double>("frame/%s/%d/body/%d/points/%d/1", 
 								frameName, frameCount, bodyCount, pointCount);
-							vec2.y = luadata->GetLua<double>("frame/%s/%d/body/%d/points/%d/2", 
+							vec2.y = (float)luadata->GetLua<double>("frame/%s/%d/body/%d/points/%d/2", 
 								frameName, frameCount, bodyCount, pointCount);
 							body.m_Area.AddPoint(vec2);
 						}
@@ -202,9 +204,9 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 				{
 					CatchInfo catchInfo;
 					catchInfo.m_Kind	= luadata->GetLua<int>("frame/%s/%d/catch/%d/kind", frameName, frameCount, catchCount);
-					catchInfo.m_ZWidth	= luadata->GetLua<double>("frame/%s/%d/catch/%d/zwidth", frameName, frameCount, catchCount);
-					catchInfo.m_CatchPosition.x = luadata->GetLua<double>("frame/%s/%d/catch/%d/catchx", frameName, frameCount, catchCount);
-					catchInfo.m_CatchPosition.y = luadata->GetLua<double>("frame/%s/%d/catch/%d/catchy", frameName, frameCount, catchCount);
+					catchInfo.m_ZWidth	= (float)luadata->GetLua<double>("frame/%s/%d/catch/%d/zwidth", frameName, frameCount, catchCount);
+					catchInfo.m_CatchPosition.x = (float)luadata->GetLua<double>("frame/%s/%d/catch/%d/catchx", frameName, frameCount, catchCount);
+					catchInfo.m_CatchPosition.y = (float)luadata->GetLua<double>("frame/%s/%d/catch/%d/catchy", frameName, frameCount, catchCount);
 					catchInfo.m_CatchWhere	= (CatchInfo::CatchPosition)luadata->GetLua<int>
 								("frame/%s/%d/catch/%d/where", frameName, frameCount, catchCount);
 					for (int pointCount=1;;++pointCount)
@@ -213,9 +215,9 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 							frameName, frameCount, catchCount, pointCount))
 						{
 							Vector2 vec2;
-							vec2.x = luadata->GetLua<double>("frame/%s/%d/catch/%d/points/%d/1", 
+							vec2.x = (float)luadata->GetLua<double>("frame/%s/%d/catch/%d/points/%d/1", 
 								frameName, frameCount, catchCount, pointCount);
-							vec2.y = luadata->GetLua<double>("frame/%s/%d/catch/%d/points/%d/2", 
+							vec2.y = (float)luadata->GetLua<double>("frame/%s/%d/catch/%d/points/%d/2", 
 								frameName, frameCount, catchCount, pointCount);
 							catchInfo.m_Area.AddPoint(vec2);
 						}

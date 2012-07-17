@@ -152,9 +152,6 @@
     <ClCompile Include="DX11\Vertex.cpp">
       <Filter>src\DX11</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>src\DX11</Filter>
-    </ClCompile>
     <ClCompile Include="game\FrameInfo.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
@@ -175,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="game\BackGround.cpp">
       <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\Camera.cpp">
+      <Filter>src\DX11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -292,9 +292,6 @@
     <ClInclude Include="memory\VMemPool.h">
       <Filter>memory</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>inc\DX11</Filter>
-    </ClInclude>
     <ClInclude Include="game\BeCatch.h">
       <Filter>inc\game</Filter>
     </ClInclude>
@@ -342,6 +339,9 @@
     </ClInclude>
     <ClInclude Include="game\BackGround.h">
       <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\Camera.h">
+      <Filter>inc\DX11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,10 +20,11 @@ public:
 		MOUSE_MIDDLE	///< 滑鼠中鍵
 	};
 	InputState();
+	~InputState();
 	/// 更新輸入訊號
 	void GetInput();
 	/// 設定輸入端
-	void SetDirectXInput(GetDirectXInput *DxInput );
+	int InputInit(HWND hWnd, HINSTANCE Instance);
 	/// 確認 代碼為index的鍵 是否為按下鍵的瞬間
 	bool isKeyDown(int index);
 	/// 確認 代碼為index的鍵 是否為放開鍵的瞬間

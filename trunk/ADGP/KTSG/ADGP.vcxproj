@@ -188,8 +188,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConvStr.cpp" />
+    <ClCompile Include="DX11\Camera.cpp" />
     <ClCompile Include="game\BackGround.cpp" />
     <ClCompile Include="game\FrameInfo.cpp" />
     <ClCompile Include="game\Hero.cpp" />
@@ -228,16 +228,17 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="DX11\InputState.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="DX11\TextureManager.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="DX11\Timer.cpp" />
+    <ClCompile Include="DX11\Timer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="DX11\WaveSound.cpp" />
     <ClCompile Include="path\BezierCurve.cpp" />
     <ClCompile Include="path\BsplineCurve.cpp" />
@@ -261,8 +262,8 @@
     <ClCompile Include="memory\BitSet.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="ConvStr.h" />
+    <ClInclude Include="DX11\Camera.h" />
     <ClInclude Include="game\Attack.h" />
     <ClInclude Include="game\BackGround.h" />
     <ClInclude Include="game\BeCatch.h" />

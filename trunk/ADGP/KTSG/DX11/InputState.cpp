@@ -1,12 +1,18 @@
-﻿#include "stdafx.h"
+﻿
 #include "InputState.h"
 
 InputState::InputState()
 {
+	m_lpDxInput = new GetDirectXInput;
 	memset(m_NowKeyState,0,sizeof(m_NowKeyState));
 	memset(m_LastKeyState,0,sizeof(m_LastKeyState));
 	memset(&m_MouseInfo,0,sizeof(m_MouseInfo));
 	memset(&m_LastMouseInfo,0,sizeof(m_LastMouseInfo));
+}
+
+InputState::~InputState()
+{
+	delete m_lpDxInput;
 }
 
 bool InputState::isKeyDown( int index )
@@ -43,11 +49,6 @@ void InputState::GetInput()
 	m_lpDxInput->ReadKeyboard(m_NowKeyState);
 	memcpy(&m_LastMouseInfo, &m_MouseInfo, sizeof(m_MouseInfo));
 	m_lpDxInput->ReadMouse(&m_MouseInfo);
-}
-
-void InputState::SetDirectXInput( GetDirectXInput *DxInput )
-{
-	m_lpDxInput = DxInput;
 }
 
 bool InputState::isMouseLDown()
@@ -165,6 +166,11 @@ std::queue<int> InputState::GetKeyDownQue()
 	}
 	
 	return keyDownQue;
+}
+
+int InputState::InputInit( HWND hWnd, HINSTANCE Instance )
+{
+	return m_lpDxInput->InputInit(hWnd, Instance);
 }
 
 

@@ -43,6 +43,7 @@ typedef std::vector<ParallelLight> ParallelLights;
 class BackGround
 {
 public:
+	std::string	m_Name;
 	// can move bounding
 	AxisAlignedBoxs	m_SpaceBounding;
 	// can't move bounding
@@ -50,9 +51,8 @@ public:
 	BGLayers	m_BGLayers;
 	ColorRects	m_ColorRects;
 	ParallelLights	m_ParallelLights;
+	LuaCell_Sptr	m_LuaCell;
 	bool	CheckDataVaild(LuaCell_Sptr luadata);
 	void	LoadData(LuaCell_Sptr luadata);
 };
-
-
 
