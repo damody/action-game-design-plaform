@@ -29,7 +29,7 @@ THE SOFTWARE.
 
 // Geometric Tools, LLC
 // Copyright (c) 1998-2010
-// Distributed under the Boost Software License, Version 1.0.
+// Distributed under the Boost Software License, Version 1.0f.
 // http://www.boost.org/LICENSE_1_0.txt
 // http://www.geometrictools.com/License/Boost/LICENSE_1_0.txt
 
@@ -41,7 +41,7 @@ THE SOFTWARE.
 
 const float Quaternion::ms_fEpsilon = 1e-03;
 const Quaternion Quaternion::ZERO(0.0,0.0,0.0,0.0);
-const Quaternion Quaternion::IDENTITY(1.0,0.0,0.0,0.0);
+const Quaternion Quaternion::IDENTITY(1.0f,0.0,0.0,0.0);
 
 //-----------------------------------------------------------------------
 void Quaternion::FromRotationMatrix (const Matrix3& kRot)
@@ -55,7 +55,7 @@ void Quaternion::FromRotationMatrix (const Matrix3& kRot)
 	if ( fTrace > 0.0 )
 	{
 		// |w| > 1/2, may as well choose w > 1/2
-		fRoot = Math::Sqrt(fTrace + 1.0);  // 2w
+		fRoot = Math::Sqrt(fTrace + 1.0f);  // 2w
 		w = 0.5f*fRoot;
 		fRoot = 0.5f/fRoot;  // 1/(4w)
 		x = (kRot[2][1]-kRot[1][2])*fRoot;
@@ -74,7 +74,7 @@ void Quaternion::FromRotationMatrix (const Matrix3& kRot)
 		size_t j = s_iNext[i];
 		size_t k = s_iNext[j];
 
-		fRoot = Math::Sqrt(kRot[i][i]-kRot[j][j]-kRot[k][k] + 1.0);
+		fRoot = Math::Sqrt(kRot[i][i]-kRot[j][j]-kRot[k][k] + 1.0f);
 		float* apkQuat[3] = { &x, &y, &z };
 		*apkQuat[i] = 0.5f*fRoot;
 		fRoot = 0.5f/fRoot;
@@ -99,15 +99,15 @@ void Quaternion::ToRotationMatrix (Matrix3& kRot) const
 	float fTyz = fTz*y;
 	float fTzz = fTz*z;
 
-	kRot[0][0] = 1.0-(fTyy+fTzz);
+	kRot[0][0] = 1.0f-(fTyy+fTzz);
 	kRot[0][1] = fTxy-fTwz;
 	kRot[0][2] = fTxz+fTwy;
 	kRot[1][0] = fTxy+fTwz;
-	kRot[1][1] = 1.0-(fTxx+fTzz);
+	kRot[1][1] = 1.0f-(fTxx+fTzz);
 	kRot[1][2] = fTyz-fTwx;
 	kRot[2][0] = fTxz-fTwy;
 	kRot[2][1] = fTyz+fTwx;
-	kRot[2][2] = 1.0-(fTxx+fTyy);
+	kRot[2][2] = 1.0f-(fTxx+fTyy);
 }
 //-----------------------------------------------------------------------
 void Quaternion::FromAngleAxis (const Radian& rfAngle,
@@ -134,7 +134,7 @@ void Quaternion::ToAngleAxis (Radian& rfAngle, Vector3& rkAxis) const
 	float fSqrLength = x*x+y*y+z*z;
 	if ( fSqrLength > 0.0 )
 	{
-		rfAngle = 2.0*Math::ACos(w);
+		rfAngle = 2.0f*Math::ACos(w);
 		float fInvLength = Math::InvSqrt(fSqrLength);
 		rkAxis.x = x*fInvLength;
 		rkAxis.y = y*fInvLength;
@@ -144,7 +144,7 @@ void Quaternion::ToAngleAxis (Radian& rfAngle, Vector3& rkAxis) const
 	{
 		// angle is 0 (mod 2*pi), so any axis will do
 		rfAngle = Radian(0.0);
-		rkAxis.x = 1.0;
+		rkAxis.x = 1.0f;
 		rkAxis.y = 0.0;
 		rkAxis.z = 0.0;
 	}
@@ -200,9 +200,9 @@ void Quaternion::ToAxes (Vector3* akAxis) const
 //-----------------------------------------------------------------------
 Vector3 Quaternion::xAxis(void) const
 {
-	//Real fTx  = 2.0*x;
-	float fTy  = 2.0*y;
-	float fTz  = 2.0*z;
+	//Real fTx  = 2.0f*x;
+	float fTy  = 2.0f*y;
+	float fTz  = 2.0f*z;
 	float fTwy = fTy*w;
 	float fTwz = fTz*w;
 	float fTxy = fTy*x;
@@ -210,14 +210,14 @@ Vector3 Quaternion::xAxis(void) const
 	float fTyy = fTy*y;
 	float fTzz = fTz*z;
 
-	return Vector3(1.0-(fTyy+fTzz), fTxy+fTwz, fTxz-fTwy);
+	return Vector3(1.0f-(fTyy+fTzz), fTxy+fTwz, fTxz-fTwy);
 }
 //-----------------------------------------------------------------------
 Vector3 Quaternion::yAxis(void) const
 {
-	float fTx  = 2.0*x;
-	float fTy  = 2.0*y;
-	float fTz  = 2.0*z;
+	float fTx  = 2.0f*x;
+	float fTy  = 2.0f*y;
+	float fTz  = 2.0f*z;
 	float fTwx = fTx*w;
 	float fTwz = fTz*w;
 	float fTxx = fTx*x;
@@ -225,14 +225,14 @@ Vector3 Quaternion::yAxis(void) const
 	float fTyz = fTz*y;
 	float fTzz = fTz*z;
 
-	return Vector3(fTxy-fTwz, 1.0-(fTxx+fTzz), fTyz+fTwx);
+	return Vector3(fTxy-fTwz, 1.0f-(fTxx+fTzz), fTyz+fTwx);
 }
 //-----------------------------------------------------------------------
 Vector3 Quaternion::zAxis(void) const
 {
-	float fTx  = 2.0*x;
-	float fTy  = 2.0*y;
-	float fTz  = 2.0*z;
+	float fTx  = 2.0f*x;
+	float fTy  = 2.0f*y;
+	float fTz  = 2.0f*z;
 	float fTwx = fTx*w;
 	float fTwy = fTy*w;
 	float fTxx = fTx*x;
@@ -240,7 +240,7 @@ Vector3 Quaternion::zAxis(void) const
 	float fTyy = fTy*y;
 	float fTyz = fTz*y;
 
-	return Vector3(fTxz+fTwy, fTyz-fTwx, 1.0-(fTxx+fTyy));
+	return Vector3(fTxz+fTwy, fTyz-fTwx, 1.0f-(fTxx+fTyy));
 }
 //-----------------------------------------------------------------------
 void Quaternion::ToAxes (Vector3& xaxis, Vector3& yaxis, Vector3& zaxis) const
@@ -318,7 +318,7 @@ Quaternion Quaternion::Inverse () const
 	float fNorm = w*w+x*x+y*y+z*z;
 	if ( fNorm > 0.0 )
 	{
-		float fInvNorm = 1.0/fNorm;
+		float fInvNorm = 1.0f/fNorm;
 		return Quaternion(w*fInvNorm,-x*fInvNorm,-y*fInvNorm,-z*fInvNorm);
 	}
 	else
@@ -372,7 +372,7 @@ Quaternion Quaternion::Log () const
 	Quaternion kResult;
 	kResult.w = 0.0;
 
-	if ( Math::Abs(w) < 1.0 )
+	if ( Math::Abs(w) < 1.0f )
 	{
 		Radian fAngle ( Math::ACos(w) );
 		float fSin = Math::Sin(fAngle);
@@ -400,8 +400,8 @@ Vector3 Quaternion::operator* (const Vector3& v) const
 	Vector3 qvec(x, y, z);
 	uv = qvec.crossProduct(v);
 	uuv = qvec.crossProduct(uv);
-	uv *= (2.0 * w);
-	uuv *= 2.0;
+	uv *= (2.0f * w);
+	uuv *= 2.0f;
 
 	return v + uv + uuv;
 
@@ -440,8 +440,8 @@ Quaternion Quaternion::Slerp (float fT, const Quaternion& rkP,
 		// Standard case (slerp)
 		float fSin = Math::Sqrt(1 - Math::Sqr(fCos));
 		Radian fAngle = Math::ATan2(fSin, fCos);
-		float fInvSin = 1.0 / fSin;
-		float fCoeff0 = Math::Sin((1.0 - fT) * fAngle) * fInvSin;
+		float fInvSin = 1.0f / fSin;
+		float fCoeff0 = Math::Sin((1.0f - fT) * fAngle) * fInvSin;
 		float fCoeff1 = Math::Sin(fT * fAngle) * fInvSin;
 		return fCoeff0 * rkP + fCoeff1 * rkT;
 	}
@@ -453,7 +453,7 @@ Quaternion Quaternion::Slerp (float fT, const Quaternion& rkP,
 		// 2. "rkP" and "rkQ" are almost inverse of each other (fCos ~= -1), there
 		//    are an infinite number of possibilities interpolation. but we haven't
 		//    have method to fix this case, so just use linear interpolation here.
-		Quaternion t = (1.0 - fT) * rkP + fT * rkT;
+		Quaternion t = (1.0f - fT) * rkP + fT * rkT;
 		// taking the complement requires renormalisation
 		t.normalise();
 		return t;
@@ -471,8 +471,8 @@ Quaternion Quaternion::SlerpExtraSpins (float fT,
 
 	float fSin = Math::Sin(fAngle);
 	Radian fPhase ( Math::PI*iExtraSpins*fT );
-	float fInvSin = 1.0/fSin;
-	float fCoeff0 = Math::Sin((1.0-fT)*fAngle - fPhase)*fInvSin;
+	float fInvSin = 1.0f/fSin;
+	float fCoeff0 = Math::Sin((1.0f-fT)*fAngle - fPhase)*fInvSin;
 	float fCoeff1 = Math::Sin(fT*fAngle + fPhase)*fInvSin;
 	return fCoeff0*rkP + fCoeff1*rkQ;
 }
@@ -498,7 +498,7 @@ Quaternion Quaternion::Squad (float fT,
 	const Quaternion& rkP, const Quaternion& rkA,
 	const Quaternion& rkB, const Quaternion& rkQ, bool shortestPath)
 {
-	float fSlerpT = 2.0*fT*(1.0-fT);
+	float fSlerpT = 2.0f*fT*(1.0f-fT);
 	Quaternion kSlerpP = Slerp(fT, rkP, rkQ, shortestPath);
 	Quaternion kSlerpQ = Slerp(fT, rkA, rkB);
 	return Slerp(fSlerpT, kSlerpP ,kSlerpQ);
@@ -507,7 +507,7 @@ Quaternion Quaternion::Squad (float fT,
 float Quaternion::normalise(void)
 {
 	float len = Norm();
-	float factor = 1.0 / Math::Sqrt(len);
+	float factor = 1.0f / Math::Sqrt(len);
 	*this = *this * factor;
 	return len;
 }
@@ -518,17 +518,17 @@ Radian Quaternion::getRoll(bool reprojectAxis) const
 	{
 		// roll = atan2(localx.y, localx.x)
 		// pick parts of xAxis() implementation that we need
-		//			Real fTx  = 2.0*x;
-		float fTy  = 2.0*y;
-		float fTz  = 2.0*z;
+		//			Real fTx  = 2.0f*x;
+		float fTy  = 2.0f*y;
+		float fTz  = 2.0f*z;
 		float fTwz = fTz*w;
 		float fTxy = fTy*x;
 		float fTyy = fTy*y;
 		float fTzz = fTz*z;
 
-		// Vector3(1.0-(fTyy+fTzz), fTxy+fTwz, fTxz-fTwy);
+		// Vector3(1.0f-(fTyy+fTzz), fTxy+fTwz, fTxz-fTwy);
 
-		return Radian(Math::ATan2(fTxy+fTwz, 1.0-(fTyy+fTzz)));
+		return Radian(Math::ATan2(fTxy+fTwz, 1.0f-(fTyy+fTzz)));
 
 	}
 	else
@@ -543,16 +543,16 @@ Radian Quaternion::getPitch(bool reprojectAxis) const
 	{
 		// pitch = atan2(localy.z, localy.y)
 		// pick parts of yAxis() implementation that we need
-		float fTx  = 2.0*x;
-		//			Real fTy  = 2.0*y;
-		float fTz  = 2.0*z;
+		float fTx  = 2.0f*x;
+		//			Real fTy  = 2.0f*y;
+		float fTz  = 2.0f*z;
 		float fTwx = fTx*w;
 		float fTxx = fTx*x;
 		float fTyz = fTz*y;
 		float fTzz = fTz*z;
 
-		// Vector3(fTxy-fTwz, 1.0-(fTxx+fTzz), fTyz+fTwx);
-		return Radian(Math::ATan2(fTyz+fTwx, 1.0-(fTxx+fTzz)));
+		// Vector3(fTxy-fTwz, 1.0f-(fTxx+fTzz), fTyz+fTwx);
+		return Radian(Math::ATan2(fTyz+fTwx, 1.0f-(fTxx+fTzz)));
 	}
 	else
 	{
@@ -567,17 +567,17 @@ Radian Quaternion::getYaw(bool reprojectAxis) const
 	{
 		// yaw = atan2(localz.x, localz.z)
 		// pick parts of zAxis() implementation that we need
-		float fTx  = 2.0*x;
-		float fTy  = 2.0*y;
-		float fTz  = 2.0*z;
+		float fTx  = 2.0f*x;
+		float fTy  = 2.0f*y;
+		float fTz  = 2.0f*z;
 		float fTwy = fTy*w;
 		float fTxx = fTx*x;
 		float fTxz = fTz*x;
 		float fTyy = fTy*y;
 
-		// Vector3(fTxz+fTwy, fTyz-fTwx, 1.0-(fTxx+fTyy));
+		// Vector3(fTxz+fTwy, fTyz-fTwx, 1.0f-(fTxx+fTyy));
 
-		return Radian(Math::ATan2(fTxz+fTwy, 1.0-(fTxx+fTyy)));
+		return Radian(Math::ATan2(fTxz+fTwy, 1.0f-(fTxx+fTyy)));
 
 	}
 	else

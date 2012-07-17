@@ -407,7 +407,7 @@ public:
 	*/
 	static float InvSqrt(float fValue)
 	{
-		return 1./sqrt(fValue);
+		return 1.0f/sqrt(fValue);
 	}
 
 	static float UnitRandom ();  // in [0,1]

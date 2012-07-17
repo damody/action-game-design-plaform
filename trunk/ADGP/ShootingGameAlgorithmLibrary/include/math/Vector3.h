@@ -311,7 +311,7 @@ public:
 	{
 		assert( fScalar != 0.0 );
 
-		float fInv = 1.0 / fScalar;
+		float fInv = 1.0f / fScalar;
 
 		x *= fInv;
 		y *= fInv;
@@ -433,7 +433,7 @@ public:
 		// Will also work for zero-sized vectors, but will change nothing
 		if ( fLength > 1e-08 )
 		{
-			float fInvLength = 1.0 / fLength;
+			float fInvLength = 1.0f / fLength;
 			x *= fInvLength;
 			y *= fInvLength;
 			z *= fInvLength;
@@ -576,7 +576,7 @@ public:
 
 		float f = dotProduct(dest) / lenProduct;
 
-		f = Math::Clamp(f, (float)-1.0, (float)1.0);
+		f = Math::Clamp(f, (float)-1.0f, (float)1.0f);
 		return Math::ACos(f);
 
 	}
