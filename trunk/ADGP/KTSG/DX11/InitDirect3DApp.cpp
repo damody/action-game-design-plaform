@@ -9,8 +9,8 @@
 
 InitDirect3DApp* InitDirect3DApp::dxAppInstance = NULL;
 
-InitDirect3DApp::InitDirect3DApp(HINSTANCE hInstance)
-: D3DApp(hInstance), m_Heroes_Width(0), m_Heroes_Height(0), m_Buffer_Heroes(0) , m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1)
+InitDirect3DApp::InitDirect3DApp()
+: D3DApp(), m_Heroes_Width(0), m_Heroes_Height(0), m_Buffer_Heroes(0) , m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1)
 {
 	dxAppInstance = this;
 }

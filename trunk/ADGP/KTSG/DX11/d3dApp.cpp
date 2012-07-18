@@ -24,9 +24,9 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-D3DApp::D3DApp(HINSTANCE hInstance)
+D3DApp::D3DApp()
 {
-	m_hAppInst   = hInstance;
+	m_hAppInst   = GetModuleHandle(NULL);
 
 	m_AppPaused  = false;
 	m_Minimized  = false;

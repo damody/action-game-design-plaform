@@ -4,7 +4,7 @@
 
 int main()
 {
-	InitDirect3DApp theApp(GetModuleHandle(NULL));
+	InitDirect3DApp theApp;
 	theApp.initApp();
 	return theApp.run();
 }

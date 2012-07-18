@@ -20,7 +20,7 @@
 class InitDirect3DApp : public D3DApp
 {
 public:
-	InitDirect3DApp(HINSTANCE hInstance);
+	InitDirect3DApp();
 	~InitDirect3DApp();
 	static InitDirect3DApp* dxAppInstance;
 	void initApp();

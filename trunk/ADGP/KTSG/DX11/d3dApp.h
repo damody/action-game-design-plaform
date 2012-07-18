@@ -10,7 +10,7 @@
 class D3DApp
 {
 public:
-	D3DApp(HINSTANCE hInstance);
+	D3DApp();
 	virtual ~D3DApp();
 
 	HINSTANCE	getAppInst();
