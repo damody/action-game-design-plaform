@@ -36,7 +36,7 @@ void InitDirect3DApp::initApp()
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
 	//init Camera
-	m_Camera = Camera_Sptr(new Camera(0,0,0,1,0,0));
+	m_Camera = Camera_Sptr(new Camera(0,0,0,10,0,0));
 }
 
 
@@ -270,7 +270,7 @@ void InitDirect3DApp::LoadHero()
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
 
-	m_Heroes.push_back(m_Player.CreateHero(Vector3(100,100,0)));
+	m_Heroes.push_back(m_Player.CreateHero(Vector3(500,0,100)));
 	m_Heroes.push_back(m_Player.CreateHero(Vector3(0,0,0)));
 	
 }
