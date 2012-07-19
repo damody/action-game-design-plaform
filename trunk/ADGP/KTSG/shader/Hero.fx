@@ -52,8 +52,13 @@ VS_OUT VS(VS_IN vIn)
 	
 	vIn.position.xyz=mul(float3(vIn.position.xyz),view);
 	vIn.position.z += cPolarCoord.z;
-	vIn.position.xyz= (vIn.position.xyz)/float3(width,height,2000);
+	
+	float zDepth = 3000;
+	vIn.position.z /= zDepth;
+	vIn.position.xy= (vIn.position.xy) / float2(width*(1+cPolarCoord.x/zDepth)/(1-vIn.position.z),height*(1+cPolarCoord.x/zDepth)/(1-vIn.position.z));
+	vIn.position.y -= 0.9; 
 	vOut.pos =float4(vIn.position.xyz,1.0) ;
+	
 	
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
@@ -65,10 +70,10 @@ VS_OUT VS(VS_IN vIn)
 [maxvertexcount (6)]
 void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 {
-	
+	float zDepth = 3000;
 	float x = input[0].angle*3.14159/180;
 	float2x2 mat = {cos(x), -sin(x), sin(x), cos(x)};
-	float2 size = {(1-input[0].pos.z)/width,(1-input[0].pos.z)/height};
+	float2 size = {(1-input[0].pos.z)/(width*(1+cPolarCoord.x/zDepth)),(1-input[0].pos.z)/(height*(1+cPolarCoord.x/zDepth))};
 	float2 texsize = {1/input[0].picpos.z, 1/input[0].picpos.w};
 
 	GS_OUT out5;
