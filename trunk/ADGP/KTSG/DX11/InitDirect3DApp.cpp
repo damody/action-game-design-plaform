@@ -91,6 +91,7 @@ void InitDirect3DApp::DrawScene()
 	m_DeviceContext->ClearRenderTargetView(RTVView1, m_ClearColor);
 	m_DeviceContext->ClearRenderTargetView(RTVView2, m_ClearColor);
 	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
+	
 
 	UINT offset = 0;
 	UINT stride2 = sizeof(ClipVertex);
@@ -214,6 +215,7 @@ void InitDirect3DApp::LoadBlend()
 	depth_stencil_desc.DepthEnable = TRUE;
 	depth_stencil_desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	depth_stencil_desc.DepthFunc = D3D11_COMPARISON_LESS;
+
 	depth_stencil_desc.StencilEnable = FALSE;
 	depth_stencil_desc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
 	depth_stencil_desc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
@@ -226,7 +228,7 @@ void InitDirect3DApp::LoadBlend()
 	// 關閉zbuffer write
 	if ( D3D_OK != m_d3dDevice->CreateDepthStencilState(&depth_stencil_desc, &m_pDepthStencil_ZWriteOFF) )
 		return ;
-
+	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteON, 0);
 	CD3D11_BLEND_DESCX blend_state_desc(
 		FALSE,
 		FALSE,
@@ -269,6 +271,7 @@ void InitDirect3DApp::LoadHero()
 	m_Player.SetTeam(0);
 
 	m_Heroes.push_back(m_Player.CreateHero(Vector3(100,100,0)));
+	m_Heroes.push_back(m_Player.CreateHero(Vector3(0,0,0)));
 	
 }
 
@@ -377,319 +380,6 @@ void InitDirect3DApp::InitTexture()
 	HR(m_d3dDevice->CreateTexture2D(&depthStencilDesc1, 0, &tex12));
 	HR(m_d3dDevice->CreateDepthStencilView(tex12, 0, &m_DepthStencilView2));
 }
-
-/*
-void InitDirect3DApp::SetCtrlKey()
-{
-	if (InputStateS::instance().isKeyPress(KEY_A))
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_A;
-		m_SettingKeyID=-1;
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "A");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_B))
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_B;
-		m_SettingKeyID=-1;
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "B");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_C))
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_C;
-		m_SettingKeyID=-1;
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "C");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_D))
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_D;
-		m_SettingKeyID=-1;
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "D");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_E))
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_E;
-		m_SettingKeyID=-1;
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "E");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_F)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_F; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "F");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_G)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_G; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "G");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_H)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_H; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "H");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_I)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_I; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "I");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_J)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_J; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "J");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_K)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_K; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "K");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_L)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_L; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "L");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_M)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_M; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "M");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_N)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_N; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "N");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_O)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_O; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "O");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_P)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_P; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "P");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_Q)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_Q; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "Q");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_R)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_R; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "R");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_S)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_S; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "S");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_T)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_T; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "T");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_U)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_U; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "U");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_V)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_V; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "V");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_W)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_W; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "W");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_X)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_X; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "X");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_Y)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_Y; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "Y");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_Z)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_Z; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "Z");
-	}
-	//===============================================================================0~9===================================================================
-	//===============================================================================0~9===================================================================
-	else if (InputStateS::instance().isKeyPress(KEY_0)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_0; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "0");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_1)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_1; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "1");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_2)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_2; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "2");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_3)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_3; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "3");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_4)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_4; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "4");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_5)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_5; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "5");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_6)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_6; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "6");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_7)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_7; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "7");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_8)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_8; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "8");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_9)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_9; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "9");
-	}
-	//===============================================================================numpad===================================================================
-	//===============================================================================numpad===================================================================
-	else if (InputStateS::instance().isKeyPress(KEY_NUMPAD0)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_NUMPAD0; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "num0");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_NUMPAD1)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_NUMPAD1; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "num1");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_NUMPAD2)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_NUMPAD2; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "num2");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_NUMPAD3)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_NUMPAD3; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "num3");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_NUMPAD4)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_NUMPAD4; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "num4");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_NUMPAD5)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_NUMPAD5; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "num5");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_NUMPAD6)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_NUMPAD6; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "num6");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_NUMPAD7)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_NUMPAD7; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "num7");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_NUMPAD8)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_NUMPAD8; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "num8");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_NUMPAD9)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_NUMPAD9; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "num9");
-	}
-	//===============================================================================方向鍵===================================================================
-	//===============================================================================方向鍵===================================================================
-	else if (InputStateS::instance().isKeyPress(KEY_UP)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_UP; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "Up");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_DOWN)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_DOWN; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "Down");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_LEFT)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_LEFT; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "Left");
-	}
-	else if (InputStateS::instance().isKeyPress(KEY_RIGHT)) 
-	{
-		m_CtrlKey[m_SettingKeyID] = KEY_RIGHT; 
-		m_SettingKeyID=-1; 
-		m_DXUT_UI->SetStatic(m_SettingKeyTextID, "Right");
-	}
-	/ *if (m_SettingKeyID==-1)
-		m_TestHero.m_CtrlKeys = m_CtrlKey;* /
-}*/
 
 void InitDirect3DApp::DealMainMenu()
 {
