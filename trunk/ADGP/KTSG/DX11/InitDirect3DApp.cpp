@@ -36,7 +36,7 @@ void InitDirect3DApp::initApp()
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
 	//init Camera
-	m_Camera = Camera_Sptr(new Camera(0,0,0,1,0,45));
+	m_Camera = Camera_Sptr(new Camera(0,0,0,0,0,45));
 }
 
 

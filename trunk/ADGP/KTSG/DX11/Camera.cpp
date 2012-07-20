@@ -45,6 +45,7 @@ void Camera::Zoom( float index )
 {
 	if((m_Radius+index)<0)return;
 	else m_Radius += index;
+	std::cout<<"Zoom:"<<m_Radius<<std::endl;
 }
 
 void Camera::SurroundX( float index )
