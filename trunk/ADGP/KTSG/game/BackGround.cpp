@@ -213,13 +213,13 @@ void BackGround::UpdateDataToDraw()
 		if(m_TimeTik%it->m_TimeLine < it->m_TimeStart)continue;
 		if(m_TimeTik%it->m_TimeLine > it->m_TimeEnd)  continue;
 
-		float d=0
+		float d=0;
 		do 
 		{
-			if(bgv.position.x = it->m_Position.x + d*m_LoopDistance > this->m_Width)break;
-			
 			BGVertex bgv;
-			bgv.position.x = it->m_Position.x + d*m_LoopDistance;
+
+			if(bgv.position.x = it->m_Position.x + d*it->m_LoopDistance > this->m_Width)break;
+			bgv.position.x = it->m_Position.x + d*it->m_LoopDistance;
 			bgv.position.y = it->m_Position.y;
 			bgv.position.z = it->m_Position.z;
 			bgv.size.x     = it->m_Width;
