@@ -208,11 +208,16 @@ void BackGround::Update( float dt )
 void BackGround::UpdateDataToDraw()
 {
 	m_BGVerteices.clear();
+	m_DrawVertexGroups.clear();
+	int vertexCount = 0, count = 0;
 	for(BGLayers::iterator it=m_BGLayers.begin();it != m_BGLayers.end();it++)
 	{
 		if(m_TimeTik%it->m_TimeLine < it->m_TimeStart)continue;
 		if(m_TimeTik%it->m_TimeLine > it->m_TimeEnd)  continue;
-
+		DrawVertexGroup dvg = {};
+		dvg.texture = g_TextureManager.GetTexture(it->m_PicID);
+		vertexCount = 0;
+		dvg.StartVertexLocation = count;
 		float d=0;
 		do 
 		{
@@ -230,8 +235,14 @@ void BackGround::UpdateDataToDraw()
 				bgv.angle = 0;
 			}
 			bgv.width=this->m_Width;
+
+			++vertexCount;
+			++count;
+
 		} while (it->m_LoopDistance > 0);
-		
+
+		dvg.VertexCount = vertexCount;
+		m_DrawVertexGroups.push_back(dvg);
 		
 	}
 }

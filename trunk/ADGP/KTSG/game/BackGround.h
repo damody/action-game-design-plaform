@@ -59,6 +59,7 @@ private:
 
 	int		m_TimeTik;
 	BGVerteices	m_BGVerteices;
+	DrawVertexGroups m_DrawVertexGroups;
 public:
 	BackGround(){}
 	~BackGround(){}
