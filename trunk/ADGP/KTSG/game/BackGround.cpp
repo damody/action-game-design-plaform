@@ -1,5 +1,5 @@
 #include "BackGround.h"
-
+#include "global.h"
 
 
 bool BackGround::CheckDataVaild( LuaCell_Sptr luadata )
@@ -153,6 +153,7 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 			bgl.m_TimeLine		= luadata->GetLua<int>("layer/%d/timeline", i);
 			bgl.m_TimeStart		= luadata->GetLua<int>("layer/%d/time_start", i);
 			bgl.m_TimeEnd		= luadata->GetLua<int>("layer/%d/time_end", i);
+			bgl.m_PicID		= g_TextureManager.AddTexture(bgl.m_PicturePath);
 			m_BGLayers.push_back(bgl);
 		}
 		else
@@ -196,5 +197,41 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 		}
 		else
 			break;
+	}
+}
+
+void BackGround::Update( float dt )
+{
+	m_TimeTik++;
+}
+
+void BackGround::UpdateDataToDraw()
+{
+	m_BGVerteices.clear();
+	for(BGLayers::iterator it=m_BGLayers.begin();it != m_BGLayers.end();it++)
+	{
+		if(m_TimeTik%it->m_TimeLine < it->m_TimeStart)continue;
+		if(m_TimeTik%it->m_TimeLine > it->m_TimeEnd)  continue;
+
+		float d=0
+		do 
+		{
+			if(bgv.position.x = it->m_Position.x + d*m_LoopDistance > this->m_Width)break;
+			
+			BGVertex bgv;
+			bgv.position.x = it->m_Position.x + d*m_LoopDistance;
+			bgv.position.y = it->m_Position.y;
+			bgv.position.z = it->m_Position.z;
+			bgv.size.x     = it->m_Width;
+			bgv.size.y     = it->m_Height;
+			if(it->m_IsGround){
+				bgv.angle = 90;
+			}else{
+				bgv.angle = 0;
+			}
+			bgv.width=this->m_Width;
+		} while (it->m_LoopDistance > 0);
+		
+		
 	}
 }

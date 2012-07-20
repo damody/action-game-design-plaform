@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "DX11/Vertex.h"
+#include "DX11/TextureManager.h"
 #include "math/AxisAlignedBox.h"
 #include "math/Vector3.h"
 #include "Lua/LuaCell.h"
@@ -8,6 +10,7 @@
 struct BGLayer
 {
 	std::string	m_PicturePath;
+	int		m_PicID;
 	Vector3		m_Position;
 	float		m_Width;
 	float		m_Height;
@@ -42,8 +45,10 @@ typedef std::vector<ParallelLight> ParallelLights;
 
 class BackGround
 {
-public:
+private:
+	LuaCell_Sptr	m_LuaCell;
 	std::string	m_Name;
+	float		m_Width;
 	// can move bounding
 	AxisAlignedBoxs	m_SpaceBounding;
 	// can't move bounding
@@ -51,8 +56,19 @@ public:
 	BGLayers	m_BGLayers;
 	ColorRects	m_ColorRects;
 	ParallelLights	m_ParallelLights;
-	LuaCell_Sptr	m_LuaCell;
+
+	int		m_TimeTik;
+	BGVerteices	m_BGVerteices;
+public:
+	BackGround(){}
+	~BackGround(){}
+
+	void Update(float dt);
+	
 	bool	CheckDataVaild(LuaCell_Sptr luadata);
 	void	LoadData(LuaCell_Sptr luadata);
+
+protected:	
+	void UpdateDataToDraw();
 };
 
