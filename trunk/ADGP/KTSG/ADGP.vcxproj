@@ -191,6 +191,7 @@
     <ClCompile Include="ConvStr.cpp" />
     <ClCompile Include="DX11\Camera.cpp" />
     <ClCompile Include="game\BackGround.cpp" />
+    <ClCompile Include="game\BGManager.cpp" />
     <ClCompile Include="game\FrameInfo.cpp" />
     <ClCompile Include="game\Hero.cpp" />
     <ClCompile Include="game\HeroInfo.cpp" />
@@ -267,6 +268,7 @@
     <ClInclude Include="game\Attack.h" />
     <ClInclude Include="game\BackGround.h" />
     <ClInclude Include="game\BeCatch.h" />
+    <ClInclude Include="game\BGManager.h" />
     <ClInclude Include="game\BloodInfo.h" />
     <ClInclude Include="game\Body.h" />
     <ClInclude Include="game\CatchInfo.h" />

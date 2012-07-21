@@ -1,11 +1,13 @@
 #pragma once
 #include <string>
+#include <map>
 #include <vector>
 #include "DX11/Vertex.h"
 #include "DX11/TextureManager.h"
 #include "math/AxisAlignedBox.h"
 #include "math/Vector3.h"
 #include "Lua/LuaCell.h"
+#include "common\shared_ptr.h"
 
 struct BGLayer
 {
@@ -47,7 +49,6 @@ class BackGround
 {
 private:
 	LuaCell_Sptr	m_LuaCell;
-	std::string	m_Name;
 	float		m_Width;
 	// can move bounding
 	AxisAlignedBoxs	m_SpaceBounding;
@@ -61,15 +62,19 @@ private:
 	BGVerteices	m_BGVerteices;
 	DrawVertexGroups m_DrawVertexGroups;
 public:
-	BackGround(){}
+	BackGround():m_TimeTik(0){}
 	~BackGround(){}
+
+	std::string	m_Name;
 
 	void Update(float dt);
 	
 	bool	CheckDataVaild(LuaCell_Sptr luadata);
 	void	LoadData(LuaCell_Sptr luadata);
-
+	void    Init();
 protected:	
 	void UpdateDataToDraw();
 };
+SHARE_PTR(BackGround);
 
+typedef std::map<std::string,BackGround_RawPtr> BGMaps;

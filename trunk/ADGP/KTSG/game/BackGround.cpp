@@ -246,3 +246,8 @@ void BackGround::UpdateDataToDraw()
 		
 	}
 }
+
+void BackGround::Init()
+{
+	m_TimeTik = 0;
+}
