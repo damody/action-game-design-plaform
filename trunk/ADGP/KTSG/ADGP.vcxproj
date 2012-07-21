@@ -321,6 +321,7 @@
     <ClInclude Include="memory\VMemPool.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shader\Background.fx" />
     <None Include="shader\bullet.fx" />
     <None Include="shader\Hero.fx" />
     <None Include="shader\point.fx" />

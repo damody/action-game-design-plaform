@@ -23,6 +23,7 @@ Texture_Sptr TextureManager::GetTexture(unsigned int index )
 {
 	if(index < m_Textures.size())
 				return m_Textures[index];
+	else return Texture_Sptr();
 }
 
 int TextureManager::Find( std::string path )

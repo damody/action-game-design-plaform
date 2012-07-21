@@ -363,5 +363,8 @@
     <None Include="shader\Hero.fx">
       <Filter>shader</Filter>
     </None>
+    <None Include="shader\Background.fx">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

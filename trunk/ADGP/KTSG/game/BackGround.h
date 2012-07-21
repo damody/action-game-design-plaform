@@ -59,21 +59,21 @@ private:
 	ParallelLights	m_ParallelLights;
 
 	int		m_TimeTik;
-	BGVerteices	m_BGVerteices;
-	DrawVertexGroups m_DrawVertexGroups;
+	
 public:
 	BackGround():m_TimeTik(0){}
 	~BackGround(){}
 
-	std::string	m_Name;
+	std::string	 m_Name;
+	BGVerteices	 m_BGVerteices;
+	DrawVertexGroups m_DrawVertexGroups;
 
 	void Update(float dt);
-	
+	void BuildPoint();
+
 	bool	CheckDataVaild(LuaCell_Sptr luadata);
 	void	LoadData(LuaCell_Sptr luadata);
 	void    Init();
-protected:	
-	void UpdateDataToDraw();
 };
 SHARE_PTR(BackGround);
 

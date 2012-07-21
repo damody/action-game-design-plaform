@@ -10,7 +10,9 @@
 InitDirect3DApp* InitDirect3DApp::dxAppInstance = NULL;
 
 InitDirect3DApp::InitDirect3DApp()
-: D3DApp(), m_Heroes_Width(0), m_Heroes_Height(0), m_Buffer_Heroes(0) , m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1)
+: D3DApp(), m_Heroes_Width(0), m_Heroes_Height(0), m_Buffer_Heroes(0),
+            m_Background_Width(0), m_Background_Height(0), m_Buffer_Background(0), m_Background(0),
+	    m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1)
 {
 	dxAppInstance = this;
 }
@@ -50,23 +52,27 @@ void InitDirect3DApp::UpdateScene(float dt)
 
 	//*test camera
 	TestCamera();
-	//InputStateS::instance().GetInput();
+	UpdateCamera();
 	
-	m_Heroes_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Heroes_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 
-	//Hero Update
+	
 	static float timp_count = 0;
 	timp_count+=dt;
 	if (timp_count > 1/60.0f)
 	{
+		//Hero Update
 		for(std::vector<Hero_RawPtr>::iterator it = m_Heroes.begin();it != m_Heroes.end(); it++)
 		{
 			(*it)->Update(dt);
 		}
+		//Background Update
+		if(m_Background != NULL)
+		{
+			m_Background->Update(dt);
+		}
 		timp_count -= 1/60.0f;
 	}
-
+	
 	UpdateUI();
 	buildPoint();
 }
@@ -80,6 +86,12 @@ void InitDirect3DApp::OnResize()
 		m_Heroes_Width->SetFloat((float)mClientWidth);
 		m_Heroes_Height->SetFloat((float)mClientHeight);
 	}
+
+	if (m_Background_Width!=NULL && m_Background_Height!=NULL)
+	{
+		m_Background_Width->SetFloat((float)mClientWidth);
+		m_Background_Height->SetFloat((float)mClientHeight);
+	}
 	
 }
 
@@ -92,7 +104,7 @@ void InitDirect3DApp::DrawScene()
 	m_DeviceContext->ClearRenderTargetView(RTVView2, m_ClearColor);
 	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 	
-
+	//Draw Hero
 	UINT offset = 0;
 	UINT stride2 = sizeof(ClipVertex);
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
@@ -108,6 +120,24 @@ void InitDirect3DApp::DrawScene()
 		}
 	}
 	
+	//Draw Background
+	if (m_Background != NULL)
+	{
+		offset = 0;
+		stride2 = sizeof(BGVertex);
+		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+		m_DeviceContext->IASetInputLayout(m_PLayout_Background);
+		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Background, &stride2, &offset);
+		for (DrawVertexGroups::iterator it = m_Background->m_DrawVertexGroups.begin();it != m_Background->m_DrawVertexGroups.end();++it)
+		{
+			if (it->texture.get())
+			{
+				m_PMap_Heroes->SetResource(*(it->texture));
+				m_PTech_Heroes->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+				m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
+			}
+		}
+	}
 	
 }
 
@@ -138,6 +168,30 @@ void InitDirect3DApp::buildPointFX()
 	D3DX11_PASS_DESC PassDesc;
 	m_PTech_Heroes->GetPassByIndex(0)->GetDesc(&PassDesc);
 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_HeroVertex, 4, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Heroes));
+
+	hr = 0;
+	hr=D3DX11CompileFromFile(_T("shader\\Background.fx"), NULL, NULL, NULL, 
+		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
+	if(FAILED(hr))
+	{
+		if( pError )
+		{
+			MessageBoxA(0, (char*)pError->GetBufferPointer(), 0, 0);
+			ReleaseCOM(pError);
+		}
+		DXTrace(__FILE__, __LINE__, hr, _T("D3DX11CreateEffectFromFile"), TRUE);
+	} 
+	HR(D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_Background));
+	m_PTech_Background = m_Effect_Background->GetTechniqueByName("PointTech");
+	m_Background_Width = m_Effect_Background->GetVariableByName("sceneW")->AsScalar();
+	m_Background_Height =m_Effect_Background->GetVariableByName("sceneH")->AsScalar();
+	m_Background_cLootAt = m_Effect_Background->GetVariableByName("cLookAt");
+	m_Background_cPos = m_Effect_Background->GetVariableByName("cPolarCoord");
+	m_PMap_Background =m_Effect_Background->GetVariableByName("gMap")->AsShaderResource();
+
+	D3DX11_PASS_DESC PassDescBG;
+	m_PTech_Background->GetPassByIndex(0)->GetDesc(&PassDescBG);
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_BGVertex, 4, PassDescBG.pIAInputSignature,PassDescBG.IAInputSignatureSize, &m_PLayout_Background));
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -184,6 +238,16 @@ void InitDirect3DApp::buildPoint()
 			HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Heroes));
 		}
 	}
+
+	if(m_Background != NULL){
+		m_Background->BuildPoint();
+		m_vbd.ByteWidth = (UINT)(sizeof(BGVertex) * m_Background->m_BGVerteices.size());
+		m_vbd.StructureByteStride=sizeof(BGVertex);
+		D3D11_SUBRESOURCE_DATA vinitData;
+		vinitData.pSysMem = &m_HeroVertex[0];
+		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Background));
+	}
+
 }
 
 void InitDirect3DApp::LoadResource()
@@ -600,4 +664,12 @@ void InitDirect3DApp::TestCamera()
 		//m_Camera->Zoom(1);
 		//m_Camera->MoveX(1);
 	}
+}
+
+void InitDirect3DApp::UpdateCamera()
+{
+	m_Heroes_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Heroes_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Background_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Background_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 }

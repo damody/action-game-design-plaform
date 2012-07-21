@@ -15,6 +15,7 @@
 #include "TextureManager.h"
 #include "game/Hero.h"
 #include "game/Player.h"
+#include "game/BackGround.h"
 #include "Camera.h"
 
 class InitDirect3DApp : public D3DApp
@@ -35,6 +36,7 @@ private:
 
 	void DrawScene();
 	void UpdateScene(float dt);
+	void UpdateCamera();
 	int  UpdateInput();
 	int  UpdateUI();
 	void PrintInfo();
@@ -80,6 +82,18 @@ private:
 	ID3DX11EffectScalarVariable* m_Heroes_Width;
 	ID3DX11EffectScalarVariable* m_Heroes_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Heroes;
+
+	BackGround_RawPtr	m_Background;
+
+	ID3D11Buffer* m_Buffer_Background;
+	ID3DX11Effect* m_Effect_Background;
+	ID3DX11EffectTechnique* m_PTech_Background;
+	ID3D11InputLayout* m_PLayout_Background;
+	ID3DX11EffectVariable *m_Background_cLootAt;
+	ID3DX11EffectVariable *m_Background_cPos;
+	ID3DX11EffectScalarVariable* m_Background_Width;
+	ID3DX11EffectScalarVariable* m_Background_Height;
+	ID3DX11EffectShaderResourceVariable*  m_PMap_Background;
 
 	
 	int			m_SettingKeyID;		//目前要設定的按鍵的id

@@ -24,13 +24,15 @@ std::vector<std::string> BGManager::GetBGList()
 
 BackGround_RawPtr BGManager::GetBG( std::string name )
 {
+	m_BGMaps[name]->Init();
 	return m_BGMaps[name];
 }
 
 BackGround_RawPtr BGManager::GetBG(unsigned int id )
 {
-	if(id < m_BGList.size())
+	if(id < m_BGList.size()){
+		m_BGMaps[m_BGList[id]]->Init();
 		return m_BGMaps[m_BGList[id]];
-	else
+	} else
 		return NULL;
 }

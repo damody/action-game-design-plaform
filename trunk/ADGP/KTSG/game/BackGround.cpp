@@ -205,7 +205,7 @@ void BackGround::Update( float dt )
 	m_TimeTik++;
 }
 
-void BackGround::UpdateDataToDraw()
+void BackGround::BuildPoint()
 {
 	m_BGVerteices.clear();
 	m_DrawVertexGroups.clear();
