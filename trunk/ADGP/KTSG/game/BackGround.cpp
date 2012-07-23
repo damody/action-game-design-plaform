@@ -226,10 +226,10 @@ void BackGround::BuildPoint()
 			BGVertex bgv;
 
 			bgv.position.x = it->m_Position.x + d*it->m_LoopDistance;
-			bgv.position.y = it->m_Position.y;
+			bgv.position.y = it->m_Position.y ;
 			bgv.position.z = it->m_Position.z;
-			bgv.size.x     = it->m_Width;
-			bgv.size.y     = it->m_Height;
+			bgv.size.x     = it->m_Width  ;
+			bgv.size.y     = it->m_Height ;
 			if(it->m_IsGround)
 			{
 				bgv.angle = 90;

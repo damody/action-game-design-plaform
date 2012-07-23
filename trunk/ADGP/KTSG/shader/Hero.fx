@@ -51,7 +51,7 @@ VS_OUT VS(VS_IN vIn)
 	view[2]=float3(sin(-thita) 	,  cos(-thita) * -sin(-alpha) ,  cos(-thita) * cos(-alpha) );
 	
 	vIn.position.xyz=mul(float3(vIn.position.xyz),view);
-	vIn.position.z += cPolarCoord.z;
+	vIn.position.z += cPolarCoord.x;
 	
 	float zDepth = 3000;
 	vIn.position.z /= zDepth;

@@ -106,7 +106,6 @@ void InitDirect3DApp::DrawScene()
 	m_DeviceContext->ClearRenderTargetView(RTVView2, m_ClearColor);
 	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 	
-	
 	//Draw Background
 	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	if (m_Background != NULL)
@@ -126,8 +125,7 @@ void InitDirect3DApp::DrawScene()
 			}
 		}
 	}
-
-
+	
 	//Draw Hero
 	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteON, 0);
 	UINT offset = 0;
@@ -212,6 +210,7 @@ void InitDirect3DApp::buildPointFX()
 void InitDirect3DApp::buildPoint()
 {
 	ReleaseCOM(m_Buffer_Heroes);
+	ReleaseCOM(m_Buffer_Background);
 	// set background
 	if(m_Background != NULL){
 		m_Background->BuildPoint();
@@ -352,7 +351,7 @@ void InitDirect3DApp::LoadHero()
 
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
-
+	/*
 	for(int i=0 ; i<10 ; i++){
 		for (int j=0 ; j<10 ; j++)
 		{
@@ -360,8 +359,8 @@ void InitDirect3DApp::LoadHero()
 		}
 			
 	}
-	
-	
+	*/
+	m_Heroes.push_back(m_Player.CreateHero(Vector3(0,0,0)));
 }
 
 
