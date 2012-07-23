@@ -20,6 +20,7 @@ layer =
 	{picture_path="bg\\ft\\g2.bmp", ground=0, x=70, y=283,  z=3000, w=140, h=11, loop_width=23000, loop_distance=140, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\g3.bmp", ground=0, x=70, y=94,   z=3000, w=140, h=12, loop_width=24000, loop_distance=140, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\g4.bmp", ground=0, x=64, y=73,   z=3000, w=128, h=21, loop_width=24000, loop_distance=128, timeline=1, time_start=0, time_end=0},
+
 	{picture_path="bg\\ft\\c1.bmp", ground=0, x=27, y=337,  z=3000, w=54, h=134, loop_width=23000, loop_distance=324, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\c2.bmp", ground=0, x=30, y=294,  z=3000, w=60, h=43,  loop_width=23000, loop_distance=324, timeline=1, time_start=0, time_end=0},
 

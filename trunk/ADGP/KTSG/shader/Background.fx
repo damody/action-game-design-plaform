@@ -72,63 +72,54 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	view[2]=float3(sin(thita) 	,  cos(thita) * -sin(alpha) ,  cos(thita) * cos(alpha) );
 	
 	float zDepth =3000;
-	/*
-	float4x4 proj
-	float fov=45*3.14159/180;
-	float xscale = cot(fov*0.5)*SceneW/sceneH;
-	float yscale = cot(fov*0.5);
-	proj[0]=float3(xscale 	,  0		 , 0 ,0);
-	proj[1]=float3(0		,  yscale	 , 0 ,0);
-	proj[2]=float3(0 		,  0         ,-1 ,0);
-	proj[3]=float3(0 		,  0         , 0 ,0);
-	*/
+	float offset    =0.1/tan(3.14159/6);
 
 	
 	GS_OUT out5;
 	//0
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(0,-input[0].size.y,0),mat)),view),1);
+	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z /= zDepth;
-	out5.posH.xy = out5.posH.xy * float2(1/sceneW,1/sceneH);
 	out5.posH.y -=0.9;
 	out5.texcoord = float2(0,0);
 	triStream.Append( out5 );
 	
 	//1
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(0,0,0), mat)),view),1);
+	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z /= zDepth;
-	out5.posH.xy = out5.posH.xy * float2(1/sceneW,1/sceneH);
 	out5.posH.y -=0.9;
 	out5.texcoord = float2(0,1);
 	triStream.Append( out5 );
 
 	//2
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,-input[0].size.y,0), mat)),view),1);
+	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z /= zDepth;
-	out5.posH.xy = out5.posH.xy * float2(1/sceneW,1/sceneH);
 	out5.posH.y -=0.9;
 	out5.texcoord = float2(1,0);
 	triStream.Append( out5 );
 
 	//3
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(0,0,0), mat)),view),1);
+	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z /= zDepth;
-	out5.posH.xy = out5.posH.xy * float2(1/sceneW,1/sceneH);
 	out5.posH.y -=0.9;
 	out5.texcoord = float2(0,1);
 	triStream.Append( out5 );
 
 	//4
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,-input[0].size.y,0), mat)),view),1);
+	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z /= zDepth;
-	out5.posH.xy = out5.posH.xy * float2(1/sceneW,1/sceneH);
 	out5.posH.y -=0.9;
 	out5.texcoord = float2(1,0);
 	triStream.Append( out5 );
 	
 	//5
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,0,0), mat)),view),1);
+	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z /= zDepth;
-	out5.posH.xy = out5.posH.xy * float2(1/sceneW,1/sceneH);
 	out5.posH.y -=0.9;
 	out5.texcoord = float2(1,1);
 	triStream.Append( out5 );

@@ -165,8 +165,8 @@ void InitDirect3DApp::buildPointFX()
 	} 
 	HR(D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_Heroes));
 	m_PTech_Heroes = m_Effect_Heroes->GetTechniqueByName("PointTech");
-	m_Heroes_Width = m_Effect_Heroes->GetVariableByName("width")->AsScalar();
-	m_Heroes_Height =m_Effect_Heroes->GetVariableByName("height")->AsScalar();
+	m_Heroes_Width = m_Effect_Heroes->GetVariableByName("sceneW")->AsScalar();
+	m_Heroes_Height =m_Effect_Heroes->GetVariableByName("sceneH")->AsScalar();
 	m_Heroes_cLootAt = m_Effect_Heroes->GetVariableByName("cLookAt");
 	m_Heroes_cPos = m_Effect_Heroes->GetVariableByName("cPolarCoord");
 	m_PMap_Heroes =m_Effect_Heroes->GetVariableByName("gMap")->AsShaderResource();
