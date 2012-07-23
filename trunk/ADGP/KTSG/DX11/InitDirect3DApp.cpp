@@ -106,6 +106,24 @@ void InitDirect3DApp::DrawScene()
 	m_DeviceContext->ClearRenderTargetView(RTVView2, m_ClearColor);
 	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 	
+	//Draw Background
+	if (m_Background != NULL)
+	{
+		UINT offset = 0;
+		UINT stride2 = sizeof(BGVertex);
+		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+		m_DeviceContext->IASetInputLayout(m_PLayout_Background);
+		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Background, &stride2, &offset);
+		for (DrawVertexGroups::iterator it = m_Background->m_DrawVertexGroups.begin();it != m_Background->m_DrawVertexGroups.end();++it)
+		{
+			if (it->texture.get())
+			{
+				m_PMap_Heroes->SetResource(*(it->texture));
+				m_PTech_Heroes->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+				m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
+			}
+		}
+	}
 	//Draw Hero
 	UINT offset = 0;
 	UINT stride2 = sizeof(ClipVertex);
@@ -122,24 +140,7 @@ void InitDirect3DApp::DrawScene()
 		}
 	}
 	
-	//Draw Background
-	if (m_Background != NULL)
-	{
-		offset = 0;
-		stride2 = sizeof(BGVertex);
-		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-		m_DeviceContext->IASetInputLayout(m_PLayout_Background);
-		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Background, &stride2, &offset);
-		for (DrawVertexGroups::iterator it = m_Background->m_DrawVertexGroups.begin();it != m_Background->m_DrawVertexGroups.end();++it)
-		{
-			if (it->texture.get())
-			{
-				m_PMap_Heroes->SetResource(*(it->texture));
-				m_PTech_Heroes->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-				m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
-			}
-		}
-	}
+	
 	
 }
 
@@ -170,7 +171,7 @@ void InitDirect3DApp::buildPointFX()
 	D3DX11_PASS_DESC PassDesc;
 	m_PTech_Heroes->GetPassByIndex(0)->GetDesc(&PassDesc);
 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_HeroVertex, 4, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Heroes));
-
+	//background
 	hr = 0;
 	hr=D3DX11CompileFromFile(_T("shader\\Background.fx"), NULL, NULL, NULL, 
 		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
@@ -206,6 +207,15 @@ void InitDirect3DApp::buildPointFX()
 void InitDirect3DApp::buildPoint()
 {
 	ReleaseCOM(m_Buffer_Heroes);
+	// set background
+	if(m_Background != NULL){
+		m_Background->BuildPoint();
+		m_vbd.ByteWidth = (UINT)(sizeof(BGVertex) * m_Background->m_BGVerteices.size());
+		m_vbd.StructureByteStride=sizeof(BGVertex);
+		D3D11_SUBRESOURCE_DATA vinitData;
+		vinitData.pSysMem = &m_Background->m_BGVerteices[0];
+		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Background));
+	}
 	// set heroes
 	std::stable_sort(m_Heroes.begin(),m_Heroes.end(),SortHero);
 	m_HeroVertex.clear();
@@ -241,14 +251,7 @@ void InitDirect3DApp::buildPoint()
 		}
 	}
 
-	if(m_Background != NULL){
-		m_Background->BuildPoint();
-		m_vbd.ByteWidth = (UINT)(sizeof(BGVertex) * m_Background->m_BGVerteices.size());
-		m_vbd.StructureByteStride=sizeof(BGVertex);
-		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &m_HeroVertex[0];
-		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Background));
-	}
+	
 
 }
 
@@ -336,6 +339,7 @@ void InitDirect3DApp::LoadHero()
 		std::cout<<"BG Data Fail"<<std::endl;
 	}
 	tempBG->LoadData(ft);
+	m_Background = tempBG;
 
 	//player init
 	int key[8] = {KEY_UP,KEY_DOWN,KEY_RIGHT,KEY_LEFT,KEY_Q,KEY_W,KEY_E,KEY_R};

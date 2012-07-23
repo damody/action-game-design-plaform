@@ -17,6 +17,7 @@ struct BGLayer
 	float		m_Width;
 	float		m_Height;
 	float		m_LoopDistance;
+	float		m_LoopWidth;
 	int		m_TimeLine;
 	int		m_TimeStart;
 	int		m_TimeEnd;
