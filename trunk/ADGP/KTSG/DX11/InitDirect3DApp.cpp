@@ -39,6 +39,8 @@ void InitDirect3DApp::initApp()
 	buildPoint();
 	//init Camera
 	m_Camera = Camera_Sptr(new Camera(0,0,0,0,0,45));
+	
+
 }
 
 
@@ -326,6 +328,14 @@ void InitDirect3DApp::LoadHero()
 	HeroInfo_Sptr temp = HeroInfo_Sptr(new HeroInfo);
 	temp->LoadHeroData(davis);
 	g_HeroInfoMG.AddHeroInfo(temp->m_Name,temp);
+	//test bg
+	LuaCell_Sptr ft = LuaCell_Sptr(new LuaCell);
+	ft->InputLuaFile("bg.lua");
+	BackGround_RawPtr tempBG = BackGround_RawPtr(new BackGround());
+	if(!tempBG->CheckDataVaild(ft)){
+		std::cout<<"BG Data Fail"<<std::endl;
+	}
+	tempBG->LoadData(ft);
 
 	//player init
 	int key[8] = {KEY_UP,KEY_DOWN,KEY_RIGHT,KEY_LEFT,KEY_Q,KEY_W,KEY_E,KEY_R};

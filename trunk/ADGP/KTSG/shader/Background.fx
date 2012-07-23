@@ -44,8 +44,8 @@ VS_OUT VS(VS_IN vIn)
 	float alpha = cPolarCoord.z *3.14159/180;
 	
 	vIn.position= float4(vIn.position.xy-cLookAt.xy,vIn.position.z,1.0);
-	float offset = (cLookAt.x - sceneW) * (vIn.width - vIn.size.x) / (vIn.width - sceneW);
-	vIn.position.x += offset;
+	//float offset = (cLookAt.x - sceneW) * (vIn.width - vIn.size.x) / (vIn.width - sceneW);
+	//vIn.position.x += offset;
 	vIn.position.xyz= (vIn.position.xyz)/float3(sceneW,sceneH,3000);
 	
 	vOut.pos =float4(vIn.position,1.0) ;
