@@ -77,26 +77,27 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	
 	GS_OUT out5;
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x/2,-input[0].size.y,0),mat)*size),view),1);
-	out5.texcoord = float2(0,-1);
-	triStream.Append( out5 );
-	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x/2,0,0), mat)*size),view),1);
 	out5.texcoord = float2(0,0);
 	out5.posH.z = 0;
 	triStream.Append( out5 );
+	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x/2,0,0), mat)*size),view),1);
+	out5.texcoord = float2(0,1);
+	out5.posH.z = 0;
+	triStream.Append( out5 );
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3( input[0].size.x/2,-input[0].size.y,0), mat)*size),view),1);
-	out5.texcoord = float2(-1,-1);
+	out5.texcoord = float2(1,0);
 	out5.posH.z = 0;
 	triStream.Append( out5 );
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x/2,0,0), mat)*size),view),1);
-	out5.texcoord = float2(0,0);
+	out5.texcoord = float2(0,1);
 	out5.posH.z = 0;
 	triStream.Append( out5 );
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3( input[0].size.x/2,-input[0].size.y,0), mat)*size),view),1);
-	out5.texcoord = float2(-1,-1);
+	out5.texcoord = float2(1,0);
 	out5.posH.z = 0;
 	triStream.Append( out5 );
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3( input[0].size.x/2,0,0), mat)*size),view),1);
-	out5.texcoord = float2(-1,0);
+	out5.texcoord = float2(1,1);
 	out5.posH.z = 0;
 	triStream.Append( out5 );
 	

@@ -106,7 +106,9 @@ void InitDirect3DApp::DrawScene()
 	m_DeviceContext->ClearRenderTargetView(RTVView2, m_ClearColor);
 	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 	
+	
 	//Draw Background
+	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	if (m_Background != NULL)
 	{
 		UINT offset = 0;
@@ -118,13 +120,16 @@ void InitDirect3DApp::DrawScene()
 		{
 			if (it->texture.get())
 			{
-				m_PMap_Heroes->SetResource(*(it->texture));
-				m_PTech_Heroes->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+				m_PMap_Background->SetResource(*(it->texture));
+				m_PTech_Background->GetPassByIndex(0)->Apply(0, m_DeviceContext);
 				m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
 			}
 		}
 	}
+
+
 	//Draw Hero
+	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteON, 0);
 	UINT offset = 0;
 	UINT stride2 = sizeof(ClipVertex);
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
@@ -618,63 +623,63 @@ void InitDirect3DApp::ReflashTowerState()
 
 void InitDirect3DApp::TestCamera()
 {
-	if (InputStateS::instance().isKeyDown(KEY_Z))
+	if (InputStateS::instance().isKeyPress(KEY_Z))
 	{
-		m_Camera->Zoom(-10);
+		m_Camera->Zoom(-0.1);
 		//m_Camera->SurroundX(-10);
 		//m_Camera->MoveX(-1);
 	}
-	if (InputStateS::instance().isKeyDown(KEY_X))
+	if (InputStateS::instance().isKeyPress(KEY_X))
 	{
 		//m_Camera->SurroundX(10);
-		m_Camera->Zoom(10); 
+		m_Camera->Zoom(0.1); 
 		//m_Camera->MoveX(1);
 	}
-	if (InputStateS::instance().isKeyDown(KEY_4))
+	if (InputStateS::instance().isKeyPress(KEY_NUMPAD4))
 	{
 		//m_Camera->Zoom(-1);
 		//m_Camera->SurroundX(-10);
-		m_Camera->MoveX(-10);
+		m_Camera->MoveX(-1);
 	}
-	if (InputStateS::instance().isKeyDown(KEY_6))
+	if (InputStateS::instance().isKeyPress(KEY_NUMPAD6))
 	{
 		//m_Camera->SurroundX(10);
 		//m_Camera->Zoom(1); 
-		m_Camera->MoveX(10); 
+		m_Camera->MoveX(1); 
 	}
-	if (InputStateS::instance().isKeyDown(KEY_2))
+	if (InputStateS::instance().isKeyPress(KEY_NUMPAD2))
 	{
 		//m_Camera->Zoom(-1);
 		//m_Camera->SurroundX(-10);
-		m_Camera->MoveY(-10);
+		m_Camera->MoveY(-1);
 	}
-	if (InputStateS::instance().isKeyDown(KEY_8))
+	if (InputStateS::instance().isKeyPress(KEY_NUMPAD8))
 	{
 		//m_Camera->SurroundX(10);
 		//m_Camera->Zoom(1); 
-		m_Camera->MoveY(10); 
+		m_Camera->MoveY(1); 
 	}
-	if (InputStateS::instance().isKeyDown(KEY_K))
+	if (InputStateS::instance().isKeyPress(KEY_K))
 	{
 		//m_Camera->Zoom(-1);
-		m_Camera->SurroundX(-10);
+		m_Camera->SurroundX(-0.1);
 		//m_Camera->MoveX(-1);
 	}
-	if (InputStateS::instance().isKeyDown(KEY_I))
+	if (InputStateS::instance().isKeyPress(KEY_I))
 	{
-		m_Camera->SurroundX(10);
+		m_Camera->SurroundX(0.1);
 		//m_Camera->Zoom(1);
 		//m_Camera->MoveX(1);
 	}
-	if (InputStateS::instance().isKeyDown(KEY_J))
+	if (InputStateS::instance().isKeyPress(KEY_J))
 	{
 		//m_Camera->Zoom(-1);
-		m_Camera->SurroundY(-10);
+		m_Camera->SurroundY(-0.1);
 		//m_Camera->MoveX(-1);
 	}
-	if (InputStateS::instance().isKeyDown(KEY_L))
+	if (InputStateS::instance().isKeyPress(KEY_L))
 	{
-		m_Camera->SurroundY(10);
+		m_Camera->SurroundY(0.1);
 		//m_Camera->Zoom(1);
 		//m_Camera->MoveX(1);
 	}

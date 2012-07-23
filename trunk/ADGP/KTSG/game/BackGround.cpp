@@ -220,36 +220,36 @@ void BackGround::BuildPoint()
 		dvg.texture = g_TextureManager.GetTexture(it->m_PicID);
 		vertexCount = 0;
 		dvg.StartVertexLocation = count;
-		float d=0;
+		int d=0;
 		do 
 		{
-			BGVertex bgv = {};
+			BGVertex bgv;
 
 			bgv.position.x = it->m_Position.x + d*it->m_LoopDistance;
 			bgv.position.y = it->m_Position.y;
 			bgv.position.z = it->m_Position.z;
 			bgv.size.x     = it->m_Width;
 			bgv.size.y     = it->m_Height;
-			if(it->m_IsGround){
+			if(it->m_IsGround)
+			{
 				bgv.angle = 90;
-			}else{
+			}
+			else
+			{
 				bgv.angle = 0;
 			}
 			bgv.width=this->m_Width;
-
 			m_BGVerteices.push_back(bgv);
-
 			++vertexCount;
 			++count;
-
 			d++;
-			if(bgv.position.x = it->m_Position.x + d*it->m_LoopDistance > it->m_LoopWidth)break;
+			if(bgv.position.x = it->m_Position.x + d*it->m_LoopDistance > it->m_LoopWidth)
+				break;
 
 		} while (it->m_LoopDistance > 0);
 
 		dvg.VertexCount = vertexCount;
 		m_DrawVertexGroups.push_back(dvg);
-		
 	}
 }
 
