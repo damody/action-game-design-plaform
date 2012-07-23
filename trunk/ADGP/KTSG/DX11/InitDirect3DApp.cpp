@@ -622,16 +622,16 @@ void InitDirect3DApp::ReflashTowerState()
 
 void InitDirect3DApp::TestCamera()
 {
-	if (InputStateS::instance().isKeyPress(KEY_Z))
+	if (InputStateS::instance().isKeyDown(KEY_Z))
 	{
-		m_Camera->Zoom(-0.1);
+		m_Camera->Zoom(-0.01);
 		//m_Camera->SurroundX(-10);
 		//m_Camera->MoveX(-1);
 	}
-	if (InputStateS::instance().isKeyPress(KEY_X))
+	if (InputStateS::instance().isKeyDown(KEY_X))
 	{
 		//m_Camera->SurroundX(10);
-		m_Camera->Zoom(0.1); 
+		m_Camera->Zoom(0.01); 
 		//m_Camera->MoveX(1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD4))
