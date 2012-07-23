@@ -331,7 +331,7 @@ void InitDirect3DApp::LoadHero()
 	//test bg
 	LuaCell_Sptr ft = LuaCell_Sptr(new LuaCell);
 	ft->InputLuaFile("bg.lua");
-	BackGround_RawPtr tempBG = BackGround_RawPtr(new BackGround());
+	BackGround_RawPtr tempBG = new BackGround();
 	if(!tempBG->CheckDataVaild(ft)){
 		std::cout<<"BG Data Fail"<<std::endl;
 	}
