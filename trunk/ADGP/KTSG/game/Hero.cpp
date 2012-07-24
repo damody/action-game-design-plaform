@@ -69,18 +69,23 @@ void Hero::Update(float dt)
 			m_TimeTik--;
 		}
 	}
+	//物理
+	m_Position += m_Vel;
+	//m_Vel -= fs
+
 	this->UpdateDataToDraw();
 }
 
 void Hero::UpdateDataToDraw()
 {
-
+// 	m_Pic.position.x = m_Position.x - (m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX / 1280);
+// 	m_Pic.position.y = m_Position.y - (m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY / 800);
 	m_Pic.position.x = m_Position.x;
 	m_Pic.position.y = m_Position.y;
-	m_Pic.position.z = m_Position.z;
+	m_Pic.position.z = 0;
 	m_Pic.angle = m_Angle;
-	m_Pic.size.x = m_HeroInfo->m_PictureDatas[m_PicID].m_Width *1.5f;
-	m_Pic.size.y = m_HeroInfo->m_PictureDatas[m_PicID].m_Height *1.5f ;
+	m_Pic.size.x = m_HeroInfo->m_PictureDatas[m_PicID].m_Width *2.0f ;
+	m_Pic.size.y = m_HeroInfo->m_PictureDatas[m_PicID].m_Height *2.0f ;
 
 	m_Pic.picpos.x = (float)m_PicX;
 	m_Pic.picpos.y = (float)m_PicY;
@@ -121,8 +126,64 @@ void Hero::NextFrame()
 
 bool Hero::ScanKeyQue()
 {
-	//Undo
-	return false;
+	std::string nFrame;
+	int nFramID=0;
+	Vector3 dv;
+	KeyQue::iterator i=m_KeyQue.begin();
+	//決定按鍵動作
+	if(m_Action == HeroAction::STANDING){
+		while(i!=m_KeyQue.end()){
+			if(i->key == CtrlKey::UP){
+				nFrame = "walking";
+				dv.z = m_HeroInfo->m_WalkingSpeedZ;
+			}else if(i->key == CtrlKey::DOWN){
+				nFrame = "walking";
+				dv.z = m_HeroInfo->m_WalkingSpeedZ;
+			}else if(i->key == CtrlKey::LEFT){
+				nFrame = "walking";
+				dv.z = m_HeroInfo->m_WalkingSpeed;
+			}else if(i->key == CtrlKey::RIGHT){
+				nFrame = "walking";
+				dv.z = m_HeroInfo->m_WalkingSpeed;
+			}
+		}
+	}else if(m_Action == HeroAction::WALKING){
+		while(i!=m_KeyQue.end()){
+			if(i->key == CtrlKey::UP){
+				nFrame = "walking";
+				dv.z += m_HeroInfo->m_WalkingSpeedZ;
+			}else if(i->key == CtrlKey::DOWN){
+				nFrame = "walking";
+				dv.z -= m_HeroInfo->m_WalkingSpeedZ;
+			}else if(i->key == CtrlKey::LEFT){
+				nFrame = "walking";
+				dv.z -= m_HeroInfo->m_WalkingSpeed;
+			}else if(i->key == CtrlKey::RIGHT){
+				nFrame = "walking";
+				dv.z += m_HeroInfo->m_WalkingSpeed;
+			}
+		}
+	}
+	//清理佇列
+	while( !m_KeyQue.empty() && g_Time - m_KeyQue.front().time > KEYLIFE_AFTER_KEYUP ){
+		m_KeyQue.pop_front();
+	}
+	//下個影格
+	if(nFrame.empty()) return false;
+	else{
+		m_Vel += dv;
+		m_Frame = nFrame;
+		m_FrameID = nFramID;
+
+		m_PicID = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_PictureID;
+		m_PicX = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_PictureX;
+		m_PicY = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_PictureY;
+		m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
+		m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
+		m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
+		m_Action = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_HeroAction;
+		m_TimeTik = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Wait;
+	}
 }
 
 void Hero::Position( Vector3 pos )
@@ -138,6 +199,65 @@ void Hero::SetRecord( Record_Sptr r )
 void Hero::PushKey( KeyInfo k )
 {
 	m_KeyQue.push_back(k);
+	KeyQue::iterator i;
+
+	if(k.key == CtrlKey::ATK1_KEYUP){
+		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+			if(i->key == CtrlKey::ATK1){
+				m_KeyQue.erase(i);
+				break;
+			}
+		}
+	}else if(k.key == CtrlKey::ATK2_KEYUP){
+		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+			if(i->key == CtrlKey::ATK2){
+				m_KeyQue.erase(i);
+				break;
+			}
+		}
+	}else if(k.key == CtrlKey::DEF_KEYUP){
+		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+			if(i->key == CtrlKey::DEF){
+				m_KeyQue.erase(i);
+				break;
+			}
+		}
+	}else if(k.key == CtrlKey::DOWN_KEYUP){
+		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+			if(i->key == CtrlKey::DOWN){
+				m_KeyQue.erase(i);
+				break;
+			}
+		}
+	}else if(k.key == CtrlKey::JUMP_KEYUP){
+		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+			if(i->key == CtrlKey::JUMP){
+				m_KeyQue.erase(i);
+				break;
+			}
+		}
+	}else if(k.key == CtrlKey::LEFT_KEYUP){
+		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+			if(i->key == CtrlKey::LEFT){
+				m_KeyQue.erase(i);
+				break;
+			}
+		}
+	}else if(k.key == CtrlKey::RIGHT_KEYUP){
+		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+			if(i->key == CtrlKey::RIGHT){
+				m_KeyQue.erase(i);
+				break;
+			}
+		}
+	}else if(k.key == CtrlKey::UP_KEYUP){
+		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+			if(i->key == CtrlKey::UP){
+				m_KeyQue.erase(i);
+				break;
+			}
+		}
+	}
 }
 
 void Hero::SetTeam( int team )

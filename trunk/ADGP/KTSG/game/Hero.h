@@ -17,6 +17,8 @@
 #include "HeroAction.h"
 #include <string>
 
+#define KEYLIFE_AFTER_KEYUP 120
+
 struct Record
 {
 	int Kill;    //±þ¼Ä¼Æ
@@ -46,6 +48,7 @@ private:
 	int		m_PicY;
 	
 	Vector3		m_Position;
+	Vector3		m_Vel;
 	Bodys		m_Bodys;
 	float		m_Angle;
 

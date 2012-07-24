@@ -1,19 +1,13 @@
 #pragma once
 #include <string>
-#include <map>
 #include <vector>
-#include "DX11/Vertex.h"
-#include "DX11/TextureManager.h"
 #include "math/AxisAlignedBox.h"
 #include "math/Vector3.h"
 #include "Lua/LuaCell.h"
-#include "common\shared_ptr.h"
-#include "game/ColorRect.h"
 
 struct BGLayer
-{ 
+{
 	std::string	m_PicturePath;
-	int		m_PicID;
 	Vector3		m_Position;
 	float		m_Width;
 	float		m_Height;
@@ -25,7 +19,16 @@ struct BGLayer
 };
 typedef std::vector<BGLayer> BGLayers;
 
-
+struct ColorRect
+{
+	// min:0.0 ~ max:1.0, RGBA
+	Vector4		m_Color;
+	Vector3		m_Position;
+	float		m_Width;
+	float		m_Height;
+	bool		m_IsGround;
+};
+typedef std::vector<ColorRect> ColorRects;
 
 struct ParallelLight
 {
@@ -39,9 +42,8 @@ typedef std::vector<ParallelLight> ParallelLights;
 
 class BackGround
 {
-private:
-	LuaCell_Sptr	m_LuaCell;
-	float		m_Width;
+public:
+	std::string	m_Name;
 	// can move bounding
 	AxisAlignedBoxs	m_SpaceBounding;
 	// can't move bounding
@@ -49,24 +51,8 @@ private:
 	BGLayers	m_BGLayers;
 	ColorRects	m_ColorRects;
 	ParallelLights	m_ParallelLights;
-
-	int		m_TimeTik;
-	
-public:
-	BackGround():m_TimeTik(0){}
-	~BackGround(){}
-
-	std::string	 m_Name;
-	BGVerteices	 m_BGVerteices;
-	DrawVertexGroups m_DrawVertexGroups;
-
-	void Update(float dt);
-	void BuildPoint();
-
+	LuaCell_Sptr	m_LuaCell;
 	bool	CheckDataVaild(LuaCell_Sptr luadata);
 	void	LoadData(LuaCell_Sptr luadata);
-	void    Init();
 };
-SHARE_PTR(BackGround);
 
-typedef std::map<std::string,BackGround_RawPtr> BGMaps;

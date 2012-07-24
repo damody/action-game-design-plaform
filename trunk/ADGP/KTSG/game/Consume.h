@@ -10,9 +10,10 @@ struct Consume
 	int	m_HP;
 	//要消耗的 mp
 	int	m_MP;
-	//夠的話 跳到 m_EnoughFrameName 的第 m_EnoughFrame 格
+	/*夠的話 跳到 m_EnoughFrameName 的第 m_EnoughFrame 格
 	std::string	m_EnoughFrameName;
 	int		m_EnoughFrame;
+	//夠的話直接繼續執行*/
 	//不夠的話 跳到 m_NotEnoughFrameName 的第 m_NotEnoughFrame 格
 	std::string	m_NotEnoughFrameName;
 	int		m_NotEnoughFrame;

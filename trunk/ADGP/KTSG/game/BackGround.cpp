@@ -1,5 +1,5 @@
 #include "BackGround.h"
-#include "global.h"
+
 
 
 bool BackGround::CheckDataVaild( LuaCell_Sptr luadata )
@@ -102,7 +102,6 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 {
 	m_LuaCell	= luadata;
 	m_Name		= luadata->GetLua<const char*>("name");
-	m_Width		= (float)luadata->GetLua<double>("width");
 	// read space bounding
 	for (int i=1;;++i)
 	{
@@ -154,7 +153,6 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 			bgl.m_TimeLine		= luadata->GetLua<int>("layer/%d/timeline", i);
 			bgl.m_TimeStart		= luadata->GetLua<int>("layer/%d/time_start", i);
 			bgl.m_TimeEnd		= luadata->GetLua<int>("layer/%d/time_end", i);
-			bgl.m_PicID		= g_TextureManager.AddTexture(bgl.m_PicturePath);
 			m_BGLayers.push_back(bgl);
 		}
 		else
@@ -199,59 +197,4 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 		else
 			break;
 	}
-}
-
-void BackGround::Update( float dt )
-{
-	m_TimeTik++;
-}
-
-void BackGround::BuildPoint()
-{
-	m_BGVerteices.clear();
-	m_DrawVertexGroups.clear();
-	int vertexCount = 0, count = 0;
-	for(BGLayers::iterator it=m_BGLayers.begin();it != m_BGLayers.end();it++)
-	{
-		if(m_TimeTik%it->m_TimeLine < it->m_TimeStart)continue;
-		if(m_TimeTik%it->m_TimeLine > it->m_TimeEnd)  continue;
-		DrawVertexGroup dvg = {};
-		dvg.texture = g_TextureManager.GetTexture(it->m_PicID);
-		vertexCount = 0;
-		dvg.StartVertexLocation = count;
-		int d=0;
-		do 
-		{
-			BGVertex bgv;
-
-			bgv.position.x = it->m_Position.x + d*it->m_LoopDistance;
-			bgv.position.y = it->m_Position.y ;
-			bgv.position.z = it->m_Position.z;
-			bgv.size.x     = it->m_Width  ;
-			bgv.size.y     = it->m_Height ;
-			if(it->m_IsGround)
-			{
-				bgv.angle = 90;
-			}
-			else
-			{
-				bgv.angle = 0;
-			}
-			m_BGVerteices.push_back(bgv);
-			++vertexCount;
-			++count;
-			d++;
-			if(bgv.position.x = it->m_Position.x + d*it->m_LoopDistance > m_Width)
-				break;
-
-		} while (it->m_LoopDistance > 0);
-
-		dvg.VertexCount = vertexCount;
-		m_DrawVertexGroups.push_back(dvg);
-	}
-}
-
-void BackGround::Init()
-{
-	m_TimeTik = 0;
 }
