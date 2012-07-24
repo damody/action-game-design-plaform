@@ -176,6 +176,9 @@
     <ClCompile Include="DX11\Camera.cpp">
       <Filter>src\DX11</Filter>
     </ClCompile>
+    <ClCompile Include="game\BGManager.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -343,6 +346,12 @@
     <ClInclude Include="DX11\Camera.h">
       <Filter>inc\DX11</Filter>
     </ClInclude>
+    <ClInclude Include="game\BGManager.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ColorRect.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\bullet.fx">
@@ -355,6 +364,12 @@
       <Filter>shader</Filter>
     </None>
     <None Include="shader\Hero.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\Background.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\ColorRect.fx">
       <Filter>shader</Filter>
     </None>
   </ItemGroup>
