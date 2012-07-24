@@ -102,7 +102,7 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 {
 	m_LuaCell	= luadata;
 	m_Name		= luadata->GetLua<const char*>("name");
-	m_Width		= 2400;
+	m_Width		= (float)luadata->GetLua<double>("width");
 	// read space bounding
 	for (int i=1;;++i)
 	{
@@ -151,7 +151,6 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 			bgl.m_Width		= (float)luadata->GetLua<double>("layer/%d/w", i);
 			bgl.m_Height		= (float)luadata->GetLua<double>("layer/%d/h", i);
 			bgl.m_LoopDistance	= luadata->GetLua<int>("layer/%d/loop_distance", i);
-			bgl.m_LoopWidth	= luadata->GetLua<int>("layer/%d/loop_width", i);
 			bgl.m_TimeLine		= luadata->GetLua<int>("layer/%d/timeline", i);
 			bgl.m_TimeStart		= luadata->GetLua<int>("layer/%d/time_start", i);
 			bgl.m_TimeEnd		= luadata->GetLua<int>("layer/%d/time_end", i);
@@ -238,12 +237,12 @@ void BackGround::BuildPoint()
 			{
 				bgv.angle = 0;
 			}
-			bgv.width=this->m_Width;
+			bgv.width= m_Width;
 			m_BGVerteices.push_back(bgv);
 			++vertexCount;
 			++count;
 			d++;
-			if(bgv.position.x = it->m_Position.x + d*it->m_LoopDistance > it->m_LoopWidth)
+			if(bgv.position.x = it->m_Position.x + d*it->m_LoopDistance > m_Width)
 				break;
 
 		} while (it->m_LoopDistance > 0);

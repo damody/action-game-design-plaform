@@ -351,16 +351,14 @@ void InitDirect3DApp::LoadHero()
 
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
-	/*
+	
 	for(int i=0 ; i<10 ; i++){
-		for (int j=0 ; j<10 ; j++)
+		for (int j=0 ; j<200 ; j++)
 		{
-			m_Heroes.push_back(m_Player.CreateHero(Vector3(-500+j*100,0,i*100)));
+			m_Heroes.push_back(m_Player.CreateHero(Vector3(j*200,0,i*200)));
 		}
-			
-	}
-	*/
-	m_Heroes.push_back(m_Player.CreateHero(Vector3(0,0,0)));
+	}	
+	//m_Heroes.push_back(m_Player.CreateHero(Vector3(0,0,0)));
 }
 
 
