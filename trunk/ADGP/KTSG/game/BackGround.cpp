@@ -237,7 +237,6 @@ void BackGround::BuildPoint()
 			{
 				bgv.angle = 0;
 			}
-			bgv.width= m_Width;
 			m_BGVerteices.push_back(bgv);
 			++vertexCount;
 			++count;

@@ -272,6 +272,7 @@
     <ClInclude Include="game\BloodInfo.h" />
     <ClInclude Include="game\Body.h" />
     <ClInclude Include="game\CatchInfo.h" />
+    <ClInclude Include="game\ColorRect.h" />
     <ClInclude Include="game\Consume.h" />
     <ClInclude Include="game\CtrlKey.h" />
     <ClInclude Include="game\FrameInfo.h" />
@@ -323,6 +324,7 @@
   <ItemGroup>
     <None Include="shader\Background.fx" />
     <None Include="shader\bullet.fx" />
+    <None Include="shader\ColorRect.fx" />
     <None Include="shader\Hero.fx" />
     <None Include="shader\point.fx" />
     <None Include="screen.fx" />

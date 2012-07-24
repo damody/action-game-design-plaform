@@ -8,9 +8,10 @@
 #include "math/Vector3.h"
 #include "Lua/LuaCell.h"
 #include "common\shared_ptr.h"
+#include "game/ColorRect.h"
 
 struct BGLayer
-{
+{ 
 	std::string	m_PicturePath;
 	int		m_PicID;
 	Vector3		m_Position;
@@ -24,16 +25,7 @@ struct BGLayer
 };
 typedef std::vector<BGLayer> BGLayers;
 
-struct ColorRect
-{
-	// min:0.0 ~ max:1.0, RGBA
-	Vector4		m_Color;
-	Vector3		m_Position;
-	float		m_Width;
-	float		m_Height;
-	bool		m_IsGround;
-};
-typedef std::vector<ColorRect> ColorRects;
+
 
 struct ParallelLight
 {
