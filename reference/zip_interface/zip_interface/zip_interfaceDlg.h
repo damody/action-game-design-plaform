@@ -6,7 +6,37 @@
 #include "afxmenubutton.h"
 #include "afxwin.h"
 #include "ZipFolder.h"
+#include "afxcmn.h"
 
+
+
+class ZipMaping
+{
+public:
+	void NewMaping(HTREEITEM TI, ZipFolder* ZF)
+	{
+		ItemToFolder IF;
+		IF.TI = TI;
+		IF.ZF = ZF;
+		FolderList.push_back(IF);
+	}
+	ZipFolder* GetMaping(HTREEITEM TI)
+	{
+		for(int i = 0; i < FolderList.size(); i++)
+		{
+			if(FolderList[i].TI == TI) return FolderList[i].ZF;
+		}
+		return 0;
+	}
+private:
+	struct ItemToFolder
+	{
+		HTREEITEM TI;
+		ZipFolder* ZF;
+	};
+
+	std::vector<ItemToFolder> FolderList;
+};
 
 // Czip_interfaceDlg 對話方塊
 class Czip_interfaceDlg : public CDialogEx
@@ -58,20 +88,76 @@ public:
 			m_ListBoxOutput.AddString(SSt);
 		}
 	}
-	void ShowZipFolderToListBox(ZipFolder* ZF, CListBox* CB)
+	void ShowFolderDataToListBox(ZipFolder* ZF, CListBox* LB)
 	{
-		CB->ResetContent();
+		LB->ResetContent();
 		for(int i = 0; i < ZF->m_ZipDatas.size(); i++)
 		{
 			t_CS = ZF->m_ZipDatas[i]->m_Name.c_str();
-			CB->AddString(t_CS);
+			t_CS+= "\t";
+			if(ZF->m_ZipDatas[i]->IsCompressed())
+			{
+				t_CS += " true ";
+			}else
+			{
+				t_CS += " false ";
+			}
+			char buffer[11];
+			memcpy(buffer, &*(ZF->m_ZipDatas[i]->GetData().end()-11), 10);
+			buffer[10] = 0;
+			t_CS += buffer; //顯示最後一個char看看對不對...
+			LB->AddString(t_CS);
+		}
+	}
+	void ShowZipFolderToListBox(ZipFolder* ZF, CListBox* LB)
+	{
+		LB->ResetContent();
+		for(int i = 0; i < ZF->m_ZipDatas.size(); i++)
+		{
+			t_CS = ZF->m_ZipDatas[i]->m_Name.c_str();
+			LB->AddString(t_CS);
 		}
 		for(int i =0; i < ZF->m_ZipFolders.size(); i++)
 		{
 			t_CS = ZF->m_ZipFolders[i].m_Name.c_str();
 			t_CS = '+' + t_CS;
-			CB->AddString(t_CS);
+			LB->AddString(t_CS);
 		}
+	}
+	void MakeFolderTree(ZipFolder* ZF, CTreeCtrl* TC)
+	{
+		TC->DeleteAllItems();
+		HTREEITEM t_TI;
+		HTREEITEM TI = TC->InsertItem(CString(ZF->m_Name.c_str()));
+		m_ZMap.NewMaping(TI, ZF);
+		for(int i = 0; i < ZF->m_ZipFolders.size(); i++)
+		{
+			t_CS = ZF->m_ZipFolders[i].m_Name.c_str();
+			t_TI = TC->InsertItem(t_CS, TI);
+			m_ZMap.NewMaping(t_TI, &ZF->m_ZipFolders[i]);
+			MakeFolderTree(&ZF->m_ZipFolders[i], TC, &t_TI);
+		}
+		/*for(int i =0; i < ZF->m_ZipDatas.size(); i++)
+		{
+			t_CS = ZF->m_ZipDatas[i]->m_Name.c_str();
+			t_TI = TC->InsertItem(t_CS);
+		}*/
+	}
+	void MakeFolderTree(ZipFolder* ZF, CTreeCtrl* TC, HTREEITEM* TI)
+	{
+		HTREEITEM t_TI;
+		for(int i = 0; i < ZF->m_ZipFolders.size(); i++)
+		{
+			t_CS = ZF->m_ZipFolders[i].m_Name.c_str();
+			t_TI = TC->InsertItem(t_CS, *TI);
+			m_ZMap.NewMaping(t_TI, &ZF->m_ZipFolders[i]);
+			MakeFolderTree(&ZF->m_ZipFolders[i], TC, &t_TI);
+		}
+		/*for(int i =0; i < ZF->m_ZipDatas.size(); i++)
+		{
+			t_CS = ZF->m_ZipDatas[i]->m_Name.c_str();
+			TC->InsertItem(t_CS, *TI);
+		}*/
 	}
 // 程式碼實作
 protected:
@@ -96,6 +182,10 @@ public:
 	CComboBox	m_ComboBox_CompressMethod;
 
 	ZipFolder*	m_ZipFolder;
-	ZipFolder*	m_curFolder;
+	ZipFolder*	m_FocusFolder;
+
 	CString		t_CS;
+	CTreeCtrl	m_TreeCtrlFolderData;
+	ZipMaping	m_ZMap;
+//	afx_msg void OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult);
 };

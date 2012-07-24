@@ -7,7 +7,9 @@
 #include "zip_interfaceDlg.h"
 #include "afxdialogex.h"
 #include "ConvStr.h"
-
+#include <stdio.h>
+#include <io.h>
+#include <fcntl.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -54,6 +56,19 @@ Czip_interfaceDlg::Czip_interfaceDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(Czip_interfaceDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	AllocConsole();
+
+	HANDLE handle_out = GetStdHandle(STD_OUTPUT_HANDLE);
+	int hCrt = _open_osfhandle((long) handle_out, _O_TEXT);
+	FILE* hf_out = _fdopen(hCrt, "w");
+	setvbuf(hf_out, NULL, _IONBF, 1);
+	*stdout = *hf_out;
+
+	HANDLE handle_in = GetStdHandle(STD_INPUT_HANDLE);
+	hCrt = _open_osfhandle((long) handle_in, _O_TEXT);
+	FILE* hf_in = _fdopen(hCrt, "r");
+	setvbuf(hf_in, NULL, _IONBF, 128);
+	*stdin = *hf_in;
 }
 
 void Czip_interfaceDlg::DoDataExchange(CDataExchange* pDX)
@@ -62,6 +77,7 @@ void Czip_interfaceDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST1, m_ListBoxInput);
 	DDX_Control(pDX, IDC_LIST2, m_ListBoxOutput);
 	DDX_Control(pDX, IDC_COMBO1, m_ComboBox_CompressMethod);
+	DDX_Control(pDX, IDC_TREE1, m_TreeCtrlFolderData);
 }
 
 BEGIN_MESSAGE_MAP(Czip_interfaceDlg, CDialogEx)
@@ -73,6 +89,7 @@ BEGIN_MESSAGE_MAP(Czip_interfaceDlg, CDialogEx)
 	ON_COMMAND(ID_ZIPDATA_ADD, &Czip_interfaceDlg::OnZipdataAdd)
 	ON_BN_CLICKED(IDC_BUTTON2, &Czip_interfaceDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON1, &Czip_interfaceDlg::OnBnClickedButton1)
+//	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, &Czip_interfaceDlg::OnTvnSelchangedTree1)
 END_MESSAGE_MAP()
 
 
@@ -113,18 +130,45 @@ BOOL Czip_interfaceDlg::OnInitDialog()
 	SetMenu(&menu);
 	menu.Detach();
 
-	m_ComboBox_CompressMethod.AddString(L"0  NO_COMPRESS");
-	m_ComboBox_CompressMethod.AddString(L"1  BEST_SPEED");
-	m_ComboBox_CompressMethod.AddString(L"2");
-	m_ComboBox_CompressMethod.AddString(L"3");
-	m_ComboBox_CompressMethod.AddString(L"4");
-	m_ComboBox_CompressMethod.AddString(L"5");
-	m_ComboBox_CompressMethod.AddString(L"6  NORMAL");
-	m_ComboBox_CompressMethod.AddString(L"7");
-	m_ComboBox_CompressMethod.AddString(L"8");
-	m_ComboBox_CompressMethod.AddString(L"9  BEST_COMPRESSION");
-	m_ComboBox_CompressMethod.SetCurSel(1);
+	m_ComboBox_CompressMethod.AddString(L"00  NO_COMPRESS");
+	m_ComboBox_CompressMethod.AddString(L"01  BEST_SPEED");
+	m_ComboBox_CompressMethod.AddString(L"02");
+	m_ComboBox_CompressMethod.AddString(L"03");
+	m_ComboBox_CompressMethod.AddString(L"04");
+	m_ComboBox_CompressMethod.AddString(L"05");
+	m_ComboBox_CompressMethod.AddString(L"06  NORMAL");
+	m_ComboBox_CompressMethod.AddString(L"07");
+	m_ComboBox_CompressMethod.AddString(L"08");
+	m_ComboBox_CompressMethod.AddString(L"09  BEST_COMPRESSION");
+
+	m_ComboBox_CompressMethod.AddString(L"10");
+	m_ComboBox_CompressMethod.AddString(L"11 CL_ZLIB_1_BAST_SPEED");
+	m_ComboBox_CompressMethod.AddString(L"12 CL_ZLIB_2");
+	m_ComboBox_CompressMethod.AddString(L"13 CL_ZLIB_3");
+	m_ComboBox_CompressMethod.AddString(L"14 CL_ZLIB_4");
+	m_ComboBox_CompressMethod.AddString(L"15 CL_ZLIB_5");
+	m_ComboBox_CompressMethod.AddString(L"16 CL_ZLIB_6_NORMAL");
+	m_ComboBox_CompressMethod.AddString(L"17 CL_ZLIB_7");
+	m_ComboBox_CompressMethod.AddString(L"18 CL_ZLIB_8");
+	m_ComboBox_CompressMethod.AddString(L"19 CL_ZLIB_9_BEST_COMPRESSION");
+
+	m_ComboBox_CompressMethod.AddString(L"20 CL_LZMA_0_BAST_SPEED");
+	m_ComboBox_CompressMethod.AddString(L"21 CL_LZMA_1");
+	m_ComboBox_CompressMethod.AddString(L"22 CL_LZMA_2");
+	m_ComboBox_CompressMethod.AddString(L"23 CL_LZMA_3");
+	m_ComboBox_CompressMethod.AddString(L"24 CL_LZMA_4");
+	m_ComboBox_CompressMethod.AddString(L"25 CL_LZMA_5_NORMAL");
+	m_ComboBox_CompressMethod.AddString(L"26 CL_LZMA_6");
+	m_ComboBox_CompressMethod.AddString(L"27 CL_LZMA_7");
+	m_ComboBox_CompressMethod.AddString(L"28 CL_LZMA_8");
+	m_ComboBox_CompressMethod.AddString(L"29 CL_LZMA_9_BAST_COMPRESSION");
+
+	m_ComboBox_CompressMethod.AddString(L"30 CL_LZO_1x_1");
+	m_ComboBox_CompressMethod.SetCurSel(11);
 	m_ZipFolder = new ZipFolder();
+	m_FocusFolder = m_ZipFolder;
+	//HTREEITEM FQ = m_TreeCtrlFolderData.InsertItem(L"FQ");
+	//m_TreeCtrlFolderData.InsertItem(L"Fuuck", FQ);
 	return TRUE;  // 傳回 TRUE，除非您對控制項設定焦點
 }
 
@@ -215,7 +259,9 @@ void Czip_interfaceDlg::OnFileLoad()
 		{
 			m_ZipFolder = new ZipFolder();
 			m_ZipFolder->ReadFromDisk(ConvStr::GetStr(filename.GetString()));
-			ShowZipFolderToListBox(m_ZipFolder, &m_ListBoxInput);
+			ShowFolderDataToListBox(m_ZipFolder, &m_ListBoxInput);
+			
+			MakeFolderTree(m_ZipFolder, &m_TreeCtrlFolderData);
 		}
 	}
 }
@@ -237,7 +283,8 @@ void Czip_interfaceDlg::OnZipdataAdd()
 		{
 			m_ZipFolder->AddZipDataFromDisk(ConvStr::GetStr(filename.GetString()));
 			//m_ListBoxInput.AddString(CString(m_ZipFolder->m_ZipDatas.back()->m_Name.c_str()));
-			ShowZipFolderToListBox(m_ZipFolder, &m_ListBoxInput);
+			//ShowZipFolderToListBox(m_ZipFolder, &m_ListBoxInput);
+			ShowFolderDataToListBox(m_ZipFolder, &m_ListBoxInput);
 		}
 	}
 }
@@ -249,7 +296,8 @@ void Czip_interfaceDlg::OnBnClickedButton1()
 	{
 		m_ZipFolder->m_ZipDatas[i]->CompressData(CompressLevel(m_ComboBox_CompressMethod.GetCurSel()));
 	}
-	SeeListBox2();
+	//SeeListBox2();
+	ShowFolderDataToListBox(m_ZipFolder, &m_ListBoxInput);
 }
 
 void Czip_interfaceDlg::OnBnClickedButton2()
@@ -259,9 +307,22 @@ void Czip_interfaceDlg::OnBnClickedButton2()
 	{
 		m_ZipFolder->m_ZipDatas[i]->UncompressData();
 	}
-	SeeListBox1();
-	ZipFolder ZF;
-	ZF.m_Name = "Info";
-	m_ZipFolder->m_ZipFolders.push_back(ZF);
+	ShowFolderDataToListBox(m_ZipFolder, &m_ListBoxInput);
+	//m_FocusFolder = m_ZMap.GetMaping(m_TreeCtrlFolderData.GetSelectedItem());
+	//m_FocusFolder->m_ZipFolders.push_back(ZipFolder());
+	//SeeListBox1();
+	//m_ZipFolder->m_ZipFolders[0].AddZipDataFromDisk("ConvStr.h");
+	/*ZipFolder ZF;
+	ZF.m_Name = "Texture";
+	m_ZipFolder->m_ZipFolders.push_back(ZF);*/
 }
 
+
+
+//void Czip_interfaceDlg::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
+//{
+//	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+//	// TODO: 在此加入控制項告知處理常式程式碼
+//
+//	*pResult = 0;
+//}

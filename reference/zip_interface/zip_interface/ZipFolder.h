@@ -19,10 +19,15 @@ public:
 	bool	ReadFromDisk(const std::string& path);
 	bool	ReadFromDisk(const std::wstring& path);
 	inline int	GetTotalSize(){return m_TotalSize;}
+	ZipData*	GetData(const std::string& path);
+	ZipData*	GetData(const std::wstring& path);
 public:
 	std::string	m_Name;		 // ZipFolder name
 	ZipData_ptrs	m_ZipDatas;
 	ZipFolders	m_ZipFolders;
+protected:
+	ZipData*	FindData(const std::string& name);
+	ZipFolder*	FindFolder(const std::string& name);
 private:
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -31,11 +36,9 @@ private:
 		ar & m_Name;
 		ar & m_ZipDatas;
 		ar & m_ZipFolders;
-		ar & m_PerFolder;
 		ar & m_TotalSize;
 	}
-	ZipFolder* m_PerFolder;
-	int	   m_TotalSize;
+	int	m_TotalSize;
 };
 
 #endif // _ZipFolder_H_
