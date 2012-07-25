@@ -31,12 +31,8 @@ struct GS_OUT
 VS_OUT VS(VS_IN vIn)
 {
 	VS_OUT vOut;
-	
-	float thita = -cPolarCoord.y *3.14159/180;
-	float alpha = -cPolarCoord.z *3.14159/180;
 
-	vIn.position= float4(vIn.position.xy-cLookAt.xy,vIn.position.z,1.0);	
-	vOut.pos =float4(vIn.position.xyz,1.0) ;
+	vOut.pos= float4(vIn.position.xy-cLookAt.xy,vIn.position.z,1.0);
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
 	vOut.color = vIn.color;
@@ -79,7 +75,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	triStream.Append( out5 );
 	
 	//1
-	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(0,0,0), mat)),view),1);
+	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(0,0,0),mat)),view),1);
 	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z *= zDepth;
 	out5.posH.xyz /= 1+cPolarCoord.x;
@@ -89,7 +85,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	triStream.Append( out5 );
 
 	//2
-	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,-input[0].size.y,0), mat)),view),1);
+	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,-input[0].size.y,0),mat)),view),1);
 	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z *= zDepth;
 	out5.posH.xyz /= 1+cPolarCoord.x;

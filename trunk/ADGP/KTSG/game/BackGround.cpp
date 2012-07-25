@@ -211,25 +211,34 @@ void BackGround::BuildPoint()
 	m_CRVerteices.clear();
 	for (ColorRects::iterator it=m_ColorRects.begin();it != m_ColorRects.end();it++)
 	{
-		CRVertex crv;
-		crv.position.x = it->m_Position.x;
-		crv.position.y = it->m_Position.y;
-		crv.position.z = it->m_Position.z;
-		crv.size.x = it->m_Width;
-		crv.size.y = it->m_Height;
-		crv.color.x = it->m_Color.x;
-		crv.color.y = it->m_Color.y;
-		crv.color.z = it->m_Color.z;
-		crv.color.w = it->m_Color.w;
-		if(it->m_IsGround)
+		int i=0;
+		for (float w=it->m_Width; w>0 ;w-=1000,i++)
 		{
-			crv.angle = 90;
+			CRVertex crv;
+			crv.position.x = it->m_Position.x + i*1000;
+			crv.position.y = it->m_Position.y;
+			crv.position.z = it->m_Position.z;
+			if (w-1000 > 0){
+				crv.size.x = 1000;
+			}else{
+				crv.size.x = w;
+			}
+
+			crv.size.y = it->m_Height;
+			crv.color.x = it->m_Color.x;
+			crv.color.y = it->m_Color.y;
+			crv.color.z = it->m_Color.z;
+			crv.color.w = it->m_Color.w;
+			if(it->m_IsGround)
+			{
+				crv.angle = 90;
+			}
+			else
+			{
+				crv.angle = 0;
+			}
+			m_CRVerteices.push_back(crv);
 		}
-		else
-		{
-			crv.angle = 0;
-		}
-		m_CRVerteices.push_back(crv);
 	}
 
 	m_BGVerteices.clear();

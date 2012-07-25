@@ -37,12 +37,8 @@ struct GS_OUT
 VS_OUT VS(VS_IN vIn)
 {
 	VS_OUT vOut;
-	
-	float thita = -cPolarCoord.y *3.14159/180;
-	float alpha = -cPolarCoord.z *3.14159/180;
 
-	vIn.position= float4(vIn.position.xy-cLookAt.xy,vIn.position.z,1.0);	
-	vOut.pos =float4(vIn.position.xyz,1.0) ;
+	vOut.pos= float4(vIn.position.xy-cLookAt.xy,vIn.position.z,1.0);
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
 	return vOut;
@@ -63,7 +59,6 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	mat[2]=float3(   0 	, -sin(x)  ,  cos(x) );
 	
 	float3x3 view;
-	
 	view[0]=float3(cos(thita) 	, -sin(thita) * -sin(alpha)  , -sin(thita) * cos(alpha) );
 	view[1]=float3(	0			,  cos(alpha) 				 ,  sin(alpha)	             );
 	view[2]=float3(sin(thita) 	,  cos(thita) * -sin(alpha) ,  cos(thita) * cos(alpha) );
