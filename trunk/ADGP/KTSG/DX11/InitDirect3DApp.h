@@ -95,7 +95,18 @@ private:
 	ID3DX11EffectScalarVariable* m_Background_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Background;
 
-	
+	CRVerteices m_CRVerteices;
+
+	ID3D11Buffer* m_Buffer_ColorRect;
+	ID3DX11Effect* m_Effect_ColorRect;
+	ID3DX11EffectTechnique* m_PTech_ColorRect;
+	ID3D11InputLayout* m_PLayout_ColorRect;
+	ID3DX11EffectVariable *m_ColorRect_cLootAt;
+	ID3DX11EffectVariable *m_ColorRect_cPos;
+	ID3DX11EffectScalarVariable* m_ColorRect_Width;
+	ID3DX11EffectScalarVariable* m_ColorRect_Height;
+
+
 	int			m_SettingKeyID;		//目前要設定的按鍵的id
 	int			m_SettingKeyTextID;	//目前要設定的按鍵的text物件的id
 	int			m_GameProcess;		//遊戲流程,表示目前執行的畫面

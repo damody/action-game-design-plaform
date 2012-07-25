@@ -6,7 +6,6 @@ cbuffer cbPerFrame
 	float3 cPolarCoord;
 };
  
-Texture2D gMap;
 SamplerState gTriLinearSam
 {
 	Filter = MIN_MAG_MIP_LINEAR;
@@ -47,7 +46,7 @@ VS_OUT VS(VS_IN vIn)
 	vOut.pos =float4(vIn.position.xyz,1.0) ;
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
-	vOut.color = vIn.color
+	vOut.color = vIn.color;
 	return vOut;
 }
 
@@ -141,7 +140,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 
 float4 PS(GS_OUT pIn) : SV_Target
 {
-	float4 color=gMap.Sample( gTriLinearSam, pIn.texcoord );
+	float4 color=pIn.color;
 	if (color.a<0.5)
 		discard;
 	return color;

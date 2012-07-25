@@ -18,7 +18,7 @@ layer =
 	{picture_path="bg\\ft\\w3.bmp", ground=0, x=0, y=0,  z=2000, w=288, h=60, loop_distance=288, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\g1.bmp", ground=1, x=0, y=0,  z=2000, w=324, h=118, loop_distance=162, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\g2.bmp", ground=1, x=0, y=0,  z=1882, w=280, h=22, loop_distance=140, timeline=1, time_start=0, time_end=0},
-	{picture_path="bg\\ft\\g5.bmp", ground=1, x=0, y=0,  z=1860, w=280, h=1794, loop_distance=140, timeline=1, time_start=0, time_end=0},
+	--{picture_path="bg\\ft\\g5.bmp", ground=1, x=0, y=0,  z=1860, w=280, h=1794, loop_distance=140, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\g3.bmp", ground=1, x=0, y=0,   z=66, w=280, h=24, loop_distance=140, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\g4.bmp", ground=1, x=0, y=0,   z=42, w=256, h=42, loop_distance=128, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\c1.bmp", ground=0, x=6, y=38,  z=1900, w=108, h=268, loop_distance=648, timeline=1, time_start=0, time_end=0},
@@ -41,7 +41,7 @@ layer =
 
 color_rect =
 {
-	{r=1.0, g=0, b=0, a=0.1, ground=0, x=0, y=106, z=3000, w=800, h=177},
+	{r=1.0, g=0, b=0, a=1, ground=1, x=0, y=0, z=1860, w=280, h=1794},
 }
 
 parallel_light = {

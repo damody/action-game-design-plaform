@@ -22,7 +22,7 @@ struct DXVertex
 	float angle;
 };
 typedef std::vector<DXVertex> DXVertexs;
-// Vertex format
+//Hero Vertex format
 struct ClipVertex
 {
 	D3DXVECTOR3 position;
@@ -48,7 +48,7 @@ struct CRVertex
 	float angle;
 	D3DXVECTOR4 color;
 };
-typedef std::vector<BGVertex> BGVerteices;
+typedef std::vector<CRVertex> CRVerteices;
 
 
 // 
