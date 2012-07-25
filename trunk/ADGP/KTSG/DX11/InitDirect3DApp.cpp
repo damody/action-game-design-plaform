@@ -57,8 +57,6 @@ void InitDirect3DApp::UpdateScene(float dt)
 	TestCamera();
 	UpdateCamera();
 	
-
-	
 	static float timp_count = 0;
 	timp_count+=dt;
 	if (timp_count > 1/60.0f)
@@ -122,7 +120,7 @@ void InitDirect3DApp::DrawScene()
 	m_DeviceContext->IASetInputLayout(m_PLayout_ColorRect);
 	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_ColorRect, &stride2, &offset);
 	m_PTech_ColorRect->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-	m_DeviceContext->Draw(0,m_CRVerteices.size());
+	m_DeviceContext->Draw((UINT)m_CRVerteices.size(),0);
 	
 
 	//Draw Background
@@ -241,13 +239,10 @@ void InitDirect3DApp::buildPointFX()
 	m_PTech_ColorRect->GetPassByIndex(0)->GetDesc(&PassDescCR);
 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_CRVertex, 4, PassDescCR.pIAInputSignature,PassDescCR.IAInputSignatureSize, &m_PLayout_ColorRect));
 
-
-
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_vbd.CPUAccessFlags = 0;
 	m_vbd.MiscFlags = 0;
-
 }
 
 
@@ -264,19 +259,21 @@ void InitDirect3DApp::buildPoint()
 	}
 
 	//set color rect
-	
-
 	m_CRVerteices.clear();
 	if(m_Background != NULL)
 	{
 		m_CRVerteices.assign(m_Background->m_CRVerteices.begin(),m_Background->m_CRVerteices.end());
 	}
-	m_vbd.ByteWidth = (UINT)(sizeof(CRVertex) * m_CRVerteices.size());
-	m_vbd.StructureByteStride=sizeof(CRVertex);
-	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = &m_CRVerteices[0];
-	HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_ColorRect));
 
+	if(!m_CRVerteices.empty())
+	{
+		m_vbd.ByteWidth = (UINT)(sizeof(CRVertex) * m_CRVerteices.size());
+		m_vbd.StructureByteStride=sizeof(CRVertex);
+		D3D11_SUBRESOURCE_DATA vinitData;
+		vinitData.pSysMem = &m_CRVerteices[0];
+		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_ColorRect));
+	}
+	
 	// set background
 	if(m_Background != NULL){
 		m_vbd.ByteWidth = (UINT)(sizeof(BGVertex) * m_Background->m_BGVerteices.size());
