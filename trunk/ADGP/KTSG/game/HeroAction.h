@@ -1,7 +1,8 @@
 #pragma once
 
 //必要的基本動作定義
-enum HeroAction
+namespace HeroAction{
+enum e
 {
 	//站立
 	STANDING,
@@ -74,7 +75,7 @@ enum HeroAction
 	//跌倒
 	FALLING,
 	//跳
-	JUMP,
+	JUMP = 210,
 	//蹲
 	CROUCH,
 	//受傷
@@ -88,3 +89,5 @@ enum HeroAction
 	//基本動作結束值
 	BASIC_ACTION_END
 };
+};
+

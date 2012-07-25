@@ -10,3 +10,5 @@ extern BGManager      g_BGManger;
 extern BallptrManager g_BallptrManager;
 extern BallptrManager g_EnemyBallptrManager;
 extern ID3D11Device*  g_d3dDevice;
+
+extern int g_Time;

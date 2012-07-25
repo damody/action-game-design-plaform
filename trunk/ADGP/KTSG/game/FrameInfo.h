@@ -15,7 +15,7 @@
 struct FrameInfo
 {
 	//°Ê§@ª¬ºA
-	HeroAction	m_HeroAction;
+	HeroAction::e	m_HeroAction;
 	//Frame Name
 	std::string	m_FrameName;
 	//Frame index of action

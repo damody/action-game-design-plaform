@@ -16,32 +16,32 @@ Player::~Player()
 
 }
 
-void Player::SetCtrlKey(int index,KeyInfo::CtrlKey key )
+void Player::SetCtrlKey(int index,CtrlKey::e key )
 {
 	switch(key)
 	{
-	case KeyInfo::CtrlKey::UP :
+	case CtrlKey::UP :
 			m_KeyCode[0]=index;
 			break;
-	case KeyInfo::CtrlKey::DOWN :
+	case CtrlKey::DOWN :
 			m_KeyCode[1]=index;
 			break;
-	case KeyInfo::CtrlKey::RIGHT :
+	case CtrlKey::RIGHT :
 			m_KeyCode[2]=index;
 			break;
-	case KeyInfo::CtrlKey::LEFT :
+	case CtrlKey::LEFT :
 			m_KeyCode[3]=index;
 			break;
-	case KeyInfo::CtrlKey::DEF :
+	case CtrlKey::DEF :
 			m_KeyCode[4]=index;
 			break;
-	case KeyInfo::CtrlKey::JUMP :
+	case CtrlKey::JUMP :
 			m_KeyCode[5]=index;
 			break;
-	case KeyInfo::CtrlKey::ATK1 :
+	case CtrlKey::ATK1 :
 			m_KeyCode[6]=index;
 			break;
-	case KeyInfo::CtrlKey::ATK2 :
+	case CtrlKey::ATK2 :
 			m_KeyCode[7]=index;
 			break;
 	}
@@ -72,14 +72,14 @@ void Player::UpdateInput()
 			KeyInfo keyInfo = {};
 			if (InputStateS::instance().isKeyDown(m_KeyCode[k]))
 			{
-				keyInfo.key = (KeyInfo::CtrlKey)k;
+				keyInfo.key = (CtrlKey::e)k;
 				std::cout<<"Ctrl Key:"<< test[k] <<std::endl;
 				m_Hero->PushKey(keyInfo);
 			}
 
 			if (InputStateS::instance().isKeyUp(m_KeyCode[k]))
 			{
-				keyInfo.key = (KeyInfo::CtrlKey)(k+KEYUP);
+				keyInfo.key = (CtrlKey::e)(k+KEYUP);
 				m_Hero->PushKey(keyInfo);
 			}
 		}

@@ -131,7 +131,7 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 			newData.m_PictureID	= luadata->GetLua<int>("frame/%s/%d/pic_id", frameName, frameCount);
 			newData.m_PictureX	= luadata->GetLua<int>("frame/%s/%d/pic_x", frameName, frameCount);
 			newData.m_PictureY	= luadata->GetLua<int>("frame/%s/%d/pic_y", frameName, frameCount);
-			newData.m_HeroAction	= (HeroAction)luadata->GetLua<int>("frame/%s/%d/state", frameName, frameCount);
+			newData.m_HeroAction	= (HeroAction::e)luadata->GetLua<int>("frame/%s/%d/state", frameName, frameCount);
 			newData.m_Wait		= luadata->GetLua<int>("frame/%s/%d/wait", frameName, frameCount);
 			newData.m_NextFrameName	= luadata->GetLua<const char*>("frame/%s/%d/next/1", frameName, frameCount);
 			newData.m_NextFrameIndex= luadata->GetLua<int>("frame/%s/%d/next/2", frameName, frameCount);
