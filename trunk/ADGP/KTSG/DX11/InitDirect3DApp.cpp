@@ -61,6 +61,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 	timp_count+=dt;
 	if (timp_count > 1/60.0f)
 	{
+		g_Time++;
 		//Hero Update
 		for(std::vector<Hero_RawPtr>::iterator it = m_Heroes.begin();it != m_Heroes.end(); it++)
 		{

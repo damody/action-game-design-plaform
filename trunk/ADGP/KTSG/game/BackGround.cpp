@@ -203,8 +203,7 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 
 void BackGround::Update( float dt )
 {
-	m_TimeTik++;
-	g_Time = m_TimeTik;
+	
 }
 
 void BackGround::BuildPoint()
@@ -238,8 +237,8 @@ void BackGround::BuildPoint()
 	int vertexCount = 0, count = 0;
 	for(BGLayers::iterator it=m_BGLayers.begin();it != m_BGLayers.end();it++)
 	{
-		if(m_TimeTik%it->m_TimeLine < it->m_TimeStart)continue;
-		if(m_TimeTik%it->m_TimeLine > it->m_TimeEnd)  continue;
+		if(g_Time%it->m_TimeLine < it->m_TimeStart)continue;
+		if(g_Time%it->m_TimeLine > it->m_TimeEnd)  continue;
 		DrawVertexGroup dvg = {};
 		dvg.texture = g_TextureManager.GetTexture(it->m_PicID);
 		vertexCount = 0;
