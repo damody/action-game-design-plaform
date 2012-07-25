@@ -118,12 +118,11 @@ void InitDirect3DApp::DrawScene()
 	//Draw Color Rect
 	UINT offset = 0;
 	UINT stride2 = sizeof(CRVertex);
-	
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	m_DeviceContext->IASetInputLayout(m_PLayout_ColorRect);
 	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_ColorRect, &stride2, &offset);
 	m_PTech_ColorRect->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-	m_DeviceContext->Draw(0, m_CRVerteices.size());
+	m_DeviceContext->Draw(0,m_CRVerteices.size());
 	
 
 	//Draw Background
@@ -216,7 +215,7 @@ void InitDirect3DApp::buildPointFX()
 
 	D3DX11_PASS_DESC PassDescBG;
 	m_PTech_Background->GetPassByIndex(0)->GetDesc(&PassDescBG);
-	HR(m_d3dDevice->CreateInputLayout(VertexDesc_BGVertex, 4, PassDescBG.pIAInputSignature,PassDescBG.IAInputSignatureSize, &m_PLayout_Background));
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_BGVertex, 3, PassDescBG.pIAInputSignature,PassDescBG.IAInputSignatureSize, &m_PLayout_Background));
 
 	//color rect
 	hr = 0;
@@ -238,8 +237,9 @@ void InitDirect3DApp::buildPointFX()
 	m_ColorRect_cLootAt = m_Effect_ColorRect->GetVariableByName("cLookAt");
 	m_ColorRect_cPos = m_Effect_ColorRect->GetVariableByName("cPolarCoord");
 
-	m_PTech_ColorRect->GetPassByIndex(0)->GetDesc(&PassDesc);
-	HR(m_d3dDevice->CreateInputLayout(VertexDesc_HeroVertex, 4, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_ColorRect));
+	D3DX11_PASS_DESC PassDescCR;
+	m_PTech_ColorRect->GetPassByIndex(0)->GetDesc(&PassDescCR);
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_CRVertex, 4, PassDescCR.pIAInputSignature,PassDescCR.IAInputSignatureSize, &m_PLayout_ColorRect));
 
 
 
