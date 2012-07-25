@@ -25,7 +25,7 @@ Hero::Hero()
 
 }
 
-Hero::Hero( std::string h ):hero(h),m_Position(Vector3()),m_Team(0)
+Hero::Hero( std::string h ):hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(false)
 {
 	m_HeroInfo = g_HeroInfoMG.GetHeroInfo(hero);
 	if(m_HeroInfo.get())
@@ -71,16 +71,24 @@ void Hero::Update(float dt)
 	}
 	//ª«²z
 	m_Position += m_Vel;
+
+	float sign = m_Vel.x/abs(m_Vel.x);
+	m_Vel.x = abs(m_Vel.x);
 	m_Vel.x -= FRICTION;
 	if(m_Vel.x < 0) m_Vel.x = 0;
+	else m_Vel.x *= sign;
+
+	sign = m_Vel.y/abs(m_Vel.y);
+	m_Vel.y = abs(m_Vel.y);
 	m_Vel.y -= FRICTION;
 	if(m_Vel.y < 0) m_Vel.y = 0;
+	else m_Vel.y *= sign;
+
+	sign = m_Vel.z/abs(m_Vel.z);
+	m_Vel.z = abs(m_Vel.z);
 	m_Vel.z -= FRICTION;
 	if(m_Vel.z < 0) m_Vel.z = 0;
-
-	if(m_Action == HeroAction::WALKING){
-		printf("WALKING %d\n",m_FrameID);
-	}
+	else m_Vel.z *= sign;
 
 	this->UpdateDataToDraw();
 }
@@ -120,17 +128,19 @@ int Hero::GetTextureID()
 
 void Hero::NextFrame()
 {
-	m_Frame = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_NextFrameName;
-	m_FrameID = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_NextFrameIndex;
+	std::string tFrame = m_Frame;
+	int tFrameID = m_FrameID;
+	m_Frame = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_NextFrameName;
+	m_FrameID = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_NextFrameIndex;
 
-	m_PicID = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_PictureID;
-	m_PicX = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_PictureX;
-	m_PicY = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_PictureY;
+	m_PicID = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_PictureID;
+	m_PicX = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_PictureX;
+	m_PicY = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_PictureY;
 	m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
 	m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
 	m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
-	m_Action = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_HeroAction;
-	m_TimeTik = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Wait;
+	m_Action = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_HeroAction;
+	m_TimeTik = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_Wait;
 }
 
 bool Hero::ScanKeyQue()
@@ -154,13 +164,13 @@ bool Hero::ScanKeyQue()
 			{
 				printf("Scand keydown\n");
 				nFrame = "walking";
-				dv.z = m_HeroInfo->m_WalkingSpeedZ;
+				dv.z = -m_HeroInfo->m_WalkingSpeedZ;
 			}
 			else if(i->key == CtrlKey::LEFT)
 			{
 				printf("Scand keyleft\n");
 				nFrame = "walking";
-				dv.x = m_HeroInfo->m_WalkingSpeed;
+				dv.x = -m_HeroInfo->m_WalkingSpeed;
 			}
 			else if(i->key == CtrlKey::RIGHT)
 			{
@@ -173,7 +183,7 @@ bool Hero::ScanKeyQue()
 	}
 	else if(m_Action == HeroAction::WALKING )
 	{
-		if(m_TimeTik < 5){
+		if(m_TimeTik < 15){
 			while(i!=m_KeyQue.end()){
 				if(i->key == CtrlKey::UP)
 				{
