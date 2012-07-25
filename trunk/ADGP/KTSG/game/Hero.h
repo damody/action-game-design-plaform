@@ -18,6 +18,7 @@
 #include <string>
 
 #define KEYLIFE_AFTER_KEYUP 120
+#define FRICTION 0.5
 
 struct Record
 {

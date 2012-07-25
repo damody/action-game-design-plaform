@@ -40,7 +40,7 @@ frame =
 
 frame.default[0] =
 {
-   pic_id = 0, pic_x = 1, pic_y = 1, state = Action.Standing, wait = 75, next = {"standing", 0},
+   pic_id = 0, pic_x = 1, pic_y = 1, state = Action.Standing, wait = 45, next = {"standing", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},

@@ -204,6 +204,7 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 void BackGround::Update( float dt )
 {
 	m_TimeTik++;
+	g_Time = m_TimeTik;
 }
 
 void BackGround::BuildPoint()

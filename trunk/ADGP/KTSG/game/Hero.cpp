@@ -71,7 +71,16 @@ void Hero::Update(float dt)
 	}
 	//物理
 	m_Position += m_Vel;
-	//m_Vel -= fs
+	m_Vel.x -= FRICTION;
+	if(m_Vel.x < 0) m_Vel.x = 0;
+	m_Vel.y -= FRICTION;
+	if(m_Vel.y < 0) m_Vel.y = 0;
+	m_Vel.z -= FRICTION;
+	if(m_Vel.z < 0) m_Vel.z = 0;
+
+	if(m_Action == HeroAction::WALKING){
+		printf("WALKING %d\n",m_FrameID);
+	}
 
 	this->UpdateDataToDraw();
 }
@@ -134,39 +143,62 @@ bool Hero::ScanKeyQue()
 	if(m_Action == HeroAction::STANDING){
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::UP){
+				printf("Scand keyup\n");
 				nFrame = "walking";
 				dv.z = m_HeroInfo->m_WalkingSpeedZ;
 			}else if(i->key == CtrlKey::DOWN){
+				printf("Scand keydown\n");
 				nFrame = "walking";
 				dv.z = m_HeroInfo->m_WalkingSpeedZ;
 			}else if(i->key == CtrlKey::LEFT){
+				printf("Scand keyleft\n");
 				nFrame = "walking";
-				dv.z = m_HeroInfo->m_WalkingSpeed;
+				dv.x = m_HeroInfo->m_WalkingSpeed;
 			}else if(i->key == CtrlKey::RIGHT){
+				printf("Scand keyright\n");
 				nFrame = "walking";
-				dv.z = m_HeroInfo->m_WalkingSpeed;
+				dv.x = m_HeroInfo->m_WalkingSpeed;
+			}
+			i++;
+		}
+	}else if(m_Action == HeroAction::WALKING ){
+		if(m_TimeTik < 5){
+			while(i!=m_KeyQue.end()){
+				if(i->key == CtrlKey::UP){
+					printf("Scand keyup\n");
+					nFrame = "walking";
+					dv.z += m_HeroInfo->m_WalkingSpeedZ;
+				}else if(i->key == CtrlKey::DOWN){
+					printf("Scand keydown\n");
+					nFrame = "walking";
+					dv.z -= m_HeroInfo->m_WalkingSpeedZ;
+				}else if(i->key == CtrlKey::LEFT){
+					printf("Scand keyleft\n");
+					nFrame = "walking";
+					dv.x -= m_HeroInfo->m_WalkingSpeed;
+				}else if(i->key == CtrlKey::RIGHT){
+					printf("Scand keyright\n");
+					nFrame = "walking";
+					dv.x += m_HeroInfo->m_WalkingSpeed;
+				}
+				i++;
 			}
 		}
-	}else if(m_Action == HeroAction::WALKING){
-		while(i!=m_KeyQue.end()){
-			if(i->key == CtrlKey::UP){
-				nFrame = "walking";
-				dv.z += m_HeroInfo->m_WalkingSpeedZ;
-			}else if(i->key == CtrlKey::DOWN){
-				nFrame = "walking";
-				dv.z -= m_HeroInfo->m_WalkingSpeedZ;
-			}else if(i->key == CtrlKey::LEFT){
-				nFrame = "walking";
-				dv.z -= m_HeroInfo->m_WalkingSpeed;
-			}else if(i->key == CtrlKey::RIGHT){
-				nFrame = "walking";
-				dv.z += m_HeroInfo->m_WalkingSpeed;
-			}
-		}
+		if(!nFrame.empty() ){
+			//printf("size:%d\n",m_HeroInfo->m_FramesMap[nFrame].size());
+			nFramID = (m_FrameID+1) % (m_HeroInfo->m_FramesMap[nFrame].size());
+			/*if(nFramID == 1) printf("1\n");
+			else if(nFramID == 2) printf("2\n");
+			else if(nFramID == 3) printf("3\n");
+			else if(nFramID > 3) printf(">3\n");//*/
+		}else nFrame.clear();
 	}
 	//清理佇列
-	while( !m_KeyQue.empty() && g_Time - m_KeyQue.front().time > KEYLIFE_AFTER_KEYUP ){
-		m_KeyQue.pop_front();
+	i=m_KeyQue.begin();
+	while( i != m_KeyQue.end()){
+		if( i->key > CtrlKey::ATK2 && g_Time - i->time > KEYLIFE_AFTER_KEYUP){
+			i = m_KeyQue.erase(i);
+		}else i++;
 	}
 	//下個影格
 	if(nFrame.empty()) return false;
@@ -202,6 +234,7 @@ void Hero::PushKey( KeyInfo k )
 	KeyQue::iterator i;
 
 	if(k.key == CtrlKey::ATK1_KEYUP){
+		printf("ATK1_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::ATK1){
 				m_KeyQue.erase(i);
@@ -209,6 +242,7 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 	}else if(k.key == CtrlKey::ATK2_KEYUP){
+		printf("ATK2_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::ATK2){
 				m_KeyQue.erase(i);
@@ -216,6 +250,7 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 	}else if(k.key == CtrlKey::DEF_KEYUP){
+		printf("DEF_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::DEF){
 				m_KeyQue.erase(i);
@@ -223,6 +258,7 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 	}else if(k.key == CtrlKey::DOWN_KEYUP){
+		printf("DOWN_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::DOWN){
 				m_KeyQue.erase(i);
@@ -230,6 +266,7 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 	}else if(k.key == CtrlKey::JUMP_KEYUP){
+		printf("JUMP_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::JUMP){
 				m_KeyQue.erase(i);
@@ -237,6 +274,7 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 	}else if(k.key == CtrlKey::LEFT_KEYUP){
+		printf("LEFT_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::LEFT){
 				m_KeyQue.erase(i);
@@ -244,6 +282,7 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 	}else if(k.key == CtrlKey::RIGHT_KEYUP){
+		printf("RIGHT_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::RIGHT){
 				m_KeyQue.erase(i);
@@ -251,6 +290,7 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 	}else if(k.key == CtrlKey::UP_KEYUP){
+		printf("UP_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::UP){
 				m_KeyQue.erase(i);

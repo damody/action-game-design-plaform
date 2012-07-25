@@ -75,7 +75,7 @@ enum e
 	//¶^­Ë
 	FALLING,
 	//¸õ
-	JUMP = 210,
+	JUMP,
 	//ÃÛ
 	CROUCH,
 	//¨ü¶Ë
