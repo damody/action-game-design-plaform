@@ -25,7 +25,7 @@ Hero::Hero()
 
 }
 
-Hero::Hero( std::string h ):hero(h),m_Position(Vector3()),m_Team(0)
+Hero::Hero( std::string h ):hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(false)
 {
 	m_HeroInfo = g_HeroInfoMG.GetHeroInfo(hero);
 	if(m_HeroInfo.get())
@@ -71,12 +71,24 @@ void Hero::Update(float dt)
 	}
 	//ª«²z
 	m_Position += m_Vel;
+
+	float sign = m_Vel.x/abs(m_Vel.x);
+	m_Vel.x = abs(m_Vel.x);
 	m_Vel.x -= FRICTION;
 	if(m_Vel.x < 0) m_Vel.x = 0;
+	else m_Vel.x *= sign;
+
+	sign = m_Vel.y/abs(m_Vel.y);
+	m_Vel.y = abs(m_Vel.y);
 	m_Vel.y -= FRICTION;
 	if(m_Vel.y < 0) m_Vel.y = 0;
+	else m_Vel.y *= sign;
+
+	sign = m_Vel.z/abs(m_Vel.z);
+	m_Vel.z = abs(m_Vel.z);
 	m_Vel.z -= FRICTION;
 	if(m_Vel.z < 0) m_Vel.z = 0;
+	else m_Vel.z *= sign;
 
 	this->UpdateDataToDraw();
 }
@@ -152,13 +164,13 @@ bool Hero::ScanKeyQue()
 			{
 				printf("Scand keydown\n");
 				nFrame = "walking";
-				dv.z = m_HeroInfo->m_WalkingSpeedZ;
+				dv.z = -m_HeroInfo->m_WalkingSpeedZ;
 			}
 			else if(i->key == CtrlKey::LEFT)
 			{
 				printf("Scand keyleft\n");
 				nFrame = "walking";
-				dv.x = m_HeroInfo->m_WalkingSpeed;
+				dv.x = -m_HeroInfo->m_WalkingSpeed;
 			}
 			else if(i->key == CtrlKey::RIGHT)
 			{
@@ -171,7 +183,7 @@ bool Hero::ScanKeyQue()
 	}
 	else if(m_Action == HeroAction::WALKING )
 	{
-		if(m_TimeTik < 5){
+		if(m_TimeTik < 15){
 			while(i!=m_KeyQue.end()){
 				if(i->key == CtrlKey::UP)
 				{

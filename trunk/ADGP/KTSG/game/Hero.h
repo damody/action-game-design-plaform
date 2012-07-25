@@ -16,9 +16,10 @@
 #include "HeroInfo.h"
 #include "HeroAction.h"
 #include <string>
+#include <cmath>
 
 #define KEYLIFE_AFTER_KEYUP 120
-#define FRICTION 0.5
+#define FRICTION 0.2f
 
 struct Record
 {
@@ -52,6 +53,7 @@ private:
 	Vector3		m_Vel;
 	Bodys		m_Bodys;
 	float		m_Angle;
+	bool		m_FaceSide;
 
 	int		m_Team;//0為不分
 	int		m_MaxRecoverHP;//最大恢復血量
