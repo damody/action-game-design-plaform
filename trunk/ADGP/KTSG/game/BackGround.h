@@ -58,6 +58,7 @@ public:
 
 	std::string	 m_Name;
 	BGVerteices	 m_BGVerteices;
+	CRVerteices	 m_CRVerteices;
 	DrawVertexGroups m_DrawVertexGroups;
 
 	void Update(float dt);

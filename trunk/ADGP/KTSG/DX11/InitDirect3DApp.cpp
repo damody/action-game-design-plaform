@@ -12,6 +12,7 @@ InitDirect3DApp* InitDirect3DApp::dxAppInstance = NULL;
 InitDirect3DApp::InitDirect3DApp()
 : D3DApp(), m_Heroes_Width(0), m_Heroes_Height(0), m_Buffer_Heroes(0),
             m_Background_Width(0), m_Background_Height(0), m_Buffer_Background(0), m_Background(0),
+	    m_ColorRect_Width(0), m_ColorRect_Height(0), m_Buffer_ColorRect(0),
 	    m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1)
 {
 	dxAppInstance = this;
@@ -94,6 +95,12 @@ void InitDirect3DApp::OnResize()
 		m_Background_Width->SetFloat((float)mClientWidth);
 		m_Background_Height->SetFloat((float)mClientHeight);
 	}
+
+	if (m_ColorRect_Width!=NULL && m_ColorRect_Height!=NULL)
+	{
+		m_ColorRect_Width->SetFloat((float)mClientWidth);
+		m_ColorRect_Height->SetFloat((float)mClientHeight);
+	}
 	
 }
 
@@ -105,9 +112,21 @@ void InitDirect3DApp::DrawScene()
 	m_DeviceContext->ClearRenderTargetView(RTVView1, m_ClearColor);
 	m_DeviceContext->ClearRenderTargetView(RTVView2, m_ClearColor);
 	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
-	
-	//Draw Background
 	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
+	
+	
+	//Draw Color Rect
+	UINT offset = 0;
+	UINT stride2 = sizeof(CRVertex);
+	
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	m_DeviceContext->IASetInputLayout(m_PLayout_ColorRect);
+	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_ColorRect, &stride2, &offset);
+	m_PTech_ColorRect->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+	m_DeviceContext->Draw(0, m_CRVerteices.size());
+	
+
+	//Draw Background
 	if (m_Background != NULL)
 	{
 		UINT offset = 0;
@@ -127,9 +146,8 @@ void InitDirect3DApp::DrawScene()
 	}
 	
 	//Draw Hero
-	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteON, 0);
-	UINT offset = 0;
-	UINT stride2 = sizeof(ClipVertex);
+	offset = 0;
+	stride2 = sizeof(ClipVertex);
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	m_DeviceContext->IASetInputLayout(m_PLayout_Heroes);
 	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Heroes, &stride2, &offset);
@@ -174,6 +192,7 @@ void InitDirect3DApp::buildPointFX()
 	D3DX11_PASS_DESC PassDesc;
 	m_PTech_Heroes->GetPassByIndex(0)->GetDesc(&PassDesc);
 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_HeroVertex, 4, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Heroes));
+
 	//background
 	hr = 0;
 	hr=D3DX11CompileFromFile(_T("shader\\Background.fx"), NULL, NULL, NULL, 
@@ -199,10 +218,36 @@ void InitDirect3DApp::buildPointFX()
 	m_PTech_Background->GetPassByIndex(0)->GetDesc(&PassDescBG);
 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_BGVertex, 4, PassDescBG.pIAInputSignature,PassDescBG.IAInputSignatureSize, &m_PLayout_Background));
 
+	//color rect
+	hr = 0;
+	hr=D3DX11CompileFromFile(_T("shader\\ColorRect.fx"), NULL, NULL, NULL, 
+		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
+	if(FAILED(hr))
+	{
+		if( pError )
+		{
+			MessageBoxA(0, (char*)pError->GetBufferPointer(), 0, 0);
+			ReleaseCOM(pError);
+		}
+		DXTrace(__FILE__, __LINE__, hr, _T("D3DX11CreateEffectFromFile"), TRUE);
+	} 
+	HR(D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_ColorRect));
+	m_PTech_ColorRect = m_Effect_ColorRect->GetTechniqueByName("PointTech");
+	m_ColorRect_Width = m_Effect_ColorRect->GetVariableByName("sceneW")->AsScalar();
+	m_ColorRect_Height =m_Effect_ColorRect->GetVariableByName("sceneH")->AsScalar();
+	m_ColorRect_cLootAt = m_Effect_ColorRect->GetVariableByName("cLookAt");
+	m_ColorRect_cPos = m_Effect_ColorRect->GetVariableByName("cPolarCoord");
+
+	m_PTech_ColorRect->GetPassByIndex(0)->GetDesc(&PassDesc);
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_HeroVertex, 4, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_ColorRect));
+
+
+
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_vbd.CPUAccessFlags = 0;
 	m_vbd.MiscFlags = 0;
+
 }
 
 
@@ -211,9 +256,29 @@ void InitDirect3DApp::buildPoint()
 {
 	ReleaseCOM(m_Buffer_Heroes);
 	ReleaseCOM(m_Buffer_Background);
+	ReleaseCOM(m_Buffer_ColorRect);
+
+	if(m_Background != NULL)
+	{
+		m_Background->BuildPoint();
+	}
+
+	//set color rect
+	
+
+	m_CRVerteices.clear();
+	if(m_Background != NULL)
+	{
+		m_CRVerteices.assign(m_Background->m_CRVerteices.begin(),m_Background->m_CRVerteices.end());
+	}
+	m_vbd.ByteWidth = (UINT)(sizeof(CRVertex) * m_CRVerteices.size());
+	m_vbd.StructureByteStride=sizeof(CRVertex);
+	D3D11_SUBRESOURCE_DATA vinitData;
+	vinitData.pSysMem = &m_CRVerteices[0];
+	HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_ColorRect));
+
 	// set background
 	if(m_Background != NULL){
-		m_Background->BuildPoint();
 		m_vbd.ByteWidth = (UINT)(sizeof(BGVertex) * m_Background->m_BGVerteices.size());
 		m_vbd.StructureByteStride=sizeof(BGVertex);
 		D3D11_SUBRESOURCE_DATA vinitData;
@@ -351,14 +416,14 @@ void InitDirect3DApp::LoadHero()
 
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
-	
+	/*
 	for(int i=0 ; i<10 ; i++){
 		for (int j=0 ; j<200 ; j++)
 		{
 			m_Heroes.push_back(m_Player.CreateHero(Vector3(j*200,0,i*200)));
 		}
-	}	
-	//m_Heroes.push_back(m_Player.CreateHero(Vector3(0,0,0)));
+	}	*/
+	m_Heroes.push_back(m_Player.CreateHero(Vector3(0,0,0)));
 }
 
 
@@ -688,4 +753,6 @@ void InitDirect3DApp::UpdateCamera()
 	m_Heroes_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 	m_Background_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
 	m_Background_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_ColorRect_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_ColorRect_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 }

@@ -208,6 +208,30 @@ void BackGround::Update( float dt )
 
 void BackGround::BuildPoint()
 {
+	m_CRVerteices.clear();
+	for (ColorRects::iterator it=m_ColorRects.begin();it != m_ColorRects.end();it++)
+	{
+		CRVertex crv;
+		crv.position.x = it->m_Position.x;
+		crv.position.y = it->m_Position.y;
+		crv.position.z = it->m_Position.z;
+		crv.size.x = it->m_Width;
+		crv.size.y = it->m_Height;
+		crv.color.x = it->m_Color.x;
+		crv.color.y = it->m_Color.y;
+		crv.color.z = it->m_Color.z;
+		crv.color.w = it->m_Color.w;
+		if(it->m_IsGround)
+		{
+			crv.angle = 90;
+		}
+		else
+		{
+			crv.angle = 0;
+		}
+		m_CRVerteices.push_back(crv);
+	}
+
 	m_BGVerteices.clear();
 	m_DrawVertexGroups.clear();
 	int vertexCount = 0, count = 0;
