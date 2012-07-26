@@ -25,7 +25,7 @@ Hero::Hero()
 
 }
 
-Hero::Hero( std::string h ):hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(false)
+Hero::Hero( std::string h ):hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(true)
 {
 	m_HeroInfo = g_HeroInfoMG.GetHeroInfo(hero);
 	if(m_HeroInfo.get())
@@ -108,6 +108,12 @@ void Hero::UpdateDataToDraw()
 	m_Pic.picpos.y = (float)m_PicY;
 	m_Pic.picpos.z = (float)m_PicH;
 	m_Pic.picpos.w = (float)m_PicW;
+	
+	if(m_FaceSide){
+		m_Pic.faceside = 1;
+	}else{
+		m_Pic.faceside = -1;
+	}
 	
 }
 

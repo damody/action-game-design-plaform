@@ -212,14 +212,14 @@ void BackGround::BuildPoint()
 	for (ColorRects::iterator it=m_ColorRects.begin();it != m_ColorRects.end();it++)
 	{
 		int i=0;
-		for (float w=it->m_Width; w>0 ;w-=1000,i++)
+		for (float w=it->m_Width; w>0 ;w-=5000,i++)
 		{
 			CRVertex crv;
-			crv.position.x = it->m_Position.x + i*1000;
+			crv.position.x = it->m_Position.x + i*5000;
 			crv.position.y = it->m_Position.y;
 			crv.position.z = it->m_Position.z;
-			if (w-1000 > 0){
-				crv.size.x = 1000;
+			if (w-5000 > 0){
+				crv.size.x = 5000;
 			}else{
 				crv.size.x = w;
 			}

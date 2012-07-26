@@ -20,6 +20,7 @@ struct VS_IN
 	float2	size: SIZE;
 	float	angle : PI;
 	float4	picpos : PICPOS; // x, y, w, h
+	float   faceside :FACE;
 };
 
 struct VS_OUT
@@ -28,6 +29,7 @@ struct VS_OUT
 	float2	size  : TEXCOORD0;
 	float	angle : ANGLE;
 	float4	picpos : PICPOSITION; // x, y, w, h
+	float   faceside :FACE;
 };
 
 struct GS_OUT
@@ -58,6 +60,7 @@ VS_OUT VS(VS_IN vIn)
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
 	vOut.picpos = vIn.picpos;
+	vOut.faceside = vIn.faceside;
 	return vOut;
 }
 
@@ -66,7 +69,7 @@ VS_OUT VS(VS_IN vIn)
 void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 {
 	float x = input[0].angle*3.14159/180;
-	float2x2 mat = {cos(x), -sin(x), sin(x), cos(x)};
+	float2x2 mat = {input[0].faceside*cos(x), input[0].faceside*-sin(x), sin(x), cos(x)};
 	float2 texsize = {1/input[0].picpos.z, 1/input[0].picpos.w};
 
 	float zDepth =1/30000.0;

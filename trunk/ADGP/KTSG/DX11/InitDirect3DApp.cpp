@@ -167,6 +167,8 @@ void InitDirect3DApp::buildPointFX()
 {
 	ID3D10Blob* pCode;
 	ID3D10Blob* pError;
+
+	//Hero
 	HRESULT hr = 0;
 	hr=D3DX11CompileFromFile(_T("shader\\Hero.fx"), NULL, NULL, NULL, 
 		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
@@ -189,9 +191,9 @@ void InitDirect3DApp::buildPointFX()
 
 	D3DX11_PASS_DESC PassDesc;
 	m_PTech_Heroes->GetPassByIndex(0)->GetDesc(&PassDesc);
-	HR(m_d3dDevice->CreateInputLayout(VertexDesc_HeroVertex, 4, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Heroes));
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_HeroVertex, 5, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Heroes));
 
-	//background
+	//Background
 	hr = 0;
 	hr=D3DX11CompileFromFile(_T("shader\\Background.fx"), NULL, NULL, NULL, 
 		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
@@ -216,7 +218,7 @@ void InitDirect3DApp::buildPointFX()
 	m_PTech_Background->GetPassByIndex(0)->GetDesc(&PassDescBG);
 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_BGVertex, 3, PassDescBG.pIAInputSignature,PassDescBG.IAInputSignatureSize, &m_PLayout_Background));
 
-	//color rect
+	//Color Rect
 	hr = 0;
 	hr=D3DX11CompileFromFile(_T("shader\\ColorRect.fx"), NULL, NULL, NULL, 
 		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );

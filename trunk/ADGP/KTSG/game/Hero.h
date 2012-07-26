@@ -53,7 +53,7 @@ private:
 	Vector3		m_Vel;
 	Bodys		m_Bodys;
 	float		m_Angle;
-	bool		m_FaceSide;
+	bool		m_FaceSide;//true 右, false 左
 
 	int		m_Team;//0為不分
 	int		m_MaxRecoverHP;//最大恢復血量
@@ -61,7 +61,7 @@ private:
 	int		m_MP;
 	Record_Sptr     m_Record;
 
-	KeyQueue		m_KeyQue;
+	KeyQueue	m_KeyQue;
 
 public:
 	const std::string hero;
