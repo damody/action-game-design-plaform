@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
-
+namespace boost{namespace serialization{class access;}}
 struct Consume
 {
 	// 0 時只對next有用，1 時只對 hitdata有用
@@ -17,5 +17,17 @@ struct Consume
 	//不夠的話 跳到 m_NotEnoughFrameName 的第 m_NotEnoughFrame 格
 	std::string	m_NotEnoughFrameName;
 	int		m_NotEnoughFrame;
+
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar &	m_JumpRule;
+		ar &	m_HP;
+		ar &	m_MP;
+		ar &	m_NotEnoughFrameName;
+		ar &	m_NotEnoughFrame;
+	}
 };
 typedef std::vector<Consume> Consumes;

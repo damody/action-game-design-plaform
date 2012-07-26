@@ -9,9 +9,10 @@
 #include "Lua/LuaCell.h"
 #include "common\shared_ptr.h"
 #include "game/ColorRect.h"
-
+namespace boost{namespace serialization{class access;}}
 struct BGLayer
 { 
+	
 	std::string	m_PicturePath;
 	int		m_PicID;
 	Vector3		m_Position;
@@ -22,6 +23,22 @@ struct BGLayer
 	int		m_TimeStart;
 	int		m_TimeEnd;
 	bool		m_IsGround;
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar &	m_PicturePath;
+		ar &	m_PicID;
+		ar &	m_Position;
+		ar &	m_Width;
+		ar &	m_Height;
+		ar &	m_LoopDistance;
+		ar &	m_TimeLine;
+		ar &	m_TimeStart;
+		ar &	m_TimeEnd;
+		ar &	m_IsGround;
+	}
 };
 typedef std::vector<BGLayer> BGLayers;
 

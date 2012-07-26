@@ -2,7 +2,7 @@
 #include <deque>
 
 #define KEYUP 8
-
+namespace boost{namespace serialization{class access;}}
 struct CtrlKey
 {
 	enum v{
@@ -14,6 +14,14 @@ struct CtrlKey
 struct KeyInfo{
 	CtrlKey::v key;
 	int time;
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar & key;
+		ar & time;
+	}
 };
 
 typedef std::deque<KeyInfo> KeyQueue;

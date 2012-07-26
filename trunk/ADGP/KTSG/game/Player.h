@@ -8,7 +8,7 @@
 #include "common\shared_ptr.h"
 #include "game\Hero.h"
 
-
+namespace boost{namespace serialization{class access;}}
 class Player
 {
 private:
@@ -17,6 +17,17 @@ private:
 	std::string	m_HeroName;
 	int		m_Team;
 	Record_Sptr     m_Record;//Set Hero Record 
+
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar &	m_KeyCode[8];
+		ar &	m_HeroName;
+		ar &	m_Team;
+		ar &    m_Record;
+	}
 public:
 	Player();
 	Player(int id);

@@ -10,7 +10,7 @@
 #include "BeCatch.h"
 #include "BloodInfo.h"
 #include "Body.h"
-
+namespace boost{namespace serialization{class access;}}
 //每一個動作 Frame 所含的資訊
 struct FrameInfo
 {
@@ -58,6 +58,34 @@ struct FrameInfo
 	BeCatch		m_BeCatch;
 	//流血資訊
 	BloodInfos	m_BloodInfos;
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar &	m_HeroAction;
+		ar &	m_FrameName;
+		ar &	m_FrameIndex;
+		ar &	m_NextFrameName;
+		ar &	m_NextFrameIndex;
+		ar &	m_PictureID;
+		ar &	m_PictureX;
+		ar &	m_PictureY;
+		ar &	m_CenterX;
+		ar &	m_CenterY;
+		ar &	m_Consume;
+		ar &	m_DVX;
+		ar &	m_DVY;
+		ar &	m_DVZ;
+		ar &	m_Wait;
+		ar &	m_ClearKeyQueue;
+		ar &	m_Bodys;
+		ar &	m_Attacks;
+		ar &	m_HitDatas;
+		ar &	m_Catchs;
+		ar &	m_BeCatch;
+		ar &	m_BloodInfos;
+	}
 };
 typedef std::vector<FrameInfo> FrameInfos;
 typedef std::map<std::string, FrameInfos> FramesMap;

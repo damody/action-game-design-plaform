@@ -20,7 +20,7 @@
 
 #define KEYLIFE_AFTER_KEYUP 120
 #define FRICTION 0.2f
-
+namespace boost{namespace serialization{class access;}}
 struct Record
 {
 	int Kill;    //殺敵數
@@ -29,6 +29,18 @@ struct Record
 	int MPUsage; //耗魔量
 	int Picking; //拾起物品數目
 	bool Status; //true: win false: lose
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar & Kill;    
+		ar & Attack;  
+		ar & HPLost;  
+		ar & MPUsage; 
+		ar & Picking; 
+		ar & Status; 
+	}
 };
 SHARE_PTR(Record)
 
@@ -62,6 +74,39 @@ private:
 	Record_Sptr     m_Record;
 
 	KeyQueue	m_KeyQue;
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar &	m_TimeTik;
+		ar &	m_Pic;
+		ar &	m_HeroInfo;
+		ar &	m_Action;
+		ar &    m_Frame;
+		ar &	m_FrameID;
+
+		ar &	m_Texture;
+		ar &    m_PicID;
+		ar &	m_PicW;
+		ar &	m_PicH;
+		ar &	m_PicX;
+		ar &	m_PicY;
+
+		ar &	m_Position;
+		ar &	m_Vel;
+		ar &	m_Bodys;
+		ar &	m_Angle;
+		ar &	m_FaceSide;
+
+		ar &	m_Team;
+		ar &	m_MaxRecoverHP;
+		ar &	m_HP;
+		ar &	m_MP;
+		ar &    m_Record;
+
+		ar &	m_KeyQue; 
+	}
 
 public:
 	const std::string hero;

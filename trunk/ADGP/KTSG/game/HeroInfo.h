@@ -5,7 +5,7 @@
 #include "Lua/LuaCell.h"
 #include "FrameInfo.h"
 #include "common\shared_ptr.h"
-
+namespace boost{namespace serialization{class access;}}
 //每一個英雄需要用到的資訊
 struct HeroInfo
 {
@@ -57,6 +57,43 @@ struct HeroInfo
 	float		m_AntiMagic;
 	//魔法減傷%數
 	float		m_AntiMagicPercent;
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar &	m_Name;
+		ar &	m_Headpic;
+		ar &	m_Smallpic;
+		ar &	m_PictureDatas;
+		ar &	m_FramesMap;
+		ar &		m_WalkingSpeed;
+		ar &		m_WalkingSpeedZ;
+		ar &		m_RunningSpeed;
+		ar &		m_RunningSpeedZ;
+		ar &		m_HeavyWalkingSpeed;
+		ar &		m_HeavyWalkingSpeedZ;
+		ar &		m_HeavyRunningSpeed;
+		ar &		m_HeavyRunningSpeedZ;
+		ar &		m_JumpHeight;
+		ar &		m_JumpDistance;
+		ar &		m_JumpDistanceZ;
+		ar &		m_DashHeight;
+		ar &		m_DashDistance;
+		ar &		m_DashDistanceZ;
+		ar &		m_RowingHeight;
+		ar &		m_RowingDistance;
+		ar &		m_MaxMP;
+		ar &		m_MaxHP;
+		ar &		m_MaxFall;
+		ar &		m_MaxDefend;
+		ar &		m_PhysicsDefense;
+		ar &		m_MagicDefense;
+		ar &		m_AntiPhysics;
+		ar &		m_AntiPhysicsPercent;
+		ar &		m_AntiMagic;
+		ar &		m_AntiMagicPercent;
+	}
 public:
 	bool	CheckHeroDataVaild(LuaCell_Sptr luadata);
 	void	LoadHeroData(LuaCell_Sptr luadata);
