@@ -15,6 +15,7 @@ InitDirect3DApp::InitDirect3DApp()
 	    m_ColorRect_Width(0), m_ColorRect_Height(0), m_Buffer_ColorRect(0),
 	    m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1)
 {
+	g_Time = 0;
 	dxAppInstance = this;
 }
 
