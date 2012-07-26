@@ -286,6 +286,12 @@ void InitDirect3DApp::buildPoint()
 		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Background));
 	}
 	// set heroes
+
+	for(std::vector<Hero_RawPtr>::iterator it = m_Heroes.begin();it != m_Heroes.end(); it++)
+	{
+		(*it)->UpdateDataToDraw();
+	}
+
 	std::stable_sort(m_Heroes.begin(),m_Heroes.end(),SortHero);
 	m_HeroVertex.clear();
 	m_DrawVertexGroups.clear();

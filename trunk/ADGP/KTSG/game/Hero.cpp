@@ -90,7 +90,6 @@ void Hero::Update(float dt)
 	if(m_Vel.z < 0) m_Vel.z = 0;
 	else m_Vel.z *= sign;
 
-	this->UpdateDataToDraw();
 }
 
 void Hero::UpdateDataToDraw()
@@ -260,7 +259,6 @@ bool Hero::ScanKeyQue()
 void Hero::SetPosition( Vector3 pos )
 {
 	m_Position =pos;
-	UpdateDataToDraw();
 }
 
 void Hero::SetRecord( Record_Sptr r )

@@ -114,7 +114,8 @@ public:
 	Hero();
 	Hero(std::string h);
 	void Update(float dt);
-	
+	void UpdateDataToDraw();//Data To m_Pic
+
 	Texture_Sptr GetTexture();
 	int GetTextureID();
 	ClipVertex GetPic();
@@ -132,7 +133,7 @@ protected:
 	void ClearKeyQue();
 	void Flicker();//°{Ã{
 	void Recover();//¦^¦å¡B®ð¡B¯}¨¾­È.....
-	void UpdateDataToDraw();//Data To m_Pic
+	
 
 };
 SHARE_PTR(Hero)
