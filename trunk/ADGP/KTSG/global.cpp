@@ -5,4 +5,4 @@ BGManager      g_BGManager;
 BallptrManager g_BallptrManager;
 BallptrManager g_EnemyBallptrManager;
 ID3D11Device* g_d3dDevice;
-unsigned int  g_Time;
+int  g_Time;

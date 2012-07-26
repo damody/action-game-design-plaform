@@ -150,7 +150,7 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 			bgl.m_Position.z	= (float)luadata->GetLua<double>("layer/%d/z", i);
 			bgl.m_Width		= (float)luadata->GetLua<double>("layer/%d/w", i);
 			bgl.m_Height		= (float)luadata->GetLua<double>("layer/%d/h", i);
-			bgl.m_LoopDistance	= luadata->GetLua<int>("layer/%d/loop_distance", i);
+			bgl.m_LoopDistance	= (float)luadata->GetLua<int>("layer/%d/loop_distance", i);
 			bgl.m_TimeLine		= luadata->GetLua<int>("layer/%d/timeline", i);
 			bgl.m_TimeStart		= luadata->GetLua<int>("layer/%d/time_start", i);
 			bgl.m_TimeEnd		= luadata->GetLua<int>("layer/%d/time_end", i);
@@ -212,14 +212,15 @@ void BackGround::BuildPoint()
 	for (ColorRects::iterator it=m_ColorRects.begin();it != m_ColorRects.end();it++)
 	{
 		int i=0;
-		for (float w=it->m_Width; w>0 ;w-=5000,i++)
+		float cut=2500;
+		for (float w=it->m_Width; w>0 ;w-=cut,i++)
 		{
 			CRVertex crv;
-			crv.position.x = it->m_Position.x + i*5000;
+			crv.position.x = it->m_Position.x + i*cut;
 			crv.position.y = it->m_Position.y;
 			crv.position.z = it->m_Position.z;
-			if (w-5000 > 0){
-				crv.size.x = 5000;
+			if (w-cut > 0){
+				crv.size.x = cut;
 			}else{
 				crv.size.x = w;
 			}
@@ -289,7 +290,7 @@ void BackGround::BuildPoint()
 Vector3 BackGround::AlignmentSpace( Vector3 pIn )
 {
 	Vector3 pOut  = pIn;
-	float   error = 999999999;
+	float   error = 999999.9f;
 	for (AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ;it++)
 	{
 		bool inBox = true;
@@ -432,4 +433,9 @@ Vector3 BackGround::AlignmentBan( Vector3 pIn)
 	}
 
 	return pIn;
+}
+
+float BackGround::Width()
+{
+	return m_Width;
 }

@@ -84,6 +84,8 @@ public:
 	bool	CheckDataVaild(LuaCell_Sptr luadata);
 	void	LoadData(LuaCell_Sptr luadata);
 
+	float   Width();
+
 	bool    InSpace(Vector3 pIn);//判斷vIn是否在地圖的可行範圍
 	Vector3	AlignmentSpace(Vector3 pIn);//判斷vIn是否在地圖的可行範圍，並校正
 

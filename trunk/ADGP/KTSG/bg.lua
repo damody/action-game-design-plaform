@@ -3,7 +3,7 @@ width = 40000
 space_bounding =
 {
 
-	{xmin=0, ymin=0, zmin=0, xmax=10000, ymax=500, zmax=1700},
+	{xmin=0, ymin=0, zmin=0, xmax=40000, ymax=500, zmax=1700},
 	{xmin=150, ymin=0, zmin=1600, xmax=600, ymax=500, zmax=1850},
 	{xmin=800, ymin=0, zmin=1600, xmax=1250, ymax=500, zmax=1850},
 	--{xmin=100, ymin=0, zmin=1000, xmax=700, ymax=500, zmax=1900},

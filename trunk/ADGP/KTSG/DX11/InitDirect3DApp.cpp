@@ -40,7 +40,7 @@ void InitDirect3DApp::initApp()
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
 	//init Camera
-	m_Camera = Camera_Sptr(new Camera(0,0,0,0,0,45));
+	m_Camera = Camera_Sptr(new Camera((float)mClientWidth,0,0,0,0,45));
 	
 
 }
@@ -746,6 +746,13 @@ void InitDirect3DApp::TestCamera()
 
 void InitDirect3DApp::UpdateCamera()
 {
+	if(m_Player.m_Hero->Position().x >= mClientWidth && m_Player.m_Hero->Position().x <= m_Background->Width()-mClientWidth)
+	{
+		float m = m_Player.m_Hero->Position().x - m_Camera->LookAt().x;
+		m_Camera->MoveX(m*0.1f);
+	}
+
+
 	m_Heroes_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
 	m_Heroes_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 	m_Background_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
