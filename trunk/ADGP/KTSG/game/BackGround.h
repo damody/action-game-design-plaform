@@ -83,8 +83,11 @@ public:
 	bool	CheckDataVaild(LuaCell_Sptr luadata);
 	void	LoadData(LuaCell_Sptr luadata);
 
-	bool    InSpace(Vector3 vIn);//判斷vIn是否在地圖的可行範圍
-	Vector3	AlignmentSpace(Vector3 vIn);//判斷vIn是否在地圖的可行範圍，並校正
+	bool    InSpace(Vector3 pIn);//判斷vIn是否在地圖的可行範圍
+	Vector3	AlignmentSpace(Vector3 pIn);//判斷vIn是否在地圖的可行範圍，並校正
+
+	bool    InBan(Vector3 pIn);//判斷vIn是否在地圖的禁足範圍
+	Vector3	AlignmentBan(Vector3 pIn );//判斷vIn是否在地圖的禁足範圍，並校正
 };
 SHARE_PTR(BackGround);
 
