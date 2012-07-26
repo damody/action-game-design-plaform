@@ -54,7 +54,6 @@ void Hero::Init()
 	m_Action = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_HeroAction;
 	m_TimeTik = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Wait;
 	m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;
-	this->UpdateDataToDraw();
 }
 
 void Hero::Update(float dt) 

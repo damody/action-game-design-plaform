@@ -401,8 +401,6 @@ Vector3 BackGround::AlignmentBan( Vector3 pIn)
 		&& pIn.z >= min.z && pIn.z <= max.z
 		){
 			float bound=30;
-			//std::cout<<"l"<<pIn.x-min.x<<std::endl;
-			//std::cout<<(max.x-min.x)*bound<<std::endl;
 			if(pIn.x-min.x < bound)
 			{
 				pOut.x = min.x;
