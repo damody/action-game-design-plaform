@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <cmath>
 #include "DX11/Vertex.h"
 #include "DX11/TextureManager.h"
 #include "math/AxisAlignedBox.h"

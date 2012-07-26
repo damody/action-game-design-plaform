@@ -289,15 +289,13 @@ void BackGround::BuildPoint()
 Vector3 BackGround::AlignmentSpace( Vector3 pIn )
 {
 	Vector3 pOut  = pIn;
-	float   n = 9999;
+	float   error = 999999999;
 	for (AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ;it++)
 	{
 		bool inBox = true;
 		Vector3 temp = pIn;
 		Vector3 min = it->getMinimum();
 		Vector3 max = it->getMaximum();
-		Vector3 center = it->getCenter();
-
 		if (pIn.x < min.x)
 		{
 			inBox = false;
@@ -327,16 +325,19 @@ Vector3 BackGround::AlignmentSpace( Vector3 pIn )
 			temp.z = max.z;
 		}
 
-		if(center.distance(pIn) < n)
-		{
-			n = center.distance(pIn);
-			pOut = temp;
-		}
-
 		if(inBox)
 		{
 			return pIn;
 		}
+
+		float t=pIn.distance(temp);
+		if (t < error)
+		{
+			error = t;
+			pOut = temp;
+		}
+		
+		
 	}
 	return pOut;
 }

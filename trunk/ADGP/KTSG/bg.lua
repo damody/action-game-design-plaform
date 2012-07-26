@@ -2,8 +2,13 @@ name="Forbidden_Tower"
 width = 40000
 space_bounding =
 {
-	{xmin=0, ymin=0, zmin=0, xmax=500, ymax=500, zmax=500},
-	{xmin=400, ymin=0, zmin=400, xmax=900, ymax=500, zmax=900},
+
+	{xmin=0, ymin=0, zmin=0, xmax=10000, ymax=500, zmax=1700},
+	{xmin=150, ymin=0, zmin=1600, xmax=600, ymax=500, zmax=1850},
+	{xmin=800, ymin=0, zmin=1600, xmax=1250, ymax=500, zmax=1850},
+	--{xmin=100, ymin=0, zmin=1000, xmax=700, ymax=500, zmax=1900},
+	--{xmin=0, ymin=0, zmin=0, xmax=500, ymax=500, zmax=500},
+	--{xmin=400, ymin=0, zmin=400, xmax=900, ymax=500, zmax=900},
 }
 
 ban_bounding =
@@ -42,9 +47,9 @@ layer =
 
 color_rect =
 {
-	--{r=0.566, g=0.06, b=0.06, a=1, ground=1, x=0, y=0, z=1860, w=40000, h=1794},
-	{r=0.566, g=0.06, b=0.06, a=0.9, ground=1, x=0, y=0, z=500, w=500, h=500},
-	{r=0.566, g=0.06, b=0.06, a=0.9, ground=1, x=400, y=0, z=900, w=500, h=500},
+	{r=0.566, g=0.06, b=0.06, a=1, ground=1, x=0, y=0, z=1860, w=40000, h=1794},
+	--{r=0.566, g=0.06, b=0.06, a=0.9, ground=1, x=0, y=0, z=500, w=500, h=500},
+	--{r=0.566, g=0.06, b=0.06, a=0.9, ground=1, x=400, y=0, z=900, w=500, h=500},
 	{r=0.06, g=0.06, b=0.566, a=1, ground=1, x=100, y=0, z=500, w=100, h=400},
 }
 
