@@ -89,18 +89,7 @@ public:
 		setMaximum( 0.5, 0.5, 0.5 );
 		mExtent = e;
 	}
-
-	inline AxisAlignedBox(const AxisAlignedBox & rkBox) : mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mpCorners(0)
-
-	{
-		if (rkBox.isNull())
-			setNull();
-		else if (rkBox.isInfinite())
-			setInfinite();
-		else
-			setExtents( rkBox.mMinimum, rkBox.mMaximum );
-	}
-
+	
 	inline AxisAlignedBox( const Vector3& min, const Vector3& max ) : mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mpCorners(0)
 	{
 		setExtents( min, max );
@@ -112,20 +101,7 @@ public:
 	{
 		setExtents( mx, my, mz, Mx, My, Mz );
 	}
-
-	AxisAlignedBox& operator=(const AxisAlignedBox& rhs)
-	{
-		// Specifically override to avoid copying mpCorners
-		if (rhs.isNull())
-			setNull();
-		else if (rhs.isInfinite())
-			setInfinite();
-		else
-			setExtents(rhs.mMinimum, rhs.mMaximum);
-
-		return *this;
-	}
-
+	
 	~AxisAlignedBox()
 	{
 		if (mpCorners)

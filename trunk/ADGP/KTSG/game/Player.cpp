@@ -95,7 +95,7 @@ Hero_RawPtr Player::CreateHero(Vector3 pos)
 	m_Hero = Hero_RawPtr(new Hero(m_HeroName));
 	m_Hero->SetTeam(m_Team);
 	m_Hero->SetRecord(m_Record);
-	m_Hero->Position(pos);
+	m_Hero->SetPosition(pos);
 	return m_Hero;
 }
 

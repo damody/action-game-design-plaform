@@ -118,10 +118,13 @@ public:
 	Texture_Sptr GetTexture();
 	int GetTextureID();
 	ClipVertex GetPic();
+	Vector3 Position();
+
 	void SetRecord(Record_Sptr r);
 	void SetTeam(int team);
+	void SetPosition(Vector3 pos);
 	void PushKey(KeyInfo k);
-	void Position(Vector3 pos);
+	
 protected:
 	void Init();
 	void NextFrame();

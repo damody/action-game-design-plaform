@@ -284,7 +284,93 @@ void BackGround::BuildPoint()
 	}
 }
 
-void BackGround::Init()
+
+
+Vector3 BackGround::AlignmentSpace( Vector3 vIn )
 {
-	m_TimeTik = 0;
+	Vector3 vOut  = vIn;
+	float   n = 9999;
+	for (AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ;it++)
+	{
+		bool inBox = true;
+		Vector3 temp = vIn;
+		Vector3 min = it->getMinimum();
+		Vector3 max = it->getMaximum();
+		Vector3 center = it->getCenter();
+
+		if (vIn.x < min.x)
+		{
+			inBox = false;
+			temp.x = min.x;
+		}else if (vIn.x >max.x)
+		{
+			inBox = false;
+			temp.x = max.x;
+		}
+		
+		if (vIn.y < min.y)
+		{
+			inBox = false;
+			temp.y = min.y;
+		}else if (vIn.y >max.y)
+		{
+			inBox = false;
+			temp.y = max.y;
+		}
+		if (vIn.z < min.z)
+		{
+			inBox = false;
+			temp.z = min.z;
+		}else if (vIn.z >max.z)
+		{
+			inBox = false;
+			temp.z = max.z;
+		}
+
+	
+		if(center.distance(vIn) < n)
+		{
+			n = center.distance(vIn);
+			vOut = temp;
+		}
+
+		if(inBox)
+		{
+			return vIn;
+		}
+
+		
+	}
+
+	std::cout<<vOut.x<<std::endl;
+	return vOut;
+}
+
+bool BackGround::InSpace( Vector3 vIn )
+{
+	for (AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ;it++)
+	{
+		bool inBox = true;
+		Vector3 min = it->getMinimum();
+		Vector3 max = it->getMaximum();
+		
+		if (vIn.x < min.x || vIn.x >max.x)
+		{
+			inBox = false;
+		}
+		if (vIn.y < min.y || vIn.y >max.y)
+		{
+			inBox = false;
+		}
+		if (vIn.z < min.z || vIn.z >max.z)
+		{
+			inBox = false;
+		}
+
+		if(inBox)
+		{
+			return true;
+		}
+	}
+	return false;
 }
