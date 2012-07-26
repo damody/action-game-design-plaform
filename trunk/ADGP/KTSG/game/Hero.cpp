@@ -257,9 +257,10 @@ bool Hero::ScanKeyQue()
 	}
 }
 
-void Hero::Position( Vector3 pos )
+void Hero::SetPosition( Vector3 pos )
 {
 	m_Position =pos;
+	UpdateDataToDraw();
 }
 
 void Hero::SetRecord( Record_Sptr r )
@@ -344,6 +345,10 @@ void Hero::SetTeam( int team )
 	m_Team = team;
 }
 
+Vector3 Hero::Position()
+{
+	return m_Position;
+}
 
 bool SortHero( Hero_RawPtr a,Hero_RawPtr b )
 {

@@ -50,10 +50,9 @@ private:
 	ColorRects	m_ColorRects;
 	ParallelLights	m_ParallelLights;
 
-	int		m_TimeTik;
 	
 public:
-	BackGround():m_TimeTik(0){}
+	BackGround(){}
 	~BackGround(){}
 
 	std::string	 m_Name;
@@ -66,7 +65,9 @@ public:
 
 	bool	CheckDataVaild(LuaCell_Sptr luadata);
 	void	LoadData(LuaCell_Sptr luadata);
-	void    Init();
+
+	bool    InSpace(Vector3 vIn);//判斷vIn是否在地圖的可行範圍
+	Vector3	AlignmentSpace(Vector3 vIn);//判斷vIn是否在地圖的可行範圍，並校正
 };
 SHARE_PTR(BackGround);
 

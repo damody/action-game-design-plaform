@@ -71,10 +71,10 @@ void InitDirect3DApp::UpdateScene(float dt)
 		if(m_Background != NULL)
 		{
 			m_Background->Update(dt);
+			TestBackgroundSpace();
 		}
 		timp_count -= 1/60.0f;
 	}
-	
 	UpdateUI();
 	buildPoint();
 }
@@ -745,4 +745,12 @@ void InitDirect3DApp::UpdateCamera()
 	m_Background_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 	m_ColorRect_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
 	m_ColorRect_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+}
+
+void InitDirect3DApp::TestBackgroundSpace()
+{
+	for(std::vector<Hero_RawPtr>::iterator it=m_Heroes.begin(); it !=m_Heroes.end() ; it++)
+	{
+		(*it)->SetPosition(m_Background->AlignmentSpace((*it)->Position()));
+	}
 }
