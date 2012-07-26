@@ -41,7 +41,7 @@ layer =
 
 color_rect =
 {
-	{r=1.0, g=0, b=0, a=1, ground=1, x=0, y=0, z=1860, w=280, h=1794},
+	{r=1.0, g=0, b=0, a=1, ground=1, x=0, y=0, z=1860, w=40000, h=1794},
 }
 
 parallel_light = {

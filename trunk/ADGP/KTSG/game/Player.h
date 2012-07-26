@@ -28,7 +28,7 @@ public:
 	void SetHero(std::string name);
 	void SetTeam(int team);
 	Hero_RawPtr CreateHero(Vector3 pos);
-	void SetCtrlKey(int index,CtrlKey::e key);
+	void SetCtrlKey(int index,CtrlKey::v key);
 	void SetCtrlKey(int index[8]);
 	void UpdateInput();
 

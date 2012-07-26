@@ -8,20 +8,6 @@
 #include <d3dx11.h>
 #include <vector>
 
-struct Screen_Vertex
-{
-	D3DXVECTOR4 pos;
-	D3DXVECTOR2 tex;
-};
-
-// Vertex format
-struct DXVertex
-{
-	D3DXVECTOR3 position;
-	D3DXVECTOR2 size;
-	float angle;
-};
-typedef std::vector<DXVertex> DXVertexs;
 //Hero Vertex format
 struct ClipVertex
 {
@@ -50,10 +36,8 @@ struct CRVertex
 };
 typedef std::vector<CRVertex> CRVerteices;
 
-
-// 
-extern D3D11_INPUT_ELEMENT_DESC VertexDesc_DXVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_HeroVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_BGVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_CRVertex[];
+
 #endif // VERTEX_H

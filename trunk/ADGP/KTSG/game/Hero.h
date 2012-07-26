@@ -59,7 +59,7 @@ private:
 	int		m_MP;
 	Record_Sptr     m_Record;
 
-	KeyQue		m_KeyQue;
+	KeyQueue		m_KeyQue;
 
 public:
 	const std::string hero;

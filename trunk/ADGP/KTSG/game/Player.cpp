@@ -16,7 +16,7 @@ Player::~Player()
 
 }
 
-void Player::SetCtrlKey(int index,CtrlKey::e key )
+void Player::SetCtrlKey(int index,CtrlKey::v key )
 {
 	switch(key)
 	{
@@ -72,14 +72,14 @@ void Player::UpdateInput()
 			KeyInfo keyInfo = {};
 			if (InputStateS::instance().isKeyDown(m_KeyCode[k]))
 			{
-				keyInfo.key = (CtrlKey::e)k;
+				keyInfo.key = (CtrlKey::v)k;
 				std::cout<<"Ctrl Key:"<< test[k] <<std::endl;
 				m_Hero->PushKey(keyInfo);
 			}
 
 			if (InputStateS::instance().isKeyUp(m_KeyCode[k]))
 			{
-				keyInfo.key = (CtrlKey::e)(k+KEYUP);
+				keyInfo.key = (CtrlKey::v)(k+KEYUP);
 				m_Hero->PushKey(keyInfo);
 			}
 		}

@@ -138,45 +138,63 @@ bool Hero::ScanKeyQue()
 	std::string nFrame;
 	int nFramID=0;
 	Vector3 dv;
-	KeyQue::iterator i=m_KeyQue.begin();
+	KeyQueue::iterator i=m_KeyQue.begin();
 	//決定按鍵動作
-	if(m_Action == HeroAction::STANDING){
-		while(i!=m_KeyQue.end()){
-			if(i->key == CtrlKey::UP){
+	if(m_Action == HeroAction::STANDING)
+	{
+		while(i!=m_KeyQue.end())
+		{
+			if(i->key == CtrlKey::UP)
+			{
 				printf("Scand keyup\n");
 				nFrame = "walking";
 				dv.z = m_HeroInfo->m_WalkingSpeedZ;
-			}else if(i->key == CtrlKey::DOWN){
+			}
+			else if(i->key == CtrlKey::DOWN)
+			{
 				printf("Scand keydown\n");
 				nFrame = "walking";
 				dv.z = m_HeroInfo->m_WalkingSpeedZ;
-			}else if(i->key == CtrlKey::LEFT){
+			}
+			else if(i->key == CtrlKey::LEFT)
+			{
 				printf("Scand keyleft\n");
 				nFrame = "walking";
 				dv.x = m_HeroInfo->m_WalkingSpeed;
-			}else if(i->key == CtrlKey::RIGHT){
+			}
+			else if(i->key == CtrlKey::RIGHT)
+			{
 				printf("Scand keyright\n");
 				nFrame = "walking";
 				dv.x = m_HeroInfo->m_WalkingSpeed;
 			}
 			i++;
 		}
-	}else if(m_Action == HeroAction::WALKING ){
+	}
+	else if(m_Action == HeroAction::WALKING )
+	{
 		if(m_TimeTik < 5){
 			while(i!=m_KeyQue.end()){
-				if(i->key == CtrlKey::UP){
+				if(i->key == CtrlKey::UP)
+				{
 					printf("Scand keyup\n");
 					nFrame = "walking";
 					dv.z += m_HeroInfo->m_WalkingSpeedZ;
-				}else if(i->key == CtrlKey::DOWN){
+				}
+				else if(i->key == CtrlKey::DOWN)
+				{
 					printf("Scand keydown\n");
 					nFrame = "walking";
 					dv.z -= m_HeroInfo->m_WalkingSpeedZ;
-				}else if(i->key == CtrlKey::LEFT){
+				}
+				else if(i->key == CtrlKey::LEFT)
+				{
 					printf("Scand keyleft\n");
 					nFrame = "walking";
 					dv.x -= m_HeroInfo->m_WalkingSpeed;
-				}else if(i->key == CtrlKey::RIGHT){
+				}
+				else if(i->key == CtrlKey::RIGHT)
+				{
 					printf("Scand keyright\n");
 					nFrame = "walking";
 					dv.x += m_HeroInfo->m_WalkingSpeed;
@@ -184,14 +202,19 @@ bool Hero::ScanKeyQue()
 				i++;
 			}
 		}
-		if(!nFrame.empty() ){
+		if(!nFrame.empty() )
+		{
 			//printf("size:%d\n",m_HeroInfo->m_FramesMap[nFrame].size());
 			nFramID = (m_FrameID+1) % (m_HeroInfo->m_FramesMap[nFrame].size());
 			/*if(nFramID == 1) printf("1\n");
 			else if(nFramID == 2) printf("2\n");
 			else if(nFramID == 3) printf("3\n");
 			else if(nFramID > 3) printf(">3\n");//*/
-		}else nFrame.clear();
+		}
+		else 
+		{
+			nFrame.clear();
+		}
 	}
 	//清理佇列
 	i=m_KeyQue.begin();
@@ -231,7 +254,7 @@ void Hero::SetRecord( Record_Sptr r )
 void Hero::PushKey( KeyInfo k )
 {
 	m_KeyQue.push_back(k);
-	KeyQue::iterator i;
+	KeyQueue::iterator i;
 
 	if(k.key == CtrlKey::ATK1_KEYUP){
 		printf("ATK1_KEYUP\n");

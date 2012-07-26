@@ -501,17 +501,7 @@ void InitDirect3DApp::InitTexture()
 	HR(m_d3dDevice->CreateTexture2D(&depthStencilDesc0, 0, &tesres));
 	HR(m_d3dDevice->CreateShaderResourceView(tesres, 0, &SRVViewRes));
 	HR(m_d3dDevice->CreateRenderTargetView(tesres, 0, &RTVViewRes));
-
-	Screen_Vertex svQuad[4];
-	svQuad[0].pos = D3DXVECTOR4( -1.0f, 1.0f, 0.5f, 1.0f );
-	svQuad[0].tex = D3DXVECTOR2( 0.0f, 0.0f );
-	svQuad[1].pos = D3DXVECTOR4( 1.0f, 1.0f, 0.5f, 1.0f );
-	svQuad[1].tex = D3DXVECTOR2( 1.0f, 0.0f );
-	svQuad[2].pos = D3DXVECTOR4( -1.0f, -1.0f, 0.5f, 1.0f );
-	svQuad[2].tex = D3DXVECTOR2( 0.0f, 1.0f );
-	svQuad[3].pos = D3DXVECTOR4( 1.0f, -1.0f, 0.5f, 1.0f );
-	svQuad[3].tex = D3DXVECTOR2( 1.0f, 1.0f );
-
+	
 	ID3D11Texture2D* tex12;
 
 	D3D11_TEXTURE2D_DESC depthStencilDesc1;
@@ -685,14 +675,14 @@ void InitDirect3DApp::TestCamera()
 {
 	if (InputStateS::instance().isKeyDown(KEY_Z))
 	{
-		m_Camera->Zoom(-0.01);
+		m_Camera->Zoom(-0.01f);
 		//m_Camera->SurroundX(-10);
 		//m_Camera->MoveX(-1);
 	}
 	if (InputStateS::instance().isKeyDown(KEY_X))
 	{
 		//m_Camera->SurroundX(10);
-		m_Camera->Zoom(0.01); 
+		m_Camera->Zoom(0.01f); 
 		//m_Camera->MoveX(1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD4))
@@ -722,24 +712,24 @@ void InitDirect3DApp::TestCamera()
 	if (InputStateS::instance().isKeyPress(KEY_K))
 	{
 		//m_Camera->Zoom(-1);
-		m_Camera->SurroundX(-0.1);
+		m_Camera->SurroundX(-0.1f);
 		//m_Camera->MoveX(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_I))
 	{
-		m_Camera->SurroundX(0.1);
+		m_Camera->SurroundX(0.1f);
 		//m_Camera->Zoom(1);
 		//m_Camera->MoveX(1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_J))
 	{
 		//m_Camera->Zoom(-1);
-		m_Camera->SurroundY(-0.1);
+		m_Camera->SurroundY(-0.1f);
 		//m_Camera->MoveX(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_L))
 	{
-		m_Camera->SurroundY(0.1);
+		m_Camera->SurroundY(0.1f);
 		//m_Camera->Zoom(1);
 		//m_Camera->MoveX(1);
 	}
