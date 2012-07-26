@@ -78,10 +78,6 @@ void Hero::Update(float dt)
 	m_Vel.z -= FRICTION;
 	if(m_Vel.z < 0) m_Vel.z = 0;
 
-	if(m_Action == HeroAction::WALKING){
-		printf("WALKING %d\n",m_FrameID);
-	}
-
 	this->UpdateDataToDraw();
 }
 
@@ -120,17 +116,19 @@ int Hero::GetTextureID()
 
 void Hero::NextFrame()
 {
-	m_Frame = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_NextFrameName;
-	m_FrameID = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_NextFrameIndex;
+	std::string tFrame = m_Frame;
+	int tFrameID = m_FrameID;
+	m_Frame = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_NextFrameName;
+	m_FrameID = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_NextFrameIndex;
 
-	m_PicID = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_PictureID;
-	m_PicX = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_PictureX;
-	m_PicY = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_PictureY;
+	m_PicID = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_PictureID;
+	m_PicX = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_PictureX;
+	m_PicY = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_PictureY;
 	m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
 	m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
 	m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
-	m_Action = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_HeroAction;
-	m_TimeTik = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Wait;
+	m_Action = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_HeroAction;
+	m_TimeTik = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_Wait;
 }
 
 bool Hero::ScanKeyQue()
