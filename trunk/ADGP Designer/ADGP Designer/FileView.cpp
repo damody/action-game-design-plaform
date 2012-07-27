@@ -100,17 +100,14 @@ void CFileView::OnSize(UINT nType, int cx, int cy)
 
 void CFileView::FillFileView()
 {
-	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("FakeApp 檔"), 0, 0);
+	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("專案一"), 0, 0);
 	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
-	HTREEITEM hSrc = m_wndFileView.InsertItem(_T("FakeApp 原始程式檔"), 0, 0, hRoot);
+	HTREEITEM hSrc = m_wndFileView.InsertItem(_T("davis 資料"), 0, 0, hRoot);
 
-	m_wndFileView.InsertItem(_T("FakeApp.cpp"), 1, 1, hSrc);
-	m_wndFileView.InsertItem(_T("FakeApp.rc"), 1, 1, hSrc);
-	m_wndFileView.InsertItem(_T("FakeAppDoc.cpp"), 1, 1, hSrc);
-	m_wndFileView.InsertItem(_T("FakeAppView.cpp"), 1, 1, hSrc);
-	m_wndFileView.InsertItem(_T("MainFrm.cpp"), 1, 1, hSrc);
-	m_wndFileView.InsertItem(_T("StdAfx.cpp"), 1, 1, hSrc);
+	m_wndFileView.InsertItem(_T("davis.lua"), 1, 1, hSrc);
+	m_wndFileView.InsertItem(_T("davis_0.png"), 1, 1, hSrc);
+	m_wndFileView.InsertItem(_T("davis_1.png"), 1, 1, hSrc);
 
 	HTREEITEM hInc = m_wndFileView.InsertItem(_T("FakeApp 標頭檔"), 0, 0, hRoot);
 
