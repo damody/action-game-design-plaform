@@ -13,7 +13,6 @@
 static const char *progname = NULL;
 #define WANT_LZO_MALLOC 1
 #define WANT_XMALLOC 1
-#include <examples/portab.h>
 
 #include <cstdio>
 #include "ConvStr.h"
@@ -251,9 +250,9 @@ bool ZipData::LzoCompressData( CompressLevel cl )
 	lzo_uint in_len = m_OriginalSize;
 	lzo_uint out_len = in_len + in_len / 16 + 64 + 3;
 
-	in = (lzo_bytep) xmalloc(in_len);
-	out = (lzo_bytep) xmalloc(out_len);
-	wrkmem = (lzo_voidp) xmalloc(LZO1X_1_MEM_COMPRESS);
+	in = (lzo_bytep) malloc(in_len);
+	out = (lzo_bytep) malloc(out_len);
+	wrkmem = (lzo_voidp) malloc(LZO1X_1_MEM_COMPRESS);
 
 	lzo_memcpy(in, &m_Data[0], in_len);
 	
@@ -268,9 +267,9 @@ bool ZipData::LzoCompressData( CompressLevel cl )
 		std::cout << "LzoCompressData ok\n";
 	}
 
-	lzo_free(wrkmem);
-	lzo_free(out);
-	lzo_free(in);
+	free(wrkmem);
+	free(out);
+	free(in);
 
 	return finish;
 	
@@ -285,8 +284,8 @@ bool ZipData::LzoUncompressData()
 	lzo_uint in_len = m_CompressSize;
 	lzo_uint out_len = m_OriginalSize;
 
-	in = (lzo_bytep) xmalloc(in_len);
-	out = (lzo_bytep) xmalloc(out_len);
+	in = (lzo_bytep) malloc(in_len);
+	out = (lzo_bytep) malloc(out_len);
 	
 	lzo_memcpy(in, &m_Data[0], in_len);
 
@@ -305,8 +304,8 @@ bool ZipData::LzoUncompressData()
 		std::cout << "internal error - decompression failed: " << r << std::endl;
 	}
 
-	lzo_free(in);
-	lzo_free(out);
+	free(in);
+	free(out);
 
 	return finish;
 }
