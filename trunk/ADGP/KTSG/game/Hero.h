@@ -19,7 +19,7 @@
 #include <cmath>
 
 #define KEYLIFE_AFTER_KEYUP 120
-#define FRICTION 0.2f
+#define FRICTION 0.5f
 #define WAIT_FOR_KEY_RUN 120
 namespace boost{namespace serialization{class access;}}
 struct Record
