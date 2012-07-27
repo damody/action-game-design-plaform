@@ -2,7 +2,7 @@ name="Forbidden_Tower"
 width = 40000
 space_bounding =
 {
-	{xmin=0, ymin=0, zmin=0, xmax=500, ymax=500, zmax=500},
+	{xmin=0, ymin=0, zmin=0, xmax=500, ymax=500, zmax=3000},
 	{xmin=400, ymin=0, zmin=400, xmax=900, ymax=500, zmax=900},
 }
 

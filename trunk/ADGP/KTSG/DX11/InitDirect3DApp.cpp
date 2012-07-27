@@ -48,9 +48,8 @@ void InitDirect3DApp::initApp()
 
 void InitDirect3DApp::UpdateScene(float dt)
 {
-	m_DXUT_UI->UpdataUI(dt);
 	m_SwapChain->Present(0, 0);
-	D3DApp::DrawScene(); // clear window
+	m_DXUT_UI->UpdataUI(dt);
 	PrintInfo();
 	UpdateInput();
 
@@ -112,19 +111,19 @@ void InitDirect3DApp::DrawScene()
 	m_DeviceContext->ClearRenderTargetView(RTVView1, m_ClearColor);
 	m_DeviceContext->ClearRenderTargetView(RTVView2, m_ClearColor);
 	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
-	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
-	
+	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	
 	//Draw Color Rect
-	UINT offset = 0;
-	UINT stride2 = sizeof(CRVertex);
-	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-	m_DeviceContext->IASetInputLayout(m_PLayout_ColorRect);
-	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_ColorRect, &stride2, &offset);
-	m_PTech_ColorRect->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-	m_DeviceContext->Draw((UINT)m_CRVerteices.size(),0);
-	
-
+	if (m_CRVerteices.size() > 0)
+	{
+		UINT offset = 0;
+		UINT stride2 = sizeof(CRVertex);
+		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+		m_DeviceContext->IASetInputLayout(m_PLayout_ColorRect);
+		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_ColorRect, &stride2, &offset);
+		m_PTech_ColorRect->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+		m_DeviceContext->Draw((UINT)m_CRVerteices.size(),0);
+	}
 	//Draw Background
 	if (m_Background != NULL)
 	{
@@ -145,23 +144,23 @@ void InitDirect3DApp::DrawScene()
 	}
 	
 	//Draw Hero
-	offset = 0;
-	stride2 = sizeof(ClipVertex);
-	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-	m_DeviceContext->IASetInputLayout(m_PLayout_Heroes);
-	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Heroes, &stride2, &offset);
-	for (DrawVertexGroups::iterator it = m_DrawVertexGroups.begin();it != m_DrawVertexGroups.end();++it)
+	if (m_DrawVertexGroups.size() > 0)
 	{
-		if (it->texture.get())
+		UINT offset = 0;
+		UINT stride2 = sizeof(ClipVertex);
+		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+		m_DeviceContext->IASetInputLayout(m_PLayout_Heroes);
+		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Heroes, &stride2, &offset);
+		for (DrawVertexGroups::iterator it = m_DrawVertexGroups.begin();it != m_DrawVertexGroups.end();++it)
 		{
-			m_PMap_Heroes->SetResource(*(it->texture));
-			m_PTech_Heroes->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
+			if (it->texture.get())
+			{
+				m_PMap_Heroes->SetResource(*(it->texture));
+				m_PTech_Heroes->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+				m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
+			}
 		}
 	}
-	
-	
-	
 }
 
 void InitDirect3DApp::buildPointFX()
