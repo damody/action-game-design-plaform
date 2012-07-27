@@ -133,19 +133,19 @@ int Hero::GetTextureID()
 
 void Hero::NextFrame()
 {
-	std::string tFrame = m_Frame;
-	int tFrameID = m_FrameID;
-	m_Frame = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_NextFrameName;
-	m_FrameID = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_NextFrameIndex;
+	FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
+	m_Frame = f->m_NextFrameName;
+	m_FrameID = f->m_NextFrameIndex;
+	f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
 
-	m_PicID = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_PictureID;
-	m_PicX = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_PictureX;
-	m_PicY = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_PictureY;
+	m_PicID = f->m_PictureID;
+	m_PicX = f->m_PictureX;
+	m_PicY = f->m_PictureY;
 	m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
 	m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
 	m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
-	m_Action = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_HeroAction;
-	m_TimeTik = m_HeroInfo->m_FramesMap[tFrame][tFrameID].m_Wait;
+	m_Action = f->m_HeroAction;
+	m_TimeTik = f->m_Wait;
 }
 
 bool Hero::ScanKeyQue()
@@ -241,15 +241,16 @@ bool Hero::ScanKeyQue()
 		m_Vel += dv;
 		m_Frame = nFrame;
 		m_FrameID = nFramID;
+		FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
 
-		m_PicID = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_PictureID;
-		m_PicX = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_PictureX;
-		m_PicY = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_PictureY;
+		m_PicID = f->m_PictureID;
+		m_PicX = f->m_PictureX;
+		m_PicY = f->m_PictureY;
 		m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
 		m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
 		m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
-		m_Action = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_HeroAction;
-		m_TimeTik = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Wait;
+		m_Action = f->m_HeroAction;
+		m_TimeTik = f->m_Wait;
 		return true;
 	}
 }
