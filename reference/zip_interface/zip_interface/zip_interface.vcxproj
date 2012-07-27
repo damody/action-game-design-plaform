@@ -57,7 +57,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>uafxcwd.lib;LzmaLib.lib;liblzo2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>uafxcwd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
