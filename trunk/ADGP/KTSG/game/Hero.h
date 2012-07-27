@@ -20,6 +20,7 @@
 
 #define KEYLIFE_AFTER_KEYUP 120
 #define FRICTION 0.2f
+#define WAIT_FOR_KEY_RUN 120
 namespace boost{namespace serialization{class access;}}
 struct Record
 {
@@ -66,6 +67,7 @@ private:
 	Bodys		m_Bodys;
 	float		m_Angle;
 	bool		m_FaceSide;//true 右, false 左
+	int         d_run;     //判定跑步用，右正左負
 
 	int		m_Team;//0為不分
 	int		m_MaxRecoverHP;//最大恢復血量

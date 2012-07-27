@@ -26,7 +26,7 @@ Hero::Hero()
 }
 
 Hero::Hero( std::string h ):
-hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(true),m_FrameID(0),m_Texture(0),m_PicID(0),m_PicW(0),m_PicH(0),m_PicX(0),m_PicY(0)
+hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(true),m_FrameID(0),m_Texture(0),m_PicID(0),m_PicW(0),m_PicH(0),m_PicX(0),m_PicY(0),d_run(0)
 {
 	m_HeroInfo = g_HeroInfoMG.GetHeroInfo(hero);
 	if(m_HeroInfo.get())
@@ -154,69 +154,93 @@ bool Hero::ScanKeyQue()
 	int nFramID=0;
 	Vector3 dv;
 	KeyQueue::iterator i=m_KeyQue.begin();
-	//決定按鍵動作
+	//決定方向按鍵動作
 	if(m_Action == HeroAction::STANDING)
 	{
 		while(i!=m_KeyQue.end())
 		{
 			if(i->key == CtrlKey::UP)
 			{
-				printf("Scand keyup\n");
 				nFrame = "walking";
 				m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
 			}
 			else if(i->key == CtrlKey::DOWN)
 			{
-				printf("Scand keydown\n");
 				nFrame = "walking";
 				m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
 			}
 			else if(i->key == CtrlKey::LEFT)
 			{
-				printf("Scand keyleft\n");
-				nFrame = "walking";
-				m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
+				if( g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
+					//跑
+					nFrame = "running";
+					m_Vel.x = -m_HeroInfo->m_RunningSpeed;
+				}else{
+					//走
+					nFrame = "walking";
+					m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
+					m_FaceSide = false;
+				}
 			}
 			else if(i->key == CtrlKey::RIGHT)
 			{
-				printf("Scand keyright\n");
-				nFrame = "walking";
-				m_Vel.x = m_HeroInfo->m_WalkingSpeed;
+				if( g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
+					//跑
+					nFrame = "running";
+					m_Vel.x = m_HeroInfo->m_RunningSpeed;
+				}
+				else{
+					//走
+					nFrame = "walking";
+					m_Vel.x = m_HeroInfo->m_WalkingSpeed;
+					m_FaceSide = true;
+				}
 			}
 			i++;
 		}
 	}
 	else if(m_Action == HeroAction::WALKING )
 	{
-		if(m_TimeTik < 15){
-			while(i!=m_KeyQue.end()){
-				if(i->key == CtrlKey::UP)
-				{
-					printf("Scand keyup\n");
-					nFrame = "walking";
-					m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
-				}
-				else if(i->key == CtrlKey::DOWN)
-				{
-					printf("Scand keydown\n");
-					nFrame = "walking";
-					m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
-				}
-				else if(i->key == CtrlKey::LEFT)
-				{
-					printf("Scand keyleft\n");
-					nFrame = "walking";
-					m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
-				}
-				else if(i->key == CtrlKey::RIGHT)
-				{
-					printf("Scand keyright\n");
-					nFrame = "walking";
-					m_Vel.x = m_HeroInfo->m_WalkingSpeed;
-				}
-				i++;
+		//if(m_TimeTik < 2){
+		while(i!=m_KeyQue.end()){
+			if(i->key == CtrlKey::UP)
+			{
+				if(m_TimeTik < 2) nFrame = "walking";
+				m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
 			}
+			else if(i->key == CtrlKey::DOWN)
+			{
+				if(m_TimeTik < 2) nFrame = "walking";
+				m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
+			}
+			else if(i->key == CtrlKey::LEFT)
+			{
+				if( g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
+					//跑
+					nFrame = "running";
+					m_Vel.x = -m_HeroInfo->m_RunningSpeed;
+				}
+				else{
+					if(m_TimeTik < 2) nFrame = "walking";
+					m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
+					m_FaceSide = false;
+				}
+			}
+			else if(i->key == CtrlKey::RIGHT)
+			{
+				if( g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
+					//跑
+					nFrame = "running";
+					m_Vel.x = m_HeroInfo->m_RunningSpeed;
+				}else{
+					if(m_TimeTik < 2) nFrame = "walking";
+					m_Vel.x = m_HeroInfo->m_WalkingSpeed;
+					m_FaceSide = true;
+				}
+			}
+			i++;
 		}
+		//}
 		if(!nFrame.empty() )
 		{
 			nFramID = (m_FrameID+1) % (m_HeroInfo->m_FramesMap[nFrame].size());
@@ -226,6 +250,34 @@ bool Hero::ScanKeyQue()
 			nFrame.clear();
 		}
 	}
+	else if(m_Action == HeroAction::RUNNING){
+		while(i!=m_KeyQue.end()){
+			if(i->key == CtrlKey::UP)
+			{
+				if(m_TimeTik < 2) nFrame = "running";
+				nFramID = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_NextFrameIndex;
+				m_Vel.z = m_HeroInfo->m_RunningSpeedZ;
+			}
+			else if(i->key == CtrlKey::DOWN)
+			{
+				if(m_TimeTik < 2) nFrame = "running";
+				nFramID = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_NextFrameIndex;
+				m_Vel.z = -m_HeroInfo->m_RunningSpeedZ;
+			}
+			else if(i->key == CtrlKey::LEFT  && m_FaceSide){
+				//stop running
+				nFrame = "stop_running";
+			}
+			else if(i->key == CtrlKey::RIGHT && !m_FaceSide){
+				//stop running
+				nFrame = "stop_running";
+			}
+		}
+	}
+	//決定招式按鍵動作
+
+		/*未開工*/
+
 	//清理佇列
 	i=m_KeyQue.begin();
 	while( i != m_KeyQue.end()){
@@ -374,6 +426,7 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 		else if(k.key == CtrlKey::LEFT){
+			d_run = -k.time;
 			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 				if(i->key == CtrlKey::RIGHT){
 					m_KeyQue.erase(i);
@@ -382,6 +435,7 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 		else if(k.key == CtrlKey::RIGHT){
+			d_run = k.time;
 			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 				if(i->key == CtrlKey::LEFT){
 					m_KeyQue.erase(i);
