@@ -16,6 +16,51 @@
 #include "ADGP Designer.h"
 #include <game/FrameInfo.h>
 
+
+const CString CClassView::anims[MAX_ANIMATIONS] = {
+	CString("standing"),
+	CString("walking"),
+	CString("running"),
+	CString("stop_running"),
+	CString("heavy_weapon_walk"),
+	CString("heavy_weapon_run"),
+	CString("light_weapon_stand_attack"),
+	CString("light_weapon_jump_attack"),
+	CString("light_weapon_run_attack"),
+	CString("light_weapon_dash_attack"),
+	CString("light_weaponCStringhrow"),
+	CString("heavy_weaponCStringhrow"),
+	CString("light_weapon_jumpCStringhrow"),
+	CString("heavy_weapon_jumpCStringhrow"),
+	CString("drink"),
+	CString("light_punch"),
+	CString("light_kick"),
+	CString("heavy_punch"),
+	CString("heavy_kick"),
+	CString("super_punch"),
+	CString("super_kick"),
+	CString("jump_punch"),
+	CString("jump_kick"),
+	CString("run_punch"),
+	CString("run_kick"),
+	CString("forward_fly_rowing"),
+	CString("backward_fly_rowing"),
+	CString("forward_rowing"),
+	CString("backward_rowing"),
+	CString("defend"),
+	CString("defend_punch"),
+	CString("defend_kick"),
+	CString("catching"),
+	CString("caught"),
+	CString("falling"),
+	CString("jump"),
+	CString("crouch"),
+	CString("injured"),
+	CString("forward_lying"),
+	CString("backward_lying"),
+	CString("unique_skill")
+};
+
 class CClassViewMenuButton : public CMFCToolBarMenuButton
 {
 	friend class CClassView;
@@ -60,13 +105,17 @@ BEGIN_MESSAGE_MAP(CClassView, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_CONTEXTMENU()
-	ON_COMMAND(ID_CLASS_ADD_MEMBER_FUNCTION, OnClassAddMemberFunction)
-	ON_COMMAND(ID_CLASS_ADD_MEMBER_VARIABLE, OnClassAddMemberVariable)
-	ON_COMMAND(ID_CLASS_DEFINITION, OnClassDefinition)
-	ON_COMMAND(ID_CLASS_PROPERTIES, OnClassProperties)
+	ON_COMMAND(ID_ANIMATION_ADD, OnAnimationAdd)
+	ON_COMMAND(ID_ANIMATION_DELETE, OnAnimationDelete)
+	ON_COMMAND(ID_ANIMATION_RENAME, OnAnimationRename)
+	ON_COMMAND(ID_FRAME_ADD, OnFrameAdd)
+	ON_COMMAND(ID_FRAME_DELETE, OnFrameDelete)
+	ON_COMMAND(ID_FRAME_RENAME, OnFrameRename)
+	ON_COMMAND(ID_PROPERTY_VIEW, OnPropertyView)
 	ON_COMMAND(ID_NEW_FOLDER, OnNewFolder)
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
+	ON_WM_LBUTTONUP()
 	ON_COMMAND_RANGE(ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnSort)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnUpdateSort)
 END_MESSAGE_MAP()
@@ -83,13 +132,15 @@ int CClassView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	rectDummy.SetRectEmpty();
 
 	// 建立檢視:
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS | TVS_EDITLABELS | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
 	if (!m_wndClassView.Create(dwViewStyle, rectDummy, this, 2))
 	{
 		TRACE0("無法建立 [類別檢視]\n");
 		return -1;      // 無法建立
 	}
+
+	m_wndClassView.SetOwner(this);
 
 	// 載入影像:
 	m_wndToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_SORT);
@@ -134,7 +185,6 @@ void CClassView::OnSize(UINT nType, int cx, int cy)
 
 void CClassView::FillClassView()
 {
-	FrameInfo fi;
 	HTREEITEM hRoot = m_wndClassView.InsertItem(_T("人名"), 0, 0);
 	m_wndClassView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
@@ -167,8 +217,6 @@ void CClassView::FillClassView()
 	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
 	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
 	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-
-	m_wndClassView.Expand(hRoot, TVE_EXPAND);
 
 	hClass = m_wndClassView.InsertItem(_T("walking"), 1, 1, hRoot);
 	hClass2 = m_wndClassView.InsertItem(_T("0"), 3, 3, hClass);
@@ -230,13 +278,24 @@ void CClassView::FillClassView()
 	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
 	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
 
+	m_wndClassView.Expand(hRoot, TVE_EXPAND);
 	m_wndClassView.Expand(hClass, TVE_EXPAND);
+	m_wndClassView.Expand(hClass2, TVE_EXPAND);
+}
+
+void CClassView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	//CDockablePane::OnLButtonDown(nFlags, point);
+
+	AfxMessageBox(_T("Click..."));
 }
 
 void CClassView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	CTreeCtrl* pWndTree = (CTreeCtrl*)&m_wndClassView;
 	ASSERT_VALID(pWndTree);
+
+	CMenu menu;
 
 	if (pWnd != pWndTree)
 	{
@@ -255,12 +314,30 @@ void CClassView::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (hTreeItem != NULL)
 		{
 			pWndTree->SelectItem(hTreeItem);
+			if(IsAnAnimation(pWndTree, hTreeItem))
+			{
+				menu.LoadMenu(IDR_POPUP_ANIMATION_EDIT);
+			}
+			else if(pWndTree->GetRootItem() == hTreeItem)
+			{
+				menu.LoadMenu(IDR_POPUP_CHARACTER_EDIT);
+			}
+			else if(IsNumber(pWndTree->GetItemText(hTreeItem)))
+			{
+				menu.LoadMenu(IDR_POPUP_FRAME_EDIT);
+			}
+			else
+			{
+				menu.LoadMenu(IDR_POPUP_OTHER_EDIT);
+			}
+		}
+		else
+		{
+			menu.LoadMenu(IDR_POPUP_SORT);
 		}
 	}
 
 	pWndTree->SetFocus();
-	CMenu menu;
-	menu.LoadMenu(IDR_POPUP_SORT);
 
 	CMenu* pSumMenu = menu.GetSubMenu(0);
 
@@ -321,24 +398,47 @@ void CClassView::OnUpdateSort(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck(pCmdUI->m_nID == m_nCurrSort);
 }
 
-void CClassView::OnClassAddMemberFunction()
+void CClassView::OnAnimationAdd()
 {
 	AfxMessageBox(_T("新增成員函式..."));
 }
 
-void CClassView::OnClassAddMemberVariable()
+void CClassView::OnAnimationRename()
+{
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	if(item!=NULL)
+	{
+		m_wndClassView.EditLabel(item);
+	}
+}
+
+void CClassView::OnAnimationDelete()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
 }
 
-void CClassView::OnClassDefinition()
+void CClassView::OnFrameAdd()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
 }
 
-void CClassView::OnClassProperties()
+void CClassView::OnFrameDelete()
 {
-	// TODO: 在此加入您的命令處理常式程式碼
+
+}
+
+void CClassView::OnFrameRename()
+{
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	if(item!=NULL)
+	{
+		m_wndClassView.EditLabel(item);
+	}
+}
+
+void CClassView::OnPropertyView()
+{
+
 }
 
 void CClassView::OnNewFolder()
@@ -393,4 +493,31 @@ void CClassView::OnChangeVisualStyle()
 
 	m_wndToolBar.CleanUpLockedImages();
 	m_wndToolBar.LoadBitmap(theApp.m_bHiColorIcons ? IDB_SORT_24 : IDR_SORT, 0, 0, TRUE /* 鎖定 */);
+}
+
+void CClassView::OnSelectItem(HTREEITEM item)
+{
+	m_wndClassView.SelectItem(item);
+	m_wndClassView.SetFocus();
+}
+
+BOOL CClassView::IsAnAnimation(CTreeCtrl* treeCtrl, HTREEITEM item)
+{
+	CString caption = treeCtrl->GetItemText(item);
+	for(unsigned int i=0;i<MAX_ANIMATIONS;i++)
+	{
+		if(anims[i].Compare(caption) == 0)
+			return TRUE;
+	}
+
+	return FALSE;
+}
+
+BOOL CClassView::IsNumber( CString str )
+{
+	for(int i=0;i<str.GetLength();i++)
+		if(str.GetAt(i) > '9' || str.GetAt(i) < '0')
+			return FALSE;
+
+	return TRUE;
 }

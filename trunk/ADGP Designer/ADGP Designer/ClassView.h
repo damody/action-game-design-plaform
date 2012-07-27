@@ -13,6 +13,8 @@
 
 #include "ViewTree.h"
 
+#define MAX_ANIMATIONS 41
+
 class CClassToolBar : public CMFCToolBar
 {
 	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler)
@@ -31,14 +33,18 @@ public:
 
 	void AdjustLayout();
 	void OnChangeVisualStyle();
+	void OnSelectItem(HTREEITEM item);
 
 protected:
+	static const CString anims[MAX_ANIMATIONS];
 	CClassToolBar m_wndToolBar;
 	CViewTree m_wndClassView;
 	CImageList m_ClassViewImages;
 	UINT m_nCurrSort;
 
 	void FillClassView();
+	static BOOL IsAnAnimation(CTreeCtrl* treeCtrl, HTREEITEM item);
+	static BOOL IsNumber(CString str);
 
 // ÂÐ¼g
 public:
@@ -47,11 +53,15 @@ public:
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	afx_msg void OnClassAddMemberFunction();
-	afx_msg void OnClassAddMemberVariable();
-	afx_msg void OnClassDefinition();
-	afx_msg void OnClassProperties();
+	afx_msg void OnAnimationAdd();
+	afx_msg void OnAnimationDelete();
+	afx_msg void OnAnimationRename();
+	afx_msg void OnFrameAdd();
+	afx_msg void OnFrameDelete();
+	afx_msg void OnFrameRename();
+	afx_msg void OnPropertyView();
 	afx_msg void OnNewFolder();
 	afx_msg void OnPaint();
 	afx_msg void OnSetFocus(CWnd* pOldWnd);

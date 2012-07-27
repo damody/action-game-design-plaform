@@ -23,11 +23,15 @@ public:
 // 覆寫
 protected:
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	virtual void OnBeginLabelEdit(NMHDR* pNMHDR, LRESULT* pResult);
+	virtual void OnEndLabelEdit(NMHDR* pNMHDR, LRESULT* pResult);
 
 // 程式碼實作
 public:
 	virtual ~CViewTree();
 
 protected:
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	DECLARE_MESSAGE_MAP()
 };
