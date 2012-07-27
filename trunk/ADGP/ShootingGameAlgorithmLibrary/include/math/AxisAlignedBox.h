@@ -76,28 +76,27 @@ public:
 		NEAR_LEFT_TOP = 5,
 		NEAR_RIGHT_TOP = 4
 	} CornerEnum;
-	inline AxisAlignedBox() : mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mpCorners(0)
+	inline AxisAlignedBox() :mExtent(EXTENT_FINITE), mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mpCorners(0)
 	{
 		// Default to a null box 
 		setMinimum( -0.5, -0.5, -0.5 );
 		setMaximum( 0.5, 0.5, 0.5 );
-		mExtent = EXTENT_NULL;
 	}
-	inline AxisAlignedBox(Extent e) : mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mpCorners(0)
+	inline AxisAlignedBox(Extent e) :mExtent(EXTENT_FINITE), mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mpCorners(0)
 	{
 		setMinimum( -0.5, -0.5, -0.5 );
 		setMaximum( 0.5, 0.5, 0.5 );
 		mExtent = e;
 	}
 	
-	inline AxisAlignedBox( const Vector3& min, const Vector3& max ) : mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mpCorners(0)
+	inline AxisAlignedBox( const Vector3& min, const Vector3& max ) :mExtent(EXTENT_FINITE), mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mpCorners(0)
 	{
 		setExtents( min, max );
 	}
 
 	inline AxisAlignedBox(
 		float mx, float my, float mz,
-		float Mx, float My, float Mz ) : mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mpCorners(0)
+		float Mx, float My, float Mz ) :mExtent(EXTENT_FINITE), mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mpCorners(0)
 	{
 		setExtents( mx, my, mz, Mx, My, Mz );
 	}
