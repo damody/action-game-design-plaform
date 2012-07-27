@@ -1,17 +1,19 @@
 
 #include "ZipData.h"
 #include <auto_link_zlib.hpp>
+#include <auto_link_lzma.hpp>
+#include <auto_link_lzo.hpp>
 #include <zlib.h>
 
 #include <Types.h>
 #include <LzmaLib.h>
 
-#include "lzo\lzoconf.h"
-#include "lzo\lzo1x.h"
+#include <lzo\lzoconf.h>
+#include <lzo\lzo1x.h>
 static const char *progname = NULL;
 #define WANT_LZO_MALLOC 1
 #define WANT_XMALLOC 1
-#include "examples/portab.h"
+#include <examples/portab.h>
 
 #include <cstdio>
 #include "ConvStr.h"
