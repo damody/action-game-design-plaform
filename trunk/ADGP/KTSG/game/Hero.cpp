@@ -219,12 +219,7 @@ bool Hero::ScanKeyQue()
 		}
 		if(!nFrame.empty() )
 		{
-			//printf("size:%d\n",m_HeroInfo->m_FramesMap[nFrame].size());
 			nFramID = (m_FrameID+1) % (m_HeroInfo->m_FramesMap[nFrame].size());
-			/*if(nFramID == 1) printf("1\n");
-			else if(nFramID == 2) printf("2\n");
-			else if(nFramID == 3) printf("3\n");
-			else if(nFramID > 3) printf(">3\n");//*/
 		}
 		else 
 		{
@@ -234,7 +229,9 @@ bool Hero::ScanKeyQue()
 	//清理佇列
 	i=m_KeyQue.begin();
 	while( i != m_KeyQue.end()){
-		if( i->key > CtrlKey::ATK2 && g_Time - i->time > KEYLIFE_AFTER_KEYUP){
+		/*  i->key > CtrlKey::ATK2 ：特殊按鍵放開事件要處理
+		 *  i->key >=CtrlKey::DEF  ：特殊按鍵放開事件不處理 */
+		if( i->key >=CtrlKey::DEF && g_Time - i->time > KEYLIFE_AFTER_KEYUP){
 			i = m_KeyQue.erase(i);
 		}else i++;
 	}
@@ -271,6 +268,11 @@ void Hero::PushKey( KeyInfo k )
 {
 	KeyQueue::iterator i;
 
+	if(k.key >= CtrlKey::DEF_KEYUP){
+		//忽略特殊按鍵放開事件
+		return;
+	}
+	/*特殊按鍵放開
 	if(k.key == CtrlKey::ATK1_KEYUP){
 		//printf("ATK1_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
@@ -301,16 +303,6 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 	}
-	else if(k.key == CtrlKey::DOWN_KEYUP){
-		//printf("DOWN_KEYUP\n");
-		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
-			if(i->key == CtrlKey::DOWN){
-				i->key = k.key;
-				i->time= k.time;
-				break;
-			}
-		}
-	}
 	else if(k.key == CtrlKey::JUMP_KEYUP){
 		//printf("JUMP_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
@@ -320,7 +312,7 @@ void Hero::PushKey( KeyInfo k )
 				break;
 			}
 		}
-	}
+	}//特殊按鍵放開*/
 	else if(k.key == CtrlKey::LEFT_KEYUP){
 		//printf("LEFT_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
@@ -345,6 +337,16 @@ void Hero::PushKey( KeyInfo k )
 		//printf("UP_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::UP){
+				i->key = k.key;
+				i->time= k.time;
+				break;
+			}
+		}
+	}
+	else if(k.key == CtrlKey::DOWN_KEYUP){
+		//printf("DOWN_KEYUP\n");
+		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+			if(i->key == CtrlKey::DOWN){
 				i->key = k.key;
 				i->time= k.time;
 				break;
