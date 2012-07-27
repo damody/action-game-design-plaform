@@ -70,3 +70,10 @@ float* Camera::GetCPos()
 	return m_Pos;
 }
 
+Vector3 Camera::LookAt()
+{
+	return m_LookAT;
+}
+
+
+

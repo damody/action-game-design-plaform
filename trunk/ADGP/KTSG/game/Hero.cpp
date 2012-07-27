@@ -25,7 +25,8 @@ Hero::Hero()
 
 }
 
-Hero::Hero( std::string h ):hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(true)
+Hero::Hero( std::string h ):
+hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(true),m_FrameID(0),m_Texture(0),m_PicID(0),m_PicW(0),m_PicH(0),m_PicX(0),m_PicY(0)
 {
 	m_HeroInfo = g_HeroInfoMG.GetHeroInfo(hero);
 	if(m_HeroInfo.get())

@@ -40,7 +40,7 @@ void InitDirect3DApp::initApp()
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
 	//init Camera
-	m_Camera = Camera_Sptr(new Camera(0,0,0,0,0,45));
+	m_Camera = Camera_Sptr(new Camera((float)mClientWidth,0,0,0,0,45));
 	
 
 }
@@ -48,8 +48,9 @@ void InitDirect3DApp::initApp()
 
 void InitDirect3DApp::UpdateScene(float dt)
 {
-	m_SwapChain->Present(0, 0);
 	m_DXUT_UI->UpdataUI(dt);
+	m_SwapChain->Present(0, 0);
+	D3DApp::DrawScene(); // clear window
 	PrintInfo();
 	UpdateInput();
 
@@ -111,19 +112,19 @@ void InitDirect3DApp::DrawScene()
 	m_DeviceContext->ClearRenderTargetView(RTVView1, m_ClearColor);
 	m_DeviceContext->ClearRenderTargetView(RTVView2, m_ClearColor);
 	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
-	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
+	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
+	
 	
 	//Draw Color Rect
-	if (m_CRVerteices.size() > 0)
-	{
-		UINT offset = 0;
-		UINT stride2 = sizeof(CRVertex);
-		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-		m_DeviceContext->IASetInputLayout(m_PLayout_ColorRect);
-		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_ColorRect, &stride2, &offset);
-		m_PTech_ColorRect->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-		m_DeviceContext->Draw((UINT)m_CRVerteices.size(),0);
-	}
+	UINT offset = 0;
+	UINT stride2 = sizeof(CRVertex);
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	m_DeviceContext->IASetInputLayout(m_PLayout_ColorRect);
+	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_ColorRect, &stride2, &offset);
+	m_PTech_ColorRect->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+	m_DeviceContext->Draw((UINT)m_CRVerteices.size(),0);
+	
+
 	//Draw Background
 	if (m_Background != NULL)
 	{
@@ -144,23 +145,23 @@ void InitDirect3DApp::DrawScene()
 	}
 	
 	//Draw Hero
-	if (m_DrawVertexGroups.size() > 0)
+	offset = 0;
+	stride2 = sizeof(ClipVertex);
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	m_DeviceContext->IASetInputLayout(m_PLayout_Heroes);
+	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Heroes, &stride2, &offset);
+	for (DrawVertexGroups::iterator it = m_DrawVertexGroups.begin();it != m_DrawVertexGroups.end();++it)
 	{
-		UINT offset = 0;
-		UINT stride2 = sizeof(ClipVertex);
-		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-		m_DeviceContext->IASetInputLayout(m_PLayout_Heroes);
-		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Heroes, &stride2, &offset);
-		for (DrawVertexGroups::iterator it = m_DrawVertexGroups.begin();it != m_DrawVertexGroups.end();++it)
+		if (it->texture.get())
 		{
-			if (it->texture.get())
-			{
-				m_PMap_Heroes->SetResource(*(it->texture));
-				m_PTech_Heroes->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-				m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
-			}
+			m_PMap_Heroes->SetResource(*(it->texture));
+			m_PTech_Heroes->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
 		}
 	}
+	
+	
+	
 }
 
 void InitDirect3DApp::buildPointFX()
@@ -745,6 +746,13 @@ void InitDirect3DApp::TestCamera()
 
 void InitDirect3DApp::UpdateCamera()
 {
+	if(m_Player.m_Hero->Position().x >= mClientWidth && m_Player.m_Hero->Position().x <= m_Background->Width()-mClientWidth)
+	{
+		float m = m_Player.m_Hero->Position().x - m_Camera->LookAt().x;
+		m_Camera->MoveX(m*0.1f);
+	}
+
+
 	m_Heroes_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
 	m_Heroes_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 	m_Background_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);

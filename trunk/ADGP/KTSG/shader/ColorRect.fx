@@ -130,6 +130,8 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 float4 PS(GS_OUT pIn) : SV_Target
 {
 	float4 color=pIn.color;
+	if (color.a<0.5)
+		discard;
 	return color;
 }
 

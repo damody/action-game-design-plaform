@@ -9,7 +9,7 @@
 class Camera
 {
 	private:
-		Vector3 m_LookAT;//註: Shader 採用Othogonal 所以 z 不影響
+		Vector3 m_LookAT;
 		union {
 			float m_Pos[3];//極座標 p(半徑,z軸-x軸 角度, y軸-xz平面 角度)
 			struct
@@ -25,6 +25,7 @@ class Camera
 		~Camera();
 
 		//徵對Look At
+		Vector3 LookAt();
 		void SetLookAt(float xlook,float ylook,float zlook);
 		void MoveX(float index);
 		void MoveY(float index);
