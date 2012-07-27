@@ -31,6 +31,7 @@ frame =
 	default  = {},
 	standing = {},
 	walking  = {},
+	running  = {},
 	ball     = {},
 	many_punch={},
 	jump_hit = {},
@@ -203,4 +204,55 @@ frame.walking[3] =
 
 }
 
+frame.running[0] =
+{
+   pic_id = 0, pic_x = 1, pic_y = 3, state = Action.Running, wait = 45, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 36,  centery = 80,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   blood = {{scale = 1.0, x=49, y=38, value=150}},
+   body = {
+   {kind = 0, points = {{25,-19}, {25,-79}, {63,-79}, {63,-19}}, zwidth = 8}
+   }
 
+   --sound: data\003.wav
+   --wpoint:
+   --   kind: 1  x: 23  y: 53  weaponact: 23  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.running[1] =
+{
+   pic_id = 0, pic_x = 2, pic_y = 3, state = Action.Running, wait = 45, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 37,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   blood = {{scale = 1.0, x=49, y=38, value=150}},
+   body = {
+   {kind = 0, points = {{25,-19}, {25,-79}, {63,-79}, {63,-19}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 23  y: 53  weaponact: 23  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.running[2] =
+{
+   pic_id = 0, pic_x = 3, pic_y = 3, state = Action.Running, wait = 45, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 32,  centery = 78,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   blood = {{scale = 1.0, x=45, y=37, value=150}},
+   body = {
+   {kind = 0, points = {{25,-19}, {25,-79}, {63,-79}, {63,-19}}, zwidth = 8}
+   }
+
+   --sound: data\004.wav
+   --wpoint:
+   --   kind: 1  x: 26  y: 53  weaponact: 23  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}

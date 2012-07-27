@@ -269,73 +269,124 @@ void Hero::SetRecord( Record_Sptr r )
 
 void Hero::PushKey( KeyInfo k )
 {
-	m_KeyQue.push_back(k);
 	KeyQueue::iterator i;
 
 	if(k.key == CtrlKey::ATK1_KEYUP){
 		//printf("ATK1_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::ATK1){
-				m_KeyQue.erase(i);
+				i->key = k.key;
+				i->time= k.time;
 				break;
 			}
 		}
-	}else if(k.key == CtrlKey::ATK2_KEYUP){
+	}
+	else if(k.key == CtrlKey::ATK2_KEYUP){
 		//printf("ATK2_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::ATK2){
-				m_KeyQue.erase(i);
+				i->key = k.key;
+				i->time= k.time;
 				break;
 			}
 		}
-	}else if(k.key == CtrlKey::DEF_KEYUP){
+	}
+	else if(k.key == CtrlKey::DEF_KEYUP){
 		//printf("DEF_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::DEF){
-				m_KeyQue.erase(i);
+				i->key = k.key;
+				i->time= k.time;
 				break;
 			}
 		}
-	}else if(k.key == CtrlKey::DOWN_KEYUP || k.key == CtrlKey::UP){
+	}
+	else if(k.key == CtrlKey::DOWN_KEYUP){
 		//printf("DOWN_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::DOWN){
-				m_KeyQue.erase(i);
+				i->key = k.key;
+				i->time= k.time;
 				break;
 			}
 		}
-	}else if(k.key == CtrlKey::JUMP_KEYUP){
+	}
+	else if(k.key == CtrlKey::JUMP_KEYUP){
 		//printf("JUMP_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::JUMP){
-				m_KeyQue.erase(i);
+				i->key = k.key;
+				i->time= k.time;
 				break;
 			}
 		}
-	}else if(k.key == CtrlKey::LEFT_KEYUP || k.key == CtrlKey::RIGHT){
+	}
+	else if(k.key == CtrlKey::LEFT_KEYUP){
 		//printf("LEFT_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::LEFT){
-				m_KeyQue.erase(i);
+				i->key = k.key;
+				i->time= k.time;
 				break;
 			}
 		}
-	}else if(k.key == CtrlKey::RIGHT_KEYUP || k.key == CtrlKey::LEFT){
+	}
+	else if(k.key == CtrlKey::RIGHT_KEYUP){
 		//printf("RIGHT_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::RIGHT){
-				m_KeyQue.erase(i);
+				i->key = k.key;
+				i->time= k.time;
 				break;
 			}
 		}
-	}else if(k.key == CtrlKey::UP_KEYUP || k.key == CtrlKey::DOWN){
+	}
+	else if(k.key == CtrlKey::UP_KEYUP){
 		//printf("UP_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::UP){
-				m_KeyQue.erase(i);
+				i->key = k.key;
+				i->time= k.time;
 				break;
 			}
 		}
+	}
+	else{
+		m_KeyQue.push_back(k);
+		//若是上下左右，將與其相反方向的按鍵事件取消
+		if(k.key == CtrlKey::UP){
+			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+				if(i->key == CtrlKey::DOWN){
+					m_KeyQue.erase(i);
+					break;
+				}
+			}
+		}
+		else if(k.key == CtrlKey::DOWN){
+			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+				if(i->key == CtrlKey::UP){
+					m_KeyQue.erase(i);
+					break;
+				}
+			}
+		}
+		else if(k.key == CtrlKey::LEFT){
+			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+				if(i->key == CtrlKey::RIGHT){
+					m_KeyQue.erase(i);
+					break;
+				}
+			}
+		}
+		else if(k.key == CtrlKey::RIGHT){
+			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
+				if(i->key == CtrlKey::LEFT){
+					m_KeyQue.erase(i);
+					break;
+				}
+			}
+		}
+		//*/
 	}
 }
 
