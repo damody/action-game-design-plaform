@@ -14,6 +14,7 @@
 #include "ClassView.h"
 #include "Resource.h"
 #include "ADGP Designer.h"
+#include <game/FrameInfo.h>
 
 class CClassViewMenuButton : public CMFCToolBarMenuButton
 {
@@ -133,39 +134,102 @@ void CClassView::OnSize(UINT nType, int cx, int cy)
 
 void CClassView::FillClassView()
 {
-	HTREEITEM hRoot = m_wndClassView.InsertItem(_T("FakeApp 類別"), 0, 0);
+	FrameInfo fi;
+	HTREEITEM hRoot = m_wndClassView.InsertItem(_T("人名"), 0, 0);
 	m_wndClassView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
-	HTREEITEM hClass = m_wndClassView.InsertItem(_T("CFakeAboutDlg"), 1, 1, hRoot);
-	m_wndClassView.InsertItem(_T("CFakeAboutDlg()"), 3, 3, hClass);
+	HTREEITEM hClass = m_wndClassView.InsertItem(_T("standing"), 1, 1, hRoot);
+	HTREEITEM hClass2 = m_wndClassView.InsertItem(_T("0"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
+	hClass2 = m_wndClassView.InsertItem(_T("1"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
+	hClass2 = m_wndClassView.InsertItem(_T("2"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
+	hClass2 = m_wndClassView.InsertItem(_T("3"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
 
 	m_wndClassView.Expand(hRoot, TVE_EXPAND);
 
-	hClass = m_wndClassView.InsertItem(_T("CFakeApp"), 1, 1, hRoot);
-	m_wndClassView.InsertItem(_T("CFakeApp()"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("InitInstance()"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("OnAppAbout()"), 3, 3, hClass);
+	hClass = m_wndClassView.InsertItem(_T("walking"), 1, 1, hRoot);
+	hClass2 = m_wndClassView.InsertItem(_T("0"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
+	hClass2 = m_wndClassView.InsertItem(_T("1"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
+	hClass2 = m_wndClassView.InsertItem(_T("2"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
+	hClass2 = m_wndClassView.InsertItem(_T("3"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
 
-	hClass = m_wndClassView.InsertItem(_T("CFakeAppDoc"), 1, 1, hRoot);
-	m_wndClassView.InsertItem(_T("CFakeAppDoc()"), 4, 4, hClass);
-	m_wndClassView.InsertItem(_T("~CFakeAppDoc()"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("OnNewDocument()"), 3, 3, hClass);
+	hClass = m_wndClassView.InsertItem(_T("jump"), 1, 1, hRoot);
+	hClass2 = m_wndClassView.InsertItem(_T("0"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
+	hClass2 = m_wndClassView.InsertItem(_T("1"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
+	hClass2 = m_wndClassView.InsertItem(_T("2"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
+	hClass2 = m_wndClassView.InsertItem(_T("3"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
 
-	hClass = m_wndClassView.InsertItem(_T("CFakeAppView"), 1, 1, hRoot);
-	m_wndClassView.InsertItem(_T("CFakeAppView()"), 4, 4, hClass);
-	m_wndClassView.InsertItem(_T("~CFakeAppView()"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("GetDocument()"), 3, 3, hClass);
-	m_wndClassView.Expand(hClass, TVE_EXPAND);
-
-	hClass = m_wndClassView.InsertItem(_T("CFakeAppFrame"), 1, 1, hRoot);
-	m_wndClassView.InsertItem(_T("CFakeAppFrame()"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("~CFakeAppFrame()"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("m_wndMenuBar"), 6, 6, hClass);
-	m_wndClassView.InsertItem(_T("m_wndToolBar"), 6, 6, hClass);
-	m_wndClassView.InsertItem(_T("m_wndStatusBar"), 6, 6, hClass);
-
-	hClass = m_wndClassView.InsertItem(_T("Globals"), 2, 2, hRoot);
-	m_wndClassView.InsertItem(_T("theFakeApp"), 5, 5, hClass);
 	m_wndClassView.Expand(hClass, TVE_EXPAND);
 }
 
