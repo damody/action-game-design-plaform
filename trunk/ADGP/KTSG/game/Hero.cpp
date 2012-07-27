@@ -146,14 +146,18 @@ void Hero::NextFrame()
 	m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
 	m_Action = f->m_HeroAction;
 	m_TimeTik = f->m_Wait;
+	m_Vel.x +=f->m_DVX;
+	m_Vel.y +=f->m_DVY;
+	m_Vel.z +=f->m_DVZ;
 }
 
 bool Hero::ScanKeyQue()
 {
 	std::string nFrame;
 	int nFramID=0;
-	Vector3 dv;
+	//Vector3 dv;
 	KeyQueue::iterator i=m_KeyQue.begin();
+
 	//決定方向按鍵動作
 	if(m_Action == HeroAction::STANDING)
 	{
@@ -171,6 +175,7 @@ bool Hero::ScanKeyQue()
 			}
 			else if(i->key == CtrlKey::LEFT)
 			{
+				printf("d_run:%d\n",d_run);
 				if( g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
 					//跑
 					nFrame = "running";
@@ -184,6 +189,7 @@ bool Hero::ScanKeyQue()
 			}
 			else if(i->key == CtrlKey::RIGHT)
 			{
+				printf("d_run:%d\n",d_run);
 				if( g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
 					//跑
 					nFrame = "running";
@@ -215,6 +221,7 @@ bool Hero::ScanKeyQue()
 			}
 			else if(i->key == CtrlKey::LEFT)
 			{
+				printf("d_run:%d\n",d_run);
 				if( g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
 					//跑
 					nFrame = "running";
@@ -228,6 +235,7 @@ bool Hero::ScanKeyQue()
 			}
 			else if(i->key == CtrlKey::RIGHT)
 			{
+				printf("d_run:%d\n",d_run);
 				if( g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
 					//跑
 					nFrame = "running";
@@ -245,10 +253,10 @@ bool Hero::ScanKeyQue()
 		{
 			nFramID = (m_FrameID+1) % (m_HeroInfo->m_FramesMap[nFrame].size());
 		}
-		else 
+		/*else 
 		{
 			nFrame.clear();
-		}
+		}//*/
 	}
 	else if(m_Action == HeroAction::RUNNING){
 		while(i!=m_KeyQue.end()){
@@ -290,7 +298,7 @@ bool Hero::ScanKeyQue()
 	//下個影格
 	if(nFrame.empty()) return false;
 	else{
-		m_Vel += dv;
+		//m_Vel += dv;
 		m_Frame = nFrame;
 		m_FrameID = nFramID;
 		FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
@@ -303,6 +311,9 @@ bool Hero::ScanKeyQue()
 		m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
 		m_Action = f->m_HeroAction;
 		m_TimeTik = f->m_Wait;
+		m_Vel.x +=f->m_DVX;
+		m_Vel.y +=f->m_DVY;
+		m_Vel.z +=f->m_DVZ;
 		return true;
 	}
 }
@@ -427,6 +438,7 @@ void Hero::PushKey( KeyInfo k )
 		}
 		else if(k.key == CtrlKey::LEFT){
 			d_run = -k.time;
+			printf("LEFT, k.time = %d, d_run = %d, g_Time: %d\n",k.time,d_run,g_Time);
 			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 				if(i->key == CtrlKey::RIGHT){
 					m_KeyQue.erase(i);
@@ -436,6 +448,7 @@ void Hero::PushKey( KeyInfo k )
 		}
 		else if(k.key == CtrlKey::RIGHT){
 			d_run = k.time;
+			printf("LEFT, k.time = %d, d_run = %d, g_Time: %d\n",k.time,d_run,g_Time);
 			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 				if(i->key == CtrlKey::LEFT){
 					m_KeyQue.erase(i);

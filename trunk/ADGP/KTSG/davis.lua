@@ -314,7 +314,7 @@ frame.running[3] =
    --wpoint_end:
 
 }
---[[
+
 frame.stop_running[0] =
 {
    pic_id = 1, pic_x = 5, pic_y = 5, state = Action.StopRunning, wait = 45, next = {"default", 0},
@@ -323,7 +323,7 @@ frame.stop_running[0] =
    hit = {},
    blood = {{scale = 1.0, x=39, y=36, value=150}},
    body = {
-   {kind = 0, points = {{17,-25}, {17,-80}, {47,-80}, {47,-25}}, zwidth = 8}
+   {kind = 0, points = {{17,-25}, {17,-80}, {47,-80}, {47,-25}}, zwidth = 8},
    {kind = 0, points = {{45,-47}, {45,-79}, {61,-79}, {61,-47}}, zwidth = 8}
    }
 
@@ -333,4 +333,4 @@ frame.stop_running[0] =
    --wpoint_end:
 
 }
---]]--
+
