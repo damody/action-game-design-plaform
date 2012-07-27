@@ -752,5 +752,6 @@ void InitDirect3DApp::TestBackgroundSpace()
 	for(std::vector<Hero_RawPtr>::iterator it=m_Heroes.begin(); it !=m_Heroes.end() ; it++)
 	{
 		(*it)->SetPosition(m_Background->AlignmentSpace((*it)->Position()));
+		(*it)->SetPosition(m_Background->AlignmentBan((*it)->Position()));
 	}
 }

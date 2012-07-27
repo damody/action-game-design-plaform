@@ -286,67 +286,62 @@ void BackGround::BuildPoint()
 
 
 
-Vector3 BackGround::AlignmentSpace( Vector3 vIn )
+Vector3 BackGround::AlignmentSpace( Vector3 pIn )
 {
-	Vector3 vOut  = vIn;
+	Vector3 pOut  = pIn;
 	float   n = 9999;
 	for (AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ;it++)
 	{
 		bool inBox = true;
-		Vector3 temp = vIn;
+		Vector3 temp = pIn;
 		Vector3 min = it->getMinimum();
 		Vector3 max = it->getMaximum();
 		Vector3 center = it->getCenter();
 
-		if (vIn.x < min.x)
+		if (pIn.x < min.x)
 		{
 			inBox = false;
 			temp.x = min.x;
-		}else if (vIn.x >max.x)
+		}else if (pIn.x >max.x)
 		{
 			inBox = false;
 			temp.x = max.x;
 		}
 		
-		if (vIn.y < min.y)
+		if (pIn.y < min.y)
 		{
 			inBox = false;
 			temp.y = min.y;
-		}else if (vIn.y >max.y)
+		}else if (pIn.y >max.y)
 		{
 			inBox = false;
 			temp.y = max.y;
 		}
-		if (vIn.z < min.z)
+		if (pIn.z < min.z)
 		{
 			inBox = false;
 			temp.z = min.z;
-		}else if (vIn.z >max.z)
+		}else if (pIn.z >max.z)
 		{
 			inBox = false;
 			temp.z = max.z;
 		}
 
-	
-		if(center.distance(vIn) < n)
+		if(center.distance(pIn) < n)
 		{
-			n = center.distance(vIn);
-			vOut = temp;
+			n = center.distance(pIn);
+			pOut = temp;
 		}
 
 		if(inBox)
 		{
-			return vIn;
+			return pIn;
 		}
-
-		
 	}
-
-	std::cout<<vOut.x<<std::endl;
-	return vOut;
+	return pOut;
 }
 
-bool BackGround::InSpace( Vector3 vIn )
+bool BackGround::InSpace( Vector3 pIn )
 {
 	for (AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ;it++)
 	{
@@ -354,15 +349,15 @@ bool BackGround::InSpace( Vector3 vIn )
 		Vector3 min = it->getMinimum();
 		Vector3 max = it->getMaximum();
 		
-		if (vIn.x < min.x || vIn.x >max.x)
+		if (pIn.x < min.x || pIn.x >max.x)
 		{
 			inBox = false;
 		}
-		if (vIn.y < min.y || vIn.y >max.y)
+		if (pIn.y < min.y || pIn.y >max.y)
 		{
 			inBox = false;
 		}
-		if (vIn.z < min.z || vIn.z >max.z)
+		if (pIn.z < min.z || pIn.z >max.z)
 		{
 			inBox = false;
 		}
@@ -373,4 +368,69 @@ bool BackGround::InSpace( Vector3 vIn )
 		}
 	}
 	return false;
+}
+
+bool BackGround::InBan( Vector3 pIn )
+{
+	for (AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ;it++)
+	{
+		bool inBox = true;
+		Vector3 min = it->getMinimum();
+		Vector3 max = it->getMaximum();
+
+		if(pIn.x >= min.x && pIn.x <= max.x
+		&& pIn.y >= min.y && pIn.y <= max.y
+		&& pIn.z >= min.z && pIn.z <= max.z
+		){
+			return true;
+		}
+	}
+	return false;
+}
+
+Vector3 BackGround::AlignmentBan( Vector3 pIn)
+{
+	for (AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ;it++)
+	{
+		Vector3 pOut = pIn;
+		Vector3 min = it->getMinimum();
+		Vector3 max = it->getMaximum();
+
+		if(pIn.x >= min.x && pIn.x <= max.x
+		&& pIn.y >= min.y && pIn.y <= max.y
+		&& pIn.z >= min.z && pIn.z <= max.z
+		){
+			float bound=30;
+			//std::cout<<"l"<<pIn.x-min.x<<std::endl;
+			//std::cout<<(max.x-min.x)*bound<<std::endl;
+			if(pIn.x-min.x < bound)
+			{
+				pOut.x = min.x;
+			}
+			if(pIn.y-min.y < bound)
+			{
+				pOut.y = min.y;
+			}
+			if(pIn.z-min.z < bound)
+			{
+				pOut.z = min.z;
+			}
+			if(max.x-pIn.x < bound)
+			{
+				pOut.x = max.x;
+			}
+			if(max.y-pIn.y < bound)
+			{
+				pOut.y = max.y;
+			}
+			if(max.z-pIn.z < bound)
+			{
+				pOut.z = max.z;
+			}
+			return pOut;
+		}
+
+	}
+
+	return pIn;
 }
