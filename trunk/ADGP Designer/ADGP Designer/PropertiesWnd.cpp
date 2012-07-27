@@ -320,7 +320,7 @@ void CPropertiesWnd::InitPropList_Frame()
 	pProp = new CMFCPropertyGridProperty( _T("ClearKeyQueue"), (_variant_t) false, _T("是否要清掉 KeyQueue 的資料"));
 	pGroup1->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty(_T("Picture ID"), _T("0"), _T("表示用哪一張圖裡面可以顯示的動作"));
+	pProp = new CMFCPropertyGridProperty(_T("Picture ID"), (_variant_t) 0l, _T("表示用哪一張圖裡面可以顯示的動作"));
 	pProp->EnableSpinControl(TRUE, 0, 300);
 	pGroup1->AddSubItem(pProp);
 	
@@ -367,13 +367,10 @@ void CPropertiesWnd::InitPropList_Frame()
 
 	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty(_T("Direction Vector"), 0, TRUE);
 	pProp = new CMFCPropertyGridProperty(_T("DVX"), (_variant_t) 0.f, _T("X方向左右的移動向量"));
-	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pDirectionVector->AddSubItem(pProp);
 	pProp = new CMFCPropertyGridProperty(_T("DVY"), (_variant_t) 0.f, _T("Y方向左右的移動向量"));
-	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pDirectionVector->AddSubItem(pProp);
 	pProp = new CMFCPropertyGridProperty(_T("DVZ"), (_variant_t) 0.f, _T("Z方向左右的移動向量"));
-	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pDirectionVector->AddSubItem(pProp);
 	pGroup1->AddSubItem(pDirectionVector);
 
