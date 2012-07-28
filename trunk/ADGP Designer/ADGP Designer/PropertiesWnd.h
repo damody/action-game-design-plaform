@@ -32,13 +32,21 @@ public:
 
 // ÄÝ©Ê
 public:
+	static CPropertiesWnd* GetInstance(){return instance;}
+	static CMFCPropertyGridProperty* GetDefaultPropList();
+
+	HTREEITEM m_lastSelectedItem;
+
 	void SetVSDotNetLook(BOOL bSet)
 	{
 		m_wndPropList.SetVSDotNetLook(bSet);
 		m_wndPropList.SetGroupNameFullWidth(bSet);
 	}
 
+	CMFCPropertyGridCtrl* GetPropList(){return &m_wndPropList;}
+
 protected:
+	static CPropertiesWnd* instance;
 	CFont m_fntPropList;
 	CComboBox m_wndObjectCombo;
 	CPropertiesToolBar m_wndToolBar;
@@ -61,6 +69,7 @@ protected:
 	afx_msg void OnUpdateProperties2(CCmdUI* pCmdUI);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
+	afx_msg LRESULT OnPropertyChanged( __in WPARAM wparam, __in LPARAM lparam );
 
 	DECLARE_MESSAGE_MAP()
 
@@ -72,9 +81,9 @@ protected:
 	void InitPropList_CatchInfo();
 	void InitPropList_BloodInfo();
 	void SetPropListFont();
-	void AddNormalActionUcase(CMFCPropertyGridProperty* pProp);
-	void AddNormalActionDcase(CMFCPropertyGridProperty* pProp);
-	void AddPointXY(CMFCPropertyGridProperty*& pProp);
+	static void AddNormalActionUcase(CMFCPropertyGridProperty* pProp);
+	static void AddNormalActionDcase(CMFCPropertyGridProperty* pProp);
+	static void AddPointXY(CMFCPropertyGridProperty*& pProp);
 
 };
 

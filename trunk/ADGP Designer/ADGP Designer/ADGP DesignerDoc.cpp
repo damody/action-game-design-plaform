@@ -23,6 +23,9 @@
 
 #include <propkey.h>
 
+
+#include "ClassView.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -51,10 +54,7 @@ BOOL CADGPDesignerDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
-
-	// TODO: 在此加入重新初始化程式碼
-	// (SDI 文件會重用此文件)
-
+	
 	return TRUE;
 }
 

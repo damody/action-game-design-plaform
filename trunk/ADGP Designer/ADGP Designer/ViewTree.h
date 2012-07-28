@@ -20,6 +20,8 @@ class CViewTree : public CTreeCtrl
 public:
 	CViewTree();
 
+	HTREEITEM m_lastSelectedItem;
+
 // ÂÐ¼g
 protected:
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);

@@ -12,8 +12,11 @@
 #pragma once
 
 #include "ViewTree.h"
+#include "PropertiesWnd.h"
+#include <game/FrameInfo.h>
 
 #define MAX_ANIMATIONS 41
+#define MAX_ACTIONS 41
 
 class CClassToolBar : public CMFCToolBar
 {
@@ -34,17 +37,24 @@ public:
 	void AdjustLayout();
 	void OnChangeVisualStyle();
 	void OnSelectItem(HTREEITEM item);
+	CViewTree* GetViewTree();
+	CMap<HTREEITEM, HTREEITEM, FrameInfo, FrameInfo>& GetPropMap();
 
+	static CClassView* GetInstance();
+	//static CMFCPropertyGridProperty* GetDefaultPropList();
+	static BOOL IsAnAnimation(CTreeCtrl* treeCtrl, HTREEITEM item);
+	static BOOL IsNumber(CString str);
 protected:
+	static CClassView* instance;
 	static const CString anims[MAX_ANIMATIONS];
+	static const CString actionMap[MAX_ACTIONS];
 	CClassToolBar m_wndToolBar;
 	CViewTree m_wndClassView;
 	CImageList m_ClassViewImages;
 	UINT m_nCurrSort;
+	CMap<HTREEITEM, HTREEITEM, FrameInfo, FrameInfo> m_propMap;
 
 	void FillClassView();
-	static BOOL IsAnAnimation(CTreeCtrl* treeCtrl, HTREEITEM item);
-	static BOOL IsNumber(CString str);
 
 // ÂÐ¼g
 public:
@@ -68,6 +78,9 @@ protected:
 	afx_msg LRESULT OnChangeActiveTab(WPARAM, LPARAM);
 	afx_msg void OnSort(UINT id);
 	afx_msg void OnUpdateSort(CCmdUI* pCmdUI);
+public:
+	afx_msg LRESULT OnPropertyChanged( __in WPARAM wparam, __in LPARAM lparam, HTREEITEM item );
+
 
 	DECLARE_MESSAGE_MAP()
 };

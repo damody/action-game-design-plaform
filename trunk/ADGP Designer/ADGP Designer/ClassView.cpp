@@ -11,11 +11,11 @@
 
 #include "stdafx.h"
 #include "MainFrm.h"
-#include "ClassView.h"
 #include "Resource.h"
 #include "ADGP Designer.h"
-#include <game/FrameInfo.h>
+#include <comutil.h>
 
+CClassView* CClassView::instance = NULL;
 
 const CString CClassView::anims[MAX_ANIMATIONS] = {
 	CString("standing"),
@@ -28,10 +28,10 @@ const CString CClassView::anims[MAX_ANIMATIONS] = {
 	CString("light_weapon_jump_attack"),
 	CString("light_weapon_run_attack"),
 	CString("light_weapon_dash_attack"),
-	CString("light_weaponCStringhrow"),
-	CString("heavy_weaponCStringhrow"),
-	CString("light_weapon_jumpCStringhrow"),
-	CString("heavy_weapon_jumpCStringhrow"),
+	CString("light_weapon_throw"),
+	CString("heavy_weapon_throw"),
+	CString("light_weapon_jump_throw"),
+	CString("heavy_weapon_jump_throw"),
 	CString("drink"),
 	CString("light_punch"),
 	CString("light_kick"),
@@ -59,6 +59,50 @@ const CString CClassView::anims[MAX_ANIMATIONS] = {
 	CString("forward_lying"),
 	CString("backward_lying"),
 	CString("unique_skill")
+};
+
+const CString CClassView::actionMap[MAX_ACTIONS] = {
+	CString("STANDING"),
+	CString("WALKING"),
+	CString("RUNNING"),
+	CString("STOP_RUNNING"),
+	CString("HEAVY_WEAPON_WALK"),
+	CString("HEAVY_WEAPON_RUN"),
+	CString("LIGHT_WEAPON_STAND_ATTACK"),
+	CString("LIGHT_WEAPON_JUMP_ATTACK"),
+	CString("LIGHT_WEAPON_RUN_ATTACK"),
+	CString("LIGHT_WEAPON_DASH_ATTACK"),
+	CString("LIGHT_WEAPON_THROW"),
+	CString("HEAVY_WEAPON_THROW"),
+	CString("LIGHT_WEAPON_JUMP_THROW"),
+	CString("HEAVY_WEAPON_JUMP_THROW"),
+	CString("DRINK"),
+	CString("LIGHT_PUNCH"),
+	CString("LIGHT_KICK"),
+	CString("HEAVY_PUNCH"),
+	CString("HEAVY_KICK"),
+	CString("SUPER_PUNCH"),
+	CString("SUPER_KICK"),
+	CString("JUMP_PUNCH"),
+	CString("JUMP_KICK"),
+	CString("RUN_PUNCH"),
+	CString("RUN_KICK"),
+	CString("FORWARD_FLY_ROWING"),
+	CString("BACKWARD_FLY_ROWING"),
+	CString("FORWARD_ROWING"),
+	CString("BACKWARD_ROWING"),
+	CString("DEFEND"),
+	CString("DEFEND_PUNCH"),
+	CString("DEFEND_KICK"),
+	CString("CATCHING"),
+	CString("CAUGHT"),
+	CString("FALLING"),
+	CString("JUMP"),
+	CString("CROUCH"),
+	CString("INJURED"),
+	CString("FORWARD_LYING"),
+	CString("BACKWARD_LYING"),
+	CString("UNIQUE_SKILL")
 };
 
 class CClassViewMenuButton : public CMFCToolBarMenuButton
@@ -95,6 +139,8 @@ IMPLEMENT_SERIAL(CClassViewMenuButton, CMFCToolBarMenuButton, 1)
 CClassView::CClassView()
 {
 	m_nCurrSort = ID_SORTING_GROUPBYTYPE;
+
+	instance = this;
 }
 
 CClassView::~CClassView()
@@ -132,7 +178,7 @@ int CClassView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	rectDummy.SetRectEmpty();
 
 	// 建立檢視:
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS | TVS_EDITLABELS | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
 	if (!m_wndClassView.Create(dwViewStyle, rectDummy, this, 2))
 	{
@@ -188,8 +234,9 @@ void CClassView::FillClassView()
 	HTREEITEM hRoot = m_wndClassView.InsertItem(_T("人名"), 0, 0);
 	m_wndClassView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
-	HTREEITEM hClass = m_wndClassView.InsertItem(_T("standing"), 1, 1, hRoot);
+	/*HTREEITEM hClass = m_wndClassView.InsertItem(_T("standing"), 1, 1, hRoot);
 	HTREEITEM hClass2 = m_wndClassView.InsertItem(_T("0"), 3, 3, hClass);
+
 	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
 	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
 	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
@@ -280,7 +327,7 @@ void CClassView::FillClassView()
 
 	m_wndClassView.Expand(hRoot, TVE_EXPAND);
 	m_wndClassView.Expand(hClass, TVE_EXPAND);
-	m_wndClassView.Expand(hClass2, TVE_EXPAND);
+	m_wndClassView.Expand(hClass2, TVE_EXPAND);*/
 }
 
 void CClassView::OnLButtonUp(UINT nFlags, CPoint point)
@@ -303,6 +350,8 @@ void CClassView::OnContextMenu(CWnd* pWnd, CPoint point)
 		return;
 	}
 
+	HTREEITEM hTreeItem = NULL;
+
 	if (point != CPoint(-1, -1))
 	{
 		// 選取按下的項目:
@@ -310,31 +359,36 @@ void CClassView::OnContextMenu(CWnd* pWnd, CPoint point)
 		pWndTree->ScreenToClient(&ptTree);
 
 		UINT flags = 0;
-		HTREEITEM hTreeItem = pWndTree->HitTest(ptTree, &flags);
-		if (hTreeItem != NULL)
+		hTreeItem = pWndTree->HitTest(ptTree, &flags);
+	}
+	else
+	{
+		hTreeItem = pWndTree->GetSelectedItem();
+	}
+
+	if (hTreeItem != NULL)
+	{
+		pWndTree->SelectItem(hTreeItem);
+		if(IsAnAnimation(pWndTree, hTreeItem))
 		{
-			pWndTree->SelectItem(hTreeItem);
-			if(IsAnAnimation(pWndTree, hTreeItem))
-			{
-				menu.LoadMenu(IDR_POPUP_ANIMATION_EDIT);
-			}
-			else if(pWndTree->GetRootItem() == hTreeItem)
-			{
-				menu.LoadMenu(IDR_POPUP_CHARACTER_EDIT);
-			}
-			else if(IsNumber(pWndTree->GetItemText(hTreeItem)))
-			{
-				menu.LoadMenu(IDR_POPUP_FRAME_EDIT);
-			}
-			else
-			{
-				menu.LoadMenu(IDR_POPUP_OTHER_EDIT);
-			}
+			menu.LoadMenu(IDR_POPUP_ANIMATION_EDIT);
+		}
+		else if(pWndTree->GetRootItem() == hTreeItem)
+		{
+			menu.LoadMenu(IDR_POPUP_CHARACTER_EDIT);
+		}
+		else if(IsNumber(pWndTree->GetItemText(hTreeItem)))
+		{
+			menu.LoadMenu(IDR_POPUP_FRAME_EDIT);
 		}
 		else
 		{
-			menu.LoadMenu(IDR_POPUP_SORT);
+			menu.LoadMenu(IDR_POPUP_OTHER_EDIT);
 		}
+	}
+	else
+	{
+		menu.LoadMenu(IDR_POPUP_SORT);
 	}
 
 	pWndTree->SetFocus();
@@ -400,7 +454,44 @@ void CClassView::OnUpdateSort(CCmdUI* pCmdUI)
 
 void CClassView::OnAnimationAdd()
 {
-	AfxMessageBox(_T("新增成員函式..."));
+	HTREEITEM root = m_wndClassView.GetRootItem();
+	HTREEITEM item = m_wndClassView.InsertItem(_T("standing"), 1, 1, root);
+	FrameInfo fi;
+	fi.m_FrameName = std::string("standing");
+	fi.m_FrameIndex = 0;
+	fi.m_NextFrameName = fi.m_FrameName;
+	fi.m_NextFrameIndex = 0;
+	fi.m_HeroAction = HeroAction::STANDING;
+	fi.m_Wait = 1;
+	fi.m_ClearKeyQueue = false;
+	fi.m_PictureID = 1;
+	fi.m_CenterX = 0.0f;
+	fi.m_CenterY = 0.0f;
+	fi.m_PictureX = 0;
+	fi.m_PictureY = 0;
+	fi.m_Consume.m_JumpRule = 0;
+	fi.m_Consume.m_HP = 1;
+	fi.m_Consume.m_MP = 1;
+	fi.m_Consume.m_NotEnoughFrameName = fi.m_FrameName;
+	fi.m_Consume.m_NotEnoughFrame = 0;
+	fi.m_DVX = 0.0f;
+	fi.m_DVY = 0.0f;
+	fi.m_DVZ = 0.0f;
+
+	HTREEITEM hClass = m_wndClassView.InsertItem(_T("0"), 3, 3, item);
+
+	m_propMap[hClass] = fi;
+
+	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
+
+	m_wndClassView.Expand(root, TVE_EXPAND);
+	m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
+	m_wndClassView.EditLabel(item);
 }
 
 void CClassView::OnAnimationRename()
@@ -408,32 +499,96 @@ void CClassView::OnAnimationRename()
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
 	if(item!=NULL)
 	{
+		m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
 		m_wndClassView.EditLabel(item);
 	}
 }
 
 void CClassView::OnAnimationDelete()
 {
-	// TODO: 在此加入您的命令處理常式程式碼
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	if(item!=NULL)
+	{
+		HTREEITEM hNextItem;
+		HTREEITEM hChildItem = m_wndClassView.GetChildItem(item);
+
+		while (hChildItem != NULL)
+		{
+			hNextItem = m_wndClassView.GetNextItem(hChildItem, TVGN_NEXT);
+			m_propMap.RemoveKey(hChildItem);
+			m_wndClassView.DeleteItem(hChildItem);
+			hChildItem = hNextItem;
+		}
+
+		m_wndClassView.DeleteItem(item);
+	}
 }
 
 void CClassView::OnFrameAdd()
 {
-	// TODO: 在此加入您的命令處理常式程式碼
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	
+	if(item != NULL)
+	{
+		CT2CA pszConvertedAnsiString (m_wndClassView.GetItemText(item));
+		std::string str2(pszConvertedAnsiString);
+
+		FrameInfo fi;
+		fi.m_FrameName = str2;
+		fi.m_FrameIndex = 0;
+		fi.m_NextFrameName = fi.m_FrameName;
+		fi.m_NextFrameIndex = 0;
+		fi.m_HeroAction = HeroAction::STANDING;
+		fi.m_Wait = 1;
+		fi.m_ClearKeyQueue = false;
+		fi.m_PictureID = 1;
+		fi.m_CenterX = 0.0f;
+		fi.m_CenterY = 0.0f;
+		fi.m_PictureX = 0;
+		fi.m_PictureY = 0;
+		fi.m_Consume.m_JumpRule = 0;
+		fi.m_Consume.m_HP = 1;
+		fi.m_Consume.m_MP = 1;
+		fi.m_Consume.m_NotEnoughFrameName = fi.m_FrameName;
+		fi.m_Consume.m_NotEnoughFrame = 0;
+		fi.m_DVX = 0.0f;
+		fi.m_DVY = 0.0f;
+		fi.m_DVZ = 0.0f;
+
+		HTREEITEM hClass = m_wndClassView.InsertItem(_T("99"), 3, 3, item);
+
+		m_propMap[hClass] = fi;
+
+		m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
+
+		m_wndClassView.Expand(item, TVE_EXPAND);
+		m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
+		m_wndClassView.EditLabel(hClass);
+	}
 }
 
 void CClassView::OnFrameDelete()
 {
-
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	if(item!=NULL)
+	{
+		m_wndClassView.DeleteItem(item);
+	}
 }
 
 void CClassView::OnFrameRename()
 {
-	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	/*HTREEITEM item = m_wndClassView.GetSelectedItem();
 	if(item!=NULL)
 	{
+		m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
 		m_wndClassView.EditLabel(item);
-	}
+	}*/
 }
 
 void CClassView::OnPropertyView()
@@ -497,20 +652,83 @@ void CClassView::OnChangeVisualStyle()
 
 void CClassView::OnSelectItem(HTREEITEM item)
 {
+	CMFCPropertyGridCtrl* ctrl = CPropertiesWnd::GetInstance()->GetPropList();
+	ctrl->RemoveAll();
+	ctrl->RedrawWindow();
+	((CMainFrame*)(this->GetParentFrame()))->m_wndProperties.RedrawWindow();
+
+	if(IsNumber(m_wndClassView.GetItemText(item)))
+	{
+		ctrl->AddProperty(CPropertiesWnd::GetInstance()->GetDefaultPropList());
+
+		CMFCPropertyGridProperty* propRoot = ctrl->GetProperty(0);
+
+		VARIANT varFloat;
+		varFloat.vt = VT_R4;
+		varFloat.fltVal = 0.0f;
+
+		VARIANT varInt;
+		varInt.vt = VT_INT;
+		varInt.intVal = m_propMap[item].m_FrameIndex;
+
+		VARIANT varBool;
+		varBool.vt = VT_BOOL;
+		varBool.boolVal = false;
+
+		propRoot->GetSubItem(0)->SetValue(CString(m_propMap[item].m_FrameName.c_str()));
+		propRoot->GetSubItem(1)->SetValue(varInt);
+		propRoot->GetSubItem(2)->SetValue(CString(m_propMap[item].m_NextFrameName.c_str()));
+		varInt.intVal = m_propMap[item].m_NextFrameIndex;
+		propRoot->GetSubItem(3)->SetValue(varInt);
+		propRoot->GetSubItem(4)->SetValue(CString(actionMap[m_propMap[item].m_HeroAction]));
+		varInt.intVal = m_propMap[item].m_Wait;
+		propRoot->GetSubItem(5)->SetValue(varInt);
+		varBool.boolVal = m_propMap[item].m_ClearKeyQueue;
+		propRoot->GetSubItem(6)->SetValue(varBool);
+		varInt.intVal = m_propMap[item].m_PictureID;
+		propRoot->GetSubItem(7)->SetValue(varInt);
+		varFloat.fltVal = m_propMap[item].m_CenterX;
+		propRoot->GetSubItem(8)->GetSubItem(0)->SetValue(varFloat);
+		varFloat.fltVal = m_propMap[item].m_CenterY;
+		propRoot->GetSubItem(8)->GetSubItem(1)->SetValue(varFloat);
+		varInt.intVal = m_propMap[item].m_PictureX;
+		propRoot->GetSubItem(9)->GetSubItem(0)->SetValue(varInt);
+		varInt.intVal = m_propMap[item].m_PictureY;
+		propRoot->GetSubItem(9)->GetSubItem(1)->SetValue(varInt);
+		varBool.boolVal = m_propMap[item].m_Consume.m_JumpRule;
+		propRoot->GetSubItem(10)->GetSubItem(0)->SetValue(varBool);
+		varInt.intVal = m_propMap[item].m_Consume.m_HP;
+		propRoot->GetSubItem(10)->GetSubItem(1)->SetValue(varInt);
+		varInt.intVal = m_propMap[item].m_Consume.m_MP;
+		propRoot->GetSubItem(10)->GetSubItem(2)->SetValue(varInt);
+		propRoot->GetSubItem(10)->GetSubItem(3)->SetValue(CString(m_propMap[item].m_Consume.m_NotEnoughFrameName.c_str()));
+		varInt.intVal = m_propMap[item].m_Consume.m_NotEnoughFrame;
+		propRoot->GetSubItem(10)->GetSubItem(4)->SetValue(varInt);
+		varFloat.fltVal = m_propMap[item].m_DVX;
+		propRoot->GetSubItem(11)->GetSubItem(0)->SetValue(varFloat);
+		varFloat.fltVal = m_propMap[item].m_DVY;
+		propRoot->GetSubItem(11)->GetSubItem(1)->SetValue(varFloat);
+		varFloat.fltVal = m_propMap[item].m_DVZ;
+		propRoot->GetSubItem(11)->GetSubItem(2)->SetValue(varFloat);
+	}
+
+	CPropertiesWnd::GetInstance()->m_lastSelectedItem = item;
+	m_wndClassView.m_lastSelectedItem = item;
+
 	m_wndClassView.SelectItem(item);
 	m_wndClassView.SetFocus();
 }
 
 BOOL CClassView::IsAnAnimation(CTreeCtrl* treeCtrl, HTREEITEM item)
 {
-	CString caption = treeCtrl->GetItemText(item);
+	/*CString caption = treeCtrl->GetItemText(item);
 	for(unsigned int i=0;i<MAX_ANIMATIONS;i++)
 	{
 		if(anims[i].Compare(caption) == 0)
 			return TRUE;
-	}
+	}*/
 
-	return FALSE;
+	return treeCtrl->GetParentItem(item) == treeCtrl->GetRootItem();
 }
 
 BOOL CClassView::IsNumber( CString str )
@@ -521,3 +739,339 @@ BOOL CClassView::IsNumber( CString str )
 
 	return TRUE;
 }
+
+CClassView* CClassView::GetInstance()
+{
+	return instance;
+}
+
+CViewTree* CClassView::GetViewTree()
+{
+	return &m_wndClassView;
+}
+
+LRESULT CClassView::OnPropertyChanged( __in WPARAM wparam, __in LPARAM lparam, HTREEITEM item )
+{
+	CMFCPropertyGridProperty* prop = (CMFCPropertyGridProperty*)lparam;
+
+	if(item != NULL)
+	{
+		FrameInfo& fi = m_propMap[item];
+		CString caption = prop->GetName();
+		COleVariant var = prop->GetValue();
+
+		if(caption.Compare(_T("Frame Name")) == 0)
+		{
+			fi.m_FrameName = std::string(_com_util::ConvertBSTRToString(var.bstrVal));
+		}
+		else if(caption.Compare(_T("Frame Index")) == 0)
+		{
+			fi.m_FrameIndex = var.intVal;
+		}
+		else if(caption.Compare(_T("Next Frame Name")) == 0)
+		{
+			fi.m_NextFrameName = std::string(_com_util::ConvertBSTRToString(var.bstrVal));
+		}
+		else if(caption.Compare(_T("Next Frame Index")) == 0)
+		{
+			fi.m_NextFrameIndex = var.intVal;
+		}
+		else if(caption.Compare(_T("Hero Action")) == 0)
+		{
+			for(int i=0;i<MAX_ACTIONS;i++)
+			{
+				if(actionMap[i].Compare(var.bstrVal) == 0)
+				{
+					switch(i)
+					{
+					case 0:
+						fi.m_HeroAction = HeroAction::STANDING;
+						break;
+					case 1:
+						fi.m_HeroAction = HeroAction::WALKING;
+						break;
+					case 2:
+						fi.m_HeroAction = HeroAction::RUNNING;
+						break;
+					case 3:
+						fi.m_HeroAction = HeroAction::STOP_RUNNING;
+						break;
+					case 4:
+						fi.m_HeroAction = HeroAction::HEAVY_WEAPON_WALK;
+						break;
+					case 5:
+						fi.m_HeroAction = HeroAction::HEAVY_WEAPON_RUN;
+						break;
+					case 6:
+						fi.m_HeroAction = HeroAction::LIGHT_WEAPON_STAND_ATTACK;
+						break;
+					case 7:
+						fi.m_HeroAction = HeroAction::LIGHT_WEAPON_JUMP_ATTACK;
+						break;
+					case 8:
+						fi.m_HeroAction = HeroAction::LIGHT_WEAPON_RUN_ATTACK;
+						break;
+					case 9:
+						fi.m_HeroAction = HeroAction::LIGHT_WEAPON_DASH_ATTACK;
+						break;
+					case 10:
+						fi.m_HeroAction = HeroAction::LIGHT_WEAPON_THROW;
+						break;
+					case 11:
+						fi.m_HeroAction = HeroAction::HEAVY_WEAPON_THROW;
+						break;
+					case 12:
+						fi.m_HeroAction = HeroAction::LIGHT_WEAPON_JUMP_THROW;
+						break;
+					case 13:
+						fi.m_HeroAction = HeroAction::HEAVY_WEAPON_JUMP_THROW;
+						break;
+					case 14:
+						fi.m_HeroAction = HeroAction::DRINK;
+						break;
+					case 15:
+						fi.m_HeroAction = HeroAction::LIGHT_PUNCH;
+						break;
+					case 16:
+						fi.m_HeroAction = HeroAction::LIGHT_KICK;
+						break;
+					case 17:
+						fi.m_HeroAction = HeroAction::HEAVY_PUNCH;
+						break;
+					case 18:
+						fi.m_HeroAction = HeroAction::HEAVY_KICK;
+						break;
+					case 19:
+						fi.m_HeroAction = HeroAction::SUPER_PUNCH;
+						break;
+					case 20:
+						fi.m_HeroAction = HeroAction::SUPER_KICK;
+						break;
+					case 21:
+						fi.m_HeroAction = HeroAction::JUMP_PUNCH;
+						break;
+					case 22:
+						fi.m_HeroAction = HeroAction::JUMP_KICK;
+						break;
+					case 23:
+						fi.m_HeroAction = HeroAction::RUN_PUNCH;
+						break;
+					case 24:
+						fi.m_HeroAction = HeroAction::RUN_KICK;
+						break;
+					case 25:
+						fi.m_HeroAction = HeroAction::FORWARD_FLY_ROWING;
+						break;
+					case 26:
+						fi.m_HeroAction = HeroAction::BACKWARD_FLY_ROWING;
+						break;
+					case 27:
+						fi.m_HeroAction = HeroAction::FORWARD_ROWING;
+						break;
+					case 28:
+						fi.m_HeroAction = HeroAction::BACKWARD_ROWING;
+						break;
+					case 29:
+						fi.m_HeroAction = HeroAction::DEFEND;
+						break;
+					case 30:
+						fi.m_HeroAction = HeroAction::DEFEND_PUNCH;
+						break;
+					case 31:
+						fi.m_HeroAction = HeroAction::DEFEND_KICK;
+						break;
+					case 32:
+						fi.m_HeroAction = HeroAction::CATCHING;
+						break;
+					case 33:
+						fi.m_HeroAction = HeroAction::CAUGHT;
+						break;
+					case 34:
+						fi.m_HeroAction = HeroAction::FALLING;
+						break;
+					case 35:
+						fi.m_HeroAction = HeroAction::JUMP;
+						break;
+					case 36:
+						fi.m_HeroAction = HeroAction::CROUCH;
+						break;
+					case 37:
+						fi.m_HeroAction = HeroAction::INJURED;
+						break;
+					case 38:
+						fi.m_HeroAction = HeroAction::FORWARD_LYING;
+						break;
+					case 39:
+						fi.m_HeroAction = HeroAction::BACKWARD_LYING;
+						break;
+					case 40:
+						fi.m_HeroAction = HeroAction::UNIQUE_SKILL;
+						break;
+					}
+					break;
+				}
+			}
+		}
+		else if(caption.Compare(_T("Wait")) == 0)
+		{
+			fi.m_Wait = var.intVal;
+		}
+		else if(caption.Compare(_T("ClearKeyQueue")) == 0)
+		{
+			if(var.boolVal == -1)
+				fi.m_ClearKeyQueue = true;
+			else
+				fi.m_ClearKeyQueue = false;
+		}
+		else if(caption.Compare(_T("Picture ID")) == 0)
+		{
+			fi.m_PictureID = var.intVal;
+		}
+		else if(caption.Compare(_T("Center X Offset")) == 0)
+		{
+			fi.m_CenterX = var.fltVal;
+		}
+		else if(caption.Compare(_T("Center Y Offset")) == 0)
+		{
+			fi.m_CenterY = var.fltVal;
+		}
+		else if(caption.Compare(_T("Picture X Offset")) == 0)
+		{
+			fi.m_PictureX = var.intVal;
+		}
+		else if(caption.Compare(_T("Picture Y Offset")) == 0)
+		{
+			fi.m_PictureY = var.intVal;
+		}
+		else if(caption.Compare(_T("JumpRule")) == 0)
+		{
+			fi.m_Consume.m_JumpRule = var.intVal;
+		}
+		else if(caption.Compare(_T("HP")) == 0)
+		{
+			fi.m_Consume.m_HP = var.intVal;
+		}
+		else if(caption.Compare(_T("MP")) == 0)
+		{
+			fi.m_Consume.m_MP = var.intVal;
+		}
+		else if(caption.Compare(_T("Not Enough Frame Name")) == 0)
+		{
+			fi.m_Consume.m_NotEnoughFrameName = std::string(_com_util::ConvertBSTRToString(var.bstrVal));
+		}
+		else if(caption.Compare(_T("Not Next Frame Index")) == 0)
+		{
+			fi.m_Consume.m_NotEnoughFrame = var.intVal;
+		}
+		else if(caption.Compare(_T("DVX")) == 0)
+		{
+			fi.m_DVX = var.fltVal;
+		}
+		else if(caption.Compare(_T("DVY")) == 0)
+		{
+			fi.m_DVY = var.fltVal;
+		}
+		else if(caption.Compare(_T("DVZ")) == 0)
+		{
+			fi.m_DVZ = var.fltVal;
+		}
+	}
+
+	return 0; //Not used
+}
+
+CMap<HTREEITEM, HTREEITEM, FrameInfo, FrameInfo>& CClassView::GetPropMap()
+{
+	return m_propMap;
+}
+
+/*
+CMFCPropertyGridProperty* CClassView::GetDefaultPropList()
+{
+	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("主要屬性"));
+
+	CMFCPropertyGridProperty* pProp;
+	pProp = new CMFCPropertyGridProperty(_T("Frame Name"), _T("standing"), _T("表示這個 Frame 的名字"));
+	AddNormalActionDcase(pProp);
+	pGroup1->AddSubItem(pProp);
+
+	pProp = new CMFCPropertyGridProperty(_T("Frame Index"), (_variant_t) 0l, _T("表示在這個 Frame 的哪一格"));
+	pProp->AllowEdit(FALSE);
+	pGroup1->AddSubItem(pProp);
+
+	pProp = new CMFCPropertyGridProperty(_T("Next Frame Name"), _T("standing"), _T("表示跳到哪一個 Frame"));
+	AddNormalActionDcase(pProp);
+	pGroup1->AddSubItem(pProp);
+
+	pProp = new CMFCPropertyGridProperty(_T("Next Frame Index"), (_variant_t) 0l, _T("表示跳到 Frame 的哪一格"));
+	pProp->EnableSpinControl(TRUE, 0, 300);
+	pGroup1->AddSubItem(pProp);
+
+	pProp = new CMFCPropertyGridProperty(_T("Hero Action"), _T("STANDING"), _T("表示動作的狀態"));
+	AddNormalActionUcase(pProp);
+	pProp->AllowEdit(TRUE);
+	pGroup1->AddSubItem(pProp);
+
+	pProp = new CMFCPropertyGridProperty( _T("Wait"), (_variant_t) 0l, _T("這個 Frame 執行圈數，一圈1/60秒"));
+	pProp->EnableSpinControl(TRUE, 0, 10000);
+	pGroup1->AddSubItem(pProp);
+
+	pProp = new CMFCPropertyGridProperty( _T("ClearKeyQueue"), (_variant_t) false, _T("是否要清掉 KeyQueue 的資料"));
+	pGroup1->AddSubItem(pProp);
+
+	pProp = new CMFCPropertyGridProperty(_T("Picture ID"), (_variant_t) 0l, _T("表示用哪一張圖裡面可以顯示的動作"));
+	pProp->EnableSpinControl(TRUE, 0, 300);
+	pGroup1->AddSubItem(pProp);
+
+	CMFCPropertyGridProperty* pCenterSize = new CMFCPropertyGridProperty(_T("Center Offset"), 0, TRUE);
+	pProp = new CMFCPropertyGridProperty(_T("Center X Offset"), (_variant_t) 0l, _T("人物X方向偏移修正量"));
+	pProp->EnableSpinControl(TRUE, -1000, 1000);
+	pCenterSize->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty( _T("Center Y Offset"), (_variant_t) 0l, _T("人物Y方向偏移修正量"));
+	pProp->EnableSpinControl(TRUE, -1000, 1000);
+	pCenterSize->AddSubItem(pProp);
+	pGroup1->AddSubItem(pCenterSize);
+
+	CMFCPropertyGridProperty* pPicturePos = new CMFCPropertyGridProperty(_T("Picture Offset"), 0, TRUE);
+	pProp = new CMFCPropertyGridProperty(_T("Picture X Offset"), (_variant_t) 0l, _T("人物圖片X偏移量"));
+	pProp->EnableSpinControl(TRUE, -1000, 1000);
+	pPicturePos->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty( _T("Picture Y Offset"), (_variant_t) 0l, _T("人物圖片Y偏移量"));
+	pProp->EnableSpinControl(TRUE, -1000, 1000);
+	pPicturePos->AddSubItem(pProp);
+	pGroup1->AddSubItem(pPicturePos);
+
+	CMFCPropertyGridProperty* pConsumePos = new CMFCPropertyGridProperty(_T("Consume"), 0, TRUE);
+	pProp = new CMFCPropertyGridProperty(_T("JumpRule"), (_variant_t) false, _T("False 時只對next有用，True 時只對 hitdata有用"));
+	pConsumePos->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty( _T("HP"), (_variant_t) 0l, _T("要消耗的 hp"));
+	pProp->EnableSpinControl(TRUE, -1000, 1000);
+	pConsumePos->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty( _T("MP"), (_variant_t) 0l, _T("要消耗的 mp"));
+	pProp->EnableSpinControl(TRUE, -1000, 1000);
+	pConsumePos->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty( _T("Enough Frame Name"), _T("standing"), _T("夠消耗的話跳到該 Frame"));
+	AddNormalActionDcase(pProp);
+	pConsumePos->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("Enough Frame Index"), (_variant_t) 0l, _T("夠的話跳到該格"));
+	pProp->EnableSpinControl(TRUE, 0, 300);
+	pConsumePos->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty( _T("Not Enough Frame Name"), _T("standing"), _T("不夠消耗的話跳到該 Frame"));
+	AddNormalActionDcase(pProp);
+	pConsumePos->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("Not Next Frame Index"), (_variant_t) 0l, _T("不夠的話跳到該格"));
+	pProp->EnableSpinControl(TRUE, 0, 300);
+	pConsumePos->AddSubItem(pProp);
+	pGroup1->AddSubItem(pConsumePos);
+
+	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty(_T("Direction Vector"), 0, TRUE);
+	pProp = new CMFCPropertyGridProperty(_T("DVX"), (_variant_t) 0.f, _T("X方向左右的移動向量"));
+	pDirectionVector->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("DVY"), (_variant_t) 0.f, _T("Y方向左右的移動向量"));
+	pDirectionVector->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("DVZ"), (_variant_t) 0.f, _T("Z方向左右的移動向量"));
+	pDirectionVector->AddSubItem(pProp);
+	pGroup1->AddSubItem(pDirectionVector);
+
+	return pGroup1;
+}*/

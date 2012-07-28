@@ -49,7 +49,7 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:  // 控制列內嵌的成員
+public:  // 控制列內嵌的成員
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;
 	CMFCToolBarImages m_PanelImages;

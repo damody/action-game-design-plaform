@@ -25,6 +25,7 @@ static char THIS_FILE[] = __FILE__;
 
 CViewTree::CViewTree()
 {
+	m_lastSelectedItem = NULL;
 }
 
 CViewTree::~CViewTree()
@@ -68,7 +69,29 @@ void CViewTree::OnBeginLabelEdit( NMHDR* pNMHDR, LRESULT* pResult )
 
 void CViewTree::OnEndLabelEdit( NMHDR* pNMHDR, LRESULT* pResult )
 {
-	*pResult = TRUE;
+	*pResult = 1;
+
+	LPNMTVDISPINFO pTVDispInfo = reinterpret_cast<LPNMTVDISPINFO>(pNMHDR); 
+	HTREEITEM item = pTVDispInfo->item.hItem;
+
+	CString str(pTVDispInfo->item.pszText);
+	CT2CA pszConvertedAnsiString (str);
+	std::string str2(pszConvertedAnsiString);
+
+	if(this->GetRootItem() != item && m_lastSelectedItem == item)
+	{
+		HTREEITEM hNextItem;
+		HTREEITEM hChildItem = this->GetChildItem(item);
+
+		while (hChildItem != NULL)
+		{
+			hNextItem = this->GetNextItem(hChildItem, TVGN_NEXT);
+			CClassView::GetInstance()->GetPropMap()[hChildItem].m_FrameName = str2;
+			hChildItem = hNextItem;
+		}
+	}
+
+	this->ModifyStyle(TVS_EDITLABELS, 0);
 }
 
 void CViewTree::OnLButtonDown(UINT nFlags, CPoint point)
@@ -100,7 +123,41 @@ void CViewTree::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
 		HTREEITEM item = GetSelectedItem();
 		if(item != NULL)
 		{
+			if(CClassView::IsAnAnimation(this, item))
+			{
+				this->ModifyStyle(0, TVS_EDITLABELS);
+			}
+			else if(this->GetRootItem() == item)
+			{
+				this->ModifyStyle(0, TVS_EDITLABELS);
+			}
 			EditLabel(item);
+		}
+	}
+	else if(nChar == VK_DELETE)
+	{
+		HTREEITEM item = GetSelectedItem();
+		if(item != NULL)
+		{
+			if(CClassView::IsAnAnimation(this, item))
+			{
+				HTREEITEM hNextItem;
+				HTREEITEM hChildItem = this->GetChildItem(item);
+
+				while (hChildItem != NULL)
+				{
+					hNextItem = this->GetNextItem(hChildItem, TVGN_NEXT);
+					CClassView::GetInstance()->GetPropMap().RemoveKey(hChildItem);
+					this->DeleteItem(hChildItem);
+					hChildItem = hNextItem;
+				}
+
+				this->DeleteItem(item);
+			}
+			else if(CClassView::IsNumber(this->GetItemText(item)))
+			{
+				this->DeleteItem(item);
+			}
 		}
 	}
 }
