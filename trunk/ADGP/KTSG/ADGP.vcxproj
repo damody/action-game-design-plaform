@@ -275,12 +275,14 @@
     <ClInclude Include="game\ColorRect.h" />
     <ClInclude Include="game\Consume.h" />
     <ClInclude Include="game\CtrlKey.h" />
+    <ClInclude Include="game\FlyingType.h" />
     <ClInclude Include="game\FrameInfo.h" />
     <ClInclude Include="game\Hero.h" />
     <ClInclude Include="game\HeroAction.h" />
     <ClInclude Include="game\HeroInfo.h" />
     <ClInclude Include="game\HeroInfoManager.h" />
     <ClInclude Include="game\HitData.h" />
+    <ClInclude Include="game\ObjectInfo.h" />
     <ClInclude Include="game\PictureData.h" />
     <ClInclude Include="game\Player.h" />
     <ClInclude Include="global.h" />
