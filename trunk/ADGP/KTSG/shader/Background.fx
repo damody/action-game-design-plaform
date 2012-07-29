@@ -73,7 +73,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z *= zDepth;
 	out5.posH.xyz /= 1+cPolarCoord.x;
-	if (out5.posH.z < 0) out5.posH.z = 0.1+out5.posH.z; else out5.posH.z += 0.1;
+	out5.posH.z += 0.11;
 	out5.posH.y -=0.9;
 	out5.texcoord = float2(0,0);
 	triStream.Append( out5 );
@@ -83,7 +83,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z *= zDepth;
 	out5.posH.xyz /= 1+cPolarCoord.x;
-	if (out5.posH.z < 0) out5.posH.z = 0.1+out5.posH.z; else out5.posH.z += 0.1;
+	out5.posH.z += 0.11;
 	out5.posH.y -=0.9;
 	out5.texcoord = float2(0,1);
 	triStream.Append( out5 );
@@ -93,7 +93,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z *= zDepth;
 	out5.posH.xyz /= 1+cPolarCoord.x;
-	if (out5.posH.z < 0) out5.posH.z = 0.1+out5.posH.z; else out5.posH.z += 0.1;
+	out5.posH.z += 0.11;
 	out5.posH.y -=0.9;
 	out5.texcoord = float2(1,0);
 	triStream.Append( out5 );
@@ -103,7 +103,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z *= zDepth;
 	out5.posH.xyz /= 1+cPolarCoord.x;
-	if (out5.posH.z < 0) out5.posH.z = 0.1+out5.posH.z; else out5.posH.z += 0.1;
+	out5.posH.z += 0.11;
 	out5.posH.y -=0.9;
 	out5.texcoord = float2(0,1);
 	triStream.Append( out5 );
@@ -113,7 +113,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z *= zDepth;
 	out5.posH.xyz /= 1+cPolarCoord.x;
-	if (out5.posH.z < 0) out5.posH.z = 0.1+out5.posH.z; else out5.posH.z += 0.1;
+	out5.posH.z += 0.11;
 	out5.posH.y -=0.9;
 	out5.texcoord = float2(1,0);
 	triStream.Append( out5 );
@@ -123,7 +123,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z *= zDepth;
 	out5.posH.xyz /= 1+cPolarCoord.x;
-	if (out5.posH.z < 0) out5.posH.z = 0.1+out5.posH.z; else out5.posH.z += 0.1;
+	out5.posH.z += 0.11;
 	out5.posH.y -=0.9;
 	out5.texcoord = float2(1,1);
 	triStream.Append( out5 );
