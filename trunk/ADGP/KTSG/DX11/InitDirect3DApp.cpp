@@ -13,6 +13,7 @@ InitDirect3DApp::InitDirect3DApp()
 : D3DApp(), m_Heroes_Width(0), m_Heroes_Height(0), m_Buffer_Heroes(0),
             m_Background_Width(0), m_Background_Height(0), m_Buffer_Background(0), m_Background(0),
 	    m_ColorRect_Width(0), m_ColorRect_Height(0), m_Buffer_ColorRect(0),
+	    m_Shadow_Width(0), m_Shadow_Height(0),
 	    m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1)
 {
 	g_Time = 0;
@@ -72,7 +73,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 		if(m_Background != NULL)
 		{
 			m_Background->Update(dt);
-			TestBackgroundSpace();
+			BackgroundDataUpdate();
 		}
 		timp_count -= 1/60.0f;
 	}
@@ -100,6 +101,12 @@ void InitDirect3DApp::OnResize()
 	{
 		m_ColorRect_Width->SetFloat((float)mClientWidth);
 		m_ColorRect_Height->SetFloat((float)mClientHeight);
+	}
+
+	if (m_Shadow_Width!=NULL && m_Shadow_Height!=NULL)
+	{
+		m_Shadow_Width->SetFloat((float)mClientWidth);
+		m_Shadow_Height->SetFloat((float)mClientHeight);
 	}
 	
 }
@@ -141,6 +148,22 @@ void InitDirect3DApp::DrawScene()
 				m_PTech_Background->GetPassByIndex(0)->Apply(0, m_DeviceContext);
 				m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
 			}
+		}
+	}
+
+	//Draw Shadow
+	offset = 0;
+	stride2 = sizeof(ClipVertex);
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	m_DeviceContext->IASetInputLayout(m_PLayout_Shadow);
+	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Heroes, &stride2, &offset);
+	for (DrawVertexGroups::iterator it = m_DrawVertexGroups.begin();it != m_DrawVertexGroups.end();++it)
+	{
+		if (it->texture.get())
+		{
+			m_PMap_Shadow->SetResource(*(it->texture));
+			m_PTech_Shadow->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
 		}
 	}
 	
@@ -242,6 +265,33 @@ void InitDirect3DApp::buildPointFX()
 	D3DX11_PASS_DESC PassDescCR;
 	m_PTech_ColorRect->GetPassByIndex(0)->GetDesc(&PassDescCR);
 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_CRVertex, 4, PassDescCR.pIAInputSignature,PassDescCR.IAInputSignatureSize, &m_PLayout_ColorRect));
+
+	//Shadow
+	hr = 0;
+	hr=D3DX11CompileFromFile(_T("shader\\Shadow.fx"), NULL, NULL, NULL, 
+		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
+	if(FAILED(hr))
+	{
+		if( pError )
+		{
+			MessageBoxA(0, (char*)pError->GetBufferPointer(), 0, 0);
+			ReleaseCOM(pError);
+		}
+		DXTrace(__FILE__, __LINE__, hr, _T("D3DX11CreateEffectFromFile"), TRUE);
+	} 
+	HR(D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_Shadow));
+	m_PTech_Shadow = m_Effect_Shadow->GetTechniqueByName("PointTech");
+	m_Shadow_Width = m_Effect_Shadow->GetVariableByName("sceneW")->AsScalar();
+	m_Shadow_Height =m_Effect_Shadow->GetVariableByName("sceneH")->AsScalar();
+	m_Shadow_cLootAt = m_Effect_Shadow->GetVariableByName("cLookAt");
+	m_Shadow_cPos = m_Effect_Shadow->GetVariableByName("cPolarCoord");
+	m_Shadow_lightStr =m_Effect_Shadow->GetVariableByName("lightStr")->AsScalar();
+	m_Shadow_lightDir = m_Effect_Shadow->GetVariableByName("lightDir");
+	m_PMap_Shadow =m_Effect_Shadow->GetVariableByName("gMap")->AsShaderResource();
+
+	D3DX11_PASS_DESC PassDescShadow;
+	m_PTech_Shadow->GetPassByIndex(0)->GetDesc(&PassDescShadow);
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_HeroVertex, 5, PassDescShadow.pIAInputSignature,PassDescShadow.IAInputSignatureSize, &m_PLayout_Shadow));
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -759,10 +809,16 @@ void InitDirect3DApp::UpdateCamera()
 	m_Background_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 	m_ColorRect_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
 	m_ColorRect_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Shadow_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Shadow_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 }
 
-void InitDirect3DApp::TestBackgroundSpace()
+void InitDirect3DApp::BackgroundDataUpdate()
 {
+	ParallelLight pl =m_Background->GetParallelLight();
+	m_Shadow_lightDir->SetRawValue(&pl.m_Direction[0], 0, sizeof(float)*3);
+	m_Shadow_lightStr->SetFloat(pl.m_LightStrength/10.0);
+
 	for(std::vector<Hero_RawPtr>::iterator it=m_Heroes.begin(); it !=m_Heroes.end() ; it++)
 	{
 		(*it)->SetPosition(m_Background->AlignmentSpace((*it)->Position()));

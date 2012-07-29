@@ -47,8 +47,8 @@ typedef std::vector<BGLayer> BGLayers;
 
 struct ParallelLight
 {
-	Vector3		m_Direction;
-	float		m_LightStrength;
+	Vector3		m_Direction;     //y<0
+	float		m_LightStrength; //1-10
 	int		m_TimeLine;
 	int		m_TimeStart;
 	int		m_TimeEnd;
@@ -85,6 +85,8 @@ public:
 	void	LoadData(LuaCell_Sptr luadata);
 
 	float   Width();
+
+	ParallelLight GetParallelLight();
 
 	bool    InSpace(Vector3 pIn);//判斷vIn是否在地圖的可行範圍
 	Vector3	AlignmentSpace(Vector3 pIn);//判斷vIn是否在地圖的可行範圍，並校正

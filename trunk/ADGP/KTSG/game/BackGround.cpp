@@ -439,3 +439,20 @@ float BackGround::Width()
 {
 	return m_Width;
 }
+
+ParallelLight BackGround::GetParallelLight()
+{
+	for(ParallelLights::iterator it=m_ParallelLights.begin();it!=m_ParallelLights.end();it++)
+	{
+		if(g_Time % it->m_TimeLine < it->m_TimeStart || g_Time % it->m_TimeLine > it->m_TimeEnd){
+			continue;
+		}else{
+			return *it;
+		}
+	}
+
+	ParallelLight pl;
+	pl.m_Direction = Vector3(1,-1,-1);
+	pl.m_LightStrength = 8;
+	return pl;
+}

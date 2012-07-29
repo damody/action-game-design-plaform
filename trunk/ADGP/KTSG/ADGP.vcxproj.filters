@@ -378,5 +378,8 @@
     <None Include="shader\ColorRect.fx">
       <Filter>shader</Filter>
     </None>
+    <None Include="shader\Shadow.fx">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

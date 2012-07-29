@@ -38,6 +38,8 @@ private:
 	void UpdateScene(float dt);
 	void UpdateCamera();
 	int  UpdateInput();
+	void BackgroundDataUpdate();
+
 	int  UpdateUI();
 	void PrintInfo();
 
@@ -106,6 +108,16 @@ private:
 	ID3DX11EffectScalarVariable* m_ColorRect_Width;
 	ID3DX11EffectScalarVariable* m_ColorRect_Height;
 
+	ID3DX11Effect* m_Effect_Shadow;
+	ID3DX11EffectTechnique* m_PTech_Shadow;
+	ID3D11InputLayout* m_PLayout_Shadow;
+	ID3DX11EffectVariable *m_Shadow_cLootAt;
+	ID3DX11EffectVariable *m_Shadow_cPos;
+	ID3DX11EffectVariable *m_Shadow_lightDir;
+	ID3DX11EffectScalarVariable* m_Shadow_lightStr;
+	ID3DX11EffectScalarVariable* m_Shadow_Width;
+	ID3DX11EffectScalarVariable* m_Shadow_Height;
+	ID3DX11EffectShaderResourceVariable*  m_PMap_Shadow;
 
 	int			m_SettingKeyID;		//目前要設定的按鍵的id
 	int			m_SettingKeyTextID;	//目前要設定的按鍵的text物件的id
@@ -114,7 +126,7 @@ private:
 	int			m_Last2GameProcess;	//前前一個遊戲流程
 
 	void TestCamera();
-	void TestBackgroundSpace();
+	
 };
 
 struct CD3D11_BLEND_DESCX : public D3D11_BLEND_DESC

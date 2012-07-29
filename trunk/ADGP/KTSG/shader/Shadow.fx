@@ -43,7 +43,6 @@ struct GS_OUT
 VS_OUT VS(VS_IN vIn)
 {
 	VS_OUT vOut;
-	
 	vOut.pos =float4(vIn.position.xy-cLookAt.xy,vIn.position.z,1.0) ;
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
@@ -113,8 +112,8 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	triStream.Append( out5 );
 
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2( input[0].size.x,-2*input[0].size.y), mat),input[0].pos.z),1);
-	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH=float4(mul(float3(out5.posH.x + out5.posH.y * lightDir.x/lightDir.y,0,out5.posH.z + out5.posH.y * lightDir.z/lightDir.y),view),1);
+	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
 	out5.posH.z *= zDepth;
 	out5.posH.xyz /= 1+cPolarCoord.x;
 	if (out5.posH.z < 0) out5.posH.z = 0.1+out5.posH.z; else out5.posH.z += 0.1;
