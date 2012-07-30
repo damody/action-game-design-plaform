@@ -70,7 +70,59 @@ private:
 
 	
 public:
-	BackGround(){}
+	BackGround(){
+		/*
+		//test
+		ParallelLight pl;
+		pl.m_LightStrength = 10;
+		pl.m_TimeLine = 1000;
+
+		pl.m_Direction=Vector3(1,-1,-1);
+		pl.m_TimeStart = 0;
+		pl.m_TimeEnd = 99;
+		m_ParallelLights.push_back(pl);
+
+		pl.m_Direction=Vector3(0.75,-1,-1);
+		pl.m_TimeStart = 100;
+		pl.m_TimeEnd = 199;
+		m_ParallelLights.push_back(pl);
+
+		pl.m_Direction=Vector3(0.5,-1,-1);
+		pl.m_TimeStart = 200;
+		pl.m_TimeEnd = 299;
+		m_ParallelLights.push_back(pl);
+
+		pl.m_Direction=Vector3(0.25,-1,-1);
+		pl.m_TimeStart = 300;
+		pl.m_TimeEnd = 399;
+		m_ParallelLights.push_back(pl);
+
+		pl.m_Direction=Vector3(0,-1,-1);
+		pl.m_TimeStart = 400;
+		pl.m_TimeEnd = 499;
+		m_ParallelLights.push_back(pl);
+
+		pl.m_Direction=Vector3(-0.25,-1,-1);
+		pl.m_TimeStart = 500;
+		pl.m_TimeEnd = 599;
+		m_ParallelLights.push_back(pl);
+
+		pl.m_Direction=Vector3(-0.5,-1,-1);
+		pl.m_TimeStart = 600;
+		pl.m_TimeEnd = 699;
+		m_ParallelLights.push_back(pl);
+
+		pl.m_Direction=Vector3(-0.75,-1,-1);
+		pl.m_TimeStart = 700;
+		pl.m_TimeEnd = 799;
+		m_ParallelLights.push_back(pl);
+
+		pl.m_Direction=Vector3(-1,-1,-1);
+		pl.m_TimeStart = 800;
+		pl.m_TimeEnd = 899;
+		m_ParallelLights.push_back(pl);
+		*/
+	}
 	~BackGround(){}
 
 	std::string	 m_Name;
