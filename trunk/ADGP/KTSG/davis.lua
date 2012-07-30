@@ -5,8 +5,8 @@ head= "sprite\\sys\\davis_f.bmp"
 small= "sprite\\sys\\davis_s.bmp"
 
 file = {
-{path = "media\\davis_0.png", autoclip=1,  w = 79,  h = 79,  row = 10,  col = 7},
-{path = "media\\davis_1.png", autoclip=1,  w = 79,  h = 79,  row = 10,  col = 7},
+{path = "media\\davis_0_.png", autoclip=1,  w = 79,  h = 79,  row = 10,  col = 7},
+{path = "media\\davis_1_.png", autoclip=1,  w = 79,  h = 79,  row = 10,  col = 7},
 }
 
 walking_speed   = 5.000000
