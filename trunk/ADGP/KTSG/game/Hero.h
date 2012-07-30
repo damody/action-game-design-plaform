@@ -20,7 +20,7 @@
 
 #define KEYLIFE_AFTER_KEYUP 120
 #define FRICTION 0.5f
-#define WAIT_FOR_KEY_RUN 120
+#define WAIT_FOR_KEY_RUN 30
 namespace boost{namespace serialization{class access;}}
 struct Record
 {
