@@ -317,7 +317,7 @@ frame.running[3] =
 
 frame.stop_running[0] =
 {
-   pic_id = 1, pic_x = 5, pic_y = 5, state = Action.StopRunning, wait = 45, next = {"default", 0},
+   pic_id = 1, pic_x = 5, pic_y = 5, state = Action.StopRunning, wait = 15, next = {"default", 0},
    dvx = 1, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
