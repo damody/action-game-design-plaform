@@ -63,68 +63,59 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	view[1]=float3(	0			,  cos(alpha) 				 ,  sin(alpha)	             );
 	view[2]=float3(sin(thita) 	,  cos(thita) * -sin(alpha) ,  cos(thita) * cos(alpha) );
 	
-	float zDepth	=1/30000.0;
 	float offset    =0.1/tan(3.14159/6);
+
+	float4x4 proj;
+	proj[2]=float4(0,0,1/30000.0,0);
+	proj[3]=float4(0,-0.9,0.1,1);
 
 	
 	GS_OUT out5;
 	//0
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(0,-input[0].size.y,0),mat)),view),1);
-	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
-	out5.posH.z *= zDepth;
-	out5.posH.xyz /= 1+cPolarCoord.x;
-	out5.posH.z += 0.11;
-	out5.posH.y -=0.9;
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
+	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(0,0);
 	triStream.Append( out5 );
 	
 	//1
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(0,0,0), mat)),view),1);
-	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
-	out5.posH.z *= zDepth;
-	out5.posH.xyz /= 1+cPolarCoord.x;
-	out5.posH.z += 0.11;
-	out5.posH.y -=0.9;
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
+	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(0,1);
 	triStream.Append( out5 );
 
 	//2
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,-input[0].size.y,0), mat)),view),1);
-	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
-	out5.posH.z *= zDepth;
-	out5.posH.xyz /= 1+cPolarCoord.x;
-	out5.posH.z += 0.11;
-	out5.posH.y -=0.9;
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
+	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(1,0);
 	triStream.Append( out5 );
 
 	//3
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(0,0,0), mat)),view),1);
-	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
-	out5.posH.z *= zDepth;
-	out5.posH.xyz /= 1+cPolarCoord.x;
-	out5.posH.z += 0.11;
-	out5.posH.y -=0.9;
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
+	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(0,1);
 	triStream.Append( out5 );
 
 	//4
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,-input[0].size.y,0), mat)),view),1);
-	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
-	out5.posH.z *= zDepth;
-	out5.posH.xyz /= 1+cPolarCoord.x;
-	out5.posH.z += 0.11;
-	out5.posH.y -=0.9;
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
+	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(1,0);
 	triStream.Append( out5 );
 	
 	//5
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,0,0), mat)),view),1);
-	out5.posH.xy = out5.posH.xy * float2(1/(sceneW+out5.posH.z*offset),1/(sceneH+out5.posH.z*offset));
-	out5.posH.z *= zDepth;
-	out5.posH.xyz /= 1+cPolarCoord.x;
-	out5.posH.z += 0.11;
-	out5.posH.y -=0.9;
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
+	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(1,1);
 	triStream.Append( out5 );
 	
