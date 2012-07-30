@@ -259,6 +259,7 @@ bool Hero::ScanKeyQue()
 		}//*/
 	}
 	else if(m_Action == HeroAction::RUNNING){
+		m_Vel.x = (m_FaceSide ? m_HeroInfo->m_RunningSpeed : -m_HeroInfo->m_RunningSpeed);
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::UP)
 			{
@@ -273,13 +274,18 @@ bool Hero::ScanKeyQue()
 				m_Vel.z = -m_HeroInfo->m_RunningSpeedZ;
 			}
 			else if(i->key == CtrlKey::LEFT  && m_FaceSide){
-				//stop running
 				nFrame = "stop_running";
+				nFramID = 0;
+				d_run = 0;
+				break;
 			}
 			else if(i->key == CtrlKey::RIGHT && !m_FaceSide){
-				//stop running
 				nFrame = "stop_running";
+				nFramID = 0;
+				d_run = 0;
+				break;
 			}
+			i++;
 		}
 	}
 	//決定招式按鍵動作
