@@ -7,6 +7,7 @@
 #include "DX11\InputState.h"
 #include "common\shared_ptr.h"
 #include "game\Hero.h"
+#include "global.h"
 
 namespace boost{namespace serialization{class access;}}
 class Player

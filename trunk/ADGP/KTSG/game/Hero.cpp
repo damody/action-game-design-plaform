@@ -176,7 +176,7 @@ bool Hero::ScanKeyQue()
 			else if(i->key == CtrlKey::LEFT)
 			{
 				printf("d_run:%d\n",d_run);
-				if( g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
+				if( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
 					//¶]
 					nFrame = "running";
 					m_Vel.x = -m_HeroInfo->m_RunningSpeed;
@@ -190,7 +190,7 @@ bool Hero::ScanKeyQue()
 			else if(i->key == CtrlKey::RIGHT)
 			{
 				printf("d_run:%d\n",d_run);
-				if( g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
+				if( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
 					//¶]
 					nFrame = "running";
 					m_Vel.x = m_HeroInfo->m_RunningSpeed;
@@ -222,7 +222,7 @@ bool Hero::ScanKeyQue()
 			else if(i->key == CtrlKey::LEFT)
 			{
 				printf("d_run:%d\n",d_run);
-				if( g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
+				if( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
 					//¶]
 					nFrame = "running";
 					m_Vel.x = -m_HeroInfo->m_RunningSpeed;
@@ -236,7 +236,7 @@ bool Hero::ScanKeyQue()
 			else if(i->key == CtrlKey::RIGHT)
 			{
 				printf("d_run:%d\n",d_run);
-				if( g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
+				if( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
 					//¶]
 					nFrame = "running";
 					m_Vel.x = m_HeroInfo->m_RunningSpeed;
@@ -381,6 +381,7 @@ void Hero::PushKey( KeyInfo k )
 		//printf("LEFT_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::LEFT){
+				d_run = -i->time;
 				i->key = k.key;
 				i->time= k.time;
 				break;
@@ -391,6 +392,7 @@ void Hero::PushKey( KeyInfo k )
 		//printf("RIGHT_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::RIGHT){
+				d_run = i->time;
 				i->key = k.key;
 				i->time= k.time;
 				break;
@@ -437,7 +439,7 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 		else if(k.key == CtrlKey::LEFT){
-			d_run = -k.time;
+			//d_run = -k.time;
 			printf("LEFT, k.time = %d, d_run = %d, g_Time: %d\n",k.time,d_run,g_Time);
 			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 				if(i->key == CtrlKey::RIGHT){
@@ -447,8 +449,8 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 		else if(k.key == CtrlKey::RIGHT){
-			d_run = k.time;
-			printf("LEFT, k.time = %d, d_run = %d, g_Time: %d\n",k.time,d_run,g_Time);
+			//d_run = k.time;
+			printf("RIGHT, k.time = %d, d_run = %d, g_Time: %d\n",k.time,d_run,g_Time);
 			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 				if(i->key == CtrlKey::LEFT){
 					m_KeyQue.erase(i);

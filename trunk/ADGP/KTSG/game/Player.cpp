@@ -73,6 +73,7 @@ void Player::UpdateInput()
 			if (InputStateS::instance().isKeyDown(m_KeyCode[k]))
 			{
 				keyInfo.key = (CtrlKey::v)k;
+				keyInfo.time= g_Time;
 				std::cout<<"Ctrl Key:"<< test[k] <<std::endl;
 				m_Hero->PushKey(keyInfo);
 			}
@@ -80,6 +81,7 @@ void Player::UpdateInput()
 			if (InputStateS::instance().isKeyUp(m_KeyCode[k]))
 			{
 				keyInfo.key = (CtrlKey::v)(k+KEYUP);
+				keyInfo.time= g_Time;
 				m_Hero->PushKey(keyInfo);
 			}
 		}
