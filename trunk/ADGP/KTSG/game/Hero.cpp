@@ -96,12 +96,30 @@ void Hero::UpdateDataToDraw()
 {
 // 	m_Pic.position.x = m_Position.x - (m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX / 1280);
 // 	m_Pic.position.y = m_Position.y - (m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY / 800);
-	m_Pic.position.x = m_Position.x;
-	m_Pic.position.y = m_Position.y;
+	
+	float scale = 1.5f;
+
+
+	float offsetX,offsetY;
+
+	if(m_FaceSide){
+		offsetX= (m_HeroInfo->m_PictureDatas[m_PicID].m_Width - 2*m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX)*scale;
+	}else{
+		offsetX=-(m_HeroInfo->m_PictureDatas[m_PicID].m_Width - 2*m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX)*scale;
+	}
+	offsetY = - 2*(m_HeroInfo->m_PictureDatas[m_PicID].m_Height-m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY)*scale;
+
+	m_Pic.position.x = m_Position.x+offsetX;
+	m_Pic.position.y = m_Position.y+offsetY;
 	m_Pic.position.z = m_Position.z;
+
 	m_Pic.angle = m_Angle;
-	m_Pic.size.x = m_HeroInfo->m_PictureDatas[m_PicID].m_Width *1.5f ;
-	m_Pic.size.y = m_HeroInfo->m_PictureDatas[m_PicID].m_Height *1.5f ;
+	m_Pic.size.x = m_HeroInfo->m_PictureDatas[m_PicID].m_Width *scale;
+	m_Pic.size.y = m_HeroInfo->m_PictureDatas[m_PicID].m_Height *scale;
+
+	
+
+	
 
 	m_Pic.picpos.x = (float)m_PicX;
 	m_Pic.picpos.y = (float)m_PicY;
