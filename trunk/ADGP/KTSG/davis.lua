@@ -33,6 +33,9 @@ frame =
 	walking  = {},
 	running  = {},
 	stop_running = {},
+	jump     = {},
+	dash     = {},
+	crouch   = {},
 	ball     = {},
 	many_punch={},
 	jump_hit = {},
@@ -334,3 +337,162 @@ frame.stop_running[0] =
 
 }
 
+frame.jump[0] =
+{
+   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Jump, wait = 10, next = {"jump", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{22,-24}, {22,-82}, {57,-82}, {57,-24}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 23  y: 53  weaponact: 21  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.jump[1] =
+{
+   pic_id = 0, pic_x = 2, pic_y = 7, state = Action.Jump, wait = 10, next = {"jump", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{26,-26}, {26,-82}, {60,-82}, {60,-26}}, zwidth = 8}
+   }
+
+   --sound: data\017.wav
+   --wpoint:
+   --   kind: 1  x: 23  y: 53  weaponact: 21  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.jump[2] =
+{
+   pic_id = 0, pic_x = 3, pic_y = 7, state = Action.Jump, wait = 10, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {{scale = 1.0, x=38, y=28, value=150}},
+   body = {
+   {kind = 0, points = {{20,-11}, {20,-72}, {49,-72}, {49,-11}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 23  y: 53  weaponact: 20  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.dash[0] =
+{
+   pic_id = 0, pic_x = 4, pic_y = 7, state = Action.Dash, wait = 80, next = {"dash", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {{scale = 1.0, x=43, y=30, value=150}},
+   body = {
+   {kind = 0, points = {{43,-5}, {43,-38}, {66,-38}, {66,-5}}, zwidth = 8},
+   {kind = 0, points = {{28,-29}, {28,-62}, {49,-62}, {49,-29}}, zwidth = 8},
+   {kind = 0, points = {{18,-48}, {18,-69}, {45,-69}, {45,-48}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 36  y: 36  weaponact: 21  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.dash[1] =
+{
+   pic_id = 0, pic_x = 5, pic_y = 7, state = Action.Dash, wait = 80, next = {"dash", 3},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {{scale = 1.0, x=33, y=30, value=150}},
+   body = {
+   {kind = 0, points = {{20,-5 }, {20,-43}, {47,-43}, {47,-5 }}, zwidth = 8},
+   {kind = 0, points = {{16,-37}, {16,-59}, {52,-59}, {52,-37}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 30  y: 40  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.dash[2] =
+{
+   pic_id = 1, pic_x = 2, pic_y = 5, state = Action.Dash, wait = 20, next = {"dash", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 78,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {{scale = 1.0, x=43, y=30, value=150}},
+   body = {
+   {kind = 0, points = {{35,-8 }, {35,-35}, {62,-35}, {62,-8 }}, zwidth = 8},
+   {kind = 0, points = {{16,-30}, {16,-67}, {55,-67}, {55,-30}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 35  y: 36  weaponact: 21  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.dash[3] =
+{
+   pic_id = 1, pic_x = 3, pic_y = 5, state = Action.Dash, wait = 20, next = {"dash", 3},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {{scale = 1.0, x=33, y=30, value=150}},
+   body = {
+   {kind = 0, points = {{18,-13}, {18,-64}, {47,-64}, {47,-13}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 29  y: 39  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.crouch[0] =
+{
+   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 20, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {{scale = 1.0, x=42, y=55, value=150}},
+   body = {
+   {kind = 0, points = {{25,-26}, {25,-80}, {56,-80}, {56,-26}}, zwidth = 8}
+   }
+
+   --sound: data\012.wav
+   --wpoint:
+   --   kind: 1  x: 30  y: 40  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.crouch[1] =
+{
+   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 20, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {{scale = 1.0, x=42, y=55, value=150}},
+   body = {
+   {kind = 0, points = {{26,-36}, {26,-80}, {55,-80}, {55,-36}}, zwidth = 8}
+   }
+
+   --sound: data\012.wav
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
