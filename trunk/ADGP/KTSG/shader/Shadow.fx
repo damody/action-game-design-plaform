@@ -66,7 +66,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 
 	float3x3 view;
 	view[0]=float3(cos(-thita) 	, -sin(-thita) * -sin(-alpha) , -sin(-thita) * cos(-alpha) );
-	view[1]=float3(0			,  cos(-alpha) 			  	  ,  sin(-alpha)	           );
+	view[1]=float3(0			,  cos(-alpha) 			  	  ,   sin(-alpha)	           );
 	view[2]=float3(sin(-thita) 	,  cos(-thita) * -sin(-alpha) ,  cos(-thita) * cos(-alpha) );
 	
 	float offset =0.1/tan(3.14159/6);

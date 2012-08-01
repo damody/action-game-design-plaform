@@ -799,7 +799,7 @@ void InitDirect3DApp::UpdateCamera()
 	if(m_Player.m_Hero->Position().x >= mClientWidth && m_Player.m_Hero->Position().x <= m_Background->Width()-mClientWidth)
 	{
 		float m = m_Player.m_Hero->Position().x - m_Camera->LookAt().x;
-		m_Camera->MoveX(m*0.1f);
+		m_Camera->MoveX(m*0.01f);
 	}
 
 

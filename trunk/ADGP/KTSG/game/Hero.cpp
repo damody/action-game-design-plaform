@@ -99,7 +99,6 @@ void Hero::UpdateDataToDraw()
 	
 	float scale = 1.5f;
 
-
 	float offsetX,offsetY;
 
 	if(m_FaceSide){
@@ -116,10 +115,6 @@ void Hero::UpdateDataToDraw()
 	m_Pic.angle = m_Angle;
 	m_Pic.size.x = m_HeroInfo->m_PictureDatas[m_PicID].m_Width *scale;
 	m_Pic.size.y = m_HeroInfo->m_PictureDatas[m_PicID].m_Height *scale;
-
-	
-
-	
 
 	m_Pic.picpos.x = (float)m_PicX;
 	m_Pic.picpos.y = (float)m_PicY;

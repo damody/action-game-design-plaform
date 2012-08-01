@@ -275,7 +275,7 @@
     <ClInclude Include="game\ColorRect.h" />
     <ClInclude Include="game\Consume.h" />
     <ClInclude Include="game\CtrlKey.h" />
-    <ClInclude Include="game\FlyingType.h" />
+    <ClInclude Include="game\ObjectType.h" />
     <ClInclude Include="game\FrameInfo.h" />
     <ClInclude Include="game\Hero.h" />
     <ClInclude Include="game\HeroAction.h" />

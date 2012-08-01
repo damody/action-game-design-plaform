@@ -48,12 +48,12 @@ layer =
 color_rect =
 {
 	{r=0.566, g=0.06, b=0.06, a=1, ground=1, x=0, y=0, z=1860, w=40000, h=1794},
-	--{r=0.566, g=0.06, b=0.06, a=0.9, ground=1, x=0, y=0, z=500, w=500, h=500},
-	--{r=0.566, g=0.06, b=0.06, a=0.9, ground=1, x=400, y=0, z=900, w=500, h=500},
 	{r=0.06, g=0.06, b=0.566, a=1, ground=1, x=100, y=0, z=500, w=100, h=400},
 }
 
-parallel_light = {
-	{x=50, y=50, z=50, light=100, timeline=1, time_start=0, time_end=0},
+parallel_light = 
+{
+	{x=1, y= -1, z= -1, light=10, timeline=1, time_start=0, time_end=0},
+	{x=1, y= -1, z= -1, light=10, timeline=1, time_start=0, time_end=0},
 }
 

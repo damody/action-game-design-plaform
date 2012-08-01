@@ -82,7 +82,7 @@ bool BackGround::CheckDataVaild( LuaCell_Sptr luadata )
 	// read ParallelLights
 	for (int i=1;;++i)
 	{
-		if (luadata->HasValue("parallel_light/%d/r", i))
+		if (luadata->HasValue("parallel_light/%d/x", i))
 		{
 			testOK &= luadata->HasValue("parallel_light/%d/x", i);
 			testOK &= luadata->HasValue("parallel_light/%d/y", i);
@@ -184,7 +184,7 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 	// read ParallelLights
 	for (int i=1;;++i)
 	{
-		if (luadata->HasValue("parallel_light/%d/r", i))
+		if (luadata->HasValue("parallel_light/%d/x", i))
 		{
 			ParallelLight pl;
 			pl.m_Direction.x	= (float)luadata->GetLua<double>("parallel_light/%d/x", i);
@@ -194,6 +194,7 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 			pl.m_TimeLine		= luadata->GetLua<int>("parallel_light/%d/timeline", i);
 			pl.m_TimeStart		= luadata->GetLua<int>("parallel_light/%d/time_start", i);
 			pl.m_TimeEnd		= luadata->GetLua<int>("parallel_light/%d/time_end", i);
+
 			m_ParallelLights.push_back(pl);
 		}
 		else
@@ -452,7 +453,7 @@ ParallelLight BackGround::GetParallelLight()
 	}
 
 	ParallelLight pl;
-	pl.m_Direction = Vector3(1,-1,-1);
+	pl.m_Direction = Vector3(0,-1,0);
 	pl.m_LightStrength = 8;
 	return pl;
 }

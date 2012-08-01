@@ -59,7 +59,12 @@ class BackGround
 {
 private:
 	LuaCell_Sptr	m_LuaCell;
+	//總長
 	float		m_Width;
+	//重力
+	float		m_Garvity;
+	//摩擦力
+	float		m_Friction;
 	// can move bounding
 	AxisAlignedBoxs	m_SpaceBounding;
 	// can't move bounding
@@ -71,8 +76,8 @@ private:
 	
 public:
 	BackGround(){
-		/*
-		//test
+		
+		/*//test
 		ParallelLight pl;
 		pl.m_LightStrength = 10;
 		pl.m_TimeLine = 1000;
@@ -120,8 +125,8 @@ public:
 		pl.m_Direction=Vector3(-1,-1,-1);
 		pl.m_TimeStart = 800;
 		pl.m_TimeEnd = 899;
-		m_ParallelLights.push_back(pl);
-		*/
+		m_ParallelLights.push_back(pl);*/
+		
 	}
 	~BackGround(){}
 

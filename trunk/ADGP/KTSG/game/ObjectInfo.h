@@ -5,9 +5,11 @@
 #include "Lua/LuaCell.h"
 #include "FrameInfo.h"
 #include "common\shared_ptr.h"
-#include "game\FlyingType.h"
+#include "game\ObjectType.h"
 
 namespace boost{namespace serialization{class access;}}
+
+
 //每一個物件需要用到的資訊
 struct ObjectInfo
 {
@@ -17,15 +19,21 @@ struct ObjectInfo
 	PictureDatas	m_PictureDatas;
 	//frame inforamtion
 	FramesMap	m_FramesMap;
-	//
+	//質量
+	float		m_Mess;
+	//彈性
+	float		m_Elasticity;
+	//最大血量
 	float		m_MaxHp;
-	//是否能拾起
-	bool		m_CanPick;
-	//重物間或輕物件
-	bool		m_IsHeavy;
+	//物件類別
+	ObjectType::e	m_Type;
 	//飛行形式
 	FlyingType::e   m_Flyingtype;
-	
+
+public:
+	bool	CheckHeroDataVaild(LuaCell_Sptr luadata);
+	void	LoadHeroData(LuaCell_Sptr luadata);
+	LuaCell_Sptr	m_LuaCell;	
 };
 SHARE_PTR(ObjectInfo)
 
