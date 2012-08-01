@@ -57,13 +57,14 @@ void InitDirect3DApp::UpdateScene(float dt)
 
 	//*test camera
 	TestCamera();
-	UpdateCamera();
+	
 	
 	static float timp_count = 0;
 	timp_count+=dt;
 	if (timp_count > 1/60.0f)
 	{
 		g_Time++;
+		UpdateCamera();
 		//Hero Update
 		for(std::vector<Hero_RawPtr>::iterator it = m_Heroes.begin();it != m_Heroes.end(); it++)
 		{
@@ -800,7 +801,7 @@ void InitDirect3DApp::UpdateCamera()
 	if(m_Player.m_Hero->Position().x >= mClientWidth && m_Player.m_Hero->Position().x <= m_Background->Width()-mClientWidth)
 	{
 		float m = m_Player.m_Hero->Position().x - m_Camera->LookAt().x;
-		m_Camera->MoveX(m*0.01f);
+		m_Camera->MoveX(m*0.05f);
 	}
 
 
