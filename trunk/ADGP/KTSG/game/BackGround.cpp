@@ -200,11 +200,17 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 		else
 			break;
 	}
+	for (ParallelLights::iterator it=m_ParallelLights.begin(); it != m_ParallelLights.end();it++)
+	{
+		m_LightPath.m_Direction.AddPoint(it->m_TimeStart,it->m_Direction);
+		m_LightPath.m_LightStrength.AddPoint(it->m_TimeStart,Vector3(it->m_LightStrength,0.0f,0.0f));
+	}
 }
 
 void BackGround::Update( float dt )
 {
-	
+	m_CurrentLight.m_Direction = m_LightPath.m_Direction.GetValue((float)(g_Time%m_ParallelLights[0].m_TimeLine));
+	m_CurrentLight.m_LightStrength = m_LightPath.m_LightStrength.GetValue((float)(g_Time%m_ParallelLights[0].m_TimeLine)).x;
 }
 
 void BackGround::BuildPoint()
@@ -443,17 +449,5 @@ float BackGround::Width()
 
 ParallelLight BackGround::GetParallelLight()
 {
-	for(ParallelLights::iterator it=m_ParallelLights.begin();it!=m_ParallelLights.end();it++)
-	{
-		if(g_Time % it->m_TimeLine < it->m_TimeStart || g_Time % it->m_TimeLine > it->m_TimeEnd){
-			continue;
-		}else{
-			return *it;
-		}
-	}
-
-	ParallelLight pl;
-	pl.m_Direction = Vector3(0,-1,0);
-	pl.m_LightStrength = 8;
-	return pl;
+	return m_CurrentLight;
 }

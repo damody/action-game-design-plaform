@@ -41,7 +41,7 @@ void InitDirect3DApp::initApp()
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
 	//init Camera
-	m_Camera = Camera_Sptr(new Camera((float)mClientWidth,0,0,0,0,45));
+	m_Camera = Camera_Sptr(new Camera((float)mClientWidth,0,1000,800,0,45));
 	
 
 }
@@ -150,7 +150,7 @@ void InitDirect3DApp::DrawScene()
 			}
 		}
 	}
-
+	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
 	//Draw Shadow
 	offset = 0;
 	stride2 = sizeof(ClipVertex);
@@ -166,7 +166,7 @@ void InitDirect3DApp::DrawScene()
 			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
 		}
 	}
-	
+
 	//Draw Hero
 	offset = 0;
 	stride2 = sizeof(ClipVertex);
@@ -732,16 +732,17 @@ void InitDirect3DApp::ReflashTowerState()
 
 void InitDirect3DApp::TestCamera()
 {
-	if (InputStateS::instance().isKeyDown(KEY_Z))
+	if (InputStateS::instance().isKeyPress(KEY_Z))
 	{
-		m_Camera->Zoom(-0.01f);
+		m_Camera->Zoom(-1);
+		
 		//m_Camera->SurroundX(-10);
 		//m_Camera->MoveX(-1);
 	}
-	if (InputStateS::instance().isKeyDown(KEY_X))
+	if (InputStateS::instance().isKeyPress(KEY_X))
 	{
 		//m_Camera->SurroundX(10);
-		m_Camera->Zoom(0.01f); 
+		m_Camera->Zoom(1); 
 		//m_Camera->MoveX(1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD4))

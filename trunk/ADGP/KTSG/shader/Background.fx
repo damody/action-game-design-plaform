@@ -38,7 +38,7 @@ VS_OUT VS(VS_IN vIn)
 {
 	VS_OUT vOut;
 
-	vOut.pos= float4(vIn.position.xy-cLookAt.xy,vIn.position.z,1.0);
+	vOut.pos= float4(vIn.position.xyz-cLookAt.xyz,1.0);
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
 	return vOut;
@@ -66,7 +66,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	float offset    =0.1/tan(3.14159/6);
 	float4x4 proj;
 	proj[2]=float4(0,0,1/30000.0,0);
-	proj[3]=float4(0,-0.9,0.1,1);
+	proj[3]=float4(0,0,0.1,1);
 
 	
 	GS_OUT out5;

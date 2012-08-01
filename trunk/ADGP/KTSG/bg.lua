@@ -53,7 +53,8 @@ color_rect =
 
 parallel_light = 
 {
-	{x=1, y= -1, z= -1, light=10, timeline=1, time_start=0, time_end=0},
-	{x=1, y= -1, z= -1, light=10, timeline=1, time_start=0, time_end=0},
+	{x=2, y= -1.5, z= -1, light=3, timeline=1000, time_start=0, time_end=0},
+	{x=0, y= -1.5, z= -1, light=10, timeline=1000, time_start=500, time_end=0},
+	{x=-2, y= -1.5, z= -1, light=3, timeline=1000, time_start=1000, time_end=0},
 }
 

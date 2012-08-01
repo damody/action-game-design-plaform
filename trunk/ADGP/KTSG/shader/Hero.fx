@@ -76,7 +76,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	proj[0]=float4(1/(sceneW+(cPolarCoord.x+input[0].pos.z)*offset),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+input[0].pos.z)*offset),0,0);
 	proj[2]=float4(0,0,1/30000.0,0);
-	proj[3]=float4(0,-0.9,0.1,1);
+	proj[3]=float4(0,0.0,0.1,1);
 
 	GS_OUT out5;
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2(-input[0].size.x,-2*input[0].size.y), mat),input[0].pos.z),1);
