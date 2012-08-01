@@ -77,6 +77,8 @@ enum e
 	//¸õ
 	JUMP,
 	//ÃÛ
+	DASH,
+	//½Ä¸õ
 	CROUCH,
 	//¨ü¶Ë
 	INJURED,
