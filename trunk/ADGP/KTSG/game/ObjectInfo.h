@@ -6,6 +6,7 @@
 #include "FrameInfo.h"
 #include "common\shared_ptr.h"
 #include "game\ObjectType.h"
+#include "game\FlyingPath.h"
 
 namespace boost{namespace serialization{class access;}}
 

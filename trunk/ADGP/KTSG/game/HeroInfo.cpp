@@ -177,7 +177,7 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 				{
 					Body body;
 					body.m_Kind	= luadata->GetLua<int>("frame/%s/%d/body/%d/kind", frameName, frameCount, bodyCount);
-					body.m_ZWidth	= luadata->GetLua<double>("frame/%s/%d/body/%d/zwidth", frameName, frameCount, bodyCount);
+					body.m_ZWidth	= (float)luadata->GetLua<double>("frame/%s/%d/body/%d/zwidth", frameName, frameCount, bodyCount);
 					for (int pointCount=1;;++pointCount)
 					{
 						if (luadata->HasValue("frame/%s/%d/body/%d/points/%d/1",

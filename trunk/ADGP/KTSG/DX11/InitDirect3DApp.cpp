@@ -818,7 +818,7 @@ void InitDirect3DApp::BackgroundDataUpdate()
 {
 	ParallelLight pl =m_Background->GetParallelLight();
 	m_Shadow_lightDir->SetRawValue(&pl.m_Direction[0], 0, sizeof(float)*3);
-	m_Shadow_lightStr->SetFloat(pl.m_LightStrength/10.0);
+	m_Shadow_lightStr->SetFloat(pl.m_LightStrength*0.1f);
 
 	for(std::vector<Hero_RawPtr>::iterator it=m_Heroes.begin(); it !=m_Heroes.end() ; it++)
 	{

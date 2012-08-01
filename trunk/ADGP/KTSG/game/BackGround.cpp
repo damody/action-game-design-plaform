@@ -202,8 +202,8 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 	}
 	for (ParallelLights::iterator it=m_ParallelLights.begin(); it != m_ParallelLights.end();it++)
 	{
-		m_LightPath.m_Direction.AddPoint(it->m_TimeStart,it->m_Direction);
-		m_LightPath.m_LightStrength.AddPoint(it->m_TimeStart,Vector3(it->m_LightStrength,0.0f,0.0f));
+		m_LightPath.m_Direction.AddPoint((float)it->m_TimeStart,it->m_Direction);
+		m_LightPath.m_LightStrength.AddPoint((float)it->m_TimeStart,Vector3(it->m_LightStrength,0.0f,0.0f));
 	}
 }
 

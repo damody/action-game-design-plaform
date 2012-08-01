@@ -6,10 +6,6 @@
 #include "math\Vector3.h"
 #include "algo\nway.h"
 #include "ball\straight.h"
-#include "path\LinearLine.h"
-#include "path\BezierCurve.h"
-#include "path\BsplineCurve.h"
-#include "path\HSplineCurve.h"
 #include "common\shared_ptr.h"
 
 #include "CtrlKey.h"

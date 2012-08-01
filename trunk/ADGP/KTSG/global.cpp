@@ -1,6 +1,7 @@
 #include "global.h"
 TextureManager g_TextureManager;
 HeroInfoMG     g_HeroInfoMG;
+ObjectInfoMG   g_ObjectInfoMG;
 BGManager      g_BGManager;
 BallptrManager g_BallptrManager;
 BallptrManager g_EnemyBallptrManager;

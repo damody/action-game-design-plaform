@@ -192,12 +192,16 @@
     <ClCompile Include="DX11\Camera.cpp" />
     <ClCompile Include="game\BackGround.cpp" />
     <ClCompile Include="game\BGManager.cpp" />
+    <ClCompile Include="game\Chee.cpp" />
+    <ClCompile Include="game\FlyingPath.cpp" />
     <ClCompile Include="game\FrameInfo.cpp" />
     <ClCompile Include="game\Hero.cpp" />
     <ClCompile Include="game\HeroInfo.cpp" />
     <ClCompile Include="game\HeroInfoManager.cpp" />
+    <ClCompile Include="game\ObjectInfoManager.cpp" />
     <ClCompile Include="game\PictureData.cpp" />
     <ClCompile Include="game\Player.cpp" />
+    <ClCompile Include="game\Weapon.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
@@ -272,9 +276,12 @@
     <ClInclude Include="game\BloodInfo.h" />
     <ClInclude Include="game\Body.h" />
     <ClInclude Include="game\CatchInfo.h" />
+    <ClInclude Include="game\Chee.h" />
     <ClInclude Include="game\ColorRect.h" />
     <ClInclude Include="game\Consume.h" />
     <ClInclude Include="game\CtrlKey.h" />
+    <ClInclude Include="game\FlyingPath.h" />
+    <ClInclude Include="game\ObjectInfoManager.h" />
     <ClInclude Include="game\ObjectType.h" />
     <ClInclude Include="game\FrameInfo.h" />
     <ClInclude Include="game\Hero.h" />
@@ -285,8 +292,10 @@
     <ClInclude Include="game\ObjectInfo.h" />
     <ClInclude Include="game\PictureData.h" />
     <ClInclude Include="game\Player.h" />
+    <ClInclude Include="game\Weapon.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Lua\CreateLua.h" />
     <ClInclude Include="Lua\LuaCell.h" />
@@ -337,6 +346,9 @@
       <Project>{8865d97c-215d-45f7-924d-f053ec2b57a5}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ADGP.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
