@@ -198,6 +198,7 @@
     <ClCompile Include="game\Hero.cpp" />
     <ClCompile Include="game\HeroInfo.cpp" />
     <ClCompile Include="game\HeroInfoManager.cpp" />
+    <ClCompile Include="game\ObjectInfo.cpp" />
     <ClCompile Include="game\ObjectInfoManager.cpp" />
     <ClCompile Include="game\PictureData.cpp" />
     <ClCompile Include="game\Player.cpp" />
@@ -208,7 +209,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ObjectInfo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdAfx.h</PrecompiledHeaderFile>

@@ -191,7 +191,7 @@
     <ClCompile Include="game\FlyingPath.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectInfo.cpp">
+    <ClCompile Include="game\ObjectInfo.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
   </ItemGroup>

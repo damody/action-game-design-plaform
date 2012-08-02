@@ -1,17 +1,19 @@
-#include "ObjectType.h"
+#include "ObjectInfo.h"
+#include "global.h"
 
-bool	ObjectType::CheckObjectDataVaild(LuaCell_Sptr luadata)
+bool	ObjectInfo::CheckObjectDataVaild(LuaCell_Sptr luadata)
 {
 }
-void	ObjectType::LoadObjectData(LuaCell_Sptr luadata);
+
+void	ObjectInfo::LoadObjectData(LuaCell_Sptr luadata)
 {
 	m_LuaCell	= luadata;
 	m_Name		= luadata->GetLua<const char*>("name");
-	m_HP		= luadata->GetLua<int>("hp");
+	m_MaxHP		= luadata->GetLua<int>("hp");
 	m_Mess		= luadata->GetLua<int>("mess");
 	m_Elasticity	= (float)luadata->GetLua<double>("elasticity");
-	m_Type		= luadata->GetLua<int>("objecttype");
-	m_FlyingType	= luadata->GetLua<int>("flyingtype");
+	m_Type		= (ObjectType::e)luadata->GetLua<int>("objecttype");
+	m_FlyingType	= (FlyingType::e)luadata->GetLua<int>("flyingtype");
 	
 	// read picture file
 	for (int i=1;;++i)
