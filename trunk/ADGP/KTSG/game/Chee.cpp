@@ -132,9 +132,19 @@ int Chee::GetTextureID()
 	return m_Texture;
 }
 
+Texture_Sptr Chee::GetTexture()
+{
+	return g_TextureManager.GetTexture(m_Texture);
+}
+
 ClipVertex Chee::GetPic()
 {
 	return m_Pic;
 }
 
 
+
+bool SortChee( Chee_RawPtr a,Chee_RawPtr b )
+{
+	return a->GetTextureID()<b->GetTextureID();
+}
