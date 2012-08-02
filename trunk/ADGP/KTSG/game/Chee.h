@@ -5,6 +5,7 @@
 #include "math\Vector3.h"
 #include "global.h"
 #include "HeroAction.h"
+#include "game\FlyingPath.h"
 
 class Chee
 {
