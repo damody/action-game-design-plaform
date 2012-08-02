@@ -40,7 +40,6 @@ private:
 	void UpdateCamera();
 	int  UpdateInput();
 	void BackgroundDataUpdate();
-
 	int  UpdateUI();
 	void PrintInfo();
 

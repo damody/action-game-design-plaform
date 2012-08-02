@@ -126,3 +126,15 @@ void Chee::SetVelocity( Vector3 v )
 {
 	m_Vel = v;
 }
+
+int Chee::GetTextureID()
+{
+	return m_Texture;
+}
+
+ClipVertex Chee::GetPic()
+{
+	return m_Pic;
+}
+
+

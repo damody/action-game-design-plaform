@@ -126,5 +126,22 @@ void Weapon::SetVelocity( Vector3 v )
 	m_Vel = v;
 }
 
+int Weapon::GetTextureID()
+{
+	return m_Texture;
+}
 
+ClipVertex Weapon::GetPic()
+{
+	return m_Pic;
+}
 
+Texture_Sptr Weapon::GetTexture()
+{
+	return g_TextureManager.GetTexture(m_Texture);
+}
+
+bool SortWeapon( Weapon_RawPtr a,Weapon_RawPtr b )
+{
+	return a->GetTextureID()<b->GetTextureID();	
+}
