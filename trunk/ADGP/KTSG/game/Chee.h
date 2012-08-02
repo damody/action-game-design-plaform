@@ -6,6 +6,7 @@
 #include "global.h"
 #include "HeroAction.h"
 #include "game\FlyingPath.h"
+#include "common\shared_ptr.h"
 
 class Chee
 {

@@ -234,3 +234,6 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 	}
 }
 
+
+
+

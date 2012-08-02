@@ -32,10 +32,9 @@ struct ObjectInfo
 	FlyingType::e   m_Flyingtype;
 
 public:
-	bool	CheckHeroDataVaild(LuaCell_Sptr luadata);
-	void	LoadHeroData(LuaCell_Sptr luadata);
+	bool	CheckObjectDataVaild(LuaCell_Sptr luadata);
+	void	LoadObjectData(LuaCell_Sptr luadata);
 	LuaCell_Sptr	m_LuaCell;	
 };
 SHARE_PTR(ObjectInfo)
-
 typedef std::map<std::string, ObjectInfo_Sptr> ObjectInfoMap; 

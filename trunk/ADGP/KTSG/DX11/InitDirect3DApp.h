@@ -12,8 +12,9 @@
 
 #include "Vertex.h"
 #include "Lua/LuaCell.h"
-#include "TextureManager.h"
 #include "game/Hero.h"
+#include "game/Weapon.h"
+#include "game/Chee.h"
 #include "game/Player.h"
 #include "game/BackGround.h"
 #include "Camera.h"
@@ -71,19 +72,20 @@ private:
 	Player			m_Player;
 	Camera_Sptr		m_Camera;
 
-	std::vector<Hero_RawPtr>	m_Heroes;
-	ClipVertexs			m_HeroVertex;
+	Heroes				m_Heroes;
+	Weapons				m_Weapons;
+	ClipVertexs			m_EntityVertex;
 	DrawVertexGroups		m_DrawVertexGroups;
 	
-	ID3D11Buffer* m_Buffer_Heroes;
-	ID3DX11Effect* m_Effect_Heroes;
-	ID3DX11EffectTechnique* m_PTech_Heroes;
-	ID3D11InputLayout* m_PLayout_Heroes;
-	ID3DX11EffectVariable *m_Heroes_cLootAt;
-	ID3DX11EffectVariable *m_Heroes_cPos;
-	ID3DX11EffectScalarVariable* m_Heroes_Width;
-	ID3DX11EffectScalarVariable* m_Heroes_Height;
-	ID3DX11EffectShaderResourceVariable*  m_PMap_Heroes;
+	ID3D11Buffer* m_Buffer_Entity;
+	ID3DX11Effect* m_Effect_Entity;
+	ID3DX11EffectTechnique* m_PTech_Entity;
+	ID3D11InputLayout* m_PLayout_Entity;
+	ID3DX11EffectVariable *m_Entity_cLootAt;
+	ID3DX11EffectVariable *m_Entity_cPos;
+	ID3DX11EffectScalarVariable* m_Entity_Width;
+	ID3DX11EffectScalarVariable* m_Entity_Height;
+	ID3DX11EffectShaderResourceVariable*  m_PMap_Entity;
 
 	BackGround_RawPtr	m_Background;
 

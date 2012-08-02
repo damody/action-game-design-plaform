@@ -11,7 +11,7 @@ hp = 1
 mess = 1
 elasticity = 0.5
 objecttype = ObjectType.CHEE;
-fltingtype = Flyingtype.LINEARLINE_PATH;
+flyingtype = Flyingtype.LINEARLINE_PATH;
 
 frame =
 {

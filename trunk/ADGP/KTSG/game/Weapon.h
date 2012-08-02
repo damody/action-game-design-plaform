@@ -5,6 +5,7 @@
 #include "math\Vector3.h"
 #include "global.h"
 #include "HeroAction.h"
+#include "common\shared_ptr.h"
 
 class Weapon
 {
@@ -51,4 +52,6 @@ public:
 	void Translation(Vector3 t);
 	void SetVelocity(Vector3 v);
 };
+SHARE_PTR(Weapon)
+typedef std::vector <Weapon_RawPtr> Weapons;
 

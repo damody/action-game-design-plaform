@@ -11,7 +11,7 @@ hp = 200
 mess = 1
 elasticity = 0.5
 objecttype = ObjectType.LIGHT;
-fltingtype = Flyingtype.DEFAULT;
+flyingtype = Flyingtype.DEFAULT;
 
 frame =
 {

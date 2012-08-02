@@ -135,5 +135,6 @@ protected:
 
 };
 SHARE_PTR(Hero)
+typedef std::vector <Hero_RawPtr> Heroes;
 
 bool SortHero( Hero_RawPtr a,Hero_RawPtr b);
