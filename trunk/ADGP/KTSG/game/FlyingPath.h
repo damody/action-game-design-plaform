@@ -1,9 +1,6 @@
 #pragma once
 #include "math\Vector3.h"
-#include "path\LinearLine.h"
-#include "path\BezierCurve.h"
-#include "path\BsplineCurve.h"
-#include "path\HSplineCurve.h"
+#include "path\PathInterpolater.h"
 
 struct FlyingType{
 	enum e{
@@ -16,19 +13,12 @@ struct FlyingType{
 	};
 };
 
-class FlyingPath
+class FlyingPath: public PathInterpolater
 {
-private:
-	LinearLine	m_Linear;
-	BezierCurve	m_Bezier;
-	BsplineCurve	m_Bspline;
-	HsplineCurve	m_Hspline;
-
 public:
 	FlyingPath(void);
 	~FlyingPath(void);
 
-	void	AddPoint();
-	Vector3 GetValue();
+	Vector3 GetValue(FlyingType::e type,float time);
 };
 

@@ -25,7 +25,7 @@ struct ObjectInfo
 	//彈性
 	float		m_Elasticity;
 	//最大血量
-	float		m_MaxHp;
+	int		m_MaxHP;
 	//物件類別
 	ObjectType::e	m_Type;
 	//飛行形式
