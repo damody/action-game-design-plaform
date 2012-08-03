@@ -555,7 +555,26 @@ void CClassView::OnFrameAdd()
 		fi.m_DVY = 0.0f;
 		fi.m_DVZ = 0.0f;
 
-		HTREEITEM hClass = m_wndClassView.InsertItem(_T("99"), 3, 3, item);
+		HTREEITEM hClass;
+		HTREEITEM tmp_item = m_wndClassView.GetChildItem(item);
+		for (int i=0;;++i)
+		{
+			// need get last node
+			if (m_wndClassView.GetNextSiblingItem(tmp_item) != NULL)
+			{
+				tmp_item = m_wndClassView.GetNextSiblingItem(tmp_item);
+				continue;
+			}
+			TCHAR num_str[10];
+			CString item_str = m_wndClassView.GetItemText(tmp_item);
+			wsprintf(num_str, _T("%d"), i);
+			if (i>298 || num_str == item_str)
+			{
+				wsprintf(num_str, _T("%d"), i+1);
+				hClass = m_wndClassView.InsertItem(num_str, 3, 3, item);
+				break;
+			}
+		}
 
 		m_propMap[hClass] = fi;
 
