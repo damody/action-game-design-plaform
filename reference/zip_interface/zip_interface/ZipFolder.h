@@ -18,6 +18,8 @@ public:
 	bool	WriteToDisk(const std::wstring& path);
 	bool	ReadFromDisk(const std::string& path);
 	bool	ReadFromDisk(const std::wstring& path);
+	bool	WriteToMemory(Bytes& dst);
+	bool	ReadFromMemory(const Bytes& src);
 	inline int	GetTotalSize(){return m_TotalSize;}
 	ZipData*	GetData(const std::string& path);
 	ZipData*	GetData(const std::wstring& path);

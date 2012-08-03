@@ -1,5 +1,10 @@
 #include "ZipFolder.h"
 #include <fstream>
+#include <boost/iostreams/stream_buffer.hpp>
+#include <boost/iostreams/stream.hpp>
+#include <boost/iostreams/device/back_inserter.hpp>
+#include <boost/serialization/vector.hpp>
+#include <iostream>
 
 
 ZipFolder::ZipFolder()
@@ -128,5 +133,34 @@ ZipData* ZipFolder::GetData( const std::string& path )
 ZipData* ZipFolder::GetData( const std::wstring& path )
 {
 	return this->GetData(ConvStr::GetStr(path));
+}
+
+bool ZipFolder::WriteToMemory(Bytes& dst)
+{
+	std::vector<char> buffer = std::vector<char>();
+	boost::iostreams::stream<boost::iostreams::back_insert_device<std::vector<char>>> output_stream(buffer);
+	//boost::archive::text_oarchive oa(ofs);
+	boost::archive::binary_oarchive oa(output_stream);
+	oa << this->m_ZipFolders;
+	oa << this->m_Name;
+	oa << this->m_TotalSize;
+	oa << this->m_ZipDatas;
+	output_stream.flush();
+	dst.clear();
+	dst.assign(&buffer[0], &buffer[0]+buffer.size());
+	return true;
+}
+
+bool ZipFolder::ReadFromMemory(const Bytes& src)
+{
+	std::vector<char> buffer(&src[0], &src[0]+src.size());
+	boost::iostreams::basic_array_source<char> buffer2(&buffer[0],buffer.size());
+	boost::iostreams::stream<boost::iostreams::basic_array_source <char> > input_stream(buffer2);
+	boost::archive::binary_iarchive ia(input_stream);
+	ia >> this->m_ZipFolders;
+	ia >> this->m_Name;
+	ia >> this->m_TotalSize;
+	ia >> this->m_ZipDatas;
+	return true;
 }
 
