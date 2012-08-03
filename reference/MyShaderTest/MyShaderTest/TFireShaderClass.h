@@ -10,16 +10,32 @@
 #include <d3dx11async.h>
 #include <fstream>
 #include <d3dx11effect.h>
-
+#include <vector>
 
 ///////////////////////
 // MY CLASS INCLUDES //
 ///////////////////////
+
 #include "TextureClass.h"
+#include "EffectData.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: TFireShaderClass
 ////////////////////////////////////////////////////////////////////////////////
+
+struct ClipVertex
+{
+	D3DXVECTOR2 position;
+	D3DXVECTOR4 picpos; // x, y, w, h
+};
+typedef std::vector<ClipVertex> ClipVertices;
+struct DrawVertexGroup
+{
+	TextureClass*	 texture;	// §÷½è
+	int	VertexCount, StartVertexLocation;
+};
+typedef std::vector<DrawVertexGroup> DrawVertexGroups;
+
 class TFireShaderClass
 {
 private:
@@ -47,14 +63,6 @@ private:
 		float distortionBias;
 	};
 
-private:
-	struct ClipVertex
-	{
-		D3DXVECTOR3 position;
-		D3DXVECTOR2 size;
-		D3DXVECTOR4 picpos; // x, y, w, h
-	};
-
 public:
 	TFireShaderClass();
 	TFireShaderClass(const TFireShaderClass&);
@@ -67,13 +75,17 @@ public:
 		ID3D11ShaderResourceView* noiseTexture, ID3D11ShaderResourceView* alphaTexture, float frameTime,
 		D3DXVECTOR3 scrollSpeeds, D3DXVECTOR3 scales, D3DXVECTOR2 distortion1, D3DXVECTOR2 distortion2,
 		D3DXVECTOR2 distortion3, float distortionScale, float distortionBias);
+	void Render(ID3D11DeviceContext* deviceContext);
+	//
+	bool CreatVertex(EffectDatas::iterator begin,EffectDatas::iterator end);
 
-private:
+	void SetFrameTime(float t);
+public:
 	bool InitializeShader(ID3D11Device*, WCHAR*, HWND);
 	void ShutdownShader();
 	void OutputShaderErrorMessage(ID3D10Blob*, WCHAR*, HWND);
 
-	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, float width,float height,float* cLookAt,
+	bool SetShaderParameters(float width,float height,float* cLookAt,
 		float *cPolarCoord, ID3D11ShaderResourceView* fireTexture, 
 		ID3D11ShaderResourceView* noiseTexture, ID3D11ShaderResourceView* alphaTexture, 
 		float frameTime, D3DXVECTOR3 scrollSpeeds, D3DXVECTOR3 scales, D3DXVECTOR2 distortion1, 
@@ -82,8 +94,14 @@ private:
 	void RenderShader(ID3D11DeviceContext*, int);
 
 	//
-	bool CreatVertex(ID3D11Device* device);
+	
 	//
+
+public:
+	ID3D11Device* m_device;
+	ID3D11DeviceContext* m_deviceContext;
+	ClipVertices m_cvs;
+	DrawVertexGroups m_dvg;
 
 private:
 	ID3D11InputLayout* m_layout;

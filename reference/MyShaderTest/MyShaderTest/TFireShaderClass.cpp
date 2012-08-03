@@ -1,11 +1,12 @@
 #include "TFireShaderClass.h"
 #include <fstream>
-
+#include <iostream>
 TFireShaderClass::TFireShaderClass(void)
 {
 }
 bool TFireShaderClass::Initialize(ID3D11Device* device, WCHAR* fxFilename, HWND hwnd)
 {
+	m_device = device;
 	ID3D10Blob* pCode = 0;
 	ID3D10Blob* errorMessage = 0;
 	HRESULT d3dResult = 0;
@@ -62,9 +63,8 @@ bool TFireShaderClass::Initialize(ID3D11Device* device, WCHAR* fxFilename, HWND 
 	//Creat input layout
 	D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
 	{
-		{"POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT,		0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"SIZE",	0, DXGI_FORMAT_R32G32_FLOAT,		0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"PICPOS",	0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0}
+		{"POSITION",	0, DXGI_FORMAT_R32G32_FLOAT,		0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"PICPOS",	0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 8, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 	unsigned int totalLayoutElements = ARRAYSIZE( vertexDesc );
 	D3DX11_PASS_DESC PassDesc;
@@ -78,7 +78,8 @@ bool TFireShaderClass::Initialize(ID3D11Device* device, WCHAR* fxFilename, HWND 
 	}
 	//Creat 
 	D3D11_BUFFER_DESC bufferDesc;
-	ClipVertex heroVertex = { D3DXVECTOR3(0.0f,0.0f,0.0f),D3DXVECTOR2(1.0f,1.0f),D3DXVECTOR4(1.0f,1.0f,10.0f,7.0f) };
+	ClipVertex heroVertex = { D3DXVECTOR2(1.0f,1.0f),D3DXVECTOR4(1.0f,1.0f,10.0f,7.0f) };
+
 	ZeroMemory( &bufferDesc, sizeof( bufferDesc ) );
 	bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -155,7 +156,7 @@ bool TFireShaderClass::Render(ID3D11DeviceContext* deviceContext, int indexCount
 	bool result;
 
 	// Set the shader parameters that it will use for rendering.
-	result = SetShaderParameters(deviceContext, width, height, cLookAt,cPolarCoord, fireTexture, noiseTexture, alphaTexture, 
+	result = SetShaderParameters(width, height, cLookAt,cPolarCoord, fireTexture, noiseTexture, alphaTexture, 
 		frameTime, scrollSpeeds, scales, distortion1, distortion2, distortion3, distortionScale, 
 		distortionBias);
 	if(!result)
@@ -169,25 +170,39 @@ bool TFireShaderClass::Render(ID3D11DeviceContext* deviceContext, int indexCount
 
 	return true;
 }
-bool TFireShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext, float width,float height,float* cLookAt,
+void TFireShaderClass::Render(ID3D11DeviceContext* deviceContext)
+{
+	m_deviceContext = deviceContext;
+	UINT offset = 0;
+	UINT stride2 = sizeof(ClipVertex);
+	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	m_deviceContext->IASetInputLayout(m_layout);
+	m_deviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Heroes, &stride2, &offset);
+	m_PTech->GetPassByIndex(0)->Apply(0, m_deviceContext);
+
+	
+	for (DrawVertexGroups::iterator it = m_dvg.begin();it != m_dvg.end();++it)
+	{
+		m_alphaTexture->SetResource(it->texture->GetTexture());
+		m_PTech->GetPassByIndex(0)->Apply(0, m_deviceContext);
+		m_deviceContext->Draw(it->VertexCount, it->StartVertexLocation);
+	}
+}
+bool TFireShaderClass::SetShaderParameters(float width,float height,float* cLookAt,
 	float* cPolarCoord, ID3D11ShaderResourceView* fireTexture, 
 	ID3D11ShaderResourceView* noiseTexture, ID3D11ShaderResourceView* alphaTexture, 
 	float frameTime, D3DXVECTOR3 scrollSpeeds, D3DXVECTOR3 scales, D3DXVECTOR2 distortion1, 
 	D3DXVECTOR2 distortion2, D3DXVECTOR2 distortion3, float distortionScale, 
 	float distortionBias)
 {
-	/*m_worldMatrix->SetMatrix(worldMatrix);
-	m_viewMatrix->SetMatrix(viewMatrix);
-	m_projectionMatrix->SetMatrix(projectionMatrix);*/
+
 	m_width->SetFloat(width);
 	m_height->SetFloat(height);
-	m_cLookAt->SetRawValue(cLookAt,0,sizeof(float)*3);
-	m_cPolarCoord->SetRawValue(cPolarCoord,0,sizeof(float)*3);
+
 
 
 	m_fireTexture->SetResource(fireTexture);
 	m_noiseTexture->SetResource(noiseTexture);
-	m_alphaTexture->SetResource(alphaTexture);
 
 	m_frameTime->SetFloat(frameTime);
 	m_scrollSpeeds->SetRawValue(scrollSpeeds,0,sizeof(float)*3);
@@ -212,7 +227,16 @@ void TFireShaderClass::RenderShader(ID3D11DeviceContext* deviceContext, int inde
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Heroes, &stride2, &offset);
 	m_PTech->GetPassByIndex(0)->Apply(0, deviceContext);
-	deviceContext->Draw(indexCount, 0);
+
+
+	for (DrawVertexGroups::iterator it = m_dvg.begin();it != m_dvg.end();++it)
+	{
+		m_alphaTexture->SetResource(it->texture->GetTexture());
+		m_PTech->GetPassByIndex(0)->Apply(0, deviceContext);
+		deviceContext->Draw(it->VertexCount, it->StartVertexLocation);
+	}
+
+	//deviceContext->Draw(indexCount, 0);
 }
 
 
@@ -249,4 +273,52 @@ void TFireShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, WCHAR*
 	MessageBox(hwnd, L"Error compiling shader.  Check shader-error.txt for message.", shaderFilename, MB_OK);
 
 	return;
+}
+
+bool TFireShaderClass::CreatVertex(EffectDatas::iterator begin,EffectDatas::iterator end)
+{
+	m_cvs.clear();
+	m_dvg.clear();
+	int vertexCount = 0, count = 0;
+	for(EffectDatas::iterator it = begin;it!=end;)
+	{
+		DrawVertexGroup dvg={};
+		dvg.texture = (it)->m_Texture;
+		vertexCount = 0;
+		dvg.StartVertexLocation = count;
+		do 
+		{
+			ClipVertex temp = {};
+			temp.picpos = it->m_Picpos;
+			temp.position = it->m_Pos;
+			//save vertex points
+			m_cvs.push_back(temp);
+			it++;
+			++vertexCount;
+			++count;
+		} while (it!=end && dvg.texture == (it)->m_Texture);
+		dvg.VertexCount = vertexCount;
+		//save dvg
+		m_dvg.push_back(dvg);
+	}
+
+
+	D3D11_BUFFER_DESC bufferDesc;
+	ZeroMemory( &bufferDesc, sizeof( bufferDesc ) );
+	bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
+	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bufferDesc.CPUAccessFlags = 0;
+	bufferDesc.MiscFlags = 0;
+	bufferDesc.ByteWidth = (UINT)(sizeof(ClipVertex) * m_cvs.size());
+	bufferDesc.StructureByteStride=sizeof(ClipVertex);
+	D3D11_SUBRESOURCE_DATA resourceData;
+	ZeroMemory( &resourceData, sizeof( resourceData ) );
+	resourceData.pSysMem = &m_cvs[0];
+	m_device->CreateBuffer( &bufferDesc, &resourceData, &m_Buffer_Heroes );
+
+	return true;
+}
+void TFireShaderClass::SetFrameTime(float t)
+{
+	m_frameTime->SetFloat(t);
 }

@@ -22,6 +22,7 @@
 #include "TestShaderClass.h"
 #include "TFireShaderClass.h"
 #include "Camera.h"
+#include "Effect.h"
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: GraphicsClass
 ////////////////////////////////////////////////////////////////////////////////
@@ -42,10 +43,7 @@ private:
 	bool RenderToTexture();
 	bool RenderScene();
 
-	//test function
-	bool _TEST( HWND hwnd );
-	void TEST_RenderFire();
-	bool test_creatTexture( HWND hwnd );
+
 
 private:
 	D3DClass* m_D3D;
@@ -61,14 +59,19 @@ private:
 	//
 
 	//
-	TextureClass* m_fireTexture;
-	TextureClass* m_noiseTexture;
-	TextureClass* m_alphaTexture;
+
 	//
 
 	//TEST
 	TextureShaderClass* m_TestTS;
 	TFireShaderClass* m_tf;
+	//
+
+	//
+	Effect* m_Effect;
+	//
+
+	//
 	//
 };
 

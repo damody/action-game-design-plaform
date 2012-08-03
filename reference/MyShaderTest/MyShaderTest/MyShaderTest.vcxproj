@@ -99,6 +99,7 @@
     <ClInclude Include="CameraClass.h" />
     <ClInclude Include="D3DClass.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="EffectData.h" />
     <ClInclude Include="FireShaderClass.h" />
     <ClInclude Include="GraphicsClass.h" />
     <ClInclude Include="RenderTextureClass.h" />

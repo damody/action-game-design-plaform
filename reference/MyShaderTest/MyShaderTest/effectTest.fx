@@ -47,15 +47,13 @@ SamplerState gTriLinearSam
 
 struct VS_IN
 {
-	float3	position: POSITION;
-	float2	size: SIZE;
+	float2	position: POSITION;
 	float4	picpos : PICPOS; // x, y, w, h
 };
 
 struct VS_OUT
 {
-	float4	pos   : SV_POSITION;
-	float2	size  : TEXCOORD0;
+	float2	pos   : POSITION;
 	float4	picpos : PICPOS; // x, y, w, h
 };
 
@@ -73,8 +71,7 @@ VS_OUT VS(VS_IN vIn)
 	VS_OUT vOut;
 	
 
-	vOut.pos =float4(vIn.position.xyz,1.0) ;
-	vOut.size = vIn.size;
+	vOut.pos = float2(vIn.position.xy);
 	vOut.picpos = vIn.picpos;
 	return vOut;
 }
@@ -112,12 +109,17 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 {
 	float2 texsize = {1/input[0].picpos.z, 1/input[0].picpos.w};
 	float2 newTex;
-
+	
+	float2 offset = float2(-1,1);
+	float2 viewport = float2(1024,1024);
+	
+	float2 size = float2(256.0f,-256.0f);
+   
 	float2 lt,ld,rt,rd;
-	lt = float2(input[0].pos.x-(input[0].size.x)/2,input[0].pos.y+(input[0].size.y)/2);
-	ld= float2(input[0].pos.x-(input[0].size.x)/2,input[0].pos.y-(input[0].size.y)/2);
-	rt = float2(input[0].pos.x+(input[0].size.x)/2,input[0].pos.y+(input[0].size.y)/2);
-	rd = float2(input[0].pos.x+(input[0].size.x)/2,input[0].pos.y-(input[0].size.y)/2);
+	lt = float2((input[0].pos.x-1)*size.x,(input[0].pos.y-1)*size.y)*2/(viewport)+offset ;
+	ld= float2((input[0].pos.x-1)*size.x,(input[0].pos.y-1)*size.y+size.y)*2/(viewport)+offset  ;
+	rt = float2((input[0].pos.x-1)*size.x+size.x,(input[0].pos.y-1)*size.y)*2/(viewport)+offset ;
+	rd = float2((input[0].pos.x-1)*size.x+size.x,(input[0].pos.y-1)*size.y+size.y)*2/(viewport)+offset ;
 	
 	
 	GS_OUT out5;

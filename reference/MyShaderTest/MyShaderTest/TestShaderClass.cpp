@@ -81,7 +81,7 @@ bool TestShaderClass::InitializeShader(ID3D11Device* device, WCHAR* fxFilename,H
 	}
 	//
 	D3D11_BUFFER_DESC bufferDesc;
-	ClipVertex heroVertex = { D3DXVECTOR3(0.0f,0.0f,0.0f),D3DXVECTOR2(1.0f,1.0f),0.0f,D3DXVECTOR4(1.0f,1.0f,1.0f,1.0f) };
+	ClipVertex heroVertex = { D3DXVECTOR3(0.0f,0.0f,0.0f),D3DXVECTOR2(1.0f,1.0f),0.0f,D3DXVECTOR4(1.0f,1.0f,10.0f,7.0f) };
 	ZeroMemory( &bufferDesc, sizeof( bufferDesc ) );
 	bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
