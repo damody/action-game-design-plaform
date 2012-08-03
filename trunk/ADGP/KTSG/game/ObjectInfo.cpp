@@ -3,6 +3,7 @@
 
 bool	ObjectInfo::CheckObjectDataVaild(LuaCell_Sptr luadata)
 {
+	return true;
 }
 
 void	ObjectInfo::LoadObjectData(LuaCell_Sptr luadata)

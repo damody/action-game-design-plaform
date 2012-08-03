@@ -6,7 +6,7 @@ Chee::Chee(void)
 }
 
 Chee::Chee( std::string c ):
-chee(c),m_Position(Vector3()),m_Team(0),m_FaceSide(true),m_FrameID(0),m_Texture(0),m_PicID(0),m_PicW(0),m_PicH(0),m_PicX(0),m_PicY(0)
+chee(c),m_Position(Vector3(0,0,0)),m_Vel(Vector3(0,0,0)),m_Team(0),m_FaceSide(true),m_FrameID(0),m_Texture(0),m_PicID(0),m_PicW(0),m_PicH(0),m_PicX(0),m_PicY(0)
 {
 	m_ObjectInfo = g_ObjectInfoMG.GetObjectInfo(chee);
 	if(m_ObjectInfo.get())
@@ -72,6 +72,7 @@ void Chee::Update( float dt )
 	{
 		m_TimeTik--;
 	}
+	m_Position += m_Vel;
 }
 
 void Chee::UpdateDataToDraw()

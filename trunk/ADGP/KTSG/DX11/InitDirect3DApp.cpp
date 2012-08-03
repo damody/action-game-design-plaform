@@ -6,6 +6,7 @@
 #include "WaveSound.h"
 #include "ui/CmdDef.h"
 #include "game/HeroInfo.h"
+#include "game/ObjectInfo.h"
 
 InitDirect3DApp* InitDirect3DApp::dxAppInstance = NULL;
 
@@ -66,10 +67,17 @@ void InitDirect3DApp::UpdateScene(float dt)
 		g_Time++;
 		UpdateCamera();
 		//Hero Update
-		for(std::vector<Hero_RawPtr>::iterator it = m_Heroes.begin();it != m_Heroes.end(); it++)
+		for(Heroes::iterator it = m_Heroes.begin();it != m_Heroes.end(); it++)
 		{
 			(*it)->Update(dt);
 		}
+
+		//Chee Update
+		for(Chees::iterator it = m_Chees.begin();it != m_Chees.end(); it++)
+		{
+			(*it)->Update(dt);
+		}
+
 		//Background Update
 		if(m_Background != NULL)
 		{
@@ -151,7 +159,7 @@ void InitDirect3DApp::DrawScene()
 			}
 		}
 	}
-	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
+	//m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
 	//Draw Shadow
 	offset = 0;
 	stride2 = sizeof(ClipVertex);
@@ -425,6 +433,8 @@ void InitDirect3DApp::buildPoint()
 	// Chee
 	m_CheeVertex.clear();
 	m_CheeDrawVertexGroups.clear();
+	vertexCount = 0;
+	count = 0;
 	if(!m_Chees.empty())
 	{
 		for(Chees::iterator it = m_Chees.begin();it != m_Chees.end(); it++)
@@ -442,7 +452,7 @@ void InitDirect3DApp::buildPoint()
 			do 
 			{
 				//save vertex points
-				m_EntityVertex.push_back((*it)->GetPic());
+				m_CheeVertex.push_back((*it)->GetPic());
 				it++;
 				++vertexCount;
 				++count;
@@ -549,7 +559,19 @@ void InitDirect3DApp::LoadHero()
 	}
 	tempBG->LoadData(ft);
 	m_Background = tempBG;
-
+	
+	//test chee
+	LuaCell_Sptr ball = LuaCell_Sptr(new LuaCell);
+	ball->InputLuaFile("davis_ball.lua");
+	ObjectInfo_Sptr temp2 = ObjectInfo_Sptr(new ObjectInfo);
+	temp2->LoadObjectData(ball);
+	g_ObjectInfoMG.AddObjectInfo(temp2->m_Name,temp2);
+	
+	Chee_RawPtr test = Chee_RawPtr(new Chee(temp2->m_Name));
+	test->SetPosition(Vector3(100,50,100));
+	test->SetVelocity(Vector3(1,0,0));
+	m_Chees.push_back(test);
+	
 	//player init
 	int key[8] = {KEY_UP,KEY_DOWN,KEY_RIGHT,KEY_LEFT,KEY_Q,KEY_W,KEY_E,KEY_R};
 	m_Player.SetCtrlKey(key);
