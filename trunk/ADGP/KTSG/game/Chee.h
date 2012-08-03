@@ -52,5 +52,12 @@ public:
 	void SetPosition(Vector3 p);
 	void Translation(Vector3 t);
 	void SetVelocity(Vector3 v);
-};
 
+	int GetTextureID();
+	Texture_Sptr GetTexture();
+	ClipVertex GetPic();
+};
+SHARE_PTR(Chee)
+typedef std::vector <Chee_RawPtr> Chees;
+
+bool SortChee(Chee_RawPtr a,Chee_RawPtr b);

@@ -10,7 +10,7 @@
 InitDirect3DApp* InitDirect3DApp::dxAppInstance = NULL;
 
 InitDirect3DApp::InitDirect3DApp()
-: D3DApp(), m_Entity_Width(0), m_Entity_Height(0), m_Buffer_Entity(0),
+: D3DApp(), m_Entity_Width(0), m_Entity_Height(0), m_Buffer_Entity(0),m_Buffer_Chee(0),
             m_Background_Width(0), m_Background_Height(0), m_Buffer_Background(0), m_Background(0),
 	    m_ColorRect_Width(0), m_ColorRect_Height(0), m_Buffer_ColorRect(0),
 	    m_Shadow_Width(0), m_Shadow_Height(0),
@@ -168,13 +168,29 @@ void InitDirect3DApp::DrawScene()
 		}
 	}
 
-	//Draw Hero
+	//Draw Hero & Weapon
 	offset = 0;
 	stride2 = sizeof(ClipVertex);
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	m_DeviceContext->IASetInputLayout(m_PLayout_Entity);
 	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Entity, &stride2, &offset);
 	for (DrawVertexGroups::iterator it = m_DrawVertexGroups.begin();it != m_DrawVertexGroups.end();++it)
+	{
+		if (it->texture.get())
+		{
+			m_PMap_Entity->SetResource(*(it->texture));
+			m_PTech_Entity->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
+		}
+	}
+
+	//Draw Chee
+	offset = 0;
+	stride2 = sizeof(ClipVertex);
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	m_DeviceContext->IASetInputLayout(m_PLayout_Entity);
+	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Chee, &stride2, &offset);
+	for (DrawVertexGroups::iterator it = m_CheeDrawVertexGroups.begin();it != m_CheeDrawVertexGroups.end();++it)
 	{
 		if (it->texture.get())
 		{
@@ -305,6 +321,7 @@ void InitDirect3DApp::buildPointFX()
 void InitDirect3DApp::buildPoint()
 {
 	ReleaseCOM(m_Buffer_Entity);
+	ReleaseCOM(m_Buffer_Chee);
 	ReleaseCOM(m_Buffer_Background);
 	ReleaseCOM(m_Buffer_ColorRect);
 
@@ -337,20 +354,20 @@ void InitDirect3DApp::buildPoint()
 		vinitData.pSysMem = &m_Background->m_BGVerteices[0];
 		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Background));
 	}
-	// set heroes
 
-	for(std::vector<Hero_RawPtr>::iterator it = m_Heroes.begin();it != m_Heroes.end(); it++)
-	{
-		(*it)->UpdateDataToDraw();
-	}
-
-	std::stable_sort(m_Heroes.begin(),m_Heroes.end(),SortHero);
+	// set heroes and weapons
 	m_EntityVertex.clear();
 	m_DrawVertexGroups.clear();
 	int vertexCount = 0, count = 0;
 	if(!m_Heroes.empty())
 	{
-		for(std::vector<Hero_RawPtr>::iterator it=m_Heroes.begin();it != m_Heroes.end();)
+		for(Heroes::iterator it = m_Heroes.begin();it != m_Heroes.end(); it++)
+		{
+			(*it)->UpdateDataToDraw();
+		}
+		std::stable_sort(m_Heroes.begin(),m_Heroes.end(),SortHero);
+
+		for(Heroes::iterator it=m_Heroes.begin();it != m_Heroes.end();)
 		{
 			DrawVertexGroup dvg={};
 			dvg.texture = (*it)->GetTexture();
@@ -368,16 +385,81 @@ void InitDirect3DApp::buildPoint()
 			//save dvg
 			m_DrawVertexGroups.push_back(dvg);
 		}
-		if (vertexCount>0)
+	}
+	if(!m_Weapons.empty())
+	{
+		for(Weapons::iterator it = m_Weapons.begin();it != m_Weapons.end(); it++)
 		{
-			m_vbd.ByteWidth = (UINT)(sizeof(ClipVertex) * m_EntityVertex.size());
-			m_vbd.StructureByteStride=sizeof(ClipVertex);
-			D3D11_SUBRESOURCE_DATA vinitData;
-			vinitData.pSysMem = &m_EntityVertex[0];
-			HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Entity));
+			(*it)->UpdateDataToDraw();
+		}
+		std::stable_sort(m_Weapons.begin(),m_Weapons.end(),SortWeapon);
+
+		for(Weapons::iterator it=m_Weapons.begin();it != m_Weapons.end();)
+		{
+			DrawVertexGroup dvg={};
+			dvg.texture = (*it)->GetTexture();
+			vertexCount = 0;
+			dvg.StartVertexLocation = count;
+			do 
+			{
+				//save vertex points
+				m_EntityVertex.push_back((*it)->GetPic());
+				it++;
+				++vertexCount;
+				++count;
+			} while (it!=m_Weapons.end() && dvg.texture == (*it)->GetTexture());
+			dvg.VertexCount = vertexCount;
+			//save dvg
+			m_DrawVertexGroups.push_back(dvg);
 		}
 	}
+	if (vertexCount>0)
+	{
+		m_vbd.ByteWidth = (UINT)(sizeof(ClipVertex) * m_EntityVertex.size());
+		m_vbd.StructureByteStride=sizeof(ClipVertex);
+		D3D11_SUBRESOURCE_DATA vinitData;
+		vinitData.pSysMem = &m_EntityVertex[0];
+		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Entity));
+	}
 
+	// Chee
+	m_CheeVertex.clear();
+	m_CheeDrawVertexGroups.clear();
+	if(!m_Chees.empty())
+	{
+		for(Chees::iterator it = m_Chees.begin();it != m_Chees.end(); it++)
+		{
+			(*it)->UpdateDataToDraw();
+		}
+		std::stable_sort(m_Chees.begin(),m_Chees.end(),SortChee);
+
+		for(Chees::iterator it=m_Chees.begin();it != m_Chees.end();)
+		{
+			DrawVertexGroup dvg={};
+			dvg.texture = (*it)->GetTexture();
+			vertexCount = 0;
+			dvg.StartVertexLocation = count;
+			do 
+			{
+				//save vertex points
+				m_EntityVertex.push_back((*it)->GetPic());
+				it++;
+				++vertexCount;
+				++count;
+			} while (it!=m_Chees.end() && dvg.texture == (*it)->GetTexture());
+			dvg.VertexCount = vertexCount;
+			//save dvg
+			m_CheeDrawVertexGroups.push_back(dvg);
+		}
+	}
+	if (vertexCount>0)
+	{
+		m_vbd.ByteWidth = (UINT)(sizeof(ClipVertex) * m_EntityVertex.size());
+		m_vbd.StructureByteStride=sizeof(ClipVertex);
+		D3D11_SUBRESOURCE_DATA vinitData;
+		vinitData.pSysMem = &m_CheeVertex[0];
+		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Chee));
+	}
 	
 
 }

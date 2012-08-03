@@ -40,7 +40,6 @@ private:
 	void UpdateCamera();
 	int  UpdateInput();
 	void BackgroundDataUpdate();
-
 	int  UpdateUI();
 	void PrintInfo();
 
@@ -77,7 +76,12 @@ private:
 	ClipVertexs			m_EntityVertex;
 	DrawVertexGroups		m_DrawVertexGroups;
 	
+	Chees				m_Chees;
+	ClipVertexs			m_CheeVertex;
+	DrawVertexGroups		m_CheeDrawVertexGroups;
+
 	ID3D11Buffer* m_Buffer_Entity;
+	ID3D11Buffer* m_Buffer_Chee;
 	ID3DX11Effect* m_Effect_Entity;
 	ID3DX11EffectTechnique* m_PTech_Entity;
 	ID3D11InputLayout* m_PLayout_Entity;
