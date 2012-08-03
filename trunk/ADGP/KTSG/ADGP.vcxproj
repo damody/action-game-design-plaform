@@ -198,8 +198,10 @@
     <ClCompile Include="game\Hero.cpp" />
     <ClCompile Include="game\HeroInfo.cpp" />
     <ClCompile Include="game\HeroInfoManager.cpp" />
+    <ClCompile Include="game\HeroManager.cpp" />
     <ClCompile Include="game\ObjectInfo.cpp" />
     <ClCompile Include="game\ObjectInfoManager.cpp" />
+    <ClCompile Include="game\ObjectManager.cpp" />
     <ClCompile Include="game\PictureData.cpp" />
     <ClCompile Include="game\Player.cpp" />
     <ClCompile Include="game\Weapon.cpp" />
@@ -282,7 +284,9 @@
     <ClInclude Include="game\Consume.h" />
     <ClInclude Include="game\CtrlKey.h" />
     <ClInclude Include="game\FlyingPath.h" />
+    <ClInclude Include="game\HeroManager.h" />
     <ClInclude Include="game\ObjectInfoManager.h" />
+    <ClInclude Include="game\ObjectManager.h" />
     <ClInclude Include="game\ObjectType.h" />
     <ClInclude Include="game\FrameInfo.h" />
     <ClInclude Include="game\Hero.h" />

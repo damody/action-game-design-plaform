@@ -11,7 +11,7 @@ void	ObjectInfo::LoadObjectData(LuaCell_Sptr luadata)
 	m_LuaCell	= luadata;
 	m_Name		= luadata->GetLua<const char*>("name");
 	m_MaxHP		= luadata->GetLua<int>("hp");
-	m_Mess		= luadata->GetLua<int>("mess");
+	m_Mess		= (float)luadata->GetLua<int>("mess");
 	m_Elasticity	= (float)luadata->GetLua<double>("elasticity");
 	m_Type		= (ObjectType::e)luadata->GetLua<int>("objecttype");
 	m_FlyingType	= (FlyingType::e)luadata->GetLua<int>("flyingtype");
