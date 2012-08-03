@@ -117,6 +117,7 @@ public:
 	Texture_Sptr GetTexture();
 	int GetTextureID();
 	ClipVertex GetPic();
+	int Team();
 	Vector3 Position();
 
 	void SetRecord(Record_Sptr r);
