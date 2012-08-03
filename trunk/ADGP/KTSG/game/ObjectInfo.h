@@ -29,7 +29,7 @@ struct ObjectInfo
 	//物件類別
 	ObjectType::e	m_Type;
 	//飛行形式
-	FlyingType::e   m_Flyingtype;
+	FlyingType::e   m_FlyingType;
 
 public:
 	bool	CheckObjectDataVaild(LuaCell_Sptr luadata);
