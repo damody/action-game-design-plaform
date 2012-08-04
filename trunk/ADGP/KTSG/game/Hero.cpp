@@ -70,26 +70,61 @@ void Hero::Update(float dt)
 		}
 	}
 	//物理
+	float ry = m_Position.y;
 	m_Position += m_Vel;
 
-	float sign = m_Vel.x/abs(m_Vel.x);
-	m_Vel.x = abs(m_Vel.x);
-	m_Vel.x -= FRICTION;
-	if(m_Vel.x < 0) m_Vel.x = 0;
-	else m_Vel.x *= sign;
+	if(m_Position.y <= 0){	//地上
+		//落地判定
+		if(ry > 0 && m_Action != HeroAction::UNIQUE_SKILL){
+			m_Position.y = 0;
+			m_Vel.y = 0;
+			//Frame 改到蹲
+			// *f = &m_HeroInfo->m_FramesMap["crouch"][0];
+			m_Frame = "crouch";
+			m_FrameID = m_Action == HeroAction::DASH ? 1 : 0 ;
+			FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
 
-	sign = m_Vel.y/abs(m_Vel.y);
-	m_Vel.y = abs(m_Vel.y);
-	m_Vel.y -= FRICTION;
-	if(m_Vel.y < 0) m_Vel.y = 0;
-	else m_Vel.y *= sign;
+			m_PicID = f->m_PictureID;
+			m_PicX = f->m_PictureX;
+			m_PicY = f->m_PictureY;
+			m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
+			m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
+			m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
+			m_Action = f->m_HeroAction;
+			m_TimeTik = f->m_Wait;
+			//m_Vel.x = 0;
+			//m_Vel.z = 0;	
+		}
+		//X方向摩擦力計算
+		float sign = m_Vel.x/abs(m_Vel.x);
+		m_Vel.x = abs(m_Vel.x);
+		m_Vel.x -= FRICTION;
+		if(m_Vel.x < 0) m_Vel.x = 0;
+		else m_Vel.x *= sign;
+		//Z方向摩擦力計算
+		sign = m_Vel.z/abs(m_Vel.z);
+		m_Vel.z = abs(m_Vel.z);
+		m_Vel.z -= FRICTION;
+		if(m_Vel.z < 0) m_Vel.z = 0;
+		else m_Vel.z *= sign;
+	}
+	else{					//空中
+		m_Vel.y -= G_ACCE;
+		if(m_Action <= HeroAction::WALKING){
+			m_Frame = "jump";
+			m_FrameID = m_HeroInfo->m_FramesMap[m_Frame].size()-1;
+			FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
 
-	sign = m_Vel.z/abs(m_Vel.z);
-	m_Vel.z = abs(m_Vel.z);
-	m_Vel.z -= FRICTION;
-	if(m_Vel.z < 0) m_Vel.z = 0;
-	else m_Vel.z *= sign;
-
+			m_PicID = f->m_PictureID;
+			m_PicX = f->m_PictureX;
+			m_PicY = f->m_PictureY;
+			m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
+			m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
+			m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
+			m_Action = f->m_HeroAction;
+			m_TimeTik = f->m_Wait;
+		}
+	}
 }
 
 void Hero::UpdateDataToDraw()
@@ -188,7 +223,6 @@ bool Hero::ScanKeyQue()
 			}
 			else if(i->key == CtrlKey::LEFT)
 			{
-				printf("d_run:%d\n",d_run);
 				if( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
 					//跑
 					nFrame = "running";
@@ -202,7 +236,6 @@ bool Hero::ScanKeyQue()
 			}
 			else if(i->key == CtrlKey::RIGHT)
 			{
-				printf("d_run:%d\n",d_run);
 				if( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
 					//跑
 					nFrame = "running";
@@ -234,7 +267,6 @@ bool Hero::ScanKeyQue()
 			}
 			else if(i->key == CtrlKey::LEFT)
 			{
-				printf("d_run:%d\n",d_run);
 				if( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
 					//跑
 					nFrame = "running";
@@ -248,7 +280,6 @@ bool Hero::ScanKeyQue()
 			}
 			else if(i->key == CtrlKey::RIGHT)
 			{
-				printf("d_run:%d\n",d_run);
 				if( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
 					//跑
 					nFrame = "running";
@@ -297,6 +328,17 @@ bool Hero::ScanKeyQue()
 				nFramID = 0;
 				d_run = 0;
 				break;
+			}
+			i++;
+		}
+	}
+	else if(m_Action == HeroAction::JUMP){
+		while(i!=m_KeyQue.end()){
+			if(i->key == CtrlKey::LEFT ){
+				m_FaceSide = false;
+			}
+			else if(i->key == CtrlKey::RIGHT ){
+				m_FaceSide = true;
 			}
 			i++;
 		}
@@ -458,8 +500,6 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 		else if(k.key == CtrlKey::LEFT){
-			//d_run = -k.time;
-			printf("LEFT, k.time = %d, d_run = %d, g_Time: %d\n",k.time,d_run,g_Time);
 			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 				if(i->key == CtrlKey::RIGHT){
 					m_KeyQue.erase(i);
@@ -468,8 +508,6 @@ void Hero::PushKey( KeyInfo k )
 			}
 		}
 		else if(k.key == CtrlKey::RIGHT){
-			//d_run = k.time;
-			printf("RIGHT, k.time = %d, d_run = %d, g_Time: %d\n",k.time,d_run,g_Time);
 			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 				if(i->key == CtrlKey::LEFT){
 					m_KeyQue.erase(i);

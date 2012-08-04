@@ -585,7 +585,7 @@ void InitDirect3DApp::LoadHero()
 			m_Heroes.push_back(m_Player.CreateHero(Vector3(j*200,0,i*200)));
 		}
 	}	*/
-	m_Heroes.push_back(m_Player.CreateHero(Vector3(0,0,0)));
+	m_Heroes.push_back(m_Player.CreateHero(Vector3(0,50,0)));
 }
 
 
