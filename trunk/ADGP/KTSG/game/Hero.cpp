@@ -336,9 +336,11 @@ bool Hero::ScanKeyQue()
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::LEFT ){
 				m_FaceSide = false;
+				break;
 			}
 			else if(i->key == CtrlKey::RIGHT ){
 				m_FaceSide = true;
+				break;
 			}
 			i++;
 		}
