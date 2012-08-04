@@ -58,7 +58,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 
 	//*test camera
 	TestCamera();
-	
+	TestChee();
 	
 	static float timp_count = 0;
 	timp_count+=dt;
@@ -444,7 +444,7 @@ void InitDirect3DApp::buildPoint()
 	}
 	if (vertexCount>0)
 	{
-		m_vbd.ByteWidth = (UINT)(sizeof(ClipVertex) * m_EntityVertex.size());
+		m_vbd.ByteWidth = (UINT)(sizeof(ClipVertex) * m_CheeVertex.size());
 		m_vbd.StructureByteStride=sizeof(ClipVertex);
 		D3D11_SUBRESOURCE_DATA vinitData;
 		vinitData.pSysMem = &m_CheeVertex[0];
@@ -540,7 +540,7 @@ void InitDirect3DApp::LoadHero()
 	}
 	tempBG->LoadData(ft);
 	m_Background = tempBG;
-	/*
+	
 	//test chee
 	LuaCell_Sptr ball = LuaCell_Sptr(new LuaCell);
 	ball->InputLuaFile("davis_ball.lua");
@@ -548,11 +548,6 @@ void InitDirect3DApp::LoadHero()
 	temp2->LoadObjectData(ball);
 	g_ObjectInfoMG.AddObjectInfo(temp2->m_Name,temp2);
 	
-	Chee_RawPtr test = Chee_RawPtr(new Chee(temp2->m_Name));
-	test->SetPosition(Vector3(100,50,100));
-	test->SetVelocity(Vector3(1,0,0));
-	m_Chees.push_back(test);
-	*/
 
 	//player init
 	int key[8] = {KEY_UP,KEY_DOWN,KEY_RIGHT,KEY_LEFT,KEY_Q,KEY_W,KEY_E,KEY_R};
@@ -560,15 +555,12 @@ void InitDirect3DApp::LoadHero()
 
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
+
 	m_Player.m_Hero = g_HeroMG.Create(m_Player.HeroName(),Vector3(0,0,0));
-	/*
-	for(int i=0 ; i<1 ; i++){
-		for (int j=0 ; j<1 ; j++)
-		{
-			m_Heroes.push_back(m_Player.CreateHero(Vector3(j*200,0,i*200)));
-		}
-	}	
-	m_Heroes.push_back(m_Player.CreateHero(Vector3(0,0,0)));*/
+
+	//g_ObjectMG.CreateChee("Davis_ball",Vector3(100,80,1000),Vector3(0,0,0));
+	//g_ObjectMG.CreateChee("Davis_ball",Vector3(100,80,500),Vector3(0,0,0));
+	//g_HeroMG.Create("Davis",Vector3(100,0,100));
 }
 
 
@@ -611,7 +603,7 @@ void InitDirect3DApp::PrintInfo()
 	{
 		float fps = (float)frameCnt; // fps = frameCnt / 1
 		float mspf = 1000.0f / fps;
-		std::wcout << L"FPS: " << fps << L" Balls: " << g_BallptrManager.Ballptrs().size()
+		std::wcout << L"FPS: " << fps << L" Balls: " << g_ObjectMG.AmountChee()
 			 << "\t"<< g_EnemyBallptrManager.Ballptrs().size() << L"\n";
 		std::wcout << m_FrameStats;
 		// Reset for next average.
@@ -818,12 +810,47 @@ void InitDirect3DApp::ReflashTowerState()
 	
 }
 
+
+
+void InitDirect3DApp::UpdateCamera()
+{
+	if(m_Player.m_Hero->Position().x >= mClientWidth && m_Player.m_Hero->Position().x <= m_Background->Width()-mClientWidth)
+	{
+		float m = m_Player.m_Hero->Position().x - m_Camera->LookAt().x;
+		m_Camera->MoveX(m*0.05f);
+	}
+
+
+	m_Entity_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Entity_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Background_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Background_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_ColorRect_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_ColorRect_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Shadow_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Shadow_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+}
+
+void InitDirect3DApp::BackgroundDataUpdate()
+{
+	ParallelLight pl =m_Background->GetParallelLight();
+	m_Shadow_lightDir->SetRawValue(&pl.m_Direction[0], 0, sizeof(float)*3);
+	m_Shadow_lightStr->SetFloat(pl.m_LightStrength*0.1f);
+
+	for(std::vector<Hero_RawPtr>::iterator it=g_HeroMG.HeroVectorBegin(); it !=g_HeroMG.HeroVectorEnd() ; it++)
+	{
+		(*it)->SetPosition(m_Background->AlignmentSpace((*it)->Position()));
+		(*it)->SetPosition(m_Background->AlignmentBan((*it)->Position()));
+	}
+	
+}
+
 void InitDirect3DApp::TestCamera()
 {
 	if (InputStateS::instance().isKeyPress(KEY_Z))
 	{
 		m_Camera->Zoom(-1);
-		
+
 		//m_Camera->SurroundX(-10);
 		//m_Camera->MoveX(-1);
 	}
@@ -883,35 +910,10 @@ void InitDirect3DApp::TestCamera()
 	}
 }
 
-void InitDirect3DApp::UpdateCamera()
+void InitDirect3DApp::TestChee()
 {
-	if(m_Player.m_Hero->Position().x >= mClientWidth && m_Player.m_Hero->Position().x <= m_Background->Width()-mClientWidth)
+	if (InputStateS::instance().isKeyPress(KEY_1))
 	{
-		float m = m_Player.m_Hero->Position().x - m_Camera->LookAt().x;
-		m_Camera->MoveX(m*0.05f);
+		g_ObjectMG.CreateChee("Davis_ball",Vector3(100,80,1000),Vector3(0,0,0));
 	}
-
-
-	m_Entity_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Entity_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Background_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Background_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_ColorRect_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_ColorRect_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Shadow_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Shadow_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-}
-
-void InitDirect3DApp::BackgroundDataUpdate()
-{
-	ParallelLight pl =m_Background->GetParallelLight();
-	m_Shadow_lightDir->SetRawValue(&pl.m_Direction[0], 0, sizeof(float)*3);
-	m_Shadow_lightStr->SetFloat(pl.m_LightStrength*0.1f);
-
-	for(std::vector<Hero_RawPtr>::iterator it=g_HeroMG.HeroVectorBegin(); it !=g_HeroMG.HeroVectorEnd() ; it++)
-	{
-		(*it)->SetPosition(m_Background->AlignmentSpace((*it)->Position()));
-		(*it)->SetPosition(m_Background->AlignmentBan((*it)->Position()));
-	}
-	
 }

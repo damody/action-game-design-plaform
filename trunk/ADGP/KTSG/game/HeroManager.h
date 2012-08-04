@@ -13,7 +13,7 @@ public:
 	void Update(float dt);
 	void UpdateDataToDraw();
 
-	Hero* Create(std::string hero,Vector3 pos,int team=0);
+	Hero* Create(const std::string& hero,const Vector3& pos,int team=0);
 	void Delete(Hero_RawPtr hero);
 	void Clear();
 	void ClearDeadBody();//Undo
@@ -24,9 +24,9 @@ public:
 	Heroes::iterator HeroVectorBegin();
 	Heroes::iterator HeroVectorEnd();
 
-	Hero* GetClosestHero(Vector3 pos);
-	Hero* GetClosestFriend(Vector3 pos,int team);
-	Hero* GetClosestEnemy(Vector3 pos,int team);
+	Hero* GetClosestHero(const Vector3& pos);
+	Hero* GetClosestFriend(const Vector3& pos,int team);
+	Hero* GetClosestEnemy(const Vector3& pos,int team);
 
 };
 
