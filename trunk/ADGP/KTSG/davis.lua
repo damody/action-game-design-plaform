@@ -463,7 +463,7 @@ frame.dash[3] =
 
 frame.crouch[0] =
 {
-   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 20, next = {"default", 0},
+   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 4, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -481,7 +481,7 @@ frame.crouch[0] =
 
 frame.crouch[1] =
 {
-   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 20, next = {"default", 0},
+   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 4, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
