@@ -76,9 +76,9 @@ enum e
 	FALLING,
 	//跳
 	JUMP,
-	//蹲
-	DASH,
 	//衝跳
+	DASH,
+	//蹲
 	CROUCH,
 	//受傷
 	INJURED,
@@ -86,7 +86,25 @@ enum e
 	FORWARD_LYING,
 	//躺在地上
 	BACKWARD_LYING,
-	//放絕招
+	
+	//空中絕招
+	FLY,
+	//空中絕招，X方向鍵有效
+	FLY_X_FREE,
+	//空中絕招，Z方向鍵有效
+	FLY_Z_FREE,
+	//空中絕招，四方向鍵有效
+	FLY_FREE,
+	//直線前進絕招，Z方向鍵有效
+	X_AXIS_SKILL,
+	//垂線前進絕招，X方向鍵有效
+	Z_AXIS_SKILL,
+	//地面絕招，方向鍵無效
+	GROUND_SKILL,
+	//地面任意移動絕招，四方向鍵有效
+	//FREE_SKILL, 可以直接使用walking
+
+	//特殊絕招，方向鍵無效，可以遁地
 	UNIQUE_SKILL,
 	//基本動作結束值
 	BASIC_ACTION_END

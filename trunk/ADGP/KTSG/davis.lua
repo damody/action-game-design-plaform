@@ -45,7 +45,7 @@ frame =
 
 frame.default[0] =
 {
-   pic_id = 0, pic_x = 1, pic_y = 1, state = Action.Standing, wait = 45, next = {"standing", 1},
+   pic_id = 0, pic_x = 1, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -62,7 +62,7 @@ frame.default[0] =
 
 frame.standing[0] =
 {
-   pic_id = 0, pic_x = 1, pic_y = 1, state = Action.Standing, wait = 45, next = {"standing", 1},
+   pic_id = 0, pic_x = 1, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -79,7 +79,7 @@ frame.standing[0] =
 
 frame.standing[1] =
 {
-   pic_id = 0, pic_x = 2, pic_y = 1, state = Action.Standing, wait = 45, next = {"standing", 2},
+   pic_id = 0, pic_x = 2, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -96,7 +96,7 @@ frame.standing[1] =
 
 frame.standing[2] =
 {
-   pic_id = 0, pic_x = 3, pic_y = 1, state = Action.Standing, wait = 45, next = {"standing", 3},
+   pic_id = 0, pic_x = 3, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -113,7 +113,7 @@ frame.standing[2] =
 
 frame.standing[3] =
 {
-   pic_id = 0, pic_x = 4, pic_y = 1, state = Action.Standing, wait = 45, next = {"standing", 0},
+   pic_id = 0, pic_x = 4, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -130,7 +130,7 @@ frame.standing[3] =
 
 frame.walking[0] =
 {
-   pic_id = 0, pic_x = 5, pic_y = 1, state = Action.Walking, wait = 10, next = {"default", 0},
+   pic_id = 0, pic_x = 5, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 78,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -150,7 +150,7 @@ frame.walking[0] =
 
 frame.walking[1] =
 {
-   pic_id = 0, pic_x = 6, pic_y = 1, state = Action.Walking, wait = 10, next = {"default", 0},
+   pic_id = 0, pic_x = 6, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -170,7 +170,7 @@ frame.walking[1] =
 
 frame.walking[2] =
 {
-   pic_id = 0, pic_x = 7, pic_y = 1, state = Action.Walking, wait = 10, next = {"default", 0},
+   pic_id = 0, pic_x = 7, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -190,7 +190,7 @@ frame.walking[2] =
 
 frame.walking[3] =
 {
-   pic_id = 0, pic_x = 8, pic_y = 1, state = Action.Walking, wait = 10, next = {"default", 0},
+   pic_id = 0, pic_x = 8, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 78,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -210,7 +210,7 @@ frame.walking[3] =
 
 frame.walking[4] =
 {
-   pic_id = 0, pic_x = 7, pic_y = 1, state = Action.Walking, wait = 10, next = {"default", 0},
+   pic_id = 0, pic_x = 7, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -230,7 +230,7 @@ frame.walking[4] =
 
 frame.walking[5] =
 {
-   pic_id = 0, pic_x = 6, pic_y = 1, state = Action.Walking, wait = 10, next = {"default", 0},
+   pic_id = 0, pic_x = 6, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -250,7 +250,7 @@ frame.walking[5] =
 
 frame.running[0] =
 {
-   pic_id = 0, pic_x = 1, pic_y = 3, state = Action.Running, wait = 10, next = {"running", 1},
+   pic_id = 0, pic_x = 1, pic_y = 3, state = Action.Running, wait = 6, next = {"running", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 36,  centery = 80,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -268,7 +268,7 @@ frame.running[0] =
 
 frame.running[1] =
 {
-   pic_id = 0, pic_x = 2, pic_y = 3, state = Action.Running, wait = 10, next = {"running", 2},
+   pic_id = 0, pic_x = 2, pic_y = 3, state = Action.Running, wait = 6, next = {"running", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 37,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -285,7 +285,7 @@ frame.running[1] =
 
 frame.running[2] =
 {
-   pic_id = 0, pic_x = 3, pic_y = 3, state = Action.Running, wait = 10, next = {"running", 3},
+   pic_id = 0, pic_x = 3, pic_y = 3, state = Action.Running, wait = 6, next = {"running", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 32,  centery = 78,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
@@ -303,7 +303,7 @@ frame.running[2] =
 
 frame.running[3] =
 {
-   pic_id = 0, pic_x = 2, pic_y = 3, state = Action.Running, wait = 10, next = {"running", 0},
+   pic_id = 0, pic_x = 2, pic_y = 3, state = Action.Running, wait = 6, next = {"running", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 37,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},

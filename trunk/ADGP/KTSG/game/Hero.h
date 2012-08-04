@@ -17,6 +17,9 @@
 #define KEYLIFE_AFTER_KEYUP 120
 #define FRICTION 0.5f
 #define WAIT_FOR_KEY_RUN 30
+//#define G_ACCE bg.gravity
+#define G_ACCE 9.8f
+
 namespace boost{namespace serialization{class access;}}
 struct Record
 {
