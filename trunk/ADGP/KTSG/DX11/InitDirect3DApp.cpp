@@ -555,7 +555,7 @@ void InitDirect3DApp::LoadHero()
 
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
-	m_Player.m_Hero = g_HeroMG.Create(m_Player.HeroName(),Vector3(0,50,0));
+	m_Player.m_Hero = g_HeroMG.Create(m_Player.HeroName(),Vector3(1000,500,100));
 
 	//g_ObjectMG.CreateChee("Davis_ball",Vector3(100,80,1000),Vector3(0,0,0));
 	//g_ObjectMG.CreateChee("Davis_ball",Vector3(100,80,500),Vector3(0,0,0));
