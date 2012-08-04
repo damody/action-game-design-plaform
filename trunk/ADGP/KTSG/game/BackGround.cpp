@@ -219,7 +219,7 @@ void BackGround::BuildPoint()
 	for (ColorRects::iterator it=m_ColorRects.begin();it != m_ColorRects.end();it++)
 	{
 		int i=0;
-		float cut=2500;
+		float cut=1000;
 		for (float w=it->m_Width; w>0 ;w-=cut,i++)
 		{
 			CRVertex crv;

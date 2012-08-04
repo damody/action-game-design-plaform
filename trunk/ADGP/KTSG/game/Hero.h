@@ -117,6 +117,7 @@ public:
 	Texture_Sptr GetTexture();
 	int GetTextureID();
 	ClipVertex GetPic();
+	int Team();
 	Vector3 Position();
 
 	void SetRecord(Record_Sptr r);
@@ -135,5 +136,6 @@ protected:
 
 };
 SHARE_PTR(Hero)
+typedef std::vector <Hero_RawPtr> Heroes;
 
 bool SortHero( Hero_RawPtr a,Hero_RawPtr b);

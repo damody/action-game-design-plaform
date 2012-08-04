@@ -5,6 +5,7 @@
 #include "math\Vector3.h"
 #include "global.h"
 #include "HeroAction.h"
+#include "common\shared_ptr.h"
 
 class Weapon
 {
@@ -30,15 +31,32 @@ private:
 	bool		m_FaceSide;//true ¥k, false ¥ª
 
 	int		m_Team;//0¬°¤£¤À
-	int		m_Hp;
+	int		m_HP;
 
+protected:
+	void Init();
+	void NextFrame();
 public:
 	const std::string weapon;
 
 	Weapon(void);
+	Weapon(std::string w);
 	~Weapon(void);
 
 	void Update(float dt);
+	void UpdateDataToDraw();//Data To m_Pic
 
+	void SetTeam(int index);
+
+	void SetPosition(Vector3 p);
+	void Translation(Vector3 t);
+	void SetVelocity(Vector3 v);
+
+	int GetTextureID();
+	Texture_Sptr GetTexture();
+	ClipVertex GetPic();
 };
+SHARE_PTR(Weapon)
+typedef std::vector <Weapon_RawPtr> Weapons;
 
+bool SortWeapon( Weapon_RawPtr a,Weapon_RawPtr b);

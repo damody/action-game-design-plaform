@@ -5,6 +5,8 @@
 #include "math\Vector3.h"
 #include "global.h"
 #include "HeroAction.h"
+#include "game\FlyingPath.h"
+#include "common\shared_ptr.h"
 
 class Chee
 {
@@ -31,9 +33,31 @@ private:
 	bool		m_FaceSide;//true ¥k, false ¥ª
 
 	int		m_Team;//0¬°¤£¤À
-	int		m_Hp;
-public:
-	Chee(void);
-	~Chee(void);
-};
+	int		m_HP;
 
+protected:
+	void Init();
+	void NextFrame();
+public:
+	std::string chee;
+	Chee(void);
+	Chee(std::string c);
+	~Chee(void);
+
+	void Update(float dt);
+	void UpdateDataToDraw();//Data To m_Pic
+
+	void SetTeam(int index);
+
+	void SetPosition(Vector3 p);
+	void Translation(Vector3 t);
+	void SetVelocity(Vector3 v);
+
+	int GetTextureID();
+	Texture_Sptr GetTexture();
+	ClipVertex GetPic();
+};
+SHARE_PTR(Chee)
+typedef std::vector <Chee_RawPtr> Chees;
+
+bool SortChee(Chee_RawPtr a,Chee_RawPtr b);

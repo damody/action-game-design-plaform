@@ -291,6 +291,7 @@ void Czip_interfaceDlg::OnZipdataAdd()
 
 void Czip_interfaceDlg::OnBnClickedButton1()
 {
+	
 	// TODO: 在此加入控制項告知處理常式程式碼
 	for(int i = 0; i < m_ZipFolder->m_ZipDatas.size(); i++)
 	{

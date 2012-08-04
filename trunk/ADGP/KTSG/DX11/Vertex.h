@@ -36,7 +36,7 @@ struct CRVertex
 };
 typedef std::vector<CRVertex> CRVerteices;
 
-extern D3D11_INPUT_ELEMENT_DESC VertexDesc_HeroVertex[];
+extern D3D11_INPUT_ELEMENT_DESC VertexDesc_ClipVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_BGVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_CRVertex[];
 

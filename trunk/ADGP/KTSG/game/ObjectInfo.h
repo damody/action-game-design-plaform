@@ -25,17 +25,16 @@ struct ObjectInfo
 	//彈性
 	float		m_Elasticity;
 	//最大血量
-	float		m_MaxHp;
+	int		m_MaxHP;
 	//物件類別
 	ObjectType::e	m_Type;
 	//飛行形式
-	FlyingType::e   m_Flyingtype;
+	FlyingType::e   m_FlyingType;
 
 public:
-	bool	CheckHeroDataVaild(LuaCell_Sptr luadata);
-	void	LoadHeroData(LuaCell_Sptr luadata);
+	bool	CheckObjectDataVaild(LuaCell_Sptr luadata);
+	void	LoadObjectData(LuaCell_Sptr luadata);
 	LuaCell_Sptr	m_LuaCell;	
 };
 SHARE_PTR(ObjectInfo)
-
 typedef std::map<std::string, ObjectInfo_Sptr> ObjectInfoMap; 

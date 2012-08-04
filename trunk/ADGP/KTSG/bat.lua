@@ -4,14 +4,14 @@ require "action"
 name = "Bat"
 
 file = {
-  {path = sprite\sys\davis_ball.bmp,  w: 81,  h: 46,  row: 4,  col: 6},
+  {path = sprite\sys\weapon0.bmp,  w: 48,  h: 48,  row: 10,  col: 10},
 }
 
 hp = 200
 mess = 1
 elasticity = 0.5
 objecttype = ObjectType.LIGHT;
-fltingtype = Flyingtype.DEFAULT;
+flyingtype = Flyingtype.DEFAULT;
 
 frame =
 {

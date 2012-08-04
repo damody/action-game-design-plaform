@@ -491,6 +491,12 @@ Vector3 Hero::Position()
 	return m_Position;
 }
 
+int Hero::Team()
+{
+	return m_Team;
+}
+
+
 bool SortHero( Hero_RawPtr a,Hero_RawPtr b )
 {
 	return a->GetTextureID()<b->GetTextureID();
