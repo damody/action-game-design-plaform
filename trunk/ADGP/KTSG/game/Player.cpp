@@ -92,15 +92,6 @@ void Player::UpdateInput()
 
 }
 
-Hero_RawPtr Player::CreateHero(Vector3 pos)
-{
-	m_Hero = Hero_RawPtr(new Hero(m_HeroName));
-	m_Hero->SetTeam(m_Team);
-	m_Hero->SetRecord(m_Record);
-	m_Hero->SetPosition(pos);
-	return m_Hero;
-}
-
 void Player::SetHero( std::string name )
 {
 	m_HeroName = name;
@@ -109,4 +100,9 @@ void Player::SetHero( std::string name )
 void Player::SetTeam( int team )
 {
 	m_Team = team;
+}
+
+std::string Player::HeroName()
+{
+	return m_HeroName;
 }

@@ -24,6 +24,7 @@ void HeroManager::UpdateDataToDraw()
 	{
 		(*it)->UpdateDataToDraw();	
 	}
+	std::stable_sort(m_Heroes.begin(),m_Heroes.end(),SortHero);
 }
 
 Hero* HeroManager::Create( std::string hero,Vector3 pos,int team/*=0*/ )

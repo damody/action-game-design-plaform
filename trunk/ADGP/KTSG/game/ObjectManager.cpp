@@ -29,7 +29,7 @@ void ObjectMG::UpdateDataToDraw()
 	{
 		(*it)->UpdateDataToDraw();
 	}
-
+	std::stable_sort(m_Weapons.begin(),m_Weapons.end(),SortWeapon);
 	for (Weapons::iterator it = m_Weapons.begin(); it != m_Weapons.end();it++)
 	{
 		(*it)->UpdateDataToDraw();

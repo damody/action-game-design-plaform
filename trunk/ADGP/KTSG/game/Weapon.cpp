@@ -1,5 +1,5 @@
 #include "Weapon.h"
-
+#include "global.h"
 
 Weapon::Weapon(void)
 {

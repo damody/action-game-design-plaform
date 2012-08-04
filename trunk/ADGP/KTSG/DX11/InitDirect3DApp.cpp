@@ -67,16 +67,10 @@ void InitDirect3DApp::UpdateScene(float dt)
 		g_Time++;
 		UpdateCamera();
 		//Hero Update
-		for(Heroes::iterator it = m_Heroes.begin();it != m_Heroes.end(); it++)
-		{
-			(*it)->Update(dt);
-		}
+		g_HeroMG.Update(dt);
 
 		//Chee Update
-		for(Chees::iterator it = m_Chees.begin();it != m_Chees.end(); it++)
-		{
-			(*it)->Update(dt);
-		}
+		g_ObjectMG.Update(dt);
 
 		//Background Update
 		if(m_Background != NULL)
@@ -366,16 +360,14 @@ void InitDirect3DApp::buildPoint()
 	// set heroes and weapons
 	m_EntityVertex.clear();
 	m_DrawVertexGroups.clear();
+	g_HeroMG.UpdateDataToDraw();
+	g_ObjectMG.UpdateDataToDraw();
 	int vertexCount = 0, count = 0;
-	if(!m_Heroes.empty())
+	if(!g_HeroMG.Empty())
 	{
-		for(Heroes::iterator it = m_Heroes.begin();it != m_Heroes.end(); it++)
-		{
-			(*it)->UpdateDataToDraw();
-		}
-		std::stable_sort(m_Heroes.begin(),m_Heroes.end(),SortHero);
-
-		for(Heroes::iterator it=m_Heroes.begin();it != m_Heroes.end();)
+		
+		
+		for(Heroes::iterator it=g_HeroMG.HeroVectorBegin();it != g_HeroMG.HeroVectorEnd();)
 		{
 			DrawVertexGroup dvg={};
 			dvg.texture = (*it)->GetTexture();
@@ -388,21 +380,15 @@ void InitDirect3DApp::buildPoint()
 			  it++;
 			  ++vertexCount;
 			  ++count;
-			} while (it!=m_Heroes.end() && dvg.texture == (*it)->GetTexture());
+			} while (it!=g_HeroMG.HeroVectorEnd() && dvg.texture == (*it)->GetTexture());
 			dvg.VertexCount = vertexCount;
 			//save dvg
 			m_DrawVertexGroups.push_back(dvg);
 		}
 	}
-	if(!m_Weapons.empty())
+	if(!g_ObjectMG.WeaponEmpty())
 	{
-		for(Weapons::iterator it = m_Weapons.begin();it != m_Weapons.end(); it++)
-		{
-			(*it)->UpdateDataToDraw();
-		}
-		std::stable_sort(m_Weapons.begin(),m_Weapons.end(),SortWeapon);
-
-		for(Weapons::iterator it=m_Weapons.begin();it != m_Weapons.end();)
+		for(Weapons::iterator it = g_ObjectMG.WeaponVectorBegin();it != g_ObjectMG.WeaponVectorEnd();)
 		{
 			DrawVertexGroup dvg={};
 			dvg.texture = (*it)->GetTexture();
@@ -415,7 +401,7 @@ void InitDirect3DApp::buildPoint()
 				it++;
 				++vertexCount;
 				++count;
-			} while (it!=m_Weapons.end() && dvg.texture == (*it)->GetTexture());
+			} while (it!=g_ObjectMG.WeaponVectorEnd() && dvg.texture == (*it)->GetTexture());
 			dvg.VertexCount = vertexCount;
 			//save dvg
 			m_DrawVertexGroups.push_back(dvg);
@@ -435,15 +421,9 @@ void InitDirect3DApp::buildPoint()
 	m_CheeDrawVertexGroups.clear();
 	vertexCount = 0;
 	count = 0;
-	if(!m_Chees.empty())
+	if(!g_ObjectMG.CheeEmpty())
 	{
-		for(Chees::iterator it = m_Chees.begin();it != m_Chees.end(); it++)
-		{
-			(*it)->UpdateDataToDraw();
-		}
-		std::stable_sort(m_Chees.begin(),m_Chees.end(),SortChee);
-
-		for(Chees::iterator it=m_Chees.begin();it != m_Chees.end();)
+		for(Chees::iterator it=g_ObjectMG.CheeVectorBegin();it != g_ObjectMG.CheeVectorEnd();)
 		{
 			DrawVertexGroup dvg={};
 			dvg.texture = (*it)->GetTexture();
@@ -456,7 +436,7 @@ void InitDirect3DApp::buildPoint()
 				it++;
 				++vertexCount;
 				++count;
-			} while (it!=m_Chees.end() && dvg.texture == (*it)->GetTexture());
+			} while (it!=g_ObjectMG.CheeVectorEnd() && dvg.texture == (*it)->GetTexture());
 			dvg.VertexCount = vertexCount;
 			//save dvg
 			m_CheeDrawVertexGroups.push_back(dvg);
@@ -544,6 +524,7 @@ void InitDirect3DApp::LoadBlend()
 
 void InitDirect3DApp::LoadHero()
 {
+	
 	//Test
 	LuaCell_Sptr davis = LuaCell_Sptr(new LuaCell);
 	davis->InputLuaFile("davis.lua");
@@ -559,7 +540,7 @@ void InitDirect3DApp::LoadHero()
 	}
 	tempBG->LoadData(ft);
 	m_Background = tempBG;
-	
+	/*
 	//test chee
 	LuaCell_Sptr ball = LuaCell_Sptr(new LuaCell);
 	ball->InputLuaFile("davis_ball.lua");
@@ -571,21 +552,23 @@ void InitDirect3DApp::LoadHero()
 	test->SetPosition(Vector3(100,50,100));
 	test->SetVelocity(Vector3(1,0,0));
 	m_Chees.push_back(test);
-	
+	*/
+
 	//player init
 	int key[8] = {KEY_UP,KEY_DOWN,KEY_RIGHT,KEY_LEFT,KEY_Q,KEY_W,KEY_E,KEY_R};
 	m_Player.SetCtrlKey(key);
 
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
+	m_Player.m_Hero = g_HeroMG.Create(m_Player.HeroName(),Vector3(0,0,0));
 	/*
 	for(int i=0 ; i<1 ; i++){
 		for (int j=0 ; j<1 ; j++)
 		{
 			m_Heroes.push_back(m_Player.CreateHero(Vector3(j*200,0,i*200)));
 		}
-	}	*/
-	m_Heroes.push_back(m_Player.CreateHero(Vector3(0,0,0)));
+	}	
+	m_Heroes.push_back(m_Player.CreateHero(Vector3(0,0,0)));*/
 }
 
 
@@ -925,9 +908,10 @@ void InitDirect3DApp::BackgroundDataUpdate()
 	m_Shadow_lightDir->SetRawValue(&pl.m_Direction[0], 0, sizeof(float)*3);
 	m_Shadow_lightStr->SetFloat(pl.m_LightStrength*0.1f);
 
-	for(std::vector<Hero_RawPtr>::iterator it=m_Heroes.begin(); it !=m_Heroes.end() ; it++)
+	for(std::vector<Hero_RawPtr>::iterator it=g_HeroMG.HeroVectorBegin(); it !=g_HeroMG.HeroVectorEnd() ; it++)
 	{
 		(*it)->SetPosition(m_Background->AlignmentSpace((*it)->Position()));
 		(*it)->SetPosition(m_Background->AlignmentBan((*it)->Position()));
 	}
+	
 }

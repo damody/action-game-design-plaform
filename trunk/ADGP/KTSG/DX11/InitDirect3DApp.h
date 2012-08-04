@@ -71,8 +71,6 @@ private:
 	Player			m_Player;
 	Camera_Sptr		m_Camera;
 
-	Heroes				m_Heroes;
-	Weapons				m_Weapons;
 	ClipVertexs			m_EntityVertex;
 	DrawVertexGroups		m_DrawVertexGroups;
 	

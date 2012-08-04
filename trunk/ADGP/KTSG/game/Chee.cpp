@@ -1,5 +1,5 @@
 #include "Chee.h"
-
+#include "global.h"
 
 Chee::Chee(void)
 {
