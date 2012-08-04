@@ -10,6 +10,22 @@ HeroManager::~HeroManager(void)
 {
 }
 
+void HeroManager::Update( float dt )
+{
+	for (Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end();it++)
+	{
+		(*it)->Update(dt);	
+	}
+}
+
+void HeroManager::UpdateDataToDraw()
+{
+	for (Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end();it++)
+	{
+		(*it)->UpdateDataToDraw();	
+	}
+}
+
 Hero* HeroManager::Create( std::string hero,Vector3 pos,int team/*=0*/ )
 {
 	Hero_RawPtr h = Hero_RawPtr(new Hero(hero));
@@ -121,6 +137,8 @@ Hero* HeroManager::GetClosestEnemy( Vector3 pos,int team )
 	}
 	return h;
 }
+
+
 
 
 

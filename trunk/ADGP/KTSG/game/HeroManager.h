@@ -16,7 +16,7 @@ public:
 	Hero* Create(std::string hero,Vector3 pos,int team=0);
 	void Delete(Hero_RawPtr hero);
 	void Clear();
-	void ClearDeadBody();
+	void ClearDeadBody();//Undo
 
 	bool Empty();
 	int  AmountHeroes();

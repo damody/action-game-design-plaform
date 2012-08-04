@@ -143,6 +143,16 @@ ClipVertex Chee::GetPic()
 	return m_Pic;
 }
 
+int Chee::Team()
+{
+	return m_Team;
+}
+
+Vector3 Chee::Position()
+{
+	return m_Position;
+}
+
 
 
 bool SortChee( Chee_RawPtr a,Chee_RawPtr b )

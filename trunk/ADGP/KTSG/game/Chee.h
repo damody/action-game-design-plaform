@@ -56,6 +56,8 @@ public:
 	int GetTextureID();
 	Texture_Sptr GetTexture();
 	ClipVertex GetPic();
+	int Team();
+	Vector3 Position();
 };
 SHARE_PTR(Chee)
 typedef std::vector <Chee_RawPtr> Chees;
