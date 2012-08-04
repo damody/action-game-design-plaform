@@ -27,7 +27,7 @@ void HeroManager::UpdateDataToDraw()
 	std::stable_sort(m_Heroes.begin(),m_Heroes.end(),SortHero);
 }
 
-Hero* HeroManager::Create( std::string hero,Vector3 pos,int team/*=0*/ )
+Hero* HeroManager::Create(const std::string& hero,const Vector3& pos,int team/*=0*/ )
 {
 	Hero_RawPtr h = Hero_RawPtr(new Hero(hero));
 	h->SetPosition(pos);
@@ -90,7 +90,7 @@ int HeroManager::AmountEnemy(int team)
 	return amount;
 }
 
-Hero* HeroManager::GetClosestHero( Vector3 pos )
+Hero* HeroManager::GetClosestHero(const Vector3& pos )
 {
 	float d = 99999;
 	Hero* h = NULL;
@@ -105,7 +105,7 @@ Hero* HeroManager::GetClosestHero( Vector3 pos )
 	return h;
 }
 
-Hero* HeroManager::GetClosestFriend( Vector3 pos,int team )
+Hero* HeroManager::GetClosestFriend(const Vector3& pos,int team )
 {
 	float d = 99999;
 	Hero* h = NULL;
@@ -122,7 +122,7 @@ Hero* HeroManager::GetClosestFriend( Vector3 pos,int team )
 	return h;
 }
 
-Hero* HeroManager::GetClosestEnemy( Vector3 pos,int team )
+Hero* HeroManager::GetClosestEnemy(const Vector3& pos,int team )
 {
 	float d = 99999;
 	Hero* h = NULL;

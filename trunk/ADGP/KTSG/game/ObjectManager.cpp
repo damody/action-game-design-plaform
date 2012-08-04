@@ -36,7 +36,7 @@ void ObjectMG::UpdateDataToDraw()
 	}
 }
 
-Chee** ObjectMG::CreateChee( std::string chee,Vector3 pos,Vector3 vel,int num/*=1*/,int team/*=0*/ )
+Chee** ObjectMG::CreateChee(const std::string& chee,const Vector3& pos,const Vector3& vel,int num/*=1*/,int team/*=0*/ )
 {
 	Chee_RawPtr* c = new Chee_RawPtr [num];
 	for(int i=0;i<num;i++)
@@ -51,7 +51,7 @@ Chee** ObjectMG::CreateChee( std::string chee,Vector3 pos,Vector3 vel,int num/*=
 
 }
 
-Weapon** ObjectMG::CreateWeapon( std::string weapon,Vector3 pos,int num/*=1*/,int team/*=0*/ )
+Weapon** ObjectMG::CreateWeapon(const std::string& weapon,const Vector3& pos,int num/*=1*/,int team/*=0*/ )
 {
 	Weapon_RawPtr* w = new Weapon_RawPtr [num];
 	for(int i=0;i<num;i++)
@@ -128,7 +128,7 @@ Weapons::iterator ObjectMG::WeaponVectorEnd()
 	return m_Weapons.end();
 }
 
-Chee* ObjectMG::GetClosestChee( Vector3 pos )
+Chee* ObjectMG::GetClosestChee(const Vector3& pos )
 {
 	float d = 99999;
 	Chee* c = NULL;
@@ -143,7 +143,7 @@ Chee* ObjectMG::GetClosestChee( Vector3 pos )
 	return c;
 }
 
-Chee* ObjectMG::GetClosestCheeFromFriend( Vector3 pos,int team )
+Chee* ObjectMG::GetClosestCheeFromFriend(const Vector3& pos,int team )
 {
 	float d = 99999;
 	Chee* c = NULL;
@@ -160,7 +160,7 @@ Chee* ObjectMG::GetClosestCheeFromFriend( Vector3 pos,int team )
 	return c;
 }
 
-Chee* ObjectMG::GetClosestCheeFromEnemy( Vector3 pos,int team )
+Chee* ObjectMG::GetClosestCheeFromEnemy(const Vector3& pos,int team )
 {
 	float d = 99999;
 	Chee* c = NULL;
@@ -177,17 +177,17 @@ Chee* ObjectMG::GetClosestCheeFromEnemy( Vector3 pos,int team )
 	return c;
 }
 
-Weapon* ObjectMG::GetClosestWeaponOnFloor( Vector3 pos )
+Weapon* ObjectMG::GetClosestWeaponOnFloor(const Vector3& pos )
 {
 
 }
 
-Weapon* ObjectMG::GetClosestThrownWeaponFromFriend( Vector3 pos,int team )
+Weapon* ObjectMG::GetClosestThrownWeaponFromFriend(const Vector3& pos,int team )
 {
 
 }
 
-Weapon* ObjectMG::GetClosestThrownWeaponFromEnemy( Vector3 pos,int team )
+Weapon* ObjectMG::GetClosestThrownWeaponFromEnemy(const Vector3& pos,int team )
 {
 
 }

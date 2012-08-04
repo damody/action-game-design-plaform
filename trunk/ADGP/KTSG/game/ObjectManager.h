@@ -15,8 +15,8 @@ public:
 	void Update(float dt);
 	void UpdateDataToDraw();
 
-	Chee** CreateChee(std::string chee,Vector3 pos,Vector3 vel,int num=1,int team=0);
-	Weapon** CreateWeapon(std::string weapon,Vector3 pos,int num=1,int team=0);
+	Chee** CreateChee(const std::string& chee, const Vector3& pos, const Vector3& vel, int num=1, int team=0);
+	Weapon** CreateWeapon(const std::string& weapon, const Vector3& pos, int num=1, int team=0);
 	void Delete(Chee_RawPtr chee);
 	void Delete(Weapon_RawPtr weapon);
 	void Clear();
@@ -32,12 +32,12 @@ public:
 	Weapons::iterator WeaponVectorBegin();
 	Weapons::iterator WeaponVectorEnd();
 
-	Chee* GetClosestChee(Vector3 pos);
-	Chee* GetClosestCheeFromFriend(Vector3 pos,int team);
-	Chee* GetClosestCheeFromEnemy(Vector3 pos,int team);
+	Chee* GetClosestChee(const Vector3& pos);
+	Chee* GetClosestCheeFromFriend(const Vector3& pos,int team);
+	Chee* GetClosestCheeFromEnemy(const Vector3& pos,int team);
 
-	Weapon* GetClosestWeaponOnFloor(Vector3 pos);//Undo
-	Weapon* GetClosestThrownWeaponFromFriend(Vector3 pos,int team);//Undo
-	Weapon* GetClosestThrownWeaponFromEnemy(Vector3 pos,int team);//Undo
+	Weapon* GetClosestWeaponOnFloor(const Vector3& pos);//Undo
+	Weapon* GetClosestThrownWeaponFromFriend(const Vector3& pos,int team);//Undo
+	Weapon* GetClosestThrownWeaponFromEnemy(const Vector3& pos,int team);//Undo
 };
 
