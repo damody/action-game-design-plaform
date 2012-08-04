@@ -20,6 +20,7 @@ private:
 		ar & m_BGList;
 		ar & m_BGMaps;
 	}
+
 public:
 	BGManager(void);
 	~BGManager(void);

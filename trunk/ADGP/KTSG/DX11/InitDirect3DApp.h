@@ -74,12 +74,7 @@ private:
 	ClipVertexs			m_EntityVertex;
 	DrawVertexGroups		m_DrawVertexGroups;
 	
-	Chees				m_Chees;
-	ClipVertexs			m_CheeVertex;
-	DrawVertexGroups		m_CheeDrawVertexGroups;
-
 	ID3D11Buffer* m_Buffer_Entity;
-	ID3D11Buffer* m_Buffer_Chee;
 	ID3DX11Effect* m_Effect_Entity;
 	ID3DX11EffectTechnique* m_PTech_Entity;
 	ID3D11InputLayout* m_PLayout_Entity;
@@ -88,6 +83,20 @@ private:
 	ID3DX11EffectScalarVariable* m_Entity_Width;
 	ID3DX11EffectScalarVariable* m_Entity_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Entity;
+
+	Chees				m_Chees;
+	ClipVertexs			m_CheeVertex;
+	DrawVertexGroups		m_CheeDrawVertexGroups;
+
+	ID3D11Buffer* m_Buffer_Chee;
+	ID3DX11Effect* m_Effect_Chee;
+	ID3DX11EffectTechnique* m_PTech_Chee;
+	ID3D11InputLayout* m_PLayout_Chee;
+	ID3DX11EffectVariable *m_Chee_cLootAt;
+	ID3DX11EffectVariable *m_Chee_cPos;
+	ID3DX11EffectScalarVariable* m_Chee_Width;
+	ID3DX11EffectScalarVariable* m_Chee_Height;
+	ID3DX11EffectShaderResourceVariable*  m_PMap_Chee;
 
 	BackGround_RawPtr	m_Background;
 

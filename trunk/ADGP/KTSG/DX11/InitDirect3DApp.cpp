@@ -11,7 +11,8 @@
 InitDirect3DApp* InitDirect3DApp::dxAppInstance = NULL;
 
 InitDirect3DApp::InitDirect3DApp()
-: D3DApp(), m_Entity_Width(0), m_Entity_Height(0), m_Buffer_Entity(0),m_Buffer_Chee(0),
+: D3DApp(), m_Entity_Width(0), m_Entity_Height(0), m_Buffer_Entity(0),
+	    m_Chee_Width(0), m_Chee_Height(0), m_Buffer_Chee(0),
             m_Background_Width(0), m_Background_Height(0), m_Buffer_Background(0), m_Background(0),
 	    m_ColorRect_Width(0), m_ColorRect_Height(0), m_Buffer_ColorRect(0),
 	    m_Shadow_Width(0), m_Shadow_Height(0),
@@ -92,6 +93,12 @@ void InitDirect3DApp::OnResize()
 	{
 		m_Entity_Width->SetFloat((float)mClientWidth);
 		m_Entity_Height->SetFloat((float)mClientHeight);
+	}
+
+	if (m_Chee_Width!=NULL && m_Chee_Height!=NULL)
+	{
+		m_Chee_Width->SetFloat((float)mClientWidth);
+		m_Chee_Height->SetFloat((float)mClientHeight);
 	}
 
 	if (m_Background_Width!=NULL && m_Background_Height!=NULL)
@@ -190,14 +197,14 @@ void InitDirect3DApp::DrawScene()
 	offset = 0;
 	stride2 = sizeof(ClipVertex);
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-	m_DeviceContext->IASetInputLayout(m_PLayout_Entity);
+	m_DeviceContext->IASetInputLayout(m_PLayout_Chee);
 	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Chee, &stride2, &offset);
 	for (DrawVertexGroups::iterator it = m_CheeDrawVertexGroups.begin();it != m_CheeDrawVertexGroups.end();++it)
 	{
 		if (it->texture.get())
 		{
-			m_PMap_Entity->SetResource(*(it->texture));
-			m_PTech_Entity->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+			m_PMap_Chee->SetResource(*(it->texture));
+			m_PTech_Chee->GetPassByIndex(0)->Apply(0, m_DeviceContext);
 			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
 		}
 	}
@@ -235,6 +242,31 @@ void InitDirect3DApp::buildPointFX()
 	D3DX11_PASS_DESC PassDesc;
 	m_PTech_Entity->GetPassByIndex(0)->GetDesc(&PassDesc);
 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_ClipVertex, 5, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Entity));
+
+	//Chee
+	hr = 0;
+	hr=D3DX11CompileFromFile(_T("shader\\Chee.fx"), NULL, NULL, NULL, 
+		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
+	if(FAILED(hr))
+	{
+		if( pError )
+		{
+			MessageBoxA(0, (char*)pError->GetBufferPointer(), 0, 0);
+			ReleaseCOM(pError);
+		}
+		DXTrace(__FILE__, __LINE__, hr, _T("D3DX11CreateEffectFromFile"), TRUE);
+	} 
+	HR(D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_Chee));
+	m_PTech_Chee = m_Effect_Chee->GetTechniqueByName("PointTech");
+	m_Chee_Width = m_Effect_Chee->GetVariableByName("sceneW")->AsScalar();
+	m_Chee_Height =m_Effect_Chee->GetVariableByName("sceneH")->AsScalar();
+	m_Chee_cLootAt = m_Effect_Chee->GetVariableByName("cLookAt");
+	m_Chee_cPos = m_Effect_Chee->GetVariableByName("cPolarCoord");
+	m_PMap_Chee =m_Effect_Chee->GetVariableByName("gMap")->AsShaderResource();
+
+	D3DX11_PASS_DESC PassDescChee;
+	m_PTech_Chee->GetPassByIndex(0)->GetDesc(&PassDescChee);
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_ClipVertex, 5, PassDescChee.pIAInputSignature,PassDescChee.IAInputSignatureSize, &m_PLayout_Chee));
 
 	//Background
 	hr = 0;
@@ -822,6 +854,8 @@ void InitDirect3DApp::UpdateCamera()
 
 	m_Entity_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
 	m_Entity_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Chee_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Chee_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 	m_Background_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
 	m_Background_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 	m_ColorRect_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
@@ -911,7 +945,7 @@ void InitDirect3DApp::TestCamera()
 
 void InitDirect3DApp::TestChee()
 {
-	if (InputStateS::instance().isKeyPress(KEY_1))
+	if (InputStateS::instance().isKeyDown(KEY_1))
 	{
 		g_ObjectMG.CreateChee("Davis_ball",Vector3(100,80,1000),Vector3(0,0,0));
 	}
