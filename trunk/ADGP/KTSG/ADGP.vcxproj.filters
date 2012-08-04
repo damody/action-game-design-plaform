@@ -409,7 +409,4 @@
       <Filter>shader</Filter>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="ADGP.rc" />
-  </ItemGroup>
 </Project>
