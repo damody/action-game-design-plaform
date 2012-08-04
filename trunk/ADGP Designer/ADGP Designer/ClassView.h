@@ -28,6 +28,8 @@ class CClassToolBar : public CMFCToolBar
 	virtual BOOL AllowShowOnList() const { return FALSE; }
 };
 
+typedef std::map<HTREEITEM, FrameInfo>	TreeItemMap;
+
 class CClassView : public CDockablePane
 {
 public:
@@ -38,7 +40,8 @@ public:
 	void OnChangeVisualStyle();
 	void OnSelectItem(HTREEITEM item);
 	CViewTree* GetViewTree();
-	CMap<HTREEITEM, HTREEITEM, FrameInfo, FrameInfo>& GetPropMap();
+	TreeItemMap& GetPropMap();
+	void RemoveTreeItem(HTREEITEM item);
 
 	static CClassView* GetInstance();
 	//static CMFCPropertyGridProperty* GetDefaultPropList();
@@ -52,7 +55,9 @@ protected:
 	CViewTree m_wndClassView;
 	CImageList m_ClassViewImages;
 	UINT m_nCurrSort;
-	CMap<HTREEITEM, HTREEITEM, FrameInfo, FrameInfo> m_propMap;
+	
+	TreeItemMap	m_propMap;
+	FramesMap	m_FrameMap;
 
 	void FillClassView();
 

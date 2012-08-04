@@ -147,7 +147,7 @@ void CViewTree::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
 				while (hChildItem != NULL)
 				{
 					hNextItem = this->GetNextItem(hChildItem, TVGN_NEXT);
-					CClassView::GetInstance()->GetPropMap().RemoveKey(hChildItem);
+					CClassView::GetInstance()->RemoveTreeItem(hChildItem);
 					this->DeleteItem(hChildItem);
 					hChildItem = hNextItem;
 				}

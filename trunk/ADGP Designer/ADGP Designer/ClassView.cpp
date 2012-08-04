@@ -515,7 +515,7 @@ void CClassView::OnAnimationDelete()
 		while (hChildItem != NULL)
 		{
 			hNextItem = m_wndClassView.GetNextItem(hChildItem, TVGN_NEXT);
-			m_propMap.RemoveKey(hChildItem);
+			RemoveTreeItem(hChildItem);
 			m_wndClassView.DeleteItem(hChildItem);
 			hChildItem = hNextItem;
 		}
@@ -999,9 +999,16 @@ LRESULT CClassView::OnPropertyChanged( __in WPARAM wparam, __in LPARAM lparam, H
 	return 0; //Not used
 }
 
-CMap<HTREEITEM, HTREEITEM, FrameInfo, FrameInfo>& CClassView::GetPropMap()
+TreeItemMap& CClassView::GetPropMap()
 {
 	return m_propMap;
+}
+
+void CClassView::RemoveTreeItem( HTREEITEM item )
+{
+	TreeItemMap::iterator it = m_propMap.find(item);
+	if (it != m_propMap.end())
+		m_propMap.erase(it);
 }
 
 /*
