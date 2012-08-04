@@ -21,14 +21,16 @@ private:
 		ar & m_BGMaps;
 	}
 
+
+	BackGround* m_CurrentBG;
 public:
 	BGManager(void);
 	~BGManager(void);
 
-	unsigned int AddBG(std::string name,BackGround_RawPtr bg);
+	unsigned int AddBG(const std::string& name,BackGround_RawPtr bg);
 
 	std::vector<std::string> GetBGList();
-	BackGround_RawPtr	 GetBG(unsigned int id);
-	BackGround_RawPtr	 GetBG(std::string name);
+	void SetCurrentBG(const std::string& name);
+	BackGround* CurrentBG();
 };
 

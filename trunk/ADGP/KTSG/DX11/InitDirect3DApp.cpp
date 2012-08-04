@@ -12,8 +12,8 @@ InitDirect3DApp* InitDirect3DApp::dxAppInstance = NULL;
 
 InitDirect3DApp::InitDirect3DApp()
 : D3DApp(), m_Entity_Width(0), m_Entity_Height(0), m_Buffer_Entity(0),
-	    m_Chee_Width(0), m_Chee_Height(0), m_Buffer_Chee(0),
-            m_Background_Width(0), m_Background_Height(0), m_Buffer_Background(0), m_Background(0),
+	    m_Chee_Width(0), m_Chee_Height(0),m_Buffer_Chee(0),
+            m_Background_Width(0), m_Background_Height(0), m_Buffer_Background(0),
 	    m_ColorRect_Width(0), m_ColorRect_Height(0), m_Buffer_ColorRect(0),
 	    m_Shadow_Width(0), m_Shadow_Height(0),
 	    m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1)
@@ -74,9 +74,9 @@ void InitDirect3DApp::UpdateScene(float dt)
 		g_ObjectMG.Update(dt);
 
 		//Background Update
-		if(m_Background != NULL)
+		if(g_BGManager.CurrentBG() != NULL)
 		{
-			m_Background->Update(dt);
+			g_BGManager.CurrentBG()->Update(dt);
 			BackgroundDataUpdate();
 		}
 		timp_count -= 1/60.0f;
@@ -143,14 +143,14 @@ void InitDirect3DApp::DrawScene()
 	
 
 	//Draw Background
-	if (m_Background != NULL)
+	if (g_BGManager.CurrentBG() != NULL)
 	{
 		UINT offset = 0;
 		UINT stride2 = sizeof(BGVertex);
 		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 		m_DeviceContext->IASetInputLayout(m_PLayout_Background);
 		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Background, &stride2, &offset);
-		for (DrawVertexGroups::iterator it = m_Background->m_DrawVertexGroups.begin();it != m_Background->m_DrawVertexGroups.end();++it)
+		for (DrawVertexGroups::iterator it = g_BGManager.CurrentBG()->m_DrawVertexGroups.begin();it != g_BGManager.CurrentBG()->m_DrawVertexGroups.end();++it)
 		{
 			if (it->texture.get())
 			{
@@ -242,7 +242,7 @@ void InitDirect3DApp::buildPointFX()
 	D3DX11_PASS_DESC PassDesc;
 	m_PTech_Entity->GetPassByIndex(0)->GetDesc(&PassDesc);
 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_ClipVertex, 5, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Entity));
-
+	
 	//Chee
 	hr = 0;
 	hr=D3DX11CompileFromFile(_T("shader\\Chee.fx"), NULL, NULL, NULL, 
@@ -359,16 +359,16 @@ void InitDirect3DApp::buildPoint()
 	ReleaseCOM(m_Buffer_Background);
 	ReleaseCOM(m_Buffer_ColorRect);
 
-	if(m_Background != NULL)
+	if(g_BGManager.CurrentBG() != NULL)
 	{
-		m_Background->BuildPoint();
+		g_BGManager.CurrentBG()->BuildPoint();
 	}
 
 	//set color rect
 	m_CRVerteices.clear();
-	if(m_Background != NULL)
+	if(g_BGManager.CurrentBG() != NULL)
 	{
-		m_CRVerteices.assign(m_Background->m_CRVerteices.begin(),m_Background->m_CRVerteices.end());
+		m_CRVerteices.assign(g_BGManager.CurrentBG()->m_CRVerteices.begin(),g_BGManager.CurrentBG()->m_CRVerteices.end());
 	}
 
 	if(!m_CRVerteices.empty())
@@ -381,11 +381,11 @@ void InitDirect3DApp::buildPoint()
 	}
 	
 	// set background
-	if(m_Background != NULL){
-		m_vbd.ByteWidth = (UINT)(sizeof(BGVertex) * m_Background->m_BGVerteices.size());
+	if(g_BGManager.CurrentBG() != NULL){
+		m_vbd.ByteWidth = (UINT)(sizeof(BGVertex) * g_BGManager.CurrentBG()->m_BGVerteices.size());
 		m_vbd.StructureByteStride=sizeof(BGVertex);
 		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &m_Background->m_BGVerteices[0];
+		vinitData.pSysMem = &g_BGManager.CurrentBG()->m_BGVerteices[0];
 		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Background));
 	}
 
@@ -566,13 +566,11 @@ void InitDirect3DApp::LoadHero()
 	//test bg
 	LuaCell_Sptr ft = LuaCell_Sptr(new LuaCell);
 	ft->InputLuaFile("bg.lua");
-	BackGround_RawPtr tempBG = new BackGround();
-	if(!tempBG->CheckDataVaild(ft)){
-		std::cout<<"BG Data Fail"<<std::endl;
-	}
+	BackGround_RawPtr tempBG = BackGround_RawPtr(new BackGround());
 	tempBG->LoadData(ft);
-	m_Background = tempBG;
-	
+	g_BGManager.AddBG("Forbidden_Tower",tempBG);
+	g_BGManager.SetCurrentBG("Forbidden_Tower");
+
 	//test chee
 	LuaCell_Sptr ball = LuaCell_Sptr(new LuaCell);
 	ball->InputLuaFile("davis_ball.lua");
@@ -845,7 +843,7 @@ void InitDirect3DApp::ReflashTowerState()
 
 void InitDirect3DApp::UpdateCamera()
 {
-	if(m_Player.m_Hero->Position().x >= mClientWidth && m_Player.m_Hero->Position().x <= m_Background->Width()-mClientWidth)
+	if(m_Player.m_Hero->Position().x >= mClientWidth && m_Player.m_Hero->Position().x <= g_BGManager.CurrentBG()->Width()-mClientWidth)
 	{
 		float m = m_Player.m_Hero->Position().x - m_Camera->LookAt().x;
 		m_Camera->MoveX(m*0.05f);
@@ -866,14 +864,23 @@ void InitDirect3DApp::UpdateCamera()
 
 void InitDirect3DApp::BackgroundDataUpdate()
 {
-	ParallelLight pl =m_Background->GetParallelLight();
+	ParallelLight pl =g_BGManager.CurrentBG()->GetParallelLight();
 	m_Shadow_lightDir->SetRawValue(&pl.m_Direction[0], 0, sizeof(float)*3);
 	m_Shadow_lightStr->SetFloat(pl.m_LightStrength*0.1f);
 
-	for(std::vector<Hero_RawPtr>::iterator it=g_HeroMG.HeroVectorBegin(); it !=g_HeroMG.HeroVectorEnd() ; it++)
+	for(Heroes::iterator it=g_HeroMG.HeroVectorBegin(); it !=g_HeroMG.HeroVectorEnd() ; it++)
 	{
-		(*it)->SetPosition(m_Background->AlignmentSpace((*it)->Position()));
-		(*it)->SetPosition(m_Background->AlignmentBan((*it)->Position()));
+		(*it)->SetPosition(g_BGManager.CurrentBG()->AlignmentSpace((*it)->Position()));
+		(*it)->SetPosition(g_BGManager.CurrentBG()->AlignmentBan((*it)->Position()));
+	}
+	
+	for (Chees::iterator it = g_ObjectMG.CheeVectorBegin(); it != g_ObjectMG.CheeVectorEnd() ; it++)
+	{
+		if(!g_BGManager.CurrentBG()->InSpace((*it)->BackPosition(100.0f)))
+		{
+			g_ObjectMG.Delete(it);
+			it--;
+		}
 	}
 	
 }
@@ -948,5 +955,9 @@ void InitDirect3DApp::TestChee()
 	if (InputStateS::instance().isKeyDown(KEY_1))
 	{
 		g_ObjectMG.CreateChee("Davis_ball",Vector3(100,80,1000),Vector3(0,0,0));
+	}
+	if (InputStateS::instance().isKeyDown(KEY_2))
+	{
+		g_ObjectMG.CreateChee("Davis_ball",Vector3(1000,80,1000),Vector3(-10,0,0));
 	}
 }

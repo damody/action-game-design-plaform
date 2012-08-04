@@ -68,8 +68,10 @@ void ObjectMG::Delete( Chee_RawPtr chee )
 {
 	for (Chees::iterator it = m_Chees.begin();it != m_Chees.end();it++)
 	{
-		if((*it) ==chee)
+		if((*it) ==chee){
 			m_Chees.erase(it);
+			return;
+		}
 	}
 }
 
@@ -77,9 +79,21 @@ void ObjectMG::Delete(Weapon_RawPtr weapon )
 {
 	for (Weapons::iterator it = m_Weapons.begin();it != m_Weapons.end();it++)
 	{
-		if((*it) ==weapon)
+		if((*it) ==weapon){
 			m_Weapons.erase(it);
+			return;
+		}
 	}
+}
+
+void ObjectMG::Delete( Chees::iterator it )
+{
+	m_Chees.erase(it);
+}
+
+void ObjectMG::Delete( Weapons::iterator it )
+{
+	m_Weapons.erase(it);
 }
 
 void ObjectMG::Clear()

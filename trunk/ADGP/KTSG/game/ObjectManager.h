@@ -19,6 +19,8 @@ public:
 	Weapon** CreateWeapon(const std::string& weapon, const Vector3& pos, int num=1, int team=0);
 	void Delete(Chee_RawPtr chee);
 	void Delete(Weapon_RawPtr weapon);
+	void Delete(Chees::iterator it);
+	void Delete(Weapons::iterator it);
 	void Clear();
 	void ClearChee();
 	void ClearWeapon();

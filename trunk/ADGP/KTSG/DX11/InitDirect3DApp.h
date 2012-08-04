@@ -74,6 +74,7 @@ private:
 	ClipVertexs			m_EntityVertex;
 	DrawVertexGroups		m_DrawVertexGroups;
 	
+
 	ID3D11Buffer* m_Buffer_Entity;
 	ID3DX11Effect* m_Effect_Entity;
 	ID3DX11EffectTechnique* m_PTech_Entity;
@@ -97,8 +98,6 @@ private:
 	ID3DX11EffectScalarVariable* m_Chee_Width;
 	ID3DX11EffectScalarVariable* m_Chee_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Chee;
-
-	BackGround_RawPtr	m_Background;
 
 	ID3D11Buffer* m_Buffer_Background;
 	ID3DX11Effect* m_Effect_Background;

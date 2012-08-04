@@ -1,7 +1,7 @@
 #include "BGManager.h"
 
 
-BGManager::BGManager(void)
+BGManager::BGManager(void):m_CurrentBG(NULL)
 {
 }
 
@@ -10,7 +10,7 @@ BGManager::~BGManager(void)
 {
 }
 
-unsigned int BGManager::AddBG( std::string name,BackGround_RawPtr bg )
+unsigned int BGManager::AddBG(const std::string& name,BackGround_RawPtr bg )
 {
 	m_BGList.push_back(name);
 	m_BGMaps[name]=bg;
@@ -22,15 +22,15 @@ std::vector<std::string> BGManager::GetBGList()
 	return m_BGList;
 }
 
-BackGround_RawPtr BGManager::GetBG( std::string name )
+BackGround* BGManager::CurrentBG()
 {
-	return m_BGMaps[name];
+	return m_CurrentBG;
 }
 
-BackGround_RawPtr BGManager::GetBG(unsigned int id )
+void BGManager::SetCurrentBG( const std::string& name )
 {
-	if(id < m_BGList.size()){
-		return m_BGMaps[m_BGList[id]];
-	} else
-		return NULL;
+	m_CurrentBG = m_BGMaps[name];
+	
 }
+
+

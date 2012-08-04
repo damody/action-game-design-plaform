@@ -51,9 +51,7 @@ struct ParallelLight
 {
 	Vector3		m_Direction;     //y<0
 	float		m_LightStrength; //1-10
-	int		m_TimeLine;
 	int		m_TimeStart;
-	int		m_TimeEnd;
 };
 typedef std::vector<ParallelLight> ParallelLights;
 
@@ -69,8 +67,10 @@ private:
 	LuaCell_Sptr	m_LuaCell;
 	//總長
 	float		m_Width;
+	//時線
+	int		m_TimeLine;
 	//重力
-	float		m_Garvity;
+	float		m_Gravity;
 	//摩擦力
 	float		m_Friction;
 	// can move bounding
@@ -102,11 +102,11 @@ public:
 
 	ParallelLight GetParallelLight();
 
-	bool    InSpace(Vector3 pIn);//判斷vIn是否在地圖的可行範圍
-	Vector3	AlignmentSpace(Vector3 pIn);//判斷vIn是否在地圖的可行範圍，並校正
+	bool    InSpace(const Vector3& pIn);//判斷vIn是否在地圖的可行範圍
+	Vector3	AlignmentSpace(const Vector3& pIn);//判斷vIn是否在地圖的可行範圍，並校正
 
-	bool    InBan(Vector3 pIn);//判斷vIn是否在地圖的禁足範圍
-	Vector3	AlignmentBan(Vector3 pIn );//判斷vIn是否在地圖的禁足範圍，並校正
+	bool    InBan(const Vector3& pIn);//判斷vIn是否在地圖的禁足範圍
+	Vector3	AlignmentBan(const Vector3& pIn );//判斷vIn是否在地圖的禁足範圍，並校正
 };
 SHARE_PTR(BackGround);
 

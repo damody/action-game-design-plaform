@@ -58,9 +58,16 @@ void Chee::NextFrame()
 	m_Texture = m_ObjectInfo->m_PictureDatas[m_PicID].m_TextureID;
 	m_Action = f->m_HeroAction;
 	m_TimeTik = f->m_Wait;
-	m_Vel.x +=f->m_DVX;
-	m_Vel.y +=f->m_DVY;
-	m_Vel.z +=f->m_DVZ;
+	if(m_FaceSide){
+		m_Vel.x +=f->m_DVX;
+		m_Vel.y +=f->m_DVY;
+		m_Vel.z +=f->m_DVZ;
+	}else{
+		m_Vel.x -=f->m_DVX;
+		m_Vel.y -=f->m_DVY;
+		m_Vel.z -=f->m_DVZ;
+	}
+	
 }
 
 void Chee::Update( float dt )
@@ -72,7 +79,18 @@ void Chee::Update( float dt )
 	{
 		m_TimeTik--;
 	}
+	if (m_Vel.x < 0)
+	{
+		m_FaceSide = false;
+	}else{
+		m_FaceSide = true;
+	}
+
 	m_Position += m_Vel;
+
+	
+	
+	
 }
 
 void Chee::UpdateDataToDraw()
@@ -151,6 +169,14 @@ int Chee::Team()
 Vector3 Chee::Position()
 {
 	return m_Position;
+}
+
+Vector3 Chee::BackPosition( float back )
+{
+	Vector3 v = m_Position;
+	if(m_FaceSide)v.x -= back;
+	else	v.x += back;	
+	return v;
 }
 
 

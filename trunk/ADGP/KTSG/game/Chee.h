@@ -58,6 +58,7 @@ public:
 	ClipVertex GetPic();
 	int Team();
 	Vector3 Position();
+	Vector3 BackPosition(float back);
 };
 SHARE_PTR(Chee)
 typedef std::vector <Chee_RawPtr> Chees;

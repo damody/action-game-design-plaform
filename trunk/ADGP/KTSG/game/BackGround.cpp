@@ -1,7 +1,6 @@
 #include "BackGround.h"
 #include "global.h"
 
-
 bool BackGround::CheckDataVaild( LuaCell_Sptr luadata )
 {
 	bool testOK = true;
@@ -103,6 +102,9 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 	m_LuaCell	= luadata;
 	m_Name		= luadata->GetLua<const char*>("name");
 	m_Width		= (float)luadata->GetLua<double>("width");
+	m_TimeLine	= luadata->GetLua<int>("timeline");
+	m_Gravity	= (float)luadata->GetLua<double>("gravity");
+	m_Friction	= (float)luadata->GetLua<double>("friction");
 	// read space bounding
 	for (int i=1;;++i)
 	{
@@ -191,9 +193,7 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 			pl.m_Direction.y	= (float)luadata->GetLua<double>("parallel_light/%d/y", i);
 			pl.m_Direction.z	= (float)luadata->GetLua<double>("parallel_light/%d/z", i);
 			pl.m_LightStrength	= (float)luadata->GetLua<double>("parallel_light/%d/light", i);
-			pl.m_TimeLine		= luadata->GetLua<int>("parallel_light/%d/timeline", i);
 			pl.m_TimeStart		= luadata->GetLua<int>("parallel_light/%d/time_start", i);
-			pl.m_TimeEnd		= luadata->GetLua<int>("parallel_light/%d/time_end", i);
 
 			m_ParallelLights.push_back(pl);
 		}
@@ -209,8 +209,8 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 
 void BackGround::Update( float dt )
 {
-	m_CurrentLight.m_Direction = m_LightPath.m_Direction.GetValue((float)(g_Time%m_ParallelLights[0].m_TimeLine));
-	m_CurrentLight.m_LightStrength = m_LightPath.m_LightStrength.GetValue((float)(g_Time%m_ParallelLights[0].m_TimeLine)).x;
+	m_CurrentLight.m_Direction = m_LightPath.m_Direction.GetValue((float)(g_Time%m_TimeLine));
+	m_CurrentLight.m_LightStrength = m_LightPath.m_LightStrength.GetValue((float)(g_Time%m_TimeLine)).x;
 }
 
 void BackGround::BuildPoint()
@@ -294,7 +294,7 @@ void BackGround::BuildPoint()
 
 
 
-Vector3 BackGround::AlignmentSpace( Vector3 pIn )
+Vector3 BackGround::AlignmentSpace(const Vector3& pIn )
 {
 	Vector3 pOut  = pIn;
 	float   error = 999999.9f;
@@ -350,7 +350,7 @@ Vector3 BackGround::AlignmentSpace( Vector3 pIn )
 	return pOut;
 }
 
-bool BackGround::InSpace( Vector3 pIn )
+bool BackGround::InSpace( const Vector3& pIn )
 {
 	for (AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ;it++)
 	{
@@ -379,7 +379,7 @@ bool BackGround::InSpace( Vector3 pIn )
 	return false;
 }
 
-bool BackGround::InBan( Vector3 pIn )
+bool BackGround::InBan( const Vector3& pIn )
 {
 	for (AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ;it++)
 	{
@@ -397,7 +397,7 @@ bool BackGround::InBan( Vector3 pIn )
 	return false;
 }
 
-Vector3 BackGround::AlignmentBan( Vector3 pIn)
+Vector3 BackGround::AlignmentBan( const Vector3& pIn)
 {
 	for (AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ;it++)
 	{

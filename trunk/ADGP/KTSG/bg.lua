@@ -1,14 +1,14 @@
 name="Forbidden_Tower"
 width = 40000
+timeline=1000
+gravity=2.45
+friction=0.5
+
 space_bounding =
 {
-
 	{xmin=0, ymin=0, zmin=0, xmax=40000, ymax=500, zmax=1700},
 	{xmin=150, ymin=0, zmin=1600, xmax=600, ymax=500, zmax=1850},
 	{xmin=800, ymin=0, zmin=1600, xmax=1250, ymax=500, zmax=1850},
-	--{xmin=100, ymin=0, zmin=1000, xmax=700, ymax=500, zmax=1900},
-	--{xmin=0, ymin=0, zmin=0, xmax=500, ymax=500, zmax=500},
-	--{xmin=400, ymin=0, zmin=400, xmax=900, ymax=500, zmax=900},
 }
 
 ban_bounding =
@@ -24,7 +24,6 @@ layer =
 	{picture_path="bg\\ft\\w3.bmp", ground=0, x=0, y=0,  z=2000, w=288, h=60, loop_distance=288, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\g1.bmp", ground=1, x=0, y=0,  z=2000, w=324, h=118, loop_distance=162, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\g2.bmp", ground=1, x=0, y=0,  z=1882, w=280, h=22, loop_distance=140, timeline=1, time_start=0, time_end=0},
-	--{picture_path="bg\\ft\\g5.bmp", ground=1, x=0, y=0,  z=1860, w=280, h=1794, loop_distance=140, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\g3.bmp", ground=1, x=0, y=0,   z=66, w=280, h=24, loop_distance=140, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\g4.bmp", ground=1, x=0, y=0,   z=42, w=256, h=42, loop_distance=128, timeline=1, time_start=0, time_end=0},
 	{picture_path="bg\\ft\\c1.bmp", ground=0, x=6, y=38,  z=1900, w=108, h=268, loop_distance=648, timeline=1, time_start=0, time_end=0},
@@ -53,8 +52,8 @@ color_rect =
 
 parallel_light = 
 {
-	{x=2, y= -1.5, z= -1, light=3, timeline=1000, time_start=0, time_end=0},
-	{x=0, y= -1.5, z= -1, light=10, timeline=1000, time_start=500, time_end=0},
-	{x=-2, y= -1.5, z= -1, light=3, timeline=1000, time_start=1000, time_end=0},
+	{x=2, y= -1.5, z= -1, light=3, time_start=0},
+	{x=0, y= -1.5, z= -1, light=10, time_start=500},
+	{x=-2, y= -1.5, z= -1, light=3, time_start=1000},
 }
 
