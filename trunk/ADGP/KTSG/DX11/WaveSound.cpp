@@ -834,3 +834,224 @@ bool WavSound::isExist(int index )
 }
 
 
+int WavPlayer::CreatSound(const std::string& filename, int dupnum)
+{
+	dsDuplicate *newdupsound = new dsDuplicate();
+	if(!newdupsound->Duplicate(ConvStr::GetWstr(filename).c_str(), DSBCAPS_CTRLFREQUENCY | DSBCAPS_CTRLVOLUME | 
+		DSBCAPS_CTRLPAN , dupnum, ds_DS))
+	{
+		return -1;
+	}
+	newdupsound->SetVolume(m_soundloud);
+	m_List.push_back(filename);
+	m_DupSounds.push_back(newdupsound);
+	return m_DupSounds.size()-1;
+}
+
+bool WavPlayer::Play(int index)
+{
+	//如果能成功執行play就傳回true,其餘皆傳false
+	if (!isStart)
+		return false;
+	if (index>=0 && index<(int)m_DupSounds.size())
+	{
+		m_DupSounds[index]->Play();
+		return true;
+	}
+	return false;
+}
+
+bool WavPlayer::Stop(int index)
+{
+	//如果能成功執行stop就傳回true,其餘皆傳false
+	if (!isStart)
+		return false;
+	if (index>=0 && index<(int)m_DupSounds.size())
+	{
+		m_DupSounds[index]->Stop();
+		return true;
+	}
+	return false;
+}
+
+
+bool WavPlayer::RePlay(int index, int index2)
+{
+	//如果能成功執行replay就傳回true,其餘皆傳false
+	if (!isStart)
+		return false;
+	if (index>=0 && index<(int)m_DupSounds.size())
+	{
+		m_DupSounds[index]->RePlay(index2);
+		return true;
+	}
+	return false;
+}
+
+bool WavPlayer::Pause(int index, int index2)
+{
+	//如果能成功執行pause就傳回true,其餘皆傳false
+	if (!isStart)
+		return false;
+	if (index>=0 && index<(int)m_DupSounds.size())
+	{
+		m_DupSounds[index]->Pause(index2);
+		return true;
+	}
+	return false;
+}
+
+void WavPlayer::MoveParameters(int index, int index2, DWORD Frequency, LONG Pan, LONG Volume)
+{
+	if (index>=0 && index<(int)m_DupSounds.size())
+	{
+		m_DupSounds[index]->MoveDuplicateParameters(index2, Frequency, Pan, Volume);
+	}
+}
+
+void WavPlayer::Release()
+{
+	for(std::vector<dsDuplicate*>::iterator it = m_DupSounds.begin(); it != m_DupSounds.end(); it++)
+	{
+		(*it)->Release();
+		delete ((*it));
+		(*it) = NULL;
+	}
+	m_DupSounds.clear();
+	m_mDupSound.clear();
+}
+
+WavPlayer::~WavPlayer()
+{
+	Release();
+	if (ds_DS)
+		ds_DS->Release();
+}
+
+void WavPlayer::StopDevice()
+{
+	if (!isStart)
+		return;
+	for(std::vector<dsDuplicate*>::iterator it = m_DupSounds.begin(); it != m_DupSounds.end(); it++)
+	{
+		(*it)->Stop();
+	}
+	isStart = false;
+}
+
+void WavPlayer::PauseDevice()
+{
+	if (!isStart)
+		return;
+	int forindex;
+	for(std::vector<dsDuplicate*>::iterator it = m_DupSounds.begin(); it != m_DupSounds.end(); it++)
+	{
+		for (forindex=0; forindex < (*it)->GetNum(); forindex++)
+		{
+			if ((*it)->isPlaying(forindex))
+			{
+				(*it)->Pause(forindex);
+				m_mDupSound.push_back((*it));
+			}
+		}
+	}
+	isStart = false;
+}
+
+void WavPlayer::StartDevice()
+{
+	if (isStart)
+		return;
+	for(std::vector<dsDuplicate*>::iterator it = m_mDupSound.begin(); it != m_mDupSound.end(); it++)
+	{
+		(*it)->Play();
+	}
+	m_mDupSound.clear();
+	isStart = true;
+}
+
+void WavPlayer::SetLooping(int index, bool isLooping)
+{
+	if (index>=0 && index<(int)m_DupSounds.size())
+		m_DupSounds[index]->SetLooping(isLooping);
+}
+
+void WavPlayer::Initialize( HWND hWnd , DWORD Channels, DWORD Freq , DWORD BitRate  )
+{
+	//Com物件初使化
+	CoInitialize(0);
+	if( DirectSoundCreate8( NULL, &ds_DS, NULL ) != DS_OK )
+		return ;
+	// 設定存取等級 
+	if( ds_DS->SetCooperativeLevel( hWnd, DSSCL_PRIORITY ) != DS_OK )
+		return ;
+	//設定播放緩衝區格式
+	LPDIRECTSOUNDBUFFER Primary ;
+
+	//建立播放緩衝區 
+	DSBUFFERDESC dsbd;
+	ZeroMemory( &dsbd, sizeof(DSBUFFERDESC) );
+	dsbd.dwSize        = sizeof(DSBUFFERDESC);
+	dsbd.dwFlags       = DSBCAPS_PRIMARYBUFFER;
+	dsbd.dwBufferBytes = 0;
+	dsbd.lpwfxFormat   = NULL;
+
+	if( ds_DS->CreateSoundBuffer( &dsbd, &Primary, NULL ) != DS_OK )
+		return ;
+	//設定播放格式 
+	WAVEFORMATEX wfx;
+	ZeroMemory( &wfx, sizeof(WAVEFORMATEX) ); 
+	wfx.wFormatTag      = (WORD) WAVE_FORMAT_PCM; 
+	wfx.nChannels       = (WORD) Channels; 
+	wfx.nSamplesPerSec  = (DWORD) Freq; 
+	wfx.wBitsPerSample  = (WORD) BitRate; 
+	wfx.nBlockAlign     = (WORD) (wfx.wBitsPerSample / 8 * wfx.nChannels);
+	wfx.nAvgBytesPerSec = (DWORD) (wfx.nSamplesPerSec * wfx.nBlockAlign);
+
+	if( Primary->SetFormat(&wfx) != DS_OK )
+	{
+		Primary->Release();
+		return  ;
+	}
+	//設定完成，移除介面
+	Primary->Release();
+	isStart = true;
+}
+
+void WavPlayer::SetVolume(int index, LONG Volume )
+{	
+	if (index>=0 && index<(int)m_DupSounds.size())
+		m_DupSounds[index]->SetVolume(Volume);
+}
+
+
+void WavPlayer::SetVolume( LONG Volume )
+{
+	for(std::vector<dsDuplicate*>::iterator it = m_mDupSound.begin(); it != m_mDupSound.end(); it++)
+		(*it)->SetVolume(Volume);
+
+	m_soundloud = Volume;
+}
+
+LONG WavPlayer::GetVolume(int index )
+{	
+	if (index>=0 && index<(int)m_DupSounds.size())
+		return m_DupSounds[index]->GetVolume();
+	return 1;
+}
+
+LONG WavPlayer::GetVolume()
+{
+	return m_soundloud;
+}
+
+int WavPlayer::GetIndex( std::string name )
+{
+	int index=-1;
+	for(std::vector<std::string>::iterator it = m_List.begin();it != m_List.end(); it++)
+	{
+		index++;
+		if((*it)==name)return index;
+	}
+	return -1;// Not Found
+}

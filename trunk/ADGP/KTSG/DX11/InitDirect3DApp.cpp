@@ -3,7 +3,7 @@
 #include <ctime>
 #include "InitDirect3DApp.h"
 #include "InputState.h"
-#include "WaveSound.h"
+
 #include "ui/CmdDef.h"
 #include "game/HeroInfo.h"
 #include "game/ObjectInfo.h"
@@ -44,7 +44,8 @@ void InitDirect3DApp::initApp()
 	buildPoint();
 	//init Camera
 	m_Camera = Camera_Sptr(new Camera((float)mClientWidth,0,1000,800,0,45));
-	
+	//init WavePlayer
+	g_WavePlayer.Initialize(getMainWnd());
 
 }
 
@@ -633,7 +634,7 @@ void InitDirect3DApp::PrintInfo()
 		float fps = (float)frameCnt; // fps = frameCnt / 1
 		float mspf = 1000.0f / fps;
 		std::wcout << L"FPS: " << fps << L" Balls: " << g_ObjectMG.AmountChee()
-			 << "\t"<< g_EnemyBallptrManager.Ballptrs().size() << L"\n";
+			 << "\t"<< L"\n";
 		std::wcout << m_FrameStats;
 		// Reset for next average.
 		frameCnt = 0;
@@ -876,7 +877,7 @@ void InitDirect3DApp::BackgroundDataUpdate()
 	
 	for (Chees::iterator it = g_ObjectMG.CheeVectorBegin(); it != g_ObjectMG.CheeVectorEnd() ; it++)
 	{
-		if(!g_BGManager.CurrentBG()->InSpace((*it)->BackPosition(100.0f)))
+		if(!g_BGManager.CurrentBG()->InSpace((*it)->BackPosition(500.0f)))
 		{
 			g_ObjectMG.Delete(it);
 			it--;
@@ -890,63 +891,42 @@ void InitDirect3DApp::TestCamera()
 	if (InputStateS::instance().isKeyPress(KEY_Z))
 	{
 		m_Camera->Zoom(-1);
-
-		//m_Camera->SurroundX(-10);
-		//m_Camera->MoveX(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_X))
 	{
-		//m_Camera->SurroundX(10);
 		m_Camera->Zoom(1); 
-		//m_Camera->MoveX(1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD4))
 	{
-		//m_Camera->Zoom(-1);
-		//m_Camera->SurroundX(-10);
 		m_Camera->MoveX(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD6))
 	{
-		//m_Camera->SurroundX(10);
-		//m_Camera->Zoom(1); 
 		m_Camera->MoveX(1); 
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD2))
 	{
-		//m_Camera->Zoom(-1);
-		//m_Camera->SurroundX(-10);
 		m_Camera->MoveY(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD8))
 	{
-		//m_Camera->SurroundX(10);
-		//m_Camera->Zoom(1); 
 		m_Camera->MoveY(1); 
 	}
 	if (InputStateS::instance().isKeyPress(KEY_K))
 	{
-		//m_Camera->Zoom(-1);
 		m_Camera->SurroundX(-0.1f);
-		//m_Camera->MoveX(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_I))
 	{
 		m_Camera->SurroundX(0.1f);
-		//m_Camera->Zoom(1);
-		//m_Camera->MoveX(1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_J))
 	{
-		//m_Camera->Zoom(-1);
 		m_Camera->SurroundY(-0.1f);
-		//m_Camera->MoveX(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_L))
 	{
 		m_Camera->SurroundY(0.1f);
-		//m_Camera->Zoom(1);
-		//m_Camera->MoveX(1);
 	}
 }
 

@@ -3,11 +3,6 @@
 #include <d3dx11effect.h>
 #include <algorithm>
 #include "d3dApp.h"
-
-#include "algo/nway.h"
-#include "algo/RandomWay.h"
-#include "ball/BallptrManager.h"
-#include "ball/straight.h"
 #include "global.h"
 
 #include "Vertex.h"
