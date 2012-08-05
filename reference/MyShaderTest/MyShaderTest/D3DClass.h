@@ -35,6 +35,8 @@ class D3DClass
     private:
         HWND hwnd_;
 
+		int m_width,m_height;
+
         D3D_DRIVER_TYPE driverType_;
         D3D_FEATURE_LEVEL featureLevel_;
 

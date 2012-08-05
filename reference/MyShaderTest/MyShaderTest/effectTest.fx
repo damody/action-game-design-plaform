@@ -8,12 +8,6 @@ Texture2D alphaTexture;
 SamplerState SampleType;
 SamplerState SampleType2;
 
-cbuffer MatrixBuffer
-{
-	matrix worldMatrix;
-	matrix viewMatrix;
-	matrix projectionMatrix;
-};
 
 cbuffer NoiseBuffer
 {
@@ -30,13 +24,7 @@ cbuffer DistortionBuffer
 	float distortionScale;
 	float distortionBias;
 };
-cbuffer cbPerFrame
-{
-	float width;
-	float height;
-	float3 cLookAt;
-	float3 cPolarCoord;
-};
+
 
 SamplerState gTriLinearSam
 {
@@ -65,7 +53,6 @@ struct GS_OUT
 	float2 texCoords2 : TEXCOORD2;
 	float2 texCoords3 : TEXCOORD3;
 };
- 
 VS_OUT VS(VS_IN vIn)
 {
 	VS_OUT vOut;
@@ -82,21 +69,22 @@ GS_OUT calculate(float2 pos,float2 tex)
 	
 	
 	
-	
+
 	//output.posH = mul(output.posH, worldMatrix);
     //output.posH = mul(output.posH, viewMatrix);
     //output.posH = mul(output.posH, projectionMatrix);
 	// Store the texture coordinates for the pixel shader.
 	output.texcoord = tex;
-
+	//output.texcoord+=float2(0.5,-0.5);
     // Compute texture coordinates for first noise texture using the first scale and upward scrolling speed values.
 	output.texCoords1 = (tex * scales.x);
 	output.texCoords1.y = output.texCoords1.y + (frameTime * scrollSpeeds.x);
+	
 
     // Compute texture coordinates for second noise texture using the second scale and upward scrolling speed values.
 	output.texCoords2 = (tex * scales.y);
 	output.texCoords2.y = output.texCoords2.y + (frameTime * scrollSpeeds.y);
-
+	
     // Compute texture coordinates for third noise texture using the third scale and upward scrolling speed values.
 	output.texCoords3 = (tex * scales.z);
 	output.texCoords3.y = output.texCoords3.y + (frameTime * scrollSpeeds.z);
@@ -116,6 +104,13 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	float2 size = float2(256.0f,-256.0f);
    
 	float2 lt,ld,rt,rd;
+	/*
+	lt = float2(-1,1);
+	ld = float2(-1,-1);
+	rt = float2(1,1);
+	rd = float2(1,-1);
+	*/
+	
 	lt = float2((input[0].pos.x-1)*size.x,(input[0].pos.y-1)*size.y)*2/(viewport)+offset ;
 	ld= float2((input[0].pos.x-1)*size.x,(input[0].pos.y-1)*size.y+size.y)*2/(viewport)+offset  ;
 	rt = float2((input[0].pos.x-1)*size.x+size.x,(input[0].pos.y-1)*size.y)*2/(viewport)+offset ;
@@ -124,42 +119,76 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	
 	GS_OUT out5;
 	
+	float n = 1.0f;
+	//newTex = float2(1,0);
 	newTex = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y-1));
+	newTex*=n;
 	out5 = calculate(rt,newTex);
-	/*out5.posH = float4(lt,1,1);
-	out5.texcoord = float2(0,0);*/
 	triStream.Append( out5 );
 	
+	//newTex = float2(1,1);
 	newTex = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
+	newTex*=n;
 	out5 = calculate(rd,newTex);
-	/*out5.posH = float4(rt,1,1);
-	out5.texcoord = float2(1,0);*/
 	triStream.Append( out5 );
 	
+	//newTex = float2(0,0);
 	newTex = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
+	newTex*=n;
 	out5 = calculate(lt,newTex);
-	/*out5.posH = float4(ld,1,1);
-	out5.texcoord = float2(0,1);*/
 	triStream.Append( out5 );
 	
+	//newTex = float2(1,1);
 	newTex = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
+	newTex*=n;
 	out5 = calculate(rd,newTex);
-	/*out5.posH = float4(rt,1,1);
-	out5.texcoord = float2(1,0);*/
 	triStream.Append( out5 );
 	
+	//newTex = float2(0,0);
 	newTex = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
+	newTex*=n;
 	out5 = calculate(lt,newTex);
-	/*out5.posH = float4(ld,1,1);
-	out5.texcoord = float2(0,1);*/
 	triStream.Append( out5 );
 	
+	//newTex = float2(0,1);
 	newTex = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y));
+	newTex*=n;
 	out5 = calculate(ld,newTex);
-	/*out5.posH = float4(rd,1,1);
-	out5.texcoord = float2(1,1);*/
 	triStream.Append( out5 );
 	
+	/*
+	//------
+	newTex = float2(1,0);
+	//newTex = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y-1));
+	out5 = calculate(rt,newTex);
+	triStream.Append( out5 );
+	
+	newTex = float2(1,1);
+	//newTex = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
+	out5 = calculate(rd,newTex);
+	triStream.Append( out5 );
+	
+	newTex = float2(0,0);
+	//newTex = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
+	out5 = calculate(lt,newTex);
+	triStream.Append( out5 );
+	
+	newTex = float2(1,1);
+	//newTex = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
+	out5 = calculate(rd,newTex);
+	triStream.Append( out5 );
+	
+	newTex = float2(0,0);
+	//newTex = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
+	out5 = calculate(lt,newTex);
+	triStream.Append( out5 );
+	
+	newTex = float2(0,1);
+	//newTex = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y));
+	out5 = calculate(ld,newTex);
+	triStream.Append( out5 );
+	//---------
+	*/
 	triStream.RestartStrip( );
 }
 
@@ -174,7 +203,7 @@ float4 PS(GS_OUT pIn) : SV_Target
 	float4 fireColor;
 	float4 alphaColor;
 
-
+	
 	// Sample the same noise texture using the three different texture coordinates to get three different noise scales.
 	
 	
@@ -189,18 +218,23 @@ float4 PS(GS_OUT pIn) : SV_Target
 	noise3 = noiseTexture.Sample(SampleType, pIn.texCoords3);
 
 	// Move the noise from the (0, 1) range to the (-1, +1) range.
-    noise1 = (noise1 - 0.5f) * 1.0f;
-    noise2 = (noise2 - 0.5f) * 1.0f;
-    noise3 = (noise3 - 0.5f) * 0.3f;
+    noise1 = (noise1 - 0.5f) * 2.0f;
+    noise2 = (noise2 - 0.5f) * 2.0f;
+    noise3 = (noise3 - 0.5f) * 2.0f;
 
 	// Distort the three noise x and y coordinates by the three different distortion x and y values.
-	noise1.xy = noise1.xy * distortion1.xy;
-	noise2.xy = noise2.xy * distortion2.xy;
-	noise3.xy = noise3.xy * distortion3.xy;
+	float2 t1,t2,t3;
+	t1 = float2(0.01f, 0.07f);
+	t2 = float2(0.008f, 0.2f);
+	t3 = float2(0.006f, 0.1f);
+	noise1.xy = noise1.xy * t1.xy;//distortion1.xy;
+	noise2.xy = noise2.xy * t2.xy;//distortion2.xy;
+	noise3.xy = noise3.xy * t3.xy;//distortion3.xy;
 
 	// Combine all three distorted noise results into a single noise result.
 	finalNoise = noise1 + noise2 + noise3;
-
+	finalNoise.x *= 0.5;
+	finalNoise.y *= 0.01;
 	// Perturb the input texture Y coordinates by the distortion scale and bias values.  
 	// The perturbation gets stronger as you move up the texture which creates the flame flickering at the top effect.
 	perturb = ((1.0f - pIn.texcoord.y) * distortionScale) + distortionBias;
@@ -208,6 +242,8 @@ float4 PS(GS_OUT pIn) : SV_Target
 	// Now create the perturbed and distorted texture sampling coordinates that will be used to sample the fire color texture.
 	noiseCoords.xy = (finalNoise.xy * perturb) + pIn.texcoord.xy;
 
+	//if (noiseCoords.y < pIn.texcoord.y)
+		//discard;
 	// Sample the color from the fire texture using the perturbed and distorted texture sampling coordinates.
 	// Use the clamping sample state instead of the wrap sample state to prevent flames wrapping around.
     fireColor = fireTexture.Sample(SampleType2, noiseCoords.xy);
@@ -216,23 +252,24 @@ float4 PS(GS_OUT pIn) : SV_Target
 	// This will be used for transparency of the fire.
 	// Use the clamping sample state instead of the wrap sample state to prevent flames wrapping around.
     alphaColor = alphaTexture.Sample(SampleType2, noiseCoords.xy);
-
+	
+	if(alphaColor.a == 0.0)
+	{
+		alphaColor.r = 0.0f;
+		alphaColor.g = 0.0f;
+		alphaColor.b = 0.0f;
+		alphaColor.a = 1.0f;
+	}
 	// Set the alpha blending of the fire to the perturbed and distored alpha texture value.
 	fireColor.a = alphaColor;
+	//fireColor.a = (alphaColor.r + alphaColor.g + alphaColor.b + alphaColor.a)/4;
 	noise2 = alphaTexture.Sample(SampleType, pIn.texcoord);
 		fireColor.r = (noise2.r*(1-fireColor.a)+fireColor.r*fireColor.a);
 		fireColor.g = (noise2.g*(1-fireColor.a)+fireColor.g*fireColor.a);
 		fireColor.b = (noise2.b*(1-fireColor.a)+fireColor.b*fireColor.a);
 	fireColor.a = max(noise2.a , fireColor.a);
-	//ireColor.a = min(fireColor.a , alphaColor.a);
+	
     return fireColor;
-
-/*
-	float4 color=alphaTexture.Sample( gTriLinearSam, pIn.texcoord );
-	if (color.a<0.5)
-		discard;
-	return color;
-	*/
 }
 
 RasterizerState NoCull

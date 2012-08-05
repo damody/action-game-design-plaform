@@ -4,6 +4,8 @@
 #ifndef _GRAPHICSCLASS_H_
 #define _GRAPHICSCLASS_H_
 
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 480
 
 /////////////
 // GLOBALS //
@@ -18,7 +20,6 @@
 #include "TextureClass.h"
 #include "RenderTextureClass.h"
 #include "CameraClass.h"
-#include "FireShaderClass.h"
 #include "TestShaderClass.h"
 #include "TFireShaderClass.h"
 #include "Camera.h"
@@ -47,32 +48,10 @@ private:
 
 private:
 	D3DClass* m_D3D;
-	Camera* m_Camera;
-	//CameraClass* m_Camera;
 	TextureClass* m_Texture;
-	TextureShaderClass* m_TextureShader;
-	RenderTextureClass* m_RenderTexture;
-
-	//
-	FireShaderClass* m_FireShader;
 	TestShaderClass* m_TestShader;
-	//
-
-	//
-
-	//
-
-	//TEST
-	TextureShaderClass* m_TestTS;
-	TFireShaderClass* m_tf;
-	//
-
-	//
 	Effect* m_Effect;
-	//
 
-	//
-	//
 };
 
 #endif

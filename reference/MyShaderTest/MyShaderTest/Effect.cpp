@@ -1,12 +1,12 @@
 #include "Effect.h"
-#include <iostream>
 
-Effect::Effect():m_Texture(0),m_Row(1),m_Col(1)
+Effect::Effect():m_Row(1),m_Col(1),m_device(0),m_deviceContext(0),m_Texture(0),m_FireShader(0)
 {
 }
-bool Effect::Initialize(ID3D11Device* device,HWND hwnd)
+bool Effect::Initialize(ID3D11Device* device,ID3D11DeviceContext* deviceContext,HWND hwnd)
 {
 	m_device = device;
+	m_deviceContext = deviceContext;
 	bool result;
 	//
 	m_Texture = new RenderTextureClass();
@@ -19,29 +19,8 @@ bool Effect::Initialize(ID3D11Device* device,HWND hwnd)
 		return false;
 	}
 	//
-	m_FireShader = 0;
 	m_FireShader = new TFireShaderClass();
-	result = m_FireShader->Initialize(device,L"effectTest.fx",hwnd);
-	if(!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the TFireShaderClass object.", L"Error", MB_OK);
-		return false;
-	}
-	//
-	WCHAR* fireTextureName = L"fire01.dds";
-	WCHAR* noiseTextureName = L"noise01.dds";
-
-	m_fireTexture = 0;
-	m_fireTexture = new TextureClass();
-	result = m_fireTexture->Initialize(device,fireTextureName);
-	if(!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the TFireShaderClass object.", L"Error", MB_OK);
-		return false;
-	}
-	m_noiseTexture = 0;
-	m_noiseTexture = new TextureClass();
-	result = m_noiseTexture->Initialize(device,noiseTextureName);
+	result = m_FireShader->Initialize(device,m_deviceContext,L"effectTest.fx",hwnd);
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the TFireShaderClass object.", L"Error", MB_OK);
@@ -49,17 +28,12 @@ bool Effect::Initialize(ID3D11Device* device,HWND hwnd)
 	}
 
 	
-
+	SetFireParameters();
 
 
 
 	return true;
 }
-void Effect::SetD3DContext(ID3D11DeviceContext* deviceContext)
-{
-	m_deviceContext = deviceContext;
-}
-
 void Effect::SetViewport()
 {
 	D3D11_VIEWPORT vp;
@@ -71,28 +45,21 @@ void Effect::SetViewport()
 	vp.TopLeftY = 0;
 	m_deviceContext->RSSetViewports( 1, &vp );
 }
-
-void Effect::test()
+void Effect::Render()
 {
 	SetViewport();
 
 	m_Texture->SetRenderTarget(m_deviceContext,0);
 	m_Texture->ClearRenderTarget(m_deviceContext,0,0.0f,1.0f,1.0f,1.0f);
 
-	//Render
-
-
-
-	m_FireShader->Render(m_deviceContext);
-
-
-
-
-
+	RenderFire();
 }
-
-
-void Effect::CreateEffect( EffectType::e type,TextureClass* texture,D3DXVECTOR4 picpos )
+void Effect::RenderFire()
+{
+	//Render
+	m_FireShader->Render();
+}
+void Effect::CreateEffect(EffectType::e type,TextureClass* texture,D3DXVECTOR4 picpos)
 {
 	EffectData ed;
 	ed.m_Texture = texture;
@@ -119,40 +86,28 @@ void Effect::CreateEffect( EffectType::e type,TextureClass* texture,D3DXVECTOR4 
 	
 
 }
-
 void Effect::SetFireParameters()
 {
 	D3DXVECTOR3 scrollSpeeds, scales;
 	D3DXVECTOR2 distortion1, distortion2, distortion3;
 	float distortionScale, distortionBias;
-	static float frameTime = 0.0f;
-	float width,height;
-	float* cLookAt;
-	float* cPolarCoord;
+	scrollSpeeds = D3DXVECTOR3(1.0f, 2.0f, 5.0f);
+	scales = D3DXVECTOR3(20.0f, 30.0f, 40.0f);
+	distortion1 = D3DXVECTOR2(0.03f, 0.07f);
+	distortion2 = D3DXVECTOR2(0.02f, 0.05f);
+	distortion3 = D3DXVECTOR2(0.01f, 0.1f);
+	distortionScale = 1.2f;
+	distortionBias = 1.2f;
 
-	scrollSpeeds = D3DXVECTOR3(1.3f, 2.1f, 2.3f);
-	scales = D3DXVECTOR3(1.0f, 2.0f, 3.0f);
-	distortion1 = D3DXVECTOR2(0.1f, 0.2f);
-	distortion2 = D3DXVECTOR2(0.1f, 0.3f);
-	distortion3 = D3DXVECTOR2(0.1f, 0.1f);
-	distortionScale = 0.8f;
-	distortionBias = 0.5f;
+	m_FireShader->SetShaderParameters(scrollSpeeds,scales,distortion1,distortion2,distortion3,distortionScale,distortionBias);
 
-	frameTime += 0.0001f;
-	if(frameTime > 1000.0f)
-	{
-		frameTime = 0.0f;
-	}
-	//set
-	width = 256;
-	height = 256;
-
-	m_FireShader->SetShaderParameters(width,height,0,0,m_fireTexture->GetTexture(),m_noiseTexture->GetTexture(),0
-		,frameTime,scrollSpeeds,scales,distortion1,distortion2,distortion3,distortionScale,distortionBias);
 }
-
 void Effect::Update(float dt)
 {
-	m_FireShader->SetFrameTime(dt);
+	m_FireShader->UpdateFrameTime(dt);
 	m_FireShader->CreatVertex(m_FireEffect.begin(),m_FireEffect.end());
+}
+ID3D11ShaderResourceView* Effect::GetTexture()
+{
+	return m_Texture->GetShaderResourceView();
 }
