@@ -578,8 +578,8 @@ void InitDirect3DApp::LoadHero()
 	//test BGM
 	int index = g_WavPlayer.CreatSound("Media\\music\\stage5.wav",1);
 	g_WavPlayer.SetLooping(index,true);
-	g_BGManager.AddBGM("Media\\music\\stage5.wav",index);
-	g_BGManager.SetCurrentBGM("Media\\music\\stage5.wav");
+	g_BGManager.AddBGM("Media\\music\\stage5.mp3",index);
+	g_BGManager.SetCurrentBGM("Media\\music\\stage5.mp3");
 	g_WavPlayer.Play(g_BGManager.CurrentBGM());
 
 	//player init
