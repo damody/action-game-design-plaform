@@ -837,6 +837,16 @@ bool WavSound::isExist(int index )
 int WavPlayer::CreatSound(const std::string& filename, int dupnum)
 {
 	dsDuplicate *newdupsound = new dsDuplicate();
+
+	for (int i=0;i<m_List.size();i++)
+	{
+		if(filename == m_List[i])
+		{
+			return i;
+		}
+	}
+	
+
 	if(!newdupsound->Duplicate(ConvStr::GetWstr(filename).c_str(), DSBCAPS_CTRLFREQUENCY | DSBCAPS_CTRLVOLUME | 
 		DSBCAPS_CTRLPAN , dupnum, ds_DS))
 	{

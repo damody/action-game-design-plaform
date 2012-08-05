@@ -74,7 +74,7 @@ enum e
 	CAUGHT,
 	//跌倒
 	FALLING,
-	//跳
+	//跳，剛進入此狀態的影格會得到向上的速度
 	JUMP,
 	//衝跳
 	DASH,
@@ -87,14 +87,10 @@ enum e
 	//躺在地上
 	BACKWARD_LYING,
 	
-	//空中絕招
-	FLY,
-	//空中絕招，X方向鍵有效
-	FLY_X_FREE,
-	//空中絕招，Z方向鍵有效
-	FLY_Z_FREE,
-	//空中絕招，四方向鍵有效
-	FLY_FREE,
+	//空中，方向鍵可改變面對方向
+	IN_THE_AIR,
+	//空中絕招，方向鍵無效，無重力但會著地
+	AIR_SKILL,
 	//直線前進絕招，Z方向鍵有效
 	X_AXIS_SKILL,
 	//垂線前進絕招，X方向鍵有效
@@ -104,7 +100,7 @@ enum e
 	//地面任意移動絕招，四方向鍵有效
 	//FREE_SKILL, 可以直接使用walking
 
-	//特殊絕招，方向鍵無效，可以遁地
+	//特殊絕招，方向鍵無效，可以遁地且無重力
 	UNIQUE_SKILL,
 	//基本動作結束值
 	BASIC_ACTION_END

@@ -13,11 +13,26 @@ TextureManager::~TextureManager(void)
 
 int TextureManager::AddTexture( std::string path)
 {
+		int index=Find(path);
+		if (index != -1)
+		{
+			return index;
+		}
+		
 		m_Textures.push_back(Texture_Sptr(new Texture(path)));
 		m_List.push_back(path);
 		m_index++;
 		return m_index;
 }
+
+int TextureManager::AddTexture( std::string name , Texture texture )
+{
+	m_Textures.push_back(Texture_Sptr(&texture));
+	m_List.push_back(name);
+	m_index++;
+	return m_index;
+}
+
 
 Texture_Sptr TextureManager::GetTexture(unsigned int index )
 {
@@ -56,6 +71,13 @@ Texture::Texture( std::wstring path )
 	if (g_d3dDevice)
 		D3DX11CreateShaderResourceViewFromFileW(g_d3dDevice, path.c_str(), 0, 0, &texture, 0);
 }
+
+Texture::Texture( ID3D11ShaderResourceView* rc )
+{
+	texture = rc;
+}
+
+
 
 Texture::~Texture()
 {

@@ -11,6 +11,7 @@ struct Texture
 {
 	Texture(std::string path);
 	Texture(std::wstring path);
+	Texture(ID3D11ShaderResourceView* rc);
 	~Texture();
 	ID3D11ShaderResourceView* texture;
 	operator ID3D11ShaderResourceView*()
@@ -37,6 +38,7 @@ public:
 	TextureManager(void);
 	~TextureManager(void);
 	int AddTexture(std::string path);
+	int AddTexture(std::string name , Texture texture);
 	int Find(std::string path);
 	Texture_Sptr GetTexture(unsigned int index);
 private:

@@ -158,7 +158,7 @@ private:
 	std::vector<dsDuplicate*> m_mDupSound;
 
 public:
-	WavPlayer():ds_DS(NULL), m_soundloud(1){}
+	WavPlayer():ds_DS(NULL), m_soundloud(-100){}
 	void Initialize(HWND hWnd , DWORD Channels = 2 , DWORD Freq =  22050 , DWORD BitRate = 16);
 	~WavPlayer();
 
