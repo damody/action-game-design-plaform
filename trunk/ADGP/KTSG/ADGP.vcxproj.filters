@@ -200,6 +200,9 @@
     <ClCompile Include="game\HeroManager.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="game\Effect.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -398,6 +401,12 @@
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\ObjectManager.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Effect.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\EffectData.h">
       <Filter>inc\game</Filter>
     </ClInclude>
   </ItemGroup>

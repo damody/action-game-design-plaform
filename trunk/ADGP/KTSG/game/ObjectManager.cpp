@@ -191,6 +191,7 @@ Chee* ObjectMG::GetClosestCheeFromEnemy(const Vector3& pos,int team )
 	return c;
 }
 
+/*
 Weapon* ObjectMG::GetClosestWeaponOnFloor(const Vector3& pos )
 {
 
@@ -205,6 +206,7 @@ Weapon* ObjectMG::GetClosestThrownWeaponFromEnemy(const Vector3& pos,int team )
 {
 
 }
+*/
 
 int ObjectMG::AmountChee()
 {
