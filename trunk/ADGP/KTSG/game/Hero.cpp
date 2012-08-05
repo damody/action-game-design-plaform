@@ -74,13 +74,11 @@ void Hero::Update(float dt)
 	m_Position += m_Vel;
 
 	if(m_Position.y <= 0){	//地上
-		//printf("地上 vy = %g , Action: %d\n",m_Vel.y, m_Action);
 		//落地判定
 		if( m_Action != HeroAction::UNIQUE_SKILL){
 			m_Position.y = 0;
 			m_Vel.y = 0;
 			if(ry > 0){
-				printf("落地\n");
 				//Frame 改到蹲
 				m_Frame = "crouch";
 				m_FrameID = m_Action == HeroAction::DASH ? 1 : 0 ;
@@ -112,7 +110,6 @@ void Hero::Update(float dt)
 		else m_Vel.z *= sign;
 	}
 	else{					//空中
-		//printf("空中 vy = %g , Action: %d\n",m_Vel.y, m_Action);
 		//重力加速度
 		if(m_Action != HeroAction::AIR_SKILL && m_Action != HeroAction::UNIQUE_SKILL){
 			m_Vel.y -= G_ACCE;
@@ -266,7 +263,6 @@ bool Hero::ScanKeyQue()
 	}
 	else if(m_Action == HeroAction::WALKING )
 	{
-		//if(m_TimeTik < 2){
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::UP)
 			{
@@ -310,15 +306,10 @@ bool Hero::ScanKeyQue()
 			}
 			i++;
 		}
-		//}
 		if(!nFrame.empty() )
 		{
 			nFramID = (m_FrameID+1) % (m_HeroInfo->m_FramesMap[nFrame].size());
 		}
-		/*else 
-		{
-			nFrame.clear();
-		}//*/
 	}
 	else if(m_Action == HeroAction::RUNNING){
 		m_Vel.x = (m_FaceSide ? m_HeroInfo->m_RunningSpeed : -m_HeroInfo->m_RunningSpeed);
@@ -350,29 +341,24 @@ bool Hero::ScanKeyQue()
 			i++;
 		}
 	}
-	else if(m_Action == HeroAction::JUMP){
-		printf("JUMP\n");
+	else if(m_Action == HeroAction::JUMP && m_TimeTik < 2){
 		m_Vel.y = m_HeroInfo->m_JumpHeight;
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::UP)
 			{
-				//if(m_TimeTik < 2) nFrame = "walking";
 				m_Vel.z = m_HeroInfo->m_JumpDistanceZ;
 			}
 			else if(i->key == CtrlKey::DOWN)
 			{
-				//if(m_TimeTik < 2) nFrame = "walking";
 				m_Vel.z = -m_HeroInfo->m_JumpDistanceZ;
 			}
 			else if(i->key == CtrlKey::LEFT)
 			{
-				//if(m_TimeTik < 2) nFrame = "walking";
 				m_Vel.x = -m_HeroInfo->m_JumpDistance;
 				m_FaceSide = false;
 			}
 			else if(i->key == CtrlKey::RIGHT)
 			{
-				//if(m_TimeTik < 2) nFrame = "walking";
 				m_Vel.x = m_HeroInfo->m_JumpDistance;
 				m_FaceSide = true;
 			}
@@ -380,7 +366,6 @@ bool Hero::ScanKeyQue()
 		}
 	}
 	else if(m_Action == HeroAction::IN_THE_AIR){
-		printf("in the air\n");
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::LEFT ){
 				m_FaceSide = false;
