@@ -146,4 +146,44 @@ public:
 	bool isExist(int index);
 };
 typedef boost::detail::thread::singleton<WavSound> WavSoundS;
+
+class WavPlayer{
+private:
+	bool isStart;
+	LPDIRECTSOUND8 ds_DS;
+	int m_soundloud;
+
+	std::vector<std::string> m_List;
+	std::vector<dsDuplicate*> m_DupSounds;
+	std::vector<dsDuplicate*> m_mDupSound;
+
+public:
+	WavPlayer():ds_DS(NULL), m_soundloud(1){}
+	void Initialize(HWND hWnd , DWORD Channels = 2 , DWORD Freq =  22050 , DWORD BitRate = 16);
+	~WavPlayer();
+
+	int CreatSound(const std::string& filename, int dupnum);
+
+	void StopDevice();
+	void PauseDevice();
+	void StartDevice();
+
+	bool Play(int index);
+	bool Stop(int index);
+	bool RePlay(int index, int index2);
+	bool Pause(int index, int index2);
+
+	void SetLooping(int index, bool isLooping);
+	void MoveParameters(int index, int index2, DWORD Frequency, LONG Pan, LONG Volume);
+
+	void Release();
+
+	LONG GetVolume(int index );
+	LONG GetVolume();
+
+	void SetVolume(int index, LONG Volume);
+	void SetVolume(LONG Volume);
+
+	int GetIndex(std::string name);
+};
 #endif

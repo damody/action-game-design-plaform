@@ -22,33 +22,26 @@ class Effect
 {
 public:
 	Effect();
-	bool Initialize(ID3D11Device* device,HWND hwnd);
-	void GetEffect(EffectType);
-	void Effect::SetViewport();
-	void test();
-	void CreatVertices();
-	void RenderFire();
-
-	int m_Row,m_Col;
-
+	bool Initialize(ID3D11Device* device,ID3D11DeviceContext* deviceContext,HWND hwnd);
+	void GetEffect(EffectType);//not yet
+	void SetViewport();
+	void Render();
+	void CreatVertices();//not yet
 	void SetFireParameters();
-
-	void SetD3DContext(ID3D11DeviceContext* deviceContext);
-
 	void Update(float dt);
-public:
+	void CreateEffect(EffectType::e type,TextureClass* texture,D3DXVECTOR4 picpos);
+
+	ID3D11ShaderResourceView* GetTexture();
+
+private:
+	void RenderFire();
+private:
+	int m_Row,m_Col;//init 1,1
 	ID3D11Device* m_device;
 	ID3D11DeviceContext* m_deviceContext;
-
 	EffectDatas m_FireEffect;
-	void CreateEffect(EffectType::e type,TextureClass* texture,D3DXVECTOR4 picpos);
 	RenderTextureClass* m_Texture;
-
 	TFireShaderClass* m_FireShader;
-
-	TextureClass* m_fireTexture;
-	TextureClass* m_noiseTexture;
-	TextureClass* m_alphaTexture;
 };
 
 #endif

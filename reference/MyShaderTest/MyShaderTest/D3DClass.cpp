@@ -25,6 +25,8 @@ bool D3DClass::Initialize( HWND hwnd )
 
     unsigned int width = dimensions.right - dimensions.left;
     unsigned int height = dimensions.bottom - dimensions.top;
+	m_width = width;
+	m_height = height;
 	//Set projection world ortho matrix
 	SetMatrix(width,height,1000.0f,0.1f);
 
@@ -250,6 +252,14 @@ void D3DClass::Shutdown( )
 }
 void D3DClass::SetRenderToBackBuffer()
 {
+	D3D11_VIEWPORT vp;
+	vp.Width = m_width;
+	vp.Height = m_height;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	d3dContext_->RSSetViewports( 1, &vp );
 	d3dContext_->OMSetRenderTargets( 1, &backBufferTarget_, 0 );
 }
 ID3D11Device* D3DClass::GetDevice()
