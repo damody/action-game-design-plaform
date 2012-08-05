@@ -20,10 +20,10 @@ heavy_running_speedz= 1.000000
 jump_height     = 16.299999
 jump_distance   = 10.000000
 jump_distancez  = 3.750000
-dash_height     = -10.000000
+dash_height     = 10.000000
 dash_distance   = 18.000000
 dash_distancez  = 5.000000
-rowing_height   = -2.000000
+rowing_height   = 2.000000
 rowing_distance = 5.000000
 
 frame =

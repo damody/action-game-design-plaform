@@ -338,6 +338,20 @@ bool Hero::ScanKeyQue()
 				d_run = 0;
 				break;
 			}
+			else if(i->key == CtrlKey::JUMP){
+				nFrame = "dash";
+				nFramID= 0;
+				m_Vel.y = m_HeroInfo->m_DashHeight;
+				m_Vel.x = m_FaceSide ? m_HeroInfo->m_DashDistance : -m_HeroInfo->m_DashDistance;
+				if(m_Vel.z == m_HeroInfo->m_RunningSpeedZ){
+					m_Vel.z = m_HeroInfo->m_DashDistanceZ;
+				}
+				else if(m_Vel.z == -m_HeroInfo->m_RunningSpeedZ){
+					m_Vel.z = -m_HeroInfo->m_DashDistanceZ;
+				}
+				i = m_KeyQue.erase(i);
+				break;
+			}
 			i++;
 		}
 	}
