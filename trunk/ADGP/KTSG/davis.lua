@@ -17,7 +17,7 @@ heavy_walking_speed = 3.700000
 heavy_walking_speedz= 1.850000
 heavy_running_speed = 6.200000
 heavy_running_speedz= 1.000000
-jump_height     = -16.299999
+jump_height     = 16.299999
 jump_distance   = 10.000000
 jump_distancez  = 3.750000
 dash_height     = -10.000000
@@ -33,6 +33,7 @@ frame =
 	walking  = {},
 	running  = {},
 	stop_running = {},
+	in_the_air   = {},
 	jump     = {},
 	dash     = {},
 	crouch   = {},
@@ -339,7 +340,7 @@ frame.stop_running[0] =
 
 frame.jump[0] =
 {
-   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Jump, wait = 10, next = {"jump", 1},
+   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 10, next = {"jump", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -356,7 +357,7 @@ frame.jump[0] =
 
 frame.jump[1] =
 {
-   pic_id = 0, pic_x = 2, pic_y = 7, state = Action.Jump, wait = 10, next = {"jump", 2},
+   pic_id = 0, pic_x = 2, pic_y = 7, state = Action.Jump, wait = 10, next = {"in_the_air", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -372,9 +373,9 @@ frame.jump[1] =
 
 }
 
-frame.jump[2] =
+frame.in_the_air[0] =
 {
-   pic_id = 0, pic_x = 3, pic_y = 7, state = Action.Jump, wait = 10, next = {"default", 0},
+   pic_id = 0, pic_x = 3, pic_y = 7, state = Action.InTheAir, wait = 10, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
