@@ -885,7 +885,7 @@ void InitDirect3DApp::BackgroundDataUpdate()
 	
 	for (Chees::iterator it = g_ObjectMG.CheeVectorBegin(); it != g_ObjectMG.CheeVectorEnd() ; it++)
 	{
-		if(!g_BGManager.CurrentBG()->InSpace((*it)->BackPosition(500.0f)))
+		if(!g_BGManager.CurrentBG()->InSpace((*it)->Position()))
 		{
 			g_ObjectMG.Delete(it);
 			it--;
