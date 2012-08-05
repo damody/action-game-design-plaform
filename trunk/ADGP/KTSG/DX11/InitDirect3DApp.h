@@ -132,6 +132,7 @@ private:
 	int			m_LastGameProcess;	//前一個遊戲流程
 	int			m_Last2GameProcess;	//前前一個遊戲流程
 
+	void TestWavPlayer();
 	void TestCamera();
 	void TestChee();
 };

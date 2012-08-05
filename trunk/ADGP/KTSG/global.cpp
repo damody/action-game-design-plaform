@@ -6,5 +6,5 @@ ObjectInfoMG	g_ObjectInfoMG;
 ObjectMG	g_ObjectMG;
 BGManager	g_BGManager;
 ID3D11Device*	g_d3dDevice;
-WavSound	g_WavePlayer;	
+WavPlayer	g_WavPlayer;	
 int  g_Time;

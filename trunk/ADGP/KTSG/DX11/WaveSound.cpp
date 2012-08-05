@@ -1027,7 +1027,7 @@ void WavPlayer::SetVolume(int index, LONG Volume )
 
 void WavPlayer::SetVolume( LONG Volume )
 {
-	for(std::vector<dsDuplicate*>::iterator it = m_mDupSound.begin(); it != m_mDupSound.end(); it++)
+	for(std::vector<dsDuplicate*>::iterator it = m_DupSounds.begin(); it != m_DupSounds.end(); it++)
 		(*it)->SetVolume(Volume);
 
 	m_soundloud = Volume;

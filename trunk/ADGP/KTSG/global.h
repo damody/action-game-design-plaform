@@ -17,5 +17,5 @@ extern ObjectMG	      g_ObjectMG;
 extern BGManager      g_BGManager;
 extern ID3D11Device*  g_d3dDevice;
 
-extern WavSound g_WavePlayer;
+extern WavPlayer g_WavPlayer;
 extern int g_Time;
