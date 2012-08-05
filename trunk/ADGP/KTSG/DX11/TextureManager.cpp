@@ -25,9 +25,9 @@ int TextureManager::AddTexture( std::string path)
 		return m_index;
 }
 
-int TextureManager::AddTexture( std::string name , Texture texture )
+int TextureManager::AddTexture( std::string name , Texture_Sptr texture )
 {
-	m_Textures.push_back(Texture_Sptr(&texture));
+	m_Textures.push_back(texture);
 	m_List.push_back(name);
 	m_index++;
 	return m_index;

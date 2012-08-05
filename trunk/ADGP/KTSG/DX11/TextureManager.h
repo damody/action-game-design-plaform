@@ -38,7 +38,7 @@ public:
 	TextureManager(void);
 	~TextureManager(void);
 	int AddTexture(std::string path);
-	int AddTexture(std::string name , Texture texture);
+	int AddTexture(std::string name , Texture_Sptr texture);
 	int Find(std::string path);
 	Texture_Sptr GetTexture(unsigned int index);
 private:
