@@ -41,6 +41,7 @@ bool Effect::CreateEffect( EffectType::e type,EffectData& ed )
 		}
 
 	}
+
 	return true;
 }
 
