@@ -48,7 +48,8 @@ private:
 class EffectManager
 {
 public:
-	Effect	m_Effect[3];
+	std::vector<Effect> m_Effect;
+	//Effect m_Effect[4];
 	int	m_Page;
 public:
 	EffectManager(void);

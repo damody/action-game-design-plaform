@@ -280,6 +280,7 @@ int D3DApp::run()
 		// Otherwise, do animation/game stuff.
 		else
 		{	
+			Sleep(1);//不想打爆CPU的時候就用吧
 			m_Timer.tick();
 
 			if( !m_AppPaused )

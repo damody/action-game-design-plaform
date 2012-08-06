@@ -41,7 +41,7 @@ void InitDirect3DApp::initApp()
 	OnResize();
 	// Set blend
 	float BlendFactor[4] = {0,0,0,0};
-	m_DeviceContext->OMSetBlendState(m_pBlendState_BLEND, BlendFactor, 0xffffffff);
+	//m_DeviceContext->OMSetBlendState(m_pBlendState_BLEND, BlendFactor, 0xffffffff);
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
 
@@ -58,8 +58,13 @@ void InitDirect3DApp::initApp()
 	m_TestTexture = Texture_Sptr(new Texture("media\\davis_0_.png"));
 	//creat effect vertex
 	m_TestTextureID = g_TextureManager.AddTexture("TestTexture",m_TestTexture);
-	m_Effect_Manager->CreateEffect(EffectType::FIRE,m_TestTextureID,Vector4(1.0f,1.0f,10.0f,7.0f));
-	m_Effect_Manager->CreateEffect(EffectType::FIRE,m_TestTextureID,Vector4(2.0f,5.0f,10.0f,7.0f));
+	for(float i=0;i<25.5;i+=0.01f)
+	{
+		m_Effect_Manager->CreateEffect(EffectType::FIRE,m_TestTextureID,Vector4(1.0f+i,1.0f+i,10.0f,7.0f));
+		//m_Effect_Manager->CreateEffect(EffectType::FIRE,m_TestTextureID,Vector4(2.0f,5.0f,10.0f,7.0f));
+	}
+	
+	//m_Effect_Manager->CreateEffect(EffectType::FIRE,m_TestTextureID,Vector4(2.0f,5.0f,10.0f,7.0f));
 	//HolyK
 }
 //HolyK
@@ -69,8 +74,12 @@ void InitDirect3DApp::TestRender()
 	frameTime += 0.001f;
 	if(frameTime > 1000.0f)
 		frameTime = 0.0f;
-	m_Effect_Manager->m_Effect[0].Updata(frameTime);
-	m_Effect_Manager->m_Effect[0].Render();
+	for(int i=0;i<m_Effect_Manager->m_Effect.size();i++)
+	{
+		m_Effect_Manager->m_Effect[i].Updata(frameTime);
+		m_Effect_Manager->m_Effect[i].Render();
+	}
+	
 	//set to render to backbuffer
 	D3D11_VIEWPORT vp;
 	vp.Width = mClientWidth;
@@ -102,6 +111,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 	//HolyK
 	if(g_TestViewEffect)
 	{
+		PrintInfo();
 		D3DApp::DrawScene(); // clear window
 		UpdateInput();
 		TestRender();

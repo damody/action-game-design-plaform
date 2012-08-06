@@ -1,5 +1,5 @@
 #include "Effect.h"
-
+#include <iostream>
 Effect::Effect(void)
 {
 }
@@ -99,19 +99,19 @@ bool Effect::CreateEffect( EffectType::e type,EffectData& ed )
 		}
 		m_SerialNum++;
 	}
-	
+	std::cout<<"x = "<<ed.m_Pos.x<<"y = "<<ed.m_Pos.y<<std::endl;
 	return true;
 }
 
 void Effect::Clear()
 {
 	m_FireEffect.clear();
-	m_SerialNum = 1;
+	m_SerialNum = 0;
 }
 
 bool Effect::Overflow()
 {
-	return (m_SerialNum > (PIC_H/PASTE_H)*(PIC_W/PASTE_W));
+	return (m_SerialNum >= (PIC_H/PASTE_H)*(PIC_W/PASTE_W));
 }
 
 bool Effect::Check( EffectType::e type,EffectData& ed )
@@ -138,7 +138,7 @@ void Effect::Render()
 	SetViewport();
 
 	m_RenderTexture->SetRenderTarget(g_DeviceContext,0);
-	m_RenderTexture->ClearRenderTarget(g_DeviceContext,0,0.0f,0.0f,0.0f,0.0f);
+	//m_RenderTexture->ClearRenderTarget(g_DeviceContext,0,0.0f,0.0f,0.0f,0.0f);
 
 	RenderFire();
 }
@@ -160,7 +160,12 @@ EffectManager::EffectManager():m_Page(0){
 EffectManager::EffectManager(HWND hwnd):m_Page(0){
 	//ªì©l¤Æ Effect
 	//test
-	m_Effect[0].Initialize(hwnd);
+	for(int i=0;i<4;i++)
+	{
+		m_Effect.push_back(Effect());
+		m_Effect[i].Initialize(hwnd);
+	}
+		
 }
 
 void EffectManager::CreateEffect( EffectType::e type,int textureID,Vector4& picpos )
@@ -168,11 +173,11 @@ void EffectManager::CreateEffect( EffectType::e type,int textureID,Vector4& picp
 	EffectData ed;
 	ed.m_TextureID = textureID;
 	ed.m_PicPos    = picpos;
-	if(!m_Effect[m_Page%3].CreateEffect(type,ed))
+	if(!m_Effect[m_Page%m_Effect.size()].CreateEffect(type,ed))
 	{
 		m_Page++;
-		m_Effect[m_Page%3].Clear();
-		m_Effect[m_Page%3].CreateEffect(type,ed);
+		m_Effect[m_Page%m_Effect.size()].Clear();
+		m_Effect[m_Page%m_Effect.size()].CreateEffect(type,ed);
 	}
 	//textureID = m_Effect[m_Page%3].GetTextureID();
 	//textureID = ed.m_TextureID;

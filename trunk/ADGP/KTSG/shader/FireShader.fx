@@ -99,9 +99,9 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	float2 newTex;
 	
 	float2 offset = float2(-1,1);
-	float2 viewport = float2(1024,1024);
+	float2 viewport = float2(2048,2048);
 	
-	float2 size = float2(256.0f,-256.0f);
+	float2 size = float2(128.0f,-128.0f);
    
 	float2 lt,ld,rt,rd;
 	/*
