@@ -44,6 +44,11 @@ void InitDirect3DApp::initApp()
 	m_DeviceContext->OMSetBlendState(m_pBlendState_BLEND, BlendFactor, 0xffffffff);
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
+
+	//HolyK
+	m_Effect_Manager = 0;
+	m_Effect_Manager = new EffectManager(m_hMainWnd);
+	//HolyK
 }
 
 
@@ -576,10 +581,10 @@ void InitDirect3DApp::LoadHero()
 	
 
 	//test BGM
-	int index = g_WavPlayer.CreatSound("Media\\music\\stage5.wav",1);
+	int index = g_WavPlayer.CreatSound("Media\\music\\stage5.mp3",1);
 	g_WavPlayer.SetLooping(index,true);
-	g_BGManager.AddBGM("Media\\music\\stage5.wav",index);
-	g_BGManager.SetCurrentBGM("Media\\music\\stage5.wav");
+	g_BGManager.AddBGM("Media\\music\\stage5.mp3",index);
+	g_BGManager.SetCurrentBGM("Media\\music\\stage5.mp3");
 	g_WavPlayer.Play(g_BGManager.CurrentBGM());
 
 	//player init
@@ -885,10 +890,9 @@ void InitDirect3DApp::BackgroundDataUpdate()
 	
 	for (Chees::iterator it = g_ObjectMG.CheeVectorBegin(); it != g_ObjectMG.CheeVectorEnd() ; it++)
 	{
-		if(!g_BGManager.CurrentBG()->InSpace((*it)->BackPosition(500.0f)))
+		if(!g_BGManager.CurrentBG()->InSpace((*it)->Position()))
 		{
-			g_ObjectMG.Delete(it);
-			it--;
+			g_ObjectMG.Distory(it,6);
 		}
 	}
 	

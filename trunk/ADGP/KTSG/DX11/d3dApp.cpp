@@ -89,6 +89,7 @@ void D3DApp::initDirect3D()
 	m_d3dDevice = m_DXUT_UI->GetDevice();
 	g_d3dDevice = m_DXUT_UI->GetDevice();
 	m_DeviceContext = m_DXUT_UI->GetDeviceContext();
+	g_DeviceContext = m_DXUT_UI->GetDeviceContext();
 	m_SwapChain = m_DXUT_UI->GetSwapChaine();
 	OnResize();
 }

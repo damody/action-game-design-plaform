@@ -4,8 +4,16 @@
 
 class HeroManager
 {
+public: 
+	struct Trash
+	{
+		Heroes::iterator m_Trash;
+		int m_Time;
+	};
+	typedef std::vector<Trash> TrashCan;
 private:
 	Heroes m_Heroes;
+	TrashCan m_TrashCan;
 public:
 	HeroManager(void);
 	~HeroManager(void);
@@ -14,7 +22,8 @@ public:
 	void UpdateDataToDraw();
 
 	Hero* Create(const std::string& hero,const Vector3& pos,int team=0);
-	void Delete(Hero_RawPtr hero);
+	void Distory(Heroes::iterator it,int time=0);
+	void Distory(Hero_RawPtr hero,int time=0);
 	void Clear();
 	void ClearDeadBody();//Undo
 
@@ -28,5 +37,8 @@ public:
 	Hero* GetClosestFriend(const Vector3& pos,int team);
 	Hero* GetClosestEnemy(const Vector3& pos,int team);
 
+protected:
+	void CleanTrash();
+	bool InTrashCan(Hero_RawPtr hero);
 };
 

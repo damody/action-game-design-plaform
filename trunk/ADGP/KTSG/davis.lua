@@ -17,13 +17,13 @@ heavy_walking_speed = 3.700000
 heavy_walking_speedz= 1.850000
 heavy_running_speed = 6.200000
 heavy_running_speedz= 1.000000
-jump_height     = 16.299999
+jump_height     = 32.299999
 jump_distance   = 10.000000
 jump_distancez  = 3.750000
-dash_height     = -10.000000
+dash_height     = 20.000000
 dash_distance   = 18.000000
 dash_distancez  = 5.000000
-rowing_height   = -2.000000
+rowing_height   = 2.000000
 rowing_distance = 5.000000
 
 frame =
@@ -340,7 +340,7 @@ frame.stop_running[0] =
 
 frame.jump[0] =
 {
-   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 10, next = {"jump", 1},
+   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 2, next = {"jump", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -357,7 +357,7 @@ frame.jump[0] =
 
 frame.jump[1] =
 {
-   pic_id = 0, pic_x = 2, pic_y = 7, state = Action.Jump, wait = 10, next = {"in_the_air", 0},
+   pic_id = 0, pic_x = 2, pic_y = 7, state = Action.Jump, wait = 2, next = {"in_the_air", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -375,7 +375,7 @@ frame.jump[1] =
 
 frame.in_the_air[0] =
 {
-   pic_id = 0, pic_x = 3, pic_y = 7, state = Action.InTheAir, wait = 10, next = {"default", 0},
+   pic_id = 0, pic_x = 3, pic_y = 7, state = Action.InTheAir, wait = 2, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -392,7 +392,7 @@ frame.in_the_air[0] =
 
 frame.dash[0] =
 {
-   pic_id = 0, pic_x = 4, pic_y = 7, state = Action.Dash, wait = 80, next = {"dash", 2},
+   pic_id = 0, pic_x = 4, pic_y = 7, state = Action.Dash, wait = 16, next = {"dash", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -411,7 +411,7 @@ frame.dash[0] =
 
 frame.dash[1] =
 {
-   pic_id = 0, pic_x = 5, pic_y = 7, state = Action.Dash, wait = 80, next = {"dash", 3},
+   pic_id = 0, pic_x = 5, pic_y = 7, state = Action.Dash, wait = 16, next = {"dash", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -429,7 +429,7 @@ frame.dash[1] =
 
 frame.dash[2] =
 {
-   pic_id = 1, pic_x = 2, pic_y = 5, state = Action.Dash, wait = 20, next = {"dash", 2},
+   pic_id = 1, pic_x = 3, pic_y = 5, state = Action.Dash, wait = 4, next = {"dash", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 78,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -447,7 +447,7 @@ frame.dash[2] =
 
 frame.dash[3] =
 {
-   pic_id = 1, pic_x = 3, pic_y = 5, state = Action.Dash, wait = 20, next = {"dash", 3},
+   pic_id = 1, pic_x = 4, pic_y = 5, state = Action.Dash, wait = 4, next = {"dash", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -464,7 +464,7 @@ frame.dash[3] =
 
 frame.crouch[0] =
 {
-   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 4, next = {"default", 0},
+   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -482,7 +482,7 @@ frame.crouch[0] =
 
 frame.crouch[1] =
 {
-   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 4, next = {"default", 0},
+   pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},

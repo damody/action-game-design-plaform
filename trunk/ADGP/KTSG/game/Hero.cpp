@@ -338,6 +338,20 @@ bool Hero::ScanKeyQue()
 				d_run = 0;
 				break;
 			}
+			else if(i->key == CtrlKey::JUMP){
+				nFrame = "dash";
+				nFramID= 0;
+				m_Vel.y = m_HeroInfo->m_DashHeight;
+				m_Vel.x = m_FaceSide ? m_HeroInfo->m_DashDistance : -m_HeroInfo->m_DashDistance;
+				if(m_Vel.z == m_HeroInfo->m_RunningSpeedZ){
+					m_Vel.z = m_HeroInfo->m_DashDistanceZ;
+				}
+				else if(m_Vel.z == -m_HeroInfo->m_RunningSpeedZ){
+					m_Vel.z = -m_HeroInfo->m_DashDistanceZ;
+				}
+				i = m_KeyQue.erase(i);
+				break;
+			}
 			i++;
 		}
 	}
@@ -377,6 +391,59 @@ bool Hero::ScanKeyQue()
 			}
 			i++;
 		}
+	}
+	else if(m_Action == HeroAction::DASH){
+		while(i!=m_KeyQue.end()){
+			if(i->key == CtrlKey::LEFT && m_FaceSide){
+				m_FaceSide = false;
+				/*
+				if(正向){
+				}
+				else if(反向){
+				}
+				*/
+				break;
+			}
+			else if(i->key == CtrlKey::RIGHT && !m_FaceSide){
+				m_FaceSide = true;
+				/*
+				if(正向){
+				}
+				else if(反向){
+				}
+				*/
+				break;
+			}
+			i++;
+		}
+	}
+	else if(m_Action == HeroAction::CROUCH){
+		while(i!=m_KeyQue.end()){
+			if(i->key == CtrlKey::LEFT ){
+				m_FaceSide = false;
+			}
+			else if(i->key == CtrlKey::RIGHT ){
+				m_FaceSide = true;
+			}
+			else if(i->key == CtrlKey::JUMP){
+				nFrame = "jump";
+				nFramID= 0;
+				i = m_KeyQue.erase(i);
+				continue;
+			}
+			i++;
+		}
+		/*if(!nFrame.empty()){
+			if( m_Frame == "jump" ){
+				nFrame.clear();
+			}
+			else if( m_Frame == "crouch" && m_FrameID == 1){
+				//dash
+			}
+			else{
+				nFramID = 1;
+			}
+		}//*/
 	}
 	//決定招式按鍵動作
 

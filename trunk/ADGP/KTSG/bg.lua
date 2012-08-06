@@ -6,9 +6,9 @@ friction=0.5
 
 space_bounding =
 {
-	{xmin=0, ymin=0, zmin=0, xmax=40000, ymax=500, zmax=1700},
-	{xmin=150, ymin=0, zmin=1600, xmax=600, ymax=500, zmax=1850},
-	{xmin=800, ymin=0, zmin=1600, xmax=1250, ymax=500, zmax=1850},
+	{xmin=0, ymin=0, zmin=0, xmax=40000, ymax=1000, zmax=1700},
+	{xmin=150, ymin=0, zmin=1600, xmax=600, ymax=1000, zmax=1850},
+	{xmin=800, ymin=0, zmin=1600, xmax=1250, ymax=1000, zmax=1850},
 }
 
 ban_bounding =

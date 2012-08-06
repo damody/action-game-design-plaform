@@ -193,6 +193,8 @@
     <ClCompile Include="game\BackGround.cpp" />
     <ClCompile Include="game\BGManager.cpp" />
     <ClCompile Include="game\Chee.cpp" />
+    <ClCompile Include="game\Effect.cpp" />
+    <ClCompile Include="game\FireShaderClass.cpp" />
     <ClCompile Include="game\FlyingPath.cpp" />
     <ClCompile Include="game\FrameInfo.cpp" />
     <ClCompile Include="game\Hero.cpp" />
@@ -204,6 +206,7 @@
     <ClCompile Include="game\ObjectManager.cpp" />
     <ClCompile Include="game\PictureData.cpp" />
     <ClCompile Include="game\Player.cpp" />
+    <ClCompile Include="game\RenderTextureClass.cpp" />
     <ClCompile Include="game\Weapon.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp">
@@ -283,6 +286,9 @@
     <ClInclude Include="game\ColorRect.h" />
     <ClInclude Include="game\Consume.h" />
     <ClInclude Include="game\CtrlKey.h" />
+    <ClInclude Include="game\Effect.h" />
+    <ClInclude Include="game\EffectData.h" />
+    <ClInclude Include="game\FireShaderClass.h" />
     <ClInclude Include="game\FlyingPath.h" />
     <ClInclude Include="game\HeroManager.h" />
     <ClInclude Include="game\ObjectInfoManager.h" />
@@ -297,6 +303,7 @@
     <ClInclude Include="game\ObjectInfo.h" />
     <ClInclude Include="game\PictureData.h" />
     <ClInclude Include="game\Player.h" />
+    <ClInclude Include="game\RenderTextureClass.h" />
     <ClInclude Include="game\Weapon.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="main.h" />
