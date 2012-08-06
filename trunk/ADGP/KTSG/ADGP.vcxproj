@@ -207,6 +207,7 @@
     <ClCompile Include="game\PictureData.cpp" />
     <ClCompile Include="game\Player.cpp" />
     <ClCompile Include="game\RenderTextureClass.cpp" />
+    <ClCompile Include="game\TestRenderEffect.cpp" />
     <ClCompile Include="game\Weapon.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp">
@@ -304,6 +305,7 @@
     <ClInclude Include="game\PictureData.h" />
     <ClInclude Include="game\Player.h" />
     <ClInclude Include="game\RenderTextureClass.h" />
+    <ClInclude Include="game\TestRenderEffect.h" />
     <ClInclude Include="game\Weapon.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="main.h" />

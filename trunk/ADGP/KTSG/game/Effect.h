@@ -47,7 +47,7 @@ private:
 
 class EffectManager
 {
-private:
+public:
 	Effect	m_Effect[3];
 	int	m_Page;
 public:
@@ -55,7 +55,7 @@ public:
 	EffectManager(HWND hwnd);
 	~EffectManager(void);
 
-	void CreateEffect(EffectType::e type,int& textureID,Vector4& picpos);//直接改texture & picpos回傳
+	void CreateEffect(EffectType::e type,int textureID,Vector4& picpos);//直接改texture & picpos回傳
 
 	void Render();
 };

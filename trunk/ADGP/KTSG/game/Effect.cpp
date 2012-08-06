@@ -1,5 +1,5 @@
 #include "Effect.h"
-
+#include <iostream>
 
 Effect::Effect(void)
 {
@@ -95,11 +95,13 @@ bool Effect::CreateEffect( EffectType::e type,EffectData& ed )
 		switch(type)
 		{
 		case	EffectType::FIRE:
+			std::cout<<"x = "<<ed.m_Pos.x<<"y = "<<ed.m_Pos.y<<std::endl;
 			m_FireEffect.push_back(ed);
+			break;
 		}
 		m_SerialNum++;
 	}
-
+	
 	return true;
 }
 
@@ -138,7 +140,7 @@ void Effect::Render()
 	SetViewport();
 
 	m_RenderTexture->SetRenderTarget(g_DeviceContext,0);
-	m_RenderTexture->ClearRenderTarget(g_DeviceContext,0,0.0f,1.0f,1.0f,1.0f);
+	m_RenderTexture->ClearRenderTarget(g_DeviceContext,0,0.0f,0.0f,0.0f,0.0f);
 
 	RenderFire();
 }
@@ -163,7 +165,7 @@ EffectManager::EffectManager(HWND hwnd):m_Page(0){
 	m_Effect[0].Initialize(hwnd);
 }
 
-void EffectManager::CreateEffect( EffectType::e type,int& textureID,Vector4& picpos )
+void EffectManager::CreateEffect( EffectType::e type,int textureID,Vector4& picpos )
 {
 	EffectData ed;
 	ed.m_TextureID = textureID;
@@ -174,7 +176,7 @@ void EffectManager::CreateEffect( EffectType::e type,int& textureID,Vector4& pic
 		m_Effect[m_Page%3].Clear();
 		m_Effect[m_Page%3].CreateEffect(type,ed);
 	}
-	textureID = m_Effect[m_Page%3].GetTextureID();
+	//textureID = m_Effect[m_Page%3].GetTextureID();
 	//textureID = ed.m_TextureID;
 	picpos	  = ed.m_PicPos;
 }

@@ -209,6 +209,9 @@
     <ClCompile Include="game\RenderTextureClass.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="game\TestRenderEffect.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -419,6 +422,9 @@
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\RenderTextureClass.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\TestRenderEffect.h">
       <Filter>inc\game</Filter>
     </ClInclude>
   </ItemGroup>
