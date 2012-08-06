@@ -21,7 +21,7 @@
 #include "RenderTextureClass.h"
 #include "CameraClass.h"
 #include "TestShaderClass.h"
-#include "TFireShaderClass.h"
+#include "FireShaderClass.h"
 #include "Camera.h"
 #include "Effect.h"
 ////////////////////////////////////////////////////////////////////////////////

@@ -19,7 +19,7 @@ bool Effect::Initialize(ID3D11Device* device,ID3D11DeviceContext* deviceContext,
 		return false;
 	}
 	//
-	m_FireShader = new TFireShaderClass();
+	m_FireShader = new FireShaderClass();
 	result = m_FireShader->Initialize(device,m_deviceContext,L"effectTest.fx",hwnd);
 	if(!result)
 	{

@@ -145,7 +145,8 @@ void D3DClass::TEST(int w,int h,ID3D11RenderTargetView* rtv)
 	}*/
 	
 	if (swapChain_)
-	{/*
+	{
+		/*
 		d3dContext_->OMSetRenderTargets(0, 0, 0);
 
 		// Release all outstanding references to the swap chain's buffers.
@@ -155,28 +156,24 @@ void D3DClass::TEST(int w,int h,ID3D11RenderTargetView* rtv)
 		// Preserve the existing buffer count and format.
 		// Automatically choose the width and height to match the client rect for HWNDs.
 		hr = swapChain_->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
-		*/
+		
 		// Perform error handling here!
 
 		// Get buffer and create a render-target-view.
-		//static ID3D11Texture2D* pBuffer=0;
-		/*
+		ID3D11Texture2D* pBuffer=0;
+		
 		// Perform error handling here!
-		if(!pBuffer)
-		{
-			hr = swapChain_->GetBuffer(0, __uuidof( ID3D11Texture2D),
-				(void**) &pBuffer );
-			hr = d3dDevice_->CreateRenderTargetView(pBuffer, NULL,
-				&rtv);
-			pBuffer->Release();
-			std::cout<<"pbuffer"<<std::endl;
-		}
+		hr = swapChain_->GetBuffer(0, __uuidof( ID3D11Texture2D),
+			(void**) &pBuffer );
+		hr = d3dDevice_->CreateRenderTargetView(pBuffer, NULL,
+			&renderTargetView);
+		pBuffer->Release();
 		
 		// Perform error handling here!
 		
 
-		d3dContext_->OMSetRenderTargets(1, &rtv, NULL );*/
-
+		d3dContext_->OMSetRenderTargets(1, &renderTargetView, NULL );
+		*/
 		// Set up the viewport.
 		
 		D3D11_VIEWPORT vp;
