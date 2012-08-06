@@ -1,7 +1,6 @@
 #include "FireShaderClass.h"
 #include <fstream>
 #include "global.h"
-#include <iostream>
 FireShaderClass::FireShaderClass():
 m_device(0),m_deviceContext(0),m_layout(0),m_Buffer(0),m_sampleState(0),m_sampleState2(0),
 	m_Effect(0),m_PTech(0),m_frameTime(0),m_scrollSpeeds(0),m_scales(0),

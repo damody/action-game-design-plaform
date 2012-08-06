@@ -1,5 +1,4 @@
 #include "Effect.h"
-#include <iostream>
 
 Effect::Effect(void)
 {
@@ -95,7 +94,6 @@ bool Effect::CreateEffect( EffectType::e type,EffectData& ed )
 		switch(type)
 		{
 		case	EffectType::FIRE:
-			std::cout<<"x = "<<ed.m_Pos.x<<"y = "<<ed.m_Pos.y<<std::endl;
 			m_FireEffect.push_back(ed);
 			break;
 		}
