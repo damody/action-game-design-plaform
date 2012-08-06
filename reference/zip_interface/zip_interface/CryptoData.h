@@ -34,6 +34,7 @@ public:
 public:
 	CryptoData();
 	CryptoData(const Byte* src, int size);	// init data from memory, no compress
+	CryptoData(const Bytes& src);
 	CryptoData(const std::string& path);		// init data from memory, no compress
 	CryptoData(const std::wstring& path);		// init data from memory, no compress
 	~CryptoData(){}
@@ -53,9 +54,9 @@ public:
 	void	DecryptData(Byte* password, int len);
 	void	DecryptData(const std::string& password);
 	void	DecryptData(const std::wstring& password);
-	void	EncryptData(EncryptionType cl, Byte* password, int len);
-	void	EncryptData(EncryptionType cl, const std::string& password);
-	void	EncryptData(EncryptionType cl, const std::wstring& password);
+	void	EncryptData(int cl, Byte* password, int len);
+	void	EncryptData(int cl, const std::string& password);
+	void	EncryptData(int cl, const std::wstring& password);
 	Bytes	CalcuateDigest(bool setDigest);
 	bool	VerifyDigest(Bytes digest);
 private:

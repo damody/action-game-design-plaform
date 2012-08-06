@@ -15,6 +15,10 @@ CryptoData::CryptoData(const Byte* src, int size)
 	m_Data.assign(src, src+size);
 	m_Digest.clear();
 }
+CryptoData::CryptoData(const Bytes& src)
+{
+	CryptoData(&src[0], src.size());
+}
 CryptoData::CryptoData(const std::string& path)
 {
 	m_OriginalSize = 0;
@@ -82,7 +86,7 @@ bool CryptoData::InitFromDisk(const std::wstring& path)
 	return InitFromDisk(wstr2str(path));
 }
 
-void CryptoData::EncryptData(EncryptionType cl, Byte* password, int len)
+void CryptoData::EncryptData(int cl, Byte* password, int len)
 {
 	Bytes temp_Data,output_Data;
 	switch(cl)
@@ -162,11 +166,11 @@ void CryptoData::EncryptData(EncryptionType cl, Byte* password, int len)
 		break;
 	}
 }
-void CryptoData::EncryptData(EncryptionType cl, const std::string& password)
+void CryptoData::EncryptData(int cl, const std::string& password)
 {
 	EncryptData(cl, (Byte*)(password.c_str()), password.size());
 }
-void CryptoData::EncryptData(EncryptionType cl, const std::wstring& password)
+void CryptoData::EncryptData(int cl, const std::wstring& password)
 {  
 	EncryptData(cl, (Byte*)wstr2str(password).c_str(), wstr2str(password).size());
 }
@@ -304,7 +308,7 @@ bool CryptoData::ReadFromDisk(const std::string& path)
 		ia >> this->m_Digest;
 		ia >> this->m_Data;
 		int Nindex = path.find_last_of('\\');
-		this->m_Name.assign(&path[Nindex+1], &path[path.length()]);
+		//this->m_Name.assign(&path[Nindex+1], &path[path.length()]);
 	}
 	ifs.close();
 }

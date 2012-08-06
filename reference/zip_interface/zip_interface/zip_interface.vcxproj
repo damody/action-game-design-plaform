@@ -41,13 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\clibrary\lzma-9.20\include;C:\clibrary\lzo-2.06\include;C:\clibrary\zlib-1.2.7\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\clibrary\lzma-9.20\lib;C:\clibrary\lzo-2.06\lib;C:\clibrary\zlib-1.2.7\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\clibrary\lzma-9.20\include;C:\clibrary\lzo-2.06\include;C:\clibrary\zlib-1.2.7\include;C:\clibrary\cryptopp561\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\clibrary\lzma-9.20\lib;C:\clibrary\lzo-2.06\lib;C:\clibrary\zlib-1.2.7\lib;C:\clibrary\cryptopp561\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\clibrary\lzma-9.20\include;C:\clibrary\lzo-2.06\include;C:\clibrary\zlib-1.2.7\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\clibrary\lzma-9.20\lib;C:\clibrary\lzo-2.06\lib;C:\clibrary\zlib-1.2.7\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\clibrary\lzma-9.20\include;C:\clibrary\lzo-2.06\include;C:\clibrary\zlib-1.2.7\include;C:\clibrary\cryptopp561\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\clibrary\lzma-9.20\lib;C:\clibrary\lzo-2.06\lib;C:\clibrary\zlib-1.2.7\lib;C:\clibrary\cryptopp561\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h" />
+    <ClInclude Include="CryptoData.h" />
     <ClInclude Include="ZipFolder.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -115,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConvStr.cpp" />
+    <ClCompile Include="CryptoData.cpp" />
     <ClCompile Include="ZipFolder.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

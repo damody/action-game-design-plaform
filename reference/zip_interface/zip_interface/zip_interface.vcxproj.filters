@@ -48,6 +48,9 @@
     <ClInclude Include="ZipFolder.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="CryptoData.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zip_interface.cpp">
@@ -66,6 +69,9 @@
       <Filter>原始程式檔</Filter>
     </ClCompile>
     <ClCompile Include="ZipFolder.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="CryptoData.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
   </ItemGroup>
