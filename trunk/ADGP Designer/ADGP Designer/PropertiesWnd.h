@@ -29,6 +29,7 @@ private:
 	CString m_Text;
 	CMFCPropertyGridCtrl* m_MotherGrid;
 public:
+	int	m_Count;
 	CMFCPropertyGridPropertyButton(CMFCPropertyGridCtrl* grid, const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData);
 	virtual ~CMFCPropertyGridPropertyButton(){}
 	DECLARE_DYNAMIC(CMFCPropertyGridPropertyButton)

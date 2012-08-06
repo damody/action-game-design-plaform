@@ -2,7 +2,6 @@
 #define _ZipFolder_H_
 #include "ZipData.h"
 #include "ConvStr.h"
-#include "CryptoData.h"
 
 class ZipFolder;
 typedef std::vector<ZipFolder> ZipFolders;
@@ -21,10 +20,6 @@ public:
 	bool	ReadFromDisk(const std::wstring& path);
 	bool	WriteToMemory(Bytes& dst);
 	bool	ReadFromMemory(const Bytes& src);
-	bool	EncryptToDisk(int cryptoType, Byte* password, int len, const std::string& path);
-	bool	EncryptToDisk(int cryptoType, Byte* password, int len, const std::wstring& path);
-	Bytes	DecryptFromDisk(Byte* password, int len, const std::string& path);
-	Bytes	DecryptFromDisk(Byte* password, int len, const std::wstring& path);
 	inline int	GetTotalSize(){return m_TotalSize;}
 	ZipData*	GetData(const std::string& path);
 	ZipData*	GetData(const std::wstring& path);
