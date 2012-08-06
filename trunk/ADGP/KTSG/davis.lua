@@ -28,19 +28,20 @@ rowing_distance = 5.000000
 
 frame =
 {
-	default  = {},
-	standing = {},
-	walking  = {},
-	running  = {},
+	default      = {},
+	standing     = {},
+	walking      = {},
+	running      = {},
 	stop_running = {},
 	in_the_air   = {},
-	jump     = {},
-	dash     = {},
-	crouch   = {},
-	ball     = {},
-	many_punch={},
-	jump_hit = {},
-	singlong = {},
+	jump         = {},
+	dash_front   = {},
+	dash_back    = {},
+	crouch       = {},
+	ball         = {},
+	many_punch   = {},
+	jump_hit     = {},
+	singlong     = {},
 
 }
 
@@ -390,9 +391,9 @@ frame.in_the_air[0] =
 
 }
 
-frame.dash[0] =
+frame.dash_front[0] =
 {
-   pic_id = 0, pic_x = 4, pic_y = 7, state = Action.Dash, wait = 16, next = {"dash", 2},
+   pic_id = 0, pic_x = 4, pic_y = 7, state = Action.Dash, wait = 16, next = {"dash_front", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -409,27 +410,9 @@ frame.dash[0] =
 
 }
 
-frame.dash[1] =
+frame.dash_front[1] =
 {
-   pic_id = 0, pic_x = 5, pic_y = 7, state = Action.Dash, wait = 16, next = {"dash", 3},
-   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {},
-   blood = {{scale = 1.0, x=33, y=30, value=150}},
-   body = {
-   {kind = 0, points = {{20,-5 }, {20,-43}, {47,-43}, {47,-5 }}, zwidth = 8},
-   {kind = 0, points = {{16,-37}, {16,-59}, {52,-59}, {52,-37}}, zwidth = 8}
-   }
-
-   --wpoint:
-   --   kind: 1  x: 30  y: 40  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
-   --wpoint_end:
-
-}
-
-frame.dash[2] =
-{
-   pic_id = 1, pic_x = 3, pic_y = 5, state = Action.Dash, wait = 4, next = {"dash", 2},
+   pic_id = 1, pic_x = 3, pic_y = 5, state = Action.Dash, wait = 4, next = {"dash_front", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 78,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -445,9 +428,27 @@ frame.dash[2] =
 
 }
 
-frame.dash[3] =
+frame.dash_back[0] =
 {
-   pic_id = 1, pic_x = 4, pic_y = 5, state = Action.Dash, wait = 4, next = {"dash", 3},
+   pic_id = 0, pic_x = 5, pic_y = 7, state = Action.Dash, wait = 16, next = {"dash_back", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {{scale = 1.0, x=33, y=30, value=150}},
+   body = {
+   {kind = 0, points = {{20,-5 }, {20,-43}, {47,-43}, {47,-5 }}, zwidth = 8},
+   {kind = 0, points = {{16,-37}, {16,-59}, {52,-59}, {52,-37}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 30  y: 40  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.dash_back[1] =
+{
+   pic_id = 1, pic_x = 4, pic_y = 5, state = Action.Dash, wait = 4, next = {"dash_back", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},

@@ -208,6 +208,7 @@ bool Hero::ScanKeyQue()
 {
 	std::string nFrame;
 	int nFramID=0;
+	//bool eeTime = true;	//換 frame 時是否更新 TimeTic
 	//Vector3 dv;
 	KeyQueue::iterator i=m_KeyQue.begin();
 
@@ -339,7 +340,7 @@ bool Hero::ScanKeyQue()
 				break;
 			}
 			else if(i->key == CtrlKey::JUMP){
-				nFrame = "dash";
+				nFrame = "dash_front";
 				nFramID= 0;
 				m_Vel.y = m_HeroInfo->m_DashHeight;
 				m_Vel.x = m_FaceSide ? m_HeroInfo->m_DashDistance : -m_HeroInfo->m_DashDistance;
@@ -396,22 +397,30 @@ bool Hero::ScanKeyQue()
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::LEFT && m_FaceSide){
 				m_FaceSide = false;
-				/*
-				if(正向){
+				if(m_Frame.compare("dash_front") == 0){
+					nFrame = "dash_back";
+					nFramID= m_FrameID;
+					//wwTime = false;
 				}
-				else if(反向){
+				else if(m_Frame.compare("dash_back") == 0){
+					nFrame = "dash_front";
+					nFramID= m_FrameID;
+					//wwTime = false;
 				}
-				*/
 				break;
 			}
 			else if(i->key == CtrlKey::RIGHT && !m_FaceSide){
 				m_FaceSide = true;
-				/*
-				if(正向){
+				if(m_Frame.compare("dash_front") == 0){
+					nFrame = "dash_back";
+					nFramID= m_FrameID;
+					//wwTime = false;
 				}
-				else if(反向){
+				else if(m_Frame.compare("dash_back") == 0){
+					nFrame = "dash_front";
+					nFramID= m_FrameID;
+					//wwTime = false;
 				}
-				*/
 				break;
 			}
 			i++;
