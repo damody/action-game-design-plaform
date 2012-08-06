@@ -267,12 +267,12 @@ bool Hero::ScanKeyQue()
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::UP)
 			{
-				if(m_TimeTik < 2) nFrame = "walking";
+				if(m_TimeTik == 0) nFrame = "walking";
 				m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
 			}
 			else if(i->key == CtrlKey::DOWN)
 			{
-				if(m_TimeTik < 2) nFrame = "walking";
+				if(m_TimeTik == 0) nFrame = "walking";
 				m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
 			}
 			else if(i->key == CtrlKey::LEFT)
@@ -283,7 +283,7 @@ bool Hero::ScanKeyQue()
 					m_Vel.x = -m_HeroInfo->m_RunningSpeed;
 				}
 				else{
-					if(m_TimeTik < 2) nFrame = "walking";
+					if(m_TimeTik == 0) nFrame = "walking";
 					m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
 					m_FaceSide = false;
 				}
@@ -295,7 +295,7 @@ bool Hero::ScanKeyQue()
 					nFrame = "running";
 					m_Vel.x = m_HeroInfo->m_RunningSpeed;
 				}else{
-					if(m_TimeTik < 2) nFrame = "walking";
+					if(m_TimeTik == 0) nFrame = "walking";
 					m_Vel.x = m_HeroInfo->m_WalkingSpeed;
 					m_FaceSide = true;
 				}
@@ -317,13 +317,13 @@ bool Hero::ScanKeyQue()
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::UP)
 			{
-				if(m_TimeTik < 2) nFrame = "running";
+				if(m_TimeTik == 0) nFrame = "running";
 				nFramID = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_NextFrameIndex;
 				m_Vel.z = m_HeroInfo->m_RunningSpeedZ;
 			}
 			else if(i->key == CtrlKey::DOWN)
 			{
-				if(m_TimeTik < 2) nFrame = "running";
+				if(m_TimeTik == 0) nFrame = "running";
 				nFramID = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_NextFrameIndex;
 				m_Vel.z = -m_HeroInfo->m_RunningSpeedZ;
 			}
@@ -427,32 +427,62 @@ bool Hero::ScanKeyQue()
 		}
 	}
 	else if(m_Action == HeroAction::CROUCH){
+		//收集按鍵
+		int dx=0,dz=0,dj=0;
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::LEFT ){
-				m_FaceSide = false;
+				dx = -1;
 			}
 			else if(i->key == CtrlKey::RIGHT ){
-				m_FaceSide = true;
+				dx = +1;
+			}
+			else if(i->key == CtrlKey::UP ){
+				dz = +1;
+			}
+			else if(i->key == CtrlKey::DOWN ){
+				dz = -1;
 			}
 			else if(i->key == CtrlKey::JUMP){
-				nFrame = "jump";
-				nFramID= 0;
+				dj = 1;
 				i = m_KeyQue.erase(i);
 				continue;
 			}
 			i++;
 		}
-		/*if(!nFrame.empty()){
-			if( m_Frame == "jump" ){
-				nFrame.clear();
-			}
-			else if( m_Frame == "crouch" && m_FrameID == 1){
+		//判斷
+		if(dj == 1 && m_Frame.compare("crouch") == 0){
+			if(m_FrameID == 0){
 				//dash
+				if(dx != 0){
+					nFrame = "dash_front";
+					m_FaceSide = dx > 0;
+					m_Vel.x = dx * m_HeroInfo->m_DashDistance;
+					m_Vel.y = m_HeroInfo->m_DashHeight;
+					if(dz != 0) m_Vel.z = dz * m_HeroInfo->m_DashDistanceZ;
+				}
+				else if(m_Vel.x != 0 ){
+					if((m_Vel.x > 0) == m_FaceSide){
+						nFrame = "dash_front";
+						m_Vel.x = m_FaceSide ? m_HeroInfo->m_DashDistance : -m_HeroInfo->m_DashDistance;
+					}
+					else{
+						nFrame = "dash_back";
+						m_Vel.x = m_FaceSide ? -m_HeroInfo->m_DashDistance : m_HeroInfo->m_DashDistance;
+					}
+					m_Vel.y = m_HeroInfo->m_DashHeight;
+					if(dz != 0) m_Vel.z = dz * m_HeroInfo->m_DashDistanceZ;
+				}else{
+					nFrame = "jump";
+				}
 			}
 			else{
-				nFramID = 1;
+				nFrame = "jump";
 			}
-		}//*/
+		}
+		//蹲完速度歸零
+		if(m_TimeTik == 0){
+			m_Vel.x = 0, m_Vel.y = 0, m_Vel.z = 0;
+		}
 	}
 	//決定招式按鍵動作
 
