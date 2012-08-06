@@ -30,7 +30,7 @@ bool GraphicsClass::Initialize(WCHAR* textureName,WCHAR* shaderName, HWND hwnd )
 		return false;
 	}
 	// Initialize the texture object.
-	textureName = L"davis_0.png";
+	textureName = L"davis_0_.png";
 	
 	result = m_Texture->Initialize(m_D3D->GetDevice(),textureName);
 	if(!result)

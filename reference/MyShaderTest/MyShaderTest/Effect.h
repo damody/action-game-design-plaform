@@ -9,14 +9,10 @@
 // MY CLASS INCLUDES //
 ///////////////////////
 #include <vector>
-#include "D3DClass.h"
 #include "RenderTextureClass.h"
-#include "TFireShaderClass.h"
-#include "EffectData.h"
+#include "FireShaderClass.h"
 #include "TextureClass.h"
-
-
-
+#include "EffectData.h"
 
 class Effect
 {
@@ -41,7 +37,7 @@ private:
 	ID3D11DeviceContext* m_deviceContext;
 	EffectDatas m_FireEffect;
 	RenderTextureClass* m_Texture;
-	TFireShaderClass* m_FireShader;
+	FireShaderClass* m_FireShader;
 };
 
 #endif

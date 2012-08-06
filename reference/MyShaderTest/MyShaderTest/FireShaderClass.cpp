@@ -1,13 +1,13 @@
-#include "TFireShaderClass.h"
+#include "FireShaderClass.h"
 #include <fstream>
-TFireShaderClass::TFireShaderClass():
+FireShaderClass::FireShaderClass():
 m_device(0),m_deviceContext(0),m_layout(0),m_Buffer(0),m_sampleState(0),m_sampleState2(0),
 m_fire(0),m_noise(0),m_Effect(0),m_PTech(0),m_frameTime(0),m_scrollSpeeds(0),m_scales(0),
 m_distortion1(0),m_distortion2(0),m_distortion3(0),m_distortionScale(0),m_distortionBias(0),
 m_fireTexture(0),m_noiseTexture(0),m_alphaTexture(0),m_Sampler(0),m_Sampler2(0)
 {
 }
-bool TFireShaderClass::Initialize(ID3D11Device* device,ID3D11DeviceContext* deviceContext, WCHAR* fxFilename, HWND hwnd)
+bool FireShaderClass::Initialize(ID3D11Device* device,ID3D11DeviceContext* deviceContext, WCHAR* fxFilename, HWND hwnd)
 {
 	ID3D10Blob* pCode = 0;
 	ID3D10Blob* errorMessage = 0;
@@ -161,7 +161,7 @@ bool TFireShaderClass::Initialize(ID3D11Device* device,ID3D11DeviceContext* devi
 
 	return true;
 }
-void TFireShaderClass::Render()
+void FireShaderClass::Render()
 {
 	UINT offset = 0;
 	UINT stride2 = sizeof(ClipVertex);
@@ -178,7 +178,7 @@ void TFireShaderClass::Render()
 		m_deviceContext->Draw(it->VertexCount, it->StartVertexLocation);
 	}
 }
-void TFireShaderClass::SetShaderParameters(D3DXVECTOR3 scrollSpeeds, D3DXVECTOR3 scales, D3DXVECTOR2 distortion1, 
+void FireShaderClass::SetShaderParameters(D3DXVECTOR3 scrollSpeeds, D3DXVECTOR3 scales, D3DXVECTOR2 distortion1, 
 	D3DXVECTOR2 distortion2, D3DXVECTOR2 distortion3, float distortionScale, 
 	float distortionBias)
 {
@@ -193,7 +193,7 @@ void TFireShaderClass::SetShaderParameters(D3DXVECTOR3 scrollSpeeds, D3DXVECTOR3
 	m_Sampler->SetSampler(0,m_sampleState);
 	m_Sampler->SetSampler(1,m_sampleState2);
 }
-void TFireShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, WCHAR* shaderFilename, HWND hwnd)
+void FireShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, WCHAR* shaderFilename, HWND hwnd)
 {
 	char* compileErrors;
 	unsigned long bufferSize, i;
@@ -227,7 +227,7 @@ void TFireShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, WCHAR*
 
 	return;
 }
-bool TFireShaderClass::CreatVertex(EffectDatas::iterator begin,EffectDatas::iterator end)
+bool FireShaderClass::CreatVertex(EffectDatas::iterator begin,EffectDatas::iterator end)
 {
 	m_cvs.clear();
 	m_dvg.clear();
@@ -270,7 +270,7 @@ bool TFireShaderClass::CreatVertex(EffectDatas::iterator begin,EffectDatas::iter
 
 	return true;
 }
-void TFireShaderClass::UpdateFrameTime(float frameTime)
+void FireShaderClass::UpdateFrameTime(float frameTime)
 {
 	m_frameTime->SetFloat(frameTime);
 }

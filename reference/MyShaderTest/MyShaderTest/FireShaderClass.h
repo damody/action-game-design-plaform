@@ -1,5 +1,5 @@
-#ifndef _TFIRESHADERCLASS_H_
-#define _TFIRESHADERCLASS_H_
+#ifndef _FIRESHADERCLASS_H_
+#define _FIRESHADERCLASS_H_
 
 
 //////////////
@@ -36,7 +36,7 @@ struct DrawVertexGroup
 };
 typedef std::vector<DrawVertexGroup> DrawVertexGroups;
 
-class TFireShaderClass
+class FireShaderClass
 {
 private:
 	struct MatrixBufferType
@@ -64,18 +64,16 @@ private:
 	};
 
 public:
-	TFireShaderClass();
+	FireShaderClass();
 
 	bool Initialize(ID3D11Device*,ID3D11DeviceContext* , WCHAR*, HWND);
 	void Shutdown();//not yet
 	void Render();
 	bool CreatVertex(EffectDatas::iterator begin,EffectDatas::iterator end);
 	void UpdateFrameTime(float frameTime);
-public:
 	bool InitializeShader(ID3D11Device*, WCHAR*, HWND);
 	void ShutdownShader();//not yet
 	void OutputShaderErrorMessage(ID3D10Blob*, WCHAR*, HWND);
-
 	void SetShaderParameters(D3DXVECTOR3 scrollSpeeds, D3DXVECTOR3 scales, D3DXVECTOR2 distortion1, 
 		D3DXVECTOR2 distortion2, D3DXVECTOR2 distortion3, float distortionScale, 
 		float distortionBias);

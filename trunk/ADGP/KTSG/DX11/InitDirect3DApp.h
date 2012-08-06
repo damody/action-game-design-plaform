@@ -13,12 +13,18 @@
 #include "game/Player.h"
 #include "game/BackGround.h"
 #include "Camera.h"
+#include "game/TestRenderEffect.h"
 
 class InitDirect3DApp : public D3DApp
 {
 //HolyK
 private:
 	EffectManager* m_Effect_Manager;
+	TestRenderEffect* m_TestRenderEffect;
+	Texture_Sptr m_TestTexture;
+	int m_TestTextureID;
+	void TestRender();
+	void TestViewEffect();
 //HolyK
 public:
 	InitDirect3DApp();

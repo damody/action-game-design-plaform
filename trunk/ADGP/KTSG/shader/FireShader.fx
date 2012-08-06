@@ -268,7 +268,6 @@ float4 PS(GS_OUT pIn) : SV_Target
 		fireColor.g = (noise2.g*(1-fireColor.a)+fireColor.g*fireColor.a);
 		fireColor.b = (noise2.b*(1-fireColor.a)+fireColor.b*fireColor.a);
 	fireColor.a = max(noise2.a , fireColor.a);
-	
     return fireColor;
 }
 

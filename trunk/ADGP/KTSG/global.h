@@ -19,3 +19,7 @@ extern ID3D11Device*  g_d3dDevice;
 extern ID3D11DeviceContext* g_DeviceContext;
 extern WavPlayer g_WavPlayer;
 extern int g_Time;
+
+//HolyK
+extern bool g_TestViewEffect;//觀看2048*2048 Effect用的bool
+//HolyK

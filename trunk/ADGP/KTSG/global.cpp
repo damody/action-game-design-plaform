@@ -9,3 +9,4 @@ ID3D11Device*	g_d3dDevice;
 ID3D11DeviceContext* g_DeviceContext;
 WavPlayer	g_WavPlayer;	
 int  g_Time;
+bool g_TestViewEffect;
