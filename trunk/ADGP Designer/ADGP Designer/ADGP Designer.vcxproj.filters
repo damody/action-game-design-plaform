@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="File">
+      <UniqueIdentifier>{a6cf5d1b-1d19-4db5-9bd3-79cefaff813e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -174,6 +177,15 @@
     <ClInclude Include="PropertiesWnd.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="File\ZipData.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="File\ZipFolder.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvStr.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ADGP Designer.cpp">
@@ -207,6 +219,15 @@
       <Filter>原始程式檔</Filter>
     </ClCompile>
     <ClCompile Include="PropertiesWnd.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="File\ZipData.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="File\ZipFolder.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvStr.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
   </ItemGroup>
