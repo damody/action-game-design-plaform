@@ -16,6 +16,10 @@
 
 class InitDirect3DApp : public D3DApp
 {
+//HolyK
+private:
+	EffectManager* m_Effect_Manager;
+//HolyK
 public:
 	InitDirect3DApp();
 	~InitDirect3DApp();

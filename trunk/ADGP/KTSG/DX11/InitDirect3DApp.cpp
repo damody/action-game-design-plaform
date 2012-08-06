@@ -44,6 +44,11 @@ void InitDirect3DApp::initApp()
 	m_DeviceContext->OMSetBlendState(m_pBlendState_BLEND, BlendFactor, 0xffffffff);
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
+
+	//HolyK
+	m_Effect_Manager = 0;
+	m_Effect_Manager = new EffectManager(m_hMainWnd);
+	//HolyK
 }
 
 

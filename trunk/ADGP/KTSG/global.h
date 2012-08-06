@@ -7,7 +7,7 @@
 #include "game/HeroInfoManager.h"
 #include "game/ObjectInfoManager.h"
 #include "game/BGManager.h"
-
+#include "game/Effect.h"
 
 extern TextureManager g_TextureManager;
 extern HeroInfoMG     g_HeroInfoMG;
