@@ -99,6 +99,7 @@ bool Effect::CreateEffect( EffectType::e type,EffectData& ed )
 		}
 		m_SerialNum++;
 	}
+
 	return true;
 }
 
