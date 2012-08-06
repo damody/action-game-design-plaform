@@ -7,6 +7,7 @@
 #include <windows.h>
 #include "common/shared_ptr.h"
 
+
 struct Texture
 {
 	Texture(std::string path);

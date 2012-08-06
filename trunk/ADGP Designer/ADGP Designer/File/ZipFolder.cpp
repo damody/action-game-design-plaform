@@ -22,6 +22,7 @@ void ZipFolder::AddZipDataFromMemory( unsigned char* src, int size, CompressLeve
 		this->m_ZipDatas.back()->CompressData(cl);
 	this->m_TotalSize += this->m_ZipDatas.back()->GetOriginalSize();
 }
+
 void ZipFolder::AddZipDataFromDisk( const std::string& path, CompressLevel cl /*= NO_COMPRESS*/ )
 {
 	this->m_ZipDatas.push_back(new ZipData(path));
@@ -29,10 +30,12 @@ void ZipFolder::AddZipDataFromDisk( const std::string& path, CompressLevel cl /*
 		this->m_ZipDatas.back()->CompressData(cl);
 	this->m_TotalSize += this->m_ZipDatas.back()->GetOriginalSize();
 }
+
 void ZipFolder::AddZipDataFromDisk( const std::wstring& path, CompressLevel cl /*= NO_COMPRESS*/ )
 {
 	this->AddZipDataFromDisk(ConvStr::GetStr(path), cl);
 }
+
 bool ZipFolder::WriteToDisk( const std::string& path )
 {
 	std::ofstream ofs(path, std::ios::binary);
@@ -48,10 +51,12 @@ bool ZipFolder::WriteToDisk( const std::string& path )
 	ofs.close();
 	return true;
 }
+
 bool ZipFolder::WriteToDisk( const std::wstring& path )
 {
 	return this->WriteToDisk(ConvStr::GetStr(path));
 }
+
 bool ZipFolder::ReadFromDisk( const std::string& path )
 {
 	std::ifstream ifs(path, std::ios::binary);
@@ -69,10 +74,12 @@ bool ZipFolder::ReadFromDisk( const std::string& path )
 	ifs.close();
 	return true;
 }
+
 bool ZipFolder::ReadFromDisk( const std::wstring& path )
 {
 	return this->ReadFromDisk(ConvStr::GetStr(path));
 }
+
 
 ZipData* ZipFolder::FindData( const std::string& name )
 {
@@ -85,6 +92,7 @@ ZipData* ZipFolder::FindData( const std::string& name )
 	}
 	return 0;
 }
+
 ZipFolder* ZipFolder::FindFolder( const std::string& name )
 {
 	for(int i = 0; i < this->m_ZipFolders.size(); i++)
@@ -96,6 +104,8 @@ ZipFolder* ZipFolder::FindFolder( const std::string& name )
 	}
 	return 0;
 }
+
+
 ZipData* ZipFolder::GetData( const std::string& path )
 {
 	ZipFolder* ZF = this;
@@ -119,6 +129,7 @@ ZipData* ZipFolder::GetData( const std::string& path )
 	name.assign(&path[t_start], &path[path.length()]);
 	return ZF->FindData(name);
 }
+
 ZipData* ZipFolder::GetData( const std::wstring& path )
 {
 	return this->GetData(ConvStr::GetStr(path));
@@ -139,6 +150,7 @@ bool ZipFolder::WriteToMemory(Bytes& dst)
 	dst.assign(&buffer[0], &buffer[0]+buffer.size());
 	return true;
 }
+
 bool ZipFolder::ReadFromMemory(const Bytes& src)
 {
 	std::vector<char> buffer(&src[0], &src[0]+src.size());
@@ -150,32 +162,5 @@ bool ZipFolder::ReadFromMemory(const Bytes& src)
 	ia >> this->m_TotalSize;
 	ia >> this->m_ZipDatas;
 	return true;
-}
-bool ZipFolder::EncryptToDisk(int cryptoType, Byte* password, int len, const std::string& path)
-{
-	Bytes dst = Bytes();
-	WriteToMemory(dst);
-	CryptoData encryptor = CryptoData(dst);
-	encryptor.m_Name = path;
-	encryptor.EncryptData(cryptoType, password, len);
-	encryptor.CalcuateDigest(1);
-	encryptor.WriteToDisk(path);
-	return 1;
-}
-bool ZipFolder::EncryptToDisk(int cryptoType, Byte* password, int len, const std::wstring& path)
-{
-	return EncryptToDisk(cryptoType, password, len, ConvStr::GetStr(path));
-}
-Bytes ZipFolder::DecryptFromDisk(Byte* password, int len, const std::string& path)
-{
-	CryptoData decryptor = CryptoData();
-	decryptor.ReadFromDisk(path);
-	decryptor.DecryptData(password, len);
-	ReadFromMemory(decryptor.GetData());
-	return decryptor.GetDigest();
-}
-Bytes ZipFolder::DecryptFromDisk(Byte* password, int len, const std::wstring& path)
-{
-	return DecryptFromDisk(password, len, ConvStr::GetStr(path));
 }
 

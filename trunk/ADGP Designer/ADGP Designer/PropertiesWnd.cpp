@@ -25,8 +25,10 @@ static char THIS_FILE[]=__FILE__;
 IMPLEMENT_DYNAMIC(CMFCPropertyGridPropertyButton, CMFCPropertyGridProperty)
 
 CMFCPropertyGridPropertyButton::CMFCPropertyGridPropertyButton( CMFCPropertyGridCtrl* grid, 
-const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData ) : CMFCPropertyGridProperty(strName, data, lpszDescr, dwData)
+	const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData ) 
+	: CMFCPropertyGridProperty(strName, data, lpszDescr, dwData)
 {
+	m_Count = 4;
 	m_MotherGrid = grid;
 	m_Text = strName;
 	AllowEdit(false);
@@ -34,16 +36,16 @@ const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dw
 
 void CMFCPropertyGridPropertyButton::OnClickName( CPoint point )
 {
-	CMFCPropertyGridProperty* pPolygon2D = new CMFCPropertyGridProperty(_T("Direction Vector"), 0, TRUE);
-	CMFCPropertyGridProperty* pProp1 = new CMFCPropertyGridProperty(_T("Point1"), 0, TRUE);
+	wchar_t tbuffer[10];
+	wsprintf(tbuffer, L"Point%d", m_Count++);
+	CMFCPropertyGridProperty* pProp1 = new CMFCPropertyGridProperty(tbuffer, 0, TRUE);
 	CMFCPropertyGridProperty* pProp;
-	this->GetParent()->AddSubItem(pPolygon2D);
-	pPolygon2D->AddSubItem(pProp1);
+	this->GetParent()->AddSubItem(pProp1);
 	pProp = new CMFCPropertyGridProperty(_T("X"), (_variant_t) 0.f, _T("X位置"));
 	pProp1->AddSubItem(pProp);
 	pProp = new CMFCPropertyGridProperty(_T("Y"), (_variant_t) 0.f, _T("Y位置"));
 	pProp1->AddSubItem(pProp);
-	m_MotherGrid->ExpandAll();
+	m_MotherGrid->AdjustLayout();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -427,29 +429,29 @@ void CPropertiesWnd::InitPropList_Body()
 	CMFCPropertyGridProperty* pPolygon2D = new CMFCPropertyGridProperty(_T("Direction Vector"), 0, TRUE);
 
 	pProp = new CMFCPropertyGridPropertyButton(&m_wndPropList, _T("Add Point"), (_variant_t) _T(""), _T("增加頂點"), 0);
-	m_pBodyGroup->AddSubItem(pProp);
+	pPolygon2D->AddSubItem(pProp);
 
 	pProp1 = new CMFCPropertyGridProperty(_T("Point1"), 0, TRUE);
-	
 	pProp = new CMFCPropertyGridProperty(_T("X"), (_variant_t) 0.f, _T("X位置"));
 	pProp1->AddSubItem(pProp);
 	pProp = new CMFCPropertyGridProperty(_T("Y"), (_variant_t) 0.f, _T("Y位置"));
 	pProp1->AddSubItem(pProp);
-	
 	pPolygon2D->AddSubItem(pProp1);
-	m_pBodyGroup->AddSubItem(pPolygon2D);
 	
-
-	pPolygon2D = new CMFCPropertyGridProperty(_T("Direction Vector2"), 0, TRUE);
-	pProp1 = new CMFCPropertyGridProperty(_T("Point1"), 0, TRUE);
-
+	pProp1 = new CMFCPropertyGridProperty(_T("Point2"), 0, TRUE);
 	pProp = new CMFCPropertyGridProperty(_T("X"), (_variant_t) 0.f, _T("X位置"));
 	pProp1->AddSubItem(pProp);
 	pProp = new CMFCPropertyGridProperty(_T("Y"), (_variant_t) 0.f, _T("Y位置"));
 	pProp1->AddSubItem(pProp);
-	
-	
 	pPolygon2D->AddSubItem(pProp1);
+
+	pProp1 = new CMFCPropertyGridProperty(_T("Point3"), 0, TRUE);
+	pProp = new CMFCPropertyGridProperty(_T("X"), (_variant_t) 0.f, _T("X位置"));
+	pProp1->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("Y"), (_variant_t) 0.f, _T("Y位置"));
+	pProp1->AddSubItem(pProp);
+	pPolygon2D->AddSubItem(pProp1);
+
 	m_pBodyGroup->AddSubItem(pPolygon2D);
 	
 	m_wndPropList.AddProperty(m_pBodyGroup);

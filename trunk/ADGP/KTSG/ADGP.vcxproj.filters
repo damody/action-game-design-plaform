@@ -203,6 +203,12 @@
     <ClCompile Include="game\Effect.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="game\FireShaderClass.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\RenderTextureClass.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -407,6 +413,12 @@
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\EffectData.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\FireShaderClass.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\RenderTextureClass.h">
       <Filter>inc\game</Filter>
     </ClInclude>
   </ItemGroup>
