@@ -887,8 +887,7 @@ void InitDirect3DApp::BackgroundDataUpdate()
 	{
 		if(!g_BGManager.CurrentBG()->InSpace((*it)->Position()))
 		{
-			g_ObjectMG.Delete(it);
-			it--;
+			g_ObjectMG.Distory(it,6);
 		}
 	}
 	

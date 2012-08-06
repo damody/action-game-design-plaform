@@ -5,9 +5,26 @@
 
 class ObjectMG
 {
+public: 
+	struct CTrash
+	{
+		Chees::iterator m_Trash;
+		int m_Time;
+	};
+	typedef std::vector<CTrash> CTrashCan;
+
+	struct WTrash
+	{
+		Weapons::iterator m_Trash;
+		int m_Time;
+	};
+	typedef std::vector<WTrash> WTrashCan;
 private:
 	Chees   m_Chees;
 	Weapons m_Weapons;
+
+	CTrashCan m_CTrashCan;
+	WTrashCan m_WTrashCan;
 public:
 	ObjectMG(void);
 	~ObjectMG(void);
@@ -17,10 +34,10 @@ public:
 
 	Chee** CreateChee(const std::string& chee, const Vector3& pos, const Vector3& vel, int num=1, int team=0);
 	Weapon** CreateWeapon(const std::string& weapon, const Vector3& pos, int num=1, int team=0);
-	void Delete(Chee_RawPtr chee);
-	void Delete(Weapon_RawPtr weapon);
-	void Delete(Chees::iterator it);
-	void Delete(Weapons::iterator it);
+	void Distory(Chee_RawPtr chee,int time=0);
+	void Distory(Weapon_RawPtr weapon,int time=0);
+	void Distory(Chees::iterator it,int time=0);
+	void Distory(Weapons::iterator it,int time=0);
 	void Clear();
 	void ClearChee();
 	void ClearWeapon();
@@ -41,5 +58,10 @@ public:
 	Weapon* GetClosestWeaponOnFloor(const Vector3& pos);//Undo
 	Weapon* GetClosestThrownWeaponFromFriend(const Vector3& pos,int team);//Undo
 	Weapon* GetClosestThrownWeaponFromEnemy(const Vector3& pos,int team);//Undo
+
+protected:
+	void CleanTrashCan();
+	bool InCTrashCan(Chee_RawPtr chee);
+	bool InWTrashCan(Weapon_RawPtr weapon);
 };
 
