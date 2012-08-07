@@ -1,7 +1,7 @@
 #include "Effect.h"
 #include "global.h"
 #include <iostream>
-Effect::Effect(void)
+Effect::Effect(void):m_SerialNum(1)
 {
 }
 
@@ -89,8 +89,8 @@ bool Effect::CreateEffect( EffectType::e type,EffectData* ed )
 	if(Overflow())return false;
 	if (!Check(type,ed))
 	{
-		ed->m_Pos.x = 1 + m_SerialNum % (PIC_W/PASTE_W);
-		ed->m_Pos.y = 1 + m_SerialNum / (PIC_W/PASTE_W);
+		ed->m_Pos.x = 1 + (m_SerialNum-1) % (PIC_W/PASTE_W);
+		ed->m_Pos.y = 1 + (m_SerialNum-1) / (PIC_W/PASTE_W);
 
 		switch(type)
 		{
@@ -169,7 +169,7 @@ EffectManager::EffectManager(HWND hwnd):m_Page(0),m_Size(4){
 		
 }
 
-int EffectManager::CreateEffect( EffectType::e type,int textureID,Vector4* picpos )
+int EffectManager::CreateEffect( EffectType::e type,int textureID,D3DXVECTOR4* picpos )
 {
 	EffectData ed;
 	ed.m_TextureID = textureID;
@@ -180,7 +180,7 @@ int EffectManager::CreateEffect( EffectType::e type,int textureID,Vector4* picpo
 		m_Effect[m_Page%m_Size]->Clear();
 		m_Effect[m_Page%m_Size]->CreateEffect(type,&ed);
 	}
-	*picpos = Vector4(ed.m_Pos.x,ed.m_Pos.y,(PIC_W/PASTE_W),(PIC_H/PASTE_H));
+	*picpos = D3DXVECTOR4(ed.m_Pos.x,ed.m_Pos.y,(PIC_W/PASTE_W),(PIC_H/PASTE_H));
 	return m_Effect[m_Page%m_Size]->GetTextureID();
 }
 
@@ -190,12 +190,20 @@ void EffectManager::OnResize( int W,int H )
 	m_ScreamW=W;
 }
 
-void EffectManager::Render()
+void EffectManager::Update(ID3D11RenderTargetView* originRTV)
 {
-
-}
-
-void EffectManager::UpDate()
-{
-
+	for(int i=0;i<m_Size;i++)
+	{
+		m_Effect[i]->Updata(g_Time * 0.001f);
+		m_Effect[i]->Render();
+	}
+	D3D11_VIEWPORT vp;
+	vp.Width = m_ScreamW;
+	vp.Height = m_ScreamH;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	g_DeviceContext->RSSetViewports( 1, &vp );
+	g_DeviceContext->OMSetRenderTargets(1, &originRTV, 0);
 }

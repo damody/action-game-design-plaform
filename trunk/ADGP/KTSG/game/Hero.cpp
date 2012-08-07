@@ -69,6 +69,16 @@ void Hero::Update(float dt)
 			m_TimeTik--;
 		}
 	}
+	//Effect
+	if(m_Effect != EffectType::NONE){
+		D3DXVECTOR4 v = D3DXVECTOR4(m_PicX,m_PicY,m_PicH,m_PicW);
+		m_Texture = g_EffectMG->CreateEffect(m_Effect,m_Texture,&v);
+		m_PicX = v.x;
+		m_PicY = v.y;
+		m_PicH = v.z;
+		m_PicW = v.w;
+	}
+
 	//ª«²z
 	float ry = m_Position.y;
 	m_Position += m_Vel;
@@ -134,8 +144,6 @@ void Hero::Update(float dt)
 
 void Hero::UpdateDataToDraw()
 {
-// 	m_Pic.position.x = m_Position.x - (m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX / 1280);
-// 	m_Pic.position.y = m_Position.y - (m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY / 800);
 	
 	float scale = 1.5f;
 
@@ -160,7 +168,7 @@ void Hero::UpdateDataToDraw()
 	m_Pic.picpos.y = (float)m_PicY;
 	m_Pic.picpos.z = (float)m_PicH;
 	m_Pic.picpos.w = (float)m_PicW;
-	
+
 	if(m_FaceSide){
 		m_Pic.faceside = 1;
 	}else{
@@ -190,20 +198,11 @@ void Hero::NextFrame()
 	m_Frame = f->m_NextFrameName;
 	m_FrameID = f->m_NextFrameIndex;
 	f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
-	if(m_Effect != EffectType::NONE){
-		Vector4 picpos = Vector4(f->m_PictureX,f->m_PictureY,m_HeroInfo->m_PictureDatas[m_PicID].m_Column,m_HeroInfo->m_PictureDatas[m_PicID].m_Row);
-		m_PicID = g_EffectMG->CreateEffect(m_Effect,f->m_PictureID,&picpos);
-		m_PicX = picpos.x;
-		m_PicY = picpos.y;
-		m_PicW = picpos.z;
-		m_PicH = picpos.w;
-	}else{
-		m_PicID = f->m_PictureID;
-		m_PicX = f->m_PictureX;
-		m_PicY = f->m_PictureY;
-		m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
-		m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
-	}
+	m_PicID = f->m_PictureID;
+	m_PicX = f->m_PictureX;
+	m_PicY = f->m_PictureY;
+	m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
+	m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
 	m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
 	m_Action = f->m_HeroAction;
 	m_TimeTik = f->m_Wait;

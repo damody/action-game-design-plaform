@@ -23,7 +23,7 @@
 struct FireVertex
 {
 	Vector2 position;
-	Vector4 picpos; // x, y, w, h
+	D3DXVECTOR4 picpos; // x, y, w, h
 };
 typedef std::vector<FireVertex> FireVertexs;
 

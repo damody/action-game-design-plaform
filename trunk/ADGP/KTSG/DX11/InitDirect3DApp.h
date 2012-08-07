@@ -147,6 +147,7 @@ private:
 	void TestWavPlayer();
 	void TestCamera();
 	void TestChee();
+	void TextFire();
 };
 
 struct CD3D11_BLEND_DESCX : public D3D11_BLEND_DESC

@@ -138,7 +138,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 	{
 		g_Time++;
 		UpdateCamera();
-
+		if(g_EffectMG != NULL)g_EffectMG->Update(m_RenderTargetView);
 		//Hero Update
 		g_HeroMG.Update(dt);
 
@@ -164,6 +164,8 @@ void InitDirect3DApp::OnResize()
 {
 	D3DApp::OnResize();
 	
+	if(g_EffectMG!=NULL)g_EffectMG->OnResize((float)mClientWidth,(float)mClientHeight);
+
 	if (m_Entity_Width!=NULL && m_Entity_Height!=NULL)
 	{
 		m_Entity_Width->SetFloat((float)mClientWidth);
@@ -668,7 +670,7 @@ void InitDirect3DApp::LoadHero()
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
 	m_Player.m_Hero = g_HeroMG.Create(m_Player.HeroName(),Vector3(1000,500,100));
-
+	//m_Player.m_Hero->SetEffect(EffectType::FIRE);
 	//g_ObjectMG.CreateChee("Davis_ball",Vector3(100,80,1000),Vector3(0,0,0));
 	//g_ObjectMG.CreateChee("Davis_ball",Vector3(100,80,500),Vector3(0,0,0));
 	//g_HeroMG.Create("Davis",Vector3(100,0,100));
@@ -1056,4 +1058,16 @@ void InitDirect3DApp::TestWavPlayer()
 		g_WavPlayer.SetVolume(--vol);
 	}
 	
+}
+
+void InitDirect3DApp::TextFire()
+{
+	if (InputStateS::instance().isKeyPress(KEY_D))
+	{
+		m_Player.m_Hero->SetEffect(EffectType::NONE);
+	}
+	if (InputStateS::instance().isKeyPress(KEY_F))
+	{
+		m_Player.m_Hero->SetEffect(EffectType::FIRE);
+	}
 }

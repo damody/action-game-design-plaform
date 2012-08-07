@@ -77,7 +77,7 @@ bool FireShaderClass::Initialize(ID3D11Device* device,ID3D11DeviceContext* devic
 	}
 	//Creat 
 	D3D11_BUFFER_DESC bufferDesc;
-	FireVertex heroVertex = { Vector2(1.0f,1.0f),Vector4(1.0f,1.0f,10.0f,7.0f) };
+	FireVertex heroVertex = { Vector2(1.0f,1.0f),D3DXVECTOR4(1.0f,1.0f,10.0f,7.0f) };
 
 	ZeroMemory( &bufferDesc, sizeof( bufferDesc ) );
 	bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
@@ -220,6 +220,9 @@ void FireShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, WCHAR* 
 }
 bool FireShaderClass::CreatVertex(EffectDatas::iterator begin,EffectDatas::iterator end)
 {
+	if(begin == end){
+		return false;
+	}
 	m_cvs.clear();
 	m_dvg.clear();
 	int vertexCount = 0, count = 0;
