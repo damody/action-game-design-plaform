@@ -84,23 +84,23 @@ void Effect::SetFireParameters()
 
 }
 
-bool Effect::CreateEffect( EffectType::e type,EffectData& ed )
+bool Effect::CreateEffect( EffectType::e type,EffectData* ed )
 {
 	if(Overflow())return false;
 	if (!Check(type,ed))
 	{
-		ed.m_Pos.x = 1 + m_SerialNum % (PIC_W/PASTE_W);
-		ed.m_Pos.y = 1 + m_SerialNum / (PIC_W/PASTE_W);
+		ed->m_Pos.x = 1 + m_SerialNum % (PIC_W/PASTE_W);
+		ed->m_Pos.y = 1 + m_SerialNum / (PIC_W/PASTE_W);
 
 		switch(type)
 		{
 		case	EffectType::FIRE:
-			m_FireEffect.push_back(ed);
+			m_FireEffect.push_back(*ed);
 			break;
 		}
 		m_SerialNum++;
 	}
-	std::cout<<"x = "<<ed.m_Pos.x<<"y = "<<ed.m_Pos.y<<std::endl;
+	//std::cout<<"x = "<<ed.m_Pos.x<<"y = "<<ed.m_Pos.y<<std::endl;
 	return true;
 }
 
@@ -115,14 +115,14 @@ bool Effect::Overflow()
 	return (m_SerialNum >= (PIC_H/PASTE_H)*(PIC_W/PASTE_W));
 }
 
-bool Effect::Check( EffectType::e type,EffectData& ed )
+bool Effect::Check( EffectType::e type,EffectData* ed )
 {
 
 	for (EffectDatas::iterator it = m_FireEffect.begin();it != m_FireEffect.end();it++)
 	{
-		if(ed == (*it))
+		if((*ed) == (*it))
 		{
-			ed.m_Pos = it->m_Pos;
+			ed->m_Pos = it->m_Pos;
 			return true;
 		}
 	}
@@ -163,7 +163,8 @@ EffectManager::EffectManager(HWND hwnd):m_Page(0),m_Size(4){
 	//test
 	for(int i=0;i<m_Size;i++)
 	{
-		m_Effect[i].Initialize(hwnd);
+		m_Effect[i] = new Effect();
+		m_Effect[i]->Initialize(hwnd);
 	}
 		
 }
@@ -173,14 +174,14 @@ int EffectManager::CreateEffect( EffectType::e type,int textureID,Vector4* picpo
 	EffectData ed;
 	ed.m_TextureID = textureID;
 	ed.m_PicPos    = *picpos;
-	if(!m_Effect[m_Page%m_Size].CreateEffect(type,ed))
+	if(!m_Effect[m_Page%m_Size]->CreateEffect(type,&ed))
 	{
 		m_Page++;
-		m_Effect[m_Page%m_Size].Clear();
-		m_Effect[m_Page%m_Size].CreateEffect(type,ed);
+		m_Effect[m_Page%m_Size]->Clear();
+		m_Effect[m_Page%m_Size]->CreateEffect(type,&ed);
 	}
 	*picpos = Vector4(ed.m_Pos.x,ed.m_Pos.y,(PIC_W/PASTE_W),(PIC_H/PASTE_H));
-	return m_Effect[m_Page%m_Size].GetTextureID();
+	return m_Effect[m_Page%m_Size]->GetTextureID();
 }
 
 void EffectManager::OnResize( int W,int H )

@@ -30,9 +30,9 @@ public:
 	void Updata(float dt);
 	void SetFireParameters();
 
-	bool CreateEffect(EffectType::e type,EffectData& ed);//直接改ed回傳
+	bool CreateEffect(EffectType::e type,EffectData* ed);//直接改ed回傳
 	void Clear();//清除 EffectDatas
-	bool Check(EffectType::e type,EffectData& ed);//判斷是否有重複的圖
+	bool Check(EffectType::e type,EffectData* ed);//判斷是否有重複的圖
 	bool Overflow();//貼圖溢位
 
 	int  GetTextureID();
@@ -47,7 +47,7 @@ private:
 class EffectManager
 {
 private:
-	Effect  m_Effect[4];
+	Effect*  m_Effect[4];
 	int	m_Size;
 	int	m_Page;
 
