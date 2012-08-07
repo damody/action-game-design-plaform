@@ -137,7 +137,7 @@ protected:
 	void ClearKeyQue();
 	void Flicker();//°{Ã{
 	void Recover();//¦^¦å¡B®ð¡B¯}¨¾­È.....
-	
+	void CreateEffect();
 
 };
 SHARE_PTR(Hero)

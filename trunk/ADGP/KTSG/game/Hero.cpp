@@ -69,15 +69,7 @@ void Hero::Update(float dt)
 			m_TimeTik--;
 		}
 	}
-	//Effect
-	if(m_Effect != EffectType::NONE){
-		D3DXVECTOR4 v = D3DXVECTOR4(m_PicX,m_PicY,m_PicH,m_PicW);
-		m_Texture = g_EffectMG->CreateEffect(m_Effect,m_Texture,&v);
-		m_PicX = v.x;
-		m_PicY = v.y;
-		m_PicH = v.z;
-		m_PicW = v.w;
-	}
+	
 
 	//ª«²z
 	float ry = m_Position.y;
@@ -209,6 +201,8 @@ void Hero::NextFrame()
 	m_Vel.x +=f->m_DVX;
 	m_Vel.y +=f->m_DVY;
 	m_Vel.z +=f->m_DVZ;
+
+	CreateEffect();
 }
 
 bool Hero::ScanKeyQue()
@@ -523,6 +517,8 @@ bool Hero::ScanKeyQue()
 		m_Vel.x +=f->m_DVX;
 		m_Vel.y +=f->m_DVY;
 		m_Vel.z +=f->m_DVZ;
+
+		CreateEffect();
 		return true;
 	}
 }
@@ -686,6 +682,19 @@ void Hero::SetEffect( EffectType::e effect )
 {
 	m_Effect = effect;
 }
+
+void Hero::CreateEffect()
+{
+	if(m_Effect != EffectType::NONE){
+		D3DXVECTOR4 v = D3DXVECTOR4(m_PicX,m_PicY,m_PicH,m_PicW);
+		m_Texture = g_EffectMG->CreateEffect(m_Effect,m_Texture,&v);
+		m_PicX = v.x;
+		m_PicY = v.y;
+		m_PicH = v.z;
+		m_PicW = v.w;
+	}
+}
+
 
 
 
