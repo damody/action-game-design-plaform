@@ -38,6 +38,11 @@ frame =
 	dash_front   = {},
 	dash_back    = {},
 	crouch       = {},
+
+	punch        = {},
+	kick         = {},
+
+	defend       = {},
 	ball         = {},
 	many_punch   = {},
 	jump_hit     = {},
@@ -50,7 +55,7 @@ frame.default[0] =
    pic_id = 0, pic_x = 1, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=34, value=150}},
    body = {
 	{kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
@@ -67,7 +72,7 @@ frame.standing[0] =
    pic_id = 0, pic_x = 1, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=34, value=150}},
    body = {
 	{kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
@@ -84,7 +89,7 @@ frame.standing[1] =
    pic_id = 0, pic_x = 2, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
    {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
@@ -101,7 +106,7 @@ frame.standing[2] =
    pic_id = 0, pic_x = 3, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
    {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
@@ -118,7 +123,7 @@ frame.standing[3] =
    pic_id = 0, pic_x = 4, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
    {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
@@ -135,7 +140,7 @@ frame.walking[0] =
    pic_id = 0, pic_x = 5, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 78,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
    {kind = 0, points = {{28,-15}, {28,-80}, {55,-80}, {55,-15}}, zwidth = 8}
@@ -155,7 +160,7 @@ frame.walking[1] =
    pic_id = 0, pic_x = 6, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
    {kind = 0, points = {{28,-15}, {28,-80}, {55,-80}, {55,-15}}, zwidth = 8}
@@ -175,7 +180,7 @@ frame.walking[2] =
    pic_id = 0, pic_x = 7, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
    {kind = 0, points = {{28,-15}, {28,-80}, {55,-80}, {55,-15}}, zwidth = 8}
@@ -195,7 +200,7 @@ frame.walking[3] =
    pic_id = 0, pic_x = 8, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 78,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=34, value=150}},
    body = {
    {kind = 0, points = {{28,-15}, {28,-80}, {55,-80}, {55,-15}}, zwidth = 8}
@@ -215,7 +220,7 @@ frame.walking[4] =
    pic_id = 0, pic_x = 7, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
    {kind = 0, points = {{28,-15}, {28,-80}, {55,-80}, {55,-15}}, zwidth = 8}
@@ -235,7 +240,7 @@ frame.walking[5] =
    pic_id = 0, pic_x = 6, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"d>a", "ball", 1}, {"d^a", "singlong", 1}, {"dva", "many_punch", 1}, {"d^j", "jump_hit", 1}},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
    {kind = 0, points = {{28,-15}, {28,-80}, {55,-80}, {55,-15}}, zwidth = 8}
@@ -495,6 +500,40 @@ frame.crouch[1] =
    --sound: data\012.wav
    --wpoint:
    --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.defend[0] =
+{
+   pic_id = 0, pic_x = 7, pic_y = 6, state = Action.Defend, wait = 24, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
+   blood = {},
+   body = {
+   {kind = 0, points = {{20,-19}, {20,-79}, {58,-79}, {58,-19}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 23  y: 53  weaponact: 23  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.defend[1] =
+{
+   pic_id = 0, pic_x = 7, pic_y = 6, state = Action.Defend, wait = 1, next = {"defend", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 40,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"d>a", "ball", 0}, {"d^a", "singlong", 0}, {"dva", "many_punch", 0}, {"d^j", "jump_hit", 0}},
+   blood = {},
+   body = {
+   {kind = 0, points = {{16,-19}, {16,-79}, {58,-79}, {58,-19}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 23  y: 53  weaponact: 23  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
    --wpoint_end:
 
 }

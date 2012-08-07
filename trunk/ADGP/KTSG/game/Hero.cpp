@@ -281,7 +281,8 @@ bool Hero::ScanKeyQue()
 			d_key[2] = true;
 		}
 		else if(m_KeyQue.back().key == CtrlKey::DEF  && !d_key[3]){
-			//พื
+			nFrame = "defend";
+			d_key[3] = true;
 		}
 	}
 	else if(m_Action == HeroAction::WALKING )
@@ -351,6 +352,9 @@ bool Hero::ScanKeyQue()
 		}
 		else if(m_KeyQue.back().key == CtrlKey::DEF  && !d_key[3]){
 			//พื
+			nFrame = "defend";
+			nFramID = 0;
+			d_key[3] = true;
 		}
 	}
 	else if(m_Action == HeroAction::RUNNING){
@@ -447,7 +451,7 @@ bool Hero::ScanKeyQue()
 			i++;
 		}
 	}
-	else if(m_Action == HeroAction::IN_THE_AIR){
+	else if(m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DEFEND){
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::LEFT ){
 				m_FaceSide = false;
