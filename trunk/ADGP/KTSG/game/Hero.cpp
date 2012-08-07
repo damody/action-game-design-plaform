@@ -96,6 +96,8 @@ void Hero::Update(float dt)
 				m_TimeTik = f->m_Wait;
 				//m_Vel.x = 0;
 				//m_Vel.z = 0;
+
+				CreateEffect();
 			}
 		}
 		//X方向摩擦力計算
@@ -130,6 +132,8 @@ void Hero::Update(float dt)
 			m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
 			m_Action = f->m_HeroAction;
 			m_TimeTik = f->m_Wait;
+
+			CreateEffect();
 		}
 	}
 }
