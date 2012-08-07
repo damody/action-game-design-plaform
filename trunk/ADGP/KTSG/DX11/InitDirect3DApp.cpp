@@ -43,7 +43,7 @@ void InitDirect3DApp::initApp()
 	OnResize();
 	// Set blend
 	float BlendFactor[4] = {0,0,0,0};
-	//m_DeviceContext->OMSetBlendState(m_pBlendState_BLEND, BlendFactor, 0xffffffff);
+	m_DeviceContext->OMSetBlendState(m_pBlendState_BLEND, BlendFactor, 0xffffffff);
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
 
@@ -104,6 +104,10 @@ void InitDirect3DApp::UpdateScene(float dt)
 	//HolyK
 	if(g_TestViewEffect)
 	{
+		g_Time++;
+		if(g_Time>10000)
+			g_Time = 0;
+		if(g_EffectMG != NULL)g_EffectMG->Update(m_RenderTargetView);
 		PrintInfo();
 		D3DApp::DrawScene(); // clear window
 		UpdateInput();

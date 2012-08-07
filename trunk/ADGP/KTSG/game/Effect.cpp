@@ -139,7 +139,7 @@ void Effect::Render()
 	SetViewport();
 
 	m_RenderTexture->SetRenderTarget(g_DeviceContext,0);
-	//m_RenderTexture->ClearRenderTarget(g_DeviceContext,0,0.0f,0.0f,0.0f,0.0f);
+	m_RenderTexture->ClearRenderTarget(g_DeviceContext,0,0.0f,0.0f,0.0f,0.0f);
 
 	RenderFire();
 }
@@ -194,7 +194,7 @@ void EffectManager::Update(ID3D11RenderTargetView* originRTV)
 {
 	for(int i=0;i<m_Size;i++)
 	{
-		m_Effect[i]->Updata(g_Time * 0.001f);
+		m_Effect[i]->Updata(g_Time * 0.01f);
 		m_Effect[i]->Render();
 	}
 	D3D11_VIEWPORT vp;
@@ -207,3 +207,9 @@ void EffectManager::Update(ID3D11RenderTargetView* originRTV)
 	g_DeviceContext->RSSetViewports( 1, &vp );
 	g_DeviceContext->OMSetRenderTargets(1, &originRTV, 0);
 }
+//HolyK Test
+ID3D11ShaderResourceView* EffectManager::Test_GetNowTexture()
+{
+
+}
+//HolyK Test

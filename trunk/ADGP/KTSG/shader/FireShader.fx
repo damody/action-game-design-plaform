@@ -156,39 +156,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	out5 = calculate(ld,newTex);
 	triStream.Append( out5 );
 	
-	/*
-	//------
-	newTex = float2(1,0);
-	//newTex = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y-1));
-	out5 = calculate(rt,newTex);
-	triStream.Append( out5 );
 	
-	newTex = float2(1,1);
-	//newTex = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
-	out5 = calculate(rd,newTex);
-	triStream.Append( out5 );
-	
-	newTex = float2(0,0);
-	//newTex = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
-	out5 = calculate(lt,newTex);
-	triStream.Append( out5 );
-	
-	newTex = float2(1,1);
-	//newTex = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
-	out5 = calculate(rd,newTex);
-	triStream.Append( out5 );
-	
-	newTex = float2(0,0);
-	//newTex = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
-	out5 = calculate(lt,newTex);
-	triStream.Append( out5 );
-	
-	newTex = float2(0,1);
-	//newTex = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y));
-	out5 = calculate(ld,newTex);
-	triStream.Append( out5 );
-	//---------
-	*/
 	triStream.RestartStrip( );
 }
 
@@ -234,7 +202,7 @@ float4 PS(GS_OUT pIn) : SV_Target
 	// Combine all three distorted noise results into a single noise result.
 	finalNoise = noise1 + noise2 + noise3;
 	finalNoise.x *= 0.5;
-	finalNoise.y *= 0.01;
+	finalNoise.y *= 0.05;
 	// Perturb the input texture Y coordinates by the distortion scale and bias values.  
 	// The perturbation gets stronger as you move up the texture which creates the flame flickering at the top effect.
 	perturb = ((1.0f - pIn.texcoord.y) * distortionScale) + distortionBias;
@@ -242,8 +210,6 @@ float4 PS(GS_OUT pIn) : SV_Target
 	// Now create the perturbed and distorted texture sampling coordinates that will be used to sample the fire color texture.
 	noiseCoords.xy = (finalNoise.xy * perturb) + pIn.texcoord.xy;
 
-	//if (noiseCoords.y < pIn.texcoord.y)
-		//discard;
 	// Sample the color from the fire texture using the perturbed and distorted texture sampling coordinates.
 	// Use the clamping sample state instead of the wrap sample state to prevent flames wrapping around.
     fireColor = fireTexture.Sample(SampleType2, noiseCoords.xy);
