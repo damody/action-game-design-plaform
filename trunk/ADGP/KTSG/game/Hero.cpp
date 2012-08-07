@@ -26,7 +26,7 @@ Hero::Hero()
 }
 
 Hero::Hero( std::string h ):
-hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(true),m_FrameID(0),m_Texture(0),m_PicID(0),m_PicW(0),m_PicH(0),m_PicX(0),m_PicY(0),d_run(0),m_Effect(EffectType::NONE)
+hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(true),m_FrameID(0),m_Texture(0),m_PicID(0),m_PicW(0),m_PicH(0),m_PicX(0),m_PicY(0),d_run(0),m_Effect(EffectType::NONE),d_key()
 {
 	m_HeroInfo = g_HeroInfoMG.GetHeroInfo(hero);
 	if(m_HeroInfo.get())
@@ -259,12 +259,29 @@ bool Hero::ScanKeyQue()
 					m_FaceSide = true;
 				}
 			}
-			else if(i->key == CtrlKey::JUMP){
+			/*else if(i->key == CtrlKey::JUMP){
 				nFrame = "jump";
 				i = m_KeyQue.erase(i);
 				continue;
-			}
+			}//*/
 			i++;
+		}
+		//非方向按鍵判斷
+		if(m_KeyQue.empty()){
+		}
+		else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
+			//拳
+		}
+		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
+			//腳
+		}
+		else if(m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
+			//跳
+			nFrame = "jump";
+			d_key[2] = true;
+		}
+		else if(m_KeyQue.back().key == CtrlKey::DEF  && !d_key[3]){
+			//擋
 		}
 	}
 	else if(m_Action == HeroAction::WALKING )
@@ -305,16 +322,35 @@ bool Hero::ScanKeyQue()
 					m_FaceSide = true;
 				}
 			}
-			else if(i->key == CtrlKey::JUMP){
+			/*else if(i->key == CtrlKey::JUMP){
 				nFrame = "jump";
 				i = m_KeyQue.erase(i);
 				continue;
-			}
+			}//*/
 			i++;
 		}
 		if(!nFrame.empty() )
 		{
 			nFramID = (m_FrameID+1) % (m_HeroInfo->m_FramesMap[nFrame].size());
+		}
+
+		//非方向按鍵判斷
+		if(m_KeyQue.empty()){
+		}
+		else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
+			//拳
+		}
+		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
+			//腳
+		}
+		else if(m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
+			//跳
+			nFrame = "jump";
+			nFramID = 0;
+			d_key[2] = true;
+		}
+		else if(m_KeyQue.back().key == CtrlKey::DEF  && !d_key[3]){
+			//擋
 		}
 	}
 	else if(m_Action == HeroAction::RUNNING){
@@ -344,7 +380,7 @@ bool Hero::ScanKeyQue()
 				d_run = 0;
 				break;
 			}
-			else if(i->key == CtrlKey::JUMP){
+			/*else if(i->key == CtrlKey::JUMP){
 				nFrame = "dash_front";
 				nFramID= 0;
 				m_Vel.y = m_HeroInfo->m_DashHeight;
@@ -357,8 +393,34 @@ bool Hero::ScanKeyQue()
 				}
 				i = m_KeyQue.erase(i);
 				break;
-			}
+			}//*/
 			i++;
+		}
+		//非方向按鍵判斷
+		if(m_KeyQue.empty()){
+		}
+		else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
+			//衝拳
+		}
+		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
+			//衝腳
+		}
+		else if(m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
+			//衝跳
+			nFrame = "dash_front";
+			nFramID= 0;
+			m_Vel.y = m_HeroInfo->m_DashHeight;
+			m_Vel.x = m_FaceSide ? m_HeroInfo->m_DashDistance : -m_HeroInfo->m_DashDistance;
+			if(m_Vel.z == m_HeroInfo->m_RunningSpeedZ){
+				m_Vel.z = m_HeroInfo->m_DashDistanceZ;
+			}
+			else if(m_Vel.z == -m_HeroInfo->m_RunningSpeedZ){
+				m_Vel.z = -m_HeroInfo->m_DashDistanceZ;
+			}
+		d_key[2] = true;
+		}
+		else if(m_KeyQue.back().key == CtrlKey::DEF  && !d_key[3]){
+			//滾
 		}
 	}
 	else if(m_Action == HeroAction::JUMP && m_TimeTik < 2){
@@ -447,12 +509,16 @@ bool Hero::ScanKeyQue()
 			else if(i->key == CtrlKey::DOWN ){
 				dz = -1;
 			}
-			else if(i->key == CtrlKey::JUMP){
+			/*else if(i->key == CtrlKey::JUMP){
 				dj = 1;
 				i = m_KeyQue.erase(i);
 				continue;
-			}
+			}//*/
 			i++;
+		}
+		if(!m_KeyQue.empty() && m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
+			dj = 1;
+			d_key[2] = true;
 		}
 		//判斷
 		if(dj == 1 && m_Frame.compare("crouch") == 0){
@@ -498,7 +564,7 @@ bool Hero::ScanKeyQue()
 	while( i != m_KeyQue.end()){
 		/*  i->key > CtrlKey::ATK2 ：特殊按鍵放開事件要處理
 		 *  i->key >=CtrlKey::DEF  ：特殊按鍵放開事件不處理 */
-		if( i->key >=CtrlKey::DEF && g_Time - i->time > KEYLIFE_AFTER_KEYUP){
+		if( i->key >=CtrlKey::ATK2 && g_Time - i->time > KEYLIFE_AFTER_KEYUP){
 			i = m_KeyQue.erase(i);
 		}else i++;
 	}
@@ -541,11 +607,11 @@ void Hero::PushKey( KeyInfo k )
 {
 	KeyQueue::iterator i;
 
-	if(k.key >= CtrlKey::DEF_KEYUP){
+	/*if(k.key >= CtrlKey::DEF_KEYUP){
 		//忽略特殊按鍵放開事件
 		return;
 	}
-	/*特殊按鍵放開
+	//*特殊按鍵放開*/
 	if(k.key == CtrlKey::ATK1_KEYUP){
 		//printf("ATK1_KEYUP\n");
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
@@ -630,8 +696,21 @@ void Hero::PushKey( KeyInfo k )
 	}
 	else{
 		m_KeyQue.push_back(k);
-		//若是上下左右，將與其相反方向的按鍵事件取消
-		if(k.key == CtrlKey::UP){
+		//若非方向鍵，將判斷非方向鍵之值歸零
+		if(k.key == CtrlKey::ATK1){
+			d_key[0] = false;
+		}
+		else if(k.key == CtrlKey::ATK2){
+			d_key[1] = false;
+		}
+		else if(k.key == CtrlKey::JUMP){
+			d_key[2] = false;
+		}
+		else if(k.key == CtrlKey::DEF){
+			d_key[3] = false;
+		}
+		//若是方向鍵，將與其相反方向的按鍵事件取消
+		else if(k.key == CtrlKey::UP){
 			for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 				if(i->key == CtrlKey::DOWN){
 					m_KeyQue.erase(i);

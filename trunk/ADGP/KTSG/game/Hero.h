@@ -13,6 +13,7 @@
 #include "HeroAction.h"
 #include <string>
 #include <cmath>
+#include <bitset>
 
 #define KEYLIFE_AFTER_KEYUP 120
 #define FRICTION 0.5f
@@ -55,7 +56,7 @@ private:
 	int		m_FrameID;//Current Frame ID
 
 	int		m_Texture;//Current Texture ID
-	int             m_PicID;
+	int     m_PicID;
 	int		m_PicW;//W截切次數
 	int		m_PicH;//H截切次數
 	int		m_PicX;
@@ -65,8 +66,9 @@ private:
 	Vector3		m_Vel;
 	Bodys		m_Bodys;
 	float		m_Angle;
-	bool		m_FaceSide;//true 右, false 左
-	int         d_run;     //判定跑步用，右正左負
+	bool		m_FaceSide; //true 右, false 左
+	int         d_run;		//判定跑步用，右正左負
+	std::bitset<4> d_key;	//判斷非方向按鍵作用與否，1表示已作用，0則否，0:atk1, 1:atk2, 2:j, 3:d
 
 	int		m_Team;//0為不分
 	int		m_MaxRecoverHP;//最大恢復血量
