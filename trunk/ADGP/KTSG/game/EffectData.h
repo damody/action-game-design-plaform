@@ -7,6 +7,7 @@ struct EffectType
 {
 	enum e
 	{
+		NONE,
 		FIRE,
 		FREEZE,
 		POISON

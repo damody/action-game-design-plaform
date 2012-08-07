@@ -17,15 +17,17 @@
 
 class InitDirect3DApp : public D3DApp
 {
+/*
 //HolyK
 private:
 	EffectManager* m_Effect_Manager;
 	TestRenderEffect* m_TestRenderEffect;
 	Texture_Sptr m_TestTexture;
-	int m_TestTextureID;
+	int m_TestTextureID;*/
 	void TestRender();
 	void TestViewEffect();
 //HolyK
+
 public:
 	InitDirect3DApp();
 	~InitDirect3DApp();

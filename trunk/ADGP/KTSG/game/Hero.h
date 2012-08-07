@@ -7,7 +7,7 @@
 #include "algo\nway.h"
 #include "ball\straight.h"
 #include "common\shared_ptr.h"
-
+#include "game\EffectData.h"
 #include "CtrlKey.h"
 #include "HeroInfo.h"
 #include "HeroAction.h"
@@ -72,6 +72,7 @@ private:
 	int		m_MaxRecoverHP;//³Ì¤j«ì´_¦å¶q
 	int		m_HP;
 	int		m_MP;
+	EffectType::e   m_Effect;
 	Record_Sptr     m_Record;
 
 	KeyQueue	m_KeyQue;
@@ -126,6 +127,7 @@ public:
 	void SetRecord(Record_Sptr r);
 	void SetTeam(int team);
 	void SetPosition(Vector3 pos);
+	void SetEffect(EffectType::e effect);
 	void PushKey(KeyInfo k);
 	
 protected:

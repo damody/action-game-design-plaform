@@ -1,4 +1,5 @@
 #include "Effect.h"
+#include "global.h"
 #include <iostream>
 Effect::Effect(void)
 {
@@ -154,32 +155,46 @@ ID3D11ShaderResourceView* Effect::GetTexture()
 
 
 //EffectManager
-EffectManager::EffectManager():m_Page(0){
+EffectManager::EffectManager():m_Page(0),m_Size(4){
 	//初始化 Effect
 }
-EffectManager::EffectManager(HWND hwnd):m_Page(0){
+EffectManager::EffectManager(HWND hwnd):m_Page(0),m_Size(4){
 	//初始化 Effect
 	//test
-	for(int i=0;i<4;i++)
+	for(int i=0;i<m_Size;i++)
 	{
-		m_Effect.push_back(Effect());
 		m_Effect[i].Initialize(hwnd);
 	}
 		
 }
 
-void EffectManager::CreateEffect( EffectType::e type,int textureID,Vector4& picpos )
+int EffectManager::CreateEffect( EffectType::e type,int textureID,Vector4* picpos )
 {
 	EffectData ed;
 	ed.m_TextureID = textureID;
-	ed.m_PicPos    = picpos;
-	if(!m_Effect[m_Page%m_Effect.size()].CreateEffect(type,ed))
+	ed.m_PicPos    = *picpos;
+	if(!m_Effect[m_Page%m_Size].CreateEffect(type,ed))
 	{
 		m_Page++;
-		m_Effect[m_Page%m_Effect.size()].Clear();
-		m_Effect[m_Page%m_Effect.size()].CreateEffect(type,ed);
+		m_Effect[m_Page%m_Size].Clear();
+		m_Effect[m_Page%m_Size].CreateEffect(type,ed);
 	}
-	//textureID = m_Effect[m_Page%3].GetTextureID();
-	//textureID = ed.m_TextureID;
-	picpos	  = ed.m_PicPos;
+	*picpos = Vector4(ed.m_Pos.x,ed.m_Pos.y,(PIC_W/PASTE_W),(PIC_H/PASTE_H));
+	return m_Effect[m_Page%m_Size].GetTextureID();
+}
+
+void EffectManager::OnResize( int W,int H )
+{
+	m_ScreamH=H;
+	m_ScreamW=W;
+}
+
+void EffectManager::Render()
+{
+
+}
+
+void EffectManager::UpDate()
+{
+
 }

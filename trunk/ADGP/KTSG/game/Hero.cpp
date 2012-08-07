@@ -26,7 +26,7 @@ Hero::Hero()
 }
 
 Hero::Hero( std::string h ):
-hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(true),m_FrameID(0),m_Texture(0),m_PicID(0),m_PicW(0),m_PicH(0),m_PicX(0),m_PicY(0),d_run(0)
+hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(true),m_FrameID(0),m_Texture(0),m_PicID(0),m_PicW(0),m_PicH(0),m_PicX(0),m_PicY(0),d_run(0),m_Effect(EffectType::NONE)
 {
 	m_HeroInfo = g_HeroInfoMG.GetHeroInfo(hero);
 	if(m_HeroInfo.get())
@@ -190,12 +190,20 @@ void Hero::NextFrame()
 	m_Frame = f->m_NextFrameName;
 	m_FrameID = f->m_NextFrameIndex;
 	f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
-
-	m_PicID = f->m_PictureID;
-	m_PicX = f->m_PictureX;
-	m_PicY = f->m_PictureY;
-	m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
-	m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
+	if(m_Effect != EffectType::NONE){
+		Vector4 picpos = Vector4(f->m_PictureX,f->m_PictureY,m_HeroInfo->m_PictureDatas[m_PicID].m_Column,m_HeroInfo->m_PictureDatas[m_PicID].m_Row);
+		m_PicID = g_EffectMG->CreateEffect(m_Effect,f->m_PictureID,&picpos);
+		m_PicX = picpos.x;
+		m_PicY = picpos.y;
+		m_PicW = picpos.z;
+		m_PicH = picpos.w;
+	}else{
+		m_PicID = f->m_PictureID;
+		m_PicX = f->m_PictureX;
+		m_PicY = f->m_PictureY;
+		m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
+		m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
+	}
 	m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
 	m_Action = f->m_HeroAction;
 	m_TimeTik = f->m_Wait;
@@ -674,6 +682,12 @@ int Hero::Team()
 {
 	return m_Team;
 }
+
+void Hero::SetEffect( EffectType::e effect )
+{
+	m_Effect = effect;
+}
+
 
 
 bool SortHero( Hero_RawPtr a,Hero_RawPtr b )

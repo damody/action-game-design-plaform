@@ -5,6 +5,7 @@ HeroManager	g_HeroMG;
 ObjectInfoMG	g_ObjectInfoMG;
 ObjectMG	g_ObjectMG;
 BGManager	g_BGManager;
+EffectManager*  g_EffectMG;
 ID3D11Device*	g_d3dDevice;
 ID3D11DeviceContext* g_DeviceContext;
 WavPlayer	g_WavPlayer;	

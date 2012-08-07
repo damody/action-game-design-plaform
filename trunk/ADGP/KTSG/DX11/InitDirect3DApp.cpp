@@ -36,6 +36,8 @@ void InitDirect3DApp::initApp()
 	LoadBlend();
 	m_Camera = Camera_Sptr(new Camera((float)mClientWidth,0,1000,800,0,45));
 	g_WavPlayer.Initialize(getMainWnd());
+	g_EffectMG = new EffectManager(m_hMainWnd);
+
 	LoadHero();
 	buildPointFX();
 	OnResize();
@@ -45,6 +47,7 @@ void InitDirect3DApp::initApp()
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
 
+/*
 	//HolyK
 	g_TestViewEffect = false;
 	//init m_Effect_Manager
@@ -65,12 +68,12 @@ void InitDirect3DApp::initApp()
 	}
 	
 	//m_Effect_Manager->CreateEffect(EffectType::FIRE,m_TestTextureID,Vector4(2.0f,5.0f,10.0f,7.0f));
-	//HolyK
+	//HolyK*/
 }
 //HolyK
 void InitDirect3DApp::TestRender()
 {
-	static float frameTime = 0.0f;
+	/*static float frameTime = 0.0f;
 	frameTime += 0.001f;
 	if(frameTime > 1000.0f)
 		frameTime = 0.0f;
@@ -91,8 +94,9 @@ void InitDirect3DApp::TestRender()
 	g_DeviceContext->RSSetViewports( 1, &vp );
 	g_DeviceContext->OMSetRenderTargets( 1, &m_RenderTargetView, 0 );
 	//render effect
-	m_TestRenderEffect->Render(1,m_Effect_Manager->m_Effect[0].GetTexture());
+	m_TestRenderEffect->Render(1,m_Effect_Manager->m_Effect[0].GetTexture());*/
 }
+
 void InitDirect3DApp::TestViewEffect()
 {
 	if (InputStateS::instance().isKeyDown(KEY_V))
@@ -108,7 +112,7 @@ void InitDirect3DApp::TestViewEffect()
 
 void InitDirect3DApp::UpdateScene(float dt)
 {
-	//HolyK
+	/*//HolyK
 	if(g_TestViewEffect)
 	{
 		PrintInfo();
@@ -118,7 +122,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 		m_SwapChain->Present(0, 0);
 		return ;
 	}
-	//HolyK
+	//HolyK*/
 
 	m_DXUT_UI->UpdataUI(dt);
 	m_SwapChain->Present(0, 0);

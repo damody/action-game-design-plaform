@@ -15,6 +15,7 @@ extern HeroManager    g_HeroMG;
 extern ObjectInfoMG   g_ObjectInfoMG;
 extern ObjectMG	      g_ObjectMG;
 extern BGManager      g_BGManager;
+extern EffectManager*  g_EffectMG;
 extern ID3D11Device*  g_d3dDevice;
 extern ID3D11DeviceContext* g_DeviceContext;
 extern WavPlayer g_WavPlayer;

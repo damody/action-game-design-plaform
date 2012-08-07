@@ -2,7 +2,6 @@
 #include<d3d11.h>
 #include<d3dx11.h>
 #include<DxErr.h>
-#include "global.h"
 #include "DX11/TextureManager.h"
 #include "game/EffectData.h"
 #include "game/FireShaderClass.h"
@@ -47,16 +46,20 @@ private:
 
 class EffectManager
 {
-public:
-	std::vector<Effect> m_Effect;
-	//Effect m_Effect[4];
+private:
+	Effect  m_Effect[4];
+	int	m_Size;
 	int	m_Page;
+
+	int	m_ScreamW,m_ScreamH;
 public:
 	EffectManager(void);
 	EffectManager(HWND hwnd);
 	~EffectManager(void);
 
-	void CreateEffect(EffectType::e type,int textureID,Vector4& picpos);//直接改texture & picpos回傳
+	int CreateEffect(EffectType::e type,int textureID,Vector4 *picpos);//直接改texture & picpos回傳
 
 	void Render();
+	void UpDate();
+	void OnResize(int W,int H);
 };
