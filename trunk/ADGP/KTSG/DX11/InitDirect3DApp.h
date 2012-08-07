@@ -17,13 +17,12 @@
 
 class InitDirect3DApp : public D3DApp
 {
-/*
 //HolyK
 private:
-	EffectManager* m_Effect_Manager;
+	//EffectManager* m_Effect_Manager;
 	TestRenderEffect* m_TestRenderEffect;
-	Texture_Sptr m_TestTexture;
-	int m_TestTextureID;*/
+	//Texture_Sptr m_TestTexture;
+	//int m_TestTextureID;
 	void TestRender();
 	void TestViewEffect();
 //HolyK
@@ -147,7 +146,7 @@ private:
 	void TestWavPlayer();
 	void TestCamera();
 	void TestChee();
-	void TextFire();
+	void TestFire();
 };
 
 struct CD3D11_BLEND_DESCX : public D3D11_BLEND_DESC

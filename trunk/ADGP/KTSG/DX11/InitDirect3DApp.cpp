@@ -47,28 +47,17 @@ void InitDirect3DApp::initApp()
 	//m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	buildPoint();
 
-/*
+
 	//HolyK
 	g_TestViewEffect = false;
 	//init m_Effect_Manager
-	m_Effect_Manager = 0;
-	m_Effect_Manager = new EffectManager(m_hMainWnd);
 	//init m_TestRenderEffect
 	m_TestRenderEffect = 0;
 	m_TestRenderEffect = new TestRenderEffect();
 	m_TestRenderEffect->Initialize(g_d3dDevice,g_DeviceContext,L"shader\\TestRenderEffect.fx",m_hMainWnd);
-	//creat test texture
-	m_TestTexture = Texture_Sptr(new Texture("media\\davis_0_.png"));
-	//creat effect vertex
-	m_TestTextureID = g_TextureManager.AddTexture("TestTexture",m_TestTexture);
-	for(float i=0;i<25.5;i+=0.01f)
-	{
-		m_Effect_Manager->CreateEffect(EffectType::FIRE,m_TestTextureID,Vector4(1.0f+i,1.0f+i,10.0f,7.0f));
-		//m_Effect_Manager->CreateEffect(EffectType::FIRE,m_TestTextureID,Vector4(2.0f,5.0f,10.0f,7.0f));
-	}
 	
 	//m_Effect_Manager->CreateEffect(EffectType::FIRE,m_TestTextureID,Vector4(2.0f,5.0f,10.0f,7.0f));
-	//HolyK*/
+	//HolyK
 }
 //HolyK
 void InitDirect3DApp::TestRender()
@@ -92,9 +81,9 @@ void InitDirect3DApp::TestRender()
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
 	g_DeviceContext->RSSetViewports( 1, &vp );
-	g_DeviceContext->OMSetRenderTargets( 1, &m_RenderTargetView, 0 );
+	g_DeviceContext->OMSetRenderTargets( 1, &m_RenderTargetView, 0 );*/
 	//render effect
-	m_TestRenderEffect->Render(1,m_Effect_Manager->m_Effect[0].GetTexture());*/
+	m_TestRenderEffect->Render(1,g_EffectMG->m_Effect[0]->GetTexture());
 }
 
 void InitDirect3DApp::TestViewEffect()
@@ -112,7 +101,7 @@ void InitDirect3DApp::TestViewEffect()
 
 void InitDirect3DApp::UpdateScene(float dt)
 {
-	/*//HolyK
+	//HolyK
 	if(g_TestViewEffect)
 	{
 		PrintInfo();
@@ -122,7 +111,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 		m_SwapChain->Present(0, 0);
 		return ;
 	}
-	//HolyK*/
+	//HolyK
 
 	m_DXUT_UI->UpdataUI(dt);
 	m_SwapChain->Present(0, 0);
@@ -687,6 +676,7 @@ int InitDirect3DApp::UpdateInput()
 	TestWavPlayer();
 	//HolyK
 	TestViewEffect();
+	TestFire();
 	//HolyK
 	
 	return 0;
@@ -1060,7 +1050,7 @@ void InitDirect3DApp::TestWavPlayer()
 	
 }
 
-void InitDirect3DApp::TextFire()
+void InitDirect3DApp::TestFire()
 {
 	if (InputStateS::instance().isKeyPress(KEY_D))
 	{

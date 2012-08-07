@@ -46,7 +46,7 @@ private:
 
 class EffectManager
 {
-private:
+public:
 	Effect*  m_Effect[4];
 	int	m_Size;
 	int	m_Page;
