@@ -37,7 +37,6 @@ void InitDirect3DApp::initApp()
 	m_Camera = Camera_Sptr(new Camera((float)mClientWidth,0,1000,800,0,45));
 	g_WavPlayer.Initialize(getMainWnd());
 	g_EffectMG = new EffectManager(m_hMainWnd);
-
 	LoadHero();
 	buildPointFX();
 	OnResize();
@@ -55,37 +54,13 @@ void InitDirect3DApp::initApp()
 	m_TestRenderEffect = 0;
 	m_TestRenderEffect = new TestRenderEffect();
 	m_TestRenderEffect->Initialize(g_d3dDevice,g_DeviceContext,L"shader\\TestRenderEffect.fx",m_hMainWnd);
-	
-	//m_Effect_Manager->CreateEffect(EffectType::FIRE,m_TestTextureID,Vector4(2.0f,5.0f,10.0f,7.0f));
 	//HolyK
 }
 //HolyK
 void InitDirect3DApp::TestRender()
 {
-	/*static float frameTime = 0.0f;
-	frameTime += 0.001f;
-	if(frameTime > 1000.0f)
-		frameTime = 0.0f;
-	for(int i=0;i<m_Effect_Manager->m_Effect.size();i++)
-	{
-		m_Effect_Manager->m_Effect[i].Updata(frameTime);
-		m_Effect_Manager->m_Effect[i].Render();
-	}
-	
-	//set to render to backbuffer
-	D3D11_VIEWPORT vp;
-	vp.Width = mClientWidth;
-	vp.Height = mClientHeight;
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
-	g_DeviceContext->RSSetViewports( 1, &vp );
-	g_DeviceContext->OMSetRenderTargets( 1, &m_RenderTargetView, 0 );*/
-	//render effect
 	m_TestRenderEffect->Render(1,g_EffectMG->m_Effect[0]->GetTexture());
 }
-
 void InitDirect3DApp::TestViewEffect()
 {
 	if (InputStateS::instance().isKeyDown(KEY_V))
@@ -104,9 +79,6 @@ void InitDirect3DApp::UpdateScene(float dt)
 	//HolyK
 	if(g_TestViewEffect)
 	{
-		g_Time++;
-		if(g_Time>10000)
-			g_Time = 0;
 		if(g_EffectMG != NULL)g_EffectMG->Update(m_RenderTargetView);
 		PrintInfo();
 		D3DApp::DrawScene(); // clear window
