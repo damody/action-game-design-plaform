@@ -573,7 +573,7 @@ frame.punch[2] =
 
 frame.punch[3] =
 {
-   pic_id = 0, pic_x = 3, pic_y = 2, state = Action.Punch, wait = 2, next = {"default", 0},
+   pic_id = 0, pic_x = 4, pic_y = 2, state = Action.Punch, wait = 2, next = {"default", 0},
    dvx = 2, dvy = 0,  dvz = 0,  centerx = 41,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -581,6 +581,91 @@ frame.punch[3] =
    attack={},
    body = {
    {kind = 0, points = {{29,-10}, {29,-80}, {61,-80}, {61,-10}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.kick[0] =
+{
+   pic_id = 0, pic_x = 5, pic_y = 2, state = Action.Kick, wait = 2, next = {"kick", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 42,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 2--[[撿武器]], effect = Effect.End,
+		points = {{25,-58}, {25,-79}, {62,-79}, {62,-58}}, zwidth = 8,
+		dvx = 0, dvy = 0, dvz = 0, fall = 0, breakDefend = 0,
+		arest = 0--[[擊中停頓時間]], reAttackRest = 1--[[再度判定時間]]},
+		injury = 0, strength = 0,
+	},
+   body = {
+   {kind = 0, points = {{26,-12}, {26,-80}, {53,-80}, {53,-12}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.kick[1] =
+{
+   pic_id = 0, pic_x = 6, pic_y = 2, state = Action.Kick, wait = 2, next = {"kick", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 24,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{23,-38}, {23,-53}, {64,-53}, {64,-38}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 0, breakDefend = 16,
+		arest = 8--[[擊中停頓時間]], reAttackRest = 20--[[再度判定時間]]},
+		injury = 20, strength = 10,
+	},
+   body = {
+   {kind = 0, points = {{13,-11}, {13,-78}, {45,-78}, {45,-11}}, zwidth = 8}
+   }
+
+   --sound: data\007.wav
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.kick[2] =
+{
+   pic_id = 0, pic_x = 7, pic_y = 2, state = Action.Kick, wait = 2, next = {"kick", 3},
+   dvx = 2, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{17,-15}, {17,-79}, {54,-79}, {54,-15}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.kick[3] =
+{
+   pic_id = 0, pic_x = 8, pic_y = 2, state = Action.Kick, wait = 2, next = {"default", 0},
+   dvx = 2, dvy = 0,  dvz = 0,  centerx = 41,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{28,-9}, {28,-81}, {60,-81}, {60,-9}}, zwidth = 8}
    }
 
    --wpoint:
