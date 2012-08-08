@@ -51,13 +51,13 @@ enum e
 	//跑腳
 	RUN_KICK,
 	//前空翻
-	FORWARD_FLY_ROWING,
+	FRONT_FLIP,
 	//後空翻
-	BACKWARD_FLY_ROWING,
+	BACK_FLIP,
 	//前滾
-	FORWARD_ROWING,
+	FORWARD_ROllING,
 	//後滾
-	BACKWARD_ROWING,
+	BACKWARD_ROllING,
 	//防禦
 	DEFEND,
 	//反擊拳

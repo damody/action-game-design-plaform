@@ -38,9 +38,21 @@ frame =
 	dash_front   = {},
 	dash_back    = {},
 	crouch       = {},
-
 	punch        = {},
 	kick         = {},
+
+	super_punch  = {},
+	super_kick   = {},
+	jump_punch   = {},
+	jump_kick    = {},
+	run_punch    = {},
+	run_kick     = {},
+	dash_punch   = {},
+	dash_attack  = {},
+
+	front_flip   = {},
+	back_flip    = {},
+	rolling      = {},
 
 	defend       = {},
 	ball         = {},
@@ -515,7 +527,7 @@ frame.punch[0] =
 		{kind = 2--[[撿武器]], effect = Effect.End,
 		points = {{27,-57}, {27,-82}, {63,-82}, {63,-57}}, zwidth = 8,
 		dvx = 0, dvy = 0, dvz = 0, fall = 0, breakDefend = 0,
-		arest = 0--[[擊中停頓時間]], reAttackRest = 1--[[再度判定時間]]},
+		arest = 0, reAttackRest = 1},
 		injury = 0, strength = 0,
 	},
    body = {
@@ -539,7 +551,7 @@ frame.punch[1] =
 		{kind = 0--[[使用effect]], effect = Effect.Punch,
 		points = {{21,-31}, {21,-49}, {64,-49}, {64,-31}}, zwidth = 8,
 		dvx = 2, dvy = 0, dvz = 0, fall = 0, breakDefend = 16,
-		arest = 8--[[擊中停頓時間]], reAttackRest = 20--[[再度判定時間]]},
+		arest = 8, reAttackRest = 20},
 		injury = 20, strength = 10,
 	},
    body = {
@@ -589,6 +601,126 @@ frame.punch[3] =
 
 }
 
+frame.super_punch[0] =
+{
+   pic_id = 0, pic_x = 8, pic_y = 7, state = Action.SuperPunch, wait = 4, next = {"super_punch", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{25,-16}, {25,-77}, {55,-77}, {55,-16}}, zwidth = 8}
+   }
+
+   --sound: data\007.wav
+}
+
+frame.super_punch[1] =
+{
+   pic_id = 0, pic_x = 9, pic_y = 7, state = Action.SuperPunch, wait = 2, next = {"super_punch", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 23,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{20,-14}, {20,-80}, {54,-80}, {54,-14}}, zwidth = 8}
+   }
+}
+
+frame.super_punch[2] =
+{
+   pic_id = 0, pic_x = 9, pic_y = 1, state = Action.SuperPunch, wait = 4, next = {"super_punch", 3},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{40,-5}, {40,-50}, {75,-50}, {75,-5}}, zwidth = 8,
+		dvx = 3, dvy = 10, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 30},
+		injury = 40, strength = 15,
+	},
+   body = {
+   {kind = 0, points = {{26,-12}, {26,-78}, {61,-78}, {61,-12}}, zwidth = 8}
+   }
+}
+
+frame.super_punch[3] =
+{
+   pic_id = 0, pic_x = 10, pic_y = 1, state = Action.SuperPunch, wait = 2, next = {"super_punch", 4},
+   dvx = 5, dvy = 0,  dvz = 0,  centerx = 27,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{23,-10}, {23,-79}, {52,-79}, {52,-10}}, zwidth = 8}
+   }
+}
+
+frame.super_punch[4] =
+{
+   pic_id = 0, pic_x = 10, pic_y = 2, state = Action.SuperPunch, wait = 4, next = {"super_punch", 5},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{18,-15}, {18,-80}, {59,-80}, {59,-15}}, zwidth = 8}
+   }
+}
+
+frame.super_punch[5] =
+{
+   pic_id = 0, pic_x = 10, pic_y = 3, state = Action.SuperPunch, wait = 2, next = {"super_punch", 6},
+   dvx = 6, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{24,-10}, {24,-80}, {58,-80}, {58,-10}}, zwidth = 8}
+   }
+
+   --sound: data\007.wav
+}
+
+frame.super_punch[6] =
+{
+   pic_id = 0, pic_x = 10, pic_y = 4, state = Action.SuperPunch, wait = 4, next = {"super_punch", 7},
+   dvx = 1, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{40,-4}, {40,-48}, {72,-48}, {72,-4}}, zwidth = 8,
+		dvx = 7, dvy = 13, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 30},
+		injury = 40, strength = 15,
+	},
+   body = {
+   {kind = 0, points = {{29,-6}, {29,-78}, {52,-78}, {52,-6}}, zwidth = 8}
+   }
+}
+
+frame.super_punch[7] =
+{
+   pic_id = 0, pic_x = 10, pic_y = 5, state = Action.SuperPunch, wait = 4, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {"j", "jump_hit", 0},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{22,-13}, {22,-81}, {56,-81}, {56,-13}}, zwidth = 8}
+   }
+}
+
 frame.kick[0] =
 {
    pic_id = 0, pic_x = 5, pic_y = 2, state = Action.Kick, wait = 2, next = {"kick", 1},
@@ -600,7 +732,7 @@ frame.kick[0] =
 		{kind = 2--[[撿武器]], effect = Effect.End,
 		points = {{25,-58}, {25,-79}, {62,-79}, {62,-58}}, zwidth = 8,
 		dvx = 0, dvy = 0, dvz = 0, fall = 0, breakDefend = 0,
-		arest = 0--[[擊中停頓時間]], reAttackRest = 1--[[再度判定時間]]},
+		arest = 0, reAttackRest = 1},
 		injury = 0, strength = 0,
 	},
    body = {
@@ -624,7 +756,7 @@ frame.kick[1] =
 		{kind = 0--[[使用effect]], effect = Effect.Punch,
 		points = {{23,-38}, {23,-53}, {64,-53}, {64,-38}}, zwidth = 8,
 		dvx = 2, dvy = 0, dvz = 0, fall = 0, breakDefend = 16,
-		arest = 8--[[擊中停頓時間]], reAttackRest = 20--[[再度判定時間]]},
+		arest = 8, reAttackRest = 20},
 		injury = 20, strength = 10,
 	},
    body = {
