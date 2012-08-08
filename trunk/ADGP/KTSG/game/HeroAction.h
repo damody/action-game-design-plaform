@@ -34,30 +34,42 @@ enum e
 	HEAVY_WEAPON_JUMP_THROW,
 	//喝飲料
 	DRINK,
-	//拳
-	PUNCH,
-	//腳
-	KICK,
-	//終結拳
-	SUPER_PUNCH,
-	//終結腳
-	SUPER_KICK,
-	//跳拳
-	JUMP_PUNCH,
-	//跳腳
-	JUMP_KICK,
-	//跑拳
-	RUN_PUNCH,
-	//跑腳
-	RUN_KICK,
-	//前空翻
-	FRONT_FLIP,
-	//後空翻
-	BACK_FLIP,
-	//前滾
-	FORWARD_ROllING,
-	//後滾
-	BACKWARD_ROllING,
+
+	//預備攻擊
+	BEFORE_ATTACK,
+	//攻擊
+	ATTACKING,
+	//收招
+	AFTER_ATTACK,
+	//預備終結技
+	BEFORE_SUPER_ATTACK,
+	//終結技
+	SUPER_ATTACKING,
+	//收終結技
+	AFTER_SUPER_ATTACK,
+	//預備跳攻
+	BEFORE_JUMP_ATTACK,
+	//跳攻
+	JUMP_ATTACKING,
+	//收跳攻
+	AFTER_JUMP_ATTACK,
+	//預備跑攻
+	BEFORE_RUN_ATTACK,
+	//跑攻
+	RUN_ATTACKING,
+	//收跑攻
+	AFTER_RUN_ATTACK,
+	//預備衝跳攻
+	BEFORE_DASH_ATTACK,
+	//衝跳攻
+	DASH_ATTACKING,
+	//收衝跳攻
+	AFTER_DASH_ATTACK,
+	//空翻
+	FLIP,
+	//滾
+	ROllING,
+
 	//防禦
 	DEFEND,
 	//反擊拳
