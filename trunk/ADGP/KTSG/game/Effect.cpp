@@ -39,34 +39,12 @@ bool Effect::Initialize(HWND hwnd)
 
 	return true;
 }
-void Effect::SetViewport()
-{
-	D3D11_VIEWPORT vp;
-	vp.Width = PIC_W;
-	vp.Height = PIC_H;
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
-	g_DeviceContext->RSSetViewports( 1, &vp );
-}
-void Effect::SetViewport(float w,float h)
-{
-	D3D11_VIEWPORT vp;
-	vp.Width = w;
-	vp.Height = h;
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
-	g_DeviceContext->RSSetViewports( 1, &vp );
-}
 void Effect::Updata( float dt )
 {
 	if(!m_FireEffect.empty())
 	{
-	m_FireShader->UpdateFrameTime(dt);
-	m_FireShader->CreatVertex(m_FireEffect.begin(),m_FireEffect.end());
+		m_FireShader->UpdateFrameTime(dt);
+		m_FireShader->CreatVertex(m_FireEffect.begin(),m_FireEffect.end());
 	}
 	
 }
@@ -140,10 +118,8 @@ void Effect::Render()
 {
 	if(g_DeviceContext!=NULL && g_DeviceContext!=NULL)
 	{
-		SetViewport();
-
 		m_RenderTexture->SetRenderTarget(g_DeviceContext,0);
-		m_RenderTexture->ClearRenderTarget(g_DeviceContext,0,0.0f,0.0f,0.0f,0.0f);
+		m_RenderTexture->ClearRenderTarget(g_DeviceContext,NULL,0.0f,0.0f,0.0f,0.0f);
 
 		RenderFire();
 	}
@@ -203,24 +179,29 @@ int EffectManager::CreateEffect( EffectType::e type,int textureID,D3DXVECTOR4* p
 
 void EffectManager::OnResize( int W,int H )
 {
-	m_ScreamH=H;
-	m_ScreamW=W;
+	m_ScreanH=H;
+	m_ScreanW=W;
 }
 
 void EffectManager::Update(ID3D11RenderTargetView* originRTV)
 {
+	//set viewport because every Effect's vp.w & vp.h are all the same
+	D3D11_VIEWPORT vp;
+	vp.Width = PIC_W;
+	vp.Height = PIC_H;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	g_DeviceContext->RSSetViewports( 1, &vp );
 	for(int i=0;i<m_Size;i++)
 	{
 		m_Effect[i]->Updata(g_Time * 0.01f);
 		m_Effect[i]->Render();
 	}
-	D3D11_VIEWPORT vp;
-	vp.Width = m_ScreamW;
-	vp.Height = m_ScreamH;
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
+	//set viewport to screan's width & height
+	vp.Width = m_ScreanW;
+	vp.Height = m_ScreanH;
 	g_DeviceContext->RSSetViewports( 1, &vp );
 	g_DeviceContext->OMSetRenderTargets(1, &originRTV, 0);
 }

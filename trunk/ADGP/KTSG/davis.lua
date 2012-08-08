@@ -38,9 +38,21 @@ frame =
 	dash_front   = {},
 	dash_back    = {},
 	crouch       = {},
-
 	punch        = {},
 	kick         = {},
+
+	super_punch  = {},
+	super_kick   = {},
+	jump_punch   = {},
+	jump_kick    = {},
+	run_punch    = {},
+	run_kick     = {},
+	dash_punch   = {},
+	dash_attack  = {},
+
+	front_flip   = {},
+	back_flip    = {},
+	rolling      = {},
 
 	defend       = {},
 	ball         = {},
@@ -502,6 +514,388 @@ frame.crouch[1] =
    --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
    --wpoint_end:
 
+}
+
+frame.punch[0] =
+{
+   pic_id = 0, pic_x = 1, pic_y = 2, state = Action.BeforeAttack, wait = 2, next = {"punch", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 42,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 2--[[撿武器]], effect = Effect.End,
+		points = {{27,-57}, {27,-82}, {63,-82}, {63,-57}}, zwidth = 8,
+		dvx = 0, dvy = 0, dvz = 0, fall = 0, breakDefend = 0,
+		arest = 0, reAttackRest = 1},
+		injury = 0, strength = 0,
+	},
+   body = {
+   {kind = 0, points = {{28,-12}, {28,-82}, {61,-82}, {61,-12}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.punch[1] =
+{
+   pic_id = 0, pic_x = 2, pic_y = 2, state = Action.Attacking, wait = 2, next = {"punch", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 23,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{21,-31}, {21,-49}, {64,-49}, {64,-31}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 0, breakDefend = 16,
+		arest = 8, reAttackRest = 20},
+		injury = 20, strength = 50,
+	},
+   body = {
+   {kind = 0, points = {{13,-11}, {13,-82}, {61,-82}, {61,-11}}, zwidth = 8}
+   }
+
+   --sound: data\007.wav
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.punch[2] =
+{
+   pic_id = 0, pic_x = 3, pic_y = 2, state = Action.AfterAttack, wait = 2, next = {"punch", 3},
+   dvx = 2, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{17,-9}, {17,-81}, {48,-81}, {48,-9}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.punch[3] =
+{
+   pic_id = 0, pic_x = 4, pic_y = 2, state = Action.AfterAttack, wait = 2, next = {"default", 0},
+   dvx = 2, dvy = 0,  dvz = 0,  centerx = 41,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{29,-10}, {29,-80}, {61,-80}, {61,-10}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.kick[0] =
+{
+   pic_id = 0, pic_x = 5, pic_y = 2, state = Action.BeforeAttack, wait = 2, next = {"kick", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 42,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 2--[[撿武器]], effect = Effect.End,
+		points = {{25,-58}, {25,-79}, {62,-79}, {62,-58}}, zwidth = 8,
+		dvx = 0, dvy = 0, dvz = 0, fall = 0, breakDefend = 0,
+		arest = 0, reAttackRest = 1},
+		injury = 0, strength = 0,
+	},
+   body = {
+   {kind = 0, points = {{26,-12}, {26,-80}, {53,-80}, {53,-12}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.kick[1] =
+{
+   pic_id = 0, pic_x = 6, pic_y = 2, state = Action.Attacking, wait = 2, next = {"kick", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 24,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{23,-38}, {23,-53}, {64,-53}, {64,-38}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 0, breakDefend = 16,
+		arest = 8, reAttackRest = 20},
+		injury = 20, strength = 50,
+	},
+   body = {
+   {kind = 0, points = {{13,-11}, {13,-78}, {45,-78}, {45,-11}}, zwidth = 8}
+   }
+
+   --sound: data\007.wav
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.kick[2] =
+{
+   pic_id = 0, pic_x = 7, pic_y = 2, state = Action.AfterAttack, wait = 2, next = {"kick", 3},
+   dvx = 2, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{17,-15}, {17,-79}, {54,-79}, {54,-15}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.kick[3] =
+{
+   pic_id = 0, pic_x = 8, pic_y = 2, state = Action.AfterAttack, wait = 2, next = {"default", 0},
+   dvx = 2, dvy = 0,  dvz = 0,  centerx = 41,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{28,-9}, {28,-81}, {60,-81}, {60,-9}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.super_punch[0] =
+{
+   pic_id = 0, pic_x = 8, pic_y = 7, state = Action.BeforeSuperAttack, wait = 4, next = {"super_punch", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{25,-16}, {25,-77}, {55,-77}, {55,-16}}, zwidth = 8}
+   }
+
+   --sound: data\007.wav
+}
+
+frame.super_punch[1] =
+{
+   pic_id = 0, pic_x = 9, pic_y = 7, state = Action.BeforeSuperAttack, wait = 2, next = {"super_punch", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 23,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{20,-14}, {20,-80}, {54,-80}, {54,-14}}, zwidth = 8}
+   }
+}
+
+frame.super_punch[2] =
+{
+   pic_id = 0, pic_x = 9, pic_y = 1, state = Action.SuperAttacking, wait = 4, next = {"super_punch", 3},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{40,-5}, {40,-50}, {75,-50}, {75,-5}}, zwidth = 8,
+		dvx = 3, dvy = 10, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 30},
+		injury = 40, strength = 50,
+	},
+   body = {
+   {kind = 0, points = {{26,-12}, {26,-78}, {61,-78}, {61,-12}}, zwidth = 8}
+   }
+}
+
+frame.super_punch[3] =
+{
+   pic_id = 0, pic_x = 10, pic_y = 1, state = Action.AfterSuperAttack, wait = 2, next = {"super_punch", 4},
+   dvx = 5, dvy = 0,  dvz = 0,  centerx = 27,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{23,-10}, {23,-79}, {52,-79}, {52,-10}}, zwidth = 8}
+   }
+}
+
+frame.super_punch[4] =
+{
+   pic_id = 0, pic_x = 10, pic_y = 2, state = Action.BeforeSuperAttack, wait = 4, next = {"super_punch", 5},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{18,-15}, {18,-80}, {59,-80}, {59,-15}}, zwidth = 8}
+   }
+}
+
+frame.super_punch[5] =
+{
+   pic_id = 0, pic_x = 10, pic_y = 3, state = Action.BeforeSuperAttack, wait = 2, next = {"super_punch", 6},
+   dvx = 6, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{24,-10}, {24,-80}, {58,-80}, {58,-10}}, zwidth = 8}
+   }
+
+   --sound: data\007.wav
+}
+
+frame.super_punch[6] =
+{
+   pic_id = 0, pic_x = 10, pic_y = 4, state = Action.SuperAttacking, wait = 4, next = {"super_punch", 7},
+   dvx = 1, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{40,-4}, {40,-48}, {72,-48}, {72,-4}}, zwidth = 8,
+		dvx = 7, dvy = 13, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 30},
+		injury = 40, strength = 50,
+	},
+   body = {
+   {kind = 0, points = {{29,-6}, {29,-78}, {52,-78}, {52,-6}}, zwidth = 8}
+   }
+}
+
+frame.super_punch[7] =
+{
+   pic_id = 0, pic_x = 10, pic_y = 5, state = Action.AfterSuperAttack, wait = 4, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {"j", "jump_hit", 0},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{22,-13}, {22,-81}, {56,-81}, {56,-13}}, zwidth = 8}
+   }
+}
+
+frame.jump_kick[0] =
+{
+   pic_id = 1, pic_x = 3, pic_y = 7, state = Action.BeforeJumpAttack, wait = 1, next = {"jump_kick", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 36,  centery = 75,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{18,-10}, {18,-67}, {53,-67}, {53,-10}}, zwidth = 8}
+   }
+}
+
+frame.jump_kick[1] =
+{
+   pic_id = 1, pic_x = 4, pic_y = 7, state = Action.BeforeJumpAttack, wait = 1, next = {"jump_kick", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 74,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{22,-9}, {22,-65}, {57,-65}, {57,-9}}, zwidth = 8}
+   }
+
+   --sound: data\007.wav
+}
+
+frame.jump_kick[2] =
+{
+   pic_id = 1, pic_x = 5, pic_y = 7, state = Action.BeforeJumpAttack, wait = 1, next = {"jump_kick", 3},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 35,  centery = 75,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{24,-6}, {24,-66}, {53,-66}, {53,-6}}, zwidth = 8}
+   }
+}
+
+frame.jump_kick[3] =
+{
+   pic_id = 1, pic_x = 6, pic_y = 7, state = Action.JumpAttacking, wait = 6, next = {"jump_kick", 4},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 25,  centery = 70,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{17,-37}, {17,-54}, {69,-54}, {69,-37}}, zwidth = 8,
+		dvx = 9, dvy = 5, dvz = 0, fall = 70, breakDefend = 30,
+		arest = 8, reAttackRest = 30},
+		injury = 60, strength = 50,
+	},
+   body = {
+   {kind = 0, points = {{18,-10}, {18,-67}, {53,-67}, {53,-10}}, zwidth = 8}
+   }
+}
+
+frame.jump_kick[4] =
+{
+   pic_id = 1, pic_x = 7, pic_y = 7, state = Action.JumpAttacking, wait = 2, next = {"jump_kick", 5},
+   dvx = 0, dvy = 0, dvz = 0, centerx = 25, centery = 71, clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{32,-40}, {32,-56}, {68,-56}, {68,-40}}, zwidth = 8,
+		dvx = 9, dvy = 5, dvz = 0, fall = 70, breakDefend = 30,
+		arest = 8, reAttackRest = 30},
+		injury = 60, strength = 50,
+	},
+   body = {
+   {kind = 0, points = {{11,-5}, {11,-68}, {39,-68}, {39,-5}}, zwidth = 8}
+   }
+}
+
+frame.jump_kick[5] =
+{
+   pic_id = 1, pic_x = 8, pic_y = 7, state = Action.AfterJumpAttack, wait = 6, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 72,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{21,-6}, {21,-64}, {50,-64}, {50,-6}}, zwidth = 8}
+   }
 }
 
 frame.defend[0] =

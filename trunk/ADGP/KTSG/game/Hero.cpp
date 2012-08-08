@@ -80,12 +80,14 @@ void Hero::Update(float dt)
 		if( m_Action != HeroAction::UNIQUE_SKILL){
 			m_Position.y = 0;
 			m_Vel.y = 0;
-			if(ry > 0){
+			if(ry > 0 || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH){
 				//Frame §ï¨ìÃÛ
 				m_Frame = "crouch";
 				m_FrameID = m_Action == HeroAction::DASH ? 1 : 0 ;
 				FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
-
+				if(f->m_ClearKeyQueue){
+					m_KeyQue.clear();
+				}
 				m_PicID = f->m_PictureID;
 				m_PicX = f->m_PictureX;
 				m_PicY = f->m_PictureY;
@@ -123,7 +125,9 @@ void Hero::Update(float dt)
 			m_Frame = "in_the_air";
 			m_FrameID = 0;
 			FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
-
+			if(f->m_ClearKeyQueue){
+				m_KeyQue.clear();
+			}
 			m_PicID = f->m_PictureID;
 			m_PicX = f->m_PictureX;
 			m_PicY = f->m_PictureY;
@@ -194,6 +198,9 @@ void Hero::NextFrame()
 	m_Frame = f->m_NextFrameName;
 	m_FrameID = f->m_NextFrameIndex;
 	f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
+	if(f->m_ClearKeyQueue){
+			m_KeyQue.clear();
+		}
 	m_PicID = f->m_PictureID;
 	m_PicX = f->m_PictureX;
 	m_PicY = f->m_PictureY;
@@ -202,9 +209,9 @@ void Hero::NextFrame()
 	m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
 	m_Action = f->m_HeroAction;
 	m_TimeTik = f->m_Wait;
-	m_Vel.x +=f->m_DVX;
-	m_Vel.y +=f->m_DVY;
-	m_Vel.z +=f->m_DVZ;
+	m_Vel.x += f->m_DVX * (m_FaceSide ? 1 : -1);
+	m_Vel.y += f->m_DVY * (m_FaceSide ? 1 : -1);
+	m_Vel.z += f->m_DVZ * (m_FaceSide ? 1 : -1);
 
 	CreateEffect();
 }
@@ -259,11 +266,6 @@ bool Hero::ScanKeyQue()
 					m_FaceSide = true;
 				}
 			}
-			/*else if(i->key == CtrlKey::JUMP){
-				nFrame = "jump";
-				i = m_KeyQue.erase(i);
-				continue;
-			}//*/
 			i++;
 		}
 		//«D¤è¦V«öÁä§PÂ_
@@ -271,9 +273,13 @@ bool Hero::ScanKeyQue()
 		}
 		else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
 			//®±
+			nFrame = "punch";
+			d_key[0] = true;
 		}
 		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
 			//¸}
+			nFrame = "kick";
+			d_key[1] = true;
 		}
 		else if(m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
 			//¸õ
@@ -323,11 +329,6 @@ bool Hero::ScanKeyQue()
 					m_FaceSide = true;
 				}
 			}
-			/*else if(i->key == CtrlKey::JUMP){
-				nFrame = "jump";
-				i = m_KeyQue.erase(i);
-				continue;
-			}//*/
 			i++;
 		}
 		if(!nFrame.empty() )
@@ -340,9 +341,15 @@ bool Hero::ScanKeyQue()
 		}
 		else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
 			//®±
+			nFrame = "punch";
+			nFramID = 0;
+			d_key[0] = true;
 		}
 		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
 			//¸}
+			nFrame = "kick";
+			nFramID = 0;
+			d_key[1] = true;
 		}
 		else if(m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
 			//¸õ
@@ -384,20 +391,6 @@ bool Hero::ScanKeyQue()
 				d_run = 0;
 				break;
 			}
-			/*else if(i->key == CtrlKey::JUMP){
-				nFrame = "dash_front";
-				nFramID= 0;
-				m_Vel.y = m_HeroInfo->m_DashHeight;
-				m_Vel.x = m_FaceSide ? m_HeroInfo->m_DashDistance : -m_HeroInfo->m_DashDistance;
-				if(m_Vel.z == m_HeroInfo->m_RunningSpeedZ){
-					m_Vel.z = m_HeroInfo->m_DashDistanceZ;
-				}
-				else if(m_Vel.z == -m_HeroInfo->m_RunningSpeedZ){
-					m_Vel.z = -m_HeroInfo->m_DashDistanceZ;
-				}
-				i = m_KeyQue.erase(i);
-				break;
-			}//*/
 			i++;
 		}
 		//«D¤è¦V«öÁä§PÂ_
@@ -451,7 +444,39 @@ bool Hero::ScanKeyQue()
 			i++;
 		}
 	}
-	else if(m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DEFEND){
+	else if(m_Action == HeroAction::IN_THE_AIR){
+		while(i!=m_KeyQue.end()){
+			if(i->key == CtrlKey::LEFT ){
+				m_FaceSide = false;
+				break;
+			}
+			else if(i->key == CtrlKey::RIGHT ){
+				m_FaceSide = true;
+				break;
+			}
+			i++;
+		}
+		//«D¤è¦V«öÁä§PÂ_
+		if(m_KeyQue.empty()){
+		}
+		/*else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
+			//®±
+			nFrame = "jump_punch";
+			d_key[1] = true;
+		}//*/
+		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
+			//¸}
+			nFrame = "jump_kick";
+			d_key[1] = true;
+		}
+		/*else if(m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
+			//¸õ
+		}//*/
+		/*else if(m_KeyQue.back().key == CtrlKey::DEF  && !d_key[3]){
+			//¾×
+		}//*/
+	}
+	else if(m_Action == HeroAction::DEFEND){
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::LEFT ){
 				m_FaceSide = false;
@@ -513,11 +538,6 @@ bool Hero::ScanKeyQue()
 			else if(i->key == CtrlKey::DOWN ){
 				dz = -1;
 			}
-			/*else if(i->key == CtrlKey::JUMP){
-				dj = 1;
-				i = m_KeyQue.erase(i);
-				continue;
-			}//*/
 			i++;
 		}
 		if(!m_KeyQue.empty() && m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
@@ -579,7 +599,9 @@ bool Hero::ScanKeyQue()
 		m_Frame = nFrame;
 		m_FrameID = nFramID;
 		FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
-
+		if(f->m_ClearKeyQueue){
+			m_KeyQue.clear();
+		}
 		m_PicID = f->m_PictureID;
 		m_PicX = f->m_PictureX;
 		m_PicY = f->m_PictureY;
@@ -588,9 +610,9 @@ bool Hero::ScanKeyQue()
 		m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
 		m_Action = f->m_HeroAction;
 		m_TimeTik = f->m_Wait;
-		m_Vel.x +=f->m_DVX;
-		m_Vel.y +=f->m_DVY;
-		m_Vel.z +=f->m_DVZ;
+		m_Vel.x += f->m_DVX * (m_FaceSide ? 1 : -1);
+		m_Vel.y += f->m_DVY * (m_FaceSide ? 1 : -1);
+		m_Vel.z += f->m_DVZ * (m_FaceSide ? 1 : -1);
 
 		CreateEffect();
 		return true;
