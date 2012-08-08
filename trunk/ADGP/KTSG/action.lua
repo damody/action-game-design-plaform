@@ -73,6 +73,20 @@ Body = {}
 Body.Neck	= GetEnum()
 Body.Leg	= GetEnum()
 Body.Waist	= GetEnum()
+
+count = -1;
+CheeAction = {}
+Chee.Flying = GetEnum()
+Chee.Break = GetEnum()
+
+count = -1;
+WeaponAction = {}
+WeaponAction.OnFloor = GetEnum()
+WeaponAction.InAir = GetEnum()
+WeaponAction.OnHand = GetEnum()
+WeaponAction.Break = GetEnum()
+WeaponAction.Hit = GetEnum()
+WeaponAction.Throw = GetEnum()
 -- protect my table now
 Effect = protect_table (Effect)
 Body = protect_table (Body)

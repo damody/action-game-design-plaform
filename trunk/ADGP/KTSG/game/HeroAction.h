@@ -1,7 +1,7 @@
 #pragma once
 
 //必要的基本動作定義
-namespace HeroAction{
+struct HeroAction{
 enum e
 {
 	//站立
