@@ -504,6 +504,91 @@ frame.crouch[1] =
 
 }
 
+frame.punch[0] =
+{
+   pic_id = 0, pic_x = 1, pic_y = 2, state = Action.Punch, wait = 2, next = {"punch", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 42,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 2--[[撿武器]], effect = Effect.End,
+		points = {{27,-57}, {27,-82}, {63,-82}, {63,-57}}, zwidth = 8,
+		dvx = 0, dvy = 0, dvz = 0, fall = 0, breakDefend = 0,
+		arest = 0--[[擊中停頓時間]], reAttackRest = 1--[[再度判定時間]]},
+		injury = 0, strength = 0,
+	},
+   body = {
+   {kind = 0, points = {{28,-12}, {28,-82}, {61,-82}, {61,-12}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.punch[1] =
+{
+   pic_id = 0, pic_x = 2, pic_y = 2, state = Action.Punch, wait = 2, next = {"punch", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 23,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{21,-31}, {21,-49}, {64,-49}, {64,-31}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 0, breakDefend = 16,
+		arest = 8--[[擊中停頓時間]], reAttackRest = 20--[[再度判定時間]]},
+		injury = 20, strength = 10,
+	},
+   body = {
+   {kind = 0, points = {{13,-11}, {13,-82}, {61,-82}, {61,-11}}, zwidth = 8}
+   }
+
+   --sound: data\007.wav
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.punch[2] =
+{
+   pic_id = 0, pic_x = 3, pic_y = 2, state = Action.Punch, wait = 2, next = {"punch", 3},
+   dvx = 2, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{17,-9}, {17,-81}, {48,-81}, {48,-9}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
+frame.punch[3] =
+{
+   pic_id = 0, pic_x = 3, pic_y = 2, state = Action.Punch, wait = 2, next = {"default", 0},
+   dvx = 2, dvy = 0,  dvz = 0,  centerx = 41,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{29,-10}, {29,-80}, {61,-80}, {61,-10}}, zwidth = 8}
+   }
+
+   --wpoint:
+   --   kind: 1  x: 46  y: 64  weaponact: 35  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
+   --wpoint_end:
+
+}
+
 frame.defend[0] =
 {
    pic_id = 0, pic_x = 7, pic_y = 6, state = Action.Defend, wait = 24, next = {"default", 0},

@@ -34,14 +34,10 @@ enum e
 	HEAVY_WEAPON_JUMP_THROW,
 	//喝飲料
 	DRINK,
-	//輕拳
-	LIGHT_PUNCH,
-	//輕腳
-	LIGHT_KICK,
-	//重拳
-	HEAVY_PUNCH,
-	//重腳
-	HEAVY_KICK,
+	//拳
+	PUNCH,
+	//腳
+	KICK,
 	//終結拳
 	SUPER_PUNCH,
 	//終結腳
@@ -86,9 +82,12 @@ enum e
 	FORWARD_LYING,
 	//躺在地上
 	BACKWARD_LYING,
-	
 	//空中，方向鍵可改變面對方向
 	IN_THE_AIR,
+	//預備放招
+	BEFORE_SKILL,
+	//收招
+	AFTER_SKILL,
 	//空中絕招，方向鍵無效，無重力但會著地
 	AIR_SKILL,
 	//直線前進絕招，Z方向鍵有效
