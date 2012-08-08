@@ -63,8 +63,12 @@ void Effect::SetViewport(float w,float h)
 }
 void Effect::Updata( float dt )
 {
+	if(!m_FireEffect.empty())
+	{
 	m_FireShader->UpdateFrameTime(dt);
 	m_FireShader->CreatVertex(m_FireEffect.begin(),m_FireEffect.end());
+	}
+	
 }
 
 void Effect::SetFireParameters()
@@ -87,19 +91,17 @@ void Effect::SetFireParameters()
 bool Effect::CreateEffect( EffectType::e type,EffectData* ed )
 {
 	if(Overflow())return false;
-	if (!Check(type,ed))
-	{
-		ed->m_Pos.x = 1 + (m_SerialNum-1) % (PIC_W/PASTE_W);
-		ed->m_Pos.y = 1 + (m_SerialNum-1) / (PIC_W/PASTE_W);
+	
+	ed->m_Pos.x = 1 + (m_SerialNum-1) % (PIC_W/PASTE_W);
+	ed->m_Pos.y = 1 + (m_SerialNum-1) / (PIC_W/PASTE_W);
 
-		switch(type)
-		{
-		case	EffectType::FIRE:
-			m_FireEffect.push_back(*ed);
-			break;
-		}
-		m_SerialNum++;
+	switch(type)
+	{
+	case	EffectType::FIRE:
+		m_FireEffect.push_back(*ed);
+		break;
 	}
+	m_SerialNum++;
 	//std::cout<<"x = "<<ed.m_Pos.x<<"y = "<<ed.m_Pos.y<<std::endl;
 	return true;
 }
@@ -136,12 +138,15 @@ int Effect::GetTextureID()
 
 void Effect::Render()
 {
-	SetViewport();
+	if(g_DeviceContext!=NULL && g_DeviceContext!=NULL)
+	{
+		SetViewport();
 
-	m_RenderTexture->SetRenderTarget(g_DeviceContext,0);
-	m_RenderTexture->ClearRenderTarget(g_DeviceContext,0,0.0f,0.0f,0.0f,0.0f);
+		m_RenderTexture->SetRenderTarget(g_DeviceContext,0);
+		m_RenderTexture->ClearRenderTarget(g_DeviceContext,0,0.0f,0.0f,0.0f,0.0f);
 
-	RenderFire();
+		RenderFire();
+	}
 }
 void Effect::RenderFire()
 {
@@ -161,6 +166,7 @@ EffectManager::EffectManager():m_Page(0),m_Size(4){
 EffectManager::EffectManager(HWND hwnd):m_Page(0),m_Size(4){
 	//初始化 Effect
 	//test
+	m_Effect = new Effect*[m_Size];
 	for(int i=0;i<m_Size;i++)
 	{
 		m_Effect[i] = new Effect();
@@ -174,6 +180,17 @@ int EffectManager::CreateEffect( EffectType::e type,int textureID,D3DXVECTOR4* p
 	EffectData ed;
 	ed.m_TextureID = textureID;
 	ed.m_PicPos    = *picpos;
+
+	for(int i=0; i<m_Size; i++)
+	{
+		if(i == (m_Page+1)%m_Size)continue;//下一頁為Buffer不做搜索
+
+		if(m_Effect[i]->Check(type,&ed)){
+			*picpos = D3DXVECTOR4(ed.m_Pos.x,ed.m_Pos.y,(PIC_W/PASTE_W),(PIC_H/PASTE_H));
+			return m_Effect[i]->GetTextureID();
+		}
+	}
+
 	if(!m_Effect[m_Page%m_Size]->CreateEffect(type,&ed))
 	{
 		m_Page++;
@@ -210,6 +227,6 @@ void EffectManager::Update(ID3D11RenderTargetView* originRTV)
 //HolyK Test
 ID3D11ShaderResourceView* EffectManager::Test_GetNowTexture()
 {
-
+	return NULL;
 }
 //HolyK Test
