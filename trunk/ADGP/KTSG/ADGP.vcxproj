@@ -284,6 +284,7 @@
     <ClInclude Include="game\Body.h" />
     <ClInclude Include="game\CatchInfo.h" />
     <ClInclude Include="game\Chee.h" />
+    <ClInclude Include="game\CheeAction.h" />
     <ClInclude Include="game\ColorRect.h" />
     <ClInclude Include="game\Consume.h" />
     <ClInclude Include="game\CtrlKey.h" />
@@ -307,6 +308,7 @@
     <ClInclude Include="game\RenderTextureClass.h" />
     <ClInclude Include="game\TestRenderEffect.h" />
     <ClInclude Include="game\Weapon.h" />
+    <ClInclude Include="game\WeaponAction.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="resource.h" />

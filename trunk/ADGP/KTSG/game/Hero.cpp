@@ -80,7 +80,7 @@ void Hero::Update(float dt)
 		if( m_Action != HeroAction::UNIQUE_SKILL){
 			m_Position.y = 0;
 			m_Vel.y = 0;
-			if(ry > 0){
+			if(ry > 0 || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH){
 				//Frame ßÔ®Ï√€
 				m_Frame = "crouch";
 				m_FrameID = m_Action == HeroAction::DASH ? 1 : 0 ;
