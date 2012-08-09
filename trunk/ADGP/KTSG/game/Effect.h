@@ -36,8 +36,6 @@ public:
 	bool Overflow();//¶K¹Ï·¸¦ì
 
 	int  GetTextureID();
-	void SetViewport();
-	void SetViewport(float w,float h);
 
 	ID3D11ShaderResourceView* GetTexture();
 private:
@@ -51,7 +49,7 @@ public:
 	int	m_Size;
 	int	m_Page;
 
-	int	m_ScreamW,m_ScreamH;
+	int	m_ScreanW,m_ScreanH;
 public:
 	EffectManager(void);
 	EffectManager(HWND hwnd);
