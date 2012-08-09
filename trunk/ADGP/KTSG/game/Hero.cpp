@@ -398,6 +398,9 @@ bool Hero::ScanKeyQue()
 		}
 		else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
 			//½Ä®±
+			nFrame = "run_punch";
+			nFramID= 0;
+			d_key[0] = true;
 		}
 		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
 			//½Ä¸}
@@ -521,6 +524,26 @@ bool Hero::ScanKeyQue()
 			}
 			i++;
 		}
+		//«D¤è¦V«öÁä§PÂ_
+		if(m_KeyQue.empty()){
+		}
+		/*else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
+			//®±
+			nFrame = "jump_punch";
+			d_key[1] = true;
+		}//*/
+		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
+			//¸}
+			nFrame = "dash_kick";
+			nFramID= 0;
+			d_key[1] = true;
+		}
+		/*else if(m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
+			//¸õ
+		}//*/
+		/*else if(m_KeyQue.back().key == CtrlKey::DEF  && !d_key[3]){
+			//¾×
+		}//*/
 	}
 	else if(m_Action == HeroAction::CROUCH){
 		//¦¬¶°«öÁä

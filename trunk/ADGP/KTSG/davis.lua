@@ -40,15 +40,15 @@ frame =
 	crouch       = {},
 	punch        = {},
 	kick         = {},
-
 	super_punch  = {},
 	super_kick   = {},
 	jump_punch   = {},
 	jump_kick    = {},
+
 	run_punch    = {},
 	run_kick     = {},
 	dash_punch   = {},
-	dash_attack  = {},
+	dash_kick    = {},
 
 	front_flip   = {},
 	back_flip    = {},
@@ -888,6 +888,203 @@ frame.jump_kick[4] =
 frame.jump_kick[5] =
 {
    pic_id = 1, pic_x = 8, pic_y = 7, state = Action.AfterJumpAttack, wait = 6, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 72,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{21,-6}, {21,-64}, {50,-64}, {50,-6}}, zwidth = 8}
+   }
+}
+
+frame.run_punch[0] =
+{
+   pic_id = 1, pic_x = 1, pic_y = 4, state = Action.BeforeRunAttack, wait = 4, next = {"run_punch", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 35,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{17,-25}, {17,-79}, {61,-79}, {61,-25}}, zwidth = 8}
+   }
+}
+
+frame.run_punch[1] =
+{
+   pic_id = 1, pic_x = 2, pic_y = 4, state = Action.BeforeRunAttack, wait = 2, next = {"run_punch", 2},
+   dvx = 16, dvy = 0,  dvz = 0,  centerx = 30,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{25,-24}, {25,-79}, {56,-79}, {56,-24}}, zwidth = 8}
+   }
+
+	--sound: data\007.wav
+}
+
+frame.run_punch[2] =
+{
+   pic_id = 1, pic_x = 3, pic_y = 4, state = Action.RunAttacking, wait = 2, next = {"run_punch", 3},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 25,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {"a", "run_punch", 4},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{-18,-24}, {-18,-54}, {70,-54}, {70,-24}}, zwidth = 8,
+		dvx = 20, dvy = 0, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 14},
+		injury = 55, strength = 50,
+	},
+   body = {
+   {kind = 0, points = {{15,-19}, {15,-81}, {52,-81}, {52,-19}}, zwidth = 8}
+   }
+}
+
+frame.run_punch[3] =
+{
+   pic_id = 1, pic_x = 4, pic_y = 4, state = Action.RunAttacking, wait = 6, next = {"run_punch", 4},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 20,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {"a", "run_punch", 4},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{28,-25}, {28,-52}, {71,-52}, {71,-25}}, zwidth = 8,
+		dvx = 17, dvy = 0, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 14},
+		injury = 40, strength = 50,
+	},
+   body = {
+   {kind = 0, points = {{14,-14}, {14,-81}, {57,-81}, {57,-14}}, zwidth = 8}
+   }
+}
+
+frame.run_punch[4] =
+{
+   pic_id = 1, pic_x = 5, pic_y = 4, state = Action.AfterRunAttack, wait = 4, next = {"run_punch", 5},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 20,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{18,-10}, {18,-67}, {53,-67}, {53,-10}}, zwidth = 8}
+   }
+}
+
+frame.run_punch[5] =
+{
+   pic_id = 1, pic_x = 6, pic_y = 4, state = Action.AfterRunAttack, wait = 4, next = {"run_punch", 6},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 30,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{20,-11}, {20,-79}, {51,-79}, {51,-11}}, zwidth = 8}
+   }
+}
+
+frame.run_punch[6] =
+{
+   pic_id = 1, pic_x = 7, pic_y = 4, state = Action.AfterRunAttack, wait = 2, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{20,-11}, {20,-79}, {51,-79}, {51,-11}}, zwidth = 8}
+   }
+}
+
+frame.dash_kick[0] =
+{
+   pic_id = 1, pic_x = 3, pic_y = 7, state = Action.BeforeDashAttack, wait = 2, next = {"dash_kick", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 36,  centery = 75,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{18,-10}, {18,-67}, {53,-67}, {53,-10}}, zwidth = 8}
+   }
+}
+
+frame.dash_kick[1] =
+{
+   pic_id = 1, pic_x = 4, pic_y = 7, state = Action.BeforeDashAttack, wait = 2, next = {"dash_kick", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 74,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{22,-9}, {22,-65}, {57,-65}, {57,-9}}, zwidth = 8}
+   }
+
+   --sound: data\007.wav
+}
+
+frame.dash_kick[2] =
+{
+   pic_id = 1, pic_x = 5, pic_y = 7, state = Action.BeforeDashAttack, wait = 2, next = {"dash_kick", 3},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 35,  centery = 75,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {kind = 0, points = {{24,-6}, {24,-66}, {53,-66}, {53,-6}}, zwidth = 8}
+   }
+}
+
+frame.dash_kick[3] =
+{
+   pic_id = 1, pic_x = 6, pic_y = 7, state = Action.DashAttacking, wait = 14, next = {"dash_kick", 4},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 25,  centery = 70,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{17,-37}, {17,-54}, {69,-54}, {69,-37}}, zwidth = 8,
+		dvx = 14, dvy = 5, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 18},
+		injury = 80, strength = 50,
+	},
+   body = {
+   {kind = 0, points = {{11,-2}, {11,-65}, {40,-65}, {40,-2}}, zwidth = 8}
+   }
+}
+
+frame.dash_kick[4] =
+{
+   pic_id = 1, pic_x = 7, pic_y = 7, state = Action.DashAttacking, wait = 2, next = {"dash_kick", 5},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 25,  centery = 71,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0--[[使用effect]], effect = Effect.Punch,
+		points = {{32,-40}, {32,-56}, {68,-56}, {68,-40}}, zwidth = 8,
+		dvx = 14, dvy = 5, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 18},
+		injury = 80, strength = 50,
+	},
+   body = {
+   {kind = 0, points = {{11,-5}, {11,-68}, {39,-68}, {39,-5}}, zwidth = 8}
+   }
+}
+
+frame.dash_kick[5] =
+{
+   pic_id = 1, pic_x = 8, pic_y = 7, state = Action.AfterDashAttack, wait = 2, next = {"dash_kick", 5},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 72,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
