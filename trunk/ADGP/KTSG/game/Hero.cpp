@@ -197,6 +197,12 @@ void Hero::NextFrame()
 	FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
 	m_Frame = f->m_NextFrameName;
 	m_FrameID = f->m_NextFrameIndex;
+	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find(m_Frame);
+	if(iframe == m_HeroInfo->m_FramesMap.end() || iframe->second.size() <= m_FrameID){
+		printf("fatal error: can't find next frame \"%s\"[%d] !\n", m_Frame.c_str(), m_FrameID);
+		system("pause");
+		throw "No such frame";
+	}
 	f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
 	if(f->m_ClearKeyQueue){
 			m_KeyQue.clear();
@@ -641,12 +647,8 @@ bool Hero::ScanKeyQue()
 	if(nFrame.empty()){
 		return false;
 	}
-	else if(iframe == m_HeroInfo->m_FramesMap.end()){
-		printf("error: can't find frame \"%s\" !\n", nFrame.c_str());
-		return false;
-	}
-	else if(iframe->second.size() <= nFramID){
-		printf("error: frame \"%s\" doesn't have frame %d !\n", nFrame.c_str(), nFramID);
+	else if(iframe == m_HeroInfo->m_FramesMap.end() || iframe->second.size() <= nFramID){
+		printf("error: can't find frame \"%s\"[%d] !\n", nFrame.c_str(), nFramID);
 		return false;
 	}
 	else{

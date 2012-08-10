@@ -39,9 +39,9 @@ frame =
 	dash_back    = {},
 	crouch       = {},
 	punch        = {},
-	kick         = {},
+	kick         = {},--[[this is punch2]]
 	super_punch  = {},
-	super_kick   = {},--[[this is punch2]]
+	super_kick   = {},--[[davis don't have super kick]]
 	jump_punch   = {},--[[davis don't have jump punch]]
 	jump_kick    = {},
 	run_punch    = {},
@@ -999,6 +999,10 @@ frame.run_punch[6] =
    {kind = 0, points = {{20,-11}, {20,-79}, {51,-79}, {51,-11}}, zwidth = 8}
    }
 }
+
+
+
+
 
 frame.dash_kick[0] =
 {
