@@ -1197,7 +1197,7 @@ frame.rolling[2] =
 
 frame.rolling[3] =
 {
-   pic_id = 0, pic_x = 9, pic_y = 6, state = Action.Rolling, wait = 4, next = {"crouch", 0},
+   pic_id = 0, pic_x = 9, pic_y = 6, state = Action.Rolling, wait = 4, next = {"crouch", 1},
    dvx = 9, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},

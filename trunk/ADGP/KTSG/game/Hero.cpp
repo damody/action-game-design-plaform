@@ -567,7 +567,7 @@ bool Hero::ScanKeyQue()
 		if(m_KeyQue.empty()){
 			return false;
 		}
-		else if(m_KeyQue.back().key == CtrlKey::DEF && m_Frame.compare("crouch") == 0 && nFramID == 0){
+		else if(m_KeyQue.back().key == CtrlKey::DEF && m_Frame.compare("crouch") == 0 && m_FrameID == 0){
 			m_Vel = Vector3(0,0,0);
 			nFrame = "rolling";
 		}
