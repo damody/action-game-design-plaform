@@ -270,6 +270,7 @@ bool Hero::ScanKeyQue()
 		}
 		//非方向按鍵判斷
 		if(m_KeyQue.empty()){
+			return false;
 		}
 		else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
 			//拳
@@ -338,6 +339,7 @@ bool Hero::ScanKeyQue()
 
 		//非方向按鍵判斷
 		if(m_KeyQue.empty()){
+			return false;
 		}
 		else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
 			//拳
@@ -395,6 +397,7 @@ bool Hero::ScanKeyQue()
 		}
 		//非方向按鍵判斷
 		if(m_KeyQue.empty()){
+			return false;
 		}
 		else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
 			//衝拳
@@ -404,6 +407,9 @@ bool Hero::ScanKeyQue()
 		}
 		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
 			//衝腳
+			nFrame = "run_kick";
+			nFramID= 0;
+			d_key[1] = true;
 		}
 		else if(m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
 			//衝跳
@@ -421,6 +427,9 @@ bool Hero::ScanKeyQue()
 		}
 		else if(m_KeyQue.back().key == CtrlKey::DEF  && !d_key[3]){
 			//滾
+			nFrame = "rolling";
+			nFramID= 0;
+			d_key[3] = true;
 		}
 	}
 	else if(m_Action == HeroAction::JUMP && m_TimeTik < 2){
@@ -461,11 +470,12 @@ bool Hero::ScanKeyQue()
 		}
 		//非方向按鍵判斷
 		if(m_KeyQue.empty()){
+			return false;
 		}
-		/*else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
+		else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
 			//拳
 			nFrame = "jump_punch";
-			d_key[1] = true;
+			d_key[0] = true;
 		}//*/
 		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
 			//腳
@@ -526,11 +536,12 @@ bool Hero::ScanKeyQue()
 		}
 		//非方向按鍵判斷
 		if(m_KeyQue.empty()){
+			return false;
 		}
-		/*else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
+		else if(m_KeyQue.back().key == CtrlKey::ATK1 && !d_key[0]){
 			//拳
-			nFrame = "jump_punch";
-			d_key[1] = true;
+			nFrame = "dash_punch";
+			d_key[0] = true;
 		}//*/
 		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
 			//腳
@@ -546,55 +557,64 @@ bool Hero::ScanKeyQue()
 		}//*/
 	}
 	else if(m_Action == HeroAction::CROUCH){
-		//收集按鍵
-		int dx=0,dz=0,dj=0;
-		while(i!=m_KeyQue.end()){
-			if(i->key == CtrlKey::LEFT ){
-				dx = -1;
-			}
-			else if(i->key == CtrlKey::RIGHT ){
-				dx = +1;
-			}
-			else if(i->key == CtrlKey::UP ){
-				dz = +1;
-			}
-			else if(i->key == CtrlKey::DOWN ){
-				dz = -1;
-			}
-			i++;
+		if(m_KeyQue.empty()){
+			return false;
 		}
-		if(!m_KeyQue.empty() && m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
-			dj = 1;
-			d_key[2] = true;
+		else if(m_KeyQue.back().key == CtrlKey::DEF && m_Frame.compare("crouch") == 0 && nFramID == 0){
+			m_Vel = Vector3(0,0,0);
+			nFrame = "rolling";
 		}
-		//判斷
-		if(dj == 1 && m_Frame.compare("crouch") == 0){
-			if(m_FrameID == 0){
-				//dash
-				if(dx != 0){
-					nFrame = "dash_front";
-					m_FaceSide = dx > 0;
-					m_Vel.x = dx * m_HeroInfo->m_DashDistance;
-					m_Vel.y = m_HeroInfo->m_DashHeight;
-					if(dz != 0) m_Vel.z = dz * m_HeroInfo->m_DashDistanceZ;
+		else{
+			//收集按鍵
+			int dx=0,dz=0,dj=0;
+			while(i!=m_KeyQue.end()){
+				if(i->key == CtrlKey::LEFT ){
+					dx = -1;
 				}
-				else if(m_Vel.x != 0 ){
-					if((m_Vel.x > 0) == m_FaceSide){
+				else if(i->key == CtrlKey::RIGHT ){
+					dx = +1;
+				}
+				else if(i->key == CtrlKey::UP ){
+					dz = +1;
+				}
+				else if(i->key == CtrlKey::DOWN ){
+					dz = -1;
+				}
+				i++;
+			}
+			if(!m_KeyQue.empty() && m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
+				dj = 1;
+				d_key[2] = true;
+			}
+			//判斷
+			if(dj == 1 && m_Frame.compare("crouch") == 0){
+				if(m_FrameID == 0){
+					//dash
+					if(dx != 0){
 						nFrame = "dash_front";
-						m_Vel.x = m_FaceSide ? m_HeroInfo->m_DashDistance : -m_HeroInfo->m_DashDistance;
+						m_FaceSide = dx > 0;
+						m_Vel.x = dx * m_HeroInfo->m_DashDistance;
+						m_Vel.y = m_HeroInfo->m_DashHeight;
+						if(dz != 0) m_Vel.z = dz * m_HeroInfo->m_DashDistanceZ;
 					}
-					else{
-						nFrame = "dash_back";
-						m_Vel.x = m_FaceSide ? -m_HeroInfo->m_DashDistance : m_HeroInfo->m_DashDistance;
+					else if(m_Vel.x != 0 ){
+						if((m_Vel.x > 0) == m_FaceSide){
+							nFrame = "dash_front";
+							m_Vel.x = m_FaceSide ? m_HeroInfo->m_DashDistance : -m_HeroInfo->m_DashDistance;
+						}
+						else{
+							nFrame = "dash_back";
+							m_Vel.x = m_FaceSide ? -m_HeroInfo->m_DashDistance : m_HeroInfo->m_DashDistance;
+						}
+						m_Vel.y = m_HeroInfo->m_DashHeight;
+						if(dz != 0) m_Vel.z = dz * m_HeroInfo->m_DashDistanceZ;
+					}else{
+						nFrame = "jump";
 					}
-					m_Vel.y = m_HeroInfo->m_DashHeight;
-					if(dz != 0) m_Vel.z = dz * m_HeroInfo->m_DashDistanceZ;
-				}else{
+				}
+				else{
 					nFrame = "jump";
 				}
-			}
-			else{
-				nFrame = "jump";
 			}
 		}
 		//蹲完速度歸零

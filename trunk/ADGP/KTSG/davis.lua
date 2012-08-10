@@ -41,19 +41,16 @@ frame =
 	punch        = {},
 	kick         = {},
 	super_punch  = {},
-	super_kick   = {},
-	jump_punch   = {},
+	super_kick   = {},--[[this is punch2]]
+	jump_punch   = {},--[[davis don't have jump punch]]
 	jump_kick    = {},
-
 	run_punch    = {},
-	run_kick     = {},
-	dash_punch   = {},
+	run_kick     = {},--[[davis don't have run kick]]
+	dash_punch   = {},--[[davis don't have dash punch]]
 	dash_kick    = {},
-
 	front_flip   = {},
 	back_flip    = {},
 	rolling      = {},
-
 	defend       = {},
 	ball         = {},
 	many_punch   = {},
@@ -798,7 +795,7 @@ frame.super_punch[7] =
    pic_id = 0, pic_x = 10, pic_y = 5, state = Action.AfterSuperAttack, wait = 4, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {"j", "jump_hit", 0},
+   hit = {{"j", "jump_hit", 0}},
    blood = {},
    attack={},
    body = {
@@ -931,7 +928,7 @@ frame.run_punch[2] =
    pic_id = 1, pic_x = 3, pic_y = 4, state = Action.RunAttacking, wait = 2, next = {"run_punch", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 25,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {"a", "run_punch", 4},
+   hit = {{"a", "run_punch", 4}},
    blood = {},
    attack={
 		{kind = 0--[[使用effect]], effect = Effect.Punch,
@@ -950,7 +947,7 @@ frame.run_punch[3] =
    pic_id = 1, pic_x = 4, pic_y = 4, state = Action.RunAttacking, wait = 6, next = {"run_punch", 4},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 20,  centery = 79,  clear_key_queue = 0,
    consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {"a", "run_punch", 4},
+   hit = {{"a", "run_punch", 4}},
    blood = {},
    attack={
 		{kind = 0--[[使用effect]], effect = Effect.Punch,
@@ -1093,6 +1090,122 @@ frame.dash_kick[5] =
    body = {
    {kind = 0, points = {{21,-6}, {21,-64}, {50,-64}, {50,-6}}, zwidth = 8}
    }
+}
+
+frame.front_flip[0] =
+{
+   pic_id = 1, pic_x = 8, pic_y = 5, state = Action.FrontFlip, wait = 6, next = {"front_flip", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 42,  centery = 72,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {}
+
+   --sound: data\017.wav
+}
+
+frame.front_flip[1] =
+{
+   pic_id = 1, pic_x = 9, pic_y = 5, state = Action.FrontFlip, wait = 12, next = {"front_flip", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {}
+}
+
+frame.back_flip[0] =
+{
+   pic_id = 0, pic_x = 7, pic_y = 7, state = Action.BackFlip, wait = 4, next = {"back_flip", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 40,  centery = 80,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {}
+
+   --sound: data\017.wav
+}
+
+frame.back_flip[1] =
+{
+   pic_id = 0, pic_x = 6, pic_y = 7, state = Action.BackFlip, wait = 12, next = {"back_flip", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {}
+}
+
+frame.rolling[0] =
+{
+   pic_id = 0, pic_x = 9, pic_y = 6, state = Action.Rolling, wait = 4, next = {"rolling", 1},
+   dvx = 9, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"d^a", "singlong", 0}, {"d^j", "jump_hit", 0}},
+   blood = {},
+   attack={
+		{kind = 7--[[撈東西]], effect = Effect.End,
+		points = {{36,-54}, {36,-79}, {49,-79}, {49,-54}}, zwidth = 8,
+		dvx = 0, dvy = 0, dvz = 0, fall = 0, breakDefend = 0,
+		arest = 0, reAttackRest = 1},
+		injury = 0, strength = 0,
+	},
+   body = {}
+}
+
+frame.rolling[1] =
+{
+   pic_id = 0, pic_x = 10, pic_y = 6, state = Action.Rolling, wait = 4, next = {"rolling", 2},
+   dvx = 9, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 7--[[撈東西]], effect = Effect.End,
+		points = {{36,-54}, {36,-79}, {49,-79}, {49,-54}}, zwidth = 8,
+		dvx = 0, dvy = 0, dvz = 0, fall = 0, breakDefend = 0,
+		arest = 0, reAttackRest = 1},
+		injury = 0, strength = 0,
+	},
+   body = {}
+}
+
+frame.rolling[2] =
+{
+   pic_id = 0, pic_x = 10, pic_y = 7, state = Action.Rolling, wait = 4, next = {"rolling", 3},
+   dvx = 9, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 7--[[撈東西]], effect = Effect.End,
+		points = {{36,-54}, {36,-79}, {49,-79}, {49,-54}}, zwidth = 8,
+		dvx = 0, dvy = 0, dvz = 0, fall = 0, breakDefend = 0,
+		arest = 0, reAttackRest = 1},
+		injury = 0, strength = 0,
+	},
+   body = {}
+}
+
+frame.rolling[3] =
+{
+   pic_id = 0, pic_x = 9, pic_y = 6, state = Action.Rolling, wait = 4, next = {"crouch", 0},
+   dvx = 9, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
+   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 7--[[撈東西]], effect = Effect.End,
+		points = {{36,-54}, {36,-79}, {49,-79}, {49,-54}}, zwidth = 8,
+		dvx = 0, dvy = 0, dvz = 0, fall = 0, breakDefend = 0,
+		arest = 0, reAttackRest = 1},
+		injury = 0, strength = 0,
+	},
+   body = {}
 }
 
 frame.defend[0] =
