@@ -288,6 +288,7 @@ bool Hero::ScanKeyQue()
 			d_key[2] = true;
 		}
 		else if(m_KeyQue.back().key == CtrlKey::DEF  && !d_key[3]){
+			//擋
 			nFrame = "defend";
 			d_key[3] = true;
 		}
@@ -636,12 +637,23 @@ bool Hero::ScanKeyQue()
 		}else i++;
 	}
 	//下個影格
-	if(nFrame.empty()) return false;
+	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find(nFrame);
+	if(nFrame.empty()){
+		return false;
+	}
+	else if(iframe == m_HeroInfo->m_FramesMap.end()){
+		printf("error: can't find frame \"%s\" !\n", nFrame.c_str());
+		return false;
+	}
+	else if(iframe->second.size() <= nFramID){
+		printf("error: frame \"%s\" doesn't have frame %d !\n", nFrame.c_str(), nFramID);
+		return false;
+	}
 	else{
 		//m_Vel += dv;
 		m_Frame = nFrame;
 		m_FrameID = nFramID;
-		FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
+		FrameInfo *f = &iframe->second[m_FrameID];
 		if(f->m_ClearKeyQueue){
 			m_KeyQue.clear();
 		}
