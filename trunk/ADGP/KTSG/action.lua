@@ -81,8 +81,8 @@ Body.Waist	= GetEnum()
 
 count = -1;
 CheeAction = {}
-Chee.Flying = GetEnum()
-Chee.Break = GetEnum()
+CheeAction.Flying = GetEnum()
+CheeAction.Break = GetEnum()
 
 count = -1;
 WeaponAction = {}
