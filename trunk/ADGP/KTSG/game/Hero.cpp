@@ -20,6 +20,18 @@
 #include "math/Quaternion.h"
 #include "global.h"
 
+bool isKeyUp(char r){
+	switch(r){
+	case '^':case 'v':case '<':case '>':case 'A':case 'B':case 'J':case 'D':
+		return false;
+	case '8':case '2':case '4':case '6':case 'a':case 'b':case 'j':case 'd':
+		return true;
+	default:
+		throw "wrong hit key";
+		return false;
+	}
+}
+
 Hero::Hero()
 {
 
@@ -565,6 +577,9 @@ bool Hero::ScanKeyQue()
 	}
 	else if(m_Action == HeroAction::CROUCH){
 		if(m_KeyQue.empty()){
+			if(m_TimeTik == 0){
+				m_Vel.x = 0, m_Vel.y = 0, m_Vel.z = 0;
+			}
 			return false;
 		}
 		else if(m_KeyQue.back().key == CtrlKey::DEF && m_Frame.compare("crouch") == 0 && m_FrameID == 0){
@@ -630,9 +645,183 @@ bool Hero::ScanKeyQue()
 		}
 	}
 	//決定招式按鍵動作
-
-		/*未開工*/
-
+	if(!m_KeyQue.empty()){
+		HitDatas hit = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_HitDatas;
+		for(int i=0; i< hit.size(); i++){
+			KeyQueue::reverse_iterator riKey = m_KeyQue.rbegin();
+			const char *pHit = hit[i].m_KeyQueue.c_str(), *rHit = pHit;
+			bool flag = true;
+			//char *rHit = pHit[0];
+			while( *rHit != 0 ) rHit ++;
+			rHit--;
+			while( riKey != m_KeyQue.rend() && rHit+1 != pHit && flag){
+				KeyQueue::reverse_iterator ho,ch;
+				switch(*rHit){
+				case '^':
+					if(riKey->key != CtrlKey::UP && riKey->key != CtrlKey::UP_KEYUP){
+						flag = false;
+					}
+					break;
+				case 'v':
+					if(riKey->key != CtrlKey::DOWN && riKey->key != CtrlKey::DOWN_KEYUP){
+						flag = false;
+					}
+					break;
+				/*case '<':
+					if(riKey->key != CtrlKey::LEFT && riKey->key != CtrlKey::LEFT_KEYUP){
+						flag = false;
+					}
+					break;//*/
+				case '>':
+					if( riKey->key != CtrlKey::RIGHT && riKey->key != CtrlKey::RIGHT_KEYUP &&
+					    riKey->key != CtrlKey::LEFT && riKey->key != CtrlKey::LEFT_KEYUP){
+						flag = false;
+					}
+					break;
+				case 'A':
+					if(riKey->key != CtrlKey::ATK1 && riKey->key != CtrlKey::ATK1_KEYUP){
+						flag = false;
+					}
+					break;
+				case 'B':
+					if(riKey->key != CtrlKey::ATK2 && riKey->key != CtrlKey::ATK2_KEYUP){
+						flag = false;
+					}
+					break;
+				case 'J':
+					if(riKey->key != CtrlKey::JUMP && riKey->key != CtrlKey::JUMP_KEYUP){
+						flag = false;
+					}
+					break;
+				case 'D':
+					if(riKey->key != CtrlKey::DEF && riKey->key != CtrlKey::DEF_KEYUP){
+						flag = false;
+					}
+					break;
+				case '8':	//UP_KEYUP
+					if(riKey == m_KeyQue.rbegin()){
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::UP_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || ch->key != CtrlKey::UP_KEYUP){
+							flag = false;
+						}
+					}
+					else{
+						ho = riKey - 1;
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::UP_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || ch->key != CtrlKey::UP_KEYUP || 
+							((isKeyUp(rHit[1]) && ch->timeUp > ho->timeUp) || (!isKeyUp(rHit[1]) && ch->timeUp > ho->time))){
+							flag = false;
+						}
+					}
+					break;
+				case '2':	//DOWN_KEYUP
+					if(riKey == m_KeyQue.rbegin()){
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DOWN_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || ch->key != CtrlKey::DOWN_KEYUP){
+							flag = false;
+						}
+					}
+					else{
+						ho = riKey - 1;
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DOWN_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || ch->key != CtrlKey::DOWN_KEYUP || 
+							((isKeyUp(rHit[1]) && ch->timeUp > ho->timeUp) || (!isKeyUp(rHit[1]) && ch->timeUp > ho->time))){
+							flag = false;
+						}
+					}
+					break;
+				case '6':	//RIGHT_KEYUP
+					if(riKey == m_KeyQue.rbegin()){
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || (ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP)){
+							flag = false;
+						}
+					}
+					else{
+						ho = riKey - 1;
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || (ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP) || 
+							((isKeyUp(rHit[1]) && ch->timeUp > ho->timeUp) || (!isKeyUp(rHit[1]) && ch->timeUp > ho->time))){
+							flag = false;
+						}
+					}
+					break;
+				case 'a':
+					if(riKey == m_KeyQue.rbegin()){
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK1_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK1_KEYUP){
+							flag = false;
+						}
+					}
+					else{
+						ho = riKey - 1;
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK1_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK1_KEYUP || 
+							((isKeyUp(rHit[1]) && ch->timeUp > ho->timeUp) || (!isKeyUp(rHit[1]) && ch->timeUp > ho->time))){
+							flag = false;
+						}
+					}
+					break;
+				case 'b':
+					if(riKey == m_KeyQue.rbegin()){
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK2_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK2_KEYUP){
+							flag = false;
+						}
+					}
+					else{
+						ho = riKey - 1;
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK2_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK2_KEYUP || 
+							((isKeyUp(rHit[1]) && ch->timeUp > ho->timeUp) || (!isKeyUp(rHit[1]) && ch->timeUp > ho->time))){
+							flag = false;
+						}
+					}
+					break;
+				case 'j':
+					if(riKey == m_KeyQue.rbegin()){
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::JUMP_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || ch->key != CtrlKey::JUMP_KEYUP){
+							flag = false;
+						}
+					}
+					else{
+						ho = riKey - 1;
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::JUMP_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || ch->key != CtrlKey::JUMP_KEYUP || 
+							((isKeyUp(rHit[1]) && ch->timeUp > ho->timeUp) || (!isKeyUp(rHit[1]) && ch->timeUp > ho->time))){
+							flag = false;
+						}
+					}
+					break;
+				case 'd':
+					if(riKey == m_KeyQue.rbegin()){
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DEF_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || ch->key != CtrlKey::DEF_KEYUP){
+							flag = false;
+						}
+					}
+					else{
+						ho = riKey - 1;
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DEF_KEYUP; ch++);
+						if( ch == m_KeyQue.rend() || ch->key != CtrlKey::DEF_KEYUP || 
+							((isKeyUp(rHit[1]) && ch->timeUp > ho->timeUp) || (!isKeyUp(rHit[1]) && ch->timeUp > ho->time))){
+							flag = false;
+						}
+					}
+					break;
+				}
+				riKey ++;
+				rHit --;
+			}
+			if(pHit == rHit+1 && flag){
+				nFrame = hit[i].m_FrameName;
+				nFramID= hit[i].m_FrameOffset;
+				m_KeyQue.clear();
+				break;
+			}
+		}
+	}
 	//清理佇列
 	i=m_KeyQue.begin();
 	while( i != m_KeyQue.end()){
@@ -700,7 +889,7 @@ void Hero::PushKey( KeyInfo k )
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::ATK1){
 				i->key = k.key;
-				i->time= k.time;
+				i->timeUp = k.time;
 				break;
 			}
 		}
@@ -710,7 +899,7 @@ void Hero::PushKey( KeyInfo k )
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::ATK2){
 				i->key = k.key;
-				i->time= k.time;
+				i->timeUp = k.time;
 				break;
 			}
 		}
@@ -720,7 +909,7 @@ void Hero::PushKey( KeyInfo k )
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::DEF){
 				i->key = k.key;
-				i->time= k.time;
+				i->timeUp = k.time;
 				break;
 			}
 		}
@@ -730,7 +919,7 @@ void Hero::PushKey( KeyInfo k )
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::JUMP){
 				i->key = k.key;
-				i->time= k.time;
+				i->timeUp = k.time;
 				break;
 			}
 		}
@@ -741,7 +930,7 @@ void Hero::PushKey( KeyInfo k )
 			if(i->key == CtrlKey::LEFT){
 				d_run = -i->time;
 				i->key = k.key;
-				i->time= k.time;
+				i->timeUp = k.time;
 				break;
 			}
 		}
@@ -752,7 +941,7 @@ void Hero::PushKey( KeyInfo k )
 			if(i->key == CtrlKey::RIGHT){
 				d_run = i->time;
 				i->key = k.key;
-				i->time= k.time;
+				i->timeUp = k.time;
 				break;
 			}
 		}
@@ -762,7 +951,7 @@ void Hero::PushKey( KeyInfo k )
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::UP){
 				i->key = k.key;
-				i->time= k.time;
+				i->timeUp = k.time;
 				break;
 			}
 		}
@@ -772,7 +961,7 @@ void Hero::PushKey( KeyInfo k )
 		for(i = m_KeyQue.begin();i!=m_KeyQue.end();i++) {
 			if(i->key == CtrlKey::DOWN){
 				i->key = k.key;
-				i->time= k.time;
+				i->timeUp = k.time;
 				break;
 			}
 		}

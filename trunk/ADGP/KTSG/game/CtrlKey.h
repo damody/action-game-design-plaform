@@ -14,6 +14,7 @@ struct CtrlKey
 struct KeyInfo{
 	CtrlKey::v key;
 	int time;
+	int timeUp;
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -21,6 +22,7 @@ struct KeyInfo{
 	{
 		ar & key;
 		ar & time;
+		ar & timeUp;
 	}
 };
 
