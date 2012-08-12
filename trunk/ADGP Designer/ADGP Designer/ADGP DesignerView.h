@@ -13,6 +13,7 @@
 //
 
 #pragma once
+#include "DX11\d3dApp.h"
 
 
 class CADGPDesignerView : public CView
@@ -27,7 +28,8 @@ public:
 
 // 作業
 public:
-
+	HWND		m_hWndDX11;
+	D3DApp		m_D3DApp;
 // 覆寫
 public:
 	virtual void OnDraw(CDC* pDC);  // 覆寫以描繪此檢視
@@ -44,7 +46,7 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
-
+	void InitDx11(HWND hWnd);
 protected:
 
 // 產生的訊息對應函式
@@ -53,6 +55,9 @@ protected:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
+public:
+	virtual void OnInitialUpdate();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 #ifndef _DEBUG  // ADGP DesignerView.cpp 中的偵錯版本

@@ -15,8 +15,8 @@
 #include "PropertiesWnd.h"
 #include <game/FrameInfo.h>
 
-#define MAX_ANIMATIONS 41
-#define MAX_ACTIONS 41
+#define MAX_ANIMATIONS 52
+#define MAX_ACTIONS 52
 
 class CClassToolBar : public CMFCToolBar
 {

@@ -38,6 +38,7 @@ BEGIN_MESSAGE_MAP(CADGPDesignerView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CADGPDesignerView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 // CADGPDesignerView 建構/解構
@@ -70,6 +71,8 @@ void CADGPDesignerView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: 在此加入原生資料的描繪程式碼
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
 }
 
 
@@ -131,7 +134,41 @@ CADGPDesignerDoc* CADGPDesignerView::GetDocument() const // 內嵌非偵錯版本
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CADGPDesignerDoc)));
 	return (CADGPDesignerDoc*)m_pDocument;
 }
+
+void CADGPDesignerView::InitDx11( HWND hWnd )
+{
+	RECT rect;
+	GetWindowRect(&rect);
+	// 	m_hWndDX11 = CreateWindowA("edit", "", WS_CHILD | WS_DISABLED | WS_VISIBLE
+	// 		, 0, 0, rect.right-rect.left, rect.bottom-rect.top, hWnd, 
+	// 		(HMENU)"", 0, NULL);
+	m_hWndDX11 = hWnd;
+	::ShowWindow(m_hWndDX11, true);
+	::UpdateWindow(m_hWndDX11);
+	m_D3DApp.initApp(m_hWndDX11, rect.right-rect.left, rect.bottom-rect.top);
+	m_D3DApp.buildShaderFX();
+}
+
 #endif //_DEBUG
 
 
 // CADGPDesignerView 訊息處理常式
+
+
+void CADGPDesignerView::OnInitialUpdate()
+{
+	CView::OnInitialUpdate();
+
+	// TODO: 在此加入特定的程式碼和 (或) 呼叫基底類別
+	InitDx11(this->GetParent()->GetSafeHwnd());
+}
+
+
+void CADGPDesignerView::OnSize(UINT nType, int cx, int cy)
+{
+	CView::OnSize(nType, cx, cy);
+
+	// TODO: 在此加入您的訊息處理常式程式碼
+	if (cx > 0 && cy >0)
+		m_D3DApp.OnResize(cx, cy);
+}

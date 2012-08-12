@@ -17,15 +17,22 @@
 
 class InitDirect3DApp : public D3DApp
 {
-//HolyK
+//Test
 private:
-	//EffectManager* m_Effect_Manager;
+	struct DrawBodyGroup
+	{
+		int	VertexCount, StartVertexLocation;
+	};
+	typedef std::vector<DrawBodyGroup> DrawBodyGroups;
+
 	TestRenderEffect* m_TestRenderEffect;
-	//Texture_Sptr m_TestTexture;
-	//int m_TestTextureID;
 	void TestRender();
 	void TestViewEffect();
-//HolyK
+	void TestWavPlayer();
+	void TestCamera();
+	void TestChee();
+	void TestFire();
+//Test
 
 public:
 	InitDirect3DApp();
@@ -68,8 +75,8 @@ private:
 
 	ID3D11BlendState*	m_pBlendState_ADD;
 	ID3D11BlendState*	m_pBlendState_BLEND;
-	ID3D11DepthStencilState *m_pDepthStencil_ZWriteON;
-	ID3D11DepthStencilState *m_pDepthStencil_ZWriteOFF;
+	ID3D11DepthStencilState*m_pDepthStencil_ZWriteON;
+	ID3D11DepthStencilState*m_pDepthStencil_ZWriteOFF;
 
 	D3D11_BUFFER_DESC	m_vbd;
 
@@ -77,61 +84,60 @@ private:
 	Player			m_Player;
 	Camera_Sptr		m_Camera;
 
-	ClipVertexs			m_EntityVertex;
-	DrawVertexGroups		m_DrawVertexGroups;
+	ClipVertexs		m_EntityVertex;
+	DrawVertexGroups	m_DrawVertexGroups;
 	
 
-	ID3D11Buffer* m_Buffer_Entity;
-	ID3DX11Effect* m_Effect_Entity;
+	ID3D11Buffer*		m_Buffer_Entity;
+	ID3DX11Effect*		m_Effect_Entity;
 	ID3DX11EffectTechnique* m_PTech_Entity;
-	ID3D11InputLayout* m_PLayout_Entity;
-	ID3DX11EffectVariable *m_Entity_cLootAt;
-	ID3DX11EffectVariable *m_Entity_cPos;
+	ID3D11InputLayout*	m_PLayout_Entity;
+	ID3DX11EffectVariable *	m_Entity_cLootAt;
+	ID3DX11EffectVariable *	m_Entity_cPos;
 	ID3DX11EffectScalarVariable* m_Entity_Width;
 	ID3DX11EffectScalarVariable* m_Entity_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Entity;
 
-	Chees				m_Chees;
-	ClipVertexs			m_CheeVertex;
-	DrawVertexGroups		m_CheeDrawVertexGroups;
+	ClipVertexs		m_CheeVertex;
+	DrawVertexGroups	m_CheeDrawVertexGroups;
 
-	ID3D11Buffer* m_Buffer_Chee;
-	ID3DX11Effect* m_Effect_Chee;
+	ID3D11Buffer*		m_Buffer_Chee;
+	ID3DX11Effect*		m_Effect_Chee;
 	ID3DX11EffectTechnique* m_PTech_Chee;
-	ID3D11InputLayout* m_PLayout_Chee;
-	ID3DX11EffectVariable *m_Chee_cLootAt;
-	ID3DX11EffectVariable *m_Chee_cPos;
+	ID3D11InputLayout*	m_PLayout_Chee;
+	ID3DX11EffectVariable *	m_Chee_cLootAt;
+	ID3DX11EffectVariable *	m_Chee_cPos;
 	ID3DX11EffectScalarVariable* m_Chee_Width;
 	ID3DX11EffectScalarVariable* m_Chee_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Chee;
 
-	ID3D11Buffer* m_Buffer_Background;
-	ID3DX11Effect* m_Effect_Background;
+	ID3D11Buffer*		m_Buffer_Background;
+	ID3DX11Effect*		m_Effect_Background;
 	ID3DX11EffectTechnique* m_PTech_Background;
-	ID3D11InputLayout* m_PLayout_Background;
-	ID3DX11EffectVariable *m_Background_cLootAt;
-	ID3DX11EffectVariable *m_Background_cPos;
+	ID3D11InputLayout*	m_PLayout_Background;
+	ID3DX11EffectVariable *	m_Background_cLootAt;
+	ID3DX11EffectVariable *	m_Background_cPos;
 	ID3DX11EffectScalarVariable* m_Background_Width;
 	ID3DX11EffectScalarVariable* m_Background_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Background;
 
 	CRVerteices m_CRVerteices;
 
-	ID3D11Buffer* m_Buffer_ColorRect;
-	ID3DX11Effect* m_Effect_ColorRect;
+	ID3D11Buffer*		m_Buffer_ColorRect;
+	ID3DX11Effect*		m_Effect_ColorRect;
 	ID3DX11EffectTechnique* m_PTech_ColorRect;
-	ID3D11InputLayout* m_PLayout_ColorRect;
-	ID3DX11EffectVariable *m_ColorRect_cLootAt;
-	ID3DX11EffectVariable *m_ColorRect_cPos;
+	ID3D11InputLayout*	m_PLayout_ColorRect;
+	ID3DX11EffectVariable *	m_ColorRect_cLootAt;
+	ID3DX11EffectVariable *	m_ColorRect_cPos;
 	ID3DX11EffectScalarVariable* m_ColorRect_Width;
 	ID3DX11EffectScalarVariable* m_ColorRect_Height;
 
-	ID3DX11Effect* m_Effect_Shadow;
+	ID3DX11Effect*		m_Effect_Shadow;
 	ID3DX11EffectTechnique* m_PTech_Shadow;
-	ID3D11InputLayout* m_PLayout_Shadow;
-	ID3DX11EffectVariable *m_Shadow_cLootAt;
-	ID3DX11EffectVariable *m_Shadow_cPos;
-	ID3DX11EffectVariable *m_Shadow_lightDir;
+	ID3D11InputLayout*	m_PLayout_Shadow;
+	ID3DX11EffectVariable *	m_Shadow_cLootAt;
+	ID3DX11EffectVariable *	m_Shadow_cPos;
+	ID3DX11EffectVariable *	m_Shadow_lightDir;
 	ID3DX11EffectScalarVariable* m_Shadow_lightStr;
 	ID3DX11EffectScalarVariable* m_Shadow_Width;
 	ID3DX11EffectScalarVariable* m_Shadow_Height;
@@ -142,11 +148,6 @@ private:
 	int			m_GameProcess;		//遊戲流程,表示目前執行的畫面
 	int			m_LastGameProcess;	//前一個遊戲流程
 	int			m_Last2GameProcess;	//前前一個遊戲流程
-
-	void TestWavPlayer();
-	void TestCamera();
-	void TestChee();
-	void TestFire();
 };
 
 struct CD3D11_BLEND_DESCX : public D3D11_BLEND_DESC
