@@ -38,6 +38,10 @@ private:
 	void TestCamera();
 	void TestChee();
 	void TestFire();
+	void TestBody();
+
+	bool b_Pause;
+	bool b_Body;
 //Test
 
 public:

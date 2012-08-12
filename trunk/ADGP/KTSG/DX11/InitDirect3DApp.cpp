@@ -17,7 +17,8 @@ InitDirect3DApp::InitDirect3DApp()
 	    m_ColorRect_Width(0), m_ColorRect_Height(0), m_Buffer_ColorRect(0),
 	    m_Shadow_Width(0), m_Shadow_Height(0),
 	    m_Body_Width(0), m_Body_Height(0),m_Buffer_Body(0),
-	    m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1)
+	    m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1),
+	    b_Body(false),b_Pause(false)
 {
 	g_Time = 0;
 	dxAppInstance = this;
@@ -97,30 +98,31 @@ void InitDirect3DApp::UpdateScene(float dt)
 	UpdateInput();
 
 	
-	
-	static float timp_count = 0;
-	timp_count+=dt;
-	if (timp_count > 1/60.0f)
+	if(!b_Pause)
 	{
-		g_Time++;
-		UpdateCamera();
-		if(g_EffectMG != NULL)g_EffectMG->Update(m_RenderTargetView);
-		//Hero Update
-		g_HeroMG.Update(dt);
-
-		//Chee Update
-		g_ObjectMG.Update(dt);
-
-		//Background Update
-		if(g_BGManager.CurrentBG() != NULL)
+		static float timp_count = 0;
+		timp_count+=dt;
+		if (timp_count > 1/60.0f)
 		{
-			g_BGManager.CurrentBG()->Update(dt);
-			BackgroundDataUpdate();
-		}
-		timp_count -= 1/60.0f;
+			g_Time++;
+			UpdateCamera();
+			if(g_EffectMG != NULL)g_EffectMG->Update(m_RenderTargetView);
+			//Hero Update
+			g_HeroMG.Update(dt);
 
-		
+			//Chee Update
+			g_ObjectMG.Update(dt);
+
+			//Background Update
+			if(g_BGManager.CurrentBG() != NULL)
+			{
+				g_BGManager.CurrentBG()->Update(dt);
+				BackgroundDataUpdate();
+			}
+			timp_count -= 1/60.0f;
+		}
 	}
+
 	UpdateUI();
 	buildPoint();
 	
@@ -259,13 +261,17 @@ void InitDirect3DApp::DrawScene()
 	}
 	
 	//Draw Body
-	offset = 0;
-	stride2 = sizeof(BodyVertex);
-	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	m_DeviceContext->IASetInputLayout(m_PLayout_Body);
-	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Body, &stride2, &offset);
-	m_PTech_Body->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-	m_DeviceContext->Draw(m_BodyVerteices.size(), 0);
+	if (b_Body)
+	{
+		offset = 0;
+		stride2 = sizeof(BodyVertex);
+		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		m_DeviceContext->IASetInputLayout(m_PLayout_Body);
+		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Body, &stride2, &offset);
+		m_PTech_Body->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+		m_DeviceContext->Draw(m_BodyVerteices.size(), 0);
+	}
+	
 	
 }
 
@@ -719,7 +725,33 @@ int InitDirect3DApp::UpdateInput()
 	TestViewEffect();
 	TestFire();
 	//HolyK
+	TestBody();
+
+	if (InputStateS::instance().isKeyDown(KEY_F1))
+	{
+		b_Pause = !b_Pause;
+	}
+
+	if (InputStateS::instance().isKeyDown(KEY_F2) && b_Pause)
+	{
+			g_Time++;
+			UpdateCamera();
+			if(g_EffectMG != NULL)g_EffectMG->Update(m_RenderTargetView);
+			//Hero Update
+			g_HeroMG.Update(0);
+
+			//Chee Update
+			g_ObjectMG.Update(0);
+
+			//Background Update
+			if(g_BGManager.CurrentBG() != NULL)
+			{
+				g_BGManager.CurrentBG()->Update(0);
+				BackgroundDataUpdate();
+			}
+	}
 	
+
 	return 0;
 }
 int InitDirect3DApp::UpdateUI()
@@ -1095,12 +1127,20 @@ void InitDirect3DApp::TestWavPlayer()
 
 void InitDirect3DApp::TestFire()
 {
-	if (InputStateS::instance().isKeyPress(KEY_D))
+	if (InputStateS::instance().isKeyDown(KEY_D))
 	{
 		m_Player.m_Hero->SetEffect(EffectType::NONE);
 	}
-	if (InputStateS::instance().isKeyPress(KEY_F))
+	if (InputStateS::instance().isKeyDown(KEY_F))
 	{
 		m_Player.m_Hero->SetEffect(EffectType::FIRE);
+	}
+}
+
+void InitDirect3DApp::TestBody()
+{
+	if (InputStateS::instance().isKeyDown(KEY_B))
+	{
+		b_Body = !b_Body;
 	}
 }
