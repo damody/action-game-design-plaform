@@ -1050,6 +1050,34 @@ void Hero::CreateEffect()
 	}
 }
 
+BodyVerteices Hero::GetBodyVerteices()
+{
+	BodyVerteices bvs;
+	BodyVertex bv;
+	bv.position.x = m_Position.x;
+	bv.position.y = m_Position.y;
+	bv.position.z = m_Position.z;
+	bv.angle = m_Angle;
+	if(m_FaceSide){
+		bv.faceside = 1;
+	}else{
+		bv.faceside = -1;
+	}
+
+	for (Bodys::iterator it = m_Bodys.begin();it != m_Bodys.end();it++)
+	{
+		Vec2s points_2D= it->m_Area.Points();
+		for (Vec2s::iterator it_p = points_2D.begin(); it_p != points_2D.end() ; it_p++)
+		{
+			bv.body.x = it_p->x;
+			bv.body.y = it_p->y;
+			bvs.push_back(bv);
+		}
+	}
+}
+
+
+
 
 
 

@@ -132,7 +132,7 @@ public:
 	void SetPosition(Vector3 pos);
 	void SetEffect(EffectType::e effect);
 	void PushKey(KeyInfo k);
-	
+	BodyVerteices GetBodyVerteices();
 protected:
 	void Init();
 	void NextFrame();

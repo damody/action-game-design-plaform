@@ -8,7 +8,7 @@
 #include <d3dx11.h>
 #include <vector>
 
-//Hero Vertex format
+//Hero Weapon Chee Vertex format
 struct ClipVertex
 {
 	D3DXVECTOR3 position;
@@ -36,8 +36,19 @@ struct CRVertex
 };
 typedef std::vector<CRVertex> CRVerteices;
 
+//Body Vertex format
+struct BodyVertex
+{
+	D3DXVECTOR3 position;
+	D3DXVECTOR2 body;
+	float angle;
+	float faceside;
+};
+typedef std::vector<BodyVertex> BodyVerteices;
+
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_ClipVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_BGVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_CRVertex[];
+extern D3D11_INPUT_ELEMENT_DESC VertexDesc_BodyVertex[];
 
 #endif // VERTEX_H
