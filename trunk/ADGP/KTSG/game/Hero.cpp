@@ -1074,6 +1074,8 @@ BodyVerteices Hero::GetBodyVerteices()
 			bvs.push_back(bv);
 		}
 	}
+
+	return bvs;
 }
 
 
