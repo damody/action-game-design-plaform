@@ -13,7 +13,7 @@ space_bounding =
 
 ban_bounding =
 {
-	{xmin=100, ymin=0, zmin=100, xmax=200, ymax=100, zmax=500},
+	{xmin=100, ymin=0, zmin=100, xmax=500, ymax=100, zmax=500},
 }
 
 layer =
@@ -47,10 +47,10 @@ layer =
 color_rect =
 {
 	{r=0.566, g=0.06, b=0.06, a=1, ground=1, x=0, y=0, z=1860, w=40000, h=1794},
-	{r=0.06, g=0.06, b=0.566, a=1, ground=1, x=100, y=0, z=500, w=100, h=400},
+	{r=0.06, g=0.06, b=0.566, a=1, ground=1, x=100, y=0, z=500, w=400, h=400},
 }
 
-parallel_light = 
+parallel_light =
 {
 	{x=2, y= -1.5, z= -1, light=3, time_start=0},
 	{x=0, y= -1.5, z= -1, light=10, time_start=500},

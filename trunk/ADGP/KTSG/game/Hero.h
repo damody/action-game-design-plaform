@@ -13,6 +13,7 @@
 #include "HeroAction.h"
 #include <string>
 #include <cmath>
+#include <cstdlib>
 #include <bitset>
 
 #define KEYLIFE_AFTER_KEYUP 120
