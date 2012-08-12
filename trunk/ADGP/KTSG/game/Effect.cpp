@@ -70,8 +70,8 @@ bool Effect::CreateEffect( EffectType::e type,EffectData* ed )
 {
 	if(Overflow())return false;
 	
-	ed->m_Pos.x = 1 + (m_SerialNum-1) % (PIC_W/PASTE_W);
-	ed->m_Pos.y = 1 + (m_SerialNum-1) / (PIC_W/PASTE_W);
+	ed->m_Pos.x =(float) 1 + (m_SerialNum-1) % (PIC_W/PASTE_W);
+	ed->m_Pos.y =(float) 1 + (m_SerialNum-1) / (PIC_W/PASTE_W);
 
 	switch(type)
 	{
@@ -200,8 +200,8 @@ void EffectManager::Update(ID3D11RenderTargetView* originRTV)
 		m_Effect[i]->Render();
 	}
 	//set viewport to screan's width & height
-	vp.Width = m_ScreanW;
-	vp.Height = m_ScreanH;
+	vp.Width =(float) m_ScreanW;
+	vp.Height =(float) m_ScreanH;
 	g_DeviceContext->RSSetViewports( 1, &vp );
 	g_DeviceContext->OMSetRenderTargets(1, &originRTV, 0);
 }

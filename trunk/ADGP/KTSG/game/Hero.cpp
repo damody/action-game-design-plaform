@@ -210,7 +210,7 @@ void Hero::NextFrame()
 	m_Frame = f->m_NextFrameName;
 	m_FrameID = f->m_NextFrameIndex;
 	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find(m_Frame);
-	if(iframe == m_HeroInfo->m_FramesMap.end() || iframe->second.size() <= m_FrameID){
+	if(iframe == m_HeroInfo->m_FramesMap.end() || (int)iframe->second.size() <= m_FrameID){
 		printf("fatal error: can't find next frame \"%s\"[%d] !\n", m_Frame.c_str(), m_FrameID);
 		system("pause");
 		throw "No such frame";
@@ -647,7 +647,7 @@ bool Hero::ScanKeyQue()
 	//決定招式按鍵動作
 	if(!m_KeyQue.empty()){
 		HitDatas hit = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_HitDatas;
-		for(int i=0; i< hit.size(); i++){
+		for(unsigned int i=0; i< hit.size(); i++){
 			KeyQueue::reverse_iterator riKey = m_KeyQue.rbegin();
 			const char *pHit = hit[i].m_KeyQueue.c_str(), *rHit = pHit;
 			bool flag = true;
@@ -836,7 +836,7 @@ bool Hero::ScanKeyQue()
 	if(nFrame.empty()){
 		return false;
 	}
-	else if(iframe == m_HeroInfo->m_FramesMap.end() || iframe->second.size() <= nFramID){
+	else if(iframe == m_HeroInfo->m_FramesMap.end() || (int)iframe->second.size() <= nFramID){
 		printf("error: can't find frame \"%s\"[%d] !\n", nFrame.c_str(), nFramID);
 		return false;
 	}
@@ -1041,12 +1041,12 @@ void Hero::SetEffect( EffectType::e effect )
 void Hero::CreateEffect()
 {
 	if(m_Effect != EffectType::NONE){
-		D3DXVECTOR4 v = D3DXVECTOR4(m_PicX,m_PicY,m_PicH,m_PicW);
+		D3DXVECTOR4 v = D3DXVECTOR4((float)m_PicX,(float)m_PicY,(float)m_PicH,(float)m_PicW);
 		m_Texture = g_EffectMG->CreateEffect(m_Effect,m_Texture,&v);
-		m_PicX = v.x;
-		m_PicY = v.y;
-		m_PicH = v.z;
-		m_PicW = v.w;
+		m_PicX = (int)v.x;
+		m_PicY = (int)v.y;
+		m_PicH = (int)v.z;
+		m_PicW = (int)v.w;
 	}
 }
 

@@ -129,7 +129,7 @@ void InitDirect3DApp::OnResize()
 {
 	D3DApp::OnResize();
 	
-	if(g_EffectMG!=NULL)g_EffectMG->OnResize((float)mClientWidth,(float)mClientHeight);
+	if(g_EffectMG!=NULL)g_EffectMG->OnResize(mClientWidth,mClientHeight);
 
 	if (m_Entity_Width!=NULL && m_Entity_Height!=NULL)
 	{
@@ -620,6 +620,13 @@ void InitDirect3DApp::LoadHero()
 	temp2->LoadObjectData(ball);
 	g_ObjectInfoMG.AddObjectInfo(temp2->m_Name,temp2);
 	
+	//test BAT
+	LuaCell_Sptr bat = LuaCell_Sptr(new LuaCell);
+	bat->InputLuaFile("bat.lua");
+	ObjectInfo_Sptr temp3 = ObjectInfo_Sptr(new ObjectInfo);
+	temp3->LoadObjectData(bat);
+	g_ObjectInfoMG.AddObjectInfo(temp3->m_Name,temp3);
+	g_ObjectMG.CreateWeapon("Bat",Vector3(600,0,600));
 
 	//test BGM
 	int index = g_WavPlayer.CreatSound("Media\\music\\stage5.mp3",1);

@@ -91,7 +91,7 @@ bool ObjectMG::CheeEmpty()
 
 bool ObjectMG::WeaponEmpty()
 {
-	return m_Chees.empty();
+	return m_Weapons.empty();
 }
 
 Chees::iterator ObjectMG::CheeVectorBegin()
