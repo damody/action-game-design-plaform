@@ -998,8 +998,14 @@ void InitDirect3DApp::ReflashTowerState()
 
 void InitDirect3DApp::UpdateCamera()
 {
-	if(m_Player.m_Hero->Position().x >= mClientWidth && m_Player.m_Hero->Position().x <= g_BGManager.CurrentBG()->Width()-mClientWidth)
+	if(m_Player.m_Hero->Position().x < mClientWidth)
 	{
+		float m = mClientWidth - m_Camera->LookAt().x;
+		m_Camera->MoveX(m*0.05f);
+	}else if(m_Player.m_Hero->Position().x > g_BGManager.CurrentBG()->Width()-mClientWidth){
+		float m = g_BGManager.CurrentBG()->Width()-mClientWidth - m_Camera->LookAt().x;
+		m_Camera->MoveX(m*0.05f);
+	}else{
 		float m = m_Player.m_Hero->Position().x - m_Camera->LookAt().x;
 		m_Camera->MoveX(m*0.05f);
 	}
