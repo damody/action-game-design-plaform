@@ -48,12 +48,25 @@
 #include <afxcontrolbars.h>     // 功能區和控制列的 MFC 支援
 
 
+//全域巨集
+#define ReleaseCOM(x) { if(x){ x->Release();x = 0; }}
 
-
-
-
-
-
+#if defined(DEBUG) | defined(_DEBUG)
+#ifndef HR
+#define HR(x)                                      \
+	{                                                  \
+	HRESULT hr = x;                                \
+	if(FAILED(hr))                                 \
+		{                                              \
+		DXTrace(__FILE__, __LINE__, hr, _T(#x), TRUE); \
+		}                                              \
+	}
+#endif
+#else
+#ifndef HR
+#define HR(x) x;
+#endif
+#endif 
 
 #ifdef _UNICODE
 #if defined _M_IX86

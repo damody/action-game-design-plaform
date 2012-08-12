@@ -14,6 +14,7 @@
 #include "Resource.h"
 #include "ADGP Designer.h"
 #include <comutil.h>
+#include <game/HeroAction.h>
 
 CClassView* CClassView::instance = NULL;
 
@@ -33,20 +34,23 @@ const CString CClassView::anims[MAX_ANIMATIONS] = {
 	CString("light_weapon_jump_throw"),
 	CString("heavy_weapon_jump_throw"),
 	CString("drink"),
-	CString("light_punch"),
-	CString("light_kick"),
-	CString("heavy_punch"),
-	CString("heavy_kick"),
-	CString("super_punch"),
-	CString("super_kick"),
-	CString("jump_punch"),
-	CString("jump_kick"),
-	CString("run_punch"),
-	CString("run_kick"),
-	CString("forward_fly_rowing"),
-	CString("backward_fly_rowing"),
-	CString("forward_rowing"),
-	CString("backward_rowing"),
+	CString("before_attack"),
+	CString("attacking"),
+	CString("after_attack"),
+	CString("before_super_attack"),
+	CString("super_attacking"),
+	CString("after_super_attack"),
+	CString("before_jump_attack"),
+	CString("jump_attacking"),
+	CString("after_jump_attack"),
+	CString("before_run_attack"),
+	CString("run_attacking"),
+	CString("after_run_attack"),
+	CString("before_dash_attack"),
+	CString("dash_attacking"),
+	CString("after_dash_attack"),
+	CString("flip"),
+	CString("rolling"),
 	CString("defend"),
 	CString("defend_punch"),
 	CString("defend_kick"),
@@ -54,11 +58,19 @@ const CString CClassView::anims[MAX_ANIMATIONS] = {
 	CString("caught"),
 	CString("falling"),
 	CString("jump"),
+	CString("dash"),
 	CString("crouch"),
 	CString("injured"),
 	CString("forward_lying"),
 	CString("backward_lying"),
-	CString("unique_skill")
+	CString("in_the_air"),
+	CString("before_skill"),
+	CString("after_skill"),
+	CString("air_skill"),
+	CString("x_axis_skill"),
+	CString("z_axis_skill"),
+	CString("ground_skill"),
+	CString("unique_skill"),
 };
 
 const CString CClassView::actionMap[MAX_ACTIONS] = {
@@ -77,20 +89,23 @@ const CString CClassView::actionMap[MAX_ACTIONS] = {
 	CString("LIGHT_WEAPON_JUMP_THROW"),
 	CString("HEAVY_WEAPON_JUMP_THROW"),
 	CString("DRINK"),
-	CString("LIGHT_PUNCH"),
-	CString("LIGHT_KICK"),
-	CString("HEAVY_PUNCH"),
-	CString("HEAVY_KICK"),
-	CString("SUPER_PUNCH"),
-	CString("SUPER_KICK"),
-	CString("JUMP_PUNCH"),
-	CString("JUMP_KICK"),
-	CString("RUN_PUNCH"),
-	CString("RUN_KICK"),
-	CString("FORWARD_FLY_ROWING"),
-	CString("BACKWARD_FLY_ROWING"),
-	CString("FORWARD_ROWING"),
-	CString("BACKWARD_ROWING"),
+	CString("BEFORE_ATTACK"),
+	CString("ATTACKING"),
+	CString("AFTER_ATTACK"),
+	CString("BEFORE_SUPER_ATTACK"),
+	CString("SUPER_ATTACKING"),
+	CString("AFTER_SUPER_ATTACK"),
+	CString("BEFORE_JUMP_ATTACK"),
+	CString("JUMP_ATTACKING"),
+	CString("AFTER_JUMP_ATTACK"),
+	CString("BEFORE_RUN_ATTACK"),
+	CString("RUN_ATTACKING"),
+	CString("AFTER_RUN_ATTACK"),
+	CString("BEFORE_DASH_ATTACK"),
+	CString("DASH_ATTACKING"),
+	CString("AFTER_DASH_ATTACK"),
+	CString("FLIP"),
+	CString("ROLLING"),
 	CString("DEFEND"),
 	CString("DEFEND_PUNCH"),
 	CString("DEFEND_KICK"),
@@ -98,11 +113,19 @@ const CString CClassView::actionMap[MAX_ACTIONS] = {
 	CString("CAUGHT"),
 	CString("FALLING"),
 	CString("JUMP"),
+	CString("DASH"),
 	CString("CROUCH"),
 	CString("INJURED"),
 	CString("FORWARD_LYING"),
 	CString("BACKWARD_LYING"),
-	CString("UNIQUE_SKILL")
+	CString("IN_THE_AIR"),
+	CString("BEFORE_SKILL"),
+	CString("AFTER_SKILL"),
+	CString("AIR_SKILL"),
+	CString("X_AXIS_SKILL"),
+	CString("Z_AXIS_SKILL"),
+	CString("GROUND_SKILL"),
+	CString("UNIQUE_SKILL"),
 };
 
 class CClassViewMenuButton : public CMFCToolBarMenuButton
@@ -801,131 +824,62 @@ LRESULT CClassView::OnPropertyChanged( __in WPARAM wparam, __in LPARAM lparam, H
 			{
 				if(actionMap[i].Compare(var.bstrVal) == 0)
 				{
+#define SET_ACTION(i, X) case i: fi.m_HeroAction = HeroAction:: X; break;
 					switch(i)
 					{
-					case 0:
-						fi.m_HeroAction = HeroAction::STANDING;
-						break;
-					case 1:
-						fi.m_HeroAction = HeroAction::WALKING;
-						break;
-					case 2:
-						fi.m_HeroAction = HeroAction::RUNNING;
-						break;
-					case 3:
-						fi.m_HeroAction = HeroAction::STOP_RUNNING;
-						break;
-					case 4:
-						fi.m_HeroAction = HeroAction::HEAVY_WEAPON_WALK;
-						break;
-					case 5:
-						fi.m_HeroAction = HeroAction::HEAVY_WEAPON_RUN;
-						break;
-					case 6:
-						fi.m_HeroAction = HeroAction::LIGHT_WEAPON_STAND_ATTACK;
-						break;
-					case 7:
-						fi.m_HeroAction = HeroAction::LIGHT_WEAPON_JUMP_ATTACK;
-						break;
-					case 8:
-						fi.m_HeroAction = HeroAction::LIGHT_WEAPON_RUN_ATTACK;
-						break;
-					case 9:
-						fi.m_HeroAction = HeroAction::LIGHT_WEAPON_DASH_ATTACK;
-						break;
-					case 10:
-						fi.m_HeroAction = HeroAction::LIGHT_WEAPON_THROW;
-						break;
-					case 11:
-						fi.m_HeroAction = HeroAction::HEAVY_WEAPON_THROW;
-						break;
-					case 12:
-						fi.m_HeroAction = HeroAction::LIGHT_WEAPON_JUMP_THROW;
-						break;
-					case 13:
-						fi.m_HeroAction = HeroAction::HEAVY_WEAPON_JUMP_THROW;
-						break;
-					case 14:
-						fi.m_HeroAction = HeroAction::DRINK;
-						break;
-					case 15:
-						fi.m_HeroAction = HeroAction::LIGHT_PUNCH;
-						break;
-					case 16:
-						fi.m_HeroAction = HeroAction::LIGHT_KICK;
-						break;
-					case 17:
-						fi.m_HeroAction = HeroAction::HEAVY_PUNCH;
-						break;
-					case 18:
-						fi.m_HeroAction = HeroAction::HEAVY_KICK;
-						break;
-					case 19:
-						fi.m_HeroAction = HeroAction::SUPER_PUNCH;
-						break;
-					case 20:
-						fi.m_HeroAction = HeroAction::SUPER_KICK;
-						break;
-					case 21:
-						fi.m_HeroAction = HeroAction::JUMP_PUNCH;
-						break;
-					case 22:
-						fi.m_HeroAction = HeroAction::JUMP_KICK;
-						break;
-					case 23:
-						fi.m_HeroAction = HeroAction::RUN_PUNCH;
-						break;
-					case 24:
-						fi.m_HeroAction = HeroAction::RUN_KICK;
-						break;
-					case 25:
-						fi.m_HeroAction = HeroAction::FORWARD_FLY_ROWING;
-						break;
-					case 26:
-						fi.m_HeroAction = HeroAction::BACKWARD_FLY_ROWING;
-						break;
-					case 27:
-						fi.m_HeroAction = HeroAction::FORWARD_ROWING;
-						break;
-					case 28:
-						fi.m_HeroAction = HeroAction::BACKWARD_ROWING;
-						break;
-					case 29:
-						fi.m_HeroAction = HeroAction::DEFEND;
-						break;
-					case 30:
-						fi.m_HeroAction = HeroAction::DEFEND_PUNCH;
-						break;
-					case 31:
-						fi.m_HeroAction = HeroAction::DEFEND_KICK;
-						break;
-					case 32:
-						fi.m_HeroAction = HeroAction::CATCHING;
-						break;
-					case 33:
-						fi.m_HeroAction = HeroAction::CAUGHT;
-						break;
-					case 34:
-						fi.m_HeroAction = HeroAction::FALLING;
-						break;
-					case 35:
-						fi.m_HeroAction = HeroAction::JUMP;
-						break;
-					case 36:
-						fi.m_HeroAction = HeroAction::CROUCH;
-						break;
-					case 37:
-						fi.m_HeroAction = HeroAction::INJURED;
-						break;
-					case 38:
-						fi.m_HeroAction = HeroAction::FORWARD_LYING;
-						break;
-					case 39:
-						fi.m_HeroAction = HeroAction::BACKWARD_LYING;
-						break;
-					case 40:
-						fi.m_HeroAction = HeroAction::UNIQUE_SKILL;
-						break;
+					SET_ACTION( 0, STANDING);
+					SET_ACTION( 1, STANDING);
+					SET_ACTION( 2, WALKING);
+					SET_ACTION( 3, RUNNING);
+					SET_ACTION( 4, STOP_RUNNING);
+					SET_ACTION( 5, HEAVY_WEAPON_WALK);
+					SET_ACTION( 6, HEAVY_WEAPON_RUN);
+					SET_ACTION( 7, LIGHT_WEAPON_STAND_ATTACK);
+					SET_ACTION( 8, LIGHT_WEAPON_JUMP_ATTACK);
+					SET_ACTION( 9, LIGHT_WEAPON_RUN_ATTACK);
+					SET_ACTION(10, LIGHT_WEAPON_DASH_ATTACK);
+					SET_ACTION(11, LIGHT_WEAPON_THROW);
+					SET_ACTION(12, HEAVY_WEAPON_THROW);
+					SET_ACTION(13, LIGHT_WEAPON_JUMP_THROW);
+					SET_ACTION(14, HEAVY_WEAPON_JUMP_THROW);
+					SET_ACTION(15, DRINK);
+					SET_ACTION(16, BEFORE_ATTACK);
+					SET_ACTION(17, ATTACKING);
+					SET_ACTION(18, AFTER_ATTACK);
+					SET_ACTION(19, BEFORE_SUPER_ATTACK);
+					SET_ACTION(20, SUPER_ATTACKING);
+					SET_ACTION(21, AFTER_SUPER_ATTACK);
+					SET_ACTION(22, BEFORE_JUMP_ATTACK);
+					SET_ACTION(23, JUMP_ATTACKING);
+					SET_ACTION(24, AFTER_JUMP_ATTACK);
+					SET_ACTION(25, BEFORE_RUN_ATTACK);
+					SET_ACTION(26, RUN_ATTACKING);
+					SET_ACTION(27, AFTER_RUN_ATTACK);
+					SET_ACTION(28, BEFORE_DASH_ATTACK);
+					SET_ACTION(29, DASH_ATTACKING);
+					SET_ACTION(30, AFTER_DASH_ATTACK);
+					SET_ACTION(31, FLIP);
+					SET_ACTION(32, ROllING);
+					SET_ACTION(33, DEFEND);
+					SET_ACTION(34, DEFEND_PUNCH);
+					SET_ACTION(35, DEFEND_KICK);
+					SET_ACTION(36, CATCHING);
+					SET_ACTION(37, CAUGHT);
+					SET_ACTION(38, FALLING);
+					SET_ACTION(39, JUMP);
+					SET_ACTION(40, DASH);
+					SET_ACTION(41, CROUCH);
+					SET_ACTION(42, INJURED);
+					SET_ACTION(43, FORWARD_LYING);
+					SET_ACTION(44, BACKWARD_LYING);
+					SET_ACTION(45, IN_THE_AIR);
+					SET_ACTION(46, BEFORE_SKILL);
+					SET_ACTION(47, AFTER_SKILL);
+					SET_ACTION(48, AIR_SKILL);
+					SET_ACTION(49, X_AXIS_SKILL);
+					SET_ACTION(50, Z_AXIS_SKILL);
+					SET_ACTION(51, GROUND_SKILL);
+					SET_ACTION(52, UNIQUE_SKILL);
 					}
 					break;
 				}
