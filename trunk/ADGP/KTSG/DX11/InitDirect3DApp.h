@@ -19,14 +19,7 @@ class InitDirect3DApp : public D3DApp
 {
 //Test
 private:
-	struct DrawBodyGroup
-	{
-		int	VertexCount, StartVertexLocation;
-	};
-	typedef std::vector<DrawBodyGroup> DrawBodyGroups;
-
 	BodyVerteices  m_BodyVerteices;
-	DrawBodyGroups m_DrawBodyGroups;
 
 	ID3D11Buffer*		m_Buffer_Body;
 	ID3DX11Effect*		m_Effect_Body;

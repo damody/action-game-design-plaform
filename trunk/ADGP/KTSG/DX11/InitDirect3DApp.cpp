@@ -261,14 +261,11 @@ void InitDirect3DApp::DrawScene()
 	//Draw Body
 	offset = 0;
 	stride2 = sizeof(BodyVertex);
-	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_DeviceContext->IASetInputLayout(m_PLayout_Body);
 	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Body, &stride2, &offset);
-	for (DrawBodyGroups::iterator it = m_DrawBodyGroups.begin();it != m_DrawBodyGroups.end();++it)
-	{
-		m_PTech_Body->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-		m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
-	}
+	m_PTech_Body->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+	m_DeviceContext->Draw(m_BodyVerteices.size(), 0);
 	
 }
 
@@ -425,7 +422,7 @@ void InitDirect3DApp::buildPointFX()
 
 	D3DX11_PASS_DESC PassDescBody;
 	m_PTech_Body->GetPassByIndex(0)->GetDesc(&PassDescBody);
-	HR(m_d3dDevice->CreateInputLayout(VertexDesc_BodyVertex, 4, PassDescBody.pIAInputSignature,PassDescBody.IAInputSignatureSize, &m_PLayout_Body));
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_BodyVertex, 5, PassDescBody.pIAInputSignature,PassDescBody.IAInputSignatureSize, &m_PLayout_Body));
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -569,19 +566,12 @@ void InitDirect3DApp::buildPoint()
 	
 
 	m_BodyVerteices.clear();
-	m_DrawBodyGroups.clear();
 	count = 0;
 	if(!g_HeroMG.Empty()){
 		for (Heroes::iterator it = g_HeroMG.HeroVectorBegin(); it != g_HeroMG.HeroVectorEnd(); it++)
 		{
 			BodyVerteices bvs = (*it)->GetBodyVerteices();
 			m_BodyVerteices.assign(bvs.begin(),bvs.end());
-			DrawBodyGroup dbg;
-			dbg.StartVertexLocation = count;
-			dbg.VertexCount = bvs.size();
-			m_DrawBodyGroups.push_back(dbg);
-
-			count += bvs.size();
 		}
 	}
 	if (m_BodyVerteices.size()>0)

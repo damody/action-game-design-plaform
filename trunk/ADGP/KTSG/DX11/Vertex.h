@@ -44,6 +44,7 @@ struct BodyVertex
 	D3DXVECTOR2 body;
 	float angle;
 	float faceside;
+	D3DXVECTOR2 center;
 };
 typedef std::vector<BodyVertex> BodyVerteices;
 

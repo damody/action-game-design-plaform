@@ -14,6 +14,7 @@ struct VS_IN
 	float2 body 	 : BODY;
 	float  angle	 : PI;
 	float  faceside  : FACE;
+	float2 center		: CENTER; 
 };
 
 struct VS_OUT
@@ -35,14 +36,15 @@ VS_OUT VS_Main(VS_IN vIn) : SV_POSITION
 	view[1]=float3(0			,  cos(-alpha) 			  	  ,  sin(-alpha)	            );
 	view[2]=float3(sin(-thita) 	,  cos(-thita) * -sin(-alpha) ,  cos(-thita) * cos(-alpha) );
 	
-	vIn.position =float4(mul(float3(vIn.position.xyz),view),1.0) ;
+	vIn.position = float4(mul(float3(vIn.position.xyz),view),1.0) ;
+	vIn.position = float4(vIn.position.x-vIn.faceside*vIn.center.x,vIn.position.y+vIn.center.y,vIn.position.z,1.0);
 	
 	float x = vIn.angle*3.14159/180;
-	float2x2 mat = {vIn.faceside*cos(x), vIn.faceside*-sin(x), sin(x), cos(x)};
+	float2x2 mat = {cos(x), -sin(x), sin(x), cos(x)};
 	
 	//vOut.pos = float4(float2(mul(float2(vIn.position.xy+vIn.body.xy),mat)),vIn.position.z,1.0);
 	
-	vOut.pos = float4(vIn.position.xy+vIn.body.xy,vIn.position.z,1.0);
+	vOut.pos = float4(vIn.position.x+vIn.faceside*vIn.body.x,vIn.position.y+vIn.body.y,vIn.position.z,1.0);
 	
 	float offset =0.1/tan(3.14159/6);
 	float4x4 proj;
@@ -61,7 +63,7 @@ VS_OUT VS_Main(VS_IN vIn) : SV_POSITION
 
 float4 PS_Main( float4 pos : SV_POSITION ) : SV_TARGET
 {
-    return float4( 1.0f, 1.0f, 1.0f, 1.0f );
+    return float4( 1.0f, 1.0f, 1.0f, 0.5f );
 }
 
 technique11 PointTech

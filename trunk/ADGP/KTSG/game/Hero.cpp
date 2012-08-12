@@ -112,6 +112,7 @@ void Hero::Update(float dt)
 				m_TimeTik = f->m_Wait;
 				m_CenterX = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX;
 				m_CenterY = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY;
+				m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;
 				//m_Vel.x = 0;
 				//m_Vel.z = 0;
 
@@ -154,7 +155,7 @@ void Hero::Update(float dt)
 			m_TimeTik = f->m_Wait;
 			m_CenterX = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX;
 			m_CenterY = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY;
-
+			m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;
 			CreateEffect();
 		}
 	}
@@ -229,6 +230,7 @@ void Hero::NextFrame()
 	m_Vel.z += f->m_DVZ * (m_FaceSide ? 1 : -1);
 	m_CenterX = f->m_CenterX;
 	m_CenterY = f->m_CenterY;
+	m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;
 	CreateEffect();
 }
 
@@ -859,7 +861,7 @@ bool Hero::ScanKeyQue()
 		m_Vel.z += f->m_DVZ * (m_FaceSide ? 1 : -1);
 		m_CenterX = f->m_CenterX;
 		m_CenterY = f->m_CenterY;
-
+		m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;
 		CreateEffect();
 		return true;
 	}
@@ -1052,13 +1054,17 @@ void Hero::CreateEffect()
 
 BodyVerteices Hero::GetBodyVerteices()
 {
-	float scale = 1.5f;
+	float scale = 3.0f;
 
 	BodyVerteices bvs;
 	BodyVertex bv;
-	bv.position.x = m_Position.x ;
-	bv.position.y = m_Position.y ;
+	bv.position.x = m_Position.x;
+	bv.position.y = m_Position.y;
 	bv.position.z = m_Position.z;
+
+	bv.center.x = m_CenterX * scale;
+	bv.center.y = m_CenterY * scale;
+
 	bv.angle = m_Angle;
 	if(m_FaceSide){
 		bv.faceside = 1;
@@ -1069,10 +1075,18 @@ BodyVerteices Hero::GetBodyVerteices()
 	for (Bodys::iterator it = m_Bodys.begin();it != m_Bodys.end();it++)
 	{
 		Vec2s points_2D= it->m_Area.Points();
-		for (Vec2s::iterator it_p = points_2D.begin(); it_p != points_2D.end() ; it_p++)
+		for (unsigned int i=1; i+1 < points_2D.size();i++)
 		{
-			bv.body.x = it_p->x *scale;
-			bv.body.y = it_p->y *scale;
+			bv.body.x= points_2D[0].x *scale;
+			bv.body.y = points_2D[0].y *scale;
+			bvs.push_back(bv);
+
+			bv.body.x= points_2D[i].x *scale;
+			bv.body.y = points_2D[i].y *scale;
+			bvs.push_back(bv);
+
+			bv.body.x= points_2D[i+1].x *scale;
+			bv.body.y = points_2D[i+1].y *scale;
 			bvs.push_back(bv);
 		}
 	}
