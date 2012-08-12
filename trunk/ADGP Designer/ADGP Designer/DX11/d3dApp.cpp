@@ -84,7 +84,7 @@ void D3DApp::initDirect3D()
 	m_d3dDevice = m_DXUT_UI->GetDevice();
 	m_DeviceContext = m_DXUT_UI->GetDeviceContext();
 	m_SwapChain = m_DXUT_UI->GetSwapChaine();
-	//OnResize(mClientWidth, mClientHeight);
+	OnResize(mClientWidth, mClientHeight);
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;

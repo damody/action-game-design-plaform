@@ -169,5 +169,6 @@ void CADGPDesignerView::OnSize(UINT nType, int cx, int cy)
 	CView::OnSize(nType, cx, cy);
 
 	// TODO: 在此加入您的訊息處理常式程式碼
-	m_D3DApp.OnResize(cx, cy);
+	if (cx > 0 && cy >0)
+		m_D3DApp.OnResize(cx, cy);
 }
