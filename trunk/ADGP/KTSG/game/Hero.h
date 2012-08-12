@@ -64,13 +64,13 @@ private:
 	int		m_PicY;
 	
 	Vector3		m_Position;
-	float		m_OffsetX,m_OffsetY; //中心點偏移
+	float		m_CenterX,m_CenterY;
 	Vector3		m_Vel;
 	Bodys		m_Bodys;
 	float		m_Angle;
 	bool		m_FaceSide; //true 右, false 左
-	int         d_run;		//判定跑步用，右正左負
-	std::bitset<4> d_key;	//判斷非方向按鍵作用與否，1表示已作用，0則否，0:atk1, 1:atk2, 2:j, 3:d
+	int		d_run;		//判定跑步用，右正左負
+	std::bitset<4>	d_key;	//判斷非方向按鍵作用與否，1表示已作用，0則否，0:atk1, 1:atk2, 2:j, 3:d
 
 	int		m_Team;//0為不分
 	int		m_MaxRecoverHP;//最大恢復血量

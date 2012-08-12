@@ -27,7 +27,7 @@ private:
 	int		m_PicY;
 
 	Vector3		m_Position;
-	float		m_OffsetX,m_OffsetY; //¤¤¤ßÂI°¾²¾
+	float		m_CenterX,m_CenterY;
 	Vector3		m_Vel;
 	Bodys		m_Bodys;
 	float		m_Angle;

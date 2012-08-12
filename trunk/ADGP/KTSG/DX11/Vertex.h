@@ -16,6 +16,7 @@ struct ClipVertex
 	float angle;
 	D3DXVECTOR4 picpos; // x, y, w, h
 	float faceside;
+	D3DXVECTOR2 center;
 };
 typedef std::vector<ClipVertex> ClipVertexs;
 //Background Vertex format

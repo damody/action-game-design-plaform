@@ -459,5 +459,8 @@
     <None Include="shader\Chee.fx">
       <Filter>shader</Filter>
     </None>
+    <None Include="shader\Body.fx">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

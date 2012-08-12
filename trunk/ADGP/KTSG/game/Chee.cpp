@@ -40,6 +40,8 @@ void Chee::Init()
 	m_Action = f->m_HeroAction;
 	m_TimeTik = f->m_Wait;
 	m_Bodys = f->m_Bodys;
+	m_CenterX = f->m_CenterX;
+	m_CenterY = f->m_CenterY;
 }
 
 
@@ -58,6 +60,8 @@ void Chee::NextFrame()
 	m_Texture = m_ObjectInfo->m_PictureDatas[m_PicID].m_TextureID;
 	m_Action = f->m_HeroAction;
 	m_TimeTik = f->m_Wait;
+	m_CenterX = f->m_CenterX;
+	m_CenterY = f->m_CenterY;
 	if(m_FaceSide){
 		m_Vel.x +=f->m_DVX;
 		m_Vel.y +=f->m_DVY;
@@ -87,24 +91,18 @@ void Chee::Update( float dt )
 	}
 
 	m_Position += m_Vel;
-
-	if(m_FaceSide){
-		m_OffsetX= (m_ObjectInfo->m_PictureDatas[m_PicID].m_Width - 2*m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX);
-	}else{
-		m_OffsetX=-(m_ObjectInfo->m_PictureDatas[m_PicID].m_Width - 2*m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX);
-	}
-	m_OffsetY = - 2*(m_ObjectInfo->m_PictureDatas[m_PicID].m_Height-m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY);
-	
-	
 }
 
 void Chee::UpdateDataToDraw()
 {
 	float scale = 1.5f;
 
-	m_Pic.position.x = m_Position.x+m_OffsetX*scale;
-	m_Pic.position.y = m_Position.y+m_OffsetY*scale;
+	m_Pic.position.x = m_Position.x;
+	m_Pic.position.y = m_Position.y;
 	m_Pic.position.z = m_Position.z;
+
+	m_Pic.center.x = m_CenterX *scale;
+	m_Pic.center.y = m_CenterY *scale;
 
 	m_Pic.angle = m_Angle;
 	m_Pic.size.x = (float)m_ObjectInfo->m_PictureDatas[m_PicID].m_Width*scale;

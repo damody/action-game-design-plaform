@@ -16,6 +16,7 @@ InitDirect3DApp::InitDirect3DApp()
             m_Background_Width(0), m_Background_Height(0), m_Buffer_Background(0),
 	    m_ColorRect_Width(0), m_ColorRect_Height(0), m_Buffer_ColorRect(0),
 	    m_Shadow_Width(0), m_Shadow_Height(0),
+	    m_Body_Width(0), m_Body_Height(0),m_Buffer_Body(0),
 	    m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1)
 {
 	g_Time = 0;
@@ -160,6 +161,12 @@ void InitDirect3DApp::OnResize()
 		m_Shadow_Width->SetFloat((float)mClientWidth);
 		m_Shadow_Height->SetFloat((float)mClientHeight);
 	}
+
+	if (m_Body_Width!=NULL && m_Body_Height!=NULL)
+	{
+		m_Body_Width->SetFloat((float)mClientWidth);
+		m_Body_Height->SetFloat((float)mClientHeight);
+	}
 	
 }
 
@@ -251,7 +258,17 @@ void InitDirect3DApp::DrawScene()
 		}
 	}
 	
-	
+	//Draw Body
+	offset = 0;
+	stride2 = sizeof(BodyVertex);
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	m_DeviceContext->IASetInputLayout(m_PLayout_Body);
+	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Body, &stride2, &offset);
+	for (DrawBodyGroups::iterator it = m_DrawBodyGroups.begin();it != m_DrawBodyGroups.end();++it)
+	{
+		m_PTech_Body->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+		m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
+	}
 	
 }
 
@@ -283,7 +300,7 @@ void InitDirect3DApp::buildPointFX()
 
 	D3DX11_PASS_DESC PassDesc;
 	m_PTech_Entity->GetPassByIndex(0)->GetDesc(&PassDesc);
-	HR(m_d3dDevice->CreateInputLayout(VertexDesc_ClipVertex, 5, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Entity));
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_ClipVertex, 6, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Entity));
 	
 	//Chee
 	hr = 0;
@@ -308,7 +325,7 @@ void InitDirect3DApp::buildPointFX()
 
 	D3DX11_PASS_DESC PassDescChee;
 	m_PTech_Chee->GetPassByIndex(0)->GetDesc(&PassDescChee);
-	HR(m_d3dDevice->CreateInputLayout(VertexDesc_ClipVertex, 5, PassDescChee.pIAInputSignature,PassDescChee.IAInputSignatureSize, &m_PLayout_Chee));
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_ClipVertex, 6, PassDescChee.pIAInputSignature,PassDescChee.IAInputSignatureSize, &m_PLayout_Chee));
 
 	//Background
 	hr = 0;
@@ -384,7 +401,31 @@ void InitDirect3DApp::buildPointFX()
 
 	D3DX11_PASS_DESC PassDescShadow;
 	m_PTech_Shadow->GetPassByIndex(0)->GetDesc(&PassDescShadow);
-	HR(m_d3dDevice->CreateInputLayout(VertexDesc_ClipVertex, 5, PassDescShadow.pIAInputSignature,PassDescShadow.IAInputSignatureSize, &m_PLayout_Shadow));
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_ClipVertex, 6, PassDescShadow.pIAInputSignature,PassDescShadow.IAInputSignatureSize, &m_PLayout_Shadow));
+
+	//Body
+	hr = 0;
+	hr=D3DX11CompileFromFile(_T("shader\\Body.fx"), NULL, NULL, NULL, 
+		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
+	if(FAILED(hr))
+	{
+		if( pError )
+		{
+			MessageBoxA(0, (char*)pError->GetBufferPointer(), 0, 0);
+			ReleaseCOM(pError);
+		}
+		DXTrace(__FILE__, __LINE__, hr, _T("D3DX11CreateEffectFromFile"), TRUE);
+	} 
+	HR(D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_Body));
+	m_PTech_Body = m_Effect_Body->GetTechniqueByName("PointTech");
+	m_Body_Width = m_Effect_Body->GetVariableByName("sceneW")->AsScalar();
+	m_Body_Height =m_Effect_Body->GetVariableByName("sceneH")->AsScalar();
+	m_Body_cLootAt = m_Effect_Body->GetVariableByName("cLookAt");
+	m_Body_cPos = m_Effect_Body->GetVariableByName("cPolarCoord");
+
+	D3DX11_PASS_DESC PassDescBody;
+	m_PTech_Body->GetPassByIndex(0)->GetDesc(&PassDescBody);
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_BodyVertex, 4, PassDescBody.pIAInputSignature,PassDescBody.IAInputSignatureSize, &m_PLayout_Body));
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -400,6 +441,7 @@ void InitDirect3DApp::buildPoint()
 	ReleaseCOM(m_Buffer_Chee);
 	ReleaseCOM(m_Buffer_Background);
 	ReleaseCOM(m_Buffer_ColorRect);
+	ReleaseCOM(m_Buffer_Body);
 
 	if(g_BGManager.CurrentBG() != NULL)
 	{
@@ -525,6 +567,32 @@ void InitDirect3DApp::buildPoint()
 		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Chee));
 	}
 	
+
+	m_BodyVerteices.clear();
+	m_DrawBodyGroups.clear();
+	count = 0;
+	if(!g_HeroMG.Empty()){
+		for (Heroes::iterator it = g_HeroMG.HeroVectorBegin(); it != g_HeroMG.HeroVectorEnd(); it++)
+		{
+			BodyVerteices bvs = (*it)->GetBodyVerteices();
+			m_BodyVerteices.assign(bvs.begin(),bvs.end());
+			DrawBodyGroup dbg;
+			dbg.StartVertexLocation = count;
+			dbg.VertexCount = bvs.size();
+			m_DrawBodyGroups.push_back(dbg);
+
+			count += bvs.size();
+		}
+	}
+	if (m_BodyVerteices.size()>0)
+	{
+		m_vbd.ByteWidth = (UINT)(sizeof(BodyVertex) * m_BodyVerteices.size());
+		m_vbd.StructureByteStride=sizeof(BodyVertex);
+		D3D11_SUBRESOURCE_DATA vinitData;
+		vinitData.pSysMem = &m_BodyVerteices[0];
+		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Body));
+	}
+		
 
 }
 
@@ -925,6 +993,8 @@ void InitDirect3DApp::UpdateCamera()
 	m_ColorRect_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 	m_Shadow_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
 	m_Shadow_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Body_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Body_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 }
 
 void InitDirect3DApp::BackgroundDataUpdate()

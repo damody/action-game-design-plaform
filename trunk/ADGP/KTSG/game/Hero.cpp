@@ -67,6 +67,8 @@ void Hero::Init()
 	m_Action = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_HeroAction;
 	m_TimeTik = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Wait;
 	m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;
+	m_CenterX = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX;
+	m_CenterY = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY;
 }
 
 void Hero::Update(float dt) 
@@ -108,6 +110,8 @@ void Hero::Update(float dt)
 				m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
 				m_Action = f->m_HeroAction;
 				m_TimeTik = f->m_Wait;
+				m_CenterX = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX;
+				m_CenterY = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY;
 				//m_Vel.x = 0;
 				//m_Vel.z = 0;
 
@@ -148,26 +152,27 @@ void Hero::Update(float dt)
 			m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
 			m_Action = f->m_HeroAction;
 			m_TimeTik = f->m_Wait;
+			m_CenterX = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX;
+			m_CenterY = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY;
 
 			CreateEffect();
 		}
 	}
 
-	if(m_FaceSide){
-		m_OffsetX= (m_HeroInfo->m_PictureDatas[m_PicID].m_Width - 2*m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX);
-	}else{
-		m_OffsetX=-(m_HeroInfo->m_PictureDatas[m_PicID].m_Width - 2*m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX);
-	}
-	m_OffsetY = - 2*(m_HeroInfo->m_PictureDatas[m_PicID].m_Height-m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY);
+
+	
 }
 
 void Hero::UpdateDataToDraw()
 {
-	float scale = 1.5f;
+	float scale = 3.0f;
 
-	m_Pic.position.x = m_Position.x+m_OffsetX*scale;
-	m_Pic.position.y = m_Position.y+m_OffsetY*scale;
+	m_Pic.position.x = m_Position.x;
+	m_Pic.position.y = m_Position.y;
 	m_Pic.position.z = m_Position.z;
+
+	m_Pic.center.x = m_CenterX *scale;
+	m_Pic.center.y = m_CenterY *scale;
 
 	m_Pic.angle = m_Angle;
 	m_Pic.size.x = (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Width*scale;
@@ -222,7 +227,8 @@ void Hero::NextFrame()
 	m_Vel.x += f->m_DVX * (m_FaceSide ? 1 : -1);
 	m_Vel.y += f->m_DVY * (m_FaceSide ? 1 : -1);
 	m_Vel.z += f->m_DVZ * (m_FaceSide ? 1 : -1);
-
+	m_CenterX = f->m_CenterX;
+	m_CenterY = f->m_CenterY;
 	CreateEffect();
 }
 
@@ -851,6 +857,8 @@ bool Hero::ScanKeyQue()
 		m_Vel.x += f->m_DVX * (m_FaceSide ? 1 : -1);
 		m_Vel.y += f->m_DVY * (m_FaceSide ? 1 : -1);
 		m_Vel.z += f->m_DVZ * (m_FaceSide ? 1 : -1);
+		m_CenterX = f->m_CenterX;
+		m_CenterY = f->m_CenterY;
 
 		CreateEffect();
 		return true;
@@ -1048,8 +1056,8 @@ BodyVerteices Hero::GetBodyVerteices()
 
 	BodyVerteices bvs;
 	BodyVertex bv;
-	bv.position.x = m_Position.x + m_OffsetX*scale;
-	bv.position.y = m_Position.y + m_OffsetX*scale;
+	bv.position.x = m_Position.x ;
+	bv.position.y = m_Position.y ;
 	bv.position.z = m_Position.z;
 	bv.angle = m_Angle;
 	if(m_FaceSide){

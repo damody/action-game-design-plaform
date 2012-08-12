@@ -39,6 +39,8 @@ void Weapon::Init()
 	m_Action = f->m_HeroAction;
 	m_TimeTik = f->m_Wait;
 	m_Bodys = f->m_Bodys;
+	m_CenterX = f->m_CenterX;
+	m_CenterY = f->m_CenterY;
 }
 
 
@@ -60,6 +62,8 @@ void Weapon::NextFrame()
 	m_Vel.x +=f->m_DVX;
 	m_Vel.y +=f->m_DVY;
 	m_Vel.z +=f->m_DVZ;
+	m_CenterX = f->m_CenterX;
+	m_CenterY = f->m_CenterY;
 }
 
 void Weapon::Update( float dt )
@@ -72,21 +76,19 @@ void Weapon::Update( float dt )
 		m_TimeTik--;
 	}
 
-	if(m_FaceSide){
-		m_OffsetX= (m_ObjectInfo->m_PictureDatas[m_PicID].m_Width - 2*m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX);
-	}else{
-		m_OffsetX=-(m_ObjectInfo->m_PictureDatas[m_PicID].m_Width - 2*m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX);
-	}
-	m_OffsetY = - 2*(m_ObjectInfo->m_PictureDatas[m_PicID].m_Height-m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY);
+	
 }
 
 void Weapon::UpdateDataToDraw()
 {
-	float scale = 1.5f;
+	float scale = 3.0f;
 
-	m_Pic.position.x = m_Position.x+m_OffsetX*scale;
-	m_Pic.position.y = m_Position.y+m_OffsetY*scale;
+	m_Pic.position.x = m_Position.x;
+	m_Pic.position.y = m_Position.y;
 	m_Pic.position.z = m_Position.z;
+
+	m_Pic.center.x = m_CenterX *scale;
+	m_Pic.center.y = m_CenterY *scale;
 
 	m_Pic.angle = m_Angle;
 	m_Pic.size.x = (float)m_ObjectInfo->m_PictureDatas[m_PicID].m_Width*scale;

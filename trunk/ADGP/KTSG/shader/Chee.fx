@@ -16,19 +16,20 @@ SamplerState gTriLinearSam
 
 struct VS_IN
 {
-	float3	position: POSITION;
-	float2	size: SIZE;
-	float	angle : PI;
-	float4	picpos : PICPOS; // x, y, w, h
-	float   faceside :FACE;
+	float3	position	: POSITION;
+	float2	size		: SIZE;
+	float	angle		: PI;
+	float4	picpos 		: PICPOS; // x, y, w, h
+	float   faceside 	: FACE;
+	float2  center		: CENTER;
 };
 
 struct VS_OUT
 {
-	float4	pos   : SV_POSITION;
-	float2	size  : TEXCOORD0;
-	float	angle : ANGLE;
-	float4	picpos : PICPOSITION; // x, y, w, h
+	float4	pos   	 : SV_POSITION;
+	float2	size   	 : TEXCOORD0;
+	float	angle 	 : ANGLE;
+	float4	picpos 	 : PICPOSITION; // x, y, w, h
 	float   faceside :FACE;
 };
 
@@ -41,7 +42,8 @@ struct GS_OUT
 VS_OUT VS(VS_IN vIn)
 {
 	VS_OUT vOut;
-	vOut.pos= float4(vIn.position.xyz-cLookAt.xyz,1.0);		 
+	vOut.pos= float4(vIn.position.xyz-cLookAt.xyz,1.0);	
+	vOut.pos =float4(vOut.pos.x-vIn.faceside*vIn.center.x,vOut.pos.y+vIn.center.y,vOut.pos.z,1.0);	
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
 	vOut.picpos = vIn.picpos;
