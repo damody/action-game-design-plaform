@@ -25,6 +25,19 @@ private:
 	};
 	typedef std::vector<DrawBodyGroup> DrawBodyGroups;
 
+	BodyVerteices  m_BodyVerteices;
+	DrawBodyGroups m_DrawBodyGroups;
+
+	ID3D11Buffer*		m_Buffer_Body;
+	ID3DX11Effect*		m_Effect_Body;
+	ID3DX11EffectTechnique* m_PTech_Body;
+	ID3D11InputLayout*	m_PLayout_Body;
+	ID3DX11EffectVariable *	m_Body_cLootAt;
+	ID3DX11EffectVariable *	m_Body_cPos;
+	ID3DX11EffectScalarVariable* m_Body_Width;
+	ID3DX11EffectScalarVariable* m_Body_Height;
+
+
 	TestRenderEffect* m_TestRenderEffect;
 	void TestRender();
 	void TestViewEffect();

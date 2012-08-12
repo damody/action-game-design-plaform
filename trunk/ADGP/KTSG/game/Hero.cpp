@@ -152,41 +152,33 @@ void Hero::Update(float dt)
 			CreateEffect();
 		}
 	}
+
+	if(m_FaceSide){
+		m_OffsetX= (m_HeroInfo->m_PictureDatas[m_PicID].m_Width - 2*m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX);
+	}else{
+		m_OffsetX=-(m_HeroInfo->m_PictureDatas[m_PicID].m_Width - 2*m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX);
+	}
+	m_OffsetY = - 2*(m_HeroInfo->m_PictureDatas[m_PicID].m_Height-m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY);
 }
 
 void Hero::UpdateDataToDraw()
 {
-	
 	float scale = 1.5f;
 
-	float offsetX,offsetY;
-
-	if(m_FaceSide){
-		offsetX= (m_HeroInfo->m_PictureDatas[m_PicID].m_Width - 2*m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX)*scale;
-	}else{
-		offsetX=-(m_HeroInfo->m_PictureDatas[m_PicID].m_Width - 2*m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX)*scale;
-	}
-	offsetY = - 2*(m_HeroInfo->m_PictureDatas[m_PicID].m_Height-m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY)*scale;
-
-	m_Pic.position.x = m_Position.x+offsetX;
-	m_Pic.position.y = m_Position.y+offsetY;
+	m_Pic.position.x = m_Position.x+m_OffsetX*scale;
+	m_Pic.position.y = m_Position.y+m_OffsetY*scale;
 	m_Pic.position.z = m_Position.z;
 
 	m_Pic.angle = m_Angle;
-	m_Pic.size.x = m_HeroInfo->m_PictureDatas[m_PicID].m_Width *scale;
-	m_Pic.size.y = m_HeroInfo->m_PictureDatas[m_PicID].m_Height *scale;
+	m_Pic.size.x = (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Width*scale;
+	m_Pic.size.y = (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Height*scale;
 
 	m_Pic.picpos.x = (float)m_PicX;
 	m_Pic.picpos.y = (float)m_PicY;
 	m_Pic.picpos.z = (float)m_PicH;
 	m_Pic.picpos.w = (float)m_PicW;
 
-	if(m_FaceSide){
-		m_Pic.faceside = 1;
-	}else{
-		m_Pic.faceside = -1;
-	}
-	
+	m_Pic.faceside = (float)(m_FaceSide ? 1 : -1);	
 }
 
 Texture_Sptr Hero::GetTexture()
@@ -1052,10 +1044,12 @@ void Hero::CreateEffect()
 
 BodyVerteices Hero::GetBodyVerteices()
 {
+	float scale = 1.5f;
+
 	BodyVerteices bvs;
 	BodyVertex bv;
-	bv.position.x = m_Position.x;
-	bv.position.y = m_Position.y;
+	bv.position.x = m_Position.x + m_OffsetX*scale;
+	bv.position.y = m_Position.y + m_OffsetX*scale;
 	bv.position.z = m_Position.z;
 	bv.angle = m_Angle;
 	if(m_FaceSide){
@@ -1069,8 +1063,8 @@ BodyVerteices Hero::GetBodyVerteices()
 		Vec2s points_2D= it->m_Area.Points();
 		for (Vec2s::iterator it_p = points_2D.begin(); it_p != points_2D.end() ; it_p++)
 		{
-			bv.body.x = it_p->x;
-			bv.body.y = it_p->y;
+			bv.body.x = it_p->x *scale;
+			bv.body.y = it_p->y *scale;
 			bvs.push_back(bv);
 		}
 	}

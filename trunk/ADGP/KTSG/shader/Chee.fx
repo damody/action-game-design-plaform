@@ -69,38 +69,48 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	float offset =0.1/tan(3.14159/6);
 
 	float4x4 proj;
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+input[0].pos.z)*offset),0,0,0);
-	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+input[0].pos.z)*offset),0,0);
 	proj[2]=float4(0,0,1/30000.0,0);
 	proj[3]=float4(0,0.0,0.1,1);
 
 	GS_OUT out5;
 	out5.posH=float4(mul(float3(input[0].pos.xy-mul(float2(-input[0].size.x,-2*input[0].size.y), mat),input[0].pos.z),view),1);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y-1));
 	triStream.Append( out5 );
 
 	out5.posH=float4(mul(float3(input[0].pos.xy-mul(float2(-input[0].size.x,0), mat),input[0].pos.z),view),1);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
 	triStream.Append( out5 );
 
 	out5.posH=float4(mul(float3(input[0].pos.xy-mul(float2( input[0].size.x,-2*input[0].size.y), mat),input[0].pos.z),view),1);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
 	triStream.Append( out5 );
 
 	out5.posH=float4(mul(float3(input[0].pos.xy-mul(float2(-input[0].size.x,0), mat),input[0].pos.z),view),1);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
 	triStream.Append( out5 );
 
 	out5.posH=float4(mul(float3(input[0].pos.xy-mul(float2( input[0].size.x,-2*input[0].size.y), mat),input[0].pos.z),view),1);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
 	triStream.Append( out5 );
 
 	out5.posH=float4(mul(float3(input[0].pos.xy-mul(float2( input[0].size.x,0), mat),input[0].pos.z),view),1);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y));
 	triStream.Append( out5 );

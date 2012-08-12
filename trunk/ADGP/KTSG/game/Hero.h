@@ -57,13 +57,14 @@ private:
 	int		m_FrameID;//Current Frame ID
 
 	int		m_Texture;//Current Texture ID
-	int     m_PicID;
+	int		m_PicID;
 	int		m_PicW;//W截切次數
 	int		m_PicH;//H截切次數
 	int		m_PicX;
 	int		m_PicY;
 	
 	Vector3		m_Position;
+	float		m_OffsetX,m_OffsetY; //中心點偏移
 	Vector3		m_Vel;
 	Bodys		m_Bodys;
 	float		m_Angle;

@@ -88,7 +88,12 @@ void Chee::Update( float dt )
 
 	m_Position += m_Vel;
 
-	
+	if(m_FaceSide){
+		m_OffsetX= (m_ObjectInfo->m_PictureDatas[m_PicID].m_Width - 2*m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX);
+	}else{
+		m_OffsetX=-(m_ObjectInfo->m_PictureDatas[m_PicID].m_Width - 2*m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX);
+	}
+	m_OffsetY = - 2*(m_ObjectInfo->m_PictureDatas[m_PicID].m_Height-m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY);
 	
 	
 }
@@ -97,33 +102,20 @@ void Chee::UpdateDataToDraw()
 {
 	float scale = 1.5f;
 
-	float offsetX,offsetY;
-
-	if(m_FaceSide){
-		offsetX= (m_ObjectInfo->m_PictureDatas[m_PicID].m_Width - 2*m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX)*scale;
-	}else{
-		offsetX=-(m_ObjectInfo->m_PictureDatas[m_PicID].m_Width - 2*m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX)*scale;
-	}
-	offsetY = - 2*(m_ObjectInfo->m_PictureDatas[m_PicID].m_Height-m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY)*scale;
-
-	m_Pic.position.x = m_Position.x+offsetX;
-	m_Pic.position.y = m_Position.y+offsetY;
+	m_Pic.position.x = m_Position.x+m_OffsetX*scale;
+	m_Pic.position.y = m_Position.y+m_OffsetY*scale;
 	m_Pic.position.z = m_Position.z;
 
 	m_Pic.angle = m_Angle;
-	m_Pic.size.x = m_ObjectInfo->m_PictureDatas[m_PicID].m_Width *scale;
-	m_Pic.size.y = m_ObjectInfo->m_PictureDatas[m_PicID].m_Height *scale;
+	m_Pic.size.x = (float)m_ObjectInfo->m_PictureDatas[m_PicID].m_Width*scale;
+	m_Pic.size.y = (float)m_ObjectInfo->m_PictureDatas[m_PicID].m_Height*scale;
 
 	m_Pic.picpos.x = (float)m_PicX;
 	m_Pic.picpos.y = (float)m_PicY;
 	m_Pic.picpos.z = (float)m_PicH;
 	m_Pic.picpos.w = (float)m_PicW;
 
-	if(m_FaceSide){
-		m_Pic.faceside = 1;
-	}else{
-		m_Pic.faceside = -1;
-	}
+	m_Pic.faceside = (float)(m_FaceSide ? 1 : -1);	
 }
 
 void Chee::SetTeam( int index )
