@@ -1,12 +1,14 @@
 require "effect"
 require "action"
+
 name= "Davis"
 head= "sprite\\sys\\davis_f.bmp"
 small= "sprite\\sys\\davis_s.bmp"
 
 file = {
-{path = "media\\davis_0_.png", autoclip=1,  w = 79,  h = 79,  row = 10,  col = 7},
-{path = "media\\davis_1_.png", autoclip=1,  w = 79,  h = 79,  row = 10,  col = 7},
+{path = "media\\davis_0.png", autoclip=1,  w = 79,  h = 79,  row = 10,  col = 7},
+{path = "media\\davis_1.png", autoclip=1,  w = 79,  h = 79,  row = 10,  col = 7},
+{path = "media\\davis_2.png", autoclip=1,  w = 79,  h = 79,  row = 10,  col = 4},
 }
 
 walking_speed   = 5.000000
@@ -63,7 +65,7 @@ frame.default[0] =
 {
    pic_id = 0, pic_x = 1, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=34, value=150}},
    body = {
@@ -80,7 +82,7 @@ frame.standing[0] =
 {
    pic_id = 0, pic_x = 1, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=34, value=150}},
    body = {
@@ -97,7 +99,7 @@ frame.standing[1] =
 {
    pic_id = 0, pic_x = 2, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
@@ -114,7 +116,7 @@ frame.standing[2] =
 {
    pic_id = 0, pic_x = 3, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
@@ -131,7 +133,7 @@ frame.standing[3] =
 {
    pic_id = 0, pic_x = 4, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
@@ -148,7 +150,7 @@ frame.walking[0] =
 {
    pic_id = 0, pic_x = 5, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 78,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
@@ -168,7 +170,7 @@ frame.walking[1] =
 {
    pic_id = 0, pic_x = 6, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
@@ -188,7 +190,7 @@ frame.walking[2] =
 {
    pic_id = 0, pic_x = 7, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
@@ -208,7 +210,7 @@ frame.walking[3] =
 {
    pic_id = 0, pic_x = 8, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 78,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=34, value=150}},
    body = {
@@ -228,7 +230,7 @@ frame.walking[4] =
 {
    pic_id = 0, pic_x = 7, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
@@ -248,7 +250,7 @@ frame.walking[5] =
 {
    pic_id = 0, pic_x = 6, pic_y = 1, state = Action.Walking, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
@@ -268,7 +270,7 @@ frame.running[0] =
 {
    pic_id = 0, pic_x = 1, pic_y = 3, state = Action.Running, wait = 6, next = {"running", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 36,  centery = 80,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"B", "run_punch", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=49, y=38, value=150}},
    body = {
@@ -286,7 +288,7 @@ frame.running[1] =
 {
    pic_id = 0, pic_x = 2, pic_y = 3, state = Action.Running, wait = 6, next = {"running", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 37,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"B", "run_punch", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=49, y=38, value=150}},
    body = {
@@ -303,7 +305,7 @@ frame.running[2] =
 {
    pic_id = 0, pic_x = 3, pic_y = 3, state = Action.Running, wait = 6, next = {"running", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 32,  centery = 78,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"B", "run_punch", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=45, y=37, value=150}},
    body = {
@@ -321,7 +323,7 @@ frame.running[3] =
 {
    pic_id = 0, pic_x = 2, pic_y = 3, state = Action.Running, wait = 6, next = {"running", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 37,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"B", "run_punch", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=49, y=38, value=150}},
    body = {
@@ -338,7 +340,7 @@ frame.stop_running[0] =
 {
    pic_id = 1, pic_x = 5, pic_y = 5, state = Action.StopRunning, wait = 30, next = {"default", 0},
    dvx = 1, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {{scale = 1.0, x=39, y=36, value=150}},
    body = {
@@ -357,7 +359,7 @@ frame.jump[0] =
 {
    pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 2, next = {"jump", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    body = {
@@ -374,7 +376,7 @@ frame.jump[1] =
 {
    pic_id = 0, pic_x = 2, pic_y = 7, state = Action.Jump, wait = 2, next = {"in_the_air", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    body = {
@@ -392,7 +394,7 @@ frame.in_the_air[0] =
 {
    pic_id = 0, pic_x = 3, pic_y = 7, state = Action.InTheAir, wait = 2, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {{scale = 1.0, x=38, y=28, value=150}},
    body = {
@@ -409,7 +411,7 @@ frame.dash_front[0] =
 {
    pic_id = 0, pic_x = 4, pic_y = 7, state = Action.Dash, wait = 16, next = {"dash_front", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {{scale = 1.0, x=43, y=30, value=150}},
    body = {
@@ -428,7 +430,7 @@ frame.dash_front[1] =
 {
    pic_id = 1, pic_x = 3, pic_y = 5, state = Action.Dash, wait = 4, next = {"dash_front", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 78,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {{scale = 1.0, x=43, y=30, value=150}},
    body = {
@@ -446,7 +448,7 @@ frame.dash_back[0] =
 {
    pic_id = 0, pic_x = 5, pic_y = 7, state = Action.Dash, wait = 16, next = {"dash_back", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {{scale = 1.0, x=33, y=30, value=150}},
    body = {
@@ -464,7 +466,7 @@ frame.dash_back[1] =
 {
    pic_id = 1, pic_x = 4, pic_y = 5, state = Action.Dash, wait = 4, next = {"dash_back", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {{scale = 1.0, x=33, y=30, value=150}},
    body = {
@@ -481,7 +483,7 @@ frame.crouch[0] =
 {
    pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {{scale = 1.0, x=42, y=55, value=150}},
    body = {
@@ -499,7 +501,7 @@ frame.crouch[1] =
 {
    pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {{scale = 1.0, x=42, y=55, value=150}},
    body = {
@@ -517,7 +519,7 @@ frame.punch[0] =
 {
    pic_id = 0, pic_x = 1, pic_y = 2, state = Action.BeforeAttack, wait = 2, next = {"punch", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 42,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={
@@ -541,7 +543,7 @@ frame.punch[1] =
 {
    pic_id = 0, pic_x = 2, pic_y = 2, state = Action.Attacking, wait = 2, next = {"punch", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 23,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={
@@ -566,7 +568,7 @@ frame.punch[2] =
 {
    pic_id = 0, pic_x = 3, pic_y = 2, state = Action.AfterAttack, wait = 2, next = {"punch", 3},
    dvx = 2, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -584,7 +586,7 @@ frame.punch[3] =
 {
    pic_id = 0, pic_x = 4, pic_y = 2, state = Action.AfterAttack, wait = 2, next = {"default", 0},
    dvx = 2, dvy = 0,  dvz = 0,  centerx = 41,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -602,7 +604,7 @@ frame.kick[0] =
 {
    pic_id = 0, pic_x = 5, pic_y = 2, state = Action.BeforeAttack, wait = 2, next = {"kick", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 42,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={
@@ -626,7 +628,7 @@ frame.kick[1] =
 {
    pic_id = 0, pic_x = 6, pic_y = 2, state = Action.Attacking, wait = 2, next = {"kick", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 24,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={
@@ -651,7 +653,7 @@ frame.kick[2] =
 {
    pic_id = 0, pic_x = 7, pic_y = 2, state = Action.AfterAttack, wait = 2, next = {"kick", 3},
    dvx = 2, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -669,7 +671,7 @@ frame.kick[3] =
 {
    pic_id = 0, pic_x = 8, pic_y = 2, state = Action.AfterAttack, wait = 2, next = {"default", 0},
    dvx = 2, dvy = 0,  dvz = 0,  centerx = 41,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -687,7 +689,7 @@ frame.super_punch[0] =
 {
    pic_id = 0, pic_x = 8, pic_y = 7, state = Action.BeforeSuperAttack, wait = 4, next = {"super_punch", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -702,7 +704,7 @@ frame.super_punch[1] =
 {
    pic_id = 0, pic_x = 9, pic_y = 7, state = Action.BeforeSuperAttack, wait = 2, next = {"super_punch", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 23,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -715,7 +717,7 @@ frame.super_punch[2] =
 {
    pic_id = 0, pic_x = 9, pic_y = 1, state = Action.SuperAttacking, wait = 4, next = {"super_punch", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={
@@ -734,7 +736,7 @@ frame.super_punch[3] =
 {
    pic_id = 0, pic_x = 10, pic_y = 1, state = Action.AfterSuperAttack, wait = 2, next = {"super_punch", 4},
    dvx = 5, dvy = 0,  dvz = 0,  centerx = 27,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -747,7 +749,7 @@ frame.super_punch[4] =
 {
    pic_id = 0, pic_x = 10, pic_y = 2, state = Action.BeforeSuperAttack, wait = 4, next = {"super_punch", 5},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -760,7 +762,7 @@ frame.super_punch[5] =
 {
    pic_id = 0, pic_x = 10, pic_y = 3, state = Action.BeforeSuperAttack, wait = 2, next = {"super_punch", 6},
    dvx = 6, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -775,7 +777,7 @@ frame.super_punch[6] =
 {
    pic_id = 0, pic_x = 10, pic_y = 4, state = Action.SuperAttacking, wait = 4, next = {"super_punch", 7},
    dvx = 1, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={
@@ -794,7 +796,7 @@ frame.super_punch[7] =
 {
    pic_id = 0, pic_x = 10, pic_y = 5, state = Action.AfterSuperAttack, wait = 4, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"J", "jump_hit", 0}},
    blood = {},
    attack={},
@@ -807,7 +809,7 @@ frame.jump_kick[0] =
 {
    pic_id = 1, pic_x = 3, pic_y = 7, state = Action.BeforeJumpAttack, wait = 1, next = {"jump_kick", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 36,  centery = 75,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -820,7 +822,7 @@ frame.jump_kick[1] =
 {
    pic_id = 1, pic_x = 4, pic_y = 7, state = Action.BeforeJumpAttack, wait = 1, next = {"jump_kick", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 74,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -835,7 +837,7 @@ frame.jump_kick[2] =
 {
    pic_id = 1, pic_x = 5, pic_y = 7, state = Action.BeforeJumpAttack, wait = 1, next = {"jump_kick", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 35,  centery = 75,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -848,7 +850,7 @@ frame.jump_kick[3] =
 {
    pic_id = 1, pic_x = 6, pic_y = 7, state = Action.JumpAttacking, wait = 6, next = {"jump_kick", 4},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 25,  centery = 70,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={
@@ -867,7 +869,7 @@ frame.jump_kick[4] =
 {
    pic_id = 1, pic_x = 7, pic_y = 7, state = Action.JumpAttacking, wait = 2, next = {"jump_kick", 5},
    dvx = 0, dvy = 0, dvz = 0, centerx = 25, centery = 71, clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={
@@ -886,7 +888,7 @@ frame.jump_kick[5] =
 {
    pic_id = 1, pic_x = 8, pic_y = 7, state = Action.AfterJumpAttack, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 72,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -899,7 +901,7 @@ frame.run_punch[0] =
 {
    pic_id = 1, pic_x = 1, pic_y = 4, state = Action.BeforeRunAttack, wait = 4, next = {"run_punch", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 35,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -912,7 +914,7 @@ frame.run_punch[1] =
 {
    pic_id = 1, pic_x = 2, pic_y = 4, state = Action.BeforeRunAttack, wait = 2, next = {"run_punch", 2},
    dvx = 16, dvy = 0,  dvz = 0,  centerx = 30,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -927,7 +929,7 @@ frame.run_punch[2] =
 {
    pic_id = 1, pic_x = 3, pic_y = 4, state = Action.RunAttacking, wait = 2, next = {"run_punch", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 25,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"A", "run_punch", 4}},
    blood = {},
    attack={
@@ -946,7 +948,7 @@ frame.run_punch[3] =
 {
    pic_id = 1, pic_x = 4, pic_y = 4, state = Action.RunAttacking, wait = 6, next = {"run_punch", 4},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 20,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"A", "run_punch", 4}},
    blood = {},
    attack={
@@ -965,7 +967,7 @@ frame.run_punch[4] =
 {
    pic_id = 1, pic_x = 5, pic_y = 4, state = Action.AfterRunAttack, wait = 4, next = {"run_punch", 5},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 20,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -978,7 +980,7 @@ frame.run_punch[5] =
 {
    pic_id = 1, pic_x = 6, pic_y = 4, state = Action.AfterRunAttack, wait = 4, next = {"run_punch", 6},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 30,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -991,7 +993,7 @@ frame.run_punch[6] =
 {
    pic_id = 1, pic_x = 7, pic_y = 4, state = Action.AfterRunAttack, wait = 2, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -1008,7 +1010,7 @@ frame.dash_kick[0] =
 {
    pic_id = 1, pic_x = 3, pic_y = 7, state = Action.BeforeDashAttack, wait = 2, next = {"dash_kick", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 36,  centery = 75,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -1021,7 +1023,7 @@ frame.dash_kick[1] =
 {
    pic_id = 1, pic_x = 4, pic_y = 7, state = Action.BeforeDashAttack, wait = 2, next = {"dash_kick", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 74,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -1036,7 +1038,7 @@ frame.dash_kick[2] =
 {
    pic_id = 1, pic_x = 5, pic_y = 7, state = Action.BeforeDashAttack, wait = 2, next = {"dash_kick", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 35,  centery = 75,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -1049,7 +1051,7 @@ frame.dash_kick[3] =
 {
    pic_id = 1, pic_x = 6, pic_y = 7, state = Action.DashAttacking, wait = 14, next = {"dash_kick", 4},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 25,  centery = 70,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={
@@ -1068,7 +1070,7 @@ frame.dash_kick[4] =
 {
    pic_id = 1, pic_x = 7, pic_y = 7, state = Action.DashAttacking, wait = 2, next = {"dash_kick", 5},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 25,  centery = 71,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={
@@ -1087,7 +1089,7 @@ frame.dash_kick[5] =
 {
    pic_id = 1, pic_x = 8, pic_y = 7, state = Action.AfterDashAttack, wait = 2, next = {"dash_kick", 5},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 72,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -1100,7 +1102,7 @@ frame.front_flip[0] =
 {
    pic_id = 1, pic_x = 8, pic_y = 5, state = Action.FrontFlip, wait = 6, next = {"front_flip", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 42,  centery = 72,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -1113,7 +1115,7 @@ frame.front_flip[1] =
 {
    pic_id = 1, pic_x = 9, pic_y = 5, state = Action.FrontFlip, wait = 12, next = {"front_flip", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -1124,7 +1126,7 @@ frame.back_flip[0] =
 {
    pic_id = 0, pic_x = 7, pic_y = 7, state = Action.BackFlip, wait = 4, next = {"back_flip", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 40,  centery = 80,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -1137,7 +1139,7 @@ frame.back_flip[1] =
 {
    pic_id = 0, pic_x = 6, pic_y = 7, state = Action.BackFlip, wait = 12, next = {"back_flip", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
    attack={},
@@ -1148,7 +1150,7 @@ frame.rolling[0] =
 {
    pic_id = 0, pic_x = 9, pic_y = 6, state = Action.Rolling, wait = 4, next = {"rolling", 1},
    dvx = 9, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D^A", "singlong", 0}, {"D^J", "jump_hit", 0}},
    blood = {},
    attack={
@@ -1165,7 +1167,7 @@ frame.rolling[1] =
 {
    pic_id = 0, pic_x = 10, pic_y = 6, state = Action.Rolling, wait = 4, next = {"rolling", 2},
    dvx = 9, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D^A", "singlong", 0}, {"D^J", "jump_hit", 0}},
    blood = {},
    attack={
@@ -1182,7 +1184,7 @@ frame.rolling[2] =
 {
    pic_id = 0, pic_x = 10, pic_y = 7, state = Action.Rolling, wait = 4, next = {"rolling", 3},
    dvx = 9, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D^A", "singlong", 0}, {"D^J", "jump_hit", 0}},
    blood = {},
    attack={
@@ -1199,7 +1201,7 @@ frame.rolling[3] =
 {
    pic_id = 0, pic_x = 9, pic_y = 6, state = Action.Rolling, wait = 4, next = {"crouch", 1},
    dvx = 9, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D^A", "singlong", 0}, {"D^J", "jump_hit", 0}},
    blood = {},
    attack={
@@ -1216,7 +1218,7 @@ frame.defend[0] =
 {
    pic_id = 0, pic_x = 7, pic_y = 6, state = Action.Defend, wait = 24, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {},
    body = {
@@ -1233,7 +1235,7 @@ frame.defend[1] =
 {
    pic_id = 0, pic_x = 7, pic_y = 6, state = Action.Defend, wait = 1, next = {"defend", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 40,  centery = 79,  clear_key_queue = 0,
-   consume = {HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {},
    body = {
@@ -1245,3 +1247,306 @@ frame.defend[1] =
    --wpoint_end:
 
 }
+
+
+
+frame.ball[0] =
+{
+   pic_id = 2, pic_x = 1, pic_y = 1, state = Action.BeforeSkill, wait = 2, next = {"ball", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 40, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.ball[1] =
+{
+   pic_id = 2, pic_x = 2, pic_y = 1, state = Action.BeforeSkill, wait = 2, next = {"ball", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.ball[2] =
+{
+   pic_id = 2, pic_x = 3, pic_y = 1, state = Action.BeforeSkill, wait = 2, next = {"ball", 3},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.ball[3] =
+{
+   pic_id = 2, pic_x = 4, pic_y = 1, state = Action.BeforeSkill, wait = 2, next = {"ball", 4},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+
+   --sound: data\048.wav
+}
+
+frame.ball[4] =
+{
+   pic_id = 2, pic_x = 5, pic_y = 1, state = Action.GroundSkill, wait = 2, next = {"ball", 5},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 30,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   },
+   newobjects={
+	{
+		name="davis_ball", amount=1, x = 90, y = -43, facing=0,
+		frame={"flying", 0}, hp=10, ai="XXX",
+		dvx=0, dvy=0, dvz=0
+		}
+	}
+}
+
+frame.ball[5] =
+{
+   pic_id = 2, pic_x = 7, pic_y = 1, state = Action.AfterSkill, wait = 2, next = {"ball", 21},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"A", "ball", 6}},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+--ball2
+frame.ball[6] =
+{
+   pic_id = 2, pic_x = 7, pic_y = 1, state = Action.BeforeSkill, wait = 2, next = {"ball", 7},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 40, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.ball[7] =
+{
+   pic_id = 2, pic_x = 8, pic_y = 1, state = Action.BeforeSkill, wait = 2, next = {"ball", 8},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.ball[8] =
+{
+   pic_id = 2, pic_x = 9, pic_y = 1, state = Action.BeforeSkill, wait = 2, next = {"ball", 9},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+
+   --sound: data\048.wav
+}
+
+frame.ball[9] =
+{
+   pic_id = 2, pic_x = 10, pic_y = 1, state = Action.GroundSkill, wait = 2, next = {"ball", 10},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 23,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8},
+   },
+   newobjects={
+	{
+		name="davis_ball", amount=1, x = 90, y = -43, facing=0,
+		frame={"flying", 0}, hp=10, ai="XXX",
+		dvx=0, dvy=0, dvz=0
+		}
+   }
+}
+
+frame.ball[10] =
+{
+   pic_id = 2, pic_x = 6, pic_y = 1, state = Action.AfterSkill, wait = 2, next = {"ball", 21},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"A","ball",11}},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+--ball3
+frame.ball[11] =
+{
+   pic_id = 2, pic_x = 6, pic_y = 1, state = Action.BeforeSkill, wait = 2, next = {"ball", 12},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 40, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.ball[12] =
+{
+   pic_id = 2, pic_x = 3, pic_y = 1, state = Action.BeforeSkill, wait = 2, next = {"ball", 13},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.ball[13] =
+{
+   pic_id = 2, pic_x = 4, pic_y = 1, state = Action.BeforeSkill, wait = 2, next = {"ball", 14},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+
+   --sound: data\048.wav
+}
+
+frame.ball[14] =
+{
+   pic_id = 2, pic_x = 5, pic_y = 1, state = Action.GroundSkill, wait = 2, next = {"ball", 15},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 30,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   },
+   newobjects={
+	{
+		name="davis_ball", amount=1, x = 90, y = -43, facing=0,
+		frame={"flying", 0}, hp=10, ai="XXX",
+		dvx=0, dvy=0, dvz=0
+		}
+   }
+}
+
+frame.ball[15] =
+{
+   pic_id = 2, pic_x = 7, pic_y = 1, state = Action.AfterSkill, wait = 2, next = {"ball", 21},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"A", "ball", 16}},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+--ball4
+frame.ball[16] =
+{
+   pic_id = 2, pic_x = 1, pic_y = 2, state = Action.BeforeSkill, wait = 2, next = {"ball", 17},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 40, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.ball[17] =
+{
+   pic_id = 2, pic_x = 2, pic_y = 2, state = Action.BeforeSkill, wait = 2, next = {"ball", 18},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+
+   --sound: data\048.wav
+}
+
+frame.ball[18] =
+{
+   pic_id = 2, pic_x = 3, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"ball", 19},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 26,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   },
+   newobjects={
+	{
+		name="davis_ball", amount=1, x = 90, y = -48, facing=0,
+		frame={"flying", 0}, hp=10, ai="XXX",
+		dvx=0, dvy=0, dvz=0
+		}
+   }
+}
+
+frame.ball[19] =
+{
+   pic_id = 2, pic_x = 6, pic_y = 1, state = Action.AfterSkill, wait = 2, next = {"ball", 21},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"A","ball",20}},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.ball[20] =
+{
+   pic_id = 2, pic_x = 6, pic_y = 1, state = Action.BeforeSkill, wait = 2, next = {"ball", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 40, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.ball[21] =
+{
+   pic_id = 2, pic_x = 1, pic_y = 1, state = Action.AfterSkill, wait = 4, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
