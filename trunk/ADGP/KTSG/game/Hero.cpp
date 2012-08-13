@@ -645,6 +645,8 @@ bool Hero::ScanKeyQue()
 		}
 	}
 	//決定招式按鍵動作
+	int cface = 0;
+
 	if(!m_KeyQue.empty()){
 		HitDatas hit = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_HitDatas;
 		for(unsigned int i=0; i< hit.size(); i++){
@@ -673,8 +675,13 @@ bool Hero::ScanKeyQue()
 					}
 					break;//*/
 				case '>':
-					if( riKey->key != CtrlKey::RIGHT && riKey->key != CtrlKey::RIGHT_KEYUP &&
-					    riKey->key != CtrlKey::LEFT && riKey->key != CtrlKey::LEFT_KEYUP){
+					if( riKey->key == CtrlKey::RIGHT || riKey->key == CtrlKey::RIGHT_KEYUP){
+						cface = 1;
+					}
+					else if(riKey->key == CtrlKey::LEFT || riKey->key == CtrlKey::LEFT_KEYUP){
+						cface = -1;
+					}
+					else {
 						flag = false;
 					}
 					break;
@@ -841,6 +848,7 @@ bool Hero::ScanKeyQue()
 		return false;
 	}
 	else{
+		if(cface != 0) m_FaceSide = cface > 0;
 		//m_Vel += dv;
 		m_Frame = nFrame;
 		m_FrameID = nFramID;
