@@ -134,6 +134,7 @@ public:
 	void SetEffect(EffectType::e effect);
 	void PushKey(KeyInfo k);
 	BodyVerteices GetBodyVerteices();
+	BodyVerteices GetBodyLineVerteices();
 protected:
 	void Init();
 	void NextFrame();
