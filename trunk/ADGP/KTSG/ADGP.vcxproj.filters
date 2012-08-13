@@ -433,6 +433,9 @@
     <ClInclude Include="game\WeaponAction.h">
       <Filter>inc\game</Filter>
     </ClInclude>
+    <ClInclude Include="Name.h">
+      <Filter>inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\bullet.fx">

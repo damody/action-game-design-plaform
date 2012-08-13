@@ -311,6 +311,7 @@
     <ClInclude Include="game\WeaponAction.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Name.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Lua\CreateLua.h" />

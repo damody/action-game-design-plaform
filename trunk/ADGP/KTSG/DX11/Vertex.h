@@ -37,6 +37,15 @@ struct CRVertex
 };
 typedef std::vector<CRVertex> CRVerteices;
 
+//Text Vertex format
+struct TextVertex
+{
+	D3DXVECTOR3 position;
+	D3DXVECTOR2 size;
+	float angle;
+};
+typedef std::vector<TextVertex> TextVerteices;
+
 //Body Vertex format
 struct BodyVertex
 {
@@ -52,5 +61,6 @@ extern D3D11_INPUT_ELEMENT_DESC VertexDesc_ClipVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_BGVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_CRVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_BodyVertex[];
+extern D3D11_INPUT_ELEMENT_DESC VertexDesc_TextVertex[];
 
 #endif // VERTEX_H
