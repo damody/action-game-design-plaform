@@ -1102,6 +1102,55 @@ BodyVerteices Hero::GetBodyVerteices()
 	return bvs;
 }
 
+BodyVerteices Hero::GetBodyLineVerteices()
+{
+	float scale = 3.0f;
+
+	BodyVerteices bvs;
+	BodyVertex bv;
+	bv.position.x = m_Position.x;
+	bv.position.y = m_Position.y;
+	
+
+	bv.center.x = m_CenterX * scale;
+	bv.center.y = m_CenterY * scale;
+
+	bv.angle = m_Angle;
+	if(m_FaceSide){
+		bv.faceside = 1;
+	}else{
+		bv.faceside = -1;
+	}
+
+	for (Bodys::iterator it = m_Bodys.begin();it != m_Bodys.end();it++)
+	{
+		Vec2s points_2D= it->m_Area.Points();
+		for (unsigned int i=0; i < points_2D.size();i++)
+		{
+			bv.body.x= points_2D[i].x *scale;
+			bv.body.y = points_2D[i].y *scale;
+			bv.position.z = m_Position.z;
+			bvs.push_back(bv);
+			bv.position.z = m_Position.z + it->m_ZWidth;
+			bvs.push_back(bv);
+		}
+		bv.position.z = m_Position.z + it->m_ZWidth;
+		for (unsigned int i=0; i < points_2D.size();i++)
+		{
+			bv.body.x= points_2D[i].x *scale;
+			bv.body.y = points_2D[i].y *scale;
+			
+			bvs.push_back(bv);
+			bv.body.x= points_2D[(i+1)%points_2D.size()].x *scale;
+			bv.body.y = points_2D[(i+1)%points_2D.size()].y *scale;
+			bvs.push_back(bv);
+		}
+	}
+
+	return bvs;
+}
+
+
 
 
 

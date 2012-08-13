@@ -16,7 +16,7 @@ InitDirect3DApp::InitDirect3DApp()
             m_Background_Width(0), m_Background_Height(0), m_Buffer_Background(0),
 	    m_ColorRect_Width(0), m_ColorRect_Height(0), m_Buffer_ColorRect(0),
 	    m_Shadow_Width(0), m_Shadow_Height(0),
-	    m_Body_Width(0), m_Body_Height(0),m_Buffer_Body(0),
+	    m_Body_Width(0), m_Body_Height(0),m_Buffer_Body(0),m_Buffer_BodyLine(0),
 	    m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1),
 	    b_Body(false),b_Pause(false)
 {
@@ -270,6 +270,14 @@ void InitDirect3DApp::DrawScene()
 		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Body, &stride2, &offset);
 		m_PTech_Body->GetPassByIndex(0)->Apply(0, m_DeviceContext);
 		m_DeviceContext->Draw(m_BodyVerteices.size(), 0);
+
+		offset = 0;
+		stride2 = sizeof(BodyVertex);
+		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+		m_DeviceContext->IASetInputLayout(m_PLayout_Body);
+		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_BodyLine, &stride2, &offset);
+		m_PTech_Body->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+		m_DeviceContext->Draw(m_BodyLineVerteices.size(), 0);
 	}
 	
 	
@@ -445,6 +453,7 @@ void InitDirect3DApp::buildPoint()
 	ReleaseCOM(m_Buffer_Background);
 	ReleaseCOM(m_Buffer_ColorRect);
 	ReleaseCOM(m_Buffer_Body);
+	ReleaseCOM(m_Buffer_BodyLine);
 
 	if(g_BGManager.CurrentBG() != NULL)
 	{
@@ -572,6 +581,7 @@ void InitDirect3DApp::buildPoint()
 	
 
 	m_BodyVerteices.clear();
+	m_BodyLineVerteices.clear();
 	count = 0;
 	if(!g_HeroMG.Empty()){
 		for (Heroes::iterator it = g_HeroMG.HeroVectorBegin(); it != g_HeroMG.HeroVectorEnd(); it++)
@@ -587,6 +597,22 @@ void InitDirect3DApp::buildPoint()
 		D3D11_SUBRESOURCE_DATA vinitData;
 		vinitData.pSysMem = &m_BodyVerteices[0];
 		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Body));
+	}
+
+	if(!g_HeroMG.Empty()){
+		for (Heroes::iterator it = g_HeroMG.HeroVectorBegin(); it != g_HeroMG.HeroVectorEnd(); it++)
+		{
+			BodyVerteices bvs = (*it)->GetBodyLineVerteices();
+			m_BodyLineVerteices.assign(bvs.begin(),bvs.end());
+		}
+	}
+	if (m_BodyLineVerteices.size()>0)
+	{
+		m_vbd.ByteWidth = (UINT)(sizeof(BodyVertex) * m_BodyLineVerteices.size());
+		m_vbd.StructureByteStride=sizeof(BodyVertex);
+		D3D11_SUBRESOURCE_DATA vinitData;
+		vinitData.pSysMem = &m_BodyLineVerteices[0];
+		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_BodyLine));
 	}
 		
 
