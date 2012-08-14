@@ -212,6 +212,12 @@
     <ClCompile Include="game\TestRenderEffect.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="game\TextString.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\TextGeneratorDX11.cpp">
+      <Filter>src\DX11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -433,8 +439,11 @@
     <ClInclude Include="game\WeaponAction.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="Name.h">
-      <Filter>inc</Filter>
+    <ClInclude Include="game\TextString.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\TextGeneratorDX11.h">
+      <Filter>inc\DX11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,8 +3,12 @@
 #include <string>
 #include <d3d11.h>
 #include <DxErr.h>
+#include <auto_link_freetype.hpp>
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include "DX11/TextureManager.h"
+
+const std::string DEFAULT_FONT = "Media\\unifont.ttf";
 
 typedef struct CharBitmap_ {
 	int             x;
@@ -13,7 +17,6 @@ typedef struct CharBitmap_ {
 	unsigned int    height;
 	unsigned int    pitch;
 	unsigned char*  data;
-
 } CharBitmap;
 
 enum RenderFlag
@@ -26,7 +29,6 @@ class TextGeneratorDX11
 {
 private:
 	bool m_Initialized;
-	ID3D11Device* m_Device;
 	FT_Face m_Face;
 	FT_Library m_Library;
 	std::string m_Font;
@@ -42,17 +44,17 @@ private:
 	bool rasters(const wchar_t texts, CharBitmap& bitmap);
 public:
 
-	TextGeneratorDX11(ID3D11Device* device, std::string& font);
+	TextGeneratorDX11();
 	~TextGeneratorDX11(void);
 
 	bool SetFont(std::string& font);
-	bool SetFontSize(int& width, int& height);
+	bool SetFontSize(int width, int height);
 	void SetForeColor(BYTE r, BYTE g, BYTE b);
 	void SetBackColor(BYTE r, BYTE g, BYTE b);
 	void SetForeAlpha(BYTE alpha);
 	void SetBackAlpha(BYTE alpha);
 	void WriteBegin();
-	ID3D11ShaderResourceView** WriteEnd(int* size);
+	Textures WriteEnd();
 	void Write(std::wstring& str);
 };
 

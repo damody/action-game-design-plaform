@@ -1,17 +1,16 @@
 #include "TextGeneratorDX11.h"
+#include "global.h"
 
-
-TextGeneratorDX11::TextGeneratorDX11(ID3D11Device* device, std::string& font)
+TextGeneratorDX11::TextGeneratorDX11()
 {
 	m_Initialized = false;
-	m_Device = device;
 
 	if (FT_Init_FreeType(&m_Library))
 	{
 		std::runtime_error("Freetype2: Init library error.");
 	}
 
-	if(FT_New_Face(m_Library, font.c_str(), 0, &m_Face))
+	if(FT_New_Face(m_Library, DEFAULT_FONT.c_str(), 0, &m_Face))
 	{
 		FT_Done_FreeType(m_Library);
 		std::runtime_error("Freetype2: New face error.");
@@ -27,7 +26,7 @@ TextGeneratorDX11::TextGeneratorDX11(ID3D11Device* device, std::string& font)
 
 	FT_Select_Charmap(m_Face, FT_ENCODING_UNICODE);
 
-	m_Font = std::string(font);
+	m_Font = std::string(DEFAULT_FONT);
 	m_WString = L"";
 	m_RenderFlag = END;
 
@@ -71,7 +70,7 @@ bool TextGeneratorDX11::SetFont( std::string& font )
 	return true;
 }
 
-bool TextGeneratorDX11::SetFontSize( int& width, int& height )
+bool TextGeneratorDX11::SetFontSize( int width, int height )
 {
 	if(FT_Set_Pixel_Sizes(m_Face, width, height))
 	{
@@ -114,23 +113,23 @@ void TextGeneratorDX11::WriteBegin()
 		m_RenderFlag = BEGIN;
 }
 
-ID3D11ShaderResourceView** TextGeneratorDX11::WriteEnd(int* size)
+Textures TextGeneratorDX11::WriteEnd()
 {
+	Textures textures;
+	textures.clear();
+
 	if(m_RenderFlag != BEGIN)
 	{
-		*size = 0;
-		return 0;
+		return textures;
 	}
 
 	if(m_WString.length() == 0)
 	{
 		m_RenderFlag = END;
-		*size = 0;
-		return 0;
+		return textures;
 	}
 
 	float* characterImages = new float[m_WString.length()];
-	ID3D11ShaderResourceView** shaderResViews = new ID3D11ShaderResourceView*[m_WString.length()];
 	CharBitmap bitmap;
 	D3D11_TEXTURE2D_DESC texDesc;
 	D3D11_SHADER_RESOURCE_VIEW_DESC srDesc;
@@ -152,7 +151,7 @@ ID3D11ShaderResourceView** TextGeneratorDX11::WriteEnd(int* size)
 	srDesc.Texture2D.MostDetailedMip = 0;
 	srDesc.Texture2D.MipLevels = 1;
 	
-	for(int n=0;n<m_WString.length();n++)
+	for(unsigned int n=0;n<m_WString.length();n++)
 	{
 		rasters(m_WString[n], bitmap);
 
@@ -166,8 +165,8 @@ ID3D11ShaderResourceView** TextGeneratorDX11::WriteEnd(int* size)
 
 		sSubData.pSysMem = characterImages;
 
-		for(int j=0; j<bitmap.height; j++) {
-			for(int i=0; i<bitmap.pitch; i++) {
+		for(unsigned int j=0; j<bitmap.height; j++) {
+			for(unsigned int i=0; i<bitmap.pitch; i++) {
 				for(int k=7; k>=0; k--){
 					if(7-k+i*8 == bitmap.width)
 						break;
@@ -193,31 +192,32 @@ ID3D11ShaderResourceView** TextGeneratorDX11::WriteEnd(int* size)
 
 		ID3D11Texture2D* pTexture;
 		ID3D11ShaderResourceView* pShaderResView;
-		HRESULT d3dResult = m_Device->CreateTexture2D(&texDesc, &sSubData, &pTexture);
+		HRESULT d3dResult = g_d3dDevice->CreateTexture2D(&texDesc, &sSubData, &pTexture);
 
 		if(FAILED(d3dResult))
 		{
-			DXTRACE_MSG( "Freetype2: Failed to create texture2D!" );
-			return 0;
+			//DXTRACE_MSG( "Freetype2: Failed to create texture2D!" );
+			textures.clear();
+			return textures;
 		}
 
-		d3dResult = m_Device->CreateShaderResourceView(pTexture, &srDesc, &pShaderResView);
+		d3dResult = g_d3dDevice->CreateShaderResourceView(pTexture, &srDesc, &pShaderResView);
 
 		if(FAILED(d3dResult))
 		{
-			DXTRACE_MSG( "Freetype2: Failed to create ShaderResourceView!" );
-			return 0;
+			//DXTRACE_MSG( "Freetype2: Failed to create ShaderResourceView!" );
+			textures.clear();
+			return textures;
 		}
 
 		delete[] characterImages;
 		delete[] bitmap.data;
-		shaderResViews[n] = pShaderResView;
+		textures.push_back(Texture_Sptr(new Texture(pShaderResView)));
 	}
 
-	*size = m_WString.length();
 	m_WString.clear();
 	m_RenderFlag = END;
-	return shaderResViews;
+	return textures;
 }
 
 void TextGeneratorDX11::Write( std::wstring& str )
