@@ -1,7 +1,7 @@
 name="Forbidden_Tower"
 width = 40000
 timeline=1000
-gravity=2.45
+gravity=2.1
 friction=0.5
 
 space_bounding =
