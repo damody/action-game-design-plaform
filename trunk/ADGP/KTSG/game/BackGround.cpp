@@ -447,6 +447,11 @@ float BackGround::Width()
 	return m_Width;
 }
 
+float BackGround::Gravity()
+{
+	return m_Gravity;
+}
+
 ParallelLight BackGround::GetParallelLight()
 {
 	return m_CurrentLight;

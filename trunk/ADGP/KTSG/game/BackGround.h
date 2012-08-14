@@ -99,6 +99,7 @@ public:
 	void	LoadData(LuaCell_Sptr luadata);
 
 	float   Width();
+	float   Gravity();
 
 	ParallelLight GetParallelLight();
 

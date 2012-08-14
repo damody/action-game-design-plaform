@@ -19,13 +19,13 @@ heavy_walking_speed = 3.700000
 heavy_walking_speedz= 1.850000
 heavy_running_speed = 6.200000
 heavy_running_speedz= 1.000000
-jump_height     = 32.299999
+jump_height     = 48.900000
 jump_distance   = 10.000000
 jump_distancez  = 3.750000
-dash_height     = 20.000000
+dash_height     = 30.000000
 dash_distance   = 18.000000
 dash_distancez  = 5.000000
-rowing_height   = 2.000000
+rowing_height   = 6.000000
 rowing_distance = 5.000000
 
 frame =
@@ -722,7 +722,7 @@ frame.super_punch[2] =
    attack={
 		{kind = 0--[[使用effect]], effect = Effect.Punch,
 		points = {{40,-5}, {40,-50}, {75,-50}, {75,-5}}, zwidth = 8,
-		dvx = 3, dvy = 10, dvz = 0, fall = 70, breakDefend = 60,
+		dvx = 3, dvy = 30, dvz = 0, fall = 70, breakDefend = 60,
 		arest = 8, reAttackRest = 30},
 		injury = 40, strength = 50,
 	},
@@ -782,7 +782,7 @@ frame.super_punch[6] =
    attack={
 		{kind = 0--[[使用effect]], effect = Effect.Punch,
 		points = {{40,-4}, {40,-48}, {72,-48}, {72,-4}}, zwidth = 8,
-		dvx = 7, dvy = 13, dvz = 0, fall = 70, breakDefend = 60,
+		dvx = 7, dvy = 39, dvz = 0, fall = 70, breakDefend = 60,
 		arest = 8, reAttackRest = 30},
 		injury = 40, strength = 50,
 	},
@@ -855,7 +855,7 @@ frame.jump_kick[3] =
    attack={
 		{kind = 0--[[使用effect]], effect = Effect.Punch,
 		points = {{17,-37}, {17,-54}, {69,-54}, {69,-37}}, zwidth = 8,
-		dvx = 9, dvy = 5, dvz = 0, fall = 70, breakDefend = 30,
+		dvx = 9, dvy = 15, dvz = 0, fall = 70, breakDefend = 30,
 		arest = 8, reAttackRest = 30},
 		injury = 60, strength = 50,
 	},
@@ -874,7 +874,7 @@ frame.jump_kick[4] =
    attack={
 		{kind = 0--[[使用effect]], effect = Effect.Punch,
 		points = {{32,-40}, {32,-56}, {68,-56}, {68,-40}}, zwidth = 8,
-		dvx = 9, dvy = 5, dvz = 0, fall = 70, breakDefend = 30,
+		dvx = 9, dvy = 15, dvz = 0, fall = 70, breakDefend = 30,
 		arest = 8, reAttackRest = 30},
 		injury = 60, strength = 50,
 	},
@@ -1056,7 +1056,7 @@ frame.dash_kick[3] =
    attack={
 		{kind = 0--[[使用effect]], effect = Effect.Punch,
 		points = {{17,-37}, {17,-54}, {69,-54}, {69,-37}}, zwidth = 8,
-		dvx = 14, dvy = 5, dvz = 0, fall = 70, breakDefend = 60,
+		dvx = 14, dvy = 15, dvz = 0, fall = 70, breakDefend = 60,
 		arest = 8, reAttackRest = 18},
 		injury = 80, strength = 50,
 	},
@@ -1075,7 +1075,7 @@ frame.dash_kick[4] =
    attack={
 		{kind = 0--[[使用effect]], effect = Effect.Punch,
 		points = {{32,-40}, {32,-56}, {68,-56}, {68,-40}}, zwidth = 8,
-		dvx = 14, dvy = 5, dvz = 0, fall = 70, breakDefend = 60,
+		dvx = 14, dvy = 15, dvz = 0, fall = 70, breakDefend = 60,
 		arest = 8, reAttackRest = 18},
 		injury = 80, strength = 50,
 	},
@@ -1548,4 +1548,136 @@ frame.ball[21] =
    {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
    }
 }
+
+frame.singlong[0] =
+{
+   pic_id = 2, pic_x = 1, pic_y = 4, state = Action.BeforeSkill, wait = 2, next = {"singlong", 1},
+   dvx = 7, dvy = 27,  dvz = 0,  centerx = 30,  centery = 76,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 225, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   }
+
+   --sound: data\095.wav
+}
+
+frame.singlong[1] =
+{
+   pic_id = 2, pic_x = 2, pic_y = 4, state = Action.AirSkill, wait = 2, next = {"singlong", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0, effect = Effect.Punch,
+		points = {{10,-3}, {10,-78}, {82,-78}, {82,-3}}, zwidth = 8,
+		dvx = 7, dvy = 39, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 10},
+		injury = 85, strength = 50,
+	},
+   body = {
+   }
+
+   --sound: data\031.wav
+}
+
+frame.singlong[2] =
+{
+   pic_id = 2, pic_x = 3, pic_y = 4, state = Action.AirSkill, wait = 2, next = {"singlong", 3},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 26,  centery = 81,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0, effect = Effect.Punch,
+		points = {{13,1}, {13,-79}, {80,-79}, {80,1}}, zwidth = 8,
+		dvx = 7, dvy = 33, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 10},
+		injury = 60, strength = 50,
+	},
+   body = {
+   {points = {{19,-7}, {19,-78}, {55,-78}, {55,-7}}, zwidth = 8}
+   }
+}
+
+frame.singlong[3] =
+{
+   pic_id = 2, pic_x = 4, pic_y = 4, state = Action.AirSkill, wait = 2, next = {"singlong", 4},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 26,  centery = 78,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0, effect = Effect.Punch,
+		points = {{11,2}, {11,-78}, {74,-78}, {74,2}}, zwidth = 8,
+		dvx = 7, dvy = 27, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 10},
+		injury = 45, strength = 50,
+	},
+   body = {
+   {points = {{22,-6}, {22,-75}, {52,-75}, {52,-6}}, zwidth = 8}
+   }
+}
+
+frame.singlong[4] =
+{
+   pic_id = 2, pic_x = 5, pic_y = 4, state = Action.AirSkill, wait = 4, next = {"singlong", 5},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 34,  centery = 81,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0, effect = Effect.Punch,
+		points = {{19,-1}, {19,-81}, {80,-81}, {80,-1}}, zwidth = 8,
+		dvx = 7, dvy = 21, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 10},
+		injury = 30, strength = 50,
+	},
+   body = {
+   {points = {{28,-12}, {28,-78}, {57,-78}, {57,-12}}, zwidth = 8}
+   }
+}
+
+frame.singlong[5] =
+{
+   pic_id = 2, pic_x = 6, pic_y = 4, state = Action.AfterSkill, wait = 4, next = {"singlong", 6},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 75,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {points = {{27,-7}, {27,-72}, {55,-72}, {55,-7}}, zwidth = 8}
+   }
+}
+
+frame.singlong[6] =
+{
+   pic_id = 2, pic_x = 7, pic_y = 4, state = Action.AfterSkill, wait = 6, next = {"singlong", 7},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 29,  centery = 74,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {points = {{23,-11}, {23,-72}, {53,-72}, {53,-11}}, zwidth = 8}
+   }
+}
+
+frame.singlong[7] =
+{
+   pic_id = 2, pic_x = 8, pic_y = 4, state = Action.AfterSkill, wait = 4, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 29,  centery = 73,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={},
+   body = {
+   {points = {{21,-3}, {21,-71}, {54,-71}, {54,-3}}, zwidth = 8}
+   }
+}
+
+
+
 

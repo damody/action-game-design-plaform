@@ -865,8 +865,8 @@ bool Hero::ScanKeyQue()
 		m_Action = f->m_HeroAction;
 		m_TimeTik = f->m_Wait;
 		m_Vel.x += f->m_DVX * (m_FaceSide ? 1 : -1);
-		m_Vel.y += f->m_DVY * (m_FaceSide ? 1 : -1);
-		m_Vel.z += f->m_DVZ * (m_FaceSide ? 1 : -1);
+		m_Vel.y += f->m_DVY;
+		m_Vel.z += f->m_DVZ;// * (m_FaceSide ? 1 : -1);
 		m_CenterX = f->m_CenterX;
 		m_CenterY = f->m_CenterY;
 		m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;

@@ -19,8 +19,8 @@
 #define KEYLIFE_AFTER_KEYUP 120
 #define FRICTION 0.5f
 #define WAIT_FOR_KEY_RUN 30
-//#define G_ACCE bg.gravity
-#define G_ACCE 1.0f
+#define G_ACCE g_BGManager.CurrentBG()->Gravity()
+//#define G_ACCE 1.0f
 
 namespace boost{namespace serialization{class access;}}
 struct Record
