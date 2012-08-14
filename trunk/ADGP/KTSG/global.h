@@ -2,6 +2,7 @@
 #include <d3d11.h>
 #include "DX11/TextureManager.h"
 #include "DX11/WaveSound.h"
+#include "DX11/TextGeneratorDX11.h"
 #include "game/HeroManager.h"
 #include "game/ObjectManager.h"
 #include "game/HeroInfoManager.h"
@@ -16,9 +17,11 @@ extern ObjectInfoMG   g_ObjectInfoMG;
 extern ObjectMG	      g_ObjectMG;
 extern BGManager      g_BGManager;
 extern EffectManager*  g_EffectMG;
+
 extern ID3D11Device*  g_d3dDevice;
 extern ID3D11DeviceContext* g_DeviceContext;
 extern WavPlayer g_WavPlayer;
+extern TextGeneratorDX11 g_TextGenarator;
 extern int g_Time;
 
 //HolyK

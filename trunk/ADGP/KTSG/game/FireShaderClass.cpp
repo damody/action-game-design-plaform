@@ -13,7 +13,6 @@ bool FireShaderClass::Initialize(ID3D11Device* device,ID3D11DeviceContext* devic
 	ID3D10Blob* pCode = 0;
 	ID3D10Blob* errorMessage = 0;
 	HRESULT d3dResult = 0;
-	bool result;
 	m_device = device;
 	m_deviceContext = deviceContext;
 
