@@ -1,14 +1,13 @@
 #include "Player.h"
+#include "global.h"
 
-
-Player::Player():m_PlayerID(0),m_UserName("Player")
+Player::Player():m_PlayerID(0)
 {
 
 }
 
-Player::Player( int id ):m_PlayerID(id),m_UserName("Player")
+Player::Player( int id ):m_PlayerID(id)
 {
-	m_UserName+=id;
 }
 
 Player::~Player()
@@ -92,7 +91,7 @@ void Player::UpdateInput()
 
 }
 
-void Player::SetHero( std::string name )
+void Player::SetHero(const std::string& name )
 {
 	m_HeroName = name;
 }
@@ -105,4 +104,20 @@ void Player::SetTeam( int team )
 std::string Player::HeroName()
 {
 	return m_HeroName;
+}
+
+void Player::SetUserName(const std::wstring& name )
+{
+	m_UserName.Clear();
+	m_UserName.Texting(name);
+}
+
+void Player::CreateNameTag()
+{
+	m_UserName.Create();
+}
+
+void Player::Update()
+{
+	m_UserName.SetPosition(m_Hero->Position());
 }

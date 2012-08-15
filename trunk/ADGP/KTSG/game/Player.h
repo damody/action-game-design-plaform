@@ -7,7 +7,8 @@
 #include "DX11\InputState.h"
 #include "common\shared_ptr.h"
 #include "game\Hero.h"
-#include "global.h"
+#include "game\TextString.h"
+
 
 namespace boost{namespace serialization{class access;}}
 class Player
@@ -35,14 +36,18 @@ public:
 	~Player();
 	Hero_RawPtr     m_Hero;
 	const int	m_PlayerID;
-	std::string     m_UserName;
+	TextString	m_UserName;
 
 	std::string HeroName();
 
-	void SetHero(std::string name);
+	void SetUserName(const std::wstring& name);
+	void SetHero(const std::string& name);
 	void SetTeam(int team);
 	void SetCtrlKey(int index,CtrlKey::v key);
 	void SetCtrlKey(int index[8]);
-	void UpdateInput();
 
+
+	void UpdateInput();
+	void Update();
+	void CreateNameTag();
 };

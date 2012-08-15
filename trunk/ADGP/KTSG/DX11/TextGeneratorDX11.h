@@ -47,6 +47,8 @@ public:
 	TextGeneratorDX11();
 	~TextGeneratorDX11(void);
 
+	void Initialize();
+
 	bool SetFont(std::string& font);
 	bool SetFontSize(int width, int height);
 	void SetForeColor(BYTE r, BYTE g, BYTE b);
