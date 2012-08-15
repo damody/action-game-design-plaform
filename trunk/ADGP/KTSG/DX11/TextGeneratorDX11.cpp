@@ -3,44 +3,6 @@
 
 TextGeneratorDX11::TextGeneratorDX11()
 {
-	m_Initialized = false;
-
-	if (FT_Init_FreeType(&m_Library))
-	{
-		std::runtime_error("Freetype2: Init library error.");
-	}
-
-	if(FT_New_Face(m_Library, DEFAULT_FONT.c_str(), 0, &m_Face))
-	{
-		FT_Done_FreeType(m_Library);
-		std::runtime_error("Freetype2: New face error.");
-	}
-
-	int m_Width = 1024;
-	int m_Height = 1024;
-	if(FT_Set_Pixel_Sizes(m_Face, m_Width, m_Height)) {
-		FT_Done_Face(m_Face);
-		FT_Done_FreeType(m_Library);
-		std::runtime_error("Freetype2: Set pixel size error.");
-	}
-
-	FT_Select_Charmap(m_Face, FT_ENCODING_UNICODE);
-
-	m_Font = std::string(DEFAULT_FONT);
-	m_WString = L"";
-	m_RenderFlag = END;
-
-	m_ForeColor[0] = 0.0f;
-	m_ForeColor[1] = 0.0f;
-	m_ForeColor[2] = 0.0f;
-	m_ForeAlpha = 1.0f;
-
-	m_BackColor[0] = 1.0f;
-	m_BackColor[1] = 1.0f;
-	m_BackColor[2] = 1.0f;
-	m_BackAlpha = 0.0f;
-
-	m_Initialized = true;
 }
 
 
@@ -210,7 +172,7 @@ Textures TextGeneratorDX11::WriteEnd()
 			return textures;
 		}
 
-		delete[] characterImages;
+		//delete[] characterImages;
 		delete[] bitmap.data;
 		textures.push_back(Texture_Sptr(new Texture(pShaderResView)));
 	}
@@ -267,4 +229,46 @@ bool TextGeneratorDX11::rasters( const wchar_t texts, CharBitmap& bitmap )
 	bitmap = font;
 
 	return true;
+}
+
+void TextGeneratorDX11::Initialize()
+{
+	m_Initialized = false;
+
+	if (FT_Init_FreeType(&m_Library))
+	{
+		std::runtime_error("Freetype2: Init library error.");
+	}
+
+	if(FT_New_Face(m_Library, DEFAULT_FONT.c_str(), 0, &m_Face))
+	{
+		FT_Done_FreeType(m_Library);
+		std::runtime_error("Freetype2: New face error.");
+	}
+
+	int m_Width = 1024;
+	int m_Height = 1024;
+	if(FT_Set_Pixel_Sizes(m_Face, m_Width, m_Height)) {
+		FT_Done_Face(m_Face);
+		FT_Done_FreeType(m_Library);
+		std::runtime_error("Freetype2: Set pixel size error.");
+	}
+
+	FT_Select_Charmap(m_Face, FT_ENCODING_UNICODE);
+
+	m_Font = std::string(DEFAULT_FONT);
+	m_WString = L"";
+	m_RenderFlag = END;
+
+	m_ForeColor[0] = 0.0f;
+	m_ForeColor[1] = 0.0f;
+	m_ForeColor[2] = 0.0f;
+	m_ForeAlpha = 1.0f;
+
+	m_BackColor[0] = 1.0f;
+	m_BackColor[1] = 1.0f;
+	m_BackColor[2] = 1.0f;
+	m_BackAlpha = 0.0f;
+
+	m_Initialized = true;
 }

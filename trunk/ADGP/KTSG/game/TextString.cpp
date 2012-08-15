@@ -72,4 +72,9 @@ void TextString::SetBackColor( const Vector4& color )
 	m_BackColor = color;
 }
 
+void TextString::Clear()
+{
+	m_Str.clear();
+}
+
 
