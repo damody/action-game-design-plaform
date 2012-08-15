@@ -97,7 +97,13 @@ void Hero::Update(float dt)
 			if(ry > 0 || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH){
 				//Frame §ï¨ìÃÛ
 				m_Frame = "crouch";
-				m_FrameID = m_Action == HeroAction::DASH ? 1 : 0 ;
+				if( m_Action == HeroAction::DASH || m_Action == HeroAction::BEFORE_DASH_ATTACK ||
+					m_Action == HeroAction::DASH_ATTACKING || m_Action == HeroAction::AFTER_DASH_ATTACK){
+					m_FrameID = 1;
+				}
+				else{
+					m_FrameID = 0;
+				}
 				FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
 				if(f->m_ClearKeyQueue){
 					m_KeyQue.clear();

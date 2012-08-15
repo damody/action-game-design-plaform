@@ -806,7 +806,7 @@ frame.super_punch[7] =
 
 frame.jump_kick[0] =
 {
-   pic_id = 1, pic_x = 3, pic_y = 7, state = Action.BeforeJumpAttack, wait = 1, next = {"jump_kick", 1},
+   pic_id = 1, pic_x = 3, pic_y = 7, state = Action.BeforeJumpAttack, wait = 2, next = {"jump_kick", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 36,  centery = 75,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -819,7 +819,7 @@ frame.jump_kick[0] =
 
 frame.jump_kick[1] =
 {
-   pic_id = 1, pic_x = 4, pic_y = 7, state = Action.BeforeJumpAttack, wait = 1, next = {"jump_kick", 2},
+   pic_id = 1, pic_x = 4, pic_y = 7, state = Action.BeforeJumpAttack, wait = 2, next = {"jump_kick", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 74,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -834,7 +834,7 @@ frame.jump_kick[1] =
 
 frame.jump_kick[2] =
 {
-   pic_id = 1, pic_x = 5, pic_y = 7, state = Action.BeforeJumpAttack, wait = 1, next = {"jump_kick", 3},
+   pic_id = 1, pic_x = 5, pic_y = 7, state = Action.BeforeJumpAttack, wait = 2, next = {"jump_kick", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 35,  centery = 75,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
