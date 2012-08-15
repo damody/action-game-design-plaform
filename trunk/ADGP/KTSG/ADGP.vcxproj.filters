@@ -221,6 +221,9 @@
     <ClCompile Include="DX11\TextGeneratorDX11.cpp">
       <Filter>src\DX11</Filter>
     </ClCompile>
+    <ClCompile Include="DX11\TextManager.cpp">
+      <Filter>src\DX11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -450,6 +453,12 @@
     </ClInclude>
     <ClInclude Include="lib\auto_link_freetype.hpp">
       <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\TextLetter.h">
+      <Filter>inc\DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\TextManager.h">
+      <Filter>inc\DX11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

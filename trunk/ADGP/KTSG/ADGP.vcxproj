@@ -191,6 +191,7 @@
     <ClCompile Include="ConvStr.cpp" />
     <ClCompile Include="DX11\Camera.cpp" />
     <ClCompile Include="DX11\TextGeneratorDX11.cpp" />
+    <ClCompile Include="DX11\TextManager.cpp" />
     <ClCompile Include="game\BackGround.cpp" />
     <ClCompile Include="game\BGManager.cpp" />
     <ClCompile Include="game\Chee.cpp" />
@@ -279,6 +280,8 @@
     <ClInclude Include="ConvStr.h" />
     <ClInclude Include="DX11\Camera.h" />
     <ClInclude Include="DX11\TextGeneratorDX11.h" />
+    <ClInclude Include="DX11\TextLetter.h" />
+    <ClInclude Include="DX11\TextManager.h" />
     <ClInclude Include="game\Attack.h" />
     <ClInclude Include="game\BackGround.h" />
     <ClInclude Include="game\BeCatch.h" />

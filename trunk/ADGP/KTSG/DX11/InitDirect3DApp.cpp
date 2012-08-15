@@ -15,7 +15,6 @@ InitDirect3DApp::InitDirect3DApp()
 	    m_Chee_Width(0), m_Chee_Height(0),m_Buffer_Chee(0),
             m_Background_Width(0), m_Background_Height(0), m_Buffer_Background(0),
 	    m_ColorRect_Width(0), m_ColorRect_Height(0), m_Buffer_ColorRect(0),
-	    m_Name_Width(0), m_Name_Height(0),m_Buffer_Name(0),
 	    m_Shadow_Width(0), m_Shadow_Height(0),
 	    m_Body_Width(0), m_Body_Height(0),m_Buffer_Body(0),m_Buffer_BodyLine(0),
 	    m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1),
@@ -172,12 +171,6 @@ void InitDirect3DApp::OnResize()
 		m_Body_Height->SetFloat((float)mClientHeight);
 	}
 
-	if (m_Name_Width!=NULL && m_Name_Height!=NULL)
-	{
-		m_Name_Width->SetFloat((float)mClientWidth);
-		m_Name_Height->SetFloat((float)mClientHeight);
-	}
-	
 }
 
 void InitDirect3DApp::DrawScene()
@@ -288,22 +281,9 @@ void InitDirect3DApp::DrawScene()
 		m_DeviceContext->Draw(m_BodyLineVerteices.size(), 0);
 	}
 	
-	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
-	//Name
-	offset = 0;
-	stride2 = sizeof(BGVertex);
-	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-	m_DeviceContext->IASetInputLayout(m_PLayout_Name);
-	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Name, &stride2, &offset);
-	for (DrawVertexGroups::iterator it = m_DrawVertexGroups_Name.begin();it != m_DrawVertexGroups_Name.end();++it)
-	{
-		if (it->texture.get())
-		{
-			m_PMap_Background->SetResource(*(it->texture));
-			m_PTech_Background->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
-		}
-	}
+	//m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
+	
+	
 }
 
 void InitDirect3DApp::buildPointFX()
@@ -460,31 +440,6 @@ void InitDirect3DApp::buildPointFX()
 	D3DX11_PASS_DESC PassDescBody;
 	m_PTech_Body->GetPassByIndex(0)->GetDesc(&PassDescBody);
 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_BodyVertex, 5, PassDescBody.pIAInputSignature,PassDescBody.IAInputSignatureSize, &m_PLayout_Body));
-
-	//Name
-	hr = 0;
-	hr=D3DX11CompileFromFile(_T("shader\\SceneText.fx"), NULL, NULL, NULL, 
-		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
-	if(FAILED(hr))
-	{
-		if( pError )
-		{
-			MessageBoxA(0, (char*)pError->GetBufferPointer(), 0, 0);
-			ReleaseCOM(pError);
-		}
-		DXTrace(__FILE__, __LINE__, hr, _T("D3DX11CreateEffectFromFile"), TRUE);
-	} 
-	HR(D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_Name));
-	m_PTech_Name = m_Effect_Name->GetTechniqueByName("PointTech");
-	m_Name_Width = m_Effect_Name->GetVariableByName("sceneW")->AsScalar();
-	m_Name_Height =m_Effect_Name->GetVariableByName("sceneH")->AsScalar();
-	m_Name_cLootAt = m_Effect_Name->GetVariableByName("cLookAt");
-	m_Name_cPos = m_Effect_Name->GetVariableByName("cPolarCoord");
-	m_PMap_Name =m_Effect_Name->GetVariableByName("gMap")->AsShaderResource();
-
-	D3DX11_PASS_DESC PassDescName;
-	m_PTech_Name->GetPassByIndex(0)->GetDesc(&PassDescName);
-	HR(m_d3dDevice->CreateInputLayout(VertexDesc_TextVertex, 3, PassDescName.pIAInputSignature,PassDescName.IAInputSignatureSize, &m_PLayout_Name));
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -663,20 +618,6 @@ void InitDirect3DApp::buildPoint()
 		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_BodyLine));
 	}
 		
-	if(!m_Player.m_UserName.m_TexVerteices.empty())
-	{
-		m_NameVerteices.assign(m_Player.m_UserName.m_TexVerteices.begin(),m_Player.m_UserName.m_TexVerteices.end());
-		m_DrawVertexGroups_Name.assign(m_Player.m_UserName.m_DrawVertexGroups.begin(),m_Player.m_UserName.m_DrawVertexGroups.end());
-	}
-	if(m_NameVerteices.size()>0)
-	{
-		m_vbd.ByteWidth = (UINT)(sizeof(TextVertex) * m_NameVerteices.size());
-		m_vbd.StructureByteStride=sizeof(TextVertex);
-		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &m_NameVerteices[0];
-		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Name));
-	}
-
 }
 
 void InitDirect3DApp::LoadResource()
@@ -792,9 +733,7 @@ void InitDirect3DApp::LoadHero()
 
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
-	m_Player.SetUserName(L"Abc´ú¸Õ");
 	m_Player.m_Hero = g_HeroMG.Create(m_Player.HeroName(),Vector3(1000,500,100));
-	//m_Player.CreateNameTag();
 }
 
 
@@ -1108,8 +1047,6 @@ void InitDirect3DApp::UpdateCamera()
 	m_Shadow_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 	m_Body_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
 	m_Body_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Name_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Name_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
 }
 
 void InitDirect3DApp::BackgroundDataUpdate()

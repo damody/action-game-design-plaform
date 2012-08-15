@@ -106,18 +106,4 @@ std::string Player::HeroName()
 	return m_HeroName;
 }
 
-void Player::SetUserName(const std::wstring& name )
-{
-	m_UserName.Clear();
-	m_UserName.Texting(name);
-}
 
-void Player::CreateNameTag()
-{
-	m_UserName.Create();
-}
-
-void Player::Update()
-{
-	m_UserName.SetPosition(m_Hero->Position());
-}

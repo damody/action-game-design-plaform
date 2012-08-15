@@ -155,19 +155,6 @@ private:
 	ID3DX11EffectScalarVariable* m_Shadow_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Shadow;
 
-	TextVerteices m_NameVerteices;
-	DrawVertexGroups m_DrawVertexGroups_Name;
-
-	ID3D11Buffer*		m_Buffer_Name;
-	ID3DX11Effect*		m_Effect_Name;
-	ID3DX11EffectTechnique* m_PTech_Name;
-	ID3D11InputLayout*	m_PLayout_Name;
-	ID3DX11EffectVariable *	m_Name_cLootAt;
-	ID3DX11EffectVariable *	m_Name_cPos;
-	ID3DX11EffectScalarVariable* m_Name_Width;
-	ID3DX11EffectScalarVariable* m_Name_Height;
-	ID3DX11EffectShaderResourceVariable*  m_PMap_Name;
-
 	int			m_SettingKeyID;		//目前要設定的按鍵的id
 	int			m_SettingKeyTextID;	//目前要設定的按鍵的text物件的id
 	int			m_GameProcess;		//遊戲流程,表示目前執行的畫面

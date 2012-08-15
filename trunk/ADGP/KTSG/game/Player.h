@@ -48,6 +48,4 @@ public:
 
 
 	void UpdateInput();
-	void Update();
-	void CreateNameTag();
 };
