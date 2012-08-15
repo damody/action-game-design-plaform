@@ -48,6 +48,9 @@
     <Filter Include="src\game">
       <UniqueIdentifier>{731a8886-6c46-4f71-a582-c6931474b208}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lib">
+      <UniqueIdentifier>{63602d3c-85ce-42e2-978f-05aaf12769c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConvStr.cpp">
@@ -444,6 +447,9 @@
     </ClInclude>
     <ClInclude Include="DX11\TextGeneratorDX11.h">
       <Filter>inc\DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\auto_link_freetype.hpp">
+      <Filter>lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
