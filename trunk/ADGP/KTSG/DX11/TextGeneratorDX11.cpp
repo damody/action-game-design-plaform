@@ -175,7 +175,8 @@ TextLetters TextGeneratorDX11::WriteEnd()
 		free(bitmap.data);
 
 		TextLetter_Sptr tl = TextLetter_Sptr(new TextLetter());
-		tl->texture = pShaderResView;
+		tl->letter = m_WString.at(n);
+		tl->texture = Texture_Sptr(new Texture(pShaderResView));
 		textletter.push_back(tl);
 	}
 

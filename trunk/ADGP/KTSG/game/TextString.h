@@ -19,8 +19,9 @@ struct Composition
 
 class TextString{
 private:
+	const float OFFSET;
 	std::wstring	m_Str;
-	TextLetters     m_TextLetters;
+	
 	float		m_Lenght;
 
 	Composition::e  m_Composition;
@@ -28,13 +29,18 @@ private:
 	Vector3		m_Position;
 	float		m_Size; 
 	float		m_Angle;
+	Vector3		m_ForeColor;
+	Vector3		m_BackColor;
+	float		m_BackAlpha;
 	
-
+	void lenght();
 public:
 	TextString();
 	~TextString();
+	TextString(const std::wstring& str);
 
-	std::wstring w_str();
+	TextLetters     m_TextLetters;
+	const std::wstring& w_str();
 
 	void buildPoint();
 	TextVerteices		m_TexVerteices;
@@ -43,8 +49,14 @@ public:
 	void SetSize(float size);
 	void SetPosition(const Vector3& pos);
 	void SetAngle(float angle);
+	void SetForeColor(float r,float g,float b);
+	void SetBackColor(float r,float g,float b,float a);
+	void SetComposition(Composition::e c);
+
 
 	void clear();
 	void operator = (const std::wstring& str);
 	void operator +=(const std::wstring& str);
 };
+
+void SortLetters(TextVerteices& tvs, TextLetters& letters);

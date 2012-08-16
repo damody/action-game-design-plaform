@@ -9,17 +9,30 @@
 #include "game\Hero.h"
 #include "game\TextString.h"
 
+const float TEAMCOLOR[11][3] =
+{
+	{1.0f, 1.0f, 1.0f},
+	{1.0f, 0.0f, 0.0f},
+	{1.0f, 1.0f, 0.0f},
+	{1.0f, 0.0f, 1.0f},
+	{0.0f, 1.0f, 0.0f},
+	{0.0f, 1.0f, 1.0f},
+	{0.0f, 0.0f, 1.0f},
+	{0.5f, 0.5f, 0.5f},
+	{0.5f, 1.0f, 1.0f},
+	{1.0f, 0.5f, 1.0f},
+	{1.0f, 1.0f, 0.5f}
+};
 
 namespace boost{namespace serialization{class access;}}
 class Player
 {
 private:
-	
 	int		m_KeyCode[8];
 	std::string	m_HeroName;
 	int		m_Team;
 	Record_Sptr     m_Record;//Set Hero Record 
-
+	
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -48,4 +61,5 @@ public:
 
 
 	void UpdateInput();
+	void Update();
 };
