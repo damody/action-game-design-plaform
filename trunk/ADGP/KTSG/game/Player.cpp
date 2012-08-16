@@ -56,7 +56,7 @@ void Player::SetCtrlKey(int index[8])
 
 void Player::UpdateInput()
 {
-	///*
+	/*
 	std::string test[8] ={
 		"up","down","right","left","def","jump","atk1","atk2"
 	};
@@ -73,7 +73,7 @@ void Player::UpdateInput()
 			{
 				keyInfo.key = (CtrlKey::v)k;
 				keyInfo.time= g_Time;
-				std::cout<<"Ctrl Key:"<< test[k] <<std::endl;
+				//std::cout<<"Ctrl Key:"<< test[k] <<std::endl;
 				m_Hero->PushKey(keyInfo);
 			}
 
@@ -99,6 +99,7 @@ void Player::SetHero(const std::string& name )
 void Player::SetTeam( int team )
 {
 	m_Team = team;
+	m_UserName.SetForeColor(TEAMCOLOR[m_Team][0],TEAMCOLOR[m_Team][1],TEAMCOLOR[m_Team][2]);
 }
 
 std::string Player::HeroName()
@@ -106,18 +107,21 @@ std::string Player::HeroName()
 	return m_HeroName;
 }
 
-void Player::SetUserName(const std::wstring& name )
+void Player::SetUserName( const std::wstring& name )
 {
-	m_UserName.Clear();
-	m_UserName.Texting(name);
-}
-
-void Player::CreateNameTag()
-{
-	m_UserName.Create();
+	m_UserName = name;
+	m_UserName.SetComposition(Composition::CENTER);
+	m_UserName.SetForeColor(TEAMCOLOR[m_Team][0],TEAMCOLOR[m_Team][1],TEAMCOLOR[m_Team][2]);
+	m_UserName.SetBackColor(0.0f, 0.0, 0.0f, 0.0f);
 }
 
 void Player::Update()
 {
-	m_UserName.SetPosition(m_Hero->Position());
+	Vector3 v=m_Hero->Position();
+	v.y=0.0f;
+	m_UserName.SetPosition(v);
 }
+
+
+
+

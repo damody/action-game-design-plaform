@@ -75,20 +75,19 @@ void TextGeneratorDX11::WriteBegin()
 		m_RenderFlag = BEGIN;
 }
 
-Textures TextGeneratorDX11::WriteEnd()
+TextLetters TextGeneratorDX11::WriteEnd()
 {
-	Textures textures;
-	textures.clear();
+	TextLetters textletter;
 
 	if(m_RenderFlag != BEGIN)
 	{
-		return textures;
+		return textletter;
 	}
 
 	if(m_WString.length() == 0)
 	{
 		m_RenderFlag = END;
-		return textures;
+		return textletter;
 	}
 
 	float* characterImages = new float[m_WString.length()];
@@ -159,8 +158,8 @@ Textures TextGeneratorDX11::WriteEnd()
 		if(FAILED(d3dResult))
 		{
 			//DXTRACE_MSG( "Freetype2: Failed to create texture2D!" );
-			textures.clear();
-			return textures;
+			textletter.clear();
+			return textletter;
 		}
 
 		d3dResult = g_d3dDevice->CreateShaderResourceView(pTexture, &srDesc, &pShaderResView);
@@ -168,18 +167,22 @@ Textures TextGeneratorDX11::WriteEnd()
 		if(FAILED(d3dResult))
 		{
 			//DXTRACE_MSG( "Freetype2: Failed to create ShaderResourceView!" );
-			textures.clear();
-			return textures;
+			textletter.clear();
+			return textletter;
 		}
 
-		//delete[] characterImages;
-		delete[] bitmap.data;
-		textures.push_back(Texture_Sptr(new Texture(pShaderResView)));
+		delete[] characterImages;
+		free(bitmap.data);
+
+		TextLetter_Sptr tl = TextLetter_Sptr(new TextLetter());
+		tl->letter = m_WString.at(n);
+		tl->texture = Texture_Sptr(new Texture(pShaderResView));
+		textletter.push_back(tl);
 	}
 
 	m_WString.clear();
 	m_RenderFlag = END;
-	return textures;
+	return textletter;
 }
 
 void TextGeneratorDX11::Write( std::wstring& str )
@@ -246,8 +249,8 @@ void TextGeneratorDX11::Initialize()
 		std::runtime_error("Freetype2: New face error.");
 	}
 
-	int m_Width = 1024;
-	int m_Height = 1024;
+	m_Width = 1024;
+	m_Height = 1024;
 	if(FT_Set_Pixel_Sizes(m_Face, m_Width, m_Height)) {
 		FT_Done_Face(m_Face);
 		FT_Done_FreeType(m_Library);

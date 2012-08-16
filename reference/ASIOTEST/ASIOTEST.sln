@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ASIOTESTSERVER", "ASIOTEST\ASIOTEST.vcxproj", "{708DD88E-0ECE-4B3D-A4B9-5FD2609AA5B0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ASIOTESTCLIENT", "ASIOTESTCLIENT\ASIOTESTCLIENT.vcxproj", "{02EDBA19-A1A1-40AB-93C8-A7A7C304B5EF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "asd", "asd\asd.vcxproj", "{B558B4D3-DB15-436E-AB93-AF35038AE17F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{708DD88E-0ECE-4B3D-A4B9-5FD2609AA5B0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{708DD88E-0ECE-4B3D-A4B9-5FD2609AA5B0}.Debug|Win32.Build.0 = Debug|Win32
+		{708DD88E-0ECE-4B3D-A4B9-5FD2609AA5B0}.Release|Win32.ActiveCfg = Release|Win32
+		{708DD88E-0ECE-4B3D-A4B9-5FD2609AA5B0}.Release|Win32.Build.0 = Release|Win32
+		{02EDBA19-A1A1-40AB-93C8-A7A7C304B5EF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{02EDBA19-A1A1-40AB-93C8-A7A7C304B5EF}.Debug|Win32.Build.0 = Debug|Win32
+		{02EDBA19-A1A1-40AB-93C8-A7A7C304B5EF}.Release|Win32.ActiveCfg = Release|Win32
+		{02EDBA19-A1A1-40AB-93C8-A7A7C304B5EF}.Release|Win32.Build.0 = Release|Win32
+		{B558B4D3-DB15-436E-AB93-AF35038AE17F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B558B4D3-DB15-436E-AB93-AF35038AE17F}.Debug|Win32.Build.0 = Debug|Win32
+		{B558B4D3-DB15-436E-AB93-AF35038AE17F}.Release|Win32.ActiveCfg = Release|Win32
+		{B558B4D3-DB15-436E-AB93-AF35038AE17F}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

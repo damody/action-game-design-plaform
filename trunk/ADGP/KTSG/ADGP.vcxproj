@@ -87,8 +87,8 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;$(SDKs)freetype-2.4.9\include;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc\;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SDKs)freetype-2.4.9\lib\vc10;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Debug;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;lib\;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">lib\;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Release;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;$(SDKs)freetype-2.4.9\include;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SDKs)freetype-2.4.9\lib\vc10;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Release;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -191,6 +191,7 @@
     <ClCompile Include="ConvStr.cpp" />
     <ClCompile Include="DX11\Camera.cpp" />
     <ClCompile Include="DX11\TextGeneratorDX11.cpp" />
+    <ClCompile Include="DX11\TextManager.cpp" />
     <ClCompile Include="game\BackGround.cpp" />
     <ClCompile Include="game\BGManager.cpp" />
     <ClCompile Include="game\Chee.cpp" />
@@ -279,6 +280,8 @@
     <ClInclude Include="ConvStr.h" />
     <ClInclude Include="DX11\Camera.h" />
     <ClInclude Include="DX11\TextGeneratorDX11.h" />
+    <ClInclude Include="DX11\TextLetter.h" />
+    <ClInclude Include="DX11\TextManager.h" />
     <ClInclude Include="game\Attack.h" />
     <ClInclude Include="game\BackGround.h" />
     <ClInclude Include="game\BeCatch.h" />

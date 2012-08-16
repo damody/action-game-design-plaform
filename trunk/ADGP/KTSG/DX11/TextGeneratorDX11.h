@@ -7,6 +7,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include "DX11/TextureManager.h"
+#include "TextLetter.h"
 
 const std::string DEFAULT_FONT = "Media\\unifont.ttf";
 
@@ -56,7 +57,7 @@ public:
 	void SetForeAlpha(BYTE alpha);
 	void SetBackAlpha(BYTE alpha);
 	void WriteBegin();
-	Textures WriteEnd();
+	TextLetters WriteEnd();
 	void Write(std::wstring& str);
 };
 
