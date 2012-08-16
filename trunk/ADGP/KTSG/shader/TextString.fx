@@ -28,7 +28,6 @@ struct VS_OUT
 	float2	size  		: TEXCOORD0;
 	float   angle 		: PI;
 	float3  color		: FORECOLOR;
-	float4  backcolor   : BACKCOLOR;
 };
 
 struct GS_OUT
@@ -36,7 +35,6 @@ struct GS_OUT
 	float4 posH    		: SV_POSITION;
 	float2 texcoord 	: TEXCOORD0;
 	float3 color		: FORECOLOR;
-	float4 backcolor   	: BACKCOLOR;
 };
  
 VS_OUT VS(VS_IN vIn)
@@ -57,7 +55,6 @@ VS_OUT VS(VS_IN vIn)
 	
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
-	vOut.backcolor = vIn.backcolor;
 	vOut.color = vIn.color;
 	return vOut;
 }
@@ -83,42 +80,36 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(1,0);
 	out5.color = input[0].color;
-	out5.backcolor = input[0].backcolor;
 	triStream.Append( out5 );
 
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat),input[0].pos.z),1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(1,1);
 	out5.color = input[0].color;
-	out5.backcolor = input[0].backcolor;
 	triStream.Append( out5 );
 
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2( 0,0), mat),input[0].pos.z),1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(0,0);
 	out5.color = input[0].color;
-	out5.backcolor = input[0].backcolor;
 	triStream.Append( out5 );
 
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat),input[0].pos.z),1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(1,1);
 	out5.color = input[0].color;
-	out5.backcolor = input[0].backcolor;
 	triStream.Append( out5 );
 
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2( 0,0), mat),input[0].pos.z),1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(0,0);
 	out5.color = input[0].color;
-	out5.backcolor = input[0].backcolor;
 	triStream.Append( out5 );
 
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2( 0,input[0].size.y), mat),input[0].pos.z),1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(0,1);
 	out5.color = input[0].color;
-	out5.backcolor = input[0].backcolor;
 	triStream.Append( out5 );
 
 	triStream.RestartStrip( );
