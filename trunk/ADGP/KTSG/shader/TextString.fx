@@ -41,18 +41,7 @@ VS_OUT VS(VS_IN vIn)
 {
 	VS_OUT vOut;
 
-	float thita = cPolarCoord.y *3.14159/180;
-	float alpha = cPolarCoord.z *3.14159/180;
-	
-	vIn.position= float4(vIn.position.xyz-cLookAt.xyz,1.0);		 
-	
-	float3x3 view;
-	view[0]=float3(cos(-thita) 	, -sin(-thita) * -sin(-alpha) , -sin(-thita) * cos(-alpha) );
-	view[1]=float3(0			,  cos(-alpha) 			  	  ,  sin(-alpha)	           );
-	view[2]=float3(sin(-thita) 	,  cos(-thita) * -sin(-alpha) ,  cos(-thita) * cos(-alpha) );
-	
-	vOut.pos =float4(mul(float3(vIn.position.xyz),view),1.0) ;
-	
+	vOut.pos= float4(vIn.position.xyz-cLookAt.xyz,1.0);
 	vOut.size = vIn.size;
 	vOut.angle = vIn.angle;
 	vOut.color = vIn.color;
@@ -63,50 +52,70 @@ VS_OUT VS(VS_IN vIn)
 [maxvertexcount (6)]
 void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 {
-	float x = input[0].angle*3.14159/180;
-	float2x2 mat = {cos(x), -sin(x), sin(x), cos(x)};
-
-	float zDepth =1/30000.0;
-	float offset =0.1/tan(3.14159/6);
-
+	float thita = -cPolarCoord.y *3.14159/180;
+	float alpha = -cPolarCoord.z *3.14159/180;
+	
+	float x = -input[0].angle*3.14159/180;
+	float3x3 mat;
+	
+	mat[0]=float3(	1 	,  0 		,  0    );
+	mat[1]=float3(	0	,  cos(x)  , sin(x) );
+	mat[2]=float3(   0 	, -sin(x)  ,  cos(x));
+	
+	float3x3 view;
+	view[0]=float3(cos(thita) 	, -sin(thita) * -sin(alpha)  , -sin(thita) * cos(alpha));
+	view[1]=float3(	0			,  cos(alpha) 				 ,  sin(alpha)	           );
+	view[2]=float3(sin(thita) 	,  cos(thita) * -sin(alpha) ,  cos(thita) * cos(alpha) );
+	
+	float offset    =0.1/tan(3.14159/6);
 	float4x4 proj;
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+input[0].pos.z)*offset),0,0,0);
-	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+input[0].pos.z)*offset),0,0);
 	proj[2]=float4(0,0,1/30000.0,0);
-	proj[3]=float4(0,0.0,0.1,1);
+	proj[3]=float4(0,0,0.1,1);
 
 	GS_OUT out5;
-	out5.posH=float4(float3(input[0].pos.xy-mul(float2(-input[0].size.x,0), mat),input[0].pos.z),1);
+	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,0,0), mat)),view),1);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(1,0);
 	out5.color = input[0].color;
 	triStream.Append( out5 );
 
-	out5.posH=float4(float3(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat),input[0].pos.z),1);
+	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,input[0].size.y,0), mat)),view),1);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(1,1);
 	out5.color = input[0].color;
 	triStream.Append( out5 );
 
-	out5.posH=float4(float3(input[0].pos.xy-mul(float2( 0,0), mat),input[0].pos.z),1);
+	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3( 0,0,0), mat)),view),1);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(0,0);
 	out5.color = input[0].color;
 	triStream.Append( out5 );
 
-	out5.posH=float4(float3(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat),input[0].pos.z),1);
+	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,input[0].size.y,0), mat)),view),1);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(1,1);
 	out5.color = input[0].color;
 	triStream.Append( out5 );
 
-	out5.posH=float4(float3(input[0].pos.xy-mul(float2( 0,0), mat),input[0].pos.z),1);
+	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3( 0,0,0), mat)),view),1);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(0,0);
 	out5.color = input[0].color;
 	triStream.Append( out5 );
 
-	out5.posH=float4(float3(input[0].pos.xy-mul(float2( 0,input[0].size.y), mat),input[0].pos.z),1);
+	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3( 0,input[0].size.y,0), mat)),view),1);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(0,1);
 	out5.color = input[0].color;

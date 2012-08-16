@@ -28,7 +28,7 @@ private:
 
 	Vector3		m_Position;
 	float		m_Size; 
-	float		m_Angle;
+	bool		m_OnGround;
 	Vector3		m_ForeColor;
 	Vector3		m_BackColor;
 	float		m_BackAlpha;
@@ -48,9 +48,8 @@ public:
 	
 	void SetSize(float size);
 	void SetPosition(const Vector3& pos);
-	void SetAngle(float angle);
+	void SetOnGround(bool g);
 	void SetForeColor(float r,float g,float b);
-	void SetBackColor(float r,float g,float b,float a);
 	void SetComposition(Composition::e c);
 
 

@@ -111,14 +111,14 @@ void Player::SetUserName( const std::wstring& name )
 {
 	m_UserName = name;
 	m_UserName.SetComposition(Composition::CENTER);
+	m_UserName.SetOnGround(true);
 	m_UserName.SetForeColor(TEAMCOLOR[m_Team][0],TEAMCOLOR[m_Team][1],TEAMCOLOR[m_Team][2]);
-	m_UserName.SetBackColor(0.0f, 0.0, 0.0f, 0.0f);
 }
 
 void Player::Update()
 {
 	Vector3 v=m_Hero->Position();
-	v.y=0.0f;
+	v.y=0.1f;
 	m_UserName.SetPosition(v);
 }
 
