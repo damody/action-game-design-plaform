@@ -125,11 +125,6 @@ void TextString::buildPoint()
 		tv.color.y = m_ForeColor.y;
 		tv.color.z = m_ForeColor.z;
 
-		tv.backcolor.x = m_BackColor.x;
-		tv.backcolor.y = m_BackColor.y;
-		tv.backcolor.z = m_BackColor.z;
-		tv.backcolor.w = m_BackAlpha;
-
 		m_TexVerteices.push_back(tv);
 	}
 }

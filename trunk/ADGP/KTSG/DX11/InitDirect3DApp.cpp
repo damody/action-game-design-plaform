@@ -492,7 +492,7 @@ void InitDirect3DApp::buildPointFX()
 
 	D3DX11_PASS_DESC PassDescText;
 	m_PTech_Text->GetPassByIndex(0)->GetDesc(&PassDescText);
-	HR(m_d3dDevice->CreateInputLayout(VertexDesc_TextVertex, 5, PassDescText.pIAInputSignature,PassDescText.IAInputSignatureSize, &m_PLayout_Text));
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_TextVertex, 4, PassDescText.pIAInputSignature,PassDescText.IAInputSignatureSize, &m_PLayout_Text));
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
