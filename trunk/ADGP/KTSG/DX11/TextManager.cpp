@@ -13,8 +13,7 @@ TextManager::~TextManager(void)
 void TextManager::Initialize()
 {
 	std::wstring TYPE_1 = std::wstring(L"ABCDEFGHIJKLMNOPQRSTUVWXYZbdfhk1234567890@#$%&?/");
-	//std::wstring TYPE_2 = std::wstring(L"acemnorsuvwxz+-");
-	std::wstring TYPE_2 = std::wstring(L"acemnorsuvwxz+-");
+	std::wstring TYPE_2 = std::wstring(L"acemnorsuvwxz+");
 	std::wstring TYPE_3 = std::wstring(L"il!|");
 	std::wstring TYPE_4 = std::wstring(L"gpqy");
 	std::wstring TYPE_5 = std::wstring(L"j");
@@ -24,7 +23,7 @@ void TextManager::Initialize()
 	std::wstring TYPE_9 = std::wstring(L"*");
 	std::wstring TYPE_10 = std::wstring(L"()");
 	std::wstring TYPE_11 = std::wstring(L"¤@");
-
+	std::wstring TYPE_12 = std::wstring(L"-");
 
 	g_TextGenarator.SetForeColor(255,255,255);
 	g_TextGenarator.SetForeAlpha(255);
@@ -66,11 +65,11 @@ void TextManager::Initialize()
 	for (TextLetters::iterator it = temp.begin(); it != temp.end();it++)
 	{
 		(*it)->m_OffsetY = 0.2f;
-		(*it)->m_ScaleH = 0.5f;
+		(*it)->m_ScaleH = 0.7f;
 
-		(*it)->m_OffsetX_Fore = 0.15f;
-		(*it)->m_ScaleW = 0.2f;
-		(*it)->m_OffsetX_Back = 0.15f;
+		(*it)->m_OffsetX_Fore = 0.1f;
+		(*it)->m_ScaleW = 0.3f;
+		(*it)->m_OffsetX_Back = 0.1f;
 		m_TextLetterMap[TYPE_3.at(i)]=(*it);
 		i++;
 	}
@@ -98,8 +97,8 @@ void TextManager::Initialize()
 		(*it)->m_OffsetY = 0.2f;
 		(*it)->m_ScaleH = 0.9f;
 
-		(*it)->m_ScaleW = 0.2f;
-		(*it)->m_OffsetX_Back = 0.3f;
+		(*it)->m_ScaleW = 0.3f;
+		(*it)->m_OffsetX_Back = 0.1f;
 		m_TextLetterMap[TYPE_5.at(i)]=(*it);
 		i++;
 	}
@@ -185,6 +184,20 @@ void TextManager::Initialize()
 
 		(*it)->m_ScaleW = 1.0f;
 		m_TextLetterMap[TYPE_11.at(i)]=(*it);
+		i++;
+	}
+
+	g_TextGenarator.WriteBegin();
+	g_TextGenarator.Write(TYPE_12);
+	temp = g_TextGenarator.WriteEnd();
+	i=0;
+	for (TextLetters::iterator it = temp.begin(); it != temp.end();it++)
+	{
+		(*it)->m_OffsetY = 0.5f;
+		(*it)->m_ScaleH = 0.1f;
+
+		(*it)->m_ScaleW = 0.5f;
+		m_TextLetterMap[TYPE_12.at(i)]=(*it);
 		i++;
 	}
 }

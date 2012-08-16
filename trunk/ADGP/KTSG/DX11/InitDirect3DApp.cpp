@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include <cstdlib>
 #include <ctime>
 #include "InitDirect3DApp.h"
@@ -746,13 +746,13 @@ void InitDirect3DApp::LoadBlend()
 	depth_stencil_desc.StencilEnable = FALSE;
 	depth_stencil_desc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
 	depth_stencil_desc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
-	// ¶}±Òzbuffer write
+	// é–‹å•Ÿzbuffer write
 	if ( D3D_OK != m_d3dDevice->CreateDepthStencilState(&depth_stencil_desc, &m_pDepthStencil_ZWriteON) )
 		return ;
 
 	depth_stencil_desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 
-	// Ãö³¬zbuffer write
+	// é—œé–‰zbuffer write
 	if ( D3D_OK != m_d3dDevice->CreateDepthStencilState(&depth_stencil_desc, &m_pDepthStencil_ZWriteOFF) )
 		return ;
 	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteON, 0);
@@ -767,7 +767,7 @@ void InitDirect3DApp::LoadBlend()
 		D3D11_BLEND_ONE,
 		D3D11_BLEND_OP_ADD,
 		D3D11_COLOR_WRITE_ENABLE_ALL);
-	// ADD²V¦â¼Ò¦¡
+	// ADDæ··è‰²æ¨¡å¼
 	if ( D3D_OK != m_d3dDevice->CreateBlendState(&blend_state_desc, &m_pBlendState_ADD) )
 		return;
 	blend_state_desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA ;
@@ -776,7 +776,7 @@ void InitDirect3DApp::LoadBlend()
 	blend_state_desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
 	blend_state_desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
 
-	// Alpha Blend²V¦â¼Ò¦¡
+	// Alpha Blendæ··è‰²æ¨¡å¼
 	if ( D3D_OK != m_d3dDevice->CreateBlendState(&blend_state_desc, &m_pBlendState_BLEND) )
 		return ;
 }
@@ -827,7 +827,7 @@ void InitDirect3DApp::LoadHero()
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
 	m_Player.m_Hero = g_HeroMG.Create(m_Player.HeroName(),Vector3(1000,500,100));
-	m_Player.SetUserName(L"<´ú¸Õ¤HTest>");
+	m_Player.SetUserName(L"<ã“ã‚“ã«ã¡ã¯æ¸¬è©¦äºº-Testing...>");
 }
 
 int InitDirect3DApp::UpdateInput()
@@ -987,7 +987,7 @@ void InitDirect3DApp::DealOptionPage()
 	std::vector<CmdState> cmdstate = m_DXUT_UI->GetCmdState();
 
 // 	if (m_SettingKeyID>=0)
-// 		SetCtrlKey();		//³]©w±±¨î«öÁäªº³B²z¨ç¼Æ
+// 		SetCtrlKey();		//è¨­å®šæ§åˆ¶æŒ‰éµçš„è™•ç†å‡½æ•¸
 
 	for (size_t i=0; i<cmdstate.size(); i++)
 	{

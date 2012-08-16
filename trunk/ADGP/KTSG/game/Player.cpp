@@ -85,10 +85,6 @@ void Player::UpdateInput()
 			}
 		}
 	}
-		
-	
-	
-
 }
 
 void Player::SetHero(const std::string& name )
@@ -118,7 +114,7 @@ void Player::SetUserName( const std::wstring& name )
 void Player::Update()
 {
 	Vector3 v=m_Hero->Position();
-	v.y=0.1f;
+	v.y=1.0f;
 	m_UserName.SetPosition(v);
 }
 

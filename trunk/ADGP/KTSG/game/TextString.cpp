@@ -66,6 +66,7 @@ void TextString::lenght()
 		m_Lenght += m_Size * (*it)->m_OffsetX_Fore;
 		m_Lenght += m_Size * (*it)->m_ScaleW;
 		m_Lenght += m_Size * (*it)->m_OffsetX_Back;
+		m_Lenght += m_Size * OFFSET;
 	}
 }
 
@@ -100,7 +101,7 @@ void TextString::buildPoint()
 		p += m_Size * (*it)->m_OffsetX_Fore;
 		tv.position.x = m_Position.x + p - c;
 		p += m_Size * (*it)->m_ScaleW;
-		p += m_Size * (*it)->m_OffsetX_Back + OFFSET;
+		p += m_Size * (*it)->m_OffsetX_Back + m_Size *OFFSET;
 
 		tv.position.y = m_Position.y;
 		tv.position.z = m_Position.z;
