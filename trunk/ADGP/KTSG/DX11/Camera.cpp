@@ -43,7 +43,7 @@ void Camera::Rotate( float inX,float inY )
 
 void Camera::Zoom( float index )
 {
-	if((m_Radius+index)<0)return;
+	if((m_Radius+index)<-2200)return;
 	else m_Radius += index;
 	std::cout<<"Zoom:"<<m_Radius<<std::endl;
 }

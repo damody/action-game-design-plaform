@@ -94,19 +94,22 @@ void InitDirect3DApp::UpdateScene(float dt)
 	}
 	//HolyK
 
-	m_DXUT_UI->UpdataUI(dt);
-	m_SwapChain->Present(0, 0);
-	D3DApp::DrawScene(); // clear window
 	PrintInfo();
 	UpdateInput();
-
 	
+	//m_DXUT_UI->UpdataUI(dt);
+	m_SwapChain->Present(0, 0);
+	D3DApp::DrawScene(); // clear window
+	//UpdateUI();
+	buildPoint();
+
 	if(!b_Pause)
 	{
 		static float timp_count = 0;
 		timp_count+=dt;
 		if (timp_count > 1/60.0f)
 		{
+			
 			g_Time++;
 			UpdateCamera();
 			if(g_EffectMG != NULL)g_EffectMG->Update(m_RenderTargetView);
@@ -125,12 +128,9 @@ void InitDirect3DApp::UpdateScene(float dt)
 				BackgroundDataUpdate();
 			}
 			timp_count -= 1/60.0f;
+			
 		}
 	}
-
-	UpdateUI();
-	buildPoint();
-	
 }
 
 void InitDirect3DApp::OnResize()
