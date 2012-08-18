@@ -20,7 +20,7 @@ bool Effect::Initialize(ID3D11Device* device,ID3D11DeviceContext* deviceContext,
 	}
 	//
 	m_FireShader = new FireShaderClass();
-	result = m_FireShader->Initialize(device,m_deviceContext,L"effectTest.fx",hwnd);
+	result = m_FireShader->Initialize(device,m_deviceContext,L"TestScale.fx",hwnd);
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the TFireShaderClass object.", L"Error", MB_OK);
