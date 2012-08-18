@@ -137,6 +137,11 @@ Texture_Sptr Weapon::GetTexture()
 	return g_TextureManager.GetTexture(m_Texture);
 }
 
+Vector3 Weapon::Position()
+{
+	return m_Position;
+}
+
 bool SortWeapon( Weapon_RawPtr a,Weapon_RawPtr b )
 {
 	return a->GetTextureID()<b->GetTextureID();	

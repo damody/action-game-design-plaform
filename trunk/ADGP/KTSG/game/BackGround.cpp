@@ -244,7 +244,7 @@ void BackGround::BuildPoint()
 				crv.color.y = it->m_Color.y;
 				crv.color.z = it->m_Color.z;
 				crv.color.w = it->m_Color.w;
-				crv.angle = (it->m_IsGround? 90:0);
+				crv.angle = (it->m_IsGround? 90.0f:0.0f);
 				
 				m_CRVerteices.push_back(crv);
 				}
@@ -286,7 +286,7 @@ void BackGround::BuildPoint()
 
 				bgv.size.x     = it->m_Width  ;
 				bgv.size.y     = it->m_Height ;
-				bgv.angle      = (it->m_IsGround? 90:0);
+				bgv.angle      = (it->m_IsGround? 90.0f:0.0f);
 				m_BGVerteices.push_back(bgv);
 				++vertexCount;
 				++count;

@@ -563,6 +563,12 @@ void InitDirect3DApp::buildPoint()
 			dvg.StartVertexLocation = count;
 			do 
 			{
+			  if (!g_Camera->Visable((*it)->Position()))
+			  {	
+				  it++;
+				  continue;
+				  
+			  }
 			  //save vertex points
 			  m_EntityVertex.push_back((*it)->GetPic());
 			  it++;
@@ -584,6 +590,12 @@ void InitDirect3DApp::buildPoint()
 			dvg.StartVertexLocation = count;
 			do 
 			{
+				if (!g_Camera->Visable((*it)->Position()))
+				{
+					it++;
+					continue;
+				}
+
 				//save vertex points
 				m_EntityVertex.push_back((*it)->GetPic());
 				it++;
@@ -592,10 +604,10 @@ void InitDirect3DApp::buildPoint()
 			} while (it!=g_ObjectMG.WeaponVectorEnd() && dvg.texture == (*it)->GetTexture());
 			dvg.VertexCount = vertexCount;
 			//save dvg
-			m_DrawVertexGroups.push_back(dvg);
+			if(dvg.VertexCount != 0)m_DrawVertexGroups.push_back(dvg);
 		}
 	}
-	if (vertexCount>0)
+	if (m_EntityVertex.size()>0)
 	{
 		m_vbd.ByteWidth = (UINT)(sizeof(ClipVertex) * m_EntityVertex.size());
 		m_vbd.StructureByteStride=sizeof(ClipVertex);
@@ -619,6 +631,11 @@ void InitDirect3DApp::buildPoint()
 			dvg.StartVertexLocation = count;
 			do 
 			{
+				if (!g_Camera->Visable((*it)->Position()))
+				{
+					  it++;
+					  continue;
+				}
 				//save vertex points
 				m_CheeVertex.push_back((*it)->GetPic());
 				it++;
@@ -630,7 +647,7 @@ void InitDirect3DApp::buildPoint()
 			m_CheeDrawVertexGroups.push_back(dvg);
 		}
 	}
-	if (vertexCount>0)
+	if (m_CheeVertex.size()>0)
 	{
 		m_vbd.ByteWidth = (UINT)(sizeof(ClipVertex) * m_CheeVertex.size());
 		m_vbd.StructureByteStride=sizeof(ClipVertex);
