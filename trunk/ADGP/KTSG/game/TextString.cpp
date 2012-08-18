@@ -140,6 +140,34 @@ void TextString::SetOnGround( bool g )
 
 void SortLetters( TextVerteices& tvs, TextLetters& letters )
 {
-	
+	for (unsigned int i = 0 ; i < letters.size() ; i++)
+	{
+		for (unsigned int j = i+1 ; j < letters.size() ; j++)
+		{
+			if(letters[i]->letter > letters[j]->letter){
+				TextLetter_Sptr temp;
+				TextVertex	temp_tv;
+
+				temp = letters[i];
+				letters[i] = letters[j];
+				letters[j] = temp;
+
+				temp_tv.position= tvs[i].position;
+				temp_tv.color	= tvs[i].color;
+				temp_tv.angle	= tvs[i].angle;
+				temp_tv.size	= tvs[i].size;
+
+				tvs[i].position = tvs[j].position;
+				tvs[i].color	= tvs[j].color;
+				tvs[i].angle	= tvs[j].angle;
+				tvs[i].size	= tvs[j].size;
+
+				tvs[j].position = temp_tv.position;
+				tvs[j].color	= temp_tv.color;
+				tvs[j].angle	= temp_tv.angle;
+				tvs[j].size	= temp_tv.size;
+			}
+		}
+	}
 
 }

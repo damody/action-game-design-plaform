@@ -244,21 +244,7 @@ void InitDirect3DApp::DrawScene()
 
 	//m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
 	
-	//Draw Name
-	offset = 0;
-	stride2 = sizeof(TextVertex);
-	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-	m_DeviceContext->IASetInputLayout(m_PLayout_Text);
-	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Text, &stride2, &offset);
-	for (DrawVertexGroups::iterator it = m_DrawVertexGroups_Text.begin();it != m_DrawVertexGroups_Text.end();++it)
-	{
-		if (it->texture.get())
-		{
-			m_PMap_Text->SetResource(*(it->texture));
-			m_PTech_Text->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
-		}
-	}
+	
 	
 	//Draw Hero & Weapon
 	offset = 0;
@@ -312,6 +298,21 @@ void InitDirect3DApp::DrawScene()
 		m_DeviceContext->Draw(m_BodyLineVerteices.size(), 0);
 	}
 	
+	//Draw Name
+	offset = 0;
+	stride2 = sizeof(TextVertex);
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	m_DeviceContext->IASetInputLayout(m_PLayout_Text);
+	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Text, &stride2, &offset);
+	for (DrawVertexGroups::iterator it = m_DrawVertexGroups_Text.begin();it != m_DrawVertexGroups_Text.end();++it)
+	{
+		if (it->texture.get())
+		{
+			m_PMap_Text->SetResource(*(it->texture));
+			m_PTech_Text->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
+		}
+	}
 	//m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
 	
 	
@@ -701,7 +702,7 @@ void InitDirect3DApp::buildPoint()
 		m_TextVeices.assign(m_Player.m_UserName.m_TexVerteices.begin(),m_Player.m_UserName.m_TexVerteices.end());
 		m_TextLetters.assign(m_Player.m_UserName.m_TextLetters.begin(),m_Player.m_UserName.m_TextLetters.end());	
 	}
-	//Sort
+	SortLetters(m_TextVeices,m_TextLetters);
 	vertexCount = 0;
 	count = 0;
 	if(!m_TextLetters.empty())
