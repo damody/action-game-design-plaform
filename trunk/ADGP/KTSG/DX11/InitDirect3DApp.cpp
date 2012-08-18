@@ -37,7 +37,7 @@ void InitDirect3DApp::initApp()
 	InitTexture();
 	LoadResource();
 	LoadBlend();
-	m_Camera = Camera_Sptr(new Camera((float)mClientWidth,0,1000,800,0,45));
+	g_Camera = Camera_Sptr(new Camera((float)mClientWidth,0,1000,800,0,45));
 	g_WavPlayer.Initialize(getMainWnd());
 	g_TextGenarator.Initialize();
 	g_TextMG.Initialize();
@@ -137,6 +137,9 @@ void InitDirect3DApp::OnResize()
 {
 	D3DApp::OnResize();
 	
+	if (g_Camera.get())
+		g_Camera->onResize((float)mClientWidth,(float)mClientHeight);
+
 	if(g_EffectMG!=NULL)g_EffectMG->OnResize(mClientWidth,mClientHeight);
 
 	if (m_Entity_Width!=NULL && m_Entity_Height!=NULL)
@@ -1117,31 +1120,31 @@ void InitDirect3DApp::UpdateCamera()
 {
 	if(m_Player.m_Hero->Position().x < mClientWidth)
 	{
-		float m = mClientWidth - m_Camera->LookAt().x;
-		m_Camera->MoveX(m*0.05f);
+		float m = mClientWidth - g_Camera->LookAt().x;
+		g_Camera->MoveX(m*0.05f);
 	}else if(m_Player.m_Hero->Position().x > g_BGManager.CurrentBG()->Width()-mClientWidth){
-		float m = g_BGManager.CurrentBG()->Width()-mClientWidth - m_Camera->LookAt().x;
-		m_Camera->MoveX(m*0.05f);
+		float m = g_BGManager.CurrentBG()->Width()-mClientWidth - g_Camera->LookAt().x;
+		g_Camera->MoveX(m*0.05f);
 	}else{
-		float m = m_Player.m_Hero->Position().x - m_Camera->LookAt().x;
-		m_Camera->MoveX(m*0.05f);
+		float m = m_Player.m_Hero->Position().x - g_Camera->LookAt().x;
+		g_Camera->MoveX(m*0.05f);
 	}
 
 
-	m_Entity_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Entity_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Chee_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Chee_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Background_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Background_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_ColorRect_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_ColorRect_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Shadow_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Shadow_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Body_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Body_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Text_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Text_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Entity_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Entity_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Chee_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Chee_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Background_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Background_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_ColorRect_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_ColorRect_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Shadow_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Shadow_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Body_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Body_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Text_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Text_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
 }
 
 void InitDirect3DApp::BackgroundDataUpdate()
@@ -1170,43 +1173,43 @@ void InitDirect3DApp::TestCamera()
 {
 	if (InputStateS::instance().isKeyPress(KEY_Z))
 	{
-		m_Camera->Zoom(-1);
+		g_Camera->Zoom(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_X))
 	{
-		m_Camera->Zoom(1); 
+		g_Camera->Zoom(1); 
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD4))
 	{
-		m_Camera->MoveX(-1);
+		g_Camera->MoveX(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD6))
 	{
-		m_Camera->MoveX(1); 
+		g_Camera->MoveX(1); 
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD2))
 	{
-		m_Camera->MoveY(-1);
+		g_Camera->MoveY(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD8))
 	{
-		m_Camera->MoveY(1); 
+		g_Camera->MoveY(1); 
 	}
 	if (InputStateS::instance().isKeyPress(KEY_K))
 	{
-		m_Camera->SurroundX(-0.1f);
+		g_Camera->SurroundX(-0.1f);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_I))
 	{
-		m_Camera->SurroundX(0.1f);
+		g_Camera->SurroundX(0.1f);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_J))
 	{
-		m_Camera->SurroundY(-0.1f);
+		g_Camera->SurroundY(-0.1f);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_L))
 	{
-		m_Camera->SurroundY(0.1f);
+		g_Camera->SurroundY(0.1f);
 	}
 }
 

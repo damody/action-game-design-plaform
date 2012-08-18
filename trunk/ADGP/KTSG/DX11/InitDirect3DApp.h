@@ -12,7 +12,6 @@
 #include "game/Chee.h"
 #include "game/Player.h"
 #include "game/BackGround.h"
-#include "Camera.h"
 #include "game/TestRenderEffect.h"
 
 class InitDirect3DApp : public D3DApp
@@ -94,7 +93,6 @@ private:
 
 	LuaCell			m_Lua;
 	Player			m_Player;
-	Camera_Sptr		m_Camera;
 
 	ClipVertexs		m_EntityVertex;
 	DrawVertexGroups	m_DrawVertexGroups;
