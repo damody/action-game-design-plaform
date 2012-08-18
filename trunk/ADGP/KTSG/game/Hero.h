@@ -64,6 +64,7 @@ private:
 	int		m_PicY;
 	
 	Vector3		m_Position;
+	Vector3		m_PastPos;
 	float		m_CenterX,m_CenterY;
 	Vector3		m_Vel;
 	Bodys		m_Bodys;
@@ -71,7 +72,7 @@ private:
 	bool		m_FaceSide; //true 右, false 左
 	int		d_run;		//判定跑步用，右正左負
 	std::bitset<4>	d_key;	//判斷非方向按鍵作用與否，1表示已作用，0則否，0:atk1, 1:atk2, 2:j, 3:d
-
+	bool		d_Ground;  //判斷是否在地面上
 	int		m_Team;//0為不分
 	int		m_MaxRecoverHP;//最大恢復血量
 	int		m_HP;
@@ -126,7 +127,9 @@ public:
 	int GetTextureID();
 	ClipVertex GetPic();
 	int Team();
-	Vector3 Position();
+	const Vector3& Position();
+	const Vector3& Past_Position();
+	const Vector3& Velocity(); 
 
 	void SetRecord(Record_Sptr r);
 	void SetTeam(int team);
@@ -135,6 +138,10 @@ public:
 	void PushKey(KeyInfo k);
 	BodyVerteices GetBodyVerteices();
 	BodyVerteices GetBodyLineVerteices();
+
+	void GetBack();
+	void Stop();
+	void OnGround();
 protected:
 	void Init();
 	void NextFrame();

@@ -43,6 +43,7 @@ struct TextVertex
 	D3DXVECTOR3 position;
 	D3DXVECTOR2 size;
 	float angle;
+	D3DXVECTOR3 color;
 };
 typedef std::vector<TextVertex> TextVerteices;
 

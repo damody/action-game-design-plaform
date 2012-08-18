@@ -19,10 +19,10 @@ heavy_walking_speed = 3.700000
 heavy_walking_speedz= 1.850000
 heavy_running_speed = 6.200000
 heavy_running_speedz= 1.000000
-jump_height     = 48.900000
+jump_height     = 32.600000
 jump_distance   = 10.000000
 jump_distancez  = 3.750000
-dash_height     = 30.000000
+dash_height     = 25.000000
 dash_distance   = 18.000000
 dash_distancez  = 5.000000
 rowing_height   = 6.000000
@@ -806,7 +806,7 @@ frame.super_punch[7] =
 
 frame.jump_kick[0] =
 {
-   pic_id = 1, pic_x = 3, pic_y = 7, state = Action.BeforeJumpAttack, wait = 1, next = {"jump_kick", 1},
+   pic_id = 1, pic_x = 3, pic_y = 7, state = Action.BeforeJumpAttack, wait = 2, next = {"jump_kick", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 36,  centery = 75,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -819,7 +819,7 @@ frame.jump_kick[0] =
 
 frame.jump_kick[1] =
 {
-   pic_id = 1, pic_x = 4, pic_y = 7, state = Action.BeforeJumpAttack, wait = 1, next = {"jump_kick", 2},
+   pic_id = 1, pic_x = 4, pic_y = 7, state = Action.BeforeJumpAttack, wait = 2, next = {"jump_kick", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 74,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -834,7 +834,7 @@ frame.jump_kick[1] =
 
 frame.jump_kick[2] =
 {
-   pic_id = 1, pic_x = 5, pic_y = 7, state = Action.BeforeJumpAttack, wait = 1, next = {"jump_kick", 3},
+   pic_id = 1, pic_x = 5, pic_y = 7, state = Action.BeforeJumpAttack, wait = 2, next = {"jump_kick", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 35,  centery = 75,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -1549,10 +1549,81 @@ frame.ball[21] =
    }
 }
 
+frame.jump_hit[0] =
+{
+   pic_id = 2, pic_x = 1, pic_y = 3, state = Action.BeforeSkill, wait = 2, next = {"jump_hit", 1},
+   dvx = 8, dvy = 32,  dvz = 0,  centerx = 32,  centery = 75,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 25, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{13,-8}, {13,-69}, {51,-69}, {51,-8}}, zwidth = 8}
+   }
+
+   --sound: data\017.wav
+}
+
+frame.jump_hit[1] =
+{
+   pic_id = 2, pic_x = 2, pic_y = 3, state = Action.BeforeSkill, wait = 4, next = {"jump_hit", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 31,  centery = 75,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{15,-8}, {15,-70}, {49,-70}, {49,-8}}, zwidth = 8}
+   }
+}
+
+frame.jump_hit[2] =
+{
+   pic_id = 2, pic_x = 2, pic_y = 3, state = Action.BeforeSkill, wait = 30, next = {"jump_hit", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 37,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"A","jump_hit",3}},
+   blood = {},
+   body = {
+   {kind = 0, points = {{21,-8}, {21,-74}, {55,-74}, {55,-8}}, zwidth = 8}
+   }
+}
+
+frame.jump_hit[3] =
+{
+   pic_id = 2, pic_x = 3, pic_y = 3, state = Action.GroundSkill, wait = 6, next = {"jump_hit", 4},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 26,  centery = 72,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0, effect = Effect.Punch,
+		points = {{17,-19}, {17,-64}, {62,-64}, {62,-19}}, zwidth = 8,
+		dvx = 22, dvy = -15, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 12},
+		injury = 50, strength = 50,
+	},
+   body = {
+   {kind = 0, points = {{16,-20}, {16,-66}, {62,-66}, {62,-20}}, zwidth = 8}
+   }
+
+   --sound: data\007.wav
+}
+
+frame.jump_hit[4] =
+{
+   pic_id = 2, pic_x = 4, pic_y = 3, state = Action.AfterSkill, wait = 30, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 26,  centery = 72,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{16,-20}, {16,-66}, {62,-66}, {62,-20}}, zwidth = 8}
+   }
+}
+
 frame.singlong[0] =
 {
    pic_id = 2, pic_x = 1, pic_y = 4, state = Action.BeforeSkill, wait = 2, next = {"singlong", 1},
-   dvx = 7, dvy = 27,  dvz = 0,  centerx = 30,  centery = 76,  clear_key_queue = 0,
+   dvx = 7, dvy = 36,  dvz = 0,  centerx = 30,  centery = 76,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 225, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1564,7 +1635,7 @@ frame.singlong[0] =
 
 frame.singlong[1] =
 {
-   pic_id = 2, pic_x = 2, pic_y = 4, state = Action.AirSkill, wait = 2, next = {"singlong", 2},
+   pic_id = 2, pic_x = 2, pic_y = 4, state = Action.GroundSkill, wait = 2, next = {"singlong", 2},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 28,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -1584,7 +1655,7 @@ frame.singlong[1] =
 
 frame.singlong[2] =
 {
-   pic_id = 2, pic_x = 3, pic_y = 4, state = Action.AirSkill, wait = 2, next = {"singlong", 3},
+   pic_id = 2, pic_x = 3, pic_y = 4, state = Action.GroundSkill, wait = 2, next = {"singlong", 3},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 26,  centery = 81,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -1603,7 +1674,7 @@ frame.singlong[2] =
 
 frame.singlong[3] =
 {
-   pic_id = 2, pic_x = 4, pic_y = 4, state = Action.AirSkill, wait = 2, next = {"singlong", 4},
+   pic_id = 2, pic_x = 4, pic_y = 4, state = Action.GroundSkill, wait = 2, next = {"singlong", 4},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 26,  centery = 78,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -1622,7 +1693,7 @@ frame.singlong[3] =
 
 frame.singlong[4] =
 {
-   pic_id = 2, pic_x = 5, pic_y = 4, state = Action.AirSkill, wait = 4, next = {"singlong", 5},
+   pic_id = 2, pic_x = 5, pic_y = 4, state = Action.GroundSkill, wait = 4, next = {"singlong", 5},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 34,  centery = 81,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},

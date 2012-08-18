@@ -107,7 +107,8 @@ public:
 	Vector3	AlignmentSpace(const Vector3& pIn);//判斷vIn是否在地圖的可行範圍，並校正
 
 	bool    InBan(const Vector3& pIn);//判斷vIn是否在地圖的禁足範圍
-	Vector3	AlignmentBan(const Vector3& pIn );//判斷vIn是否在地圖的禁足範圍，並校正
+	AxisAlignedBoxs::iterator InWinchBan(const Vector3& pIn);
+	Vector3	AlignmentBan(const Vector3& pIn ,const Vector3& pIn_past , bool* onTop);//判斷vIn是否在地圖的禁足範圍，並校正
 };
 SHARE_PTR(BackGround);
 

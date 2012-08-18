@@ -56,6 +56,7 @@ public:
 	int GetTextureID();
 	Texture_Sptr GetTexture();
 	ClipVertex GetPic();
+	Vector3 Position();
 };
 SHARE_PTR(Weapon)
 typedef std::vector <Weapon_RawPtr> Weapons;

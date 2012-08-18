@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cmath>
+#include <d3d9.h>
+#include <d3dx9.h>
 #include "math\Vector3.h"
 #include "common\shared_ptr.h"
 
@@ -19,6 +21,10 @@ class Camera
 				float m_Alpha;
 			};
 		};
+
+
+		float m_Thita_R;
+		float m_ScreenW,m_ScreenH;
 	public:
 		Camera();
 		Camera(float xlook,float ylook,float zlook,float r,float thita,float alpha);
@@ -35,6 +41,12 @@ class Camera
 		void Zoom(float index);
 		void SurroundX(float index);//идл╫
 		void SurroundY(float index);//идл╫
+
+		bool Visable(const Vector3& pos);
+		bool Visable(const D3DXVECTOR3& pos);
+		int Offside(const D3DXVECTOR3& pos);
+
+		void onResize(float w,float h);
 
 		float* GetLookAt();
 		float* GetCPos();

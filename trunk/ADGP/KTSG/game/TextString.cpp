@@ -1,9 +1,19 @@
 #include "game/TextString.h"
 #include "global.h"
 
-TextString::TextString():m_Angle(0),m_Width(50),m_Height(50),m_ForeColor(Vector4(0,0,0,1)),m_BackColor(Vector4(0,0,0,0)),m_Position(Vector3(0,0,0))
+TextString::TextString():OFFSET(0.1f),
+m_Size(50),m_OnGround(false),m_Composition(Composition::LEFT),
+m_Position(Vector3(0,0,0)),m_ForeColor(Vector3(0,0,0))
 {
-	m_Str.clear();
+
+}
+
+TextString::TextString(const std::wstring& str ):OFFSET(0.1f),
+m_Str(str),m_Size(50),m_OnGround(false),m_Composition(Composition::LEFT),
+m_Position(Vector3(0,0,0)),m_ForeColor(Vector3(0,0,0))
+{
+	m_TextLetters = g_TextMG.GetLetters(m_Str);
+	lenght();
 }
 
 TextString::~TextString()
@@ -11,28 +21,15 @@ TextString::~TextString()
 
 }
 
-void TextString::buildPoint()
+void TextString::clear()
 {
-	int i=0;
-	TextVertex tv;
-	tv.size.x=(float)m_Width;
-	tv.size.y=(float)m_Height;
-	tv.position.x = m_Position.x;
-	tv.position.y = m_Position.z;
-	tv.position.z = m_Position.y;
-	tv.angle    = m_Angle;
-	for (Textures::iterator it = m_Textures.begin(); it != m_Textures.end() ; ++it)
-	{
-		
-		tv.position.x +=(float) i*m_Width;
-		m_TexVerteices.push_back(tv);
+	m_Str.clear();
+	m_TextLetters.clear();
+}
 
-		DrawVertexGroup dvg;
-		dvg.texture = (*it);
-		dvg.StartVertexLocation=i;
-		dvg.VertexCount = 1;
-		m_DrawVertexGroups.push_back(dvg);
-	}
+void TextString::SetSize( float size )
+{
+	m_Size = size;
 }
 
 void TextString::SetPosition( const Vector3& pos )
@@ -40,41 +37,137 @@ void TextString::SetPosition( const Vector3& pos )
 	m_Position = pos;
 }
 
-void TextString::SetAngle( float angle )
+void TextString::operator=( const std::wstring& str )
 {
-	m_Angle = angle;
+	this->clear();
+	m_Str.append(str);
+	m_TextLetters = g_TextMG.GetLetters(m_Str);
+	lenght();
 }
 
-void TextString::Texting( const std::wstring& text )
+void TextString::operator+=( const std::wstring& str )
 {
-	m_Str.append(text);
+	m_Str.assign(str.begin(),str.end());
+	TextLetters temp = g_TextMG.GetLetters(str);
+	m_TextLetters.assign(temp.begin(),temp.end());
+	lenght();
 }
 
-void TextString::Create()
+const std::wstring& TextString::w_str()
 {
-	g_TextGenarator.WriteBegin();
-	g_TextGenarator.Write(m_Str);
-	g_TextGenarator.SetFontSize(125,125);
-	g_TextGenarator.SetForeColor((BYTE)m_ForeColor.x,(BYTE)m_ForeColor.y,(BYTE)m_ForeColor.z);
-	g_TextGenarator.SetForeAlpha((BYTE)m_ForeColor.w);
-	g_TextGenarator.SetBackColor((BYTE)m_BackColor.x,(BYTE)m_BackColor.y,(BYTE)m_BackColor.z);
-	g_TextGenarator.SetBackAlpha((BYTE)m_BackColor.w);
-	m_Textures = g_TextGenarator.WriteEnd();
+	return m_Str;
 }
 
-void TextString::SetForeColor( const Vector4& color )
+void TextString::lenght()
 {
-	m_ForeColor = color;
+	m_Lenght = 0;
+	for (TextLetters::iterator it=m_TextLetters.begin(); it != m_TextLetters.end();++it)
+	{
+		m_Lenght += m_Size * (*it)->m_OffsetX_Fore;
+		m_Lenght += m_Size * (*it)->m_ScaleW;
+		m_Lenght += m_Size * (*it)->m_OffsetX_Back;
+		m_Lenght += m_Size * OFFSET;
+	}
 }
 
-void TextString::SetBackColor( const Vector4& color )
+void TextString::SetForeColor( float r,float g,float b )
 {
-	m_BackColor = color;
+	m_ForeColor = Vector3(r,g,b);
 }
 
-void TextString::Clear()
+void TextString::buildPoint()
 {
-	m_Str.clear();
+	float c;
+	switch (m_Composition)
+	{
+	case Composition::LEFT:
+		c = 0.0f;
+		break;
+	case Composition::CENTER:
+		c = m_Lenght * 0.5f;
+		break;
+	case Composition::RIGHT:
+		c = m_Lenght;
+		break;
+	}
+
+	m_TexVerteices.clear();
+	m_DrawVertexGroups.clear();
+	float p = 0;
+	for (TextLetters::iterator it = m_TextLetters.begin(); it != m_TextLetters.end();++it)
+	{
+		TextVertex tv;
+
+		p += m_Size * (*it)->m_OffsetX_Fore;
+		tv.position.x = m_Position.x + p - c;
+		p += m_Size * (*it)->m_ScaleW;
+		p += m_Size * (*it)->m_OffsetX_Back + m_Size *OFFSET;
+
+		tv.position.y = m_Position.y;
+		tv.position.z = m_Position.z;
+
+		
+		tv.size.x = m_Size * (*it)->m_ScaleW;
+		tv.size.y = m_Size * (*it)->m_ScaleH;
+
+		if(m_OnGround){
+			tv.position.z -= m_Size * (*it)->m_OffsetY;
+			tv.angle = -90;
+		}else{
+			tv.position.y -= m_Size * (*it)->m_OffsetY;
+			tv.angle = 0;
+		}
+		
+		tv.color.x = m_ForeColor.x;
+		tv.color.y = m_ForeColor.y;
+		tv.color.z = m_ForeColor.z;
+
+		m_TexVerteices.push_back(tv);
+	}
+}
+
+void TextString::SetComposition( Composition::e c )
+{
+	m_Composition = c;
+}
+
+void TextString::SetOnGround( bool g )
+{
+	m_OnGround = g;
 }
 
 
+
+void SortLetters( TextVerteices& tvs, TextLetters& letters )
+{
+	for (unsigned int i = 0 ; i < letters.size() ; i++)
+	{
+		for (unsigned int j = i+1 ; j < letters.size() ; j++)
+		{
+			if(letters[i]->letter > letters[j]->letter){
+				TextLetter_Sptr temp;
+				TextVertex	temp_tv;
+
+				temp = letters[i];
+				letters[i] = letters[j];
+				letters[j] = temp;
+
+				temp_tv.position= tvs[i].position;
+				temp_tv.color	= tvs[i].color;
+				temp_tv.angle	= tvs[i].angle;
+				temp_tv.size	= tvs[i].size;
+
+				tvs[i].position = tvs[j].position;
+				tvs[i].color	= tvs[j].color;
+				tvs[i].angle	= tvs[j].angle;
+				tvs[i].size	= tvs[j].size;
+
+				tvs[j].position = temp_tv.position;
+				tvs[j].color	= temp_tv.color;
+				tvs[j].angle	= temp_tv.angle;
+				tvs[j].size	= temp_tv.size;
+			}
+		}
+	}
+
+}

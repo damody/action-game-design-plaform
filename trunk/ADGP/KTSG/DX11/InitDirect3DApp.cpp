@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include <cstdlib>
 #include <ctime>
 #include "InitDirect3DApp.h"
@@ -15,9 +15,9 @@ InitDirect3DApp::InitDirect3DApp()
 	    m_Chee_Width(0), m_Chee_Height(0),m_Buffer_Chee(0),
             m_Background_Width(0), m_Background_Height(0), m_Buffer_Background(0),
 	    m_ColorRect_Width(0), m_ColorRect_Height(0), m_Buffer_ColorRect(0),
-	    m_Name_Width(0), m_Name_Height(0),m_Buffer_Name(0),
 	    m_Shadow_Width(0), m_Shadow_Height(0),
 	    m_Body_Width(0), m_Body_Height(0),m_Buffer_Body(0),m_Buffer_BodyLine(0),
+	    m_Text_Width(0), m_Text_Height(0),m_Buffer_Text(0),
 	    m_SettingKeyID(-1), m_LastGameProcess(1), m_GameProcess(1), m_Last2GameProcess(1),
 	    b_Body(false),b_Pause(false)
 {
@@ -37,9 +37,10 @@ void InitDirect3DApp::initApp()
 	InitTexture();
 	LoadResource();
 	LoadBlend();
-	m_Camera = Camera_Sptr(new Camera((float)mClientWidth,0,1000,800,0,45));
+	g_Camera = Camera_Sptr(new Camera((float)mClientWidth,0,1000,800,0,45));
 	g_WavPlayer.Initialize(getMainWnd());
 	g_TextGenarator.Initialize();
+	g_TextMG.Initialize();
 	g_EffectMG = new EffectManager(m_hMainWnd);
 	LoadHero();
 	buildPointFX();
@@ -93,27 +94,33 @@ void InitDirect3DApp::UpdateScene(float dt)
 	}
 	//HolyK
 
-	m_DXUT_UI->UpdataUI(dt);
-	m_SwapChain->Present(0, 0);
-	D3DApp::DrawScene(); // clear window
 	PrintInfo();
 	UpdateInput();
-
 	
+	//m_DXUT_UI->UpdataUI(dt);
+	m_SwapChain->Present(0, 0);
+	D3DApp::DrawScene(); // clear window
+	//UpdateUI();
+	
+
 	if(!b_Pause)
 	{
 		static float timp_count = 0;
 		timp_count+=dt;
 		if (timp_count > 1/60.0f)
 		{
+			
 			g_Time++;
 			UpdateCamera();
 			if(g_EffectMG != NULL)g_EffectMG->Update(m_RenderTargetView);
+			buildPoint();
 			//Hero Update
 			g_HeroMG.Update(dt);
 
 			//Chee Update
 			g_ObjectMG.Update(dt);
+
+			m_Player.Update();
 
 			//Background Update
 			if(g_BGManager.CurrentBG() != NULL)
@@ -122,18 +129,18 @@ void InitDirect3DApp::UpdateScene(float dt)
 				BackgroundDataUpdate();
 			}
 			timp_count -= 1/60.0f;
+			
 		}
 	}
-
-	UpdateUI();
-	buildPoint();
-	
 }
 
 void InitDirect3DApp::OnResize()
 {
 	D3DApp::OnResize();
 	
+	if (g_Camera.get())
+		g_Camera->onResize((float)mClientWidth,(float)mClientHeight);
+
 	if(g_EffectMG!=NULL)g_EffectMG->OnResize(mClientWidth,mClientHeight);
 
 	if (m_Entity_Width!=NULL && m_Entity_Height!=NULL)
@@ -172,12 +179,12 @@ void InitDirect3DApp::OnResize()
 		m_Body_Height->SetFloat((float)mClientHeight);
 	}
 
-	if (m_Name_Width!=NULL && m_Name_Height!=NULL)
+	if (m_Text_Width!=NULL && m_Text_Height!=NULL)
 	{
-		m_Name_Width->SetFloat((float)mClientWidth);
-		m_Name_Height->SetFloat((float)mClientHeight);
+		m_Text_Width->SetFloat((float)mClientWidth);
+		m_Text_Height->SetFloat((float)mClientHeight);
 	}
-	
+
 }
 
 void InitDirect3DApp::DrawScene()
@@ -219,7 +226,23 @@ void InitDirect3DApp::DrawScene()
 			}
 		}
 	}
-	//m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
+
+	//Draw Name
+	offset = 0;
+	stride2 = sizeof(TextVertex);
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	m_DeviceContext->IASetInputLayout(m_PLayout_Text);
+	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Text, &stride2, &offset);
+	for (DrawVertexGroups::iterator it = m_DrawVertexGroups_Text.begin();it != m_DrawVertexGroups_Text.end();++it)
+	{
+		if (it->texture.get())
+		{
+			m_PMap_Text->SetResource(*(it->texture));
+			m_PTech_Text->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
+		}
+	}
+
 	//Draw Shadow
 	offset = 0;
 	stride2 = sizeof(ClipVertex);
@@ -236,6 +259,10 @@ void InitDirect3DApp::DrawScene()
 		}
 	}
 
+	//m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
+	
+	
+	
 	//Draw Hero & Weapon
 	offset = 0;
 	stride2 = sizeof(ClipVertex);
@@ -288,22 +315,10 @@ void InitDirect3DApp::DrawScene()
 		m_DeviceContext->Draw(m_BodyLineVerteices.size(), 0);
 	}
 	
-	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
-	//Name
-	offset = 0;
-	stride2 = sizeof(BGVertex);
-	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-	m_DeviceContext->IASetInputLayout(m_PLayout_Name);
-	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Name, &stride2, &offset);
-	for (DrawVertexGroups::iterator it = m_DrawVertexGroups_Name.begin();it != m_DrawVertexGroups_Name.end();++it)
-	{
-		if (it->texture.get())
-		{
-			m_PMap_Background->SetResource(*(it->texture));
-			m_PTech_Background->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
-		}
-	}
+	
+	//m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
+	
+	
 }
 
 void InitDirect3DApp::buildPointFX()
@@ -461,9 +476,9 @@ void InitDirect3DApp::buildPointFX()
 	m_PTech_Body->GetPassByIndex(0)->GetDesc(&PassDescBody);
 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_BodyVertex, 5, PassDescBody.pIAInputSignature,PassDescBody.IAInputSignatureSize, &m_PLayout_Body));
 
-	//Name
+	//
 	hr = 0;
-	hr=D3DX11CompileFromFile(_T("shader\\SceneText.fx"), NULL, NULL, NULL, 
+	hr=D3DX11CompileFromFile(_T("shader\\TextString.fx"), NULL, NULL, NULL, 
 		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
 	if(FAILED(hr))
 	{
@@ -474,17 +489,17 @@ void InitDirect3DApp::buildPointFX()
 		}
 		DXTrace(__FILE__, __LINE__, hr, _T("D3DX11CreateEffectFromFile"), TRUE);
 	} 
-	HR(D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_Name));
-	m_PTech_Name = m_Effect_Name->GetTechniqueByName("PointTech");
-	m_Name_Width = m_Effect_Name->GetVariableByName("sceneW")->AsScalar();
-	m_Name_Height =m_Effect_Name->GetVariableByName("sceneH")->AsScalar();
-	m_Name_cLootAt = m_Effect_Name->GetVariableByName("cLookAt");
-	m_Name_cPos = m_Effect_Name->GetVariableByName("cPolarCoord");
-	m_PMap_Name =m_Effect_Name->GetVariableByName("gMap")->AsShaderResource();
+	HR(D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_Text));
+	m_PTech_Text = m_Effect_Text->GetTechniqueByName("PointTech");
+	m_Text_Width = m_Effect_Text->GetVariableByName("sceneW")->AsScalar();
+	m_Text_Height =m_Effect_Text->GetVariableByName("sceneH")->AsScalar();
+	m_Text_cLootAt = m_Effect_Text->GetVariableByName("cLookAt");
+	m_Text_cPos = m_Effect_Text->GetVariableByName("cPolarCoord");
+	m_PMap_Text =m_Effect_Text->GetVariableByName("gMap")->AsShaderResource();
 
-	D3DX11_PASS_DESC PassDescName;
-	m_PTech_Name->GetPassByIndex(0)->GetDesc(&PassDescName);
-	HR(m_d3dDevice->CreateInputLayout(VertexDesc_TextVertex, 3, PassDescName.pIAInputSignature,PassDescName.IAInputSignatureSize, &m_PLayout_Name));
+	D3DX11_PASS_DESC PassDescText;
+	m_PTech_Text->GetPassByIndex(0)->GetDesc(&PassDescText);
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_TextVertex, 4, PassDescText.pIAInputSignature,PassDescText.IAInputSignatureSize, &m_PLayout_Text));
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -502,6 +517,7 @@ void InitDirect3DApp::buildPoint()
 	ReleaseCOM(m_Buffer_ColorRect);
 	ReleaseCOM(m_Buffer_Body);
 	ReleaseCOM(m_Buffer_BodyLine);
+	ReleaseCOM(m_Buffer_Text);
 
 	if(g_BGManager.CurrentBG() != NULL)
 	{
@@ -551,6 +567,12 @@ void InitDirect3DApp::buildPoint()
 			dvg.StartVertexLocation = count;
 			do 
 			{
+			  if (!g_Camera->Visable((*it)->Position()))
+			  {	
+				  it++;
+				  continue;
+				  
+			  }
 			  //save vertex points
 			  m_EntityVertex.push_back((*it)->GetPic());
 			  it++;
@@ -572,6 +594,12 @@ void InitDirect3DApp::buildPoint()
 			dvg.StartVertexLocation = count;
 			do 
 			{
+				if (!g_Camera->Visable((*it)->Position()))
+				{
+					it++;
+					continue;
+				}
+
 				//save vertex points
 				m_EntityVertex.push_back((*it)->GetPic());
 				it++;
@@ -580,10 +608,10 @@ void InitDirect3DApp::buildPoint()
 			} while (it!=g_ObjectMG.WeaponVectorEnd() && dvg.texture == (*it)->GetTexture());
 			dvg.VertexCount = vertexCount;
 			//save dvg
-			m_DrawVertexGroups.push_back(dvg);
+			if(dvg.VertexCount != 0)m_DrawVertexGroups.push_back(dvg);
 		}
 	}
-	if (vertexCount>0)
+	if (m_EntityVertex.size()>0)
 	{
 		m_vbd.ByteWidth = (UINT)(sizeof(ClipVertex) * m_EntityVertex.size());
 		m_vbd.StructureByteStride=sizeof(ClipVertex);
@@ -607,6 +635,11 @@ void InitDirect3DApp::buildPoint()
 			dvg.StartVertexLocation = count;
 			do 
 			{
+				if (!g_Camera->Visable((*it)->Position()))
+				{
+					  it++;
+					  continue;
+				}
 				//save vertex points
 				m_CheeVertex.push_back((*it)->GetPic());
 				it++;
@@ -618,7 +651,7 @@ void InitDirect3DApp::buildPoint()
 			m_CheeDrawVertexGroups.push_back(dvg);
 		}
 	}
-	if (vertexCount>0)
+	if (m_CheeVertex.size()>0)
 	{
 		m_vbd.ByteWidth = (UINT)(sizeof(ClipVertex) * m_CheeVertex.size());
 		m_vbd.StructureByteStride=sizeof(ClipVertex);
@@ -663,20 +696,45 @@ void InitDirect3DApp::buildPoint()
 		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_BodyLine));
 	}
 		
-	if(!m_Player.m_UserName.m_TexVerteices.empty())
-	{
-		m_NameVerteices.assign(m_Player.m_UserName.m_TexVerteices.begin(),m_Player.m_UserName.m_TexVerteices.end());
-		m_DrawVertexGroups_Name.assign(m_Player.m_UserName.m_DrawVertexGroups.begin(),m_Player.m_UserName.m_DrawVertexGroups.end());
+	//Name
+	m_TextVeices.clear();
+	m_TextLetters.clear();
+	m_DrawVertexGroups_Text.clear();
+	m_Player.m_UserName.buildPoint();
+	if(!m_Player.m_UserName.m_TexVerteices.empty()){
+		m_TextVeices.assign(m_Player.m_UserName.m_TexVerteices.begin(),m_Player.m_UserName.m_TexVerteices.end());
+		m_TextLetters.assign(m_Player.m_UserName.m_TextLetters.begin(),m_Player.m_UserName.m_TextLetters.end());	
 	}
-	if(m_NameVerteices.size()>0)
+	SortLetters(m_TextVeices,m_TextLetters);
+	vertexCount = 0;
+	count = 0;
+	if(!m_TextLetters.empty())
 	{
-		m_vbd.ByteWidth = (UINT)(sizeof(TextVertex) * m_NameVerteices.size());
+		for(TextLetters::iterator it=m_TextLetters.begin();it != m_TextLetters.end();)
+		{
+			DrawVertexGroup dvg={};
+			dvg.texture = (*it)->texture;
+			vertexCount = 0;
+			dvg.StartVertexLocation = count;
+			do 
+			{
+				it++;
+				++vertexCount;
+				++count;
+			} while (it!=m_TextLetters.end() && dvg.texture == (*it)->texture);
+			dvg.VertexCount = vertexCount;
+			//save dvg
+			m_DrawVertexGroups_Text.push_back(dvg);
+		}
+	}
+	if (vertexCount>0)
+	{
+		m_vbd.ByteWidth = (UINT)(sizeof(TextVertex) * m_TextVeices.size());
 		m_vbd.StructureByteStride=sizeof(TextVertex);
 		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &m_NameVerteices[0];
-		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Name));
+		vinitData.pSysMem = &m_TextVeices[0];
+		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Text));
 	}
-
 }
 
 void InitDirect3DApp::LoadResource()
@@ -712,13 +770,13 @@ void InitDirect3DApp::LoadBlend()
 	depth_stencil_desc.StencilEnable = FALSE;
 	depth_stencil_desc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
 	depth_stencil_desc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
-	// ¶}±Òzbuffer write
+	// é–‹å•Ÿzbuffer write
 	if ( D3D_OK != m_d3dDevice->CreateDepthStencilState(&depth_stencil_desc, &m_pDepthStencil_ZWriteON) )
 		return ;
 
 	depth_stencil_desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 
-	// Ãö³¬zbuffer write
+	// é—œé–‰zbuffer write
 	if ( D3D_OK != m_d3dDevice->CreateDepthStencilState(&depth_stencil_desc, &m_pDepthStencil_ZWriteOFF) )
 		return ;
 	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteON, 0);
@@ -733,7 +791,7 @@ void InitDirect3DApp::LoadBlend()
 		D3D11_BLEND_ONE,
 		D3D11_BLEND_OP_ADD,
 		D3D11_COLOR_WRITE_ENABLE_ALL);
-	// ADD²V¦â¼Ò¦¡
+	// ADDæ··è‰²æ¨¡å¼
 	if ( D3D_OK != m_d3dDevice->CreateBlendState(&blend_state_desc, &m_pBlendState_ADD) )
 		return;
 	blend_state_desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA ;
@@ -742,7 +800,7 @@ void InitDirect3DApp::LoadBlend()
 	blend_state_desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
 	blend_state_desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
 
-	// Alpha Blend²V¦â¼Ò¦¡
+	// Alpha Blendæ··è‰²æ¨¡å¼
 	if ( D3D_OK != m_d3dDevice->CreateBlendState(&blend_state_desc, &m_pBlendState_BLEND) )
 		return ;
 }
@@ -792,11 +850,9 @@ void InitDirect3DApp::LoadHero()
 
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
-	m_Player.SetUserName(L"Abc´ú¸Õ");
 	m_Player.m_Hero = g_HeroMG.Create(m_Player.HeroName(),Vector3(1000,500,100));
-	//m_Player.CreateNameTag();
+	m_Player.SetUserName(L"<ã“ã‚“ã«ã¡ã¯æ¸¬è©¦äºº-Testing...>");
 }
-
 
 int InitDirect3DApp::UpdateInput()
 {
@@ -955,7 +1011,7 @@ void InitDirect3DApp::DealOptionPage()
 	std::vector<CmdState> cmdstate = m_DXUT_UI->GetCmdState();
 
 // 	if (m_SettingKeyID>=0)
-// 		SetCtrlKey();		//³]©w±±¨î«öÁäªº³B²z¨ç¼Æ
+// 		SetCtrlKey();		//è¨­å®šæ§åˆ¶æŒ‰éµçš„è™•ç†å‡½æ•¸
 
 	for (size_t i=0; i<cmdstate.size(); i++)
 	{
@@ -1085,31 +1141,31 @@ void InitDirect3DApp::UpdateCamera()
 {
 	if(m_Player.m_Hero->Position().x < mClientWidth)
 	{
-		float m = mClientWidth - m_Camera->LookAt().x;
-		m_Camera->MoveX(m*0.05f);
+		float m = mClientWidth - g_Camera->LookAt().x;
+		g_Camera->MoveX(m*0.05f);
 	}else if(m_Player.m_Hero->Position().x > g_BGManager.CurrentBG()->Width()-mClientWidth){
-		float m = g_BGManager.CurrentBG()->Width()-mClientWidth - m_Camera->LookAt().x;
-		m_Camera->MoveX(m*0.05f);
+		float m = g_BGManager.CurrentBG()->Width()-mClientWidth - g_Camera->LookAt().x;
+		g_Camera->MoveX(m*0.05f);
 	}else{
-		float m = m_Player.m_Hero->Position().x - m_Camera->LookAt().x;
-		m_Camera->MoveX(m*0.05f);
+		float m = m_Player.m_Hero->Position().x - g_Camera->LookAt().x;
+		g_Camera->MoveX(m*0.05f);
 	}
 
 
-	m_Entity_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Entity_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Chee_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Chee_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Background_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Background_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_ColorRect_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_ColorRect_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Shadow_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Shadow_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Body_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Body_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
-	m_Name_cLootAt->SetRawValue(m_Camera->GetLookAt(), 0, sizeof(float)*3);
-	m_Name_cPos->SetRawValue((void*)m_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Entity_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Entity_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Chee_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Chee_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Background_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Background_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_ColorRect_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_ColorRect_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Shadow_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Shadow_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Body_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Body_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
+	m_Text_cLootAt->SetRawValue(g_Camera->GetLookAt(), 0, sizeof(float)*3);
+	m_Text_cPos->SetRawValue((void*)g_Camera->GetCPos(), 0, sizeof(float)*3);
 }
 
 void InitDirect3DApp::BackgroundDataUpdate()
@@ -1121,7 +1177,9 @@ void InitDirect3DApp::BackgroundDataUpdate()
 	for(Heroes::iterator it=g_HeroMG.HeroVectorBegin(); it !=g_HeroMG.HeroVectorEnd() ; it++)
 	{
 		(*it)->SetPosition(g_BGManager.CurrentBG()->AlignmentSpace((*it)->Position()));
-		(*it)->SetPosition(g_BGManager.CurrentBG()->AlignmentBan((*it)->Position()));
+		bool onTop;
+		(*it)->SetPosition(g_BGManager.CurrentBG()->AlignmentBan((*it)->Position(),(*it)->Past_Position(), &onTop));
+		if(onTop)(*it)->OnGround();
 	}
 	
 	for (Chees::iterator it = g_ObjectMG.CheeVectorBegin(); it != g_ObjectMG.CheeVectorEnd() ; it++)
@@ -1138,43 +1196,43 @@ void InitDirect3DApp::TestCamera()
 {
 	if (InputStateS::instance().isKeyPress(KEY_Z))
 	{
-		m_Camera->Zoom(-1);
+		g_Camera->Zoom(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_X))
 	{
-		m_Camera->Zoom(1); 
+		g_Camera->Zoom(1); 
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD4))
 	{
-		m_Camera->MoveX(-1);
+		g_Camera->MoveX(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD6))
 	{
-		m_Camera->MoveX(1); 
+		g_Camera->MoveX(1); 
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD2))
 	{
-		m_Camera->MoveY(-1);
+		g_Camera->MoveY(-1);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_NUMPAD8))
 	{
-		m_Camera->MoveY(1); 
+		g_Camera->MoveY(1); 
 	}
 	if (InputStateS::instance().isKeyPress(KEY_K))
 	{
-		m_Camera->SurroundX(-0.1f);
+		g_Camera->SurroundX(-0.1f);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_I))
 	{
-		m_Camera->SurroundX(0.1f);
+		g_Camera->SurroundX(0.1f);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_J))
 	{
-		m_Camera->SurroundY(-0.1f);
+		g_Camera->SurroundY(-0.1f);
 	}
 	if (InputStateS::instance().isKeyPress(KEY_L))
 	{
-		m_Camera->SurroundY(0.1f);
+		g_Camera->SurroundY(0.1f);
 	}
 }
 

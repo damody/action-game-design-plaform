@@ -1,7 +1,7 @@
 name="Forbidden_Tower"
 width = 40000
 timeline=1000
-gravity=2.45
+gravity=1.5
 friction=0.5
 
 space_bounding =
@@ -52,8 +52,10 @@ color_rect =
 
 parallel_light =
 {
-	{x=2, y= -1.5, z= -1, light=3, time_start=0},
-	{x=0, y= -1.5, z= -1, light=10, time_start=500},
-	{x=-2, y= -1.5, z= -1, light=3, time_start=1000},
+	{x= 2, y= -2, z= -1, light=3, time_start=0},
+	{x=-2, y= -2, z= -1, light=10, time_start=250},
+	{x=-2, y= -2, z= 1, light=3, time_start=500},
+	{x= 2, y= -2, z= 1, light=10, time_start=750},
+	{x= 2, y= -2, z= -1, light=3, time_start=1000},
 }
 
