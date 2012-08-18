@@ -86,6 +86,8 @@ void Hero::Update(float dt)
 	
 
 	//ª«²z
+	m_PastPos = m_Position;
+
 	float ry = m_Position.y;
 	m_Position += m_Vel;
 
@@ -1039,7 +1041,7 @@ void Hero::SetTeam( int team )
 	m_Team = team;
 }
 
-Vector3 Hero::Position()
+const Vector3& Hero::Position()
 {
 	return m_Position;
 }
@@ -1155,6 +1157,37 @@ BodyVerteices Hero::GetBodyLineVerteices()
 
 	return bvs;
 }
+
+void Hero::GetBack()
+{
+	m_Position = m_PastPos;
+}
+
+void Hero::Stop()
+{
+	m_Vel = Vector3(0,0,0);
+}
+
+const Vector3& Hero::Past_Position()
+{
+	return m_PastPos;
+}
+
+const Vector3& Hero::Velocity()
+{
+	return m_Vel;
+}
+
+void Hero::OnGround()
+{
+	m_Vel.y=0;
+	d_Ground=true;
+}
+
+
+
+
+
 
 
 

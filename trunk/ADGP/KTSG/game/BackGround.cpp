@@ -407,48 +407,27 @@ bool BackGround::InBan( const Vector3& pIn )
 	return false;
 }
 
-Vector3 BackGround::AlignmentBan( const Vector3& pIn)
+Vector3 BackGround::AlignmentBan( const Vector3& pIn ,const Vector3& p0 , bool* onTop)
 {
-	for (AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ;it++)
+	*onTop = false;
+	if(InBan(pIn))
 	{
-		Vector3 pOut = pIn;
-		Vector3 min = it->getMinimum();
-		Vector3 max = it->getMaximum();
-
-		if(pIn.x >= min.x && pIn.x <= max.x
-		&& pIn.y >= min.y && pIn.y <= max.y
-		&& pIn.z >= min.z && pIn.z <= max.z
-		){
-			float bound=30;
-			if(pIn.x-min.x < bound)
-			{
-				pOut.x = min.x;
-			}
-			if(pIn.y-min.y < bound)
-			{
-				pOut.y = min.y;
-			}
-			if(pIn.z-min.z < bound)
-			{
-				pOut.z = min.z;
-			}
-			if(max.x-pIn.x < bound)
-			{
-				pOut.x = max.x;
-			}
-			if(max.y-pIn.y < bound)
-			{
-				pOut.y = max.y;
-			}
-			if(max.z-pIn.z < bound)
-			{
-				pOut.z = max.z;
-			}
-			return pOut;
+		if(!InBan(Vector3(p0.x,pIn.y,pIn.z)))
+		{
+			return Vector3(p0.x,pIn.y,pIn.z);
 		}
 
-	}
+		if(!InBan(Vector3(pIn.x,pIn.y,p0.z)))
+		{
+			return Vector3(pIn.x,pIn.y,p0.z);
+		}
 
+		if(!InBan(Vector3(pIn.x,p0.y,pIn.z)))
+		{
+			if(p0.y > InWinchBan(pIn)->getMaximum().y)*onTop=true;
+			return Vector3(pIn.x,p0.y,pIn.z);
+		}
+	}
 	return pIn;
 }
 
@@ -465,4 +444,22 @@ float BackGround::Gravity()
 ParallelLight BackGround::GetParallelLight()
 {
 	return m_CurrentLight;
+}
+
+AxisAlignedBoxs::iterator BackGround::InWinchBan( const Vector3& pIn )
+{
+	for (AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ;it++)
+	{
+		bool inBox = true;
+		Vector3 min = it->getMinimum();
+		Vector3 max = it->getMaximum();
+
+		if(pIn.x >= min.x && pIn.x <= max.x
+			&& pIn.y >= min.y && pIn.y <= max.y
+			&& pIn.z >= min.z && pIn.z <= max.z
+			){
+				return it;
+		}
+	}
+	return m_BanBounding.end();
 }

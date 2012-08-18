@@ -225,7 +225,23 @@ void InitDirect3DApp::DrawScene()
 			}
 		}
 	}
-	//m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
+
+	//Draw Name
+	offset = 0;
+	stride2 = sizeof(TextVertex);
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	m_DeviceContext->IASetInputLayout(m_PLayout_Text);
+	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Text, &stride2, &offset);
+	for (DrawVertexGroups::iterator it = m_DrawVertexGroups_Text.begin();it != m_DrawVertexGroups_Text.end();++it)
+	{
+		if (it->texture.get())
+		{
+			m_PMap_Text->SetResource(*(it->texture));
+			m_PTech_Text->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
+		}
+	}
+
 	//Draw Shadow
 	offset = 0;
 	stride2 = sizeof(ClipVertex);
@@ -298,21 +314,7 @@ void InitDirect3DApp::DrawScene()
 		m_DeviceContext->Draw(m_BodyLineVerteices.size(), 0);
 	}
 	
-	//Draw Name
-	offset = 0;
-	stride2 = sizeof(TextVertex);
-	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-	m_DeviceContext->IASetInputLayout(m_PLayout_Text);
-	m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Text, &stride2, &offset);
-	for (DrawVertexGroups::iterator it = m_DrawVertexGroups_Text.begin();it != m_DrawVertexGroups_Text.end();++it)
-	{
-		if (it->texture.get())
-		{
-			m_PMap_Text->SetResource(*(it->texture));
-			m_PTech_Text->GetPassByIndex(0)->Apply(0, m_DeviceContext);
-			m_DeviceContext->Draw(it->VertexCount, it->StartVertexLocation);
-		}
-	}
+	
 	//m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
 	
 	
@@ -1174,7 +1176,9 @@ void InitDirect3DApp::BackgroundDataUpdate()
 	for(Heroes::iterator it=g_HeroMG.HeroVectorBegin(); it !=g_HeroMG.HeroVectorEnd() ; it++)
 	{
 		(*it)->SetPosition(g_BGManager.CurrentBG()->AlignmentSpace((*it)->Position()));
-		(*it)->SetPosition(g_BGManager.CurrentBG()->AlignmentBan((*it)->Position()));
+		bool onTop;
+		(*it)->SetPosition(g_BGManager.CurrentBG()->AlignmentBan((*it)->Position(),(*it)->Past_Position(), &onTop));
+		if(onTop)(*it)->OnGround();
 	}
 	
 	for (Chees::iterator it = g_ObjectMG.CheeVectorBegin(); it != g_ObjectMG.CheeVectorEnd() ; it++)
