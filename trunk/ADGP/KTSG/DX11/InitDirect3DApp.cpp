@@ -101,7 +101,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 	m_SwapChain->Present(0, 0);
 	D3DApp::DrawScene(); // clear window
 	//UpdateUI();
-	buildPoint();
+	
 
 	if(!b_Pause)
 	{
@@ -113,6 +113,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 			g_Time++;
 			UpdateCamera();
 			if(g_EffectMG != NULL)g_EffectMG->Update(m_RenderTargetView);
+			buildPoint();
 			//Hero Update
 			g_HeroMG.Update(dt);
 
