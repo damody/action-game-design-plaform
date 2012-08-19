@@ -21,6 +21,7 @@
 
 #include "ADGP DesignerDoc.h"
 #include "ADGP DesignerView.h"
+#include "MainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -39,6 +40,7 @@ BEGIN_MESSAGE_MAP(CADGPDesignerView, CView)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
 	ON_WM_SIZE()
+	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 // CADGPDesignerView 建構/解構
@@ -171,4 +173,16 @@ void CADGPDesignerView::OnSize(UINT nType, int cx, int cy)
 	// TODO: 在此加入您的訊息處理常式程式碼
 	if (cx > 0 && cy >0)
 		m_D3DApp.OnResize(cx, cy);
+}
+
+
+void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	char buff[100];
+	sprintf(buff, "%d %d", point.x, point.y);
+	CString str(buff);
+	AfxMessageBox(str);
+	((CMainFrame*)(this->GetParent()->GetParentFrame()))->AddStrToOutputDebug(str);
+	CView::OnLButtonDown(nFlags, point);
 }
