@@ -9,6 +9,7 @@
 #include <aes.h>
 #include <des.h>
 #include <sha.h>
+#include "ConvStr.h"
 
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
@@ -77,6 +78,5 @@ private:
 	int		m_IsEncryption;
 	Bytes	m_Digest;
 	Bytes	m_Data;
-	std::string	wstr2str(const std::wstring& wstr);
 };
 typedef std::vector<CryptoData*> CryptoData_ptrs;
