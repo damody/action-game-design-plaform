@@ -11,5 +11,8 @@ ID3D11Device*	g_d3dDevice;
 ID3D11DeviceContext* g_DeviceContext;
 WavPlayer	g_WavPlayer;	
 TextGeneratorDX11 g_TextGenarator;
-int  g_Time;
+int		g_Time;
+Camera_Sptr	g_Camera;
+
+//test
 bool g_TestViewEffect;

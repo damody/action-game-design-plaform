@@ -259,6 +259,7 @@ bool FireShaderClass::CreatVertex(EffectDatas::iterator begin,EffectDatas::itera
 	D3D11_SUBRESOURCE_DATA resourceData;
 	ZeroMemory( &resourceData, sizeof( resourceData ) );
 	resourceData.pSysMem = &m_cvs[0];
+	ReleaseCOM(m_Buffer);
 	m_device->CreateBuffer( &bufferDesc, &resourceData, &m_Buffer );
 
 	return true;

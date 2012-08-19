@@ -1,10 +1,19 @@
 #pragma once
 
+#ifndef _POLYGON2D_H_
+#define _POLYGON2D_H_
 #include "Vector2.h"
 #include "Vector3.h"
 #include "BasicMath.h"
 #include <vector>
 
+#include <boost/geometry.hpp>
+#include <boost/geometry/geometries/polygon.hpp>
+#include <boost/geometry/geometries/point_xy.hpp>
+#include <boost/geometry/geometry.hpp>
+
+typedef boost::geometry::model::d2::point_xy<float> point2;
+typedef boost::geometry::model::polygon<point2> polygon;
 
 class Polygon2D 
 {
@@ -50,8 +59,11 @@ private:
 	void ProjectPolygon(const Vec2& axis, const Polygon2D& polygon, float* min, float* max);
 private:
 	float	m_angle;
-	Vec2s m_points, m_edges;
+	Vec2s	m_points, m_edges;
 	bool	m_needBuildEdges;
+	polygon m_polygon;
 	
 };
 typedef std::vector<Polygon2D> Polygon2Ds;
+
+#endif // _POLYGON2D_H_

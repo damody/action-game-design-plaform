@@ -219,34 +219,36 @@ void BackGround::BuildPoint()
 	for (ColorRects::iterator it=m_ColorRects.begin();it != m_ColorRects.end();it++)
 	{
 		int i=0;
-		float cut=1000;
+		float cut=500;
 		for (float w=it->m_Width; w>0 ;w-=cut,i++)
 		{
-			CRVertex crv;
-			crv.position.x = it->m_Position.x + i*cut;
-			crv.position.y = it->m_Position.y;
-			crv.position.z = it->m_Position.z;
-			if (w-cut > 0){
-				crv.size.x = cut;
-			}else{
-				crv.size.x = w;
-			}
+			if(g_Camera.get())
+			{
+				CRVertex crv;
+				crv.position.x = it->m_Position.x + i*cut;
+				crv.position.y = it->m_Position.y;
+				crv.position.z = it->m_Position.z;
 
-			crv.size.y = it->m_Height;
-			crv.color.x = it->m_Color.x;
-			crv.color.y = it->m_Color.y;
-			crv.color.z = it->m_Color.z;
-			crv.color.w = it->m_Color.w;
-			if(it->m_IsGround)
-			{
-				crv.angle = 90;
+				int offset=g_Camera->Offside(crv.position);
+				if (offset == 1)
+				{
+					break;
+				}else  if (offset == -1)
+				{
+					continue;
+				}
+				 
+				crv.size.x = (w-cut > 0? cut : w);
+				crv.size.y = it->m_Height;
+				crv.color.x = it->m_Color.x;
+				crv.color.y = it->m_Color.y;
+				crv.color.z = it->m_Color.z;
+				crv.color.w = it->m_Color.w;
+				crv.angle = (it->m_IsGround? 90.0f:0.0f);
+				
+				m_CRVerteices.push_back(crv);
+				}
 			}
-			else
-			{
-				crv.angle = 0;
-			}
-			m_CRVerteices.push_back(crv);
-		}
 	}
 
 	m_BGVerteices.clear();
@@ -263,27 +265,35 @@ void BackGround::BuildPoint()
 		int d=0;
 		do 
 		{
-			BGVertex bgv;
+			if(g_Camera.get())
+			{
+				BGVertex bgv;
 
-			bgv.position.x = it->m_Position.x + d*it->m_LoopDistance;
-			bgv.position.y = it->m_Position.y ;
-			bgv.position.z = it->m_Position.z;
-			bgv.size.x     = it->m_Width  ;
-			bgv.size.y     = it->m_Height ;
-			if(it->m_IsGround)
-			{
-				bgv.angle = 90;
+				bgv.position.x = it->m_Position.x + d*it->m_LoopDistance;
+				bgv.position.y = it->m_Position.y ;
+				bgv.position.z = it->m_Position.z;
+
+				int offside = g_Camera->Offside(bgv.position);
+				if (offside == 1)
+				{
+					break;
+				}else if(offside ==-1){
+					d++;
+					if(bgv.position.x = it->m_Position.x + d*it->m_LoopDistance > m_Width)break;
+					else continue;
+				}
+ 				
+
+				bgv.size.x     = it->m_Width  ;
+				bgv.size.y     = it->m_Height ;
+				bgv.angle      = (it->m_IsGround? 90.0f:0.0f);
+				m_BGVerteices.push_back(bgv);
+				++vertexCount;
+				++count;
+				d++;
+				if(bgv.position.x = it->m_Position.x + d*it->m_LoopDistance > m_Width)
+					break;
 			}
-			else
-			{
-				bgv.angle = 0;
-			}
-			m_BGVerteices.push_back(bgv);
-			++vertexCount;
-			++count;
-			d++;
-			if(bgv.position.x = it->m_Position.x + d*it->m_LoopDistance > m_Width)
-				break;
 
 		} while (it->m_LoopDistance > 0);
 
@@ -397,48 +407,27 @@ bool BackGround::InBan( const Vector3& pIn )
 	return false;
 }
 
-Vector3 BackGround::AlignmentBan( const Vector3& pIn)
+Vector3 BackGround::AlignmentBan( const Vector3& pIn ,const Vector3& p0 , bool* onTop)
 {
-	for (AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ;it++)
+	*onTop = false;
+	if(InBan(pIn))
 	{
-		Vector3 pOut = pIn;
-		Vector3 min = it->getMinimum();
-		Vector3 max = it->getMaximum();
-
-		if(pIn.x >= min.x && pIn.x <= max.x
-		&& pIn.y >= min.y && pIn.y <= max.y
-		&& pIn.z >= min.z && pIn.z <= max.z
-		){
-			float bound=30;
-			if(pIn.x-min.x < bound)
-			{
-				pOut.x = min.x;
-			}
-			if(pIn.y-min.y < bound)
-			{
-				pOut.y = min.y;
-			}
-			if(pIn.z-min.z < bound)
-			{
-				pOut.z = min.z;
-			}
-			if(max.x-pIn.x < bound)
-			{
-				pOut.x = max.x;
-			}
-			if(max.y-pIn.y < bound)
-			{
-				pOut.y = max.y;
-			}
-			if(max.z-pIn.z < bound)
-			{
-				pOut.z = max.z;
-			}
-			return pOut;
+		if(!InBan(Vector3(p0.x,pIn.y,pIn.z)))
+		{
+			return Vector3(p0.x,pIn.y,pIn.z);
 		}
 
-	}
+		if(!InBan(Vector3(pIn.x,pIn.y,p0.z)))
+		{
+			return Vector3(pIn.x,pIn.y,p0.z);
+		}
 
+		if(!InBan(Vector3(pIn.x,p0.y,pIn.z)))
+		{
+			if(p0.y > InWinchBan(pIn)->getMaximum().y)*onTop=true;
+			return Vector3(pIn.x,p0.y,pIn.z);
+		}
+	}
 	return pIn;
 }
 
@@ -455,4 +444,22 @@ float BackGround::Gravity()
 ParallelLight BackGround::GetParallelLight()
 {
 	return m_CurrentLight;
+}
+
+AxisAlignedBoxs::iterator BackGround::InWinchBan( const Vector3& pIn )
+{
+	for (AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ;it++)
+	{
+		bool inBox = true;
+		Vector3 min = it->getMinimum();
+		Vector3 max = it->getMaximum();
+
+		if(pIn.x >= min.x && pIn.x <= max.x
+			&& pIn.y >= min.y && pIn.y <= max.y
+			&& pIn.z >= min.z && pIn.z <= max.z
+			){
+				return it;
+		}
+	}
+	return m_BanBounding.end();
 }

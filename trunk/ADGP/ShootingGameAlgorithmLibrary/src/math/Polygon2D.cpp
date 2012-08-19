@@ -12,56 +12,37 @@
 #include "Polygon2D.h"
 #include "Quaternion.h"
 
+using namespace boost::geometry;
+
 void Polygon2D::BuildEdges()
 {
-	Vec2* p1;
-	Vec2* p2;
-	m_edges.clear();
-	
-	for (size_t i = 0; i < m_points.size(); i++) 
+	m_polygon.clear();
+	for(int i = 0; i < m_points.size(); i++)
 	{
-		p1 = &m_points[i];
-		if (i + 1 >= m_points.size()) {
-			p2 = &m_points[0];
-		} else {
-			p2 = &m_points[i + 1];
-		}
-		m_edges.push_back(*p2 - *p1);
+		m_polygon.outer().push_back(point2(m_points[i].x, m_points[i].y));
 	}
+	
+	correct(m_polygon);
 }
 
 bool Polygon2D::IsCollision( const Polygon2D& rhs )
 {
 	CheckBuildEdges();
-	size_t edgeCountA = m_edges.size();
-	size_t edgeCountB = rhs.m_edges.size();
-	float minIntervalDistance = (float)INT_MAX;
-	Vec2 edge;
-
-	// Loop through all the edges of both polygons
-	for (size_t edgeIndex = 0; edgeIndex < edgeCountA + edgeCountB; edgeIndex++) {
-		if (edgeIndex < edgeCountA) {
-			edge = m_edges[edgeIndex];
-		} else {
-			edge = rhs.m_edges[edgeIndex - edgeCountA];
+	
+	if(m_points.size() < 3)
+	{
+		for(int i = 0; i < m_points.size(); i++)
+		{
+			point2 pt(m_points[0].x, m_points[0].y);
+			if(within(pt, rhs.m_polygon)) return true;
 		}
-
-		// ===== 1. Find if the polygons are currently intersecting =====
-
-		// Find the axis perpendicular to the current edge
-		Vec2 axis(-edge.y, edge.x);
-		axis.normalise();
-
-		// Find the projection of the polygon on the current axis
-		float minA = 0; float minB = 0; float maxA = 0; float maxB = 0;
-		ProjectPolygon(axis, *this, &minA, &maxA);
-		ProjectPolygon(axis, rhs, &minB, &maxB);
-
-		// Check if the polygon projections are currentlty intersecting
-		if (IntervalDistance(minA, maxA, minB, maxB) > 0)
-			return false;
 	}
-	return true;
+	else
+	{
+		return intersects<polygon, polygon>(m_polygon, rhs.m_polygon);
+	}
+	
+	return false;
 }
 
 void Polygon2D::ProjectPolygon( const Vec2& axis, const Polygon2D& polygon, float* min, float* max )
