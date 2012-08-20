@@ -235,7 +235,13 @@ void Hero::NextFrame()
 	m_TimeTik = f->m_Wait;
 	m_Vel.x += f->m_DVX * (m_FaceSide ? 1 : -1);
 	m_Vel.y += f->m_DVY * (m_FaceSide ? 1 : -1);
-	m_Vel.z += f->m_DVZ * (m_FaceSide ? 1 : -1);
+	for (KeyQueue::iterator i=m_KeyQue.begin(); i != m_KeyQue.end();++i)
+	{
+		if (i->key == CtrlKey::UP)
+			m_Vel.z += f->m_DVZ;
+		else if (i->key == CtrlKey::DOWN)
+			m_Vel.z -= f->m_DVZ;
+	}
 	m_CenterX = f->m_CenterX;
 	m_CenterY = f->m_CenterY;
 	m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;
@@ -874,7 +880,15 @@ bool Hero::ScanKeyQue()
 		m_TimeTik = f->m_Wait;
 		m_Vel.x += f->m_DVX * (m_FaceSide ? 1 : -1);
 		m_Vel.y += f->m_DVY;
-		m_Vel.z += f->m_DVZ;// * (m_FaceSide ? 1 : -1);
+		
+		for (i=m_KeyQue.begin(); i != m_KeyQue.end();++i)
+		{
+			if (i->key == CtrlKey::UP)
+				m_Vel.z += f->m_DVZ;
+			else if (i->key == CtrlKey::DOWN)
+				m_Vel.z -= f->m_DVZ;
+		}
+		
 		m_CenterX = f->m_CenterX;
 		m_CenterY = f->m_CenterY;
 		m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;
