@@ -22,6 +22,12 @@
     <Filter Include="DX11">
       <UniqueIdentifier>{3f9d9efe-93f2-4a43-96ca-b7177969590b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ADGP">
+      <UniqueIdentifier>{ca53fb1e-5ad5-4734-acfd-8f7b937b0d6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ADGP\game">
+      <UniqueIdentifier>{78b6a503-fa0b-48d0-97e4-b3e6f48d1dab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
