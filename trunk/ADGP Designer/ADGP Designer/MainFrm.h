@@ -48,7 +48,18 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
-
+	void AddStrToOutputDebug( const CString& strAddToList )
+	{
+		m_wndOutput.AddStrToOutputDebug(CString(strAddToList));
+	}
+	void AddStrToOutputBuild( const CString& strAddToList )
+	{
+		m_wndOutput.AddStrToOutputBuild(CString(strAddToList));
+	}
+	void AddStrToOutputFind( const CString& strAddToList )
+	{
+		m_wndOutput.AddStrToOutputFind(CString(strAddToList));
+	}
 public:  // 控制列內嵌的成員
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;

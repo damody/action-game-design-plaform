@@ -58,6 +58,7 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // ADGP DesignerView.cpp ¤¤ªº°»¿ùª©¥»

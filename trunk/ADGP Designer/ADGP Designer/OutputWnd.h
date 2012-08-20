@@ -40,7 +40,24 @@ public:
 	COutputWnd();
 
 	void UpdateFonts();
-
+	void AddStrToOutputDebug( CString& strAddToList )
+	{
+		m_wndOutputDebug.AddString( strAddToList);
+		int nCount = m_wndOutputDebug.GetCount();
+		m_wndOutputDebug.SetTopIndex(nCount - 1);
+	}
+	void AddStrToOutputBuild( CString& strAddToList )
+	{
+		m_wndOutputBuild.AddString( strAddToList);
+		int nCount = m_wndOutputBuild.GetCount();
+		m_wndOutputBuild.SetTopIndex(nCount - 1);
+	}
+	void AddStrToOutputFind( CString& strAddToList )
+	{
+		m_wndOutputFind.AddString( strAddToList);
+		int nCount = m_wndOutputFind.GetCount();
+		m_wndOutputFind.SetTopIndex(nCount - 1);
+	}
 // ÄÝ©Ê
 protected:
 	CMFCTabCtrl	m_wndTabs;

@@ -41,7 +41,7 @@ CryptoData::CryptoData(const std::string& path)
 }
 CryptoData::CryptoData(const std::wstring& path)
 {
-	CryptoData(wstr2str(path));
+	CryptoData(ConvStr::GetStr(path));
 }
 
 bool CryptoData::InitFromMemory(const Byte* src, int size)
@@ -83,7 +83,7 @@ bool CryptoData::InitFromDisk(const std::string& path)
 }
 bool CryptoData::InitFromDisk(const std::wstring& path)
 {
-	return InitFromDisk(wstr2str(path));
+	return InitFromDisk(ConvStr::GetStr(path));
 }
 
 void CryptoData::EncryptData(int cl, Byte* password, int len)
@@ -172,7 +172,7 @@ void CryptoData::EncryptData(int cl, const std::string& password)
 }
 void CryptoData::EncryptData(int cl, const std::wstring& password)
 {  
-	EncryptData(cl, (Byte*)wstr2str(password).c_str(), wstr2str(password).size());
+	EncryptData(cl, (Byte*)ConvStr::GetStr(password).c_str(), ConvStr::GetStr(password).size());
 }
 
 void CryptoData::DecryptData(Byte* password, int len)
@@ -255,7 +255,7 @@ void CryptoData::DecryptData(const std::string& password)
 }
 void CryptoData::DecryptData(const std::wstring& password)
 {
-	DecryptData((Byte*)wstr2str(password).c_str(), wstr2str(password).size());
+	DecryptData((Byte*)ConvStr::GetStr(password).c_str(), ConvStr::GetStr(password).size());
 }
 
 Bytes CryptoData::CalcuateDigest(bool setDigest)
@@ -292,7 +292,7 @@ bool CryptoData::WriteToDisk(const std::string& path)
 }
 bool CryptoData::WriteToDisk(const std::wstring& path)
 {
-	return WriteToDisk(wstr2str(path));
+	return WriteToDisk(ConvStr::GetStr(path));
 }
 bool CryptoData::ReadFromDisk(const std::string& path)
 {
@@ -314,17 +314,5 @@ bool CryptoData::ReadFromDisk(const std::string& path)
 }
 bool CryptoData::ReadFromDisk(const std::wstring& path)
 {
-	return ReadFromDisk(wstr2str(path));
-}
-
-std::string CryptoData::wstr2str(const std::wstring& wstr)
-{
-	std::string str;
-	int length = WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), wstr.size(), NULL, 0, NULL, NULL); 
-	char* buffer = (char*)malloc(sizeof(char)*(length+1));
-	WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), wstr.size(), buffer, length, NULL, NULL);
-	buffer[length] = '\0';
-	str.assign(buffer);
-	free(buffer); 
-	return str;
+	return ReadFromDisk(ConvStr::GetStr(path));
 }
