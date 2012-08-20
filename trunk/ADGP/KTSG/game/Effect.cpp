@@ -25,7 +25,7 @@ bool Effect::Initialize(HWND hwnd)
 	}
 	//
 	m_FireShader = new FireShaderClass();
-	result = m_FireShader->Initialize(g_d3dDevice,g_DeviceContext,L"shader\\FireShader.fx",hwnd);
+	result = m_FireShader->Initialize(g_d3dDevice,g_DeviceContext,L"shader\\FireShaderScale.fx",hwnd);
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the FireShaderClass object.", L"Error", MB_OK);
