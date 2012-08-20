@@ -100,7 +100,7 @@ GS_OUT calculate(float2 pos,float2 tex,float2 texX,float2 texY)
 [maxvertexcount (6)]
 void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 {
-	float2 texsize = {1/input[0].picpos.z, 1/input[0].picpos.w};
+	float2 texsize = float2(1.0f/input[0].picpos.z, 1.0f/input[0].picpos.w);
 	float2 newTex;
 	
 	float2 offset = float2(-1,1);
@@ -112,9 +112,8 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	
 	float2 texX,texY;
 	
-	float n=1.5;//ÁY¤p
-	float2 texOffset = float2(texsize.x*(-0.25),texsize.y*(-0.75));
-	
+	//float2 texOffset = float2(texsize.x*(-0.25),texsize.y*(-0.5));
+	float2 texOffset = float2((texsize.x/-2.0f),(texsize.y/-2.0f));
 	lt = float2(-1,1);
 	ld = float2(-1,-1);
 	rt = float2(1,1);
@@ -134,13 +133,13 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	GS_OUT out5;
 	
 	//newTex = float2(1,0);
-	newTex = float2( texX[1]*n, texY[0] );
+	newTex = float2( texX[1]+texsize.x, texY[0] );
 	newTex += texOffset;
 	out5 = calculate(rt,newTex,texX,texY);
 	triStream.Append( out5 );
 	
 	//newTex = float2(1,1);
-	newTex = float2( texX[1]*n, texY[1]*n );
+	newTex = float2( texX[1]+texsize.x, texY[1]+texsize.y );
 	newTex += texOffset;
 	out5 = calculate(rd,newTex,texX,texY);
 	triStream.Append( out5 );
@@ -152,7 +151,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	triStream.Append( out5 );
 	
 	//newTex = float2(1,1);
-	newTex = float2( texX[1]*n, texY[1]*n );
+	newTex = float2( texX[1]+texsize.x, texY[1]+texsize.y );
 	newTex += texOffset;
 	out5 = calculate(rd,newTex,texX,texY);
 	triStream.Append( out5 );
@@ -164,44 +163,11 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	triStream.Append( out5 );
 	
 	//newTex = float2(0,1);
-	newTex = float2( texX[0], texY[1]*n );
+	newTex = float2( texX[0], texY[1]+texsize.y );
 	newTex += texOffset;
 	out5 = calculate(ld,newTex,texX,texY);
 	triStream.Append( out5 );
 	
-	/*
-	//------
-	newTex = float2(1,0);
-	//newTex = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y-1));
-	out5 = calculate(rt,newTex);
-	triStream.Append( out5 );
-	
-	newTex = float2(1,1);
-	//newTex = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
-	out5 = calculate(rd,newTex);
-	triStream.Append( out5 );
-	
-	newTex = float2(0,0);
-	//newTex = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
-	out5 = calculate(lt,newTex);
-	triStream.Append( out5 );
-	
-	newTex = float2(1,1);
-	//newTex = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
-	out5 = calculate(rd,newTex);
-	triStream.Append( out5 );
-	
-	newTex = float2(0,0);
-	//newTex = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
-	out5 = calculate(lt,newTex);
-	triStream.Append( out5 );
-	
-	newTex = float2(0,1);
-	//newTex = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y));
-	out5 = calculate(ld,newTex);
-	triStream.Append( out5 );
-	//---------
-	*/
 	triStream.RestartStrip( );
 }
 

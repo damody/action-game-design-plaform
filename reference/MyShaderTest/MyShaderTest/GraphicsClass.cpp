@@ -61,7 +61,7 @@ bool GraphicsClass::Initialize(WCHAR* textureName,WCHAR* shaderName, HWND hwnd )
 	
 
 	//m_Effect->CreateEffect(EffectType::Fire,m_Texture,D3DXVECTOR4(1.0f,1.0f,10.0f,7.0f));
-	m_Effect->CreateEffect(EffectType::Fire,m_Texture,D3DXVECTOR4(1.0f,3.0f,10.0f,7.0f));
+	m_Effect->CreateEffect(EffectType::Fire,m_Texture,D3DXVECTOR4(5.0f,5.0f,10.0f,7.0f));
 
 	return true;
 }

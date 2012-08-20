@@ -15,7 +15,7 @@ SystemClass::~SystemClass()
 }
 bool SystemClass::Initialize()
 {
-	int w=640,h=480;
+	int w=640,h=640;
 	bool result;
 
 	this->InitializeWindows(w,h);
