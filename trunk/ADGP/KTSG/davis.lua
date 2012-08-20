@@ -1148,7 +1148,7 @@ frame.back_flip[1] =
 frame.rolling[0] =
 {
    pic_id = 0, pic_x = 9, pic_y = 6, state = Action.Rolling, wait = 4, next = {"rolling", 1},
-   dvx = 9, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   dvx = 10, dvy = 0,  dvz = 5,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D^A", "singlong", 0}, {"D^J", "jump_hit", 0}},
    blood = {},
@@ -1165,7 +1165,7 @@ frame.rolling[0] =
 frame.rolling[1] =
 {
    pic_id = 0, pic_x = 10, pic_y = 6, state = Action.Rolling, wait = 4, next = {"rolling", 2},
-   dvx = 9, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
+   dvx = 5, dvy = 0,  dvz = 5,  centerx = 34,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D^A", "singlong", 0}, {"D^J", "jump_hit", 0}},
    blood = {},
@@ -1182,7 +1182,7 @@ frame.rolling[1] =
 frame.rolling[2] =
 {
    pic_id = 0, pic_x = 10, pic_y = 7, state = Action.Rolling, wait = 4, next = {"rolling", 3},
-   dvx = 9, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 5,  centerx = 34,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D^A", "singlong", 0}, {"D^J", "jump_hit", 0}},
    blood = {},
@@ -1199,7 +1199,7 @@ frame.rolling[2] =
 frame.rolling[3] =
 {
    pic_id = 0, pic_x = 9, pic_y = 6, state = Action.Rolling, wait = 4, next = {"crouch", 1},
-   dvx = 9, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 5,  centerx = 38,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D^A", "singlong", 0}, {"D^J", "jump_hit", 0}},
    blood = {},

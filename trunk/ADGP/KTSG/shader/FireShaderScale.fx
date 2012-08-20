@@ -104,7 +104,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	float2 newTex;
 	
 	float2 offset = float2(-1,1);
-	float2 viewport = float2(1024,1024);
+	float2 viewport = float2(2048,2048);
 	
 	float2 size = float2(256.0f,-256.0f);
    
@@ -114,17 +114,17 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	
 	//float2 texOffset = float2(texsize.x*(-0.25),texsize.y*(-0.5));
 	float2 texOffset = float2((texsize.x/-2.0f),(texsize.y/-2.0f));
-	lt = float2(-1,1);
+	/*lt = float2(-1,1);
 	ld = float2(-1,-1);
 	rt = float2(1,1);
-	rd = float2(1,-1);
-	/*
+	rd = float2(1,-1);*/
+	
 	
 	lt = float2((input[0].pos.x-1)*size.x,(input[0].pos.y-1)*size.y)*2/(viewport)+offset ;
 	ld= float2((input[0].pos.x-1)*size.x,(input[0].pos.y-1)*size.y+size.y)*2/(viewport)+offset  ;
 	rt = float2((input[0].pos.x-1)*size.x+size.x,(input[0].pos.y-1)*size.y)*2/(viewport)+offset ;
 	rd = float2((input[0].pos.x-1)*size.x+size.x,(input[0].pos.y-1)*size.y+size.y)*2/(viewport)+offset ;
-	*/
+	
 	texX[0] = texsize.x*(input[0].picpos.x-1);
 	texX[1] = texsize.x*(input[0].picpos.x);
 	texY[0] = texsize.y*(input[0].picpos.y-1);
