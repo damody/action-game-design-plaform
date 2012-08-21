@@ -1,48 +1,36 @@
-
 cbuffer cbPerFrame
 {
-	float width;
-	float height;
-};
- 
-Texture2D gMap;
-SamplerState gTriLinearSam
-{
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = Wrap;
-	AddressV = Wrap;
+	float sceneW; 
+	float sceneH;
 };
 
 struct VS_IN
 {
-	float3 position: POSITION;
-	float2 size: SIZE;
-	float  angle : PI;
+	float2	position: POSITION;
+	float2	size    : SIZE;
+	float4  color   : COLOR;
 };
 
 struct VS_OUT
 {
-	float4 pos   : SV_POSITION;
-	float2 size  : TEXCOORD0;
-	float  angle : TEXCOORD1;
+	float4	pos   : SV_POSITION;
+	float2	size  : SIZE;
+	float4  color : COLOR4;
 };
 
 struct GS_OUT
 {
-	float4 posH : SV_POSITION;
-	float2 texcoord : TEXCOORD0;
-
+	float4 posH    : SV_POSITION;
+	float4 color   : COLOR4;
 };
  
 VS_OUT VS(VS_IN vIn)
 {
 	VS_OUT vOut;
-	// set z = w so that z/w = 1 (i.e., skydome always on far plane).
-	vIn.position.xy=(vIn.position.xy)/float2(width,height);
-	vOut.pos =float4(vIn.position*2-1,1);
-	// use local vertex position as cubemap lookup vector.
+
+	vOut.pos= float4(vIn.position.xy,0.0,1.0);
 	vOut.size = vIn.size;
-	vOut.angle = vIn.angle;
+	vOut.color = vIn.color;
 	return vOut;
 }
 
@@ -50,39 +38,56 @@ VS_OUT VS(VS_IN vIn)
 [maxvertexcount (6)]
 void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 {
-	float x = input[0].angle*3.14159/180;
-	float2x2 mat = {cos(x), -sin(x), sin(x), cos(x)};
-	float2 size = {1/width,1/height};
+	
+	float4x4 proj;
+	proj[0]=float4(2/sceneW,0,0,0);
+	proj[1]=float4(0,2/sceneH,0,0);
+	proj[2]=float4(0,0,1,0);
+	proj[3]=float4(-1,-1,0,1);
+	
 	GS_OUT out5;
-	out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,-input[0].size.y), mat)*size ,0,1);
-	out5.texcoord=float2(0,0);
-	triStream.Append( out5 );
-	out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat)*size,0,1);
-	out5.texcoord=float2(0,1);
-	triStream.Append( out5 );
-	out5.posH=float4(input[0].pos.xy-mul(float2(input[0].size.x,-input[0].size.y), mat)*size,0,1);
-	out5.texcoord=float2(1,0);
+	//0
+	out5.posH=float4(input[0].pos.xy-float2(input[0].size.x/2,-input[0].size.y/2),input[0].pos.z,1.0);
+	out5.posH=mul(out5.posH,proj);
+	out5.color = input[0].color;
 	triStream.Append( out5 );
 	
-	out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat)*size,0,1);
-	out5.texcoord=float2(0,1);
-	triStream.Append( out5 );
-	out5.posH=float4(input[0].pos.xy-mul(float2(input[0].size.x,-input[0].size.y), mat)*size,0,1);
-	out5.texcoord=float2(1,0);
-	triStream.Append( out5 );
-	out5.posH=float4(input[0].pos.xy-mul(float2(input[0].size.x,input[0].size.y), mat)*size,0,1);
-	out5.texcoord=float2(1,1);
+	//1
+	out5.posH=float4(input[0].pos.xy-float2(input[0].size.x/2,input[0].size.y/2),input[0].pos.z,1.0);
+	out5.posH=mul(out5.posH,proj);
+	out5.color = input[0].color;
 	triStream.Append( out5 );
 
+	//2
+	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x/2,-input[0].size.y/2),input[0].pos.z,1.0);
+	out5.posH=mul(out5.posH,proj);
+	out5.color = input[0].color;
+	triStream.Append( out5 );
+
+	//3
+	out5.posH=float4(input[0].pos.xy-float2(input[0].size.x/2,input[0].size.y/2),input[0].pos.z,1.0);
+	out5.posH=mul(out5.posH,proj);
+	out5.color = input[0].color;
+	triStream.Append( out5 );
+
+	//4
+	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x/2,-input[0].size.y/2),input[0].pos.z,1.0);
+	out5.posH=mul(out5.posH,proj);
+	out5.color = input[0].color;
+	triStream.Append( out5 );
+	
+	//5
+	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x/2,input[0].size.y/2),input[0].pos.z,1.0);
+	out5.posH=mul(out5.posH,proj);
+	out5.color = input[0].color;
+	triStream.Append( out5 );
+	
 	triStream.RestartStrip( );
 }
 
 float4 PS(GS_OUT pIn) : SV_Target
 {
-	float4 color=gMap.Sample( gTriLinearSam, pIn.texcoord );
-	if (color.a<0.5)
-		discard;
-	return color;
+	return pIn.color;
 }
 
 RasterizerState NoCull
@@ -102,9 +107,9 @@ technique11 PointTech
 {
 	pass P0
 	{
-		SetVertexShader( CompileShader( vs_4_0, VS() ) );
-		SetGeometryShader( CompileShader( gs_4_0, gs_main() ) );
-		SetPixelShader( CompileShader( ps_4_0, PS() ) );
+		SetVertexShader( CompileShader( vs_5_0, VS() ) );
+		SetGeometryShader( CompileShader( gs_5_0, gs_main() ) );
+		SetPixelShader( CompileShader( ps_5_0, PS() ) );
 		SetRasterizerState(NoCull);
 		SetDepthStencilState(LessEqualDSS, 0);
 	}
