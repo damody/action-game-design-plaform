@@ -189,13 +189,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ConvStr.cpp" />
-    <ClCompile Include="CtrlKey.cpp" />
     <ClCompile Include="DX11\Camera.cpp" />
     <ClCompile Include="DX11\TextGeneratorDX11.cpp" />
     <ClCompile Include="DX11\TextManager.cpp" />
     <ClCompile Include="game\BackGround.cpp" />
     <ClCompile Include="game\BGManager.cpp" />
     <ClCompile Include="game\Chee.cpp" />
+    <ClCompile Include="game\CtrlKey.cpp" />
     <ClCompile Include="game\Effect.cpp" />
     <ClCompile Include="game\FireShaderClass.cpp" />
     <ClCompile Include="game\FlyingPath.cpp" />

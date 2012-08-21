@@ -224,8 +224,8 @@
     <ClCompile Include="DX11\TextManager.cpp">
       <Filter>src\DX11</Filter>
     </ClCompile>
-    <ClCompile Include="CtrlKey.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="game\CtrlKey.cpp">
+      <Filter>src\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
