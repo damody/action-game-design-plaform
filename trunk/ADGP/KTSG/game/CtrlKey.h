@@ -1,5 +1,7 @@
 #pragma once
 #include <deque>
+#include <vector>
+#include<map>
 
 #define KEYUP 8
 namespace boost{namespace serialization{class access;}}
@@ -10,6 +12,8 @@ struct CtrlKey
 	UP_KEYUP,DOWN_KEYUP,RIGHT_KEYUP,LEFT_KEYUP,DEF_KEYUP,JUMP_KEYUP,ATK1_KEYUP,ATK2_KEYUP //Key Up
 	};
 };
+typedef std::vector<CtrlKey::v> CtrlKeys;
+typedef std::map<int,CtrlKeys>	CtrlKeyMap;
 
 struct KeyInfo{
 	CtrlKey::v key;
@@ -25,5 +29,18 @@ struct KeyInfo{
 		ar & timeUp;
 	}
 };
-
 typedef std::deque<KeyInfo> KeyQueue;
+
+class Keyboard{
+private:
+	CtrlKeyMap m_CtrlKeyMap;
+public:
+	Keyboard(){
+	};
+	~Keyboard(){};
+
+	KeyQueue Update();
+	void SetCtrlKey(int index,CtrlKeys keys);
+};
+
+

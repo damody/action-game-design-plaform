@@ -5,6 +5,7 @@
 #include "InputState.h"
 
 #include "ui/CmdDef.h"
+#include "game/CtrlKey.h"
 #include "game/HeroInfo.h"
 #include "game/ObjectInfo.h"
 
@@ -845,8 +846,38 @@ void InitDirect3DApp::LoadHero()
 	g_WavPlayer.Play(g_BGManager.CurrentBGM());
 
 	//player init
-	int key[8] = {KEY_UP,KEY_DOWN,KEY_RIGHT,KEY_LEFT,KEY_Q,KEY_W,KEY_E,KEY_R};
-	m_Player.SetCtrlKey(key);
+	//int key = {KEY_UP,KEY_DOWN,KEY_RIGHT,KEY_LEFT,KEY_Q,KEY_W,KEY_E,KEY_R};
+	
+	CtrlKeys key;
+
+	key.push_back(CtrlKey::UP);
+	m_Player.m_Keyboard.SetCtrlKey(KEY_UP,key);
+	key.clear();
+	key.push_back(CtrlKey::DOWN);
+	m_Player.m_Keyboard.SetCtrlKey(KEY_DOWN,key);
+	key.clear();
+	key.push_back(CtrlKey::RIGHT);
+	m_Player.m_Keyboard.SetCtrlKey(KEY_RIGHT,key);
+	key.clear();
+	key.push_back(CtrlKey::LEFT);
+	m_Player.m_Keyboard.SetCtrlKey(KEY_LEFT,key);
+	key.clear();
+	key.push_back(CtrlKey::DEF);
+	m_Player.m_Keyboard.SetCtrlKey(KEY_Q,key);
+	key.clear();
+	key.push_back(CtrlKey::JUMP);
+	m_Player.m_Keyboard.SetCtrlKey(KEY_W,key);
+	key.clear();
+	key.push_back(CtrlKey::ATK1);
+	m_Player.m_Keyboard.SetCtrlKey(KEY_E,key);
+	key.clear();
+	key.push_back(CtrlKey::ATK2);
+	m_Player.m_Keyboard.SetCtrlKey(KEY_R,key);
+	key.clear();
+	key.push_back(CtrlKey::DEF);
+	key.push_back(CtrlKey::UP);
+	key.push_back(CtrlKey::ATK1);
+	m_Player.m_Keyboard.SetCtrlKey(KEY_T,key);
 
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
@@ -856,8 +887,8 @@ void InitDirect3DApp::LoadHero()
 
 int InitDirect3DApp::UpdateInput()
 {
+	InputStateS::instance().GetInput();
 	m_Player.UpdateInput();
-
 	//test 
 	TestCamera();
 	TestChee();

@@ -252,6 +252,9 @@
     <ClInclude Include="DX11\Vertex.h">
       <Filter>DX11</Filter>
     </ClInclude>
+    <ClInclude Include="PointManager.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ADGP Designer.cpp">
@@ -346,6 +349,9 @@
     </ClCompile>
     <ClCompile Include="DX11\d3dApp.cpp">
       <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="PointManager.cpp">
+      <Filter>原始程式檔</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
