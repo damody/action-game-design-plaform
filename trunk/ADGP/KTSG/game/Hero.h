@@ -17,8 +17,8 @@
 #include <bitset>
 
 #define KEYLIFE_AFTER_KEYUP 120
-#define FRICTION 0.5f
 #define WAIT_FOR_KEY_RUN 30
+#define FRICTION 0.5f
 #define G_ACCE g_BGManager.CurrentBG()->Gravity()
 //#define G_ACCE 1.0f
 
@@ -78,6 +78,7 @@ private:
 	int		m_HP;
 	int		m_MP;
 	EffectType::e   m_Effect;
+	float		m_EffectScale;
 	Record_Sptr     m_Record;
 
 	KeyQueue	m_KeyQue;

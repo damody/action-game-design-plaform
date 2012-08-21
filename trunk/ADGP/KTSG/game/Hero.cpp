@@ -38,7 +38,7 @@ Hero::Hero()
 }
 
 Hero::Hero( std::string h ):
-hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(true),m_FrameID(0),m_Texture(0),m_PicID(0),m_PicW(0),m_PicH(0),m_PicX(0),m_PicY(0),d_run(0),m_Effect(EffectType::NONE),d_key()
+hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(true),m_FrameID(0),m_Texture(0),m_PicID(0),m_PicW(0),m_PicH(0),m_PicX(0),m_PicY(0),d_run(0),m_Effect(EffectType::NONE),m_EffectScale(1.0f),d_key()
 {
 	m_HeroInfo = g_HeroInfoMG.GetHeroInfo(hero);
 	if(m_HeroInfo.get())
@@ -174,18 +174,18 @@ void Hero::Update(float dt)
 
 void Hero::UpdateDataToDraw()
 {
-	float scale = 3.0f;
+	float scale = 3.0f ;
 
 	m_Pic.position.x = m_Position.x;
 	m_Pic.position.y = m_Position.y;
 	m_Pic.position.z = m_Position.z;
 
-	m_Pic.center.x = m_CenterX *scale;
-	m_Pic.center.y = m_CenterY *scale;
+	m_Pic.center.x = scale * (m_CenterX  + 0.5f *(m_EffectScale-1) * (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Width);
+	m_Pic.center.y = scale * (m_CenterY  + 0.5f *(m_EffectScale-1) * (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Height);
 
 	m_Pic.angle = m_Angle;
-	m_Pic.size.x = (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Width*scale;
-	m_Pic.size.y = (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Height*scale;
+	m_Pic.size.x = (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Width * scale * m_EffectScale;
+	m_Pic.size.y = (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Height * scale * m_EffectScale;
 
 	m_Pic.picpos.x = (float)m_PicX;
 	m_Pic.picpos.y = (float)m_PicY;
@@ -1079,7 +1079,9 @@ void Hero::CreateEffect()
 		m_PicY = (int)v.y;
 		m_PicH = (int)v.z;
 		m_PicW = (int)v.w;
+
 	}
+	m_EffectScale = g_EffectMG->EffectScale(m_Effect);
 }
 
 BodyVerteices Hero::GetBodyVerteices()

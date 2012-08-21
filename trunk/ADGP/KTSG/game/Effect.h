@@ -60,5 +60,7 @@ public:
 	void Update(ID3D11RenderTargetView* originRTV);
 	void OnResize(int W,int H);
 
+	float	EffectScale(EffectType::e type);
+
 	ID3D11ShaderResourceView* Test_GetNowTexture();
 };

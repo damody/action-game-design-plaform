@@ -17,7 +17,7 @@ using namespace boost::geometry;
 void Polygon2D::BuildEdges()
 {
 	m_polygon.clear();
-	for(int i = 0; i < m_points.size(); i++)
+	for(unsigned int i = 0; i < m_points.size(); i++)
 	{
 		m_polygon.outer().push_back(point2(m_points[i].x, m_points[i].y));
 	}
@@ -31,7 +31,7 @@ bool Polygon2D::IsCollision( const Polygon2D& rhs )
 	
 	if(m_points.size() < 3)
 	{
-		for(int i = 0; i < m_points.size(); i++)
+		for(unsigned int i = 0; i < m_points.size(); i++)
 		{
 			point2 pt(m_points[0].x, m_points[0].y);
 			if(within(pt, rhs.m_polygon)) return true;

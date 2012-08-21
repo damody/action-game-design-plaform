@@ -210,4 +210,15 @@ ID3D11ShaderResourceView* EffectManager::Test_GetNowTexture()
 {
 	return NULL;
 }
+
+float EffectManager::EffectScale( EffectType::e type )
+{
+	switch(type){
+		case EffectType::FIRE:
+			return 2.0f;
+		default:
+			return 1.0f;
+	}
+}
+
 //HolyK Test

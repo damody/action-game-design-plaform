@@ -838,7 +838,7 @@ int WavPlayer::CreatSound(const std::string& filename, int dupnum)
 {
 	dsDuplicate *newdupsound = new dsDuplicate();
 
-	for (int i=0;i<m_List.size();i++)
+	for (unsigned int i=0;i<m_List.size();i++)
 	{
 		if(filename == m_List[i])
 		{
