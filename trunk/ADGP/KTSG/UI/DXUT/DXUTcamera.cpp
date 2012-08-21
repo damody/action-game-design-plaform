@@ -3,6 +3,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved
 //--------------------------------------------------------------------------------------
+#include "StdGame.h"
 #include "DXUT.h"
 #include "DXUTcamera.h"
 #include "DXUTres.h"

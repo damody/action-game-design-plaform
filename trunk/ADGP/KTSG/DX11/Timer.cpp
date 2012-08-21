@@ -1,3 +1,4 @@
+#include "StdGame.h"
 #include "Timer.h"
 #include <windows.h>
 #include <stdio.h>

@@ -1,4 +1,5 @@
-﻿#include "ConvStr.h"
+﻿#include "StdGame.h"
+#include "ConvStr.h"
 
 #pragma warning(disable : 4996) // use sprintf
 

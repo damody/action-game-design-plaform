@@ -1,5 +1,5 @@
+#include "StdGame.h"
 #include "BGManager.h"
-
 
 BGManager::BGManager(void):m_CurrentBG(NULL),m_CurrentBGM(0)
 {

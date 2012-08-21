@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "StdGame.h"
 #include "d3dApp.h"
 #include "ui/dxut/DXUT.h"
 #include "InputState.h"

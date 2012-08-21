@@ -1,3 +1,4 @@
+#include "StdGame.h"
 #include "TestRenderEffect.h"
 
 

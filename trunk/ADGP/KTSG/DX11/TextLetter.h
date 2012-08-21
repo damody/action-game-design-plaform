@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+#include "StdGame.h"
 #include <vector>
 #include <map>
 #include <string>

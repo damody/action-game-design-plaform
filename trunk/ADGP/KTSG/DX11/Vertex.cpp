@@ -1,3 +1,4 @@
+#include "StdGame.h"
 #include "Vertex.h"
 
 D3D11_INPUT_ELEMENT_DESC VertexDesc_ClipVertex[] =

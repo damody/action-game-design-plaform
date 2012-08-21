@@ -1,5 +1,5 @@
+#include "StdGame.h"
 #include "ObjectInfoManager.h"
-
 
 ObjectInfoMG::ObjectInfoMG(void)
 {

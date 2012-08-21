@@ -1,4 +1,4 @@
-﻿
+﻿#include "StdGame.h"
 #include "GetDirectXInput.h"
 
 #define SAFE_RELEASE(x) if (x) { x->Release(); x=NULL; }

@@ -1,3 +1,4 @@
+#include "StdGame.h"
 #include "HeroManager.h"
 #include "global.h"
 

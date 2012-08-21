@@ -1,3 +1,4 @@
+#include "StdGame.h"
 #include "Weapon.h"
 #include "global.h"
 

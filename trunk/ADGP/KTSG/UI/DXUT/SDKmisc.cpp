@@ -5,6 +5,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved
 //--------------------------------------------------------------------------------------
+#include "StdGame.h"
 #include "dxut.h"
 #include "SDKmisc.h"
 #include "DXUTres.h"

@@ -1,4 +1,4 @@
-﻿
+﻿#include "StdGame.h"
 #include "InputState.h"
 
 InputState::InputState()

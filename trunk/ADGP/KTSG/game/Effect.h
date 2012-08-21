@@ -1,7 +1,7 @@
 #pragma once
-#include<d3d11.h>
-#include<d3dx11.h>
-#include<DxErr.h>
+#include <d3d11.h>
+#include <d3dx11.h>
+#include <DxErr.h>
 #include "DX11/TextureManager.h"
 #include "game/EffectData.h"
 #include "game/FireShaderClass.h"

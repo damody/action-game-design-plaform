@@ -1,3 +1,4 @@
+#include "StdGame.h"
 #include "TextManager.h"
 #include "global.h"
 

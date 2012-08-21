@@ -2,13 +2,13 @@
 //////////////
 // INCLUDES //
 //////////////
-#include<d3d11.h>
-#include<d3dx11.h>
-#include<DxErr.h>
-#include<D3Dcompiler.h>
-#include<fstream>
-#include<xnamath.h>
-#include<d3dx11effect.h>
+#include <d3d11.h>
+#include <d3dx11.h>
+#include <DxErr.h>
+#include <D3Dcompiler.h>
+#include <fstream>
+#include <xnamath.h>
+#include <d3dx11effect.h>
 #include <d3dx9.h>
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: TestShaderClass

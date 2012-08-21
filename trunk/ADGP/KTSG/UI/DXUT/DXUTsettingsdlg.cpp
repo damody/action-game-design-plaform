@@ -5,6 +5,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved
 //--------------------------------------------------------------------------------------
+#include "StdGame.h"
 #include "DXUT.h"
 #include "DXUTgui.h"
 #include "DXUTsettingsDlg.h"

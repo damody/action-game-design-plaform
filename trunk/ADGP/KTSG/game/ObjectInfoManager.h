@@ -1,5 +1,5 @@
 #pragma once
-#include<string>
+#include <string>
 #include "game/ObjectInfo.h"
 
 class ObjectInfoMG

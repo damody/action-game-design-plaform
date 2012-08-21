@@ -1,3 +1,4 @@
+#include "StdGame.h"
 #include "FlyingPath.h"
 
 FlyingPath::FlyingPath(void):m_Type(FlyingType::LINEARLINE_PATH)

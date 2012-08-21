@@ -1,3 +1,4 @@
+#include "StdGame.h"
 #include "TextGeneratorDX11.h"
 #include "global.h"
 

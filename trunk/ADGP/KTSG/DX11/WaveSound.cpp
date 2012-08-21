@@ -1,6 +1,7 @@
-﻿#include <windows.h>
+﻿#include "StdGame.h"
+#include <windows.h>
 #include "WaveSound.h"
-#include "..\ConvStr.h"
+#include "ConvStr.h"
 dsSound::dsSound()
 {
 	m_Buffer = NULL ;

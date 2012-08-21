@@ -1,3 +1,4 @@
+#include "StdGame.h"
 #include "FireShaderClass.h"
 #include <fstream>
 #include "global.h"

@@ -8,6 +8,7 @@
 //  @ Author : 
 //
 //
+#include "StdGame.h"
 #include <iostream>
 #include <algo/nway.h>
 #include <ball/homing.h>

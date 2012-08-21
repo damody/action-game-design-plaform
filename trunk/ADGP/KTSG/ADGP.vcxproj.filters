@@ -48,9 +48,6 @@
     <Filter Include="src\game">
       <UniqueIdentifier>{731a8886-6c46-4f71-a582-c6931474b208}</UniqueIdentifier>
     </Filter>
-    <Filter Include="lib">
-      <UniqueIdentifier>{63602d3c-85ce-42e2-978f-05aaf12769c9}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConvStr.cpp">
@@ -60,9 +57,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="Lua\CreateLua.cpp">
@@ -155,9 +149,6 @@
     <ClCompile Include="DX11\Vertex.cpp">
       <Filter>src\DX11</Filter>
     </ClCompile>
-    <ClCompile Include="game\FrameInfo.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
     <ClCompile Include="game\Hero.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
@@ -165,9 +156,6 @@
       <Filter>src\game</Filter>
     </ClCompile>
     <ClCompile Include="game\HeroInfoManager.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\PictureData.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
     <ClCompile Include="game\Player.cpp">
@@ -224,6 +212,9 @@
     <ClCompile Include="DX11\TextManager.cpp">
       <Filter>src\DX11</Filter>
     </ClCompile>
+    <ClCompile Include="StdGame.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -233,9 +224,6 @@
       <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="main.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
       <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="Lua\CreateLua.h">
@@ -451,14 +439,17 @@
     <ClInclude Include="DX11\TextGeneratorDX11.h">
       <Filter>inc\DX11</Filter>
     </ClInclude>
-    <ClInclude Include="lib\auto_link_freetype.hpp">
-      <Filter>lib</Filter>
-    </ClInclude>
     <ClInclude Include="DX11\TextLetter.h">
       <Filter>inc\DX11</Filter>
     </ClInclude>
     <ClInclude Include="DX11\TextManager.h">
       <Filter>inc\DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="game\StdGame.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="StdGame.h">
+      <Filter>inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

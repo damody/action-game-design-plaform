@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "StdGame.h"
 #include "main.h"
 #include "DX11/InitDirect3DApp.h"
 

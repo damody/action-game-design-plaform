@@ -1,3 +1,4 @@
+#include "StdGame.h"
 #include "Camera.h"
 
 Camera::Camera():m_LookAT(Vector3(0,0,0)),m_Radius(0),m_Thita(0),m_Alpha(0),m_ScreenW(0),m_ScreenH(0)

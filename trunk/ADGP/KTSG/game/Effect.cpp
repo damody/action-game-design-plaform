@@ -1,6 +1,8 @@
+#include "StdGame.h"
 #include "Effect.h"
 #include "global.h"
 #include <iostream>
+
 Effect::Effect(void):m_SerialNum(1)
 {
 }

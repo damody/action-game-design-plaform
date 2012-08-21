@@ -1,3 +1,4 @@
+#include "StdGame.h"
 #include "global.h"
 TextureManager	g_TextureManager;
 HeroInfoMG	g_HeroInfoMG;

@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+﻿#include "StdGame.h"
 #include <cstdlib>
 #include <ctime>
 #include "InitDirect3DApp.h"

@@ -1,6 +1,7 @@
+#include "StdGame.h"
 #include "dxut/DXUT.h"
 #include "DXUTUI.h"
-#include "../ConvStr.h"
+#include "ConvStr.h"
 
 
 DXUTUI* g_ktsg_ui;

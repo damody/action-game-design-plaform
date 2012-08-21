@@ -1,3 +1,4 @@
+#include "StdGame.h"
 #include "ObjectInfo.h"
 #include "global.h"
 

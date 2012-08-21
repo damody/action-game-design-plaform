@@ -1,4 +1,4 @@
-
+#include "StdGame.h"
 #include "TextureManager.h"
 #include "d3dApp.h"
 #include "global.h"
