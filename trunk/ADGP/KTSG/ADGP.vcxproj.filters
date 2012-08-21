@@ -224,6 +224,9 @@
     <ClCompile Include="DX11\TextManager.cpp">
       <Filter>src\DX11</Filter>
     </ClCompile>
+    <ClCompile Include="CtrlKey.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">

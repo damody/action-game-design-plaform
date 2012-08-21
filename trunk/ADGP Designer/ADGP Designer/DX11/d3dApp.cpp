@@ -165,26 +165,26 @@ void D3DApp::buildShaderFX()
 
 	//Picture
 	HRESULT hr = 0;
-// 	hr=D3DX11CompileFromFile(_T("shader\\picture.fx"), NULL, NULL, NULL, 
-// 		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
-// 	if(FAILED(hr))
-// 	{
-// 		if( pError )
-// 		{
-// 			MessageBoxA(0, (char*)pError->GetBufferPointer(), 0, 0);
-// 			ReleaseCOM(pError);
-// 		}
-// 		DXTrace(__FILE__, __LINE__, hr, _T("D3DX11CreateEffectFromFile"), TRUE);
-// 	} 
-// 	HR(D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_Pics));
-// 	m_PTech_Pics = m_Effect_Pics->GetTechniqueByName("PointTech");
-// 	m_Pics_Width = m_Effect_Pics->GetVariableByName("width")->AsScalar();
-// 	m_Pics_Height= m_Effect_Pics->GetVariableByName("height")->AsScalar();
-// 	m_PMap_Pics  = m_Effect_Pics->GetVariableByName("gMap")->AsShaderResource();
-// 	
-// 	D3DX11_PASS_DESC PassDesc;
-// 	m_PTech_Pics->GetPassByIndex(0)->GetDesc(&PassDesc);
-// 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_PICVertex, 2, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Pics));
+	hr=D3DX11CompileFromFile(_T("shader\\picture.fx"), NULL, NULL, NULL, 
+		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
+	if(FAILED(hr))
+	{
+		if( pError )
+		{
+			MessageBoxA(0, (char*)pError->GetBufferPointer(), 0, 0);
+			ReleaseCOM(pError);
+		}
+		DXTrace(__FILE__, __LINE__, hr, _T("D3DX11CreateEffectFromFile"), TRUE);
+	} 
+	HR(D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_Pics));
+	m_PTech_Pics = m_Effect_Pics->GetTechniqueByName("PointTech");
+	m_Pics_Width = m_Effect_Pics->GetVariableByName("width")->AsScalar();
+	m_Pics_Height= m_Effect_Pics->GetVariableByName("height")->AsScalar();
+	m_PMap_Pics  = m_Effect_Pics->GetVariableByName("gMap")->AsShaderResource();
+	
+	D3DX11_PASS_DESC PassDesc;
+	m_PTech_Pics->GetPassByIndex(0)->GetDesc(&PassDesc);
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_PICVertex, 2, PassDesc.pIAInputSignature,PassDesc.IAInputSignatureSize, &m_PLayout_Pics));
 
 }
 
