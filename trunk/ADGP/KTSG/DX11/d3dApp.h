@@ -20,7 +20,7 @@ public:
 	int run();
 	virtual void initApp();
 	virtual void OnResize();// reset projection/etc
-	virtual void UpdateScene(float dt);
+	virtual void UpdateScene(float dt)=0;
 	virtual void DrawScene(); 
 	virtual LRESULT msgProc(UINT msg, WPARAM wParam, LPARAM lParam);
 

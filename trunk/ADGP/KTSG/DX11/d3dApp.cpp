@@ -257,10 +257,6 @@ LRESULT D3DApp::msgProc(UINT msg, WPARAM wParam, LPARAM lParam)
 	}
 	return DefWindowProc(m_hMainWnd, msg, wParam, lParam);
 }
-void D3DApp::UpdateScene(float dt)
-{
-		
-}
 
 
 int D3DApp::run()
@@ -284,7 +280,7 @@ int D3DApp::run()
 			m_Timer.tick();
 
 			if( !m_AppPaused )
-				UpdateScene(m_Timer.getDeltaTime());	
+				UpdateScene(m_Timer.getDeltaTime());
 			else
 				Sleep(1);
 
