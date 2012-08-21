@@ -101,11 +101,18 @@ emdargs:
 //if success return true
 bool LuaCell::InputLuaFile(const char* path)
 {
-	if (luaL_loadfile(m_LuaState, path) || 
-		lua_pcall(m_LuaState, 0, 0, 0)) 
+	if (luaL_loadfile(m_LuaState, path) || lua_pcall(m_LuaState, 0, 0, 0)) 
 		return false;
 	return true;
 }
+
+bool LuaCell::InputLuaString( const char* code )
+{
+	if (luaL_dostring(m_LuaState, code))
+		return false;
+	return true;
+}
+
 #if defined(WIN32) || defined(WIN64)
 bool LuaCell::InputLuaFile( const wchar_t* path )
 {
