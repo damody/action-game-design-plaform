@@ -65,7 +65,6 @@ frame.default[0] =
 {
    pic_id = 0, pic_x = 1, pic_y = 1, state = Action.Standing, wait = 30, next = {"standing", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
-   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=34, value=150}},
    body = {
@@ -1312,7 +1311,7 @@ frame.ball[4] =
    newobjects={
 	{
 		name="davis_ball", amount=1, x = 90, y = -43, facing=0,
-		frame={"flying", 0}, hp=10, ai="XXX",
+		frame="flying", frameID=0, hp=10, ai="XXX",
 		dvx=0, dvy=0, dvz=0
 		}
 	}
@@ -1381,7 +1380,7 @@ frame.ball[9] =
    newobjects={
 	{
 		name="davis_ball", amount=1, x = 90, y = -43, facing=0,
-		frame={"flying", 0}, hp=10, ai="XXX",
+		frame="flying", frameID=0, hp=10, ai="XXX",
 		dvx=0, dvy=0, dvz=0
 		}
    }
@@ -1450,7 +1449,7 @@ frame.ball[14] =
    newobjects={
 	{
 		name="davis_ball", amount=1, x = 90, y = -43, facing=0,
-		frame={"flying", 0}, hp=10, ai="XXX",
+		frame="flying", frameID=0, hp=10, ai="XXX",
 		dvx=0, dvy=0, dvz=0
 		}
    }
@@ -1507,7 +1506,7 @@ frame.ball[18] =
    newobjects={
 	{
 		name="davis_ball", amount=1, x = 90, y = -48, facing=0,
-		frame={"flying", 0}, hp=10, ai="XXX",
+		frame="flying", frameID=0, hp=10, ai="XXX",
 		dvx=0, dvy=0, dvz=0
 		}
    }

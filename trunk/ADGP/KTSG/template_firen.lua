@@ -107,8 +107,10 @@ frame.standing[1]=
 	newobjects={
 		{name="XXX", 			--欲創造物件之名稱
 		amount=1, 				--創造數量
+		x = 60, y = 30,			--產出物件相對於自己的位置
 		facing=0, 				--面對方向， 0:與自己同向，1:與自己反向
-		frame={"fly", 1} 		--該物件的初始 frame
+		frame="fly",	 		--該物件的初始 frame 名稱
+		frameID=1,				--該物件的初始 frame 序號
 		hp=500, 				--產出物件的血量
 		ai="XXX", 				--產出物件的 ai ?
 		dvx=0, dvy=0, dvz=0		--產出物件的初速度

@@ -839,7 +839,7 @@ bool Hero::ScanKeyQue()
 			if(pHit == rHit+1 && flag){
 				nFrame = hit[i].m_FrameName;
 				nFramID= hit[i].m_FrameOffset;
-				m_Vel.z = 0; // fix skill z up down problem
+				//m_Vel.z = 0; // fix skill z up down problem («O¯dºD©Ê)
 				m_KeyQue.clear();
 				break;
 			}

@@ -10,6 +10,7 @@
 #include "BeCatch.h"
 #include "BloodInfo.h"
 #include "Body.h"
+#include "Creation.h"
 namespace boost{namespace serialization{class access;}}
 //每一個動作 Frame 所含的資訊
 struct FrameInfo
@@ -58,6 +59,8 @@ struct FrameInfo
 	BeCatch		m_BeCatch;
 	//流血資訊
 	BloodInfos	m_BloodInfos;
+	//
+	Creations	m_Creations;
 
 	friend class boost::serialization::access;
 	template<class Archive>

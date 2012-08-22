@@ -125,7 +125,7 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 	{
 		for (int frameCount=0;;frameCount++)
 		{
-			FrameInfo newData;
+			FrameInfo newData={};
 			const char* frameName	= actions[i].c_str();
 			if (!luadata->HasValue("frame/%s/%d/pic_id", frameName, frameCount)) break;
 			newData.m_FrameName	= frameName;
@@ -218,7 +218,6 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 				else
 					break;
 			}
-
 			for (int bodyCount=1;;++bodyCount)
 			{
 				if (luadata->HasValue("frame/%s/%d/body/%d/kind", frameName, frameCount, bodyCount))
@@ -277,6 +276,29 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 				else
 					break;
 			}
+			for (int objCount=1;;++objCount)
+			{
+				if (luadata->HasValue("frame/%s/%d/newobjects/%d/name", frameName, frameCount, objCount))
+				{
+					Creation obj;
+					obj.name = luadata->GetLua<const char*>("frame/%s/%d/newobjects/%d/name", frameName, frameCount, objCount);
+					obj.amount = luadata->GetLua<int>("frame/%s/%d/newobjects/%d/amount", frameName, frameCount, objCount);
+					obj.x = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/x", frameName, frameCount, objCount);
+					obj.y = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/y", frameName, frameCount, objCount);
+					obj.facing = luadata->GetLua<int>("frame/%s/%d/newobjects/%d/facing", frameName, frameCount, objCount);
+					obj.frame = luadata->GetLua<const char*>("frame/%s/%d/newobjects/%d/frame", frameName, frameCount, objCount);
+					obj.frameID = luadata->GetLua<int>("frame/%s/%d/newobjects/%d/frameID", frameName, frameCount, objCount);
+					obj.HP = luadata->GetLua<int>("frame/%s/%d/newobjects/%d/hp", frameName, frameCount, objCount);
+					obj.dvx = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/dvx", frameName, frameCount, objCount);
+					obj.dvy = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/dvy", frameName, frameCount, objCount);
+					obj.dvz = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/dvz", frameName, frameCount, objCount);
+					//ai
+
+					newData.m_Creations.push_back(obj);
+				}
+				else
+					break;
+			}//*/
 			m_FramesMap[actions[i]].push_back(newData);
 		}
 	}
