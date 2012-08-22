@@ -238,7 +238,7 @@ NextLoop:
 	}
 	if(f->m_Consume.m_JumpRule <= 0){
 		printf("MaxHP:%d\tHP:%d\tMP:%d\n",m_MaxRecoverHP,m_HP,m_MP);
-		printf("consume: rule=%d, MP=%d, HP=%d, backFrame=%s, backFrameID=%d",f->m_Consume.m_JumpRule,f->m_Consume.m_MP,f->m_Consume.m_HP,f->m_Consume.m_NotEnoughFrameName,f->m_Consume.m_NotEnoughFrame);
+		printf("consume: rule=%d, MP=%d, HP=%d, backFrame=%s, backFrameID=%d\n",f->m_Consume.m_JumpRule,f->m_Consume.m_MP,f->m_Consume.m_HP,f->m_Consume.m_NotEnoughFrameName.c_str(),f->m_Consume.m_NotEnoughFrame);
 		if(m_HP >= f->m_Consume.m_HP && m_MP >= f->m_Consume.m_MP){
 			m_HP -= f->m_Consume.m_HP;
 			m_MP -= f->m_Consume.m_MP;
@@ -246,6 +246,15 @@ NextLoop:
 			m_Frame = f->m_Consume.m_NotEnoughFrameName;
 			m_FrameID = f->m_Consume.m_NotEnoughFrame;
 			goto NextLoop;
+		}
+	}
+	//創造物件
+	if(!f->m_Creations.empty()){
+		Creations::iterator ic = f->m_Creations.begin();
+		while(ic != f->m_Creations.end()){
+			Vector3 pos(ic->x + m_Position.x, ic->y + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
+			g_ObjectMG.CreateChee(ic->name, pos, ic->v0, m_Team);
+			ic++;
 		}
 	}
 	m_PicID = f->m_PictureID;
@@ -895,15 +904,26 @@ KeyLoop:
 		if(f->m_ClearKeyQueue){
 			m_KeyQue.clear();
 		}
+		//消耗
 		if(f->m_Consume.m_JumpRule >= 0){
+			printf("MaxHP:%d\tHP:%d\tMP:%d\n",m_MaxRecoverHP,m_HP,m_MP);
+			printf("consume: rule=%d, MP=%d, HP=%d, backFrame=%s, backFrameID=%d\n",f->m_Consume.m_JumpRule,f->m_Consume.m_MP,f->m_Consume.m_HP,f->m_Consume.m_NotEnoughFrameName.c_str(),f->m_Consume.m_NotEnoughFrame);
 			if(m_HP >= f->m_Consume.m_HP && m_MP >= f->m_Consume.m_MP){
 				m_HP -= f->m_Consume.m_HP;
 				m_MP -= f->m_Consume.m_MP;
-				printf("MaxHP:%d\tHP:%d\tMP:%d\n",m_MaxRecoverHP,m_HP,m_MP);
 			}else{
 				nFrame = f->m_Consume.m_NotEnoughFrameName;
 				nFramID = f->m_Consume.m_NotEnoughFrame;
 				goto KeyLoop;
+			}
+		}
+		//創造物件
+		if(!f->m_Creations.empty()){
+			Creations::iterator ic = f->m_Creations.begin();
+			while(ic != f->m_Creations.end()){
+				Vector3 pos(ic->x + m_Position.x, ic->y + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
+				g_ObjectMG.CreateChee(ic->name, pos, ic->v0, m_Team);
+				ic++;
 			}
 		}
 		m_PicID = f->m_PictureID;
