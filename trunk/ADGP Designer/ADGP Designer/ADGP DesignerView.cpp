@@ -143,6 +143,9 @@ CADGPDesignerDoc* CADGPDesignerView::GetDocument() const // 內嵌非偵錯版本
 	return (CADGPDesignerDoc*)m_pDocument;
 }
 
+
+#endif //_DEBUG
+
 void CADGPDesignerView::InitDx11( HWND hWnd )
 {
 	RECT rect;
@@ -156,9 +159,6 @@ void CADGPDesignerView::InitDx11( HWND hWnd )
 	m_D3DApp.initApp(m_hWndDX11, rect.right-rect.left, rect.bottom-rect.top);
 	m_D3DApp.buildShaderFX();
 }
-
-#endif //_DEBUG
-
 
 // CADGPDesignerView 訊息處理常式
 

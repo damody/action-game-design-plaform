@@ -3,6 +3,7 @@
 //
 // Copyright (c) Microsoft Corp. All rights reserved.
 //-----------------------------------------------------------------------------
+#include "stdafx.h"
 #include "DXUT.h"
 #include "DXUTres.h"
 

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "dxut/DXUT.h"
 #include "DXUTUI.h"
 #include "ConvStr.h"

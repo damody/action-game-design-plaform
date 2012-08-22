@@ -1,6 +1,7 @@
+#include "stdafx.h"
 #include "Timer.h"
 #include <windows.h>
-#include <stdio.h>
+#include <cstdio>
 
 GameTimer::GameTimer()
 : mSecondsPerCount(0.0), mDeltaTime(-1.0), mBaseTime(0), 

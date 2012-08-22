@@ -5,6 +5,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved
 //--------------------------------------------------------------------------------------
+#include "stdafx.h"
 #include "dxut.h"
 #include <xinput.h>
 #define DXUT_GAMEPAD_TRIGGER_THRESHOLD      30

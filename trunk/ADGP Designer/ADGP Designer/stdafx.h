@@ -77,5 +77,31 @@
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
 #endif
+#pragma warning(disable:4819)
+#pragma warning(disable:4244)
+#pragma warning(disable:4005)
+#include <fstream>
+#include <boost/iostreams/stream_buffer.hpp>
+#include <boost/iostreams/stream.hpp>
+#include <boost/iostreams/device/back_inserter.hpp>
+#include <boost/serialization/vector.hpp>
+#include <iostream>
+#include <d3d9.h>
+#include <d3dx9.h>
 
+#include <d3d11.h>
+#include <windows.h>
+#include <d3dx11.h>
+#include <vector>
+#include <vector>
+#include <map>
+#include <D3DX11tex.h>
+#include <D3DX11.h>
+#include <D3DX11core.h>
+#include <D3DX11async.h>
+#include <dxsdkver.h>
+#include <usp10.h>
+#include <dimm.h>
+#include <sal.h>
+#include <windows.h>
 

@@ -2,8 +2,6 @@
 
 #include <vector>
 #include <map>
-//#include "SDKmisc.h"
-//#include "SDKMesh.h"
 #include <D3DX11tex.h>
 #include <D3DX11.h>
 #include <D3DX11core.h>
