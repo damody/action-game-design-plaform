@@ -202,7 +202,7 @@ void D3DApp::DrawScene()
 		m_DeviceContext->IASetInputLayout(m_PLayout_Pics);
 		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Pics, &stride2, &offset);
 		m_PMap_Pics->SetResource(g_TextureManager.GetTexture(m_Pic->m_TextureID)->texture);
-		m_PTech_Lines->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+		m_PTech_Pics->GetPassByIndex(0)->Apply(0, m_DeviceContext);
 		m_DeviceContext->Draw(1,0);
 	}
 
