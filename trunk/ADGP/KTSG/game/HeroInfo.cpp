@@ -142,6 +142,17 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 			newData.m_CenterX	= (float)luadata->GetLua<double>("frame/%s/%d/centerx", frameName, frameCount);
 			newData.m_CenterY	= (float)luadata->GetLua<double>("frame/%s/%d/centery", frameName, frameCount);
 			newData.m_ClearKeyQueue	= luadata->GetLua<int>("frame/%s/%d/clear_key_queue", frameName, frameCount);
+			//consume
+			if (luadata->HasValue("frame/%s/%d/consume/rule", frameName, frameCount))
+			{
+				Consume consumeData;
+				consumeData.m_JumpRule = luadata->GetLua<int>("frame/%s/%d/consume/rule", frameName, frameCount);
+				consumeData.m_HP = luadata->GetLua<int>("frame/%s/%d/consume/HP", frameName, frameCount);
+				consumeData.m_MP = luadata->GetLua<int>("frame/%s/%d/consume/MP", frameName, frameCount);
+				consumeData.m_NotEnoughFrameName = luadata->GetLua<const char*>("frame/%s/%d/consume/backFrame", frameName, frameCount);
+				consumeData.m_NotEnoughFrame = luadata->GetLua<int>("frame/%s/%d/consume/backFrameID", frameName, frameCount);
+			}
+			//hit
 			for (int hitCount=1;;++hitCount)
 			{
 				if (luadata->HasValue("frame/%s/%d/hit/%d/1", frameName, frameCount, hitCount))
