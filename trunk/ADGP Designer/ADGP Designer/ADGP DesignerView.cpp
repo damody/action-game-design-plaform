@@ -232,7 +232,6 @@ void CADGPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
 
-
 	char buff[100];
 	sprintf(buff, "   座標位置( %d , %d )", point.x, point.y);
 	CString str(buff);

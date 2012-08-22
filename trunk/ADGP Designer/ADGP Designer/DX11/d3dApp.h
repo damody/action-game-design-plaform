@@ -6,13 +6,17 @@
 #include "Timer.h"
 #include "DXUTUI.h"
 #include "Vertex.h"
+#include "game/PictureData.h"
 
 #include "PointManager.h"
 
 class D3DApp
 {
 public:
-	PointManager m_Body;
+	PointManager  m_Body;
+private:
+	PictureData  *m_Pic;
+	float         m_picX,m_picY;
 public:
 	D3DApp();
 	~D3DApp();
@@ -74,6 +78,16 @@ protected:
 	ID3DX11EffectScalarVariable*	m_Lines_Width;
 	ID3DX11EffectScalarVariable*	m_Lines_Height;
 	
+	ID3DX11Effect*			m_Effect_Pics;
+	ID3D11Buffer*			m_Buffer_Pics;
+	ID3DX11EffectTechnique*		m_PTech_Pics;
+	ID3D11InputLayout*		m_PLayout_Pics;
+	ID3DX11EffectScalarVariable*	m_Pics_Width;
+	ID3DX11EffectScalarVariable*	m_Pics_Height;
+	ID3DX11EffectShaderResourceVariable*  m_PMap_Pics;
+	ID3D11ShaderResourceView*	m_Pics_Texture;
+	
+
 	D3D11_BUFFER_DESC		m_vbd;
 	DXUTUI*				m_DXUT_UI;
 	// Derived class should set these in derived constructor to customize starting values.

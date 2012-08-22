@@ -255,6 +255,12 @@
     <ClInclude Include="PointManager.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\TextureManager.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ADGP Designer.cpp">
@@ -352,6 +358,12 @@
     </ClCompile>
     <ClCompile Include="PointManager.cpp">
       <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="global.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\TextureManager.cpp">
+      <Filter>DX11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
