@@ -32,6 +32,7 @@ public:
 	bool CallLuaFunction(const char* functionName, const char* signString, ...);
 	/// 讀入一個lua檔，得到這個檔的函數與變數
 	bool InputLuaFile(const char* path);
+	bool InputLuaString(const char* code);
 #if defined(WIN32) || defined(WIN64)
 	bool InputLuaFile(const wchar_t* path);
 #endif
