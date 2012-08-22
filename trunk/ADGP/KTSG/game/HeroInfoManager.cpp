@@ -9,7 +9,11 @@ void HeroInfoMG::AddHeroInfo( std::string name, HeroInfo_Sptr info )
 
 HeroInfo_Sptr HeroInfoMG::GetHeroInfo( std::string name )
 {
-	return m_HeroInfoMaps[name];
+	HeroInfoMap::iterator i = m_HeroInfoMaps.find(name);
+	if(i==m_HeroInfoMaps.end()){
+		return HeroInfo_Sptr();
+	}
+	return i->second;
 }
 
 const std::vector<std::string> HeroInfoMG::GetList()

@@ -20,7 +20,7 @@ typedef std::vector<PointVertex> PointVertices;
 //Picture Vertex format
 struct LineVertex
 {
-	D3DXVECTOR3 position;
+	D3DXVECTOR2 position;
 	D3DXVECTOR4 color;
 };
 typedef std::vector<LineVertex> LineVertices;
@@ -28,8 +28,8 @@ typedef std::vector<LineVertex> LineVertices;
 //Picture Vertex format
 struct PictureVertex
 {
-	D3DXVECTOR3 position;
 	D3DXVECTOR2 size;
+	D3DXVECTOR4 picpos;
 };
 typedef std::vector<PictureVertex> PictureVertices;
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "d3dApp.h"
 #include "dxut/DXUT.h"
+#include "global.h"
 
 D3DApp::D3DApp()
 {
@@ -26,13 +27,13 @@ D3DApp::D3DApp()
 	m_Lines_Width = NULL;
 	m_Lines_Height = NULL;
 
-// 	m_Effect_Pics = NULL;
-// 	m_PTech_Pics = NULL;
-// 	m_PLayout_Pics = NULL;
-// 	m_Pics_Width = NULL;
-// 	m_Pics_Height = NULL;
-// 	m_Pics_Texture = NULL;
-// 	m_Buffer_Pics = NULL;
+	m_Effect_Pics = NULL;
+	m_PTech_Pics = NULL;
+	m_PLayout_Pics = NULL;
+	m_Pics_Width = NULL;
+	m_Pics_Height = NULL;
+	m_Pics_Texture = NULL;
+	m_Buffer_Pics = NULL;
 
 	m_hAppInst   = GetModuleHandle(NULL);
 
@@ -96,6 +97,7 @@ void D3DApp::initDirect3D()
 	m_DXUT_UI->SetWindow(m_hMainWnd);
 	m_DXUT_UI->CreateDevice(mClientWidth, mClientHeight);
 	m_d3dDevice = m_DXUT_UI->GetDevice();
+	g_d3dDevice = m_DXUT_UI->GetDevice();
 	m_DeviceContext = m_DXUT_UI->GetDeviceContext();
 	m_SwapChain = m_DXUT_UI->GetSwapChaine();
 	OnResize(mClientWidth, mClientHeight);
