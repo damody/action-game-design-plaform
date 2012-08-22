@@ -48,6 +48,10 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
+	void SetStatus(const CString& str)
+	{
+		m_wndStatusBar.SetInformation(str);
+	}
 	void AddStrToOutputDebug( const CString& strAddToList )
 	{
 		m_wndOutput.AddStrToOutputDebug(CString(strAddToList));

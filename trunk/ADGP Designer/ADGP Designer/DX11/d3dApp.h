@@ -7,8 +7,12 @@
 #include "DXUTUI.h"
 #include "Vertex.h"
 
+#include "PointManager.h"
+
 class D3DApp
 {
+public:
+	PointManager m_Body;
 public:
 	D3DApp();
 	~D3DApp();
@@ -22,6 +26,7 @@ public:
 	void LoadBlend();
 	void buildShaderFX();
 	void buildPoint();
+	
 	ID3D11Device* GetDevice()
 	{
 		return m_d3dDevice;
@@ -51,15 +56,23 @@ protected:
 	ID3D11DepthStencilState *m_pDepthStencil_ZWriteON;
 	ID3D11DepthStencilState *m_pDepthStencil_ZWriteOFF;
 
-	ID3DX11Effect*			m_Effect_Pics;
-	ID3DX11EffectTechnique*		m_PTech_Pics;
-	ID3D11InputLayout*		m_PLayout_Pics;
-	ID3DX11EffectScalarVariable*	m_Pics_Width;
-	ID3DX11EffectScalarVariable*	m_Pics_Height;
-	ID3DX11EffectShaderResourceVariable*  m_PMap_Pics;
-	ID3D11ShaderResourceView*	m_Pics_Texture;
-	ID3D11Buffer*			m_Buffer_Pics;
-	PictureVertices			m_PictureVertices;
+	PointVertices			m_PointVertices;
+
+	ID3D11Buffer*			m_Buffer_Points;
+	ID3DX11Effect*			m_Effect_Points;
+	ID3DX11EffectTechnique*		m_PTech_Points;
+	ID3D11InputLayout*		m_PLayout_Points;
+	ID3DX11EffectScalarVariable*	m_Points_Width;
+	ID3DX11EffectScalarVariable*	m_Points_Height;
+	
+	LineVertices			m_LineVertices;
+
+	ID3D11Buffer*			m_Buffer_Lines;
+	ID3DX11Effect*			m_Effect_Lines;
+	ID3DX11EffectTechnique*		m_PTech_Lines;
+	ID3D11InputLayout*		m_PLayout_Lines;
+	ID3DX11EffectScalarVariable*	m_Lines_Width;
+	ID3DX11EffectScalarVariable*	m_Lines_Height;
 	
 	D3D11_BUFFER_DESC		m_vbd;
 	DXUTUI*				m_DXUT_UI;

@@ -1,4 +1,3 @@
-// <effectEd direct3D="10" profile="fx_4_0" shaderFlags="None, WarningsAreErrors" />
 cbuffer cbPerFrame
 {
 	float sceneW;

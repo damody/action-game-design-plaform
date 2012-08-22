@@ -1,7 +1,7 @@
 #include "PointManager.h"
 
 
-PointManager::PointManager(void):m_Size(0.5f)
+PointManager::PointManager(void):m_Size(5.0f)
 {
 }
 
@@ -10,9 +10,9 @@ PointManager::~PointManager(void)
 {
 }
 
-void PointManager::Add( float x, float y,float r/*=0*/,float g/*=0*/, float b/*=0*/, float a/*=1*/ )
+void PointManager::Add( float x, float y,float r/*=1*/,float g/*=1*/, float b/*=1*/, float a/*=1*/ )
 {
-		m_Point.push_back(Point(x,y,r,g,b,a));
+	m_Point.push_back(Point(x,y,r,g,b,a));
 }
 
 void PointManager::Clear()
@@ -29,13 +29,20 @@ void PointManager::Transale( float x,float y )
 	}
 }
 
+void PointManager::Transale( Points::iterator it_point,float x,float y )
+{
+	if(it_point == m_Point.end())return;
+	it_point->x += x;
+	it_point->y += y;
+}
+
 Points::iterator PointManager::Select( float x, float y )
 {
-	float error = 999999;
+	float error = 100;
 	Points::iterator it_point = m_Point.end();
 	for (Points::iterator it=m_Point.begin(); it != m_Point.end(); it++)
 	{
-		float length = it->x-x*it->x-x + it->y-y*it->y-y;
+		float length = (it->x-x)*(it->x-x) + (it->y-y)*(it->y-y);
 		if (error > length)
 		{
 			error = length;
@@ -52,6 +59,7 @@ void PointManager::Erase( Points::iterator it_point )
 
 void PointManager::Modify( Points::iterator it_point,float x,float y )
 {
+	if(it_point == m_Point.end())return;
 	it_point->x = x;
 	it_point->y = y;
 }
@@ -79,29 +87,29 @@ PointVertices PointManager::BuildPoint()
 LineVertices PointManager::BuildLine( float loop /*= true*/ )
 {
 	LineVertices lvs;
-	for (unsigned int i=1; i<m_Point.size() ;i++)
+	for (unsigned int i=0; i+1<m_Point.size() ;i++)
 	{
 		LineVertex lv;
 		
-		lv.color.x	= 0.0f;
-		lv.color.y	= 0.0f;
-		lv.color.z	= 0.0f;
-		lv.color.w	= 0.0f;
+		lv.color.x	= 1.0f;
+		lv.color.y	= 1.0f;
+		lv.color.z	= 1.0f;
+		lv.color.w	= 1.0f;
 
-		lv.position.x	= m_Point[i-1].x;
-		lv.position.y	= m_Point[i-1].y;
-		lvs.push_back(lv);
 		lv.position.x	= m_Point[i].x;
 		lv.position.y	= m_Point[i].y;
 		lvs.push_back(lv);
+		lv.position.x	= m_Point[i+1].x;
+		lv.position.y	= m_Point[i+1].y;
+		lvs.push_back(lv);
 	}
 
-	if(loop){
+	if(loop && m_Point.size()>2){
 		LineVertex lv;
-		lv.color.x	= 0.0f;
-		lv.color.y	= 0.0f;
-		lv.color.z	= 0.0f;
-		lv.color.w	= 0.0f;
+		lv.color.x	= 1.0f;
+		lv.color.y	= 1.0f;
+		lv.color.z	= 1.0f;
+		lv.color.w	= 1.0f;
 
 		lv.position.x	= m_Point.back().x;
 		lv.position.y	= m_Point.back().y;
@@ -122,4 +130,13 @@ bool PointManager::Empty()
 Points::iterator PointManager::End()
 {
 	return m_Point.end();
+}
+
+void PointManager::ChangeColor( Points::iterator it_point,float r,float g, float b,float a/*=1.0f*/ )
+{
+	if(it_point == m_Point.end())return;
+	it_point->r = r;
+	it_point->g = g;
+	it_point->b = b;
+	it_point->a = a;
 }

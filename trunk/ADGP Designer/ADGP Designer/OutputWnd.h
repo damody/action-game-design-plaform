@@ -42,7 +42,7 @@ public:
 	void UpdateFonts();
 	void AddStrToOutputDebug( CString& strAddToList )
 	{
-		m_wndOutputDebug.AddString( strAddToList);
+		m_wndOutputDebug.AddString(strAddToList);
 		int nCount = m_wndOutputDebug.GetCount();
 		m_wndOutputDebug.SetTopIndex(nCount - 1);
 	}
