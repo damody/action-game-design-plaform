@@ -85,7 +85,6 @@ protected:
 	ID3DX11EffectScalarVariable*	m_Pics_Width;
 	ID3DX11EffectScalarVariable*	m_Pics_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Pics;
-	ID3D11ShaderResourceView*	m_Pics_Texture;
 	
 
 	D3D11_BUFFER_DESC		m_vbd;

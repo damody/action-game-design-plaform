@@ -2,9 +2,12 @@
 #include "d3dApp.h"
 #include "dxut/DXUT.h"
 #include "global.h"
-
+#include <d3d11.h>
 D3DApp::D3DApp()
 {
+	
+
+
 	m_d3dDevice = NULL;
 	m_SwapChain = NULL;
 	m_DepthStencilBuffer = NULL;
@@ -27,13 +30,17 @@ D3DApp::D3DApp()
 	m_Lines_Width = NULL;
 	m_Lines_Height = NULL;
 
+	m_Pic = NULL;
+	m_picX = 1;
+	m_picY = 1;
 	m_Effect_Pics = NULL;
 	m_PTech_Pics = NULL;
 	m_PLayout_Pics = NULL;
 	m_Pics_Width = NULL;
 	m_Pics_Height = NULL;
-	m_Pics_Texture = NULL;
 	m_Buffer_Pics = NULL;
+
+	
 
 	m_hAppInst   = GetModuleHandle(NULL);
 
@@ -106,6 +113,15 @@ void D3DApp::initDirect3D()
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_vbd.CPUAccessFlags = 0;
 	m_vbd.MiscFlags = 0;
+
+	//*test
+	m_Pic = new PictureData();
+	m_Pic->m_Path = std::string("media\\davis_0.png");
+	m_Pic->m_TextureID = g_TextureManager.AddTexture(m_Pic->m_Path);
+	m_Pic->m_Width = 79;
+	m_Pic->m_Height = 79;
+	m_Pic->m_Row = 10;
+	m_Pic->m_Column = 7;
 }
 
 
@@ -164,6 +180,12 @@ void D3DApp::OnResize(int w, int h)
 		m_Lines_Width->SetFloat((float)mClientWidth);
 		m_Lines_Height->SetFloat((float)mClientHeight);
 	}
+
+	if (m_Pics_Width!=NULL && m_Pics_Height!=NULL)
+	{
+		m_Pics_Width->SetFloat((float)mClientWidth);
+		m_Pics_Height->SetFloat((float)mClientHeight);
+	}
 }
 
 void D3DApp::DrawScene()
@@ -173,6 +195,17 @@ void D3DApp::DrawScene()
 	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);	
 	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
 	
+	if(m_Pic!=NULL){
+		UINT offset = 0;
+		UINT stride2 = sizeof(PictureVertex);
+		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+		m_DeviceContext->IASetInputLayout(m_PLayout_Pics);
+		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Pics, &stride2, &offset);
+		m_PMap_Pics->SetResource(g_TextureManager.GetTexture(m_Pic->m_TextureID)->texture);
+		m_PTech_Lines->GetPassByIndex(0)->Apply(0, m_DeviceContext);
+		m_DeviceContext->Draw(1,0);
+	}
+
 	if (m_LineVertices.size()>0)
 	{
 		UINT offset = 0;
@@ -245,6 +278,28 @@ void D3DApp::buildShaderFX()
 	m_PTech_Lines->GetPassByIndex(0)->GetDesc(&PassDesc_Line);
 	HR(m_d3dDevice->CreateInputLayout(VertexDesc_LineVertex, 2, PassDesc_Line.pIAInputSignature,PassDesc_Line.IAInputSignatureSize, &m_PLayout_Lines));
 
+	hr = 0;
+	hr=D3DX11CompileFromFile(_T("shader\\picture.fx"), NULL, NULL, NULL, 
+		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS|D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
+	if(FAILED(hr))
+	{
+		if( pError )
+		{
+			MessageBoxA(0, (char*)pError->GetBufferPointer(), 0, 0);
+			ReleaseCOM(pError);
+		}
+		DXTrace(__FILE__, __LINE__, hr, _T("D3DX11CreateEffectFromFile"), TRUE);
+	} 
+	HR(D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_Pics));
+	m_PTech_Pics = m_Effect_Pics->GetTechniqueByName("PointTech");
+	m_Pics_Width = m_Effect_Pics->GetVariableByName("sceneW")->AsScalar();
+	m_Pics_Height= m_Effect_Pics->GetVariableByName("sceneH")->AsScalar();
+	m_PMap_Pics =m_Effect_Pics->GetVariableByName("gMap")->AsShaderResource();
+
+	D3DX11_PASS_DESC PassDesc_Pic;
+	m_PTech_Pics->GetPassByIndex(0)->GetDesc(&PassDesc_Pic);
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_PICVertex, 2, PassDesc_Pic.pIAInputSignature,PassDesc_Pic.IAInputSignatureSize, &m_PLayout_Pics));
+
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_vbd.CPUAccessFlags = 0;
@@ -280,6 +335,24 @@ void D3DApp::buildPoint()
 		vinitData.pSysMem = &m_LineVertices[0];
 		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Lines));
 	}
+
+	if (m_Pic != NULL)
+	{
+		PictureVertex pv;
+		pv.size.x = m_Pic->m_Width;
+		pv.size.y = m_Pic->m_Height;
+		pv.picpos.x = m_picX;
+		pv.picpos.y = m_picY;
+		pv.picpos.z = m_Pic->m_Row;
+		pv.picpos.w = m_Pic->m_Column;
+
+		m_vbd.ByteWidth = (UINT)(sizeof(PictureVertex));
+		m_vbd.StructureByteStride=sizeof(PictureVertex);
+		D3D11_SUBRESOURCE_DATA vinitData;
+		vinitData.pSysMem = &pv;
+		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Pics));
+	}
+
 	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteON, 0);
 }
 
@@ -328,5 +401,3 @@ void D3DApp::LoadBlend()
 	if ( D3D_OK != m_d3dDevice->CreateBlendState(&blend_state_desc, &m_pBlendState_BLEND) )
 		return ;
 }
-
-
