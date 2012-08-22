@@ -454,6 +454,9 @@
     <ClInclude Include="StdGame.h">
       <Filter>inc</Filter>
     </ClInclude>
+    <ClInclude Include="game\Creation.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\bullet.fx">

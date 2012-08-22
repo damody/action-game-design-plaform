@@ -4,7 +4,7 @@
 namespace boost{namespace serialization{class access;}}
 struct Consume
 {
-	// 0 時只對next有用，1 時只對 hitdata有用
+	// -1 時只對next有用，0 時兩者皆有用，1 時只對 hitdata有用
 	int	m_JumpRule;
 	//要消耗的 hp
 	int	m_HP;

@@ -498,6 +498,7 @@
     <ClInclude Include="game\CheeAction.h" />
     <ClInclude Include="game\ColorRect.h" />
     <ClInclude Include="game\Consume.h" />
+    <ClInclude Include="game\Creation.h" />
     <ClInclude Include="game\CtrlKey.h" />
     <ClInclude Include="game\Effect.h" />
     <ClInclude Include="game\EffectData.h" />

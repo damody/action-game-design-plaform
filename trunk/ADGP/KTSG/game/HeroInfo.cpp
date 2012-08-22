@@ -2,6 +2,11 @@
 #include "HeroInfo.h"
 #include "global.h"
 
+HeroInfo::HeroInfo():m_Name(),m_MaxHP(500),m_MaxMP(500)
+{
+
+}
+
 bool HeroInfo::CheckHeroDataVaild( LuaCell_Sptr luadata )
 {
 	bool testOK = true;
@@ -123,9 +128,10 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 	}
 	for (int i=0;i<(int)actions.size();++i)
 	{
+		FrameInfos *fFrame = &m_FramesMap[actions[i]];
 		for (int frameCount=0;;frameCount++)
 		{
-			FrameInfo newData;
+			FrameInfo newData={};
 			const char* frameName	= actions[i].c_str();
 			if (!luadata->HasValue("frame/%s/%d/pic_id", frameName, frameCount)) break;
 			newData.m_FrameName	= frameName;
@@ -142,6 +148,15 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 			newData.m_CenterX	= (float)luadata->GetLua<double>("frame/%s/%d/centerx", frameName, frameCount);
 			newData.m_CenterY	= (float)luadata->GetLua<double>("frame/%s/%d/centery", frameName, frameCount);
 			newData.m_ClearKeyQueue	= luadata->GetLua<int>("frame/%s/%d/clear_key_queue", frameName, frameCount);
+			
+			if (luadata->HasValue("frame/%s/%d/consume/rule", frameName, frameCount))
+			{
+				newData.m_Consume.m_JumpRule = luadata->GetLua<int>("frame/%s/%d/consume/rule", frameName, frameCount);
+				newData.m_Consume.m_HP = luadata->GetLua<int>("frame/%s/%d/consume/HP", frameName, frameCount);
+				newData.m_Consume.m_MP = luadata->GetLua<int>("frame/%s/%d/consume/MP", frameName, frameCount);
+				newData.m_Consume.m_NotEnoughFrameName = luadata->GetLua<const char*>("frame/%s/%d/consume/backFrame", frameName, frameCount);
+				newData.m_Consume.m_NotEnoughFrame = luadata->GetLua<int>("frame/%s/%d/consume/backFrameID", frameName, frameCount);
+			}
 			for (int hitCount=1;;++hitCount)
 			{
 				if (luadata->HasValue("frame/%s/%d/hit/%d/1", frameName, frameCount, hitCount))
@@ -168,6 +183,43 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 					bloodInfo.m_Position.y	= (float)luadata->GetLua<double>("frame/%s/%d/blood/%d/y", frameName, frameCount, bloodCount);
 					bloodInfo.m_EnableValue	= (float)luadata->GetLua<double>("frame/%s/%d/blood/%d/value", frameName, frameCount, bloodCount);
 					newData.m_BloodInfos.push_back(bloodInfo);
+				}
+				else
+					break;
+			}
+			for (int atkCount=1;;++atkCount)
+			{
+				if (luadata->HasValue("frame/%s/%d/attack/%d/kind", frameName, frameCount, atkCount))
+				{
+					Attack atk;
+					atk.m_Kind	= luadata->GetLua<int>("frame/%s/%d/attack/%d/kind", frameName, frameCount, atkCount);
+					atk.m_Effect	= luadata->GetLua<int>("frame/%s/%d/attack/%d/effect", frameName, frameCount, atkCount);
+					atk.m_ZWidth	= (float)luadata->GetLua<double>("frame/%s/%d/attack/%d/zwidth", frameName, frameCount, atkCount);
+					atk.m_DVX	= (float)luadata->GetLua<double>("frame/%s/%d/attack/%d/dvx", frameName, frameCount, atkCount);
+					atk.m_DVY	= (float)luadata->GetLua<double>("frame/%s/%d/attack/%d/dvy", frameName, frameCount, atkCount);
+					atk.m_DVZ	= (float)luadata->GetLua<double>("frame/%s/%d/attack/%d/dvz", frameName, frameCount, atkCount);
+					atk.m_Fall	= luadata->GetLua<int>("frame/%s/%d/attack/%d/fall", frameName, frameCount, atkCount);
+					atk.m_AttackRest	= luadata->GetLua<int>("frame/%s/%d/attack/%d/arest", frameName, frameCount, atkCount);
+					atk.m_ReAttackRest	= luadata->GetLua<int>("frame/%s/%d/attack/%d/reAttackRest", frameName, frameCount, atkCount);
+					atk.m_Injury	= luadata->GetLua<int>("frame/%s/%d/attack/%d/injury", frameName, frameCount, atkCount);
+					atk.m_Strength	= luadata->GetLua<int>("frame/%s/%d/attack/%d/strength", frameName, frameCount, atkCount);
+					
+					for (int pointCount=1;;++pointCount)
+					{
+						if (luadata->HasValue("frame/%s/%d/attack/%d/points/%d/1",
+							frameName, frameCount, atkCount, pointCount))
+						{
+							Vector2 vec2;
+							vec2.x = (float)luadata->GetLua<double>("frame/%s/%d/attack/%d/points/%d/1", 
+								frameName, frameCount, atkCount, pointCount);
+							vec2.y = (float)luadata->GetLua<double>("frame/%s/%d/attack/%d/points/%d/2", 
+								frameName, frameCount, atkCount, pointCount);
+							atk.m_Area.AddPoint(vec2);
+						}
+						else
+							break;
+					}
+					newData.m_Attacks.push_back(atk);
 				}
 				else
 					break;
@@ -230,7 +282,30 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 				else
 					break;
 			}
-			m_FramesMap[actions[i]].push_back(newData);
+			for (int objCount=1;;++objCount)
+			{
+				if (luadata->HasValue("frame/%s/%d/newobjects/%d/name", frameName, frameCount, objCount))
+				{
+					Creation obj;
+					obj.name = luadata->GetLua<const char*>("frame/%s/%d/newobjects/%d/name", frameName, frameCount, objCount);
+					obj.amount = luadata->GetLua<int>("frame/%s/%d/newobjects/%d/amount", frameName, frameCount, objCount);
+					obj.x = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/x", frameName, frameCount, objCount);
+					obj.y = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/y", frameName, frameCount, objCount);
+					obj.facing = luadata->GetLua<int>("frame/%s/%d/newobjects/%d/facing", frameName, frameCount, objCount);
+					obj.frame = luadata->GetLua<const char*>("frame/%s/%d/newobjects/%d/frame", frameName, frameCount, objCount);
+					obj.frameID = luadata->GetLua<int>("frame/%s/%d/newobjects/%d/frameID", frameName, frameCount, objCount);
+					obj.HP = luadata->GetLua<int>("frame/%s/%d/newobjects/%d/hp", frameName, frameCount, objCount);
+					obj.dvx = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/dvx", frameName, frameCount, objCount);
+					obj.dvy = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/dvy", frameName, frameCount, objCount);
+					obj.dvz = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/dvz", frameName, frameCount, objCount);
+					//ai
+
+					newData.m_Creations.push_back(obj);
+				}
+				else
+					break;
+			}//*/
+			fFrame->push_back(newData);
 		}
 	}
 }

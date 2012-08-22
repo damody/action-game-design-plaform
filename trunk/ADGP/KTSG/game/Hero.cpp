@@ -84,8 +84,17 @@ void Hero::Update(float dt)
 			m_TimeTik--;
 		}
 	}
-	
 
+	//恢復
+	if(m_MP < 500){
+		m_MP += 3 + 200/m_HP;
+		if(m_MP > 500) m_MP = 500;
+	}
+	if(m_HP < m_MaxRecoverHP){
+		m_HP += 3;
+		if(m_HP > m_MaxRecoverHP) m_HP = m_MaxRecoverHP;
+	}
+	
 	//物理
 	m_PastPos = m_Position;
 
@@ -216,16 +225,29 @@ void Hero::NextFrame()
 	FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
 	m_Frame = f->m_NextFrameName;
 	m_FrameID = f->m_NextFrameIndex;
+NextLoop:
 	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find(m_Frame);
 	if(iframe == m_HeroInfo->m_FramesMap.end() || (int)iframe->second.size() <= m_FrameID){
 		printf("fatal error: can't find next frame \"%s\"[%d] !\n", m_Frame.c_str(), m_FrameID);
 		system("pause");
 		throw "No such frame";
 	}
-	f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
+	f = &iframe->second[m_FrameID];
 	if(f->m_ClearKeyQueue){
-			m_KeyQue.clear();
+		m_KeyQue.clear();
+	}
+	if(f->m_Consume.m_JumpRule <= 0){
+		printf("MaxHP:%d\tHP:%d\tMP:%d\n",m_MaxRecoverHP,m_HP,m_MP);
+		printf("consume: rule=%d, MP=%d, HP=%d, backFrame=%s, backFrameID=%d",f->m_Consume.m_JumpRule,f->m_Consume.m_MP,f->m_Consume.m_HP,f->m_Consume.m_NotEnoughFrameName,f->m_Consume.m_NotEnoughFrame);
+		if(m_HP >= f->m_Consume.m_HP && m_MP >= f->m_Consume.m_MP){
+			m_HP -= f->m_Consume.m_HP;
+			m_MP -= f->m_Consume.m_MP;
+		}else{
+			m_Frame = f->m_Consume.m_NotEnoughFrameName;
+			m_FrameID = f->m_Consume.m_NotEnoughFrame;
+			goto NextLoop;
 		}
+	}
 	m_PicID = f->m_PictureID;
 	m_PicX = f->m_PictureX;
 	m_PicY = f->m_PictureY;
@@ -839,7 +861,7 @@ bool Hero::ScanKeyQue()
 			if(pHit == rHit+1 && flag){
 				nFrame = hit[i].m_FrameName;
 				nFramID= hit[i].m_FrameOffset;
-				m_Vel.z = 0; // fix skill z up down problem
+				m_Vel.z = 0; // fix skill z up down problem 
 				m_KeyQue.clear();
 				break;
 			}
@@ -855,11 +877,12 @@ bool Hero::ScanKeyQue()
 		}else i++;
 	}
 	//下個影格
-	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find(nFrame);
 	if(nFrame.empty()){
 		return false;
 	}
-	else if(iframe == m_HeroInfo->m_FramesMap.end() || (int)iframe->second.size() <= nFramID){
+KeyLoop:
+	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find(nFrame);
+	if(iframe == m_HeroInfo->m_FramesMap.end() || (int)iframe->second.size() <= nFramID){
 		printf("error: can't find frame \"%s\"[%d] !\n", nFrame.c_str(), nFramID);
 		return false;
 	}
@@ -871,6 +894,17 @@ bool Hero::ScanKeyQue()
 		FrameInfo *f = &iframe->second[m_FrameID];
 		if(f->m_ClearKeyQueue){
 			m_KeyQue.clear();
+		}
+		if(f->m_Consume.m_JumpRule >= 0){
+			if(m_HP >= f->m_Consume.m_HP && m_MP >= f->m_Consume.m_MP){
+				m_HP -= f->m_Consume.m_HP;
+				m_MP -= f->m_Consume.m_MP;
+				printf("MaxHP:%d\tHP:%d\tMP:%d\n",m_MaxRecoverHP,m_HP,m_MP);
+			}else{
+				nFrame = f->m_Consume.m_NotEnoughFrameName;
+				nFramID = f->m_Consume.m_NotEnoughFrame;
+				goto KeyLoop;
+			}
 		}
 		m_PicID = f->m_PictureID;
 		m_PicX = f->m_PictureX;
