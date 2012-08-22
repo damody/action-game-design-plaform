@@ -267,10 +267,11 @@ NextLoop:
 	m_CenterY = f->m_CenterY;
 	m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;
 	//創造物件
+	float df = m_FaceSide ? 1 : -1;
 	if(!f->m_Creations.empty()){
 		Creations::iterator ic = f->m_Creations.begin();
 		while(ic != f->m_Creations.end()){
-			Vector3 pos( (ic->x - m_CenterX) * SCALE + m_Position.x, (ic->y + m_CenterY) * SCALE + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
+			Vector3 pos( df * (ic->x - m_CenterX) * SCALE + m_Position.x, (ic->y + m_CenterY) * SCALE + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
 			g_ObjectMG.CreateChee(ic->name, pos, ic->v0, ic->amount, m_Team);
 			ic++;
 		}
@@ -938,10 +939,11 @@ KeyLoop:
 		m_CenterY = f->m_CenterY;
 		m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;
 		//創造物件
+		float df = m_FaceSide ? 1 : -1;
 		if(!f->m_Creations.empty()){
 			Creations::iterator ic = f->m_Creations.begin();
 			while(ic != f->m_Creations.end()){
-				Vector3 pos( (ic->x - m_CenterX) * SCALE + m_Position.x, (ic->y + m_CenterY) * SCALE + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
+				Vector3 pos( df * (ic->x - m_CenterX) * SCALE + m_Position.x, (ic->y + m_CenterY) * SCALE + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
 				g_ObjectMG.CreateChee(ic->name, pos, ic->v0, ic->amount, m_Team);
 				ic++;
 			}
