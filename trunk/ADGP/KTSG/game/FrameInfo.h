@@ -59,7 +59,7 @@ struct FrameInfo
 	BeCatch		m_BeCatch;
 	//流血資訊
 	BloodInfos	m_BloodInfos;
-	//
+	//物件創造
 	Creations	m_Creations;
 
 	friend class boost::serialization::access;
@@ -88,6 +88,7 @@ struct FrameInfo
 		ar &	m_Catchs;
 		ar &	m_BeCatch;
 		ar &	m_BloodInfos;
+		ar &	m_Creations;
 	}
 };
 typedef std::vector<FrameInfo> FrameInfos;

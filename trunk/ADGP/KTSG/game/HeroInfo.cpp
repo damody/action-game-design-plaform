@@ -2,6 +2,11 @@
 #include "HeroInfo.h"
 #include "global.h"
 
+HeroInfo::HeroInfo():m_Name(),m_MaxHP(500),m_MaxMP(500)
+{
+
+}
+
 bool HeroInfo::CheckHeroDataVaild( LuaCell_Sptr luadata )
 {
 	bool testOK = true;
@@ -123,6 +128,7 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 	}
 	for (int i=0;i<(int)actions.size();++i)
 	{
+		FrameInfos *fFrame = &m_FramesMap[actions[i]];
 		for (int frameCount=0;;frameCount++)
 		{
 			FrameInfo newData={};
@@ -299,7 +305,7 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 				else
 					break;
 			}//*/
-			m_FramesMap[actions[i]].push_back(newData);
+			fFrame->push_back(newData);
 		}
 	}
 }
