@@ -295,9 +295,9 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 					obj.frame = luadata->GetLua<const char*>("frame/%s/%d/newobjects/%d/frame", frameName, frameCount, objCount);
 					obj.frameID = luadata->GetLua<int>("frame/%s/%d/newobjects/%d/frameID", frameName, frameCount, objCount);
 					obj.HP = luadata->GetLua<int>("frame/%s/%d/newobjects/%d/hp", frameName, frameCount, objCount);
-					obj.dvx = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/dvx", frameName, frameCount, objCount);
-					obj.dvy = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/dvy", frameName, frameCount, objCount);
-					obj.dvz = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/dvz", frameName, frameCount, objCount);
+					obj.v0.x = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/dvx", frameName, frameCount, objCount);
+					obj.v0.y = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/dvy", frameName, frameCount, objCount);
+					obj.v0.z = (float)luadata->GetLua<double>("frame/%s/%d/newobjects/%d/dvz", frameName, frameCount, objCount);
 					//ai
 
 					newData.m_Creations.push_back(obj);

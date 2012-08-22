@@ -19,7 +19,7 @@ struct Creation
 	//物件血量
 	int HP;
 	//物件初速度
-	float dvx,dvy,dvz;
+	Vector3 v0;
 	//ai
 };
 

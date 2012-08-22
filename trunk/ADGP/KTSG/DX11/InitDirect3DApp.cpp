@@ -1217,7 +1217,7 @@ void InitDirect3DApp::BackgroundDataUpdate()
 	{
 		if(!g_BGManager.CurrentBG()->InSpace((*it)->Position()))
 		{
-			g_ObjectMG.Distory(it,6);
+			//g_ObjectMG.Distory(it,6);
 		}
 	}
 	
@@ -1271,11 +1271,11 @@ void InitDirect3DApp::TestChee()
 {
 	if (InputStateS::instance().isKeyDown(KEY_1))
 	{
-		g_ObjectMG.CreateChee("Davis_ball",Vector3(100,80,1000),Vector3(0,0,0));
+		g_ObjectMG.CreateChee("davis_ball",Vector3(100,80,1000),Vector3(0,0,0));
 	}
 	if (InputStateS::instance().isKeyDown(KEY_2))
 	{
-		g_ObjectMG.CreateChee("Davis_ball",Vector3(1000,80,1000),Vector3(-10,0,0));
+		g_ObjectMG.CreateChee("davis_ball",Vector3(1000,80,1000),Vector3(-10,0,0));
 	}
 }
 

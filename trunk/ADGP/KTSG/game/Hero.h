@@ -20,7 +20,7 @@
 #define WAIT_FOR_KEY_RUN 30
 #define FRICTION 0.5f
 #define G_ACCE g_BGManager.CurrentBG()->Gravity()
-//#define G_ACCE 1.0f
+#define SCALE 3.0f
 
 namespace boost{namespace serialization{class access;}}
 struct Record
