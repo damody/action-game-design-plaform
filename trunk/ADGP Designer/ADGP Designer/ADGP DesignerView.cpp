@@ -47,6 +47,7 @@ BEGIN_MESSAGE_MAP(CADGPDesignerView, CView)
 	ON_WM_KEYUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONUP()
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 // CADGPDesignerView 建構/解構
@@ -148,7 +149,7 @@ CADGPDesignerDoc* CADGPDesignerView::GetDocument() const // 內嵌非偵錯版本
 
 void CADGPDesignerView::InitDx11( HWND hWnd )
 {
-	RECT rect;
+	CRect rect;
 	GetWindowRect(&rect);
 	// 	m_hWndDX11 = CreateWindowA("edit", "", WS_CHILD | WS_DISABLED | WS_VISIBLE
 	// 		, 0, 0, rect.right-rect.left, rect.bottom-rect.top, hWnd, 
@@ -156,7 +157,7 @@ void CADGPDesignerView::InitDx11( HWND hWnd )
 	m_hWndDX11 = hWnd;
 	::ShowWindow(m_hWndDX11, true);
 	::UpdateWindow(m_hWndDX11);
-	m_D3DApp.initApp(m_hWndDX11, rect.right-rect.left, rect.bottom-rect.top);
+	m_D3DApp.initApp(m_hWndDX11, rect.Width(), rect.Height());
 	m_D3DApp.buildShaderFX();
 }
 
@@ -359,3 +360,15 @@ void CADGPDesignerView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
+
+
+void CADGPDesignerView::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+	// TODO: 在此加入您的訊息處理常式程式碼
+	// 不要呼叫圖片訊息的 CView::OnPaint()
+	CRect rect;
+	GetClientRect(&rect);
+	m_D3DApp.OnResize(rect.Width(), rect.Height());
+	m_D3DApp.DrawScene();
+}
