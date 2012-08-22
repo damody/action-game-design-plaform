@@ -179,10 +179,13 @@ void CADGPDesignerView::OnSize(UINT nType, int cx, int cy)
 void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	m_D3DApp.m_Body.Add(point.x, point.y);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
 	char buff[100];
 	sprintf(buff, "%d %d", point.x, point.y);
 	CString str(buff);
-	AfxMessageBox(str);
+	//AfxMessageBox(str);
 	((CMainFrame*)(this->GetParent()->GetParentFrame()))->AddStrToOutputDebug(str);
 	CView::OnLButtonDown(nFlags, point);
 }

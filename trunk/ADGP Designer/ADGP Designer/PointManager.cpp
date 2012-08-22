@@ -1,7 +1,7 @@
 #include "PointManager.h"
 
 
-PointManager::PointManager(void):m_Size(0.5f)
+PointManager::PointManager(void):m_Size(5.0f)
 {
 }
 
@@ -10,7 +10,7 @@ PointManager::~PointManager(void)
 {
 }
 
-void PointManager::Add( float x, float y,float r/*=0*/,float g/*=0*/, float b/*=0*/, float a/*=1*/ )
+void PointManager::Add( float x, float y,float r/*=1*/,float g/*=1*/, float b/*=1*/, float a/*=1*/ )
 {
 		m_Point.push_back(Point(x,y,r,g,b,a));
 }
@@ -83,10 +83,10 @@ LineVertices PointManager::BuildLine( float loop /*= true*/ )
 	{
 		LineVertex lv;
 		
-		lv.color.x	= 0.0f;
-		lv.color.y	= 0.0f;
-		lv.color.z	= 0.0f;
-		lv.color.w	= 0.0f;
+		lv.color.x	= 1.0f;
+		lv.color.y	= 1.0f;
+		lv.color.z	= 1.0f;
+		lv.color.w	= 1.0f;
 
 		lv.position.x	= m_Point[i-1].x;
 		lv.position.y	= m_Point[i-1].y;
@@ -98,10 +98,10 @@ LineVertices PointManager::BuildLine( float loop /*= true*/ )
 
 	if(loop){
 		LineVertex lv;
-		lv.color.x	= 0.0f;
-		lv.color.y	= 0.0f;
-		lv.color.z	= 0.0f;
-		lv.color.w	= 0.0f;
+		lv.color.x	= 1.0f;
+		lv.color.y	= 1.0f;
+		lv.color.z	= 1.0f;
+		lv.color.w	= 1.0f;
 
 		lv.position.x	= m_Point.back().x;
 		lv.position.y	= m_Point.back().y;
