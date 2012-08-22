@@ -96,7 +96,7 @@ void Chee::Update( float dt )
 
 void Chee::UpdateDataToDraw()
 {
-	float scale = 1.5f;
+	float scale = 3.0f;
 
 	m_Pic.position.x = m_Position.x;
 	m_Pic.position.y = m_Position.y;
