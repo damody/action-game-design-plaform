@@ -17,5 +17,9 @@ void ObjectInfoMG::AddObjectInfo( std::string name,ObjectInfo_Sptr info )
 
 ObjectInfo_Sptr ObjectInfoMG::GetObjectInfo( std::string name )
 {
-	return m_ObjectInfoMap[name];
+	ObjectInfoMap::iterator i = m_ObjectInfoMap.find(name);
+	if(i==m_ObjectInfoMap.end()){
+		return ObjectInfo_Sptr();
+	}
+	return i->second;
 }
