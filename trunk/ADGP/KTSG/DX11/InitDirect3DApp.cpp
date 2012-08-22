@@ -1217,7 +1217,7 @@ void InitDirect3DApp::BackgroundDataUpdate()
 	{
 		if(!g_BGManager.CurrentBG()->InSpace((*it)->Position()))
 		{
-			//g_ObjectMG.Distory(it,6);
+			g_ObjectMG.Distory(it,6);
 		}
 	}
 	
