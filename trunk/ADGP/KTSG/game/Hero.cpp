@@ -184,18 +184,16 @@ void Hero::Update(float dt)
 
 void Hero::UpdateDataToDraw()
 {
-	float scale = 3.0f ;
-
 	m_Pic.position.x = m_Position.x;
 	m_Pic.position.y = m_Position.y;
 	m_Pic.position.z = m_Position.z;
 
-	m_Pic.center.x = scale * (m_CenterX  + 0.5f *(m_EffectScale-1) * (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Width);
-	m_Pic.center.y = scale * (m_CenterY  + 0.5f *(m_EffectScale-1) * (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Height);
+	m_Pic.center.x = SCALE * (m_CenterX  + 0.5f *(m_EffectScale-1) * (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Width);
+	m_Pic.center.y = SCALE * (m_CenterY  + 0.5f *(m_EffectScale-1) * (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Height);
 
 	m_Pic.angle = m_Angle;
-	m_Pic.size.x = (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Width * scale * m_EffectScale;
-	m_Pic.size.y = (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Height * scale * m_EffectScale;
+	m_Pic.size.x = (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Width * SCALE * m_EffectScale;
+	m_Pic.size.y = (float)m_HeroInfo->m_PictureDatas[m_PicID].m_Height * SCALE * m_EffectScale;
 
 	m_Pic.picpos.x = (float)m_PicX;
 	m_Pic.picpos.y = (float)m_PicY;
@@ -248,15 +246,6 @@ NextLoop:
 			goto NextLoop;
 		}
 	}
-	//創造物件
-	if(!f->m_Creations.empty()){
-		Creations::iterator ic = f->m_Creations.begin();
-		while(ic != f->m_Creations.end()){
-			Vector3 pos(ic->x + m_Position.x, ic->y + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
-			g_ObjectMG.CreateChee(ic->name, pos, ic->v0, m_Team);
-			ic++;
-		}
-	}
 	m_PicID = f->m_PictureID;
 	m_PicX = f->m_PictureX;
 	m_PicY = f->m_PictureY;
@@ -277,6 +266,15 @@ NextLoop:
 	m_CenterX = f->m_CenterX;
 	m_CenterY = f->m_CenterY;
 	m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;
+	//創造物件
+	if(!f->m_Creations.empty()){
+		Creations::iterator ic = f->m_Creations.begin();
+		while(ic != f->m_Creations.end()){
+			Vector3 pos( (ic->x - m_CenterX) * SCALE + m_Position.x, (ic->y + m_CenterY) * SCALE + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
+			g_ObjectMG.CreateChee(ic->name, pos, ic->v0, ic->amount, m_Team);
+			ic++;
+		}
+	}
 	CreateEffect();
 }
 
@@ -917,15 +915,6 @@ KeyLoop:
 				goto KeyLoop;
 			}
 		}
-		//創造物件
-		if(!f->m_Creations.empty()){
-			Creations::iterator ic = f->m_Creations.begin();
-			while(ic != f->m_Creations.end()){
-				Vector3 pos(ic->x + m_Position.x, ic->y + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
-				g_ObjectMG.CreateChee(ic->name, pos, ic->v0, m_Team);
-				ic++;
-			}
-		}
 		m_PicID = f->m_PictureID;
 		m_PicX = f->m_PictureX;
 		m_PicY = f->m_PictureY;
@@ -948,6 +937,15 @@ KeyLoop:
 		m_CenterX = f->m_CenterX;
 		m_CenterY = f->m_CenterY;
 		m_Bodys = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_Bodys;
+		//創造物件
+		if(!f->m_Creations.empty()){
+			Creations::iterator ic = f->m_Creations.begin();
+			while(ic != f->m_Creations.end()){
+				Vector3 pos( (ic->x - m_CenterX) * SCALE + m_Position.x, (ic->y + m_CenterY) * SCALE + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
+				g_ObjectMG.CreateChee(ic->name, pos, ic->v0, ic->amount, m_Team);
+				ic++;
+			}
+		}
 		CreateEffect();
 		return true;
 	}
@@ -1142,7 +1140,6 @@ void Hero::CreateEffect()
 
 BodyVerteices Hero::GetBodyVerteices()
 {
-	float scale = 3.0f;
 
 	BodyVerteices bvs;
 	BodyVertex bv;
@@ -1150,8 +1147,8 @@ BodyVerteices Hero::GetBodyVerteices()
 	bv.position.y = m_Position.y;
 	bv.position.z = m_Position.z;
 
-	bv.center.x = m_CenterX * scale;
-	bv.center.y = m_CenterY * scale;
+	bv.center.x = m_CenterX * SCALE;
+	bv.center.y = m_CenterY * SCALE;
 
 	bv.angle = m_Angle;
 	if(m_FaceSide){
@@ -1165,16 +1162,16 @@ BodyVerteices Hero::GetBodyVerteices()
 		Vec2s points_2D= it->m_Area.Points();
 		for (unsigned int i=1; i+1 < points_2D.size();i++)
 		{
-			bv.body.x= points_2D[0].x *scale;
-			bv.body.y = points_2D[0].y *scale;
+			bv.body.x= points_2D[0].x *SCALE;
+			bv.body.y = points_2D[0].y *SCALE;
 			bvs.push_back(bv);
 
-			bv.body.x= points_2D[i].x *scale;
-			bv.body.y = points_2D[i].y *scale;
+			bv.body.x= points_2D[i].x *SCALE;
+			bv.body.y = points_2D[i].y *SCALE;
 			bvs.push_back(bv);
 
-			bv.body.x= points_2D[i+1].x *scale;
-			bv.body.y = points_2D[i+1].y *scale;
+			bv.body.x= points_2D[i+1].x *SCALE;
+			bv.body.y = points_2D[i+1].y *SCALE;
 			bvs.push_back(bv);
 		}
 	}
@@ -1184,7 +1181,6 @@ BodyVerteices Hero::GetBodyVerteices()
 
 BodyVerteices Hero::GetBodyLineVerteices()
 {
-	float scale = 3.0f;
 
 	BodyVerteices bvs;
 	BodyVertex bv;
@@ -1192,8 +1188,8 @@ BodyVerteices Hero::GetBodyLineVerteices()
 	bv.position.y = m_Position.y;
 	
 
-	bv.center.x = m_CenterX * scale;
-	bv.center.y = m_CenterY * scale;
+	bv.center.x = m_CenterX * SCALE;
+	bv.center.y = m_CenterY * SCALE;
 
 	bv.angle = m_Angle;
 	if(m_FaceSide){
@@ -1207,8 +1203,8 @@ BodyVerteices Hero::GetBodyLineVerteices()
 		Vec2s points_2D= it->m_Area.Points();
 		for (unsigned int i=0; i < points_2D.size();i++)
 		{
-			bv.body.x= points_2D[i].x *scale;
-			bv.body.y = points_2D[i].y *scale;
+			bv.body.x= points_2D[i].x *SCALE;
+			bv.body.y = points_2D[i].y *SCALE;
 			bv.position.z = m_Position.z;
 			bvs.push_back(bv);
 			bv.position.z = m_Position.z + it->m_ZWidth;
@@ -1217,12 +1213,12 @@ BodyVerteices Hero::GetBodyLineVerteices()
 		bv.position.z = m_Position.z + it->m_ZWidth;
 		for (unsigned int i=0; i < points_2D.size();i++)
 		{
-			bv.body.x= points_2D[i].x *scale;
-			bv.body.y = points_2D[i].y *scale;
+			bv.body.x= points_2D[i].x *SCALE;
+			bv.body.y = points_2D[i].y *SCALE;
 			
 			bvs.push_back(bv);
-			bv.body.x= points_2D[(i+1)%points_2D.size()].x *scale;
-			bv.body.y = points_2D[(i+1)%points_2D.size()].y *scale;
+			bv.body.x= points_2D[(i+1)%points_2D.size()].x *SCALE;
+			bv.body.y = points_2D[(i+1)%points_2D.size()].y *SCALE;
 			bvs.push_back(bv);
 		}
 	}
