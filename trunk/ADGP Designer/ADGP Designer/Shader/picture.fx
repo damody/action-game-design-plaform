@@ -48,7 +48,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	float2 texsize = {1/input[0].picpos.z, 1/input[0].picpos.w};
 
 	float w = 2/sceneW;
-	float h =-2/sceneH;
+	float h = 2/sceneH;
 
 	float4x4 proj;
 	proj[0]=float4(w,0,0,0);
@@ -59,32 +59,38 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	GS_OUT out5;
 	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x,0),0,1);
 	out5.posH=mul(out5.posH,proj);
-	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y-1));
+//	out5.texcoord=(1,1);
+ 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y-1));
 	triStream.Append( out5 );
 
 	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x,input[0].size.y),0,1);
 	out5.posH=mul(out5.posH,proj);
-	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
+//	out5.texcoord=(1,0);
+ 	 out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
 	triStream.Append( out5 );
 
 	out5.posH=float4(input[0].pos.xy-float2( 0,0),0,1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
+//	out5.texcoord=(0,1);
 	triStream.Append( out5 );
 
 	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x,input[0].size.y),0,1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
+//	out5.texcoord=(1,0);
 	triStream.Append( out5 );
 
 	out5.posH=float4(input[0].pos.xy-float2( 0,0),0,1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
+//	out5.texcoord=(0,1);
 	triStream.Append( out5 );
 
 	out5.posH=float4(input[0].pos.xy-float2( 0,input[0].size.y),0,1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y));
+//	out5.texcoord=(0,0);
 	triStream.Append( out5 );
 
 	triStream.RestartStrip( );
@@ -93,8 +99,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 float4 PS(GS_OUT pIn) : SV_Target
 {
 	float4 color=gMap.Sample( gTriLinearSam, pIn.texcoord );
-	if (color.a<0.5)
-		discard;
+	
 	return color;
 }
 

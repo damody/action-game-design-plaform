@@ -10,7 +10,7 @@
 
 #include "PointManager.h"
 
-class D3DApp
+class D3DApp_Frame
 {
 public:
 	PointManager  m_Body;
@@ -18,8 +18,8 @@ private:
 	PictureData  *m_Pic;
 	float         m_picX,m_picY;
 public:
-	D3DApp();
-	~D3DApp();
+	D3DApp_Frame();
+	~D3DApp_Frame();
 
 	HINSTANCE	getAppInst();
 	HWND		getMainWnd();

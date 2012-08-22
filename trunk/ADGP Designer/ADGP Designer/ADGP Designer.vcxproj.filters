@@ -28,6 +28,9 @@
     <Filter Include="ADGP\game">
       <UniqueIdentifier>{78b6a503-fa0b-48d0-97e4-b3e6f48d1dab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shader">
+      <UniqueIdentifier>{e870cc9e-d94c-462f-aa4d-5c50cb229233}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -148,6 +151,15 @@
     <None Include="res\Toolbar256.bmp">
       <Filter>資源檔</Filter>
     </None>
+    <None Include="Shader\Line.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="Shader\picture.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="Shader\point.fx">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADGP Designer.h">
@@ -240,9 +252,6 @@
     <ClInclude Include="DXUT\DXUT.h">
       <Filter>DXUT</Filter>
     </ClInclude>
-    <ClInclude Include="DX11\d3dApp.h">
-      <Filter>DX11</Filter>
-    </ClInclude>
     <ClInclude Include="DX11\DXUTUI.h">
       <Filter>DX11</Filter>
     </ClInclude>
@@ -259,6 +268,12 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="DX11\TextureManager.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\d3dApp_Frame.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\d3dApp_Picture.h">
       <Filter>DX11</Filter>
     </ClInclude>
   </ItemGroup>
@@ -353,9 +368,6 @@
     <ClCompile Include="DX11\Vertex.cpp">
       <Filter>DX11</Filter>
     </ClCompile>
-    <ClCompile Include="DX11\d3dApp.cpp">
-      <Filter>DX11</Filter>
-    </ClCompile>
     <ClCompile Include="PointManager.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
@@ -363,6 +375,12 @@
       <Filter>原始程式檔</Filter>
     </ClCompile>
     <ClCompile Include="DX11\TextureManager.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\d3dApp_Frame.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\d3dApp_Picture.cpp">
       <Filter>DX11</Filter>
     </ClCompile>
   </ItemGroup>

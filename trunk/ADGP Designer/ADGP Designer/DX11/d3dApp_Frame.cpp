@@ -1,9 +1,9 @@
 #include "stdafx.h"
-#include "d3dApp.h"
+#include "d3dApp_Frame.h"
 #include "dxut/DXUT.h"
 #include "global.h"
 #include <d3d11.h>
-D3DApp::D3DApp()
+D3DApp_Frame::D3DApp_Frame()
 {
 	
 
@@ -62,7 +62,7 @@ D3DApp::D3DApp()
 	mClientHeight   = 900;
 }
 
-D3DApp::~D3DApp()
+D3DApp_Frame::~D3DApp_Frame()
 {
 	ReleaseCOM(m_d3dDevice);
 	ReleaseCOM(m_SwapChain);
@@ -78,26 +78,29 @@ D3DApp::~D3DApp()
 		delete m_DXUT_UI;
 	//	ReleaseCOM(mFont);
 }
-HINSTANCE D3DApp::getAppInst()
+HINSTANCE D3DApp_Frame::getAppInst()
 {
 	return m_hAppInst;
 }
 
-HWND D3DApp::getMainWnd()
+HWND D3DApp_Frame::getMainWnd()
 {
 	return m_hMainWnd;
 }
 
-void D3DApp::initApp(HWND hWnd, int w, int h)
+void D3DApp_Frame::initApp(HWND hWnd, int w, int h)
 {
 	m_hMainWnd = hWnd;
 	mClientWidth = w;
 	mClientHeight = h;
 	initDirect3D();
 	LoadBlend();
+
+	float BlendFactor[4] = {0,0,0,0};
+	m_DeviceContext->OMSetBlendState(m_pBlendState_BLEND, BlendFactor, 0xffffffff);
 }
 
-void D3DApp::initDirect3D()
+void D3DApp_Frame::initDirect3D()
 {
 	m_DXUT_UI = new DXUTUI;
 	m_DXUT_UI->InitDXUT();
@@ -125,7 +128,7 @@ void D3DApp::initDirect3D()
 }
 
 
-void D3DApp::OnResize(int w, int h)
+void D3DApp_Frame::OnResize(int w, int h)
 {
 	if (!m_d3dDevice) return;
 	mClientWidth = w;
@@ -188,7 +191,7 @@ void D3DApp::OnResize(int w, int h)
 	}
 }
 
-void D3DApp::DrawScene()
+void D3DApp_Frame::DrawScene()
 {
 	m_DXUT_UI->UpdataUI(0.1f);
 	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, m_ClearColor);
@@ -231,7 +234,7 @@ void D3DApp::DrawScene()
 	m_SwapChain->Present(0, 0);
 }
 
-void D3DApp::buildShaderFX()
+void D3DApp_Frame::buildShaderFX()
 {
 	ID3D10Blob* pCode;
 	ID3D10Blob* pError;
@@ -306,7 +309,7 @@ void D3DApp::buildShaderFX()
 	m_vbd.MiscFlags = 0;
 }
 
-void D3DApp::buildPoint()
+void D3DApp_Frame::buildPoint()
 {
 	//Point
 	ReleaseCOM(m_Buffer_Points);
@@ -356,7 +359,7 @@ void D3DApp::buildPoint()
 	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteON, 0);
 }
 
-void D3DApp::LoadBlend()
+void D3DApp_Frame::LoadBlend()
 {
 	D3D11_DEPTH_STENCIL_DESC depth_stencil_desc;
 	ZeroMemory(&depth_stencil_desc, sizeof(depth_stencil_desc));

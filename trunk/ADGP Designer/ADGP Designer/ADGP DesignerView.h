@@ -13,7 +13,7 @@
 //
 
 #pragma once
-#include "DX11\d3dApp.h"
+#include "DX11\d3dApp_Frame.h"
 
 
 class CADGPDesignerView : public CView
@@ -35,7 +35,7 @@ public:
 // 作業
 public:
 	HWND		m_hWndDX11;
-	D3DApp		m_D3DApp;
+	D3DApp_Frame	m_D3DApp;
 // 覆寫
 public:
 	virtual void OnDraw(CDC* pDC);  // 覆寫以描繪此檢視

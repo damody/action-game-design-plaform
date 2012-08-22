@@ -1,7 +1,7 @@
 #include "StdGame.h"
 #include "TextureManager.h"
-#include "d3dApp.h"
 #include "global.h"
+
 TextureManager::TextureManager(void):m_index(-1)
 {
 }
