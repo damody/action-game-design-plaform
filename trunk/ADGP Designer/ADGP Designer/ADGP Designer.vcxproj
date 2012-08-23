@@ -152,10 +152,10 @@
     <ClInclude Include="ADGP Designer.h" />
     <ClInclude Include="ADGP DesignerDoc.h" />
     <ClInclude Include="ADGP DesignerView.h" />
-    <ClInclude Include="Bounds.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="ClassView.h" />
     <ClInclude Include="ConvStr.h" />
+    <ClInclude Include="D3DPanelView.h" />
     <ClInclude Include="DX11\d3dApp_Frame.h" />
     <ClInclude Include="DX11\d3dApp_Picture.h" />
     <ClInclude Include="DX11\DXUTUI.h" />
@@ -202,7 +202,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Bounds.cpp" />
     <ClCompile Include="ChildFrm.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
@@ -215,6 +214,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="D3DPanelView.cpp" />
     <ClCompile Include="DX11\d3dApp_Frame.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>

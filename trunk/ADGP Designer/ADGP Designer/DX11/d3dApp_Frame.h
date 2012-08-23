@@ -115,11 +115,11 @@ protected:
 	int mClientHeight;
 };
 
-struct CD3D11_BLEND_DESCX : public D3D11_BLEND_DESC
+struct CD3D11_BLEND_DESCX2 : public D3D11_BLEND_DESC
 {
-	CD3D11_BLEND_DESCX(){}
-	explicit CD3D11_BLEND_DESCX(const D3D11_BLEND_DESC& o) : D3D11_BLEND_DESC( o ){}
-	explicit CD3D11_BLEND_DESCX(
+	CD3D11_BLEND_DESCX2(){}
+	explicit CD3D11_BLEND_DESCX2(const D3D11_BLEND_DESC& o) : D3D11_BLEND_DESC( o ){}
+	explicit CD3D11_BLEND_DESCX2(
 		BOOL AlphaToCoverageEnable,
 		BOOL IndependentBlendEnable,
 		BOOL BlendEnable0,
@@ -142,6 +142,6 @@ struct CD3D11_BLEND_DESCX : public D3D11_BLEND_DESC
 		this->RenderTarget[0].BlendOpAlpha = BlendOpAlpha0;
 		this->RenderTarget[0].RenderTargetWriteMask = RenderTargetWriteMask0; 
 	}
-	~CD3D11_BLEND_DESCX(){}
+	~CD3D11_BLEND_DESCX2(){}
 	operator const D3D11_BLEND_DESC&() const { return *this; }
 };

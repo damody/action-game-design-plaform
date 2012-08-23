@@ -3,6 +3,7 @@
 #include "dxut/DXUT.h"
 #include "global.h"
 #include <d3d11.h>
+
 D3DApp_Frame::D3DApp_Frame()
 {
 	m_d3dDevice = NULL;
@@ -60,7 +61,7 @@ D3DApp_Frame::D3DApp_Frame()
 	m_MainWndCaption = L"D3D11 Application";
 	m_d3dDriverType  = D3D_DRIVER_TYPE_HARDWARE;
 	//md3dDriverType  = D3D_DRIVER_TYPE_REFERENCE;
-	m_ClearColor     = D3DXCOLOR(0.75f, 0.75f, 0.75f, 1.0f);
+	m_ClearColor     = D3DXCOLOR(0.75f, 0.0f, 0.75f, 1.0f);
 	mClientWidth    = 1440;
 	mClientHeight   = 900;
 }
@@ -394,7 +395,7 @@ void D3DApp_Frame::LoadBlend()
 	if ( D3D_OK != m_d3dDevice->CreateDepthStencilState(&depth_stencil_desc, &m_pDepthStencil_ZWriteOFF) )
 		return ;
 	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteON, 0);
-	CD3D11_BLEND_DESCX blend_state_desc(
+	CD3D11_BLEND_DESCX2 blend_state_desc(
 		FALSE,
 		FALSE,
 		TRUE,

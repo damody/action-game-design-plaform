@@ -276,7 +276,7 @@
     <ClInclude Include="DX11\d3dApp_Picture.h">
       <Filter>DX11</Filter>
     </ClInclude>
-    <ClInclude Include="Bounds.h">
+    <ClInclude Include="D3DPanelView.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
@@ -386,7 +386,7 @@
     <ClCompile Include="DX11\d3dApp_Picture.cpp">
       <Filter>DX11</Filter>
     </ClCompile>
-    <ClCompile Include="Bounds.cpp">
+    <ClCompile Include="D3DPanelView.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
   </ItemGroup>

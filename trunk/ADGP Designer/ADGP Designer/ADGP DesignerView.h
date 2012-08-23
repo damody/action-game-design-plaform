@@ -13,7 +13,7 @@
 //
 
 #pragma once
-#include "DX11\d3dApp_Frame.h"
+#include "DX11\D3DApp_Picture.h"
 #include "game\PictureData.h"
 
 class CADGPDesignerView : public CView
@@ -52,7 +52,7 @@ public:
 // 作業
 public:
 	HWND		m_hWndDX11;
-	D3DApp_Frame	m_D3DApp;
+	D3DApp_Picture	m_D3DApp;
 // 覆寫
 public:
 	virtual void OnDraw(CDC* pDC);  // 覆寫以描繪此檢視

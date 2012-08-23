@@ -18,6 +18,7 @@
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
 #include "Resource.h"
+#include "D3DPanelView.h"
 
 class COutlookBar : public CMFCOutlookBar
 {
@@ -75,7 +76,7 @@ public:  // 控制列內嵌的成員
 	CPropertiesWnd    m_wndProperties;
 	CMFCShellTreeCtrl m_wndTree;
 	CMFCCaptionBar    m_wndCaptionBar;
-
+	CD3DPanelView	  m_D3DPictureView;
 // 產生的訊息對應函式
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -101,6 +102,7 @@ public:
 	afx_msg void OnButtonAreaAdd();
 	afx_msg void OnButtonAreaMove();
 	afx_msg void OnButtonAreaScale();
+	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 };
 
 

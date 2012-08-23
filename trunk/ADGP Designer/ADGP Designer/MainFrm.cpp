@@ -129,6 +129,18 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndProperties.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndProperties);
 
+	CString strPropertiesWnd;
+	bNameValid = strPropertiesWnd.LoadString(IDS_VIEW_DLGBAR);
+	if (!m_D3DPictureView.Create (strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, 
+		ID_VIEW_DLGBAR, 
+		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI ))
+	{
+		TRACE0("Failed to create Dialog Bar\n");
+		return FALSE;      // fail to create
+	}
+	m_D3DPictureView.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_D3DPictureView);
+	//m_D3DPictureView.DockToWindow (&m_wndProperties, CBRS_ALIGN_LEFT);
 
 	// 啟用增強型視窗管理對話方塊
 	EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
@@ -136,7 +148,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// 在視窗標題列上切換文件名稱與應用程式名稱的順序。
 	// 這可提升工具列的可用性，因為文件名稱會隨著縮圖顯示。
 	ModifyStyle(0, FWS_PREFIXTITLE);
-
 	return 0;
 }
 
@@ -394,4 +405,13 @@ void CMainFrame::OnButtonAreaMove()
 void CMainFrame::OnButtonAreaScale()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
+}
+
+
+BOOL CMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
+{
+	// TODO: 在此加入特定的程式碼和 (或) 呼叫基底類別
+	if (m_D3DPictureView.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
+		return TRUE;
+	return CMDIFrameWndEx::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
