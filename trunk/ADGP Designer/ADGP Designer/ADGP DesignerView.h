@@ -20,10 +20,14 @@ class CADGPDesignerView : public CView
 {
 private:
 	bool m_LMouseHold;
-	bool m_CtrlPoint;
-	bool m_CtrlPoints;
+	bool m_CtrlPress;
+	bool m_ShiftPress;
+	bool m_KeyAPress;
+
 	Points::iterator m_BodyPoint;
 	float m_RecordX,m_RecordY;
+
+	
 protected: // 僅從序列化建立
 	CADGPDesignerView();
 	DECLARE_DYNCREATE(CADGPDesignerView)
@@ -66,11 +70,11 @@ public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnPaint();
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };
 
 #ifndef _DEBUG  // ADGP DesignerView.cpp 中的偵錯版本

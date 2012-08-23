@@ -5,3 +5,7 @@
 
 extern ID3D11Device*  g_d3dDevice;
 extern TextureManager g_TextureManager;
+
+extern float g_Frame_Scale;
+extern float g_Frame_OffsetX;
+extern float g_Frame_OffsetY;

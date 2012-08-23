@@ -28,6 +28,7 @@ typedef std::vector<LineVertex> LineVertices;
 //Picture Vertex format
 struct PictureVertex
 {
+	D3DXVECTOR2 position;
 	D3DXVECTOR2 size;
 	D3DXVECTOR4 picpos;
 };

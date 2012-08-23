@@ -57,7 +57,7 @@ D3DApp_Frame::D3DApp_Frame()
 	m_MainWndCaption = L"D3D11 Application";
 	m_d3dDriverType  = D3D_DRIVER_TYPE_HARDWARE;
 	//md3dDriverType  = D3D_DRIVER_TYPE_REFERENCE;
-	m_ClearColor     = D3DXCOLOR(0.0f, 0.0f, 0.25f, 1.0f);
+	m_ClearColor     = D3DXCOLOR(0.75f, 0.75f, 0.75f, 1.0f);
 	mClientWidth    = 1440;
 	mClientHeight   = 900;
 }
@@ -117,14 +117,7 @@ void D3DApp_Frame::initDirect3D()
 	m_vbd.CPUAccessFlags = 0;
 	m_vbd.MiscFlags = 0;
 
-	//*test
-	m_Pic = new PictureData();
-	m_Pic->m_Path = std::string("media\\davis_0.png");
-	m_Pic->m_TextureID = g_TextureManager.AddTexture(m_Pic->m_Path);
-	m_Pic->m_Width = 79;
-	m_Pic->m_Height = 79;
-	m_Pic->m_Row = 10;
-	m_Pic->m_Column = 7;
+	m_Templete=new Texture("media\\Tamplete.png");
 }
 
 
@@ -205,6 +198,7 @@ void D3DApp_Frame::DrawScene()
 		m_DeviceContext->IASetInputLayout(m_PLayout_Pics);
 		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Pics, &stride2, &offset);
 		m_PMap_Pics->SetResource(g_TextureManager.GetTexture(m_Pic->m_TextureID)->texture);
+		m_BMap_Pics->SetResource(m_Templete->texture);
 		m_PTech_Pics->GetPassByIndex(0)->Apply(0, m_DeviceContext);
 		m_DeviceContext->Draw(1,0);
 	}
@@ -298,10 +292,11 @@ void D3DApp_Frame::buildShaderFX()
 	m_Pics_Width = m_Effect_Pics->GetVariableByName("sceneW")->AsScalar();
 	m_Pics_Height= m_Effect_Pics->GetVariableByName("sceneH")->AsScalar();
 	m_PMap_Pics =m_Effect_Pics->GetVariableByName("gMap")->AsShaderResource();
+	m_BMap_Pics =m_Effect_Pics->GetVariableByName("bMap")->AsShaderResource();
 
 	D3DX11_PASS_DESC PassDesc_Pic;
 	m_PTech_Pics->GetPassByIndex(0)->GetDesc(&PassDesc_Pic);
-	HR(m_d3dDevice->CreateInputLayout(VertexDesc_PICVertex, 2, PassDesc_Pic.pIAInputSignature,PassDesc_Pic.IAInputSignatureSize, &m_PLayout_Pics));
+	HR(m_d3dDevice->CreateInputLayout(VertexDesc_PICVertex, 3, PassDesc_Pic.pIAInputSignature,PassDesc_Pic.IAInputSignatureSize, &m_PLayout_Pics));
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -342,8 +337,10 @@ void D3DApp_Frame::buildPoint()
 	if (m_Pic != NULL)
 	{
 		PictureVertex pv;
-		pv.size.x = m_Pic->m_Width;
-		pv.size.y = m_Pic->m_Height;
+		pv.position.x = g_Frame_OffsetX;
+		pv.position.y = -g_Frame_OffsetY;
+		pv.size.x = m_Pic->m_Width * g_Frame_Scale;
+		pv.size.y = m_Pic->m_Height * g_Frame_Scale;
 		pv.picpos.x = m_picX;
 		pv.picpos.y = m_picY;
 		pv.picpos.z = m_Pic->m_Row;
@@ -403,4 +400,11 @@ void D3DApp_Frame::LoadBlend()
 	// Alpha Blend²V¦â¼Ò¦¡
 	if ( D3D_OK != m_d3dDevice->CreateBlendState(&blend_state_desc, &m_pBlendState_BLEND) )
 		return ;
+}
+
+void D3DApp_Frame::SetPic( PictureData *pic,float x,float y )
+{
+	m_Pic = pic;
+	m_picX = x;
+	m_picY = y;
 }

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "PointManager.h"
-
+#include "global.h"
 
 PointManager::PointManager(void):m_Size(5.0f)
 {
@@ -11,7 +11,7 @@ PointManager::~PointManager(void)
 {
 }
 
-void PointManager::Add( float x, float y,float r/*=1*/,float g/*=1*/, float b/*=1*/, float a/*=1*/ )
+void PointManager::Add( float x, float y,float r/*=0*/,float g/*=0*/, float b/*=0*/, float a/*=1*/ )
 {
 	m_Point.push_back(Point(x,y,r,g,b,a));
 }
@@ -71,10 +71,10 @@ PointVertices PointManager::BuildPoint()
 	for (Points::iterator it=m_Point.begin(); it != m_Point.end(); it++)
 	{
 		PointVertex pv;
-		pv.position.x	= it->x;
-		pv.position.y	= it->y;
-		pv.size.x	= m_Size;
-		pv.size.y	= m_Size;
+		pv.position.x	= it->x * g_Frame_Scale + g_Frame_OffsetX;
+		pv.position.y	= it->y * g_Frame_Scale + g_Frame_OffsetY;
+		pv.size.x	= m_Size ;
+		pv.size.y	= m_Size ;
 		pv.color.x	= it->r;
 		pv.color.y	= it->g;
 		pv.color.z	= it->b;
@@ -92,31 +92,31 @@ LineVertices PointManager::BuildLine( float loop /*= true*/ )
 	{
 		LineVertex lv;
 		
-		lv.color.x	= 1.0f;
-		lv.color.y	= 1.0f;
-		lv.color.z	= 1.0f;
+		lv.color.x	= 0.0f;
+		lv.color.y	= 0.0f;
+		lv.color.z	= 0.0f;
 		lv.color.w	= 1.0f;
 
-		lv.position.x	= m_Point[i].x;
-		lv.position.y	= m_Point[i].y;
+		lv.position.x	= m_Point[i].x * g_Frame_Scale + g_Frame_OffsetX;
+		lv.position.y	= m_Point[i].y * g_Frame_Scale + g_Frame_OffsetY;
 		lvs.push_back(lv);
-		lv.position.x	= m_Point[i+1].x;
-		lv.position.y	= m_Point[i+1].y;
+		lv.position.x	= m_Point[i+1].x * g_Frame_Scale + g_Frame_OffsetX;
+		lv.position.y	= m_Point[i+1].y * g_Frame_Scale + g_Frame_OffsetY;
 		lvs.push_back(lv);
 	}
 
 	if(loop && m_Point.size()>2){
 		LineVertex lv;
-		lv.color.x	= 1.0f;
-		lv.color.y	= 1.0f;
-		lv.color.z	= 1.0f;
+		lv.color.x	= 0.0f;
+		lv.color.y	= 0.0f;
+		lv.color.z	= 0.0f;
 		lv.color.w	= 1.0f;
 
-		lv.position.x	= m_Point.back().x;
-		lv.position.y	= m_Point.back().y;
+		lv.position.x	= m_Point.back().x * g_Frame_Scale + g_Frame_OffsetX;
+		lv.position.y	= m_Point.back().y * g_Frame_Scale + g_Frame_OffsetY;
 		lvs.push_back(lv);
-		lv.position.x	= m_Point.front().x;
-		lv.position.y	= m_Point.front().y;
+		lv.position.x	= m_Point.front().x * g_Frame_Scale + g_Frame_OffsetX;
+		lv.position.y	= m_Point.front().y * g_Frame_Scale + g_Frame_OffsetY;
 		lvs.push_back(lv);
 	}
 

@@ -1,7 +1,7 @@
 cbuffer cbPerFrame
 {
-	float sceneW;
-	float sceneH;
+	float  sceneW;
+	float  sceneH;
 };
 
 struct VS_IN
@@ -28,7 +28,7 @@ VS_OUT VS_Main(VS_IN vIn)
 	proj[2]=float4(0,0,1,0);
 	proj[3]=float4(-1,1,0,1);
 	
-	vOut.pos= mul(float4(vIn.position.xy,0.0,1.0),proj);
+	vOut.pos= mul(float4(vIn.position.x,vIn.position.y,0.0,1.0),proj);
 	vOut.color = vIn.color;
 	return vOut;
 }

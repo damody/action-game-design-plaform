@@ -7,7 +7,7 @@
 #include "DXUTUI.h"
 #include "Vertex.h"
 #include "game/PictureData.h"
-
+#include "DX11/TextureManager.h"
 #include "PointManager.h"
 
 class D3DApp_Frame
@@ -17,6 +17,7 @@ public:
 private:
 	PictureData  *m_Pic;
 	float         m_picX,m_picY;
+	Texture*      m_Templete;
 public:
 	D3DApp_Frame();
 	~D3DApp_Frame();
@@ -30,7 +31,7 @@ public:
 	void LoadBlend();
 	void buildShaderFX();
 	void buildPoint();
-	
+	void SetPic(PictureData  *pic,float x,float y);
 	ID3D11Device* GetDevice()
 	{
 		return m_d3dDevice;
@@ -68,6 +69,9 @@ protected:
 	ID3D11InputLayout*		m_PLayout_Points;
 	ID3DX11EffectScalarVariable*	m_Points_Width;
 	ID3DX11EffectScalarVariable*	m_Points_Height;
+	ID3DX11EffectScalarVariable*	m_Points_Scale;
+	ID3DX11EffectScalarVariable*	m_Points_OffsetX;
+	ID3DX11EffectScalarVariable*	m_Points_OffsetY;
 	
 	LineVertices			m_LineVertices;
 
@@ -77,6 +81,9 @@ protected:
 	ID3D11InputLayout*		m_PLayout_Lines;
 	ID3DX11EffectScalarVariable*	m_Lines_Width;
 	ID3DX11EffectScalarVariable*	m_Lines_Height;
+	ID3DX11EffectScalarVariable*	m_Lines_Scale;
+	ID3DX11EffectScalarVariable*	m_Lines_OffsetX;
+	ID3DX11EffectScalarVariable*	m_Lines_OffsetY;
 	
 	ID3DX11Effect*			m_Effect_Pics;
 	ID3D11Buffer*			m_Buffer_Pics;
@@ -84,7 +91,11 @@ protected:
 	ID3D11InputLayout*		m_PLayout_Pics;
 	ID3DX11EffectScalarVariable*	m_Pics_Width;
 	ID3DX11EffectScalarVariable*	m_Pics_Height;
+	ID3DX11EffectScalarVariable*	m_Pics_Scale;
+	ID3DX11EffectScalarVariable*	m_Pics_OffsetX;
+	ID3DX11EffectScalarVariable*	m_Pics_OffsetY;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Pics;
+	ID3DX11EffectShaderResourceVariable*  m_BMap_Pics;
 	
 
 	D3D11_BUFFER_DESC		m_vbd;

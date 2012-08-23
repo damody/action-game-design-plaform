@@ -23,6 +23,7 @@
 #include "ADGP DesignerDoc.h"
 #include "ADGP DesignerView.h"
 #include "MainFrm.h"
+#include "global.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -48,11 +49,12 @@ BEGIN_MESSAGE_MAP(CADGPDesignerView, CView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONUP()
 	ON_WM_PAINT()
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 // CADGPDesignerView 建構/解構
 
-CADGPDesignerView::CADGPDesignerView():m_LMouseHold(false),m_CtrlPoint(false),m_CtrlPoints(false),m_RecordX(0),m_RecordY(0)
+CADGPDesignerView::CADGPDesignerView():m_LMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0)
 {
 	// TODO: 在此加入建構程式碼
 	m_BodyPoint = m_D3DApp.m_Body.End();
@@ -80,6 +82,8 @@ void CADGPDesignerView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: 在此加入原生資料的描繪程式碼
+	
+	
 	m_D3DApp.buildPoint();
 	m_D3DApp.DrawScene();
 }
@@ -159,6 +163,19 @@ void CADGPDesignerView::InitDx11( HWND hWnd )
 	::UpdateWindow(m_hWndDX11);
 	m_D3DApp.initApp(m_hWndDX11, rect.Width(), rect.Height());
 	m_D3DApp.buildShaderFX();
+
+	//*test
+	PictureData* temp = new PictureData();
+	temp->m_Path = std::string("media\\davis_0.png");
+	temp->m_TextureID = g_TextureManager.AddTexture(temp->m_Path);
+	temp->m_Width = 79;
+	temp->m_Height = 79;
+	temp->m_Row = 10;
+	temp->m_Column = 7;
+	m_D3DApp.SetPic(temp,1,1);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
+	//*/
 }
 
 // CADGPDesignerView 訊息處理常式
@@ -182,26 +199,22 @@ void CADGPDesignerView::OnSize(UINT nType, int cx, int cy)
 		m_D3DApp.OnResize(cx, cy);
 }
 
-
-void CADGPDesignerView::OnLButtonDblClk(UINT nFlags, CPoint point)
+void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	if(!m_CtrlPoint && !m_CtrlPoints)
-	{
+	point.x =(point.x-g_Frame_OffsetX)/g_Frame_Scale;
+	point.y =(point.y-g_Frame_OffsetY)/g_Frame_Scale;
+
+	m_LMouseHold = true;
+
+	if(m_KeyAPress && !m_CtrlPress && !m_ShiftPress){
 		m_D3DApp.m_Body.Add(point.x, point.y);
 		m_BodyPoint = m_D3DApp.m_Body.End();
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
-	
-	CView::OnLButtonDblClk(nFlags, point);
-}
 
-void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	m_LMouseHold = true;
-	if(m_CtrlPoint){
+	if(m_CtrlPress && !m_ShiftPress){
 		if(m_BodyPoint==m_D3DApp.m_Body.End()){
 			m_BodyPoint = m_D3DApp.m_Body.Select(point.x, point.y);
 			m_D3DApp.m_Body.ChangeColor(m_BodyPoint,1.0f,0.0f,0.0f);
@@ -213,12 +226,6 @@ void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 		m_D3DApp.DrawScene();
 	}
 
-	if (m_CtrlPoints)
-	{
-		m_RecordX = point.x;
-		m_RecordY = point.y;
-	}
-	
 	CView::OnLButtonDown(nFlags, point);
 }
 
@@ -232,27 +239,29 @@ void CADGPDesignerView::OnLButtonUp(UINT nFlags, CPoint point)
 void CADGPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	point.x =(point.x-g_Frame_OffsetX)/g_Frame_Scale;
+	point.y =(point.y-g_Frame_OffsetY)/g_Frame_Scale;
 
 	char buff[100];
 	sprintf(buff, "   座標位置( %d , %d )", point.x, point.y);
 	CString str(buff);
 	((CMainFrame*)(this->GetParent()->GetParentFrame()))->SetStatus(str);
 
-	if(m_CtrlPoint && m_LMouseHold && m_BodyPoint != m_D3DApp.m_Body.End()){
+	if(m_CtrlPress && !m_ShiftPress && m_LMouseHold && m_BodyPoint != m_D3DApp.m_Body.End()){
 		m_D3DApp.m_Body.Modify(m_BodyPoint,point.x, point.y);
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
 
-	if (m_CtrlPoints && m_LMouseHold)
+	if (m_ShiftPress && m_CtrlPress && m_LMouseHold)
 	{
 		m_D3DApp.m_Body.Transale(point.x-m_RecordX, point.y-m_RecordY);
-		m_RecordX = point.x;
-		m_RecordY = point.y;
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
 
+	m_RecordX = point.x;
+	m_RecordY = point.y;
 	CView::OnMouseMove(nFlags, point);
 }
 
@@ -263,7 +272,9 @@ const unsigned int KEY_UP	= 38;
 const unsigned int KEY_RIGHT	= 39;
 const unsigned int KEY_DOWN	= 40;
 const unsigned int KEY_DELETE	= 46;
+const unsigned int KEY_A	= 65;
 const unsigned int KEY_C	= 67;
+const unsigned int KEY_E	= 69;
 
 void CADGPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
@@ -276,15 +287,20 @@ void CADGPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar==KEY_CTRL)
 	{
-		m_CtrlPoint = true;
+		m_CtrlPress = true;
 	}
 
 	if (nChar==KEY_SHIFT)
 	{
-		m_CtrlPoints = true;
+		m_ShiftPress = true;
+	}
+
+	if (nChar==KEY_A)
+	{
+		m_KeyAPress = true;
 	}
 	
-	if(m_CtrlPoint && m_BodyPoint != m_D3DApp.m_Body.End()){
+	if(m_CtrlPress && !m_ShiftPress &&m_BodyPoint != m_D3DApp.m_Body.End()){
 		switch(nChar)
 		{
 		case KEY_LEFT:
@@ -308,7 +324,7 @@ void CADGPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		m_D3DApp.DrawScene();
 	}
 
-	if(m_CtrlPoints){
+	if(m_ShiftPress && m_CtrlPress){
 		switch(nChar)
 		{
 		case KEY_LEFT:
@@ -323,7 +339,7 @@ void CADGPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		case KEY_DOWN:
 			m_D3DApp.m_Body.Transale(0,1);
 			break;
-		case KEY_C:
+		case KEY_DELETE:
 			m_D3DApp.m_Body.Clear();
 			m_BodyPoint = m_D3DApp.m_Body.End();
 			break;
@@ -342,9 +358,9 @@ void CADGPDesignerView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar==KEY_CTRL)
 	{
-		m_CtrlPoint = false;
+		m_CtrlPress = false;
 		if(m_BodyPoint != m_D3DApp.m_Body.End()){
-			m_D3DApp.m_Body.ChangeColor(m_BodyPoint,1.0f,1.0f,1.0f);
+			m_D3DApp.m_Body.ChangeColor(m_BodyPoint,0.0f,0.0f,0.0f);
 			m_BodyPoint = m_D3DApp.m_Body.End();
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
@@ -353,7 +369,12 @@ void CADGPDesignerView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar==KEY_SHIFT)
 	{
-		m_CtrlPoints = false;
+		m_ShiftPress = false;
+	}
+
+	if (nChar==KEY_A)
+	{
+		m_KeyAPress = true;
 	}
 
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
@@ -370,4 +391,28 @@ void CADGPDesignerView::OnPaint()
 	GetClientRect(&rect);
 	m_D3DApp.OnResize(rect.Width(), rect.Height());
 	m_D3DApp.DrawScene();
+}
+
+
+BOOL CADGPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	if (m_CtrlPress && !m_ShiftPress)
+	{
+		if (zDelta > 0)
+		{
+			if (g_Frame_Scale < 10)
+			{
+				g_Frame_Scale += 0.1;
+			}
+		}else{
+			if (g_Frame_Scale > 1)
+			{
+				g_Frame_Scale -= 0.1;
+			}
+		}
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
+	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }

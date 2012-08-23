@@ -5,6 +5,7 @@ cbuffer cbPerFrame
 };
  
 Texture2D gMap;
+Texture2D bMap;
 SamplerState gTriLinearSam
 {
 	Filter = MIN_MAG_MIP_LINEAR;
@@ -14,6 +15,7 @@ SamplerState gTriLinearSam
 
 struct VS_IN
 {
+	float2	position	: POSITION;
 	float2	size		: SIZE;
 	float4	picpos 		: PICPOSITION; // x, y, w, h
 };
@@ -35,7 +37,7 @@ VS_OUT VS(VS_IN vIn)
 {
 	VS_OUT vOut;
 	
-	vOut.pos =float4(0.0,0.0,0.0,1.0) ;
+	vOut.pos= float4(vIn.position.xy,0.0,1.0);
 	vOut.size = vIn.size;
 	vOut.picpos = vIn.picpos;
 	return vOut;
@@ -98,9 +100,9 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 
 float4 PS(GS_OUT pIn) : SV_Target
 {
-	float4 color=gMap.Sample( gTriLinearSam, pIn.texcoord );
-	
-	return color;
+	float4 picture=gMap.Sample( gTriLinearSam, pIn.texcoord );
+	float4 background=bMap.Sample( gTriLinearSam, pIn.texcoord );
+	return float4(picture.xyz * picture.w + background.xyz * (1-picture.w),1.0);
 }
 
 RasterizerState NoCull
