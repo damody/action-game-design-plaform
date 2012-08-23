@@ -152,7 +152,6 @@
     <ClInclude Include="ADGP Designer.h" />
     <ClInclude Include="ADGP DesignerDoc.h" />
     <ClInclude Include="ADGP DesignerView.h" />
-    <ClInclude Include="Bounds.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="ClassView.h" />
     <ClInclude Include="ConvStr.h" />
@@ -202,7 +201,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Bounds.cpp" />
     <ClCompile Include="ChildFrm.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
