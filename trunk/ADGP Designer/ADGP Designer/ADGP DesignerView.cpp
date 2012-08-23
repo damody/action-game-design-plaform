@@ -54,10 +54,10 @@ END_MESSAGE_MAP()
 
 // CADGPDesignerView 建構/解構
 
-CADGPDesignerView::CADGPDesignerView():m_LMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0)
+CADGPDesignerView::CADGPDesignerView():m_LMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0)
 {
 	// TODO: 在此加入建構程式碼
-	m_BodyPoint = m_D3DApp.m_Body.End();
+	m_CtrlPoint = m_D3DApp.m_Body.End();
 }
 
 CADGPDesignerView::~CADGPDesignerView()
@@ -209,17 +209,24 @@ void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	if(m_KeyAPress && !m_CtrlPress && !m_ShiftPress){
 		m_D3DApp.m_Body.Add(point.x, point.y);
-		m_BodyPoint = m_D3DApp.m_Body.End();
+		m_CtrlPoint = m_D3DApp.m_Body.End();
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
+
+	if (m_EnableCtrlCenter && !m_ShiftPress && !m_CtrlPress)
+	{
+		m_D3DApp.SetCenter(point.x,point.y);
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
 
 	if(m_CtrlPress && !m_ShiftPress){
-		if(m_BodyPoint==m_D3DApp.m_Body.End()){
-			m_BodyPoint = m_D3DApp.m_Body.Select(point.x, point.y);
-			m_D3DApp.m_Body.ChangeColor(m_BodyPoint,1.0f,0.0f,0.0f);
+		if(m_CtrlPoint==m_D3DApp.m_Body.End()){
+			m_CtrlPoint = m_D3DApp.m_Body.Select(point.x, point.y);
+			m_D3DApp.m_Body.ChangeColor(m_CtrlPoint,1.0f,0.0f,0.0f);
 		}else{
-			m_D3DApp.m_Body.Modify(m_BodyPoint,point.x, point.y);
+			m_D3DApp.m_Body.Modify(m_CtrlPoint,point.x, point.y);
 		}
 		
 		m_D3DApp.buildPoint();
@@ -247,8 +254,8 @@ void CADGPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
 	CString str(buff);
 	((CMainFrame*)(this->GetParent()->GetParentFrame()))->SetStatus(str);
 
-	if(m_CtrlPress && !m_ShiftPress && m_LMouseHold && m_BodyPoint != m_D3DApp.m_Body.End()){
-		m_D3DApp.m_Body.Modify(m_BodyPoint,point.x, point.y);
+	if(m_CtrlPress && !m_ShiftPress && m_LMouseHold && m_CtrlPoint != m_D3DApp.m_Body.End()){
+		m_D3DApp.m_Body.Modify(m_CtrlPoint,point.x, point.y);
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
@@ -256,6 +263,13 @@ void CADGPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
 	if (m_ShiftPress && m_CtrlPress && m_LMouseHold)
 	{
 		m_D3DApp.m_Body.Transale(point.x-m_RecordX, point.y-m_RecordY);
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
+
+	if (m_EnableCtrlCenter && !m_ShiftPress && !m_CtrlPress && m_LMouseHold)
+	{
+		m_D3DApp.SetCenter(point.x,point.y);
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
@@ -299,25 +313,30 @@ void CADGPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		m_KeyAPress = true;
 	}
-	
-	if(m_CtrlPress && !m_ShiftPress &&m_BodyPoint != m_D3DApp.m_Body.End()){
+
+	if(nChar==KEY_C)
+	{
+		m_EnableCtrlCenter = true;
+	}
+
+	if(m_CtrlPress && !m_ShiftPress &&m_CtrlPoint != m_D3DApp.m_Body.End()){
 		switch(nChar)
 		{
 		case KEY_LEFT:
-			m_D3DApp.m_Body.Transale(m_BodyPoint,-1,0);
+			m_D3DApp.m_Body.Transale(m_CtrlPoint,-1,0);
 			break;
 		case KEY_UP:
-			m_D3DApp.m_Body.Transale(m_BodyPoint,0,-1);
+			m_D3DApp.m_Body.Transale(m_CtrlPoint,0,-1);
 			break;
 		case KEY_RIGHT:
-			m_D3DApp.m_Body.Transale(m_BodyPoint,1,0);
+			m_D3DApp.m_Body.Transale(m_CtrlPoint,1,0);
 			break;
 		case KEY_DOWN:
-			m_D3DApp.m_Body.Transale(m_BodyPoint,0,1);
+			m_D3DApp.m_Body.Transale(m_CtrlPoint,0,1);
 			break;
 		case KEY_DELETE:
-			m_D3DApp.m_Body.Erase(m_BodyPoint);
-			m_BodyPoint = m_D3DApp.m_Body.End();
+			m_D3DApp.m_Body.Erase(m_CtrlPoint);
+			m_CtrlPoint = m_D3DApp.m_Body.End();
 			break;
 		}
 		m_D3DApp.buildPoint();
@@ -341,7 +360,7 @@ void CADGPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			break;
 		case KEY_DELETE:
 			m_D3DApp.m_Body.Clear();
-			m_BodyPoint = m_D3DApp.m_Body.End();
+			m_CtrlPoint = m_D3DApp.m_Body.End();
 			break;
 		}
 		m_D3DApp.buildPoint();
@@ -359,9 +378,9 @@ void CADGPDesignerView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar==KEY_CTRL)
 	{
 		m_CtrlPress = false;
-		if(m_BodyPoint != m_D3DApp.m_Body.End()){
-			m_D3DApp.m_Body.ChangeColor(m_BodyPoint,0.0f,0.0f,0.0f);
-			m_BodyPoint = m_D3DApp.m_Body.End();
+		if(m_CtrlPoint != m_D3DApp.m_Body.End()){
+			m_D3DApp.m_Body.ChangeColor(m_CtrlPoint,0.0f,0.0f,0.0f);
+			m_CtrlPoint = m_D3DApp.m_Body.End();
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
@@ -374,7 +393,12 @@ void CADGPDesignerView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar==KEY_A)
 	{
-		m_KeyAPress = true;
+		m_KeyAPress = false;
+	}
+
+	if(nChar==KEY_C)
+	{
+		m_EnableCtrlCenter = false;
 	}
 
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);

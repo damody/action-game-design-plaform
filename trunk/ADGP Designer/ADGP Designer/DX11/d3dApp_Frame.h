@@ -18,6 +18,9 @@ private:
 	PictureData  *m_Pic;
 	float         m_picX,m_picY;
 	Texture*      m_Templete;
+
+	PointManager  m_Center;
+	float	      m_CenterX,m_CenterY;
 public:
 	D3DApp_Frame();
 	~D3DApp_Frame();
@@ -31,7 +34,10 @@ public:
 	void LoadBlend();
 	void buildShaderFX();
 	void buildPoint();
+
 	void SetPic(PictureData  *pic,float x,float y);
+	void SetCenter(float x,float y);
+
 	ID3D11Device* GetDevice()
 	{
 		return m_d3dDevice;

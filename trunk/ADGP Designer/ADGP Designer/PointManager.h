@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "DX11/Vertex.h"
+#include "math/Vector3.h"
 
 struct Point{
 	float x,y;
@@ -13,12 +14,14 @@ class PointManager
 {
 private:
 	Points		 m_Point;
-	const float      m_Size;		
+	const float      m_Size;
+	Vector3		 m_LineColor;
 public:
 	PointManager(void);
 	~PointManager(void);
 
 	void Add(float x, float y,float r=0,float g=0, float b=0, float a=1);
+	void SetLineColor(float r,float g,float b);
 
 	void Clear();
 	bool Empty();
@@ -34,4 +37,5 @@ public:
 	PointVertices BuildPoint();
 	LineVertices  BuildLine(float loop = true);
 };
+typedef std::vector<PointManager> Bounds;
 

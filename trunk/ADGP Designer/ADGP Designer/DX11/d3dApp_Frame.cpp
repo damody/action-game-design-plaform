@@ -5,9 +5,6 @@
 #include <d3d11.h>
 D3DApp_Frame::D3DApp_Frame()
 {
-	
-
-
 	m_d3dDevice = NULL;
 	m_SwapChain = NULL;
 	m_DepthStencilBuffer = NULL;
@@ -40,7 +37,13 @@ D3DApp_Frame::D3DApp_Frame()
 	m_Pics_Height = NULL;
 	m_Buffer_Pics = NULL;
 
-	
+	m_CenterX=0;
+	m_CenterY=0;
+	m_Center.Add(m_CenterX + 3,m_CenterY +3);
+	m_Center.Add(m_CenterX - 3,m_CenterY -3);
+	m_Center.Add(m_CenterX ,m_CenterY);
+	m_Center.Add(m_CenterX - 3,m_CenterY +3);
+	m_Center.Add(m_CenterX + 3,m_CenterY -3);
 
 	m_hAppInst   = GetModuleHandle(NULL);
 
@@ -325,6 +328,8 @@ void D3DApp_Frame::buildPoint()
 	m_LineVertices.clear();
 	LineVertices lvs=m_Body.BuildLine();
 	m_LineVertices.assign(lvs.begin(),lvs.end());
+	lvs=m_Center.BuildLine(false);
+	m_LineVertices.insert(m_LineVertices.end(),lvs.begin(),lvs.end());
 	if (!m_LineVertices.empty())
 	{
 		m_vbd.ByteWidth = (UINT)(sizeof(LineVertex) * m_LineVertices.size());
@@ -407,4 +412,11 @@ void D3DApp_Frame::SetPic( PictureData *pic,float x,float y )
 	m_Pic = pic;
 	m_picX = x;
 	m_picY = y;
+}
+
+void D3DApp_Frame::SetCenter( float x,float y )
+{
+	m_Center.Transale(x-m_CenterX,y-m_CenterY);
+	m_CenterX = x;
+	m_CenterY = y;
 }

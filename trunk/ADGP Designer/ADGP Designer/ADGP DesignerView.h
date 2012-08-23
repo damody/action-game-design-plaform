@@ -23,8 +23,10 @@ private:
 	bool m_CtrlPress;
 	bool m_ShiftPress;
 	bool m_KeyAPress;
+	bool m_EnableCtrlCenter;
 
-	Points::iterator m_BodyPoint;
+	int m_BodyID;
+	Points::iterator m_CtrlPoint;
 	float m_RecordX,m_RecordY;
 
 	

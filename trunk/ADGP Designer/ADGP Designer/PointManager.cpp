@@ -2,7 +2,7 @@
 #include "PointManager.h"
 #include "global.h"
 
-PointManager::PointManager(void):m_Size(5.0f)
+PointManager::PointManager(void):m_Size(5.0f),m_LineColor(Vector3(0,0,0))
 {
 }
 
@@ -92,9 +92,9 @@ LineVertices PointManager::BuildLine( float loop /*= true*/ )
 	{
 		LineVertex lv;
 		
-		lv.color.x	= 0.0f;
-		lv.color.y	= 0.0f;
-		lv.color.z	= 0.0f;
+		lv.color.x	= m_LineColor.x;
+		lv.color.y	= m_LineColor.y;
+		lv.color.z	= m_LineColor.z;
 		lv.color.w	= 1.0f;
 
 		lv.position.x	= m_Point[i].x * g_Frame_Scale + g_Frame_OffsetX;
@@ -107,9 +107,9 @@ LineVertices PointManager::BuildLine( float loop /*= true*/ )
 
 	if(loop && m_Point.size()>2){
 		LineVertex lv;
-		lv.color.x	= 0.0f;
-		lv.color.y	= 0.0f;
-		lv.color.z	= 0.0f;
+		lv.color.x	= m_LineColor.x;
+		lv.color.y	= m_LineColor.y;
+		lv.color.z	= m_LineColor.z;
 		lv.color.w	= 1.0f;
 
 		lv.position.x	= m_Point.back().x * g_Frame_Scale + g_Frame_OffsetX;
@@ -140,4 +140,11 @@ void PointManager::ChangeColor( Points::iterator it_point,float r,float g, float
 	it_point->g = g;
 	it_point->b = b;
 	it_point->a = a;
+}
+
+void PointManager::SetLineColor( float r,float g,float b )
+{
+	m_LineColor.x = r;
+	m_LineColor.y = g;
+	m_LineColor.z = b;
 }
