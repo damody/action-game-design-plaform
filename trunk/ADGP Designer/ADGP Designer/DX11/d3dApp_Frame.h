@@ -13,7 +13,8 @@
 class D3DApp_Frame
 {
 public:
-	PointManager  m_Body;
+	Bounds  m_Body;
+	Bounds  m_Attack;
 private:
 	PictureData  *m_Pic;
 	float         m_picX,m_picY;

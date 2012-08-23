@@ -14,7 +14,7 @@
 
 #pragma once
 #include "DX11\d3dApp_Frame.h"
-
+#include "game\PictureData.h"
 
 class CADGPDesignerView : public CView
 {
@@ -24,11 +24,22 @@ private:
 	bool m_ShiftPress;
 	bool m_KeyAPress;
 	bool m_EnableCtrlCenter;
-
 	int m_BodyID;
+	int m_AttackID;
+
 	Points::iterator m_CtrlPoint;
 	float m_RecordX,m_RecordY;
-
+public:
+	void Init();
+	//Init(FrameInfo *info);
+	void SetPic(PictureData  *pic,float x,float y);
+	void StopEdit();
+	int AddBody();
+	void DeleteBody(int id);
+	void EditBody(int id);
+	int AddAttack();
+	void DeleteAttack(int id);
+	void EditAttack(int id);
 	
 protected: // 僅從序列化建立
 	CADGPDesignerView();

@@ -14,8 +14,8 @@ class PointManager
 {
 private:
 	Points		 m_Point;
-	const float      m_Size;
 	Vector3		 m_LineColor;
+	const float      m_Size;
 public:
 	PointManager(void);
 	~PointManager(void);
@@ -36,6 +36,11 @@ public:
 
 	PointVertices BuildPoint();
 	LineVertices  BuildLine(float loop = true);
+
+	void operator =(PointManager index){
+					this->m_Point = index.m_Point;
+	};
+
 };
 typedef std::vector<PointManager> Bounds;
 

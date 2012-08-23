@@ -54,10 +54,9 @@ END_MESSAGE_MAP()
 
 // CADGPDesignerView 建構/解構
 
-CADGPDesignerView::CADGPDesignerView():m_LMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0)
+CADGPDesignerView::CADGPDesignerView():m_LMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),m_BodyID(-1)
 {
 	// TODO: 在此加入建構程式碼
-	m_CtrlPoint = m_D3DApp.m_Body.End();
 }
 
 CADGPDesignerView::~CADGPDesignerView()
@@ -207,31 +206,55 @@ void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	m_LMouseHold = true;
 
-	if(m_KeyAPress && !m_CtrlPress && !m_ShiftPress){
-		m_D3DApp.m_Body.Add(point.x, point.y);
-		m_CtrlPoint = m_D3DApp.m_Body.End();
-		m_D3DApp.buildPoint();
-		m_D3DApp.DrawScene();
-	}
-
-	if (m_EnableCtrlCenter && !m_ShiftPress && !m_CtrlPress)
+	if (m_EnableCtrlCenter && m_CtrlPress)
 	{
 		m_D3DApp.SetCenter(point.x,point.y);
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
 
-	if(m_CtrlPress && !m_ShiftPress){
-		if(m_CtrlPoint==m_D3DApp.m_Body.End()){
-			m_CtrlPoint = m_D3DApp.m_Body.Select(point.x, point.y);
-			m_D3DApp.m_Body.ChangeColor(m_CtrlPoint,1.0f,0.0f,0.0f);
-		}else{
-			m_D3DApp.m_Body.Modify(m_CtrlPoint,point.x, point.y);
+	if(!m_D3DApp.m_Body.empty() && m_BodyID > -1){
+		if(m_KeyAPress && !m_CtrlPress && !m_ShiftPress){
+			m_D3DApp.m_Body[m_BodyID].Add(point.x, point.y);
+			m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].End();
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
 		}
-		
-		m_D3DApp.buildPoint();
-		m_D3DApp.DrawScene();
+		if(m_CtrlPress && !m_ShiftPress){
+			if(m_CtrlPoint==m_D3DApp.m_Body[m_BodyID].End()){
+				m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].Select(point.x, point.y);
+				m_D3DApp.m_Body[m_BodyID].ChangeColor(m_CtrlPoint,1.0f,0.0f,0.0f);
+			}else{
+				m_D3DApp.m_Body[m_BodyID].Modify(m_CtrlPoint,point.x, point.y);
+			}
+
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+
 	}
+
+	if(!m_D3DApp.m_Attack.empty() && m_AttackID > -1){
+		if(m_KeyAPress && !m_CtrlPress && !m_ShiftPress){
+			m_D3DApp.m_Attack[m_AttackID].Add(point.x, point.y);
+			m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].End();
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+		if(m_CtrlPress && !m_ShiftPress){
+			if(m_CtrlPoint==m_D3DApp.m_Attack[m_AttackID].End()){
+				m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].Select(point.x, point.y);
+				m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_CtrlPoint,1.0f,0.0f,0.0f);
+			}else{
+				m_D3DApp.m_Attack[m_AttackID].Modify(m_CtrlPoint,point.x, point.y);
+			}
+
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+	}
+
+	
 
 	CView::OnLButtonDown(nFlags, point);
 }
@@ -254,20 +277,38 @@ void CADGPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
 	CString str(buff);
 	((CMainFrame*)(this->GetParent()->GetParentFrame()))->SetStatus(str);
 
-	if(m_CtrlPress && !m_ShiftPress && m_LMouseHold && m_CtrlPoint != m_D3DApp.m_Body.End()){
-		m_D3DApp.m_Body.Modify(m_CtrlPoint,point.x, point.y);
-		m_D3DApp.buildPoint();
-		m_D3DApp.DrawScene();
+
+	if(!m_D3DApp.m_Body.empty() && m_BodyID > -1){
+		if(m_CtrlPress && !m_ShiftPress && m_LMouseHold && m_CtrlPoint != m_D3DApp.m_Body[m_BodyID].End()){
+			m_D3DApp.m_Body[m_BodyID].Modify(m_CtrlPoint,point.x, point.y);
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+
+		if (m_ShiftPress && m_CtrlPress && m_LMouseHold)
+		{
+			m_D3DApp.m_Body[m_BodyID].Transale(point.x-m_RecordX, point.y-m_RecordY);
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
 	}
 
-	if (m_ShiftPress && m_CtrlPress && m_LMouseHold)
-	{
-		m_D3DApp.m_Body.Transale(point.x-m_RecordX, point.y-m_RecordY);
-		m_D3DApp.buildPoint();
-		m_D3DApp.DrawScene();
+	if(!m_D3DApp.m_Attack.empty() && m_AttackID > -1){
+		if(m_CtrlPress && !m_ShiftPress && m_LMouseHold && m_CtrlPoint != m_D3DApp.m_Attack[m_AttackID].End()){
+			m_D3DApp.m_Attack[m_AttackID].Modify(m_CtrlPoint,point.x, point.y);
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+
+		if (m_ShiftPress && m_CtrlPress && m_LMouseHold)
+		{
+			m_D3DApp.m_Attack[m_AttackID].Transale(point.x-m_RecordX, point.y-m_RecordY);
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
 	}
 
-	if (m_EnableCtrlCenter && !m_ShiftPress && !m_CtrlPress && m_LMouseHold)
+	if (m_EnableCtrlCenter && m_CtrlPress && m_LMouseHold)
 	{
 		m_D3DApp.SetCenter(point.x,point.y);
 		m_D3DApp.buildPoint();
@@ -289,6 +330,9 @@ const unsigned int KEY_DELETE	= 46;
 const unsigned int KEY_A	= 65;
 const unsigned int KEY_C	= 67;
 const unsigned int KEY_E	= 69;
+const unsigned int KEY_ADD	= 107;
+const unsigned int KEY_SUB	= 109;
+const unsigned int KEY_EQUAL	= 187;
 
 void CADGPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
@@ -316,55 +360,108 @@ void CADGPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if(nChar==KEY_C)
 	{
+		StopEdit();
 		m_EnableCtrlCenter = true;
 	}
 
-	if(m_CtrlPress && !m_ShiftPress &&m_CtrlPoint != m_D3DApp.m_Body.End()){
-		switch(nChar)
-		{
-		case KEY_LEFT:
-			m_D3DApp.m_Body.Transale(m_CtrlPoint,-1,0);
-			break;
-		case KEY_UP:
-			m_D3DApp.m_Body.Transale(m_CtrlPoint,0,-1);
-			break;
-		case KEY_RIGHT:
-			m_D3DApp.m_Body.Transale(m_CtrlPoint,1,0);
-			break;
-		case KEY_DOWN:
-			m_D3DApp.m_Body.Transale(m_CtrlPoint,0,1);
-			break;
-		case KEY_DELETE:
-			m_D3DApp.m_Body.Erase(m_CtrlPoint);
-			m_CtrlPoint = m_D3DApp.m_Body.End();
-			break;
+	if(!m_D3DApp.m_Body.empty() && m_BodyID > -1){
+		if(m_CtrlPress && !m_ShiftPress &&m_CtrlPoint != m_D3DApp.m_Body[m_BodyID].End()){
+			switch(nChar)
+			{
+			case KEY_LEFT:
+				m_D3DApp.m_Body[m_BodyID].Transale(m_CtrlPoint,-1,0);
+				break;
+			case KEY_UP:
+				m_D3DApp.m_Body[m_BodyID].Transale(m_CtrlPoint,0,-1);
+				break;
+			case KEY_RIGHT:
+				m_D3DApp.m_Body[m_BodyID].Transale(m_CtrlPoint,1,0);
+				break;
+			case KEY_DOWN:
+				m_D3DApp.m_Body[m_BodyID].Transale(m_CtrlPoint,0,1);
+				break;
+			case KEY_DELETE:
+				m_D3DApp.m_Body[m_BodyID].Erase(m_CtrlPoint);
+				m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].End();
+				break;
+			}
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
 		}
-		m_D3DApp.buildPoint();
-		m_D3DApp.DrawScene();
+
+		if(m_ShiftPress && m_CtrlPress){
+			switch(nChar)
+			{
+			case KEY_LEFT:
+				m_D3DApp.m_Body[m_BodyID].Transale(-1,0);
+				break;
+			case KEY_UP:
+				m_D3DApp.m_Body[m_BodyID].Transale(0,-1);
+				break;
+			case KEY_RIGHT:
+				m_D3DApp.m_Body[m_BodyID].Transale(1,0);
+				break;
+			case KEY_DOWN:
+				m_D3DApp.m_Body[m_BodyID].Transale(0,1);
+				break;
+			case KEY_DELETE:
+				m_D3DApp.m_Body[m_BodyID].Clear();
+				m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].End();
+				break;
+			}
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
 	}
 
-	if(m_ShiftPress && m_CtrlPress){
-		switch(nChar)
-		{
-		case KEY_LEFT:
-			m_D3DApp.m_Body.Transale(-1,0);
-			break;
-		case KEY_UP:
-			m_D3DApp.m_Body.Transale(0,-1);
-			break;
-		case KEY_RIGHT:
-			m_D3DApp.m_Body.Transale(1,0);
-			break;
-		case KEY_DOWN:
-			m_D3DApp.m_Body.Transale(0,1);
-			break;
-		case KEY_DELETE:
-			m_D3DApp.m_Body.Clear();
-			m_CtrlPoint = m_D3DApp.m_Body.End();
-			break;
+	if(!m_D3DApp.m_Attack.empty() && m_AttackID > -1){
+		if(m_CtrlPress && !m_ShiftPress &&m_CtrlPoint != m_D3DApp.m_Attack[m_AttackID].End()){
+			switch(nChar)
+			{
+			case KEY_LEFT:
+				m_D3DApp.m_Attack[m_AttackID].Transale(m_CtrlPoint,-1,0);
+				break;
+			case KEY_UP:
+				m_D3DApp.m_Attack[m_AttackID].Transale(m_CtrlPoint,0,-1);
+				break;
+			case KEY_RIGHT:
+				m_D3DApp.m_Attack[m_AttackID].Transale(m_CtrlPoint,1,0);
+				break;
+			case KEY_DOWN:
+				m_D3DApp.m_Attack[m_AttackID].Transale(m_CtrlPoint,0,1);
+				break;
+			case KEY_DELETE:
+				m_D3DApp.m_Attack[m_AttackID].Erase(m_CtrlPoint);
+				m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].End();
+				break;
+			}
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
 		}
-		m_D3DApp.buildPoint();
-		m_D3DApp.DrawScene();
+
+		if(m_ShiftPress && m_CtrlPress){
+			switch(nChar)
+			{
+			case KEY_LEFT:
+				m_D3DApp.m_Attack[m_AttackID].Transale(-1,0);
+				break;
+			case KEY_UP:
+				m_D3DApp.m_Attack[m_AttackID].Transale(0,-1);
+				break;
+			case KEY_RIGHT:
+				m_D3DApp.m_Attack[m_AttackID].Transale(1,0);
+				break;
+			case KEY_DOWN:
+				m_D3DApp.m_Attack[m_AttackID].Transale(0,1);
+				break;
+			case KEY_DELETE:
+				m_D3DApp.m_Attack[m_AttackID].Clear();
+				m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].End();
+				break;
+			}
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
 	}
 
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
@@ -378,11 +475,25 @@ void CADGPDesignerView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar==KEY_CTRL)
 	{
 		m_CtrlPress = false;
-		if(m_CtrlPoint != m_D3DApp.m_Body.End()){
-			m_D3DApp.m_Body.ChangeColor(m_CtrlPoint,0.0f,0.0f,0.0f);
-			m_CtrlPoint = m_D3DApp.m_Body.End();
-			m_D3DApp.buildPoint();
-			m_D3DApp.DrawScene();
+
+		if(!m_D3DApp.m_Body.empty() && m_BodyID > -1)
+		{
+			if(m_CtrlPoint != m_D3DApp.m_Body[m_BodyID].End()){
+				m_D3DApp.m_Body[m_BodyID].ChangeColor(m_CtrlPoint,0.0f,0.0f,0.0f);
+				m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].End();
+				m_D3DApp.buildPoint();
+				m_D3DApp.DrawScene();
+			}
+		}
+
+		if(!m_D3DApp.m_Attack.empty() && m_AttackID > -1)
+		{
+			if(m_CtrlPoint != m_D3DApp.m_Attack[m_AttackID].End()){
+				m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_CtrlPoint,0.0f,0.0f,1.0f);
+				m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].End();
+				m_D3DApp.buildPoint();
+				m_D3DApp.DrawScene();
+			}
 		}
 	}
 
@@ -396,11 +507,21 @@ void CADGPDesignerView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 		m_KeyAPress = false;
 	}
 
-	if(nChar==KEY_C)
+	//*test
+	if(nChar==KEY_ADD)
 	{
-		m_EnableCtrlCenter = false;
+		EditBody(AddBody());
 	}
+	if(nChar==KEY_SUB)
+	{
+		DeleteBody(m_BodyID);
 
+	}
+	if (nChar==KEY_EQUAL)
+	{
+		EditAttack(AddAttack());
+	}
+	//*/
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
@@ -427,12 +548,12 @@ BOOL CADGPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		{
 			if (g_Frame_Scale < 10)
 			{
-				g_Frame_Scale += 0.1;
+				g_Frame_Scale += 0.1f;
 			}
 		}else{
 			if (g_Frame_Scale > 1)
 			{
-				g_Frame_Scale -= 0.1;
+				g_Frame_Scale -= 0.1f;
 			}
 		}
 		m_D3DApp.buildPoint();
@@ -440,3 +561,75 @@ BOOL CADGPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	}
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }
+
+//Functions
+void CADGPDesignerView::Init()
+{
+	StopEdit();
+	m_D3DApp.m_Attack.clear();
+	m_D3DApp.m_Body.clear();
+}
+
+void CADGPDesignerView::SetPic( PictureData *pic,float x,float y )
+{
+	m_D3DApp.SetPic(pic,x,y);
+}
+
+void CADGPDesignerView::StopEdit()
+{
+	m_BodyID = -1;
+	m_AttackID = -1;
+	m_EnableCtrlCenter = false;
+}
+
+int CADGPDesignerView::AddBody()
+{
+	m_D3DApp.m_Body.push_back(PointManager());
+	return m_D3DApp.m_Body.size()-1;
+}
+
+void CADGPDesignerView::EditBody( int id )
+{
+	StopEdit();
+	if(id < (int)m_D3DApp.m_Body.size() && id>-1){
+				m_BodyID=id;
+				m_CtrlPoint = m_D3DApp.m_Body[id].End();
+	}
+}
+
+void CADGPDesignerView::DeleteBody( int id )
+{
+	StopEdit();
+	if(id < (int)m_D3DApp.m_Body.size() && id>-1){
+		m_D3DApp.m_Body.erase(m_D3DApp.m_Body.begin()+id);
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
+}
+
+int CADGPDesignerView::AddAttack()
+{
+	m_D3DApp.m_Attack.push_back(PointManager());
+	return m_D3DApp.m_Attack.size()-1;
+}
+
+void CADGPDesignerView::EditAttack( int id )
+{
+	StopEdit();
+	if(id < (int)m_D3DApp.m_Attack.size() && id>-1){
+		m_AttackID=id;
+		m_CtrlPoint = m_D3DApp.m_Attack[id].End();
+	}
+}
+
+void CADGPDesignerView::DeleteAttack( int id )
+{
+	StopEdit();
+	if(id < (int)m_D3DApp.m_Attack.size() && id>-1){
+		m_D3DApp.m_Attack.erase(m_D3DApp.m_Attack.begin()+id);
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
+}
+
+

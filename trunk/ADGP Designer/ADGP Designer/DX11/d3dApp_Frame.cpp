@@ -312,8 +312,14 @@ void D3DApp_Frame::buildPoint()
 	//Point
 	ReleaseCOM(m_Buffer_Points);
 	m_PointVertices.clear();
-	PointVertices pvs=m_Body.BuildPoint();
-	m_PointVertices.assign(pvs.begin(),pvs.end());
+	for(Bounds::iterator it=m_Body.begin(); it!=m_Body.end();++it){
+		PointVertices pvs=it->BuildPoint();
+		m_PointVertices.insert(m_PointVertices.end(),pvs.begin(),pvs.end());
+	}
+	for(Bounds::iterator it=m_Attack.begin(); it!=m_Attack.end();++it){
+		PointVertices pvs=it->BuildPoint();
+		m_PointVertices.insert(m_PointVertices.end(),pvs.begin(),pvs.end());
+	}
 	if (!m_PointVertices.empty())
 	{
 		m_vbd.ByteWidth = (UINT)(sizeof(PointVertex) * m_PointVertices.size());
@@ -326,9 +332,16 @@ void D3DApp_Frame::buildPoint()
 	//Line
 	ReleaseCOM(m_Buffer_Lines);
 	m_LineVertices.clear();
-	LineVertices lvs=m_Body.BuildLine();
-	m_LineVertices.assign(lvs.begin(),lvs.end());
-	lvs=m_Center.BuildLine(false);
+	for(Bounds::iterator it=m_Body.begin(); it!=m_Body.end();++it){
+		LineVertices lvs=it->BuildLine();
+		m_LineVertices.insert(m_LineVertices.end(),lvs.begin(),lvs.end());
+	}
+	for(Bounds::iterator it=m_Attack.begin(); it!=m_Attack.end();++it){
+		it->SetLineColor(0,0,1);
+		LineVertices lvs=it->BuildLine();
+		m_LineVertices.insert(m_LineVertices.end(),lvs.begin(),lvs.end());
+	}
+	LineVertices lvs=m_Center.BuildLine(false);
 	m_LineVertices.insert(m_LineVertices.end(),lvs.begin(),lvs.end());
 	if (!m_LineVertices.empty())
 	{
