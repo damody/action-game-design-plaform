@@ -142,6 +142,17 @@ void PointManager::ChangeColor( Points::iterator it_point,float r,float g, float
 	it_point->a = a;
 }
 
+void PointManager::ChangeColor( float r,float g, float b,float a/*=1.0f*/ )
+{
+	for (Points::iterator it=m_Point.begin(); it != m_Point.end(); it++)
+	{
+		it->r = r;
+		it->g = g;
+		it->b = b;
+		it->a = a;
+	}
+}
+
 void PointManager::SetLineColor( float r,float g,float b )
 {
 	m_LineColor.x = r;

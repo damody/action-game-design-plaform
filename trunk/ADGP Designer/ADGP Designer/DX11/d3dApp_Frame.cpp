@@ -337,7 +337,6 @@ void D3DApp_Frame::buildPoint()
 		m_LineVertices.insert(m_LineVertices.end(),lvs.begin(),lvs.end());
 	}
 	for(Bounds::iterator it=m_Attack.begin(); it!=m_Attack.end();++it){
-		it->SetLineColor(0,0,1);
 		LineVertices lvs=it->BuildLine();
 		m_LineVertices.insert(m_LineVertices.end(),lvs.begin(),lvs.end());
 	}

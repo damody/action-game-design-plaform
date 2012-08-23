@@ -223,7 +223,7 @@ void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 		if(m_CtrlPress && !m_ShiftPress){
 			if(m_CtrlPoint==m_D3DApp.m_Body[m_BodyID].End()){
 				m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].Select(point.x, point.y);
-				m_D3DApp.m_Body[m_BodyID].ChangeColor(m_CtrlPoint,1.0f,0.0f,0.0f);
+				m_D3DApp.m_Body[m_BodyID].ChangeColor(m_CtrlPoint,1.0f,1.0f,0.0f);
 			}else{
 				m_D3DApp.m_Body[m_BodyID].Modify(m_CtrlPoint,point.x, point.y);
 			}
@@ -244,7 +244,7 @@ void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 		if(m_CtrlPress && !m_ShiftPress){
 			if(m_CtrlPoint==m_D3DApp.m_Attack[m_AttackID].End()){
 				m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].Select(point.x, point.y);
-				m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_CtrlPoint,1.0f,0.0f,0.0f);
+				m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_CtrlPoint,1.0f,1.0f,0.0f);
 			}else{
 				m_D3DApp.m_Attack[m_AttackID].Modify(m_CtrlPoint,point.x, point.y);
 			}
@@ -489,7 +489,7 @@ void CADGPDesignerView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 		if(!m_D3DApp.m_Attack.empty() && m_AttackID > -1)
 		{
 			if(m_CtrlPoint != m_D3DApp.m_Attack[m_AttackID].End()){
-				m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_CtrlPoint,0.0f,0.0f,1.0f);
+				m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_CtrlPoint,0.0f,0.0f,0.0f);
 				m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].End();
 				m_D3DApp.buildPoint();
 				m_D3DApp.DrawScene();
@@ -577,8 +577,23 @@ void CADGPDesignerView::SetPic( PictureData *pic,float x,float y )
 
 void CADGPDesignerView::StopEdit()
 {
-	m_BodyID = -1;
-	m_AttackID = -1;
+	if (m_BodyID > -1)
+	{
+		m_D3DApp.m_Body[m_BodyID].SetLineColor(0,0,1);
+		m_D3DApp.m_Body[m_BodyID].ChangeColor(0,0,1);
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+		m_BodyID = -1;
+	}
+	if (m_AttackID > -1)
+	{
+		m_D3DApp.m_Attack[m_AttackID].SetLineColor(1,0,0);
+		m_D3DApp.m_Attack[m_AttackID].ChangeColor(1,0,0);
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+		m_AttackID = -1;
+	}
+	
 	m_EnableCtrlCenter = false;
 }
 
@@ -594,6 +609,10 @@ void CADGPDesignerView::EditBody( int id )
 	if(id < (int)m_D3DApp.m_Body.size() && id>-1){
 				m_BodyID=id;
 				m_CtrlPoint = m_D3DApp.m_Body[id].End();
+				m_D3DApp.m_Body[id].SetLineColor(0,0,0);
+				m_D3DApp.m_Body[id].ChangeColor(0,0,0);
+				m_D3DApp.buildPoint();
+				m_D3DApp.DrawScene();
 	}
 }
 
@@ -619,6 +638,10 @@ void CADGPDesignerView::EditAttack( int id )
 	if(id < (int)m_D3DApp.m_Attack.size() && id>-1){
 		m_AttackID=id;
 		m_CtrlPoint = m_D3DApp.m_Attack[id].End();
+		m_D3DApp.m_Attack[id].SetLineColor(0,0,0);
+		m_D3DApp.m_Attack[id].ChangeColor(0,0,0);
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
 	}
 }
 

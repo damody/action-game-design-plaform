@@ -33,7 +33,7 @@ public:
 	void Modify(Points::iterator it_point,float x,float y);
 	void Transale(Points::iterator it_point,float x,float y);
 	void ChangeColor(Points::iterator it_point,float r,float g, float b,float a=1.0f);
-
+	void ChangeColor(float r,float g, float b,float a=1.0f);
 	PointVertices BuildPoint();
 	LineVertices  BuildLine(float loop = true);
 
