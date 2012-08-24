@@ -38,10 +38,26 @@ DWORD WINAPI thread_function(LPVOID param)
 
 	char text[256];
 
+	int i=0;
+
 	for(;;)
 	{
+#ifdef _DEBUG
+		if(i % 1000000 != 0)
+		{
+			i++;
+			continue;
+		}
+#else
+		if(i % 10000000 != 0)
+		{
+			i++;
+			continue;
+		}
+#endif
 		text[0] = 0;
-		scanf("%[^\n]s", text);
+		//scanf("%[^\n]s", text);
+		strcpy(text, "Hello Stress TEST.");
 		if(strlen(text))
 		{
 			message mes;
@@ -69,6 +85,8 @@ DWORD WINAPI thread_function(LPVOID param)
 		}
 
 		std::fflush(stdin);
+
+		i = 1;
 	}
 
 	return 1;
