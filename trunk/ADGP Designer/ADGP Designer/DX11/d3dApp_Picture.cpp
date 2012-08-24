@@ -55,7 +55,6 @@ D3DApp_Picture::D3DApp_Picture()
 
 	m_FrameStats = L"";
 
-	m_DXUT_UI = NULL;
 	//mFont               = 0;
 
 	m_MainWndCaption = L"D3D11 Application";
@@ -75,13 +74,8 @@ D3DApp_Picture::~D3DApp_Picture()
 	ReleaseCOM(m_RenderTargetView);
 	ReleaseCOM(m_DepthStencilView);
 	ReleaseCOM(m_DeviceContext);
-
-	// 	ReleaseCOM(m_Effect_Pics);
-	// 	ReleaseCOM(m_PLayout_Pics);
-	if (m_DXUT_UI)
-		delete m_DXUT_UI;
-	//	ReleaseCOM(mFont);
 }
+
 HINSTANCE D3DApp_Picture::getAppInst()
 {
 	return m_hAppInst;
@@ -106,22 +100,53 @@ void D3DApp_Picture::initApp(HWND hWnd, int w, int h)
 
 void D3DApp_Picture::initDirect3D()
 {
-	m_DXUT_UI = new DXUTUI;
-	m_DXUT_UI->InitDXUT();
-	m_DXUT_UI->SetWindow(m_hMainWnd);
-	m_DXUT_UI->CreateDevice(mClientWidth, mClientHeight);
-	m_d3dDevice = m_DXUT_UI->GetDevice();
-	g_d3dDevice = m_DXUT_UI->GetDevice();
-	m_DeviceContext = m_DXUT_UI->GetDeviceContext();
-	m_SwapChain = m_DXUT_UI->GetSwapChaine();
+	// Fill out a DXGI_SWAP_CHAIN_DESC to describe our swap chain.
+	DXGI_SWAP_CHAIN_DESC sd;
+	sd.BufferDesc.Width  = mClientWidth;
+	sd.BufferDesc.Height = mClientHeight;
+	sd.BufferDesc.RefreshRate.Numerator = 60;
+	sd.BufferDesc.RefreshRate.Denominator = 1;
+	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+
+	// No multisampling.
+	sd.SampleDesc.Count   = 1;
+	sd.SampleDesc.Quality = 0;
+	sd.BufferUsage  = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	sd.BufferCount  = 1;
+	sd.OutputWindow = m_hMainWnd;
+	sd.Windowed     = true;
+	sd.SwapEffect   = DXGI_SWAP_EFFECT_DISCARD;
+	sd.Flags        = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH ;
+
+	// Create the device.
+	UINT createDeviceFlags = D3D11_CREATE_DEVICE_DEBUG;
+	D3D_FEATURE_LEVEL  FeatureLevelsRequested = D3D_FEATURE_LEVEL_11_0;
+	UINT               numLevelsRequested = 1;
+	HR( D3D11CreateDeviceAndSwapChain(
+		0,                 //default adapter
+		m_d3dDriverType,
+		0,                 // no software device
+		createDeviceFlags,
+		&FeatureLevelsRequested, 
+		numLevelsRequested,
+		D3D11_SDK_VERSION,
+		&sd,
+		&m_SwapChain,
+		&m_d3dDevice,
+		&m_FeatureLevelsSupported,
+		&m_DeviceContext) );
+
+	m_TextureManager = new TextureManager(m_d3dDevice);
 	OnResize(mClientWidth, mClientHeight);
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_vbd.CPUAccessFlags = 0;
 	m_vbd.MiscFlags = 0;
-
-	m_Templete=new Texture("media\\Tamplete.png");
+	int t = m_TextureManager->AddTexture("media\\Tamplete.png");
+	m_Templete = m_TextureManager->GetTexture(t).get();
 }
 
 
@@ -135,9 +160,8 @@ void D3DApp_Picture::OnResize(int w, int h)
 	ReleaseCOM(m_RenderTargetView);
 	ReleaseCOM(m_DepthStencilView);
 	ReleaseCOM(m_DepthStencilBuffer);
-	DXUTResizeDXGIBuffers(mClientWidth, mClientHeight, 0);
 	// Resize the swap chain and recreate the render target view.
-	//HR(mSwapChain->ResizeBuffers(2, mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, 0));
+	HR(m_SwapChain->ResizeBuffers(1, mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, 0));
 	ID3D11Texture2D* backBuffer;
 	HR(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
 	HR(m_d3dDevice->CreateRenderTargetView(backBuffer, 0, &m_RenderTargetView));
@@ -190,7 +214,6 @@ void D3DApp_Picture::OnResize(int w, int h)
 
 void D3DApp_Picture::DrawScene()
 {
-	m_DXUT_UI->UpdataUI(0.1f);
 	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, m_ClearColor);
 	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);	
 	m_DeviceContext->OMSetDepthStencilState(m_pDepthStencil_ZWriteOFF, 0);
@@ -201,7 +224,7 @@ void D3DApp_Picture::DrawScene()
 		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 		m_DeviceContext->IASetInputLayout(m_PLayout_Pics);
 		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Pics, &stride2, &offset);
-		m_PMap_Pics->SetResource(g_TextureManager.GetTexture(m_Pic->m_TextureID)->texture);
+		m_PMap_Pics->SetResource(GetTextureManager().GetTexture(m_Pic->m_TextureID)->texture);
 		m_BMap_Pics->SetResource(m_Templete->texture);
 		m_PTech_Pics->GetPassByIndex(0)->Apply(0, m_DeviceContext);
 		m_DeviceContext->Draw(1,0);

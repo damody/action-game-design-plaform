@@ -841,22 +841,22 @@ void CClassView::OnSelectItem(HTREEITEM item)
 		varBool.vt = VT_BOOL;
 		varBool.boolVal = false;
 
-		/*varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(0).x;
+		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(0).x;
 		propRoot->GetSubItem(0)->GetSubItem(1)->GetSubItem(0)->SetValue(varFloat);
 		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(0).y;
 		propRoot->GetSubItem(0)->GetSubItem(1)->GetSubItem(1)->SetValue(varFloat);
 		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(1).x;
-		propRoot->GetSubItem(1)->GetSubItem(2)->GetSubItem(0)->SetValue(varFloat);
+		propRoot->GetSubItem(0)->GetSubItem(2)->GetSubItem(0)->SetValue(varFloat);
 		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(1).y;
-		propRoot->GetSubItem(1)->GetSubItem(2)->GetSubItem(1)->SetValue(varFloat);
+		propRoot->GetSubItem(0)->GetSubItem(2)->GetSubItem(1)->SetValue(varFloat);
 		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(2).x;
-		propRoot->GetSubItem(2)->GetSubItem(3)->GetSubItem(0)->SetValue(varFloat);
+		propRoot->GetSubItem(0)->GetSubItem(3)->GetSubItem(0)->SetValue(varFloat);
 		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(2).y;
-		propRoot->GetSubItem(2)->GetSubItem(3)->GetSubItem(1)->SetValue(varFloat);
+		propRoot->GetSubItem(0)->GetSubItem(3)->GetSubItem(1)->SetValue(varFloat);
 		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_ZWidth;
-		propRoot->GetSubItem(3)->SetValue(varFloat);
+		propRoot->GetSubItem(1)->SetValue(varFloat);
 		varInt.intVal = m_propMap[pItem].m_Bodys.at(0).m_Kind;
-		propRoot->GetSubItem(4)->SetValue(varInt);*/
+		propRoot->GetSubItem(2)->SetValue(varInt);
 	}
 
 	CPropertiesWnd::GetInstance()->m_lastSelectedItem = item;
