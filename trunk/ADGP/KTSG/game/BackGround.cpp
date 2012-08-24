@@ -217,10 +217,11 @@ void BackGround::Update( float dt )
 void BackGround::BuildPoint()
 {
 	m_CRVerteices.clear();
-	int i=0;
-	float cut=g_Camera->Offsidelength()*0.19;
+	
 	for (ColorRects::iterator it=m_ColorRects.begin();it != m_ColorRects.end();it++)
 	{
+		int i=0;
+		float cut=g_Camera->Offsidelength()*0.19;
 		for (float w=it->m_Width; w>0 ;w-=cut,i++)
 		{
 			if(g_Camera.get())
@@ -412,9 +413,8 @@ bool BackGround::InBan( const Vector3& pIn )
 	return false;
 }
 
-Vector3 BackGround::AlignmentBan( const Vector3& pIn ,const Vector3& p0 , bool* onTop)
+Vector3 BackGround::AlignmentBan( const Vector3& pIn ,const Vector3& p0)
 {
-	*onTop = false;
 	if(InBan(pIn))
 	{
 		if(!InBan(Vector3(p0.x,pIn.y,pIn.z)))
@@ -429,7 +429,6 @@ Vector3 BackGround::AlignmentBan( const Vector3& pIn ,const Vector3& p0 , bool* 
 
 		if(!InBan(Vector3(pIn.x,p0.y,pIn.z)))
 		{
-			if(p0.y > InWinchBan(pIn)->getMaximum().y)*onTop=true;
 			return Vector3(pIn.x,p0.y,pIn.z);
 		}
 	}
@@ -467,4 +466,39 @@ AxisAlignedBoxs::iterator BackGround::InWinchBan( const Vector3& pIn )
 		}
 	}
 	return m_BanBounding.end();
+}
+
+bool BackGround::AboveSpaceBottom( const Vector3& pIn )
+{
+	for (AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ;it++)
+	{
+		Vector3 min = it->getMinimum();
+		Vector3 max = it->getMaximum();
+
+		if (pIn.x > min.x && pIn.x <max.x && pIn.z > min.z && pIn.z < max.z && pIn.y > min.y)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool BackGround::AboveBanTop( const Vector3& pIn )
+{
+	for (AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ;it++)
+	{
+		Vector3 min = it->getMinimum();
+		Vector3 max = it->getMaximum();
+
+		if (pIn.x > min.x && pIn.x <max.x && pIn.z > min.z && pIn.z < max.z && pIn.y > max.y)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool BackGround::AboveGround(const Vector3& pIn)
+{
+	return AboveSpaceBottom(pIn) && AboveBanTop(pIn);
 }

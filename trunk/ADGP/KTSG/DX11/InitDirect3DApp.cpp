@@ -1205,13 +1205,6 @@ void InitDirect3DApp::BackgroundDataUpdate()
 	m_Shadow_lightDir->SetRawValue(&pl.m_Direction[0], 0, sizeof(float)*3);
 	m_Shadow_lightStr->SetFloat(pl.m_LightStrength*0.1f);
 
-	for(Heroes::iterator it=g_HeroMG.HeroVectorBegin(); it !=g_HeroMG.HeroVectorEnd() ; it++)
-	{
-		(*it)->SetPosition(g_BGManager.CurrentBG()->AlignmentSpace((*it)->Position()));
-		bool onTop;
-		(*it)->SetPosition(g_BGManager.CurrentBG()->AlignmentBan((*it)->Position(),(*it)->Past_Position(), &onTop));
-		if(onTop)(*it)->OnGround();
-	}
 	
 	for (Chees::iterator it = g_ObjectMG.CheeVectorBegin(); it != g_ObjectMG.CheeVectorEnd() ; it++)
 	{

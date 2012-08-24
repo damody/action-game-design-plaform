@@ -105,10 +105,15 @@ public:
 
 	bool    InSpace(const Vector3& pIn);//判斷vIn是否在地圖的可行範圍
 	Vector3	AlignmentSpace(const Vector3& pIn);//判斷vIn是否在地圖的可行範圍，並校正
+	bool    AboveSpaceBottom(const Vector3& pIn);
+
 
 	bool    InBan(const Vector3& pIn);//判斷vIn是否在地圖的禁足範圍
 	AxisAlignedBoxs::iterator InWinchBan(const Vector3& pIn);
-	Vector3	AlignmentBan(const Vector3& pIn ,const Vector3& pIn_past , bool* onTop);//判斷vIn是否在地圖的禁足範圍，並校正
+	Vector3	AlignmentBan(const Vector3& pIn ,const Vector3& pIn_past);//判斷vIn是否在地圖的禁足範圍，並校正
+	bool    AboveBanTop(const Vector3& pIn);
+
+	bool	AboveGround(const Vector3& pIn);
 };
 SHARE_PTR(BackGround);
 

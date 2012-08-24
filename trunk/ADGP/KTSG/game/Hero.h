@@ -64,7 +64,6 @@ private:
 	int		m_PicY;
 	
 	Vector3		m_Position;
-	Vector3		m_PastPos;
 	float		m_CenterX,m_CenterY;
 	Vector3		m_Vel;
 	Bodys		m_Bodys;
@@ -129,7 +128,6 @@ public:
 	ClipVertex GetPic();
 	int Team();
 	const Vector3& Position();
-	const Vector3& Past_Position();
 	const Vector3& Velocity(); 
 
 	void SetRecord(Record_Sptr r);
@@ -139,10 +137,6 @@ public:
 	void PushKey(KeyInfo k);
 	BodyVerteices GetBodyVerteices();
 	BodyVerteices GetBodyLineVerteices();
-
-	void GetBack();
-	void Stop();
-	void OnGround();
 protected:
 	void Init();
 	void NextFrame();

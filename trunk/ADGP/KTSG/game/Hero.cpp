@@ -96,17 +96,25 @@ void Hero::Update(float dt)
 	}
 	
 	//物理
-	m_PastPos = m_Position;
-
-	float ry = m_Position.y;
+	Vector3 pastPos = m_Position;
 	m_Position += m_Vel;
+	bool pastInAir = false;
+	bool InAir = false;
+
+	//場地限制
+	if(g_BGManager.CurrentBG()!=NULL){
+		SetPosition(g_BGManager.CurrentBG()->AlignmentSpace(m_Position));
+		SetPosition(g_BGManager.CurrentBG()->AlignmentBan(m_Position,pastPos));
+		pastInAir = g_BGManager.CurrentBG()->AboveGround(pastPos);
+		InAir	= g_BGManager.CurrentBG()->AboveGround(m_Position);
+	}
 
 	if(m_Position.y <= 0){	//地上
 		//落地判定
 		if( m_Action != HeroAction::UNIQUE_SKILL){
 			m_Position.y = 0;
 			m_Vel.y = 0;
-			if(ry > 0 || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH){
+			if(pastPos.y > 0 || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH){
 				//Frame 改到蹲
 				m_Frame = "crouch";
 				if( m_Action == HeroAction::DASH || m_Action == HeroAction::BEFORE_DASH_ATTACK ||
@@ -178,7 +186,7 @@ void Hero::Update(float dt)
 		}
 	}
 
-
+	
 	
 }
 
@@ -1228,30 +1236,9 @@ BodyVerteices Hero::GetBodyLineVerteices()
 	return bvs;
 }
 
-void Hero::GetBack()
-{
-	m_Position = m_PastPos;
-}
-
-void Hero::Stop()
-{
-	m_Vel = Vector3(0,0,0);
-}
-
-const Vector3& Hero::Past_Position()
-{
-	return m_PastPos;
-}
-
 const Vector3& Hero::Velocity()
 {
 	return m_Vel;
-}
-
-void Hero::OnGround()
-{
-	m_Vel.y=0;
-	d_Ground=true;
 }
 
 
