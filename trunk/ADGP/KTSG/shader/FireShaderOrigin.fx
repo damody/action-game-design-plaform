@@ -5,8 +5,20 @@
 Texture2D fireTexture;
 Texture2D noiseTexture;
 Texture2D alphaTexture;
-SamplerState SampleType;
-SamplerState SampleType2;
+SamplerState SampleType
+{
+	Filter = MIN_MAG_MIP_LINEAR;
+	AddressU = Wrap;
+	AddressV = Wrap;
+	AddressW = Wrap;
+};
+SamplerState SampleType2
+{
+	Filter = MIN_MAG_MIP_LINEAR;
+	AddressU = CLAMP;
+	AddressV = CLAMP;
+	AddressW = CLAMP;
+};
 
 
 cbuffer NoiseBuffer

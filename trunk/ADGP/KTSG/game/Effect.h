@@ -5,13 +5,14 @@
 #include "DX11/TextureManager.h"
 #include "game/EffectData.h"
 #include "game/FireShaderClass.h"
+#include "game/PoisonShaderClass.h"
 #include "game/RenderTextureClass.h"
 
 const int PIC_H = 2048;
 const int PIC_W = 2048;
 const int PASTE_H = 256;
 const int PASTE_W = 256;
-
+//ShaderClass不用每張EFFECT都創 可以直接放在effectMG內 之後再改. 不然火焰shader會重複創4次 by holyk
 class Effect
 {
 private:
@@ -22,6 +23,7 @@ private:
 	EffectDatas m_FireEffect;
 	RenderTextureClass* m_RenderTexture;
 	FireShaderClass* m_FireShader;
+	//PoisonShaderClass* m_PoisonShader;
 public:
 	Effect(void);
 	~Effect(void);

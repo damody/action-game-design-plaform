@@ -85,8 +85,8 @@
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;$(SDKs)freetype-2.4.9\include;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc\;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SDKs)freetype-2.4.9\lib\vc10;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Debug;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;lib\;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">lib\;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Release;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;lib\;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">lib\;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Release;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -212,6 +212,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="EffectShaderClass.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="game\BackGround.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -297,6 +303,12 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="game\Player.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="game\PoisonShaderClass.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
@@ -487,6 +499,7 @@
     <ClInclude Include="DX11\TextGeneratorDX11.h" />
     <ClInclude Include="DX11\TextLetter.h" />
     <ClInclude Include="DX11\TextManager.h" />
+    <ClInclude Include="EffectShaderClass.h" />
     <ClInclude Include="game\Attack.h" />
     <ClInclude Include="game\BackGround.h" />
     <ClInclude Include="game\BeCatch.h" />
@@ -517,6 +530,7 @@
     <ClInclude Include="game\ObjectInfo.h" />
     <ClInclude Include="game\PictureData.h" />
     <ClInclude Include="game\Player.h" />
+    <ClInclude Include="game\PoisonShaderClass.h" />
     <ClInclude Include="game\RenderTextureClass.h" />
     <ClInclude Include="game\StdGame.h" />
     <ClInclude Include="game\TestRenderEffect.h" />

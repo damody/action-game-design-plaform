@@ -1,14 +1,14 @@
 #include "StdGame.h"
-#include "FireShaderClass.h"
+#include "PoisonShaderClass.h"
 #include <iostream>
-FireShaderClass::FireShaderClass() : EffectShaderClass(),m_frameTime(0),m_scrollSpeeds(0),m_scales(0),
+PoisonShaderClass::PoisonShaderClass() : EffectShaderClass(),m_frameTime(0),m_scrollSpeeds(0),m_scales(0),
 	m_distortion1(0),m_distortion2(0),m_distortion3(0),m_distortionScale(0),m_distortionBias(0),
 	m_fireTexture(0),m_noiseTexture(0),m_alphaTexture(0)
 {
 
 }
 
-void FireShaderClass::Render()
+void PoisonShaderClass::Render()
 {
 	UINT offset = 0;
 	UINT stride2 = sizeof(Vertex);
@@ -26,12 +26,12 @@ void FireShaderClass::Render()
 	}
 }
 
-void FireShaderClass::Update( float dt )
+void PoisonShaderClass::Update( float dt )
 {
 	m_frameTime->SetFloat(dt);
 }
 
-void FireShaderClass::GetVariableByName()
+void PoisonShaderClass::GetVariableByName()
 {
 	m_fireTexture = m_Effect->GetVariableByName("fireTexture")->AsShaderResource();
 	m_noiseTexture = m_Effect->GetVariableByName("noiseTexture")->AsShaderResource();
@@ -46,20 +46,13 @@ void FireShaderClass::GetVariableByName()
 	m_distortionBias = m_Effect->GetVariableByName("distortionBias")->AsScalar();
 }
 
-void FireShaderClass::CreateTexture()
+void PoisonShaderClass::CreateTexture()
 {
 	m_fire = Texture_Sptr(new Texture(L"Media\\fire01.dds"));
 	m_noise = Texture_Sptr(new Texture(L"Media\\noise01.dds"));
 	m_fireTexture->SetResource(m_fire->texture);
 	m_noiseTexture->SetResource(m_noise->texture);
 }
-void FireShaderClass::SetShaderParameters( D3DXVECTOR3 scrollSpeeds, D3DXVECTOR3 scales, D3DXVECTOR2 distortion1, D3DXVECTOR2 distortion2, D3DXVECTOR2 distortion3, float distortionScale, float distortionBias )
+void PoisonShaderClass::SetShaderParameters()
 {
-	m_scrollSpeeds->SetRawValue(scrollSpeeds,0,sizeof(float)*3);
-	m_scales->SetRawValue(scales,0,sizeof(float)*3);
-	m_distortion1->SetRawValue(distortion1,0,sizeof(float)*2);
-	m_distortion2->SetRawValue(distortion2,0,sizeof(float)*2);
-	m_distortion3->SetRawValue(distortion3,0,sizeof(float)*2);
-	m_distortionScale->SetFloat(distortionScale);
-	m_distortionBias->SetFloat(distortionBias);
 }

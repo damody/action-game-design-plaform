@@ -36,7 +36,8 @@ bool Effect::Initialize(HWND hwnd)
 	m_Texture = Texture_Sptr(new Texture(m_RenderTexture->GetShaderResourceView()));
 	m_TextureID = g_TextureManager.AddTexture("EffectTexture",m_Texture);
 	SetFireParameters();
-
+	//
+	//m_PoisonShader = new PoisonShaderClass();
 
 
 	return true;
@@ -45,7 +46,7 @@ void Effect::Updata( float dt )
 {
 	if(!m_FireEffect.empty())
 	{
-		m_FireShader->UpdateFrameTime(dt);
+		m_FireShader->Update(dt);
 		m_FireShader->CreatVertex(m_FireEffect.begin(),m_FireEffect.end());
 	}
 	

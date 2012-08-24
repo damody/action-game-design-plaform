@@ -48,6 +48,12 @@
     <Filter Include="src\game">
       <UniqueIdentifier>{731a8886-6c46-4f71-a582-c6931474b208}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\game\EffectShader">
+      <UniqueIdentifier>{a9440995-56cd-47a0-84c7-e419306a7b66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\game\EffectShader">
+      <UniqueIdentifier>{394f6a8a-4808-4327-90a4-d359c8902b69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConvStr.cpp">
@@ -194,9 +200,6 @@
     <ClCompile Include="game\Effect.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
-    <ClCompile Include="game\FireShaderClass.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
     <ClCompile Include="game\RenderTextureClass.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
@@ -217,6 +220,15 @@
     </ClCompile>
     <ClCompile Include="game\CtrlKey.cpp">
       <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectShaderClass.cpp">
+      <Filter>src\game\EffectShader</Filter>
+    </ClCompile>
+    <ClCompile Include="game\FireShaderClass.cpp">
+      <Filter>src\game\EffectShader</Filter>
+    </ClCompile>
+    <ClCompile Include="game\PoisonShaderClass.cpp">
+      <Filter>src\game\EffectShader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -421,9 +433,6 @@
     <ClInclude Include="game\EffectData.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="game\FireShaderClass.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
     <ClInclude Include="game\RenderTextureClass.h">
       <Filter>inc\game</Filter>
     </ClInclude>
@@ -456,6 +465,15 @@
     </ClInclude>
     <ClInclude Include="game\Creation.h">
       <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectShaderClass.h">
+      <Filter>inc\game\EffectShader</Filter>
+    </ClInclude>
+    <ClInclude Include="game\FireShaderClass.h">
+      <Filter>inc\game\EffectShader</Filter>
+    </ClInclude>
+    <ClInclude Include="game\PoisonShaderClass.h">
+      <Filter>inc\game\EffectShader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
