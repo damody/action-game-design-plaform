@@ -46,7 +46,6 @@ void Camera::Zoom( float index )
 {
 	if((m_Radius+index)<-2200)return;
 	else m_Radius += index;
-	std::cout<<"Zoom:"<<m_Radius<<std::endl;
 }
 
 void Camera::SurroundX( float index )
@@ -57,7 +56,7 @@ void Camera::SurroundX( float index )
 void Camera::SurroundY( float index )
 {
 	m_Thita += index;
-	m_Thita_R = (float)cos(-m_Thita *3.14159/180.0f);
+	m_Thita_R = (float)abs(cos(-m_Thita *3.14159/180.0f));
 }
 
 float* Camera::GetLookAt()
