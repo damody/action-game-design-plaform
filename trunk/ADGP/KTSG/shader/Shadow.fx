@@ -80,7 +80,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	GS_OUT out5;
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2(-input[0].size.x,0), mat),input[0].pos.z),1);
 	out5.posH=float4(mul(float3(out5.posH.x + out5.posH.y * lightDir.x/lightDir.y,1-cLookAt.y,out5.posH.z + out5.posH.y * lightDir.z/lightDir.y),view),1);
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset*sceneW/sceneH),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y-1));
@@ -88,7 +88,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat),input[0].pos.z),1);
 	out5.posH=float4(mul(float3(out5.posH.x + out5.posH.y * lightDir.x/lightDir.y,0-cLookAt.y,out5.posH.z + out5.posH.y * lightDir.z/lightDir.y),view),1);
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset*sceneW/sceneH),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
@@ -96,7 +96,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2( 0,0), mat),input[0].pos.z),1);
 	out5.posH=float4(mul(float3(out5.posH.x + out5.posH.y * lightDir.x/lightDir.y,0-cLookAt.y,out5.posH.z + out5.posH.y * lightDir.z/lightDir.y),view),1);
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset*sceneW/sceneH),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
@@ -104,7 +104,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat),input[0].pos.z),1);
 	out5.posH=float4(mul(float3(out5.posH.x + out5.posH.y * lightDir.x/lightDir.y,0-cLookAt.y,out5.posH.z + out5.posH.y * lightDir.z/lightDir.y),view),1);
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset*sceneW/sceneH),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
@@ -112,7 +112,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2( 0,0), mat),input[0].pos.z),1);
 	out5.posH=float4(mul(float3(out5.posH.x + out5.posH.y * lightDir.x/lightDir.y,0-cLookAt.y,out5.posH.z + out5.posH.y * lightDir.z/lightDir.y),view),1);
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset*sceneW/sceneH),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
@@ -120,7 +120,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 
 	out5.posH=float4(float3(input[0].pos.xy-mul(float2( 0,input[0].size.y), mat),input[0].pos.z),1);
 	out5.posH=float4(mul(float3(out5.posH.x + out5.posH.y * lightDir.x/lightDir.y,0-cLookAt.y,out5.posH.z + out5.posH.y * lightDir.z/lightDir.y),view),1);
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset*sceneW/sceneH),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y));

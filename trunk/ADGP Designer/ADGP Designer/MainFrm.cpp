@@ -140,7 +140,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	m_D3DPictureView.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_D3DPictureView);
-	//m_D3DPictureView.DockToWindow (&m_wndProperties, CBRS_ALIGN_LEFT);
+	m_D3DPictureView.DockToWindow (&m_wndProperties, CBRS_ALIGN_LEFT);
 
 	// 啟用增強型視窗管理對話方塊
 	EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);

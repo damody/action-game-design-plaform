@@ -45,6 +45,7 @@ class Camera
 		bool Visable(const Vector3& pos);
 		bool Visable(const D3DXVECTOR3& pos);
 		int Offside(const D3DXVECTOR3& pos);
+		float Offsidelength();
 
 		void onResize(float w,float h);
 

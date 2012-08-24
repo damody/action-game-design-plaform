@@ -219,37 +219,24 @@ void BackGround::BuildPoint()
 	m_CRVerteices.clear();
 	for (ColorRects::iterator it=m_ColorRects.begin();it != m_ColorRects.end();it++)
 	{
-		int i=0;
-		float cut=500;
-		for (float w=it->m_Width; w>0 ;w-=cut,i++)
+		CRVertex crv;
+		crv.position.x = it->m_Position.x;
+		crv.position.y = it->m_Position.y;
+		crv.position.z = it->m_Position.z;
+		if(g_Camera.get())
 		{
-			if(g_Camera.get())
+			if(it->m_Width > g_Camera->Offsidelength() || g_Camera->Offside(crv.position)==0)
 			{
-				CRVertex crv;
-				crv.position.x = it->m_Position.x + i*cut;
-				crv.position.y = it->m_Position.y;
-				crv.position.z = it->m_Position.z;
-
-				int offset=g_Camera->Offside(crv.position);
-				if (offset == 1)
-				{
-					break;
-				}else  if (offset == -1)
-				{
-					continue;
-				}
-				 
-				crv.size.x = (w-cut > 0? cut : w);
+				crv.size.x = it->m_Width;
 				crv.size.y = it->m_Height;
 				crv.color.x = it->m_Color.x;
 				crv.color.y = it->m_Color.y;
 				crv.color.z = it->m_Color.z;
 				crv.color.w = it->m_Color.w;
 				crv.angle = (it->m_IsGround? 90.0f:0.0f);
-				
 				m_CRVerteices.push_back(crv);
-				}
 			}
+		}
 	}
 
 	m_BGVerteices.clear();
@@ -274,15 +261,19 @@ void BackGround::BuildPoint()
 				bgv.position.y = it->m_Position.y ;
 				bgv.position.z = it->m_Position.z;
 
-				int offside = g_Camera->Offside(bgv.position);
-				if (offside == 1)
-				{
-					break;
-				}else if(offside ==-1){
-					d++;
-					if(bgv.position.x = it->m_Position.x + d*it->m_LoopDistance > m_Width)break;
-					else continue;
+				if(it->m_Width < g_Camera->Offsidelength()){
+					int offside = g_Camera->Offside(bgv.position);
+				
+						if (offside == 1)
+						{
+							break;
+						}else if(offside ==-1){
+							d++;
+							if(bgv.position.x = it->m_Position.x + d*it->m_LoopDistance > m_Width)break;
+							else continue;
+						}
 				}
+				
  				
 
 				bgv.size.x     = it->m_Width  ;

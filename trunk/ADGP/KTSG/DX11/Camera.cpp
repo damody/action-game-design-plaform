@@ -105,5 +105,10 @@ int Camera::Offside( const D3DXVECTOR3& pos )
 	}else   return 0;
 }
 
+float Camera::Offsidelength()
+{
+	return 4*m_ScreenW;
+}
+
 
 

@@ -72,7 +72,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	GS_OUT out5;
 	//0
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(0,-input[0].size.y,0),mat)),view),1);
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset*sceneW/sceneH),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(0,0);
@@ -80,7 +80,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	
 	//1
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(0,0,0), mat)),view),1);
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset*sceneW/sceneH),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(0,1);
@@ -88,7 +88,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 
 	//2
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,-input[0].size.y,0), mat)),view),1);
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset*sceneW/sceneH),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(1,0);
@@ -96,7 +96,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 
 	//3
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(0,0,0), mat)),view),1);
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset*sceneW/sceneH),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(0,1);
@@ -104,7 +104,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 
 	//4
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,-input[0].size.y,0), mat)),view),1);
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset*sceneW/sceneH),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(1,0);
@@ -112,7 +112,7 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	
 	//5
 	out5.posH=float4(mul(float3(input[0].pos.xyz-mul(float3(-input[0].size.x,0,0), mat)),view),1);
-	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset),0,0,0);
+	proj[0]=float4(1/(sceneW+(cPolarCoord.x+out5.posH.z)*offset*sceneW/sceneH),0,0,0);
 	proj[1]=float4(0,1/(sceneH+(cPolarCoord.x+out5.posH.z)*offset),0,0);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2(1,1);
