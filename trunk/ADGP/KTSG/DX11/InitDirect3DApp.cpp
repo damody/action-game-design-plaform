@@ -1203,17 +1203,7 @@ void InitDirect3DApp::BackgroundDataUpdate()
 {
 	ParallelLight pl =g_BGManager.CurrentBG()->GetParallelLight();
 	m_Shadow_lightDir->SetRawValue(&pl.m_Direction[0], 0, sizeof(float)*3);
-	m_Shadow_lightStr->SetFloat(pl.m_LightStrength*0.1f);
-
-	
-	for (Chees::iterator it = g_ObjectMG.CheeVectorBegin(); it != g_ObjectMG.CheeVectorEnd() ; it++)
-	{
-		if(!g_BGManager.CurrentBG()->InSpace((*it)->Position()))
-		{
-			g_ObjectMG.Distory(it,6);
-		}
-	}
-	
+	m_Shadow_lightStr->SetFloat(pl.m_LightStrength*0.1f);	
 }
 
 void InitDirect3DApp::TestCamera()

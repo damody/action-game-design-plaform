@@ -91,6 +91,14 @@ void Chee::Update( float dt )
 		m_FaceSide = true;
 	}
 
+	if (g_BGManager.CurrentBG()!=NULL)
+	{
+		if(!g_BGManager.CurrentBG()->InSpace(m_Position))
+		{
+			g_ObjectMG.Distory(this,6);
+		}
+	}
+
 	m_Position += m_Vel;
 }
 
