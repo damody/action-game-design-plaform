@@ -217,23 +217,36 @@ void BackGround::Update( float dt )
 void BackGround::BuildPoint()
 {
 	m_CRVerteices.clear();
+	int i=0;
+	float cut=g_Camera->Offsidelength()*0.19;
 	for (ColorRects::iterator it=m_ColorRects.begin();it != m_ColorRects.end();it++)
 	{
-		CRVertex crv;
-		crv.position.x = it->m_Position.x;
-		crv.position.y = it->m_Position.y;
-		crv.position.z = it->m_Position.z;
-		if(g_Camera.get())
+		for (float w=it->m_Width; w>0 ;w-=cut,i++)
 		{
-			if(it->m_Width > g_Camera->Offsidelength() || g_Camera->Offside(crv.position)==0)
+			if(g_Camera.get())
 			{
-				crv.size.x = it->m_Width;
+				CRVertex crv;
+				crv.position.x = it->m_Position.x + i*cut;
+				crv.position.y = it->m_Position.y;
+				crv.position.z = it->m_Position.z;
+
+				int offset=g_Camera->Offside(crv.position);
+				if (offset == 1)
+				{
+					break;
+				}else  if (offset == -1)
+				{
+					continue;
+				}
+
+				crv.size.x = (w-cut > 0? cut : w);
 				crv.size.y = it->m_Height;
 				crv.color.x = it->m_Color.x;
 				crv.color.y = it->m_Color.y;
 				crv.color.z = it->m_Color.z;
 				crv.color.w = it->m_Color.w;
 				crv.angle = (it->m_IsGround? 90.0f:0.0f);
+
 				m_CRVerteices.push_back(crv);
 			}
 		}
