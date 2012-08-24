@@ -10,6 +10,7 @@
 // All rights reserved.
 
 #pragma once
+#include "Resource.h"
 
 class CPropertiesToolBar : public CMFCToolBar
 {
@@ -94,6 +95,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
+public:
 	void InitPropList();
 	void InitPropList_Frame();
 	void InitPropList_Body();
