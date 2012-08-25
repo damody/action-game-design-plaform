@@ -217,11 +217,11 @@ void BackGround::Update( float dt )
 void BackGround::BuildPoint()
 {
 	m_CRVerteices.clear();
-	
+
+	float cut=g_Camera->Offsidelength()*0.19;
 	for (ColorRects::iterator it=m_ColorRects.begin();it != m_ColorRects.end();it++)
 	{
 		int i=0;
-		float cut=g_Camera->Offsidelength()*0.19;
 		for (float w=it->m_Width; w>0 ;w-=cut,i++)
 		{
 			if(g_Camera.get())
