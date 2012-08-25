@@ -42,6 +42,7 @@ Hero::Hero( std::string h ):
 hero(h),m_Position(Vector3()),m_Team(0),m_FaceSide(true),m_FrameID(0),m_Texture(0),m_PicID(0),m_PicW(0),m_PicH(0),m_PicX(0),m_PicY(0),d_run(0),m_Effect(EffectType::NONE),m_EffectScale(1.0f),d_key()
 {
 	m_HeroInfo = g_HeroInfoMG.GetHeroInfo(hero);
+	m_Record = Record_Sptr(new Record());
 	if(m_HeroInfo.get())
 			this->Init();
 	else{
@@ -287,7 +288,7 @@ NextLoop:
 		while(ic != f->m_Creations.end()){
 			Vector3 pos( df * (ic->x - m_CenterX) * SCALE + m_Position.x, (ic->y + m_CenterY) * SCALE + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
 			//g_ObjectMG.CreateChee(ic->name, pos, ic->v0, ic->amount, m_Team);
-			Creat(pos,*ic,this);
+			Creat(pos,*ic,m_FaceSide,m_Record);
 			ic++;
 		}
 	}
@@ -1248,17 +1249,17 @@ const Vector3& Hero::Velocity()
 	return m_Vel;
 }
 
-bool Creat(const Vector3 &pos, const Creation &obj, const Hero *owner){
+bool Creat(const Vector3 &pos, const Creation &obj, bool face, const Record_Sptr owner){
 	if(obj.amount <= 0){
 		printf("you just want to creat nothing!\n");
 		return true;
 	}
 	std::string u = obj.name;
-	bool f = owner->m_FaceSide ^ (obj.facing > 0);
+	bool f = face ^ (obj.facing > 0);
 
 	if(g_HeroInfoMG.GetHeroInfo(u) != HeroInfo_Sptr()){
 		for(int i=0;i<obj.amount;i++){
-			Hero* s = g_HeroMG.Create(u, pos, owner == NULL ? 0 : owner->Team());
+			Hero* s = g_HeroMG.Create(u, pos, owner == Record_Sptr() ? 0 : owner->team);
 			s->m_FaceSide = f;
 			s->m_Vel = obj.v0;
 			s->m_Frame.assign(obj.frame);
@@ -1274,20 +1275,20 @@ bool Creat(const Vector3 &pos, const Creation &obj, const Hero *owner){
 		Weapon** w;
 		switch(g_ObjectInfoMG.GetObjectInfo(u)->m_Type){
 		case ObjectType::CHEE:
-			s = g_ObjectMG.CreateChee(u, pos, obj.v0, obj.amount, owner == NULL ? 0 : owner->Team());
+			s = g_ObjectMG.CreateChee(u, pos, obj.v0, obj.amount, owner == Record_Sptr() ? 0 : owner->team);
 			for(int i=0;i<obj.amount;i++){
 				s[i]->m_FaceSide = f;
 				s[i]->m_Frame = obj.frame;
 				s[i]->m_FrameID = obj.frameID;
 				s[i]->m_HP = obj.HP;
-				//(*s)->owner = owner;
+				s[i]->m_Record = owner;
 			}
 			return true;
 		case ObjectType::STATIC:
 			//todo: »\¤è¶ô
 			return false;
 		default:
-			w = g_ObjectMG.CreateWeapon(u, pos, obj.amount, owner == NULL ? 0 : owner->Team());
+			w = g_ObjectMG.CreateWeapon(u, pos, obj.amount, owner == Record_Sptr() ? 0 : owner->team);
 			for(int i=0;i<obj.amount;i++){
 				w[i]->m_FaceSide = f;
 				w[i]->SetVelocity(obj.v0);

@@ -7,7 +7,7 @@
 #include "game\FlyingPath.h"
 #include "common\shared_ptr.h"
 #include "game\ObjectInfo.h"
-#include "Hero.h"
+#include "Record.h"
 
 class Chee
 {
@@ -37,6 +37,8 @@ private:
 	int		m_Team;//0¬°¤£¤À
 	int		m_HP;
 
+	Record_Sptr     m_Record;
+
 protected:
 	void Init();
 	void NextFrame();
@@ -61,7 +63,7 @@ public:
 	int Team();
 	Vector3 Position();
 	Vector3 BackPosition(float back);
-	friend bool Creat(const Vector3 &pos, const Creation &obj, const Hero *owner);
+	friend bool Creat(const Vector3 &pos, const Creation &obj, bool face, const Record_Sptr owner);
 };
 SHARE_PTR(Chee)
 typedef std::vector <Chee_RawPtr> Chees;

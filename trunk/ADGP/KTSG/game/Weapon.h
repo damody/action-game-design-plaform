@@ -6,7 +6,7 @@
 #include "HeroAction.h"
 #include "common\shared_ptr.h"
 #include "game\ObjectInfo.h"
-#include "Hero.h"
+#include "Record.h"
 
 class Weapon
 {
@@ -58,7 +58,7 @@ public:
 	Texture_Sptr GetTexture();
 	ClipVertex GetPic();
 	Vector3 Position();
-	friend bool Creat(const Vector3 &pos, const Creation &obj, const Hero *owner);
+	friend bool Creat(const Vector3 &pos, const Creation &obj, bool face, const Record_Sptr owner);
 };
 SHARE_PTR(Weapon)
 typedef std::vector <Weapon_RawPtr> Weapons;

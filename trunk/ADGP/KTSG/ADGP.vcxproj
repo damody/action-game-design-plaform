@@ -518,6 +518,7 @@
     <ClInclude Include="game\FireShaderClass.h" />
     <ClInclude Include="game\FlyingPath.h" />
     <ClInclude Include="game\HeroManager.h" />
+    <ClInclude Include="game\Record.h" />
     <ClInclude Include="game\ObjectInfoManager.h" />
     <ClInclude Include="game\ObjectManager.h" />
     <ClInclude Include="game\ObjectType.h" />
