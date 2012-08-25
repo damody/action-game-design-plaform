@@ -27,6 +27,7 @@ struct Texture
 	{
 		return texture == rhs.texture;
 	}
+	int w, h;
 };
 SHARE_PTR(Texture)
 
