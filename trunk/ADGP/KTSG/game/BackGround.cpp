@@ -660,11 +660,17 @@ bool BackGround::isOnGround(const Vector3& pIn ,const Vector3& dp, Vector3 *pOut
 		}
 
 		int d = AboveGround(fp);
-		if(d == 0 || d == 1){
+		if(d == 0){
 			if(pOut != NULL){
 				*pOut = fp;
 			}
 			return true;
+		}
+		else if(d == 1){
+			if(pOut != NULL){
+				*pOut = fp;
+			}
+			return false;
 		}
 		else if(d == -1){
 			fp.y = ip->getMinimum().y;
