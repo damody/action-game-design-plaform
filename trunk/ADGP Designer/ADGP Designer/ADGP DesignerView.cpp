@@ -83,8 +83,8 @@ void CADGPDesignerView::OnDraw(CDC* /*pDC*/)
 	// TODO: 在此加入原生資料的描繪程式碼
 	
 	
-// 	m_D3DApp.buildPoint();
-// 	m_D3DApp.DrawScene();
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
 }
 
 
@@ -166,7 +166,7 @@ void CADGPDesignerView::InitDx11( HWND hWnd )
 	//*test
 	PictureData* temp = new PictureData();
 	temp->m_Path = std::string("media\\davis_0.png");
-	temp->m_TextureID = g_TextureManager.AddTexture(temp->m_Path);
+	temp->m_TextureID = m_D3DApp.GetTextureManager().AddTexture(temp->m_Path);
 	temp->m_Width = 79;
 	temp->m_Height = 79;
 	temp->m_Row = 10;
@@ -185,7 +185,7 @@ void CADGPDesignerView::OnInitialUpdate()
 	CView::OnInitialUpdate();
 
 	// TODO: 在此加入特定的程式碼和 (或) 呼叫基底類別
-	//InitDx11(this->GetParent()->GetSafeHwnd());
+	InitDx11(this->GetParent()->GetSafeHwnd());
 }
 
 

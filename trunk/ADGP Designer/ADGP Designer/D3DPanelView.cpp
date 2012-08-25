@@ -72,7 +72,7 @@ void CD3DPanelView::InitDx11( HWND hWnd )
 	//*test
 	PictureData* temp = new PictureData();
 	temp->m_Path = std::string("media\\davis_0.png");
-	temp->m_TextureID = g_TextureManager.AddTexture(temp->m_Path);
+	temp->m_TextureID = m_D3DApp.GetTextureManager().AddTexture(temp->m_Path);
 	temp->m_Width = 79;
 	temp->m_Height = 79;
 	temp->m_Row = 10;

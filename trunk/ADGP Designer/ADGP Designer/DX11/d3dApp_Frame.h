@@ -10,12 +10,16 @@
 #include "DX11/TextureManager.h"
 #include "PointManager.h"
 
+//人物的身體選取應該要有魔術棒之類的功能
 class D3DApp_Frame
 {
 public:
 	Bounds  m_Body;
 	Bounds  m_Attack;
+	TextureManager& GetTextureManager()
+	{ return *m_TextureManager;}
 private:
+	TextureManager* m_TextureManager;
 	PictureData  *m_Pic;
 	float         m_picX,m_picY;
 	Texture*      m_Templete;
@@ -106,13 +110,13 @@ protected:
 	
 
 	D3D11_BUFFER_DESC		m_vbd;
-	DXUTUI*				m_DXUT_UI;
 	// Derived class should set these in derived constructor to customize starting values.
 	std::wstring m_MainWndCaption;
 	D3D_DRIVER_TYPE m_d3dDriverType;
 	D3DXCOLOR m_ClearColor;
 	int mClientWidth;
 	int mClientHeight;
+	D3D_FEATURE_LEVEL  m_FeatureLevelsSupported;
 };
 
 struct CD3D11_BLEND_DESCX2 : public D3D11_BLEND_DESC

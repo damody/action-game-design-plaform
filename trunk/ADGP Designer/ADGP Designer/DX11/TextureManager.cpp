@@ -2,7 +2,7 @@
 #include "TextureManager.h"
 #include "global.h"
 
-TextureManager::TextureManager(void):m_index(-1)
+TextureManager::TextureManager(ID3D11Device* device):m_index(-1), m_d3dDevice(device)
 {
 }
 
@@ -18,7 +18,7 @@ int TextureManager::AddTexture( std::string path)
 			return index;
 		}
 		
-		m_Textures.push_back(Texture_Sptr(new Texture(path)));
+		m_Textures.push_back(Texture_Sptr(new Texture(path, m_d3dDevice)));
 		m_List.push_back(path);
 		m_index++;
 		return m_index;
@@ -51,24 +51,24 @@ int TextureManager::Find( std::string path )
 	return -1;// Not Found
 }
 
-Texture::Texture( std::string path )
+Texture::Texture( std::string path, ID3D11Device* d3dDevice )
 {
-	assert(g_d3dDevice!=0); // check init ok
+	assert(d3dDevice!=0); // check init ok
 	FILE* file = fopen(path.c_str(), "r");
 	assert(file!=0); // check file ok
 	fclose(file);
-	if (g_d3dDevice)
-		D3DX11CreateShaderResourceViewFromFileA(g_d3dDevice, path.c_str(), 0, 0, &texture, 0);
+	if (d3dDevice)
+		D3DX11CreateShaderResourceViewFromFileA(d3dDevice, path.c_str(), 0, 0, &texture, 0);
 }
 
-Texture::Texture( std::wstring path )
+Texture::Texture( std::wstring path, ID3D11Device* d3dDevice )
 {
-	assert(g_d3dDevice!=0); // check init ok
+	assert(d3dDevice!=0); // check init ok
 	FILE* file = _wfopen(path.c_str(), L"r");
 	assert(file!=0); // check file ok
 	fclose(file);
-	if (g_d3dDevice)
-		D3DX11CreateShaderResourceViewFromFileW(g_d3dDevice, path.c_str(), 0, 0, &texture, 0);
+	if (d3dDevice)
+		D3DX11CreateShaderResourceViewFromFileW(d3dDevice, path.c_str(), 0, 0, &texture, 0);
 }
 
 Texture::Texture( ID3D11ShaderResourceView* rc )
