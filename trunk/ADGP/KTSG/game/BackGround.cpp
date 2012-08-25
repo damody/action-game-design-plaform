@@ -403,9 +403,9 @@ bool BackGround::InBan( const Vector3& pIn )
 		Vector3 min = it->getMinimum();
 		Vector3 max = it->getMaximum();
 
-		if(pIn.x >= min.x && pIn.x <= max.x
-		&& pIn.y >= min.y && pIn.y <= max.y
-		&& pIn.z >= min.z && pIn.z <= max.z
+		if(pIn.x > min.x && pIn.x < max.x
+		&& pIn.y > min.y && pIn.y < max.y
+		&& pIn.z > min.z && pIn.z < max.z
 		){
 			return true;
 		}
@@ -450,11 +450,14 @@ ParallelLight BackGround::GetParallelLight()
 	return m_CurrentLight;
 }
 
-AxisAlignedBoxs::iterator BackGround::InWinchBan( const Vector3& pIn )
+AxisAlignedBoxs::iterator BackGround::InWhichBan( const Vector3& pIn )
 {
 	for (AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ;it++)
 	{
-		bool inBox = true;
+		if( it->contains(pIn)){
+			return it;
+		}
+		/*
 		Vector3 min = it->getMinimum();
 		Vector3 max = it->getMaximum();
 
@@ -463,42 +466,218 @@ AxisAlignedBoxs::iterator BackGround::InWinchBan( const Vector3& pIn )
 			&& pIn.z >= min.z && pIn.z <= max.z
 			){
 				return it;
-		}
+		}//*/
 	}
 	return m_BanBounding.end();
 }
 
-bool BackGround::AboveSpaceBottom( const Vector3& pIn )
+AxisAlignedBoxs::iterator BackGround::InWhichSpace( const Vector3& pIn )
 {
 	for (AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ;it++)
 	{
 		Vector3 min = it->getMinimum();
 		Vector3 max = it->getMaximum();
 
-		if (pIn.x > min.x && pIn.x <max.x && pIn.z > min.z && pIn.z < max.z && pIn.y > min.y)
+		if(pIn.x > min.x && pIn.x < max.x && pIn.z > min.z && pIn.z < max.z)
 		{
-			return true;
+			return it;
 		}
 	}
-	return false;
+	return m_SpaceBounding.end();
 }
 
-bool BackGround::AboveBanTop( const Vector3& pIn )
+int BackGround::AboveSpaceBottom( const Vector3& pIn )
+{
+	for (AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ;it++)
+	{
+		Vector3 min = it->getMinimum();
+		Vector3 max = it->getMaximum();
+
+		if (pIn.x > min.x && pIn.x < max.x && pIn.z > min.z && pIn.z < max.z)
+		{
+			if(pIn.y > min.y){
+				return 1;
+			}
+			else if(pIn.y < min.y){
+				return -1;
+			}
+			else{
+				return 0;
+			}
+			
+		}
+	}
+	return 2;
+}
+
+int BackGround::AboveBanTop( const Vector3& pIn )
 {
 	for (AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ;it++)
 	{
 		Vector3 min = it->getMinimum();
 		Vector3 max = it->getMaximum();
 
-		if (pIn.x > min.x && pIn.x <max.x && pIn.z > min.z && pIn.z < max.z && pIn.y > max.y)
+		if (pIn.x > min.x && pIn.x <max.x && pIn.z > min.z && pIn.z < max.z)
 		{
-			return true;
+			if(pIn.y > max.y){
+				return 1;
+			}
+			else if(pIn.y < max.y){
+				return -1;
+			}
+			else{
+				return 0;
+			}
 		}
 	}
-	return false;
+	return 2;
 }
 
-bool BackGround::AboveGround(const Vector3& pIn)
+int BackGround::AboveGround(const Vector3& pIn)
 {
-	return AboveSpaceBottom(pIn) && AboveBanTop(pIn);
+	int b = AboveBanTop(pIn), p = AboveSpaceBottom(pIn);
+	if(b == -1 || p == -1){
+		return -1;
+	}else if( b == 0 || p == 0){
+		return 0;
+	}
+	else if( b == 1 || p == 1){ 
+		return 1;
+	}
+	else return 2;
+}
+
+bool BackGround::isOnGround(const Vector3& pIn ,const Vector3& dp, Vector3 *pOut){
+	Vector3 fp = pIn;
+	int n=3;			//取樣數，必須大於或等於二
+	int d;				//判斷結果
+	
+	for(int i=0;i<n;i++){
+		fp += dp / (float)n;
+		d = AboveGround(fp);
+		if(d == -1 || d == 2){
+			break;
+		}
+	}
+
+	if(d == 0){
+		//地面
+		if(pOut != NULL){
+			*pOut = fp;
+		}
+		return true;
+	}
+	else if(d == 1){
+		//空中
+		if(pOut != NULL){
+			*pOut = fp;
+		}
+		return false;
+	}
+	else if(d == -1){
+		//地底
+		AxisAlignedBoxs::iterator ib = InWhichBan(fp);
+		AxisAlignedBoxs::iterator ip = InWhichSpace(fp);
+		if(ib != m_BanBounding.end()){
+			if( pIn.y > ib->getMaximum().y){
+				fp.y = ib->getMaximum().y;
+				if(pOut != NULL){
+					*pOut = fp;
+				}
+				return true;
+			}
+			else {
+				if( pIn.x >= ib->getMaximum().x){
+					fp.x = ib->getMaximum().x;
+				}
+				else if( pIn.x <= ib->getMinimum().x){
+					fp.x = ib->getMinimum().x;
+				}
+				else if( pIn.z >= ib->getMaximum().z){
+					fp.z = ib->getMaximum().z;
+				}
+				else if( pIn.z <= ib->getMinimum().z){
+					fp.z = ib->getMinimum().z;
+				}
+				
+				if(pOut != NULL){
+					*pOut = fp;
+				}
+			}
+		}
+		if( ip != m_SpaceBounding.end()){
+			if(fp.y <= ip->getMinimum().y){
+				fp.y = ip->getMinimum().y;
+				if(pOut != NULL){
+					*pOut = fp;
+				}
+				return true;
+			}
+			else{ 
+				if(fp.y > ip->getMaximum().y){
+					fp.y = ip->getMaximum().y;
+				}
+				if(pOut != NULL){
+					*pOut = fp;
+				}
+				return false;
+			}
+		}
+		else{
+			printf("error!\n");
+			system("pause");
+			if(pOut != NULL){
+				*pOut = fp - dp / (float)n;
+			}
+			return false;
+		}
+	}
+	else{
+		//界外
+		AxisAlignedBoxs::iterator ip = InWhichSpace(pIn);
+		
+		if( fp.x >= ip->getMaximum().x){
+			fp.x = ip->getMaximum().x - 1.0f;
+		}
+		if( fp.z >= ip->getMaximum().z){
+			fp.z = ip->getMaximum().z - 1.0f;
+		}
+		if( fp.x <= ip->getMinimum().x){
+			fp.x = ip->getMinimum().x + 1.0f;
+		}
+		if( fp.z <= ip->getMinimum().z){
+			fp.z = ip->getMinimum().z + 1.0f;
+		}
+
+		int d = AboveGround(fp);
+		if(d == 0){
+			if(pOut != NULL){
+				*pOut = fp;
+			}
+			return true;
+		}
+		else if(d == 1){
+			if(pOut != NULL){
+				*pOut = fp;
+			}
+			return false;
+		}
+		else if(d == -1){
+			fp.y = ip->getMinimum().y;
+			/*
+			ip = InWhichBan(fp);
+			if(ip != m_BanBounding.end()){
+				
+			}
+			//*/
+			if(pOut != NULL){
+				*pOut = fp;
+			}
+			return true;
+		}
+		else{
+			printf("error2!\n");
+			system("pause");
+		}
+	}
 }

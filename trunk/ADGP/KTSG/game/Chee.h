@@ -7,6 +7,7 @@
 #include "game\FlyingPath.h"
 #include "common\shared_ptr.h"
 #include "game\ObjectInfo.h"
+#include "Hero.h"
 
 class Chee
 {
@@ -60,6 +61,7 @@ public:
 	int Team();
 	Vector3 Position();
 	Vector3 BackPosition(float back);
+	friend bool Creat(const Vector3 &pos, const Creation &obj, const Hero *owner);
 };
 SHARE_PTR(Chee)
 typedef std::vector <Chee_RawPtr> Chees;

@@ -84,12 +84,12 @@ void Chee::Update( float dt )
 	{
 		m_TimeTik--;
 	}
-	if (m_Vel.x < 0)
+	/*if (m_Vel.x < 0)
 	{
 		m_FaceSide = false;
 	}else{
 		m_FaceSide = true;
-	}
+	}//*/
 
 	if (g_BGManager.CurrentBG()!=NULL)
 	{

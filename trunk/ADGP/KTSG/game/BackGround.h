@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdio>
+#include <cstdlib>
 #include <string>
 #include <map>
 #include <vector>
@@ -83,6 +85,10 @@ private:
 	LightPath	m_LightPath;
 	ParallelLight	m_CurrentLight;
 	
+//	int _isOnBan(Vector3 &pos);
+//	int _isOnSpace(Vector3 &pos);
+//	int _isOnGround(Vector3 &pos);
+	
 public:
 	BackGround(){}
 	~BackGround(){}
@@ -105,15 +111,17 @@ public:
 
 	bool    InSpace(const Vector3& pIn);//判斷vIn是否在地圖的可行範圍
 	Vector3	AlignmentSpace(const Vector3& pIn);//判斷vIn是否在地圖的可行範圍，並校正
-	bool    AboveSpaceBottom(const Vector3& pIn);
+	int    AboveSpaceBottom(const Vector3& pIn);
 
 
 	bool    InBan(const Vector3& pIn);//判斷vIn是否在地圖的禁足範圍
-	AxisAlignedBoxs::iterator InWinchBan(const Vector3& pIn);
+	AxisAlignedBoxs::iterator InWhichBan(const Vector3& pIn);
+	AxisAlignedBoxs::iterator InWhichSpace( const Vector3& pIn );
 	Vector3	AlignmentBan(const Vector3& pIn ,const Vector3& pIn_past);//判斷vIn是否在地圖的禁足範圍，並校正
-	bool    AboveBanTop(const Vector3& pIn);
-
-	bool	AboveGround(const Vector3& pIn);
+	//-1: under ground, 0:on ground, 1:above ground, 2:not in
+	int		AboveBanTop(const Vector3& pIn);
+	int		AboveGround(const Vector3& pIn);
+	bool 	isOnGround(const Vector3& pIn ,const Vector3& dp, Vector3 *pOut);
 };
 SHARE_PTR(BackGround);
 

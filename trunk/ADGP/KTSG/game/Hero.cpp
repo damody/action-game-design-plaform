@@ -87,34 +87,36 @@ void Hero::Update(float dt)
 
 	//恢復
 	if(m_MP < 500){
-		m_MP += 3 + 200/m_HP;
+		m_MP += 1 + 200/m_HP;
 		if(m_MP > 500) m_MP = 500;
 	}
 	if(m_HP < m_MaxRecoverHP){
-		m_HP += 3;
+		m_HP += 1;
 		if(m_HP > m_MaxRecoverHP) m_HP = m_MaxRecoverHP;
 	}
 	
 	//物理
 	Vector3 pastPos = m_Position;
-	m_Position += m_Vel;
+	//m_Position += m_Vel;
 	bool pastInAir = false;
-	bool InAir = false;
+	bool inAir = false;
 
 	//場地限制
 	if(g_BGManager.CurrentBG()!=NULL){
-		SetPosition(g_BGManager.CurrentBG()->AlignmentSpace(m_Position));
-		SetPosition(g_BGManager.CurrentBG()->AlignmentBan(m_Position,pastPos));
-		pastInAir = g_BGManager.CurrentBG()->AboveGround(pastPos);
-		InAir	= g_BGManager.CurrentBG()->AboveGround(m_Position);
+		pastInAir = g_BGManager.CurrentBG()->AboveGround(pastPos) == 1;
+		inAir = !g_BGManager.CurrentBG()->isOnGround(pastPos, m_Vel, &m_Position);
+		//SetPosition(g_BGManager.CurrentBG()->AlignmentSpace(m_Position));
+		//SetPosition(g_BGManager.CurrentBG()->AlignmentBan(m_Position,pastPos));
+		//inAir	= g_BGManager.CurrentBG()->AboveGround(m_Position) == 1;
 	}
 
-	if(m_Position.y <= 0){	//地上
+	if(!inAir){	//地上
+		printf("onground\n");
 		//落地判定
 		if( m_Action != HeroAction::UNIQUE_SKILL){
-			m_Position.y = 0;
+			//m_Position.y = 0;
 			m_Vel.y = 0;
-			if(pastPos.y > 0 || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH){
+			if(pastInAir || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH){
 				//Frame 改到蹲
 				m_Frame = "crouch";
 				if( m_Action == HeroAction::DASH || m_Action == HeroAction::BEFORE_DASH_ATTACK ||
@@ -145,6 +147,9 @@ void Hero::Update(float dt)
 				CreateEffect();
 			}
 		}
+		else{
+			m_Position = pastPos + m_Vel;
+		}
 		//X方向摩擦力計算
 		float sign = m_Vel.x/abs(m_Vel.x);
 		m_Vel.x = abs(m_Vel.x);
@@ -159,6 +164,7 @@ void Hero::Update(float dt)
 		else m_Vel.z *= sign;
 	}
 	else{					//空中
+		printf("inAir\n");
 		//重力加速度
 		if(m_Action != HeroAction::AIR_SKILL && m_Action != HeroAction::UNIQUE_SKILL){
 			m_Vel.y -= G_ACCE;
@@ -280,7 +286,8 @@ NextLoop:
 		Creations::iterator ic = f->m_Creations.begin();
 		while(ic != f->m_Creations.end()){
 			Vector3 pos( df * (ic->x - m_CenterX) * SCALE + m_Position.x, (ic->y + m_CenterY) * SCALE + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
-			g_ObjectMG.CreateChee(ic->name, pos, ic->v0, ic->amount, m_Team);
+			//g_ObjectMG.CreateChee(ic->name, pos, ic->v0, ic->amount, m_Team);
+			Creat(pos,*ic,this);
 			ic++;
 		}
 	}
@@ -1124,7 +1131,7 @@ const Vector3& Hero::Position()
 	return m_Position;
 }
 
-int Hero::Team()
+int Hero::Team() const
 {
 	return m_Team;
 }
@@ -1241,7 +1248,62 @@ const Vector3& Hero::Velocity()
 	return m_Vel;
 }
 
+bool Creat(const Vector3 &pos, const Creation &obj, const Hero *owner){
+	if(obj.amount <= 0){
+		printf("you just want to creat nothing!\n");
+		return true;
+	}
+	std::string u = obj.name;
+	bool f = owner->m_FaceSide ^ (obj.facing > 0);
 
+	if(g_HeroInfoMG.GetHeroInfo(u) != HeroInfo_Sptr()){
+		for(int i=0;i<obj.amount;i++){
+			Hero* s = g_HeroMG.Create(u, pos, owner == NULL ? 0 : owner->Team());
+			s->m_FaceSide = f;
+			s->m_Vel = obj.v0;
+			s->m_Frame.assign(obj.frame);
+			s->m_FrameID = obj.frameID;
+			s->m_HP = obj.HP;
+			//s->m_MaxRecoverHP = obj.HP;
+			//s->owner = owner;
+		}
+		return true;
+	}
+	else if(g_ObjectInfoMG.GetObjectInfo(u) != ObjectInfo_Sptr()){
+		Chee** s;
+		Weapon** w;
+		switch(g_ObjectInfoMG.GetObjectInfo(u)->m_Type){
+		case ObjectType::CHEE:
+			s = g_ObjectMG.CreateChee(u, pos, obj.v0, obj.amount, owner == NULL ? 0 : owner->Team());
+			for(int i=0;i<obj.amount;i++){
+				s[i]->m_FaceSide = f;
+				s[i]->m_Frame = obj.frame;
+				s[i]->m_FrameID = obj.frameID;
+				s[i]->m_HP = obj.HP;
+				//(*s)->owner = owner;
+			}
+			return true;
+		case ObjectType::STATIC:
+			//todo: 蓋方塊
+			return false;
+		default:
+			w = g_ObjectMG.CreateWeapon(u, pos, obj.amount, owner == NULL ? 0 : owner->Team());
+			for(int i=0;i<obj.amount;i++){
+				w[i]->m_FaceSide = f;
+				w[i]->SetVelocity(obj.v0);
+				w[i]->m_Frame = obj.frame;
+				w[i]->m_FrameID = obj.frameID;
+				w[i]->m_HP = obj.HP;
+			}
+			return true;
+			//(*s)->owner = owner;
+		}
+	}
+	else{
+		printf("error: can't find %s\n",u.c_str());
+		return false;
+	}
+}
 
 
 
