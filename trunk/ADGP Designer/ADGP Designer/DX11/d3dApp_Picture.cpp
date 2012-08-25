@@ -378,14 +378,14 @@ void D3DApp_Picture::buildPoint()
 	if (m_Pic != NULL)
 	{
 		PictureVertex pv;
-		pv.position.x = g_Frame_OffsetX;
-		pv.position.y = -g_Frame_OffsetY;
-		pv.size.x = m_Pic->m_Width * g_Frame_Scale;
-		pv.size.y = m_Pic->m_Height * g_Frame_Scale;
-		pv.picpos.x = m_picX;
-		pv.picpos.y = m_picY;
-		pv.picpos.z = m_Pic->m_Row;
-		pv.picpos.w = m_Pic->m_Column;
+		pv.position.x = g_Picture_OffsetX;
+		pv.position.y = -g_Picture_OffsetY;
+		pv.size.x = m_Pic->m_Width * g_Picture_Scale;
+		pv.size.y = m_Pic->m_Height * g_Picture_Scale;
+		pv.picpos.x = 1;
+		pv.picpos.y = 1;
+		pv.picpos.z = 1;
+		pv.picpos.w = 1;
 
 		m_vbd.ByteWidth = (UINT)(sizeof(PictureVertex));
 		m_vbd.StructureByteStride=sizeof(PictureVertex);

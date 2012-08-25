@@ -7,3 +7,7 @@
 extern float g_Frame_Scale;
 extern float g_Frame_OffsetX;
 extern float g_Frame_OffsetY;
+
+extern float g_Picture_Scale;
+extern float g_Picture_OffsetX;
+extern float g_Picture_OffsetY;

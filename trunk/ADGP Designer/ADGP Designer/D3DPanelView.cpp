@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(CD3DPanelView, CDockablePane)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSEWHEEL()
+	ON_WM_MOUSELEAVE()
 END_MESSAGE_MAP()
 
 
@@ -443,6 +444,16 @@ BOOL CD3DPanelView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	return CDockablePane::OnMouseWheel(nFlags, zDelta, pt);
 }
 
+void CD3DPanelView::OnMouseLeave()
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	char buff[100];
+	sprintf(buff, "test");
+	CString str(buff);
+	AfxMessageBox(str);
+	CDockablePane::OnMouseLeave();
+}
+
 //Functions
 
 void CD3DPanelView::SetPic( PictureData *pic,float x,float y )
@@ -537,3 +548,6 @@ void CD3DPanelView::Init()
 	m_D3DApp.m_Attack.clear();
 	m_D3DApp.m_Body.clear();
 }
+
+
+

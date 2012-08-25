@@ -54,7 +54,7 @@ END_MESSAGE_MAP()
 
 // CADGPDesignerView 建構/解構
 
-CADGPDesignerView::CADGPDesignerView()
+CADGPDesignerView::CADGPDesignerView():m_LMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false)
 {
 	// TODO: 在此加入建構程式碼
 }
@@ -244,7 +244,15 @@ void CADGPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 // 	sprintf(buff, "%d", nChar);
 // 	CString str(buff);
 // 	AfxMessageBox(str);
+	if (nChar==KEY_CTRL)
+	{
+		m_CtrlPress = true;
+	}
 
+	if (nChar==KEY_SHIFT)
+	{
+		m_ShiftPress = true;
+	}
 	
 
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
@@ -254,7 +262,15 @@ void CADGPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CADGPDesignerView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	if (nChar==KEY_CTRL)
+	{
+		m_CtrlPress = false;
+	}
 
+	if (nChar==KEY_SHIFT)
+	{
+		m_ShiftPress = false;
+	}
 	
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
 }
@@ -276,23 +292,23 @@ void CADGPDesignerView::OnPaint()
 BOOL CADGPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-// 	if (m_CtrlPress && !m_ShiftPress)
-// 	{
-// 		if (zDelta > 0)
-// 		{
-// 			if (g_Frame_Scale < 10)
-// 			{
-// 				g_Frame_Scale += 0.1f;
-// 			}
-// 		}else{
-// 			if (g_Frame_Scale > 1)
-// 			{
-// 				g_Frame_Scale -= 0.1f;
-// 			}
-// 		}
-// 		m_D3DApp.buildPoint();
-// 		m_D3DApp.DrawScene();
-// 	}
+	if (m_CtrlPress && !m_ShiftPress)
+	{
+		if (zDelta > 0)
+		{
+			if (g_Picture_Scale < 10)
+			{
+				g_Picture_Scale += 0.1f;
+			}
+		}else{
+			if (g_Picture_Scale > 1)
+			{
+				g_Picture_Scale -= 0.1f;
+			}
+		}
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }
 
