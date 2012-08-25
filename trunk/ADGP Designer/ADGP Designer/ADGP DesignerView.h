@@ -32,14 +32,6 @@ private:
 public:
 	void Init();
 	//Init(FrameInfo *info);
-	void SetPic(PictureData  *pic,float x,float y);
-	void StopEdit();
-	int AddBody();
-	void DeleteBody(int id);
-	void EditBody(int id);
-	int AddAttack();
-	void DeleteAttack(int id);
-	void EditAttack(int id);
 	
 protected: // 僅從序列化建立
 	CADGPDesignerView();

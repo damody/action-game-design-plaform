@@ -16,6 +16,7 @@ class D3DApp_Frame
 public:
 	Bounds  m_Body;
 	Bounds  m_Attack;
+
 	TextureManager& GetTextureManager()
 	{ return *m_TextureManager;}
 private:
