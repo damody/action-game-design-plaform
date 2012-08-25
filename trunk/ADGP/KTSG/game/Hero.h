@@ -11,6 +11,7 @@
 #include "CtrlKey.h"
 #include "HeroInfo.h"
 #include "HeroAction.h"
+#include "Record.h"
 #include <string>
 #include <cmath>
 #include <cstdlib>
@@ -23,28 +24,6 @@
 #define SCALE 3.0f
 
 namespace boost{namespace serialization{class access;}}
-struct Record
-{
-	int Kill;    //殺敵數
-	int Attack;  //攻擊
-	int HPLost;  //損血量
-	int MPUsage; //耗魔量
-	int Picking; //拾起物品數目
-	bool Status; //true: win false: lose
-
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
-	{
-		ar & Kill;    
-		ar & Attack;  
-		ar & HPLost;  
-		ar & MPUsage; 
-		ar & Picking; 
-		ar & Status; 
-	}
-};
-SHARE_PTR(Record)
 
 class Hero
 {
@@ -137,7 +116,7 @@ public:
 	void PushKey(KeyInfo k);
 	BodyVerteices GetBodyVerteices();
 	BodyVerteices GetBodyLineVerteices();
-	friend bool Creat(const Vector3 &pos, const Creation &obj, const Hero *owner);
+	friend bool Creat(const Vector3 &pos, const Creation &obj, bool face, const Record_Sptr owner);
 protected:
 	void Init();
 	void NextFrame();

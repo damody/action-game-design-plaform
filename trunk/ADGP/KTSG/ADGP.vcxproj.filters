@@ -475,6 +475,9 @@
     <ClInclude Include="game\PoisonShaderClass.h">
       <Filter>inc\game\EffectShader</Filter>
     </ClInclude>
+    <ClInclude Include="game\Record.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\bullet.fx">
