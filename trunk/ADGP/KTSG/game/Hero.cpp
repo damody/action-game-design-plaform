@@ -87,34 +87,37 @@ void Hero::Update(float dt)
 
 	//恢復
 	if(m_MP < 500){
-		m_MP += 3 + 200/m_HP;
+		m_MP += 1 + 200/m_HP;
 		if(m_MP > 500) m_MP = 500;
 	}
 	if(m_HP < m_MaxRecoverHP){
-		m_HP += 3;
+		m_HP += 1;
 		if(m_HP > m_MaxRecoverHP) m_HP = m_MaxRecoverHP;
 	}
 	
 	//物理
 	Vector3 pastPos = m_Position;
-	m_Position += m_Vel;
+	//m_Position += m_Vel;
 	bool pastInAir = false;
-	bool InAir = false;
+	bool inAir = false;
 
 	//場地限制
 	if(g_BGManager.CurrentBG()!=NULL){
-		SetPosition(g_BGManager.CurrentBG()->AlignmentSpace(m_Position));
-		SetPosition(g_BGManager.CurrentBG()->AlignmentBan(m_Position,pastPos));
 		pastInAir = g_BGManager.CurrentBG()->AboveGround(pastPos);
-		InAir	= g_BGManager.CurrentBG()->AboveGround(m_Position);
+		inAir = !g_BGManager.CurrentBG()->isOnGround(pastPos, m_Vel, &m_Position);
+
+		//inAir	= g_BGManager.CurrentBG()->AboveGround(m_Position);
+		//SetPosition(g_BGManager.CurrentBG()->AlignmentSpace(m_Position));
+		//SetPosition(g_BGManager.CurrentBG()->AlignmentBan(m_Position,pastPos));
 	}
 
-	if(m_Position.y <= 0){	//地上
+	if(!inAir){	//地上
+		printf("onground\n");
 		//落地判定
 		if( m_Action != HeroAction::UNIQUE_SKILL){
-			m_Position.y = 0;
+			//m_Position.y = 0;
 			m_Vel.y = 0;
-			if(pastPos.y > 0 || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH){
+			if(pastInAir || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH){
 				//Frame 改到蹲
 				m_Frame = "crouch";
 				if( m_Action == HeroAction::DASH || m_Action == HeroAction::BEFORE_DASH_ATTACK ||
@@ -145,6 +148,9 @@ void Hero::Update(float dt)
 				CreateEffect();
 			}
 		}
+		else{
+			m_Position = pastPos + m_Vel;
+		}
 		//X方向摩擦力計算
 		float sign = m_Vel.x/abs(m_Vel.x);
 		m_Vel.x = abs(m_Vel.x);
@@ -159,6 +165,7 @@ void Hero::Update(float dt)
 		else m_Vel.z *= sign;
 	}
 	else{					//空中
+		printf("inAir\n");
 		//重力加速度
 		if(m_Action != HeroAction::AIR_SKILL && m_Action != HeroAction::UNIQUE_SKILL){
 			m_Vel.y -= G_ACCE;
