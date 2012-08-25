@@ -374,7 +374,7 @@ void CD3DPanelView::OnMouseMove(UINT nFlags, CPoint point)
 	char buff[100];
 	sprintf(buff, "   ®y¼Ð¦ì¸m( %d , %d )", point.x, point.y);
 	CString str(buff);
-	((CMainFrame*)(this->GetParent()))->SetStatus(str);
+	((CMainFrame*)(this->GetParentFrame()))->SetStatus(str);
 
 
 	if(!m_D3DApp.m_Body.empty() && m_BodyID > -1){

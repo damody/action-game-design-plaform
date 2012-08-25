@@ -16,9 +16,6 @@
     <Filter Include="File">
       <UniqueIdentifier>{a6cf5d1b-1d19-4db5-9bd3-79cefaff813e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DXUT">
-      <UniqueIdentifier>{a0df1008-6cc6-4b2e-880e-3c63f8b08ae2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DX11">
       <UniqueIdentifier>{3f9d9efe-93f2-4a43-96ca-b7177969590b}</UniqueIdentifier>
     </Filter>
@@ -213,48 +210,6 @@
     <ClInclude Include="File\CryptoData.h">
       <Filter>File</Filter>
     </ClInclude>
-    <ClInclude Include="DXUT\DXUTcamera.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DXUT\DXUTDevice9.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DXUT\DXUTDevice11.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DXUT\DXUTgui.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DXUT\DXUTguiIME.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DXUT\DXUTLockFreePipe.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DXUT\DXUTmisc.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DXUT\DXUTres.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DXUT\DXUTsettingsdlg.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DXUT\ImeUi.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DXUT\SDKmesh.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DXUT\SDKmisc.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DXUT\DXUT.h">
-      <Filter>DXUT</Filter>
-    </ClInclude>
-    <ClInclude Include="DX11\DXUTUI.h">
-      <Filter>DX11</Filter>
-    </ClInclude>
     <ClInclude Include="DX11\Timer.h">
       <Filter>DX11</Filter>
     </ClInclude>
@@ -325,45 +280,6 @@
     </ClCompile>
     <ClCompile Include="File\CryptoData.cpp">
       <Filter>File</Filter>
-    </ClCompile>
-    <ClCompile Include="DXUT\DXUTcamera.cpp">
-      <Filter>DXUT</Filter>
-    </ClCompile>
-    <ClCompile Include="DXUT\DXUTDevice9.cpp">
-      <Filter>DXUT</Filter>
-    </ClCompile>
-    <ClCompile Include="DXUT\DXUTDevice11.cpp">
-      <Filter>DXUT</Filter>
-    </ClCompile>
-    <ClCompile Include="DXUT\DXUTgui.cpp">
-      <Filter>DXUT</Filter>
-    </ClCompile>
-    <ClCompile Include="DXUT\DXUTguiIME.cpp">
-      <Filter>DXUT</Filter>
-    </ClCompile>
-    <ClCompile Include="DXUT\DXUTmisc.cpp">
-      <Filter>DXUT</Filter>
-    </ClCompile>
-    <ClCompile Include="DXUT\DXUTres.cpp">
-      <Filter>DXUT</Filter>
-    </ClCompile>
-    <ClCompile Include="DXUT\DXUTsettingsdlg.cpp">
-      <Filter>DXUT</Filter>
-    </ClCompile>
-    <ClCompile Include="DXUT\ImeUi.cpp">
-      <Filter>DXUT</Filter>
-    </ClCompile>
-    <ClCompile Include="DXUT\SDKmesh.cpp">
-      <Filter>DXUT</Filter>
-    </ClCompile>
-    <ClCompile Include="DXUT\SDKmisc.cpp">
-      <Filter>DXUT</Filter>
-    </ClCompile>
-    <ClCompile Include="DXUT\DXUT.cpp">
-      <Filter>DXUT</Filter>
-    </ClCompile>
-    <ClCompile Include="DX11\DXUTUI.cpp">
-      <Filter>DX11</Filter>
     </ClCompile>
     <ClCompile Include="DX11\Timer.cpp">
       <Filter>DX11</Filter>

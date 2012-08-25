@@ -4,7 +4,6 @@
 #include <d3dCompiler.h>
 #include <d3dx11effect.h>
 #include "Timer.h"
-#include "DXUTUI.h"
 #include "Vertex.h"
 #include "game/PictureData.h"
 #include "DX11/TextureManager.h"
