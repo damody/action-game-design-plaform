@@ -103,12 +103,11 @@ void Hero::Update(float dt)
 
 	//場地限制
 	if(g_BGManager.CurrentBG()!=NULL){
-		pastInAir = g_BGManager.CurrentBG()->AboveGround(pastPos);
+		pastInAir = g_BGManager.CurrentBG()->AboveGround(pastPos) == 1;
 		inAir = !g_BGManager.CurrentBG()->isOnGround(pastPos, m_Vel, &m_Position);
-
-		//inAir	= g_BGManager.CurrentBG()->AboveGround(m_Position);
 		//SetPosition(g_BGManager.CurrentBG()->AlignmentSpace(m_Position));
 		//SetPosition(g_BGManager.CurrentBG()->AlignmentBan(m_Position,pastPos));
+		//inAir	= g_BGManager.CurrentBG()->AboveGround(m_Position) == 1;
 	}
 
 	if(!inAir){	//地上
@@ -287,7 +286,8 @@ NextLoop:
 		Creations::iterator ic = f->m_Creations.begin();
 		while(ic != f->m_Creations.end()){
 			Vector3 pos( df * (ic->x - m_CenterX) * SCALE + m_Position.x, (ic->y + m_CenterY) * SCALE + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
-			g_ObjectMG.CreateChee(ic->name, pos, ic->v0, ic->amount, m_Team);
+			//g_ObjectMG.CreateChee(ic->name, pos, ic->v0, ic->amount, m_Team);
+			Creat(pos,*ic,this);
 			ic++;
 		}
 	}
@@ -1131,7 +1131,7 @@ const Vector3& Hero::Position()
 	return m_Position;
 }
 
-int Hero::Team()
+int Hero::Team() const
 {
 	return m_Team;
 }
@@ -1248,7 +1248,62 @@ const Vector3& Hero::Velocity()
 	return m_Vel;
 }
 
+bool Creat(const Vector3 &pos, const Creation &obj, const Hero *owner){
+	if(obj.amount <= 0){
+		printf("you just want to creat nothing!\n");
+		return true;
+	}
+	std::string u = obj.name;
+	bool f = owner->m_FaceSide ^ (obj.facing > 0);
 
+	if(g_HeroInfoMG.GetHeroInfo(u) != HeroInfo_Sptr()){
+		for(int i=0;i<obj.amount;i++){
+			Hero* s = g_HeroMG.Create(u, pos, owner == NULL ? 0 : owner->Team());
+			s->m_FaceSide = f;
+			s->m_Vel = obj.v0;
+			s->m_Frame.assign(obj.frame);
+			s->m_FrameID = obj.frameID;
+			s->m_HP = obj.HP;
+			//s->m_MaxRecoverHP = obj.HP;
+			//s->owner = owner;
+		}
+		return true;
+	}
+	else if(g_ObjectInfoMG.GetObjectInfo(u) != ObjectInfo_Sptr()){
+		Chee** s;
+		Weapon** w;
+		switch(g_ObjectInfoMG.GetObjectInfo(u)->m_Type){
+		case ObjectType::CHEE:
+			s = g_ObjectMG.CreateChee(u, pos, obj.v0, obj.amount, owner == NULL ? 0 : owner->Team());
+			for(int i=0;i<obj.amount;i++){
+				s[i]->m_FaceSide = f;
+				s[i]->m_Frame = obj.frame;
+				s[i]->m_FrameID = obj.frameID;
+				s[i]->m_HP = obj.HP;
+				//(*s)->owner = owner;
+			}
+			return true;
+		case ObjectType::STATIC:
+			//todo: 蓋方塊
+			return false;
+		default:
+			w = g_ObjectMG.CreateWeapon(u, pos, obj.amount, owner == NULL ? 0 : owner->Team());
+			for(int i=0;i<obj.amount;i++){
+				w[i]->m_FaceSide = f;
+				w[i]->SetVelocity(obj.v0);
+				w[i]->m_Frame = obj.frame;
+				w[i]->m_FrameID = obj.frameID;
+				w[i]->m_HP = obj.HP;
+			}
+			return true;
+			//(*s)->owner = owner;
+		}
+	}
+	else{
+		printf("error: can't find %s\n",u.c_str());
+		return false;
+	}
+}
 
 
 

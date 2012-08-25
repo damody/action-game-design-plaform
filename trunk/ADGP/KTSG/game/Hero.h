@@ -126,7 +126,7 @@ public:
 	Texture_Sptr GetTexture();
 	int GetTextureID();
 	ClipVertex GetPic();
-	int Team();
+	int Team() const;
 	const Vector3& Position();
 	const Vector3& Velocity(); 
 
@@ -137,6 +137,7 @@ public:
 	void PushKey(KeyInfo k);
 	BodyVerteices GetBodyVerteices();
 	BodyVerteices GetBodyLineVerteices();
+	friend bool Creat(const Vector3 &pos, const Creation &obj, const Hero *owner);
 protected:
 	void Init();
 	void NextFrame();
@@ -150,4 +151,5 @@ protected:
 SHARE_PTR(Hero)
 typedef std::vector <Hero_RawPtr> Heroes;
 
+//bool Creat(Vector3 pos, Creation obj, const Hero *owner);
 bool SortHero( Hero_RawPtr a,Hero_RawPtr b);

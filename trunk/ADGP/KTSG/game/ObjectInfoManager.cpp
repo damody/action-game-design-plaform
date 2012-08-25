@@ -5,7 +5,6 @@ ObjectInfoMG::ObjectInfoMG(void)
 {
 }
 
-
 ObjectInfoMG::~ObjectInfoMG(void)
 {
 }

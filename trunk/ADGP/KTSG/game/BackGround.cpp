@@ -546,10 +546,6 @@ int BackGround::AboveGround(const Vector3& pIn)
 	}
 	else return 2;
 }
-/*
-int BackGround::_isOnGround(Vector3 &pos){
-
-}//*/
 
 bool BackGround::isOnGround(const Vector3& pIn ,const Vector3& dp, Vector3 *pOut){
 	Vector3 fp = pIn;
@@ -582,7 +578,6 @@ bool BackGround::isOnGround(const Vector3& pIn ,const Vector3& dp, Vector3 *pOut
 		//¦a©³
 		AxisAlignedBoxs::iterator ib = InWhichBan(fp);
 		AxisAlignedBoxs::iterator ip = InWhichSpace(fp);
-		//Vector3 ch = fp - dp / (float)n;
 		if(ib != m_BanBounding.end()){
 			if( pIn.y > ib->getMaximum().y){
 				fp.y = ib->getMaximum().y;
@@ -639,12 +634,7 @@ bool BackGround::isOnGround(const Vector3& pIn ,const Vector3& dp, Vector3 *pOut
 	}
 	else{
 		//¬É¥~
-		//Vector3 ch = fp - dp / (float)n;
 		AxisAlignedBoxs::iterator ip = InWhichSpace(pIn);
-		/*if(ip == m_SpaceBounding.end()){
-			pIn -= dp / (float)n;
-			ip = InWhichSpace(pIn);
-		}//*/
 		
 		if( fp.x >= ip->getMaximum().x){
 			fp.x = ip->getMaximum().x - 1.0f;
@@ -690,12 +680,4 @@ bool BackGround::isOnGround(const Vector3& pIn ,const Vector3& dp, Vector3 *pOut
 			system("pause");
 		}
 	}
-	/*
-	if(AboveGround(pNext)){
-		if(pOut!=NULL) *pOut = pNext;
-		return false;
-	}
-	else{
-		
-	}//*/
 }
