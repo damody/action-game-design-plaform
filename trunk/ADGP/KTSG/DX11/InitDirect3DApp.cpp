@@ -99,8 +99,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 	UpdateInput();
 	
 	//m_DXUT_UI->UpdataUI(dt);
-	m_SwapChain->Present(0, 0);
-	D3DApp::DrawScene(); // clear window
+	
 	//UpdateUI();
 	
 
@@ -110,7 +109,9 @@ void InitDirect3DApp::UpdateScene(float dt)
 		timp_count+=dt;
 		if (timp_count > 1/60.0f)
 		{
-			
+			D3DApp::DrawScene(); // clear window
+			this->DrawScene();
+			m_SwapChain->Present(0, 0);
 			g_Time++;
 			UpdateCamera();
 			if(g_EffectMG != NULL)g_EffectMG->Update(m_RenderTargetView);
