@@ -36,7 +36,10 @@ BEGIN_MESSAGE_MAP(CD3DPanelView, CDockablePane)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSEWHEEL()
+<<<<<<< HEAD
 	ON_WM_MOUSELEAVE()
+=======
+>>>>>>> 26f492f384e830c4bb2ad7d0fa814e5f92b87203
 END_MESSAGE_MAP()
 
 
@@ -375,7 +378,7 @@ void CD3DPanelView::OnMouseMove(UINT nFlags, CPoint point)
 	char buff[100];
 	sprintf(buff, "   座標位置( %d , %d )", point.x, point.y);
 	CString str(buff);
-	((CMainFrame*)(this->GetParent()))->SetStatus(str);
+	((CMainFrame*)(this->GetParentFrame()))->SetStatus(str);
 
 
 	if(!m_D3DApp.m_Body.empty() && m_BodyID > -1){
@@ -444,6 +447,7 @@ BOOL CD3DPanelView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	return CDockablePane::OnMouseWheel(nFlags, zDelta, pt);
 }
 
+<<<<<<< HEAD
 void CD3DPanelView::OnMouseLeave()
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
@@ -454,6 +458,8 @@ void CD3DPanelView::OnMouseLeave()
 	CDockablePane::OnMouseLeave();
 }
 
+=======
+>>>>>>> 26f492f384e830c4bb2ad7d0fa814e5f92b87203
 //Functions
 
 void CD3DPanelView::SetPic( PictureData *pic,float x,float y )
@@ -548,6 +554,9 @@ void CD3DPanelView::Init()
 	m_D3DApp.m_Attack.clear();
 	m_D3DApp.m_Body.clear();
 }
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 26f492f384e830c4bb2ad7d0fa814e5f92b87203

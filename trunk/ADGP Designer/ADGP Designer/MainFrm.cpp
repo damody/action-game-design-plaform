@@ -133,14 +133,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	bNameValid = strPropertiesWnd.LoadString(IDS_VIEW_DLGBAR);
 	if (!m_D3DPictureView.Create (strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, 
 		ID_VIEW_DLGBAR, 
-		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI ))
+		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT  ))
 	{
 		TRACE0("Failed to create Dialog Bar\n");
 		return FALSE;      // fail to create
 	}
 	m_D3DPictureView.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_D3DPictureView);
-	m_D3DPictureView.DockToWindow (&m_wndProperties, CBRS_ALIGN_LEFT);
+	//m_D3DPictureView.DockToWindow (&m_wndProperties, CBRS_ALIGN_LEFT);
 
 	// 啟用增強型視窗管理對話方塊
 	EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
