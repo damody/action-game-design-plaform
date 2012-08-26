@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "d3dApp_Frame.h"
-#include "dxut/DXUT.h"
 #include "global.h"
 #include <d3d11.h>
 
@@ -339,11 +338,11 @@ void D3DApp_Frame::buildPoint()
 	ReleaseCOM(m_Buffer_Points);
 	m_PointVertices.clear();
 	for(Bounds::iterator it=m_Body.begin(); it!=m_Body.end();++it){
-		PointVertices pvs=it->BuildPoint();
+		PointVertices pvs=it->BuildPoint(g_Frame_Scale,g_Frame_OffsetX,g_Frame_OffsetY);
 		m_PointVertices.insert(m_PointVertices.end(),pvs.begin(),pvs.end());
 	}
 	for(Bounds::iterator it=m_Attack.begin(); it!=m_Attack.end();++it){
-		PointVertices pvs=it->BuildPoint();
+		PointVertices pvs=it->BuildPoint(g_Frame_Scale,g_Frame_OffsetX,g_Frame_OffsetY);
 		m_PointVertices.insert(m_PointVertices.end(),pvs.begin(),pvs.end());
 	}
 	if (!m_PointVertices.empty())
@@ -359,14 +358,14 @@ void D3DApp_Frame::buildPoint()
 	ReleaseCOM(m_Buffer_Lines);
 	m_LineVertices.clear();
 	for(Bounds::iterator it=m_Body.begin(); it!=m_Body.end();++it){
-		LineVertices lvs=it->BuildLine();
+		LineVertices lvs=it->BuildLine(g_Frame_Scale,g_Frame_OffsetX,g_Frame_OffsetY);
 		m_LineVertices.insert(m_LineVertices.end(),lvs.begin(),lvs.end());
 	}
 	for(Bounds::iterator it=m_Attack.begin(); it!=m_Attack.end();++it){
-		LineVertices lvs=it->BuildLine();
+		LineVertices lvs=it->BuildLine(g_Frame_Scale,g_Frame_OffsetX,g_Frame_OffsetY);
 		m_LineVertices.insert(m_LineVertices.end(),lvs.begin(),lvs.end());
 	}
-	LineVertices lvs=m_Center.BuildLine(false);
+	LineVertices lvs=m_Center.BuildLine(g_Frame_Scale,g_Frame_OffsetX,g_Frame_OffsetY,false);
 	m_LineVertices.insert(m_LineVertices.end(),lvs.begin(),lvs.end());
 	if (!m_LineVertices.empty())
 	{

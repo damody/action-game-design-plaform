@@ -57,8 +57,16 @@ Texture::Texture( std::string path, ID3D11Device* d3dDevice )
 	FILE* file = fopen(path.c_str(), "r");
 	assert(file!=0); // check file ok
 	fclose(file);
+	D3DX11_IMAGE_INFO info;
+	if (D3D_OK == D3DX11GetImageInfoFromFileA( path.c_str(), 0, &info, 0))
+	{
+		w = info.Width;
+		h = info.Height;
+	}
 	if (d3dDevice)
 		D3DX11CreateShaderResourceViewFromFileA(d3dDevice, path.c_str(), 0, 0, &texture, 0);
+	w = info.Width;
+	h = info.Height;
 }
 
 Texture::Texture( std::wstring path, ID3D11Device* d3dDevice )
@@ -67,6 +75,12 @@ Texture::Texture( std::wstring path, ID3D11Device* d3dDevice )
 	FILE* file = _wfopen(path.c_str(), L"r");
 	assert(file!=0); // check file ok
 	fclose(file);
+	D3DX11_IMAGE_INFO info;
+	if (D3D_OK == D3DX11GetImageInfoFromFileW( path.c_str(), 0, &info, 0))
+	{
+		w = info.Width;
+		h = info.Height;
+	}
 	if (d3dDevice)
 		D3DX11CreateShaderResourceViewFromFileW(d3dDevice, path.c_str(), 0, 0, &texture, 0);
 }

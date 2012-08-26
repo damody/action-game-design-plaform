@@ -34,8 +34,9 @@ public:
 	void Transale(Points::iterator it_point,float x,float y);
 	void ChangeColor(Points::iterator it_point,float r,float g, float b,float a=1.0f);
 	void ChangeColor(float r,float g, float b,float a=1.0f);
-	PointVertices BuildPoint();
-	LineVertices  BuildLine(float loop = true);
+	PointVertices BuildPoint(float scale,float offsetX, float offsetY);
+	LineVertices  BuildLine(float scale,float offsetX, float offsetY, float loop = true);
+	LineVertices  BuildLineP2P(float scale,float offsetX, float offsetY);
 
 	void operator =(PointManager index){
 					this->m_Point = index.m_Point;

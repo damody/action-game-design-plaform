@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "d3dApp_Picture.h"
-#include "dxut/DXUT.h"
 #include "global.h"
 #include <d3d11.h>
 
@@ -29,22 +28,12 @@ D3DApp_Picture::D3DApp_Picture()
 	m_Lines_Height = NULL;
 
 	m_Pic = NULL;
-	m_picX = 1;
-	m_picY = 1;
 	m_Effect_Pics = NULL;
 	m_PTech_Pics = NULL;
 	m_PLayout_Pics = NULL;
 	m_Pics_Width = NULL;
 	m_Pics_Height = NULL;
 	m_Buffer_Pics = NULL;
-
-	m_CenterX=0;
-	m_CenterY=0;
-	m_Center.Add(m_CenterX + 3,m_CenterY +3);
-	m_Center.Add(m_CenterX - 3,m_CenterY -3);
-	m_Center.Add(m_CenterX ,m_CenterY);
-	m_Center.Add(m_CenterX - 3,m_CenterY +3);
-	m_Center.Add(m_CenterX + 3,m_CenterY -3);
 
 	m_hAppInst   = GetModuleHandle(NULL);
 
@@ -334,38 +323,21 @@ void D3DApp_Picture::buildShaderFX()
 void D3DApp_Picture::buildPoint()
 {
 	//Point
-	ReleaseCOM(m_Buffer_Points);
-	m_PointVertices.clear();
-	for(Bounds::iterator it=m_Body.begin(); it!=m_Body.end();++it){
-		PointVertices pvs=it->BuildPoint();
-		m_PointVertices.insert(m_PointVertices.end(),pvs.begin(),pvs.end());
-	}
-	for(Bounds::iterator it=m_Attack.begin(); it!=m_Attack.end();++it){
-		PointVertices pvs=it->BuildPoint();
-		m_PointVertices.insert(m_PointVertices.end(),pvs.begin(),pvs.end());
-	}
-	if (!m_PointVertices.empty())
-	{
-		m_vbd.ByteWidth = (UINT)(sizeof(PointVertex) * m_PointVertices.size());
-		m_vbd.StructureByteStride=sizeof(PointVertex);
-		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &m_PointVertices[0];
-		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Points));
-	}
+// 	ReleaseCOM(m_Buffer_Points);
+// 	if (!m_PointVertices.empty())
+// 	{
+// 		m_vbd.ByteWidth = (UINT)(sizeof(PointVertex) * m_PointVertices.size());
+// 		m_vbd.StructureByteStride=sizeof(PointVertex);
+// 		D3D11_SUBRESOURCE_DATA vinitData;
+// 		vinitData.pSysMem = &m_PointVertices[0];
+// 		HR(m_d3dDevice->CreateBuffer(&m_vbd, &vinitData, &m_Buffer_Points));
+// 	}
 
 	//Line
 	ReleaseCOM(m_Buffer_Lines);
 	m_LineVertices.clear();
-	for(Bounds::iterator it=m_Body.begin(); it!=m_Body.end();++it){
-		LineVertices lvs=it->BuildLine();
-		m_LineVertices.insert(m_LineVertices.end(),lvs.begin(),lvs.end());
-	}
-	for(Bounds::iterator it=m_Attack.begin(); it!=m_Attack.end();++it){
-		LineVertices lvs=it->BuildLine();
-		m_LineVertices.insert(m_LineVertices.end(),lvs.begin(),lvs.end());
-	}
-	LineVertices lvs=m_Center.BuildLine(false);
-	m_LineVertices.insert(m_LineVertices.end(),lvs.begin(),lvs.end());
+	LineVertices lvs = m_Cut.BuildLineP2P(g_Picture_Scale,g_Picture_OffsetX,g_Picture_OffsetY);
+	m_LineVertices.assign(lvs.begin(),lvs.end());
 	if (!m_LineVertices.empty())
 	{
 		m_vbd.ByteWidth = (UINT)(sizeof(LineVertex) * m_LineVertices.size());
@@ -380,8 +352,8 @@ void D3DApp_Picture::buildPoint()
 		PictureVertex pv;
 		pv.position.x = g_Picture_OffsetX;
 		pv.position.y = -g_Picture_OffsetY;
-		pv.size.x = m_Pic->m_Width * g_Picture_Scale;
-		pv.size.y = m_Pic->m_Height * g_Picture_Scale;
+		pv.size.x = GetTextureManager().GetTexture(m_Pic->m_TextureID)->w * g_Picture_Scale;
+		pv.size.y = GetTextureManager().GetTexture(m_Pic->m_TextureID)->h * g_Picture_Scale;
 		pv.picpos.x = 1;
 		pv.picpos.y = 1;
 		pv.picpos.z = 1;
@@ -443,16 +415,31 @@ void D3DApp_Picture::LoadBlend()
 		return ;
 }
 
-void D3DApp_Picture::SetPic( PictureData *pic,float x,float y )
+void D3DApp_Picture::SetPic( PictureData *pic)
 {
 	m_Pic = pic;
-	m_picX = x;
-	m_picY = y;
 }
 
-void D3DApp_Picture::SetCenter( float x,float y )
+void D3DApp_Picture::Cut( int r,int c )
 {
-	m_Center.Transale(x-m_CenterX,y-m_CenterY);
-	m_CenterX = x;
-	m_CenterY = y;
+	if(m_Pic==NULL)return;
+
+	m_Cut.Clear();
+
+	float picW = GetTextureManager().GetTexture(m_Pic->m_TextureID)->w;
+	float picH = GetTextureManager().GetTexture(m_Pic->m_TextureID)->h;
+	float rW = picW / r;
+	float rH = picH / c;
+	for (int i=0; i <= r; i++)
+	{
+		m_Cut.Add(i*rW,0);
+		m_Cut.Add(i*rW,picH);
+	}
+	for (int i=0; i <= c; i++)
+	{
+		m_Cut.Add(0,i*rH);
+		m_Cut.Add(picW,i*rH);
+	}
+	
 }
+

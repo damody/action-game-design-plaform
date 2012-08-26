@@ -36,10 +36,6 @@ BEGIN_MESSAGE_MAP(CD3DPanelView, CDockablePane)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSEWHEEL()
-<<<<<<< HEAD
-	ON_WM_MOUSELEAVE()
-=======
->>>>>>> 26f492f384e830c4bb2ad7d0fa814e5f92b87203
 END_MESSAGE_MAP()
 
 
@@ -436,7 +432,7 @@ BOOL CD3DPanelView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 				g_Frame_Scale += 0.1f;
 			}
 		}else{
-			if (g_Frame_Scale > 1)
+			if (g_Frame_Scale > 0.1)
 			{
 				g_Frame_Scale -= 0.1f;
 			}
@@ -444,27 +440,22 @@ BOOL CD3DPanelView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
+
+	char buff[100];
+	sprintf(buff, "   顯示比例 %.1f%%", g_Frame_Scale * 100);
+	CString str(buff);
+	((CMainFrame*)(this->GetParentFrame()))->SetStatus(str);
+
 	return CDockablePane::OnMouseWheel(nFlags, zDelta, pt);
 }
 
-<<<<<<< HEAD
-void CD3DPanelView::OnMouseLeave()
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	char buff[100];
-	sprintf(buff, "test");
-	CString str(buff);
-	AfxMessageBox(str);
-	CDockablePane::OnMouseLeave();
-}
-
-=======
->>>>>>> 26f492f384e830c4bb2ad7d0fa814e5f92b87203
 //Functions
 
 void CD3DPanelView::SetPic( PictureData *pic,float x,float y )
 {
 	m_D3DApp.SetPic(pic,x,y);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
 }
 
 
@@ -554,9 +545,3 @@ void CD3DPanelView::Init()
 	m_D3DApp.m_Attack.clear();
 	m_D3DApp.m_Body.clear();
 }
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 26f492f384e830c4bb2ad7d0fa814e5f92b87203

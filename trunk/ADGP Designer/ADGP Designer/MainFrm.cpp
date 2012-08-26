@@ -131,16 +131,16 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CString strPropertiesWnd;
 	bNameValid = strPropertiesWnd.LoadString(IDS_VIEW_DLGBAR);
-	if (!m_D3DPictureView.Create (strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, 
+	if (!m_D3DFrameView.Create (strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, 
 		ID_VIEW_DLGBAR, 
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT  ))
 	{
 		TRACE0("Failed to create Dialog Bar\n");
 		return FALSE;      // fail to create
 	}
-	m_D3DPictureView.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_D3DPictureView);
-	//m_D3DPictureView.DockToWindow (&m_wndProperties, CBRS_ALIGN_LEFT);
+	m_D3DFrameView.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_D3DFrameView);
+	//m_D3DFrameView.DockToWindow (&m_wndProperties, CBRS_ALIGN_LEFT);
 
 	// 啟用增強型視窗管理對話方塊
 	EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
@@ -411,7 +411,7 @@ void CMainFrame::OnButtonAreaScale()
 BOOL CMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
 {
 	// TODO: 在此加入特定的程式碼和 (或) 呼叫基底類別
-	if (m_D3DPictureView.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
+	if (m_D3DFrameView.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
 		return TRUE;
 	return CMDIFrameWndEx::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }

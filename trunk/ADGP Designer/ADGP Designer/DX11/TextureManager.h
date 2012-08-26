@@ -14,6 +14,7 @@ struct Texture
 	Texture(std::wstring path, ID3D11Device* d3dDevice);
 	Texture(ID3D11ShaderResourceView* rc);
 	~Texture();
+	int w, h;
 	ID3D11ShaderResourceView* texture;
 	operator ID3D11ShaderResourceView*()
 	{
@@ -27,6 +28,7 @@ struct Texture
 	{
 		return texture == rhs.texture;
 	}
+	
 };
 SHARE_PTR(Texture)
 

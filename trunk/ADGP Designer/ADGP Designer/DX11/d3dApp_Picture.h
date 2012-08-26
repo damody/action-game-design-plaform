@@ -13,20 +13,15 @@
 class D3DApp_Picture
 {
 public:
-	Bounds  m_Body;
-	Bounds  m_Attack;
-
+	PointManager m_Cut;
 	TextureManager& GetTextureManager()
 	{ return *m_TextureManager;}
 	
+	void Cut(int r,int c);
 private:
 	TextureManager* m_TextureManager;
 	PictureData  *m_Pic;
-	float         m_picX,m_picY;
 	Texture*      m_Templete;
-
-	PointManager  m_Center;
-	float	      m_CenterX,m_CenterY;
 public:
 	D3DApp_Picture();
 	~D3DApp_Picture();
@@ -41,8 +36,7 @@ public:
 	void buildShaderFX();
 	void buildPoint();
 
-	void SetPic(PictureData  *pic,float x,float y);
-	void SetCenter(float x,float y);
+	void SetPic(PictureData  *pic);
 
 	ID3D11Device* GetDevice()
 	{

@@ -49,6 +49,10 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
+	CD3DPanelView& GetFramePanel()
+	{
+		return m_D3DFrameView;
+	}
 	void SetStatus(const CString& str)
 	{
 		m_wndStatusBar.SetInformation(str);
@@ -76,7 +80,7 @@ public:  // 控制列內嵌的成員
 	CPropertiesWnd    m_wndProperties;
 	CMFCShellTreeCtrl m_wndTree;
 	CMFCCaptionBar    m_wndCaptionBar;
-	CD3DPanelView	  m_D3DPictureView;
+	CD3DPanelView	  m_D3DFrameView;
 // 產生的訊息對應函式
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

@@ -54,7 +54,8 @@ END_MESSAGE_MAP()
 
 // CADGPDesignerView 建構/解構
 
-CADGPDesignerView::CADGPDesignerView():m_LMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false)
+CADGPDesignerView::CADGPDesignerView():m_LMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_ShiftPress(false),
+m_Pic(0),m_CutH(1),m_CutW(1),m_CutR(1),m_CutC(1)
 {
 	// TODO: 在此加入建構程式碼
 }
@@ -171,9 +172,9 @@ void CADGPDesignerView::InitDx11( HWND hWnd )
 	temp->m_Height = 79;
 	temp->m_Row = 10;
 	temp->m_Column = 7;
-	m_D3DApp.SetPic(temp,1,1);
-	m_D3DApp.buildPoint();
-	m_D3DApp.DrawScene();
+
+	SetPic(temp);
+	Cut(10,7);
 	//*/
 }
 
@@ -201,24 +202,36 @@ void CADGPDesignerView::OnSize(UINT nType, int cx, int cy)
 void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	
+	point.x = point.x / (int)m_CutW; 
+	point.y = point.y / (int)m_CutH;
+	if (point.x <=0 || point.x >m_CutR || point.y <=0 || point.y >m_CutC)
+	{
+		return;
+	}else{
+		((CMainFrame*)(this->GetParent()->GetParentFrame()))->GetFramePanel().SetPic(m_Pic,point.x,point.y);
+	}
 
 	
 
 	CView::OnLButtonDown(nFlags, point);
 }
 
-void CADGPDesignerView::OnLButtonUp(UINT nFlags, CPoint point)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	m_LMouseHold = false;
-	CView::OnLButtonUp(nFlags, point);
-}
-
 void CADGPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	
+	point.x = point.x / (int)m_CutW; 
+	point.y = point.y / (int)m_CutH;
+	if (point.x <=0 || point.x >m_CutR || point.y <=0 || point.y >m_CutC)
+	{
+		point.x = 0;
+		point.y = 0;
+	}
+
+	char buff[100];
+	sprintf(buff, "   行: %d 列: %d  ",point.x,point.y);
+	CString str(buff);
+	((CMainFrame*)(this->GetParent()->GetParentFrame()))->SetStatus(str);
+
 	CView::OnMouseMove(nFlags, point);
 }
 
@@ -301,7 +314,7 @@ BOOL CADGPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 				g_Picture_Scale += 0.1f;
 			}
 		}else{
-			if (g_Picture_Scale > 1)
+			if (g_Picture_Scale > 0.1)
 			{
 				g_Picture_Scale -= 0.1f;
 			}
@@ -309,6 +322,10 @@ BOOL CADGPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
+	char buff[100];
+	sprintf(buff, "   顯示比例 %.1f%%", g_Picture_Scale * 100);
+	CString str(buff);
+	((CMainFrame*)(this->GetParent()->GetParentFrame()))->SetStatus(str);
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }
 
@@ -316,6 +333,25 @@ BOOL CADGPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 void CADGPDesignerView::Init()
 {
 	
+}
+
+void CADGPDesignerView::SetPic( PictureData* pic )
+{
+	m_D3DApp.SetPic(pic);
+	m_Pic = pic;
+	
+}
+
+void CADGPDesignerView::Cut( int r,int c )
+{
+	if(m_Pic==NULL)return;
+	m_D3DApp.Cut(r,c);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
+	m_CutR = r;
+	m_CutC = c;
+	m_CutW = m_D3DApp.GetTextureManager().GetTexture(m_Pic->m_TextureID)->w / r;
+	m_CutH = m_D3DApp.GetTextureManager().GetTexture(m_Pic->m_TextureID)->h / c;
 }
 
 

@@ -65,14 +65,14 @@ void PointManager::Modify( Points::iterator it_point,float x,float y )
 	it_point->y = y;
 }
 
-PointVertices PointManager::BuildPoint()
+PointVertices PointManager::BuildPoint(float scale,float offsetX, float offsetY)
 {
 	PointVertices pvs;
 	for (Points::iterator it=m_Point.begin(); it != m_Point.end(); it++)
 	{
 		PointVertex pv;
-		pv.position.x	= it->x * g_Frame_Scale + g_Frame_OffsetX;
-		pv.position.y	= it->y * g_Frame_Scale + g_Frame_OffsetY;
+		pv.position.x	= it->x * scale + offsetX;
+		pv.position.y	= it->y * scale + offsetY;
 		pv.size.x	= m_Size ;
 		pv.size.y	= m_Size ;
 		pv.color.x	= it->r;
@@ -85,7 +85,7 @@ PointVertices PointManager::BuildPoint()
 	return pvs;
 }
 
-LineVertices PointManager::BuildLine( float loop /*= true*/ )
+LineVertices PointManager::BuildLine(float scale,float offsetX, float offsetY, float loop /*= true*/ )
 {
 	LineVertices lvs;
 	for (unsigned int i=0; i+1<m_Point.size() ;i++)
@@ -97,11 +97,11 @@ LineVertices PointManager::BuildLine( float loop /*= true*/ )
 		lv.color.z	= m_LineColor.z;
 		lv.color.w	= 1.0f;
 
-		lv.position.x	= m_Point[i].x * g_Frame_Scale + g_Frame_OffsetX;
-		lv.position.y	= m_Point[i].y * g_Frame_Scale + g_Frame_OffsetY;
+		lv.position.x	= m_Point[i].x * scale + offsetX;
+		lv.position.y	= m_Point[i].y * scale + offsetY;
 		lvs.push_back(lv);
-		lv.position.x	= m_Point[i+1].x * g_Frame_Scale + g_Frame_OffsetX;
-		lv.position.y	= m_Point[i+1].y * g_Frame_Scale + g_Frame_OffsetY;
+		lv.position.x	= m_Point[i+1].x * scale + offsetX;
+		lv.position.y	= m_Point[i+1].y * scale + offsetY;
 		lvs.push_back(lv);
 	}
 
@@ -112,11 +112,11 @@ LineVertices PointManager::BuildLine( float loop /*= true*/ )
 		lv.color.z	= m_LineColor.z;
 		lv.color.w	= 1.0f;
 
-		lv.position.x	= m_Point.back().x * g_Frame_Scale + g_Frame_OffsetX;
-		lv.position.y	= m_Point.back().y * g_Frame_Scale + g_Frame_OffsetY;
+		lv.position.x	= m_Point.back().x * scale + offsetX;
+		lv.position.y	= m_Point.back().y * scale + offsetY;
 		lvs.push_back(lv);
-		lv.position.x	= m_Point.front().x * g_Frame_Scale + g_Frame_OffsetX;
-		lv.position.y	= m_Point.front().y * g_Frame_Scale + g_Frame_OffsetY;
+		lv.position.x	= m_Point.front().x * scale + offsetX;
+		lv.position.y	= m_Point.front().y * scale + offsetY;
 		lvs.push_back(lv);
 	}
 
@@ -158,4 +158,26 @@ void PointManager::SetLineColor( float r,float g,float b )
 	m_LineColor.x = r;
 	m_LineColor.y = g;
 	m_LineColor.z = b;
+}
+
+LineVertices PointManager::BuildLineP2P( float scale,float offsetX, float offsetY )
+{
+	LineVertices lvs;
+	for (unsigned int i=0; i+1<m_Point.size() ;i+=2)
+	{
+		LineVertex lv;
+
+		lv.color.x	= m_LineColor.x;
+		lv.color.y	= m_LineColor.y;
+		lv.color.z	= m_LineColor.z;
+		lv.color.w	= 1.0f;
+
+		lv.position.x	= m_Point[i].x * scale + offsetX;
+		lv.position.y	= m_Point[i].y * scale + offsetY;
+		lvs.push_back(lv);
+		lv.position.x	= m_Point[i+1].x * scale + offsetX;
+		lv.position.y	= m_Point[i+1].y * scale + offsetY;
+		lvs.push_back(lv);
+	}
+	return lvs;
 }
