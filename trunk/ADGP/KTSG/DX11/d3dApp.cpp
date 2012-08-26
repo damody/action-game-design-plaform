@@ -284,7 +284,7 @@ int D3DApp::run()
 			else
 				Sleep(1);
 
-			DrawScene();
+			//DrawScene();
 		}
 	}
 	return (int)msg.wParam;
