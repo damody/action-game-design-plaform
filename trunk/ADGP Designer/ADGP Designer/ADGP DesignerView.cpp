@@ -204,8 +204,8 @@ void CADGPDesignerView::OnSize(UINT nType, int cx, int cy)
 void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	point.x = 1+(point.x-g_Picture_OffsetX) / (int)m_CutW; 
-	point.y = 1+(point.y-g_Picture_OffsetY) / (int)m_CutH;
+	point.x = 1+(point.x-g_Picture_OffsetX)/g_Picture_Scale / (int)m_CutW; 
+	point.y = 1+(point.y-g_Picture_OffsetY)/g_Picture_Scale / (int)m_CutH;
 	if (point.x <=0 || point.x >m_CutR || point.y <=0 || point.y >m_CutC)
 	{
 		return;
