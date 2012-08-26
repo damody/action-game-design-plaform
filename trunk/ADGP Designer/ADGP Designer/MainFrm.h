@@ -107,6 +107,14 @@ public:
 	afx_msg void OnButtonAreaMove();
 	afx_msg void OnButtonAreaScale();
 	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+	afx_msg void OnCheckFrameview();
+	afx_msg void OnUpdateCheckFrameview(CCmdUI *pCmdUI);
+	afx_msg void OnCheckOutputwindow();
+	afx_msg void OnUpdateCheckOutputwindow(CCmdUI *pCmdUI);
+	afx_msg void OnCheckSolutionmanager();
+	afx_msg void OnUpdateCheckSolutionmanager(CCmdUI *pCmdUI);
+	afx_msg void OnCheckHeromanager();
+	afx_msg void OnUpdateCheckHeromanager(CCmdUI *pCmdUI);
 };
 
 

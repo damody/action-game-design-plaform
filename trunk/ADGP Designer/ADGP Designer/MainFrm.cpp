@@ -41,6 +41,14 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_BUTTON_AreaAdd, &CMainFrame::OnButtonAreaAdd)
 	ON_COMMAND(ID_BUTTON_AreaMove, &CMainFrame::OnButtonAreaMove)
 	ON_COMMAND(ID_BUTTON_AreaScale, &CMainFrame::OnButtonAreaScale)
+	ON_COMMAND(ID_CHECK_FrameView, &CMainFrame::OnCheckFrameview)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_FrameView, &CMainFrame::OnUpdateCheckFrameview)
+	ON_COMMAND(ID_CHECK_OutputWindow, &CMainFrame::OnCheckOutputwindow)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_OutputWindow, &CMainFrame::OnUpdateCheckOutputwindow)
+	ON_COMMAND(ID_CHECK_SolutionManager, &CMainFrame::OnCheckSolutionmanager)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_SolutionManager, &CMainFrame::OnUpdateCheckSolutionmanager)
+	ON_COMMAND(ID_CHECK_HeroManager, &CMainFrame::OnCheckHeromanager)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_HeroManager, &CMainFrame::OnUpdateCheckHeromanager)
 END_MESSAGE_MAP()
 
 // CMainFrame 建構/解構
@@ -120,10 +128,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	m_wndFileView.EnableDocking(CBRS_ALIGN_ANY);
-	m_wndClassView.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndFileView);
-	CDockablePane* pTabbedBar = NULL;
-	m_wndClassView.AttachToTabWnd(&m_wndFileView, DM_SHOW, TRUE, &pTabbedBar);
+	m_wndClassView.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_wndClassView);
+// 	CDockablePane* pTabbedBar = NULL;
+// 	m_wndClassView.AttachToTabWnd(&m_wndFileView, DM_SHOW, TRUE, &pTabbedBar);
 	m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndOutput);
 	m_wndProperties.EnableDocking(CBRS_ALIGN_ANY);
@@ -140,8 +149,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	m_D3DFrameView.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_D3DFrameView);
-	//m_D3DFrameView.DockToWindow (&m_wndProperties, CBRS_ALIGN_LEFT);
-
+	
 	// 啟用增強型視窗管理對話方塊
 	EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
 
@@ -414,4 +422,64 @@ BOOL CMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO*
 	if (m_D3DFrameView.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
 		return TRUE;
 	return CMDIFrameWndEx::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+}
+
+
+void CMainFrame::OnCheckFrameview()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	m_D3DFrameView.ShowWindow(m_D3DFrameView.IsVisible() ? SW_HIDE : SW_SHOW);
+	RecalcLayout(FALSE);
+}
+
+
+void CMainFrame::OnUpdateCheckFrameview(CCmdUI *pCmdUI)
+{
+	// TODO: 在此加入您的命令更新 UI 處理常式程式碼
+	pCmdUI->SetCheck(m_D3DFrameView.IsVisible());
+}
+
+
+void CMainFrame::OnCheckOutputwindow()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	m_wndOutput.ShowWindow(m_wndOutput.IsVisible() ? SW_HIDE : SW_SHOW);
+	RecalcLayout(FALSE);
+}
+
+
+void CMainFrame::OnUpdateCheckOutputwindow(CCmdUI *pCmdUI)
+{
+	// TODO: 在此加入您的命令更新 UI 處理常式程式碼
+	pCmdUI->SetCheck(m_wndOutput.IsVisible());
+}
+
+
+void CMainFrame::OnCheckSolutionmanager()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	m_wndFileView.ShowWindow(m_wndFileView.IsVisible() ? SW_HIDE : SW_SHOW);
+	RecalcLayout(FALSE);
+}
+
+
+void CMainFrame::OnUpdateCheckSolutionmanager(CCmdUI *pCmdUI)
+{
+	// TODO: 在此加入您的命令更新 UI 處理常式程式碼
+	pCmdUI->SetCheck(m_wndFileView.IsVisible());
+}
+
+
+void CMainFrame::OnCheckHeromanager()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	m_wndClassView.ShowWindow(m_wndClassView.IsVisible() ? SW_HIDE : SW_SHOW);
+	RecalcLayout(FALSE);
+}
+
+
+void CMainFrame::OnUpdateCheckHeromanager(CCmdUI *pCmdUI)
+{
+	// TODO: 在此加入您的命令更新 UI 處理常式程式碼
+	pCmdUI->SetCheck(m_wndClassView.IsVisible());
 }
