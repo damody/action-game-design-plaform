@@ -12,7 +12,7 @@
 
 IMPLEMENT_DYNAMIC(CD3DPanelView, CDockablePane)
 
-CD3DPanelView::CD3DPanelView(CWnd* pParent /*=NULL*/):m_LMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),m_BodyID(-1),m_AttackID(-1)
+CD3DPanelView::CD3DPanelView(CWnd* pParent /*=NULL*/):m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),m_BodyID(-1),m_AttackID(-1)
 {
 	this->Init();
 }
@@ -36,6 +36,8 @@ BEGIN_MESSAGE_MAP(CD3DPanelView, CDockablePane)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSEWHEEL()
+	ON_WM_MBUTTONDOWN()
+	ON_WM_MBUTTONUP()
 END_MESSAGE_MAP()
 
 
@@ -367,6 +369,10 @@ void CD3DPanelView::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CD3DPanelView::OnMouseMove(UINT nFlags, CPoint point)
 {
+	float dx = point.x - m_RecordX;
+	float dy = point.y - m_RecordY;
+	m_RecordX = point.x;
+	m_RecordY = point.y;
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
 	point.x =(point.x-g_Frame_OffsetX)/g_Frame_Scale;
 	point.y =(point.y-g_Frame_OffsetY)/g_Frame_Scale;
@@ -401,7 +407,7 @@ void CD3DPanelView::OnMouseMove(UINT nFlags, CPoint point)
 
 		if (m_ShiftPress && m_CtrlPress && m_LMouseHold)
 		{
-			m_D3DApp.m_Attack[m_AttackID].Transale(point.x-m_RecordX, point.y-m_RecordY);
+			m_D3DApp.m_Attack[m_AttackID].Transale(dx,dy);
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
@@ -414,8 +420,15 @@ void CD3DPanelView::OnMouseMove(UINT nFlags, CPoint point)
 		m_D3DApp.DrawScene();
 	}
 
-	m_RecordX = point.x;
-	m_RecordY = point.y;
+	if(m_MMouseHold)
+	{
+		g_Frame_OffsetX += dx;
+		g_Frame_OffsetY += dy;
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
+
+	
 	CDockablePane::OnMouseMove(nFlags, point);
 }
 
@@ -544,4 +557,20 @@ void CD3DPanelView::Init()
 	StopEdit();
 	m_D3DApp.m_Attack.clear();
 	m_D3DApp.m_Body.clear();
+}
+
+
+void CD3DPanelView::OnMButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	m_MMouseHold =true;
+	CDockablePane::OnMButtonDown(nFlags, point);
+}
+
+
+void CD3DPanelView::OnMButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	m_MMouseHold =false;
+	CDockablePane::OnMButtonUp(nFlags, point);
 }

@@ -8,6 +8,7 @@ class CD3DPanelView : public CDockablePane
 	DECLARE_DYNAMIC(CD3DPanelView)
 private:
 	bool m_LMouseHold;
+	bool m_MMouseHold;
 	bool m_CtrlPress;
 	bool m_ShiftPress;
 	bool m_KeyAPress;
@@ -54,4 +55,6 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnMButtonUp(UINT nFlags, CPoint point);
 };

@@ -50,11 +50,13 @@ BEGIN_MESSAGE_MAP(CADGPDesignerView, CView)
 	ON_WM_LBUTTONUP()
 	ON_WM_PAINT()
 	ON_WM_MOUSEWHEEL()
+	ON_WM_MBUTTONDOWN()
+	ON_WM_MBUTTONUP()
 END_MESSAGE_MAP()
 
 // CADGPDesignerView 建構/解構
 
-CADGPDesignerView::CADGPDesignerView():m_LMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_ShiftPress(false),
+CADGPDesignerView::CADGPDesignerView():m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),
 m_Pic(0),m_CutH(1),m_CutW(1),m_CutR(1),m_CutC(1)
 {
 	// TODO: 在此加入建構程式碼
@@ -202,12 +204,13 @@ void CADGPDesignerView::OnSize(UINT nType, int cx, int cy)
 void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	point.x = point.x / (int)m_CutW; 
-	point.y = point.y / (int)m_CutH;
+	point.x = 1+(point.x-g_Picture_OffsetX) / (int)m_CutW; 
+	point.y = 1+(point.y-g_Picture_OffsetY) / (int)m_CutH;
 	if (point.x <=0 || point.x >m_CutR || point.y <=0 || point.y >m_CutC)
 	{
 		return;
 	}else{
+		//if (((CMainFrame*)(this->GetParent()->GetParentFrame()))->GetFramePanel() == NULL)return;
 		((CMainFrame*)(this->GetParent()->GetParentFrame()))->GetFramePanel().SetPic(m_Pic,point.x,point.y);
 	}
 
@@ -219,8 +222,21 @@ void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 void CADGPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	point.x = point.x / (int)m_CutW; 
-	point.y = point.y / (int)m_CutH;
+	float dx = point.x - m_RecordX;
+	float dy = point.y - m_RecordY;
+	m_RecordX = point.x;
+	m_RecordY = point.y;
+	if(m_MMouseHold)
+	{
+		g_Picture_OffsetX += dx;
+		g_Picture_OffsetY += dy;
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
+
+	point.x = 1+(point.x-g_Picture_OffsetX)/g_Picture_Scale / (int)m_CutW; 
+	point.y = 1+(point.y-g_Picture_OffsetY)/g_Picture_Scale / (int)m_CutH;
+
 	if (point.x <=0 || point.x >m_CutR || point.y <=0 || point.y >m_CutC)
 	{
 		point.x = 0;
@@ -329,6 +345,21 @@ BOOL CADGPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }
 
+void CADGPDesignerView::OnMButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	m_MMouseHold = true;
+	CView::OnMButtonDown(nFlags, point);
+}
+
+
+void CADGPDesignerView::OnMButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	m_MMouseHold = false;
+	CView::OnMButtonUp(nFlags, point);
+}
+
 //Functions
 void CADGPDesignerView::Init()
 {
@@ -353,5 +384,6 @@ void CADGPDesignerView::Cut( int r,int c )
 	m_CutW = m_D3DApp.GetTextureManager().GetTexture(m_Pic->m_TextureID)->w / r;
 	m_CutH = m_D3DApp.GetTextureManager().GetTexture(m_Pic->m_TextureID)->h / c;
 }
+
 
 

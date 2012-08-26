@@ -20,10 +20,14 @@ class CADGPDesignerView : public CView
 {
 private:
 	bool m_LMouseHold;
+	bool m_MMouseHold;
 	bool m_CtrlPress;
 	bool m_ShiftPress;
 	bool m_KeyAPress;
 	PictureData *m_Pic;
+
+	float m_RecordX,m_RecordY;
+
 	float m_CutH;
 	float m_CutW;
 	int   m_CutR;
@@ -79,6 +83,8 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnPaint();
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnMButtonUp(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // ADGP DesignerView.cpp ¤¤ªº°»¿ùª©¥»
