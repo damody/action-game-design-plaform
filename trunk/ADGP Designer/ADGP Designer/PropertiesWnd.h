@@ -51,22 +51,17 @@ public:
 	CPropertiesWnd();
 
 	void AdjustLayout();
+	virtual BOOL CanFloat() const;
+	virtual BOOL CanBeClosed() const;
+	virtual BOOL CanAutoHide() const;
 
-// ÄÝ©Ê
-public:
 	static CPropertiesWnd* GetInstance(){return instance;}
 	static CMFCPropertyGridProperty* GetDefaultPropList();
-
-	HTREEITEM m_lastSelectedItem;
-
-	void SetVSDotNetLook(BOOL bSet)
-	{
-		m_wndPropList.SetVSDotNetLook(bSet);
-		m_wndPropList.SetGroupNameFullWidth(bSet);
-	}
-
+	void SetVSDotNetLook(BOOL bSet);
 	CMFCPropertyGridCtrl* GetPropList(){return &m_wndPropList;}
-
+// ÄÝ©Ê
+public:
+	HTREEITEM m_lastSelectedItem;
 protected:
 	static CPropertiesWnd* instance;
 	CFont m_fntPropList;

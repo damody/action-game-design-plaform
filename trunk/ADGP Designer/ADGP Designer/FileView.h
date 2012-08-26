@@ -31,7 +31,9 @@ public:
 
 	void AdjustLayout();
 	void OnChangeVisualStyle();
-
+	virtual BOOL CanFloat() const;
+	virtual BOOL CanBeClosed() const;
+	virtual BOOL CanAutoHide() const;
 // ÄÝ©Ê
 protected:
 

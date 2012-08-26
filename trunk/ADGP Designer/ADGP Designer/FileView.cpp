@@ -261,3 +261,18 @@ void CFileView::OnChangeVisualStyle()
 }
 
 
+BOOL CFileView::CanFloat() const
+{
+	return TRUE;
+}
+
+BOOL CFileView::CanBeClosed() const
+{
+	return FALSE;
+}
+
+BOOL CFileView::CanAutoHide() const
+{
+	return FALSE;
+}
+

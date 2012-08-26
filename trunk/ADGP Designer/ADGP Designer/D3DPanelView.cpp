@@ -545,3 +545,18 @@ void CD3DPanelView::Init()
 	m_D3DApp.m_Attack.clear();
 	m_D3DApp.m_Body.clear();
 }
+
+BOOL CD3DPanelView::CanFloat() const
+{
+	return TRUE;
+}
+
+BOOL CD3DPanelView::CanBeClosed() const
+{
+	return FALSE;
+}
+
+BOOL CD3DPanelView::CanAutoHide() const
+{
+	return FALSE;
+}

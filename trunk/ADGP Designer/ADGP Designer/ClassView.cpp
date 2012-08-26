@@ -1070,6 +1070,23 @@ void CClassView::RemoveTreeItem( HTREEITEM item )
 		m_propMap.erase(it);
 }
 
+
+BOOL CClassView::CanFloat() const
+{
+	return TRUE;
+}
+
+BOOL CClassView::CanBeClosed() const
+{
+	return FALSE;
+}
+
+BOOL CClassView::CanAutoHide() const
+{
+	return FALSE;
+}
+
+
 /*
 CMFCPropertyGridProperty* CClassView::GetDefaultPropList()
 {

@@ -49,6 +49,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_SolutionManager, &CMainFrame::OnUpdateCheckSolutionmanager)
 	ON_COMMAND(ID_CHECK_HeroManager, &CMainFrame::OnCheckHeromanager)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_HeroManager, &CMainFrame::OnUpdateCheckHeromanager)
+	ON_COMMAND(ID_CHECK_Property, &CMainFrame::OnCheckProperty)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_Property, &CMainFrame::OnUpdateCheckProperty)
 END_MESSAGE_MAP()
 
 // CMainFrame 建構/解構
@@ -101,10 +103,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// 啟用 Visual Studio 2005 樣式停駐視窗行為
 	CDockingManager::SetDockingMode(DT_SMART);
 	// 啟用 Visual Studio 2005 樣式停駐視窗自動隱藏行為
-	//EnableAutoHidePanes(CBRS_BORDER_ANY);
+	EnableAutoHidePanes(CBRS_ALIGN_ANY);
 
 	// 將在左側建立巡覽窗格，所以會暫時停用於左側停駐:
-	EnableDocking(CBRS_ALIGN_TOP | CBRS_ALIGN_BOTTOM | CBRS_ALIGN_RIGHT);
+	//EnableDocking(CBRS_ALIGN_TOP | CBRS_ALIGN_BOTTOM | CBRS_ALIGN_RIGHT);
 	
 	// 建立標題列:
 	if (!CreateCaptionBar())
@@ -114,8 +116,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	// Outlook 功能區已建立，而且應該允許於左側停駐。
-	//EnableDocking(CBRS_ALIGN_LEFT);
-	//EnableAutoHidePanes(CBRS_ALIGN_RIGHT);
+	EnableDocking(CBRS_ALIGN_LEFT);
+	EnableAutoHidePanes(CBRS_ALIGN_RIGHT);
 
 	// 載入功能表項目影像 (不放在任何標準工具列上):
 	CMFCToolBar::AddToolBarForImageCollection(IDR_MENU_IMAGES, theApp.m_bHiColorIcons ? IDB_MENU_IMAGES_24 : 0);
@@ -128,19 +130,19 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	m_wndFileView.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndFileView);
+	DockPane(&m_wndFileView, 0, CRect(0, 0, 200, 200));
 	m_wndClassView.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndClassView);
+	DockPane(&m_wndClassView, 0, CRect(0, 0, 200, 200));
 	m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndOutput);
+	DockPane(&m_wndOutput, 0, CRect(0, 0, 200, 200));
 	m_wndProperties.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndProperties);
+	DockPane(&m_wndProperties, 0, CRect(0, 0, 200, 200));
 
 	CString strPropertiesWnd;
 	bNameValid = strPropertiesWnd.LoadString(IDS_VIEW_FRAMEEDIT);
-	if (!m_D3DFrameView.Create (strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, 
+	if (!m_D3DFrameView.Create(strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, 
 		ID_VIEW_FRAMEEDIT, 
-		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT  ))
+		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI ))
 	{
 		TRACE0("Failed to create Dialog Bar\n");
 		return FALSE;      // fail to create
@@ -480,4 +482,19 @@ void CMainFrame::OnUpdateCheckHeromanager(CCmdUI *pCmdUI)
 {
 	// TODO: 在此加入您的命令更新 UI 處理常式程式碼
 	pCmdUI->SetCheck(m_wndClassView.IsVisible());
+}
+
+
+void CMainFrame::OnCheckProperty()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	m_wndProperties.ShowWindow(m_wndProperties.IsVisible() ? SW_HIDE : SW_SHOW);
+	RecalcLayout(FALSE);
+}
+
+
+void CMainFrame::OnUpdateCheckProperty(CCmdUI *pCmdUI)
+{
+	// TODO: 在此加入您的命令更新 UI 處理常式程式碼
+	pCmdUI->SetCheck(m_wndProperties.IsVisible());
 }

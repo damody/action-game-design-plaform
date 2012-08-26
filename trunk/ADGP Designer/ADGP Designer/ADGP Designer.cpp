@@ -44,9 +44,9 @@ END_MESSAGE_MAP()
 CADGPDesignerApp::CADGPDesignerApp()
 {
 	m_bHiColorIcons = TRUE;
-
+	//m_bSaveState = FALSE;
 	// 支援重新啟動管理員
-	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_ALL_ASPECTS;
+	//m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_ALL_ASPECTS;
 #ifdef _MANAGED
 	// 如果應用程式是使用 Common Language Runtime 支援 (/clr) 建置的:
 	//     1) 要使重新啟動管理員支援正常運作需要這個額外設定。
@@ -163,7 +163,7 @@ int CADGPDesignerApp::ExitInstance()
 {
 	// TODO: 處理其他您已經加入的資源
 	AfxOleTerm(FALSE);
-
+	CleanState();
 	return CWinAppEx::ExitInstance();
 }
 

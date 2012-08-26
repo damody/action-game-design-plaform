@@ -697,3 +697,24 @@ LRESULT CPropertiesWnd::OnPropertyChanged( __in WPARAM wparam, __in LPARAM lpara
 {
 	return CClassView::GetInstance()->OnPropertyChanged(wparam, lparam, m_lastSelectedItem);
 }
+
+BOOL CPropertiesWnd::CanFloat() const
+{
+	return TRUE;
+}
+
+BOOL CPropertiesWnd::CanBeClosed() const
+{
+	return FALSE;
+}
+
+BOOL CPropertiesWnd::CanAutoHide() const
+{
+	return FALSE;
+}
+
+void CPropertiesWnd::SetVSDotNetLook( BOOL bSet )
+{
+	m_wndPropList.SetVSDotNetLook(bSet);
+	m_wndPropList.SetGroupNameFullWidth(bSet);
+}

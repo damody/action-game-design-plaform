@@ -28,7 +28,9 @@ public:
 	int AddAttack();
 	void DeleteAttack(int id);
 	void EditAttack(int id);
-
+	virtual BOOL CanFloat() const;
+	virtual BOOL CanBeClosed() const;
+	virtual BOOL CanAutoHide() const;
 public:
 	CD3DPanelView(CWnd* pParent = NULL);   // 標準建構函式
 	virtual ~CD3DPanelView();

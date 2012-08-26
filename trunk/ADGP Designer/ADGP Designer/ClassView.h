@@ -47,6 +47,10 @@ public:
 	//static CMFCPropertyGridProperty* GetDefaultPropList();
 	static BOOL IsAnAnimation(CTreeCtrl* treeCtrl, HTREEITEM item);
 	static BOOL IsNumber(CString str);
+
+	virtual BOOL CanFloat() const;
+	virtual BOOL CanBeClosed() const;
+	virtual BOOL CanAutoHide() const;
 protected:
 	static CClassView* instance;
 	static const CString anims[MAX_ANIMATIONS];

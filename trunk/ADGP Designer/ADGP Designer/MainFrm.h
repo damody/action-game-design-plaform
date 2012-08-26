@@ -115,6 +115,8 @@ public:
 	afx_msg void OnUpdateCheckSolutionmanager(CCmdUI *pCmdUI);
 	afx_msg void OnCheckHeromanager();
 	afx_msg void OnUpdateCheckHeromanager(CCmdUI *pCmdUI);
+	afx_msg void OnCheckProperty();
+	afx_msg void OnUpdateCheckProperty(CCmdUI *pCmdUI);
 };
 
 

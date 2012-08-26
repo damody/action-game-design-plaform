@@ -58,6 +58,9 @@ public:
 		int nCount = m_wndOutputFind.GetCount();
 		m_wndOutputFind.SetTopIndex(nCount - 1);
 	}
+	virtual BOOL CanFloat() const;
+	virtual BOOL CanBeClosed() const;
+	virtual BOOL CanAutoHide() const;
 // ÄÝ©Ê
 protected:
 	CMFCTabCtrl	m_wndTabs;

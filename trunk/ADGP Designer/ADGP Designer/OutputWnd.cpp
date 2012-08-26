@@ -207,3 +207,19 @@ void COutputList::OnViewOutput()
 
 	}
 }
+
+BOOL COutputWnd::CanFloat() const
+{
+	return TRUE;
+}
+
+BOOL COutputWnd::CanBeClosed() const
+{
+	return FALSE;
+}
+
+BOOL COutputWnd::CanAutoHide() const
+{
+	return FALSE;
+}
+
