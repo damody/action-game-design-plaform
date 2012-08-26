@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "d3dApp_Picture.h"
-#include "dxut/DXUT.h"
 #include "global.h"
 #include <d3d11.h>
 
