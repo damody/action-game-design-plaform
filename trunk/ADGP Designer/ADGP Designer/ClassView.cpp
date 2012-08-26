@@ -355,9 +355,9 @@ void CClassView::FillClassView()
 
 void CClassView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	//CDockablePane::OnLButtonDown(nFlags, point);
+	CDockablePane::OnLButtonUp(nFlags, point);
 
-	AfxMessageBox(_T("Click..."));
+	//AfxMessageBox(_T("Click..."));
 }
 
 void CClassView::OnContextMenu(CWnd* pWnd, CPoint point)

@@ -101,7 +101,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// 啟用 Visual Studio 2005 樣式停駐視窗行為
 	CDockingManager::SetDockingMode(DT_SMART);
 	// 啟用 Visual Studio 2005 樣式停駐視窗自動隱藏行為
-	EnableAutoHidePanes(CBRS_ALIGN_ANY);
+	//EnableAutoHidePanes(CBRS_BORDER_ANY);
 
 	// 將在左側建立巡覽窗格，所以會暫時停用於左側停駐:
 	EnableDocking(CBRS_ALIGN_TOP | CBRS_ALIGN_BOTTOM | CBRS_ALIGN_RIGHT);
@@ -114,8 +114,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	// Outlook 功能區已建立，而且應該允許於左側停駐。
-	EnableDocking(CBRS_ALIGN_LEFT);
-	EnableAutoHidePanes(CBRS_ALIGN_RIGHT);
+	//EnableDocking(CBRS_ALIGN_LEFT);
+	//EnableAutoHidePanes(CBRS_ALIGN_RIGHT);
 
 	// 載入功能表項目影像 (不放在任何標準工具列上):
 	CMFCToolBar::AddToolBarForImageCollection(IDR_MENU_IMAGES, theApp.m_bHiColorIcons ? IDB_MENU_IMAGES_24 : 0);
@@ -131,17 +131,15 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockPane(&m_wndFileView);
 	m_wndClassView.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndClassView);
-// 	CDockablePane* pTabbedBar = NULL;
-// 	m_wndClassView.AttachToTabWnd(&m_wndFileView, DM_SHOW, TRUE, &pTabbedBar);
 	m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndOutput);
 	m_wndProperties.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndProperties);
 
 	CString strPropertiesWnd;
-	bNameValid = strPropertiesWnd.LoadString(IDS_VIEW_DLGBAR);
+	bNameValid = strPropertiesWnd.LoadString(IDS_VIEW_FRAMEEDIT);
 	if (!m_D3DFrameView.Create (strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, 
-		ID_VIEW_DLGBAR, 
+		ID_VIEW_FRAMEEDIT, 
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT  ))
 	{
 		TRACE0("Failed to create Dialog Bar\n");
