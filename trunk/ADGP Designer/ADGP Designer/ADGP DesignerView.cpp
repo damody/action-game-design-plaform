@@ -58,7 +58,7 @@ END_MESSAGE_MAP()
 // CADGPDesignerView 建構/解構
 
 CADGPDesignerView::CADGPDesignerView():m_TrackMouse(true),m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),
-m_Pic(0),m_CutH(1),m_CutW(1),m_CutR(1),m_CutC(1)
+m_Pic(0),m_CutH(1),m_CutW(1),m_CutR(1),m_CutC(1),m_PictureID(0)
 {
 	// TODO: 在此加入建構程式碼
 }
@@ -166,19 +166,6 @@ void CADGPDesignerView::InitDx11( HWND hWnd )
 	::UpdateWindow(m_hWndDX11);
 	m_D3DApp.initApp(m_hWndDX11, rect.Width(), rect.Height());
 	m_D3DApp.buildShaderFX();
-
-	//*test
-	PictureData* temp = new PictureData();
-	temp->m_Path = std::string("media\\davis_0.png");
-	temp->m_TextureID = m_D3DApp.GetTextureManager().AddTexture(temp->m_Path);
-	temp->m_Width = 79;
-	temp->m_Height = 79;
-	temp->m_Row = 10;
-	temp->m_Column = 7;
-
-	SetPic(temp);
-	Cut(10,7);
-	//*/
 }
 
 // CADGPDesignerView 訊息處理常式
@@ -211,8 +198,7 @@ void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		return;
 	}else{
-		//if (((CMainFrame*)(this->GetParent()->GetParentFrame()))->GetFramePanel() == NULL)return;
-		((CMainFrame*)(this->GetParent()->GetParentFrame()))->GetFramePanel().SetPic(m_Pic,point.x,point.y);
+		Update(point.x,point.y);
 	}
 
 	
@@ -369,37 +355,6 @@ void CADGPDesignerView::OnPaint()
 	m_D3DApp.DrawScene();
 }
 
-
-
-//Functions
-void CADGPDesignerView::Init()
-{
-	
-}
-
-void CADGPDesignerView::SetPic( PictureData* pic )
-{
-	m_D3DApp.SetPic(pic);
-	m_Pic = pic;
-	
-}
-
-void CADGPDesignerView::Cut( int r,int c )
-{
-	if(m_Pic==NULL)return;
-	m_D3DApp.Cut(r,c);
-	m_D3DApp.buildPoint();
-	m_D3DApp.DrawScene();
-	m_CutR = r;
-	m_CutC = c;
-	m_CutW = m_D3DApp.GetTextureManager().GetTexture(m_Pic->m_TextureID)->w / r;
-	m_CutH = m_D3DApp.GetTextureManager().GetTexture(m_Pic->m_TextureID)->h / c;
-}
-
-
-
-
-
 void CADGPDesignerView::OnMouseLeave()
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
@@ -408,3 +363,55 @@ void CADGPDesignerView::OnMouseLeave()
 	m_CtrlPress  = false;
 	CView::OnMouseLeave();
 }
+
+//Functions
+void CADGPDesignerView::Init()
+{
+	m_Pic = NULL;
+}
+
+void CADGPDesignerView::Refresh(PictureData* pic)
+{
+	m_D3DApp.SetPic(pic);
+	m_Pic = pic;
+
+	m_D3DApp.Cut(pic->m_Row,pic->m_Column);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
+	m_CutR = m_Pic->m_Row;
+	m_CutC = m_Pic->m_Column;
+	m_CutW = m_D3DApp.GetTextureManager().GetTexture(m_Pic->m_TextureID)->w / m_Pic->m_Row;
+	m_CutH = m_D3DApp.GetTextureManager().GetTexture(m_Pic->m_TextureID)->h / m_Pic->m_Column;
+}
+
+void CADGPDesignerView::Update( int x,int y )
+{
+	FramesMap::iterator it_FrameInfos = g_ActiveFramesMap->find(g_FrameName);
+	if (it_FrameInfos != g_ActiveFramesMap->end())
+	{
+		if (g_FrameIndex > -1 && g_FrameIndex < it_FrameInfos->second.size())
+		{
+			it_FrameInfos->second[g_FrameIndex].m_PictureID = m_PictureID;
+			it_FrameInfos->second[g_FrameIndex].m_PictureX = x;
+			it_FrameInfos->second[g_FrameIndex].m_PictureY = y;
+
+			//Refresh
+			((CMainFrame*)(this->GetParent()->GetParentFrame()))->RefreshFrameEdit();
+		}else{
+			char buff[100];
+			sprintf(buff, "PictureEdit: Frame[%s][%d] does not exist",g_FrameName.c_str(),g_FrameIndex);
+			CString str(buff);
+			AfxMessageBox(str);
+			((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+			return;
+		}
+	}else{
+		char buff[100];
+		sprintf(buff, "PictureEdit: Frame[%s] does not exist",g_FrameName.c_str());
+		CString str(buff);
+		AfxMessageBox(str);
+		((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+		return;
+	}
+}
+

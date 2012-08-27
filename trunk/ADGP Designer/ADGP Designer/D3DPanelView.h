@@ -33,7 +33,6 @@ private:
 	void InitEdit();
 	void StopEdit();
 
-	
 	void UpdateCenter(float x,float y);
 	void UpdateBody();
 	void UpdateBody(int index);

@@ -34,12 +34,12 @@ private:
 	int   m_CutR;
 	int   m_CutC;
 public:
+	int  m_PictureID;
 	void Init();
-	void Refresh();
-	//Init(FrameInfo *info);
+	void Refresh(PictureData* pic);
 private:
-	void SetPic(PictureData* pic);
-	void Cut(int r,int c);
+	void Update(int x,int y);
+
 protected: // 僅從序列化建立
 	CADGPDesignerView();
 	DECLARE_DYNCREATE(CADGPDesignerView)

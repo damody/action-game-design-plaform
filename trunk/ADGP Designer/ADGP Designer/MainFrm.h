@@ -49,10 +49,6 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
-	CD3DPanelView& GetFramePanel()
-	{
-		return m_D3DFrameView;
-	}
 	void RefreshFrameEdit()
 	{
 		m_D3DFrameView.Refresh();

@@ -423,7 +423,6 @@ void D3DApp_Picture::SetPic( PictureData *pic)
 void D3DApp_Picture::Cut( int r,int c )
 {
 	if(m_Pic==NULL)return;
-
 	m_Cut.Clear();
 
 	float picW = GetTextureManager().GetTexture(m_Pic->m_TextureID)->w;
