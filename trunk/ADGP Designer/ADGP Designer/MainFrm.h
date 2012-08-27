@@ -117,6 +117,7 @@ public:
 	afx_msg void OnUpdateCheckHeromanager(CCmdUI *pCmdUI);
 	afx_msg void OnCheckProperty();
 	afx_msg void OnUpdateCheckProperty(CCmdUI *pCmdUI);
+	afx_msg void OnButtonAddnewarea();
 };
 
 

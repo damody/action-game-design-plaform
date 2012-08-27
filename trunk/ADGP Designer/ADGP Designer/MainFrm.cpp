@@ -51,6 +51,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_HeroManager, &CMainFrame::OnUpdateCheckHeromanager)
 	ON_COMMAND(ID_CHECK_Property, &CMainFrame::OnCheckProperty)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_Property, &CMainFrame::OnUpdateCheckProperty)
+	ON_COMMAND(ID_BUTTON_AddNewArea, &CMainFrame::OnButtonAddnewarea)
 END_MESSAGE_MAP()
 
 // CMainFrame 建構/解構
@@ -497,4 +498,10 @@ void CMainFrame::OnUpdateCheckProperty(CCmdUI *pCmdUI)
 {
 	// TODO: 在此加入您的命令更新 UI 處理常式程式碼
 	pCmdUI->SetCheck(m_wndProperties.IsVisible());
+}
+
+
+void CMainFrame::OnButtonAddnewarea()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
 }
