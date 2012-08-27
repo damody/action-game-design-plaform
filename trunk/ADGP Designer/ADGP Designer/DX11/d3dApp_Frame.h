@@ -34,6 +34,7 @@ public:
 	HWND		getMainWnd();
 
 	void initApp(HWND hWnd, int w, int h);
+	void Init();
 	void OnResize(int w, int h);// reset projection/etc
 	void DrawScene(); 
 	void LoadBlend();

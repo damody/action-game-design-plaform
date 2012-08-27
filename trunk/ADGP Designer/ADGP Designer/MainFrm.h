@@ -53,6 +53,23 @@ public:
 	{
 		return m_D3DFrameView;
 	}
+	void RefreshFrameEdit()
+	{
+		m_D3DFrameView.Refresh();
+	}
+	void EditBody(int id)
+	{
+		m_D3DFrameView.EditBody(id);
+	}
+	void EditAttack(int id)
+	{
+		m_D3DFrameView.EditAttack(id);
+	}
+	void EditAttack()
+	{
+		m_D3DFrameView.EditCenter();
+	}
+
 	void SetStatus(const CString& str)
 	{
 		m_wndStatusBar.SetInformation(str);

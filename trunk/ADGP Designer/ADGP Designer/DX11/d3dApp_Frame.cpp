@@ -28,23 +28,12 @@ D3DApp_Frame::D3DApp_Frame()
 	m_Lines_Width = NULL;
 	m_Lines_Height = NULL;
 
-	m_Pic = NULL;
-	m_picX = 1;
-	m_picY = 1;
 	m_Effect_Pics = NULL;
 	m_PTech_Pics = NULL;
 	m_PLayout_Pics = NULL;
 	m_Pics_Width = NULL;
 	m_Pics_Height = NULL;
 	m_Buffer_Pics = NULL;
-
-	m_CenterX=0;
-	m_CenterY=0;
-	m_Center.Add(m_CenterX + 3,m_CenterY +3);
-	m_Center.Add(m_CenterX - 3,m_CenterY -3);
-	m_Center.Add(m_CenterX ,m_CenterY);
-	m_Center.Add(m_CenterX - 3,m_CenterY +3);
-	m_Center.Add(m_CenterX + 3,m_CenterY -3);
 
 	m_hAppInst   = GetModuleHandle(NULL);
 
@@ -63,6 +52,8 @@ D3DApp_Frame::D3DApp_Frame()
 	m_ClearColor     = D3DXCOLOR(0.75f, 0.75f, 0.75f, 1.0f);
 	mClientWidth    = 1440;
 	mClientHeight   = 900;
+
+	Init();
 }
 
 D3DApp_Frame::~D3DApp_Frame()
@@ -456,4 +447,24 @@ void D3DApp_Frame::SetCenter( float x,float y )
 	m_Center.Transale(x-m_CenterX,y-m_CenterY);
 	m_CenterX = x;
 	m_CenterY = y;
+}
+
+void D3DApp_Frame::Init()
+{
+	m_Body.clear();
+	m_Attack.clear();
+
+	m_Center.Clear();
+
+	m_Pic = NULL;
+	m_picX = 1;
+	m_picY = 1;
+
+	m_CenterX=0;
+	m_CenterY=0;
+	m_Center.Add(m_CenterX + 3,m_CenterY +3);
+	m_Center.Add(m_CenterX - 3,m_CenterY -3);
+	m_Center.Add(m_CenterX ,m_CenterY);
+	m_Center.Add(m_CenterX - 3,m_CenterY +3);
+	m_Center.Add(m_CenterX + 3,m_CenterY -3);
 }

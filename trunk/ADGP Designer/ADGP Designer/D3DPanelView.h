@@ -1,5 +1,6 @@
 #pragma once
 #include "DX11\d3dApp_Frame.h"
+#include "game\FrameInfo.h"
 
 // CD3DPanelView ¹ï¸Ü¤è¶ô
 
@@ -17,6 +18,8 @@ private:
 	int m_BodyID;
 	int m_AttackID;
 
+	FrameInfo *m_FrameInfo;
+
 	Points::iterator m_CtrlPoint;
 	float m_RecordX,m_RecordY;
 public:
@@ -24,10 +27,10 @@ public:
 	void Refresh();
 	void EditBody(int id);
 	void EditAttack(int id);
+	void EditCenter();
 	void SetPic(PictureData  *pic,float x,float y);
 private:
 	void InitEdit();
-
 	void StopEdit();
 	int AddBody();
 	void DeleteBody(int id);

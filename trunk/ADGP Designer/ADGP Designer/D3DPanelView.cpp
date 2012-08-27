@@ -12,7 +12,7 @@
 
 IMPLEMENT_DYNAMIC(CD3DPanelView, CDockablePane)
 
-CD3DPanelView::CD3DPanelView(CWnd* pParent /*=NULL*/):m_TrackMouse(true),m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),m_BodyID(-1),m_AttackID(-1)
+CD3DPanelView::CD3DPanelView(CWnd* pParent /*=NULL*/):m_TrackMouse(true),m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),m_BodyID(-1),m_AttackID(-1),m_FrameInfo(NULL)
 {
 	this->Init();
 }
@@ -484,6 +484,36 @@ void CD3DPanelView::OnMouseLeave()
 	
 	CDockablePane::OnMouseLeave();
 }
+
+BOOL CD3DPanelView::CanFloat() const
+{
+	return TRUE;
+}
+
+BOOL CD3DPanelView::CanBeClosed() const
+{
+	return FALSE;
+}
+
+BOOL CD3DPanelView::CanAutoHide() const
+{
+	return FALSE;
+}
+
+void CD3DPanelView::OnMButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	m_MMouseHold =true;
+	CDockablePane::OnMButtonDown(nFlags, point);
+}
+
+
+void CD3DPanelView::OnMButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	m_MMouseHold =false;
+	CDockablePane::OnMButtonUp(nFlags, point);
+}
 //Functions
 
 void CD3DPanelView::SetPic( PictureData *pic,float x,float y )
@@ -574,40 +604,71 @@ void CD3DPanelView::EditAttack( int id )
 	}
 }
 
+void CD3DPanelView::EditCenter()
+{
+	StopEdit();
+	m_EnableCtrlCenter = true;
+}
+
 void CD3DPanelView::Init()
 {
 	StopEdit();
-	m_D3DApp.m_Attack.clear();
-	m_D3DApp.m_Body.clear();
-}
-BOOL CD3DPanelView::CanFloat() const
-{
-	return TRUE;
+	m_FrameInfo = NULL;
+	m_D3DApp.Init();
 }
 
-BOOL CD3DPanelView::CanBeClosed() const
+void CD3DPanelView::Refresh()
 {
-	return FALSE;
-}
+	Init();
+	FramesMap::iterator it_FrameInfos = g_ActiveFramesMap->find(g_FrameName);
+	if (it_FrameInfos != g_ActiveFramesMap->end())
+	{
+		if (g_FrameIndex > -1 && g_FrameIndex < it_FrameInfos->second.size())
+		{
+			m_D3DApp.SetPic(&g_HeroInfo->m_PictureDatas[m_FrameInfo->m_PictureID],m_FrameInfo->m_PictureX,m_FrameInfo->m_PictureY);
+			m_D3DApp.SetCenter(m_FrameInfo->m_CenterX,m_FrameInfo->m_CenterY);
 
-BOOL CD3DPanelView::CanAutoHide() const
-{
-	return FALSE;
-}
+			m_FrameInfo = &it_FrameInfos->second[g_FrameIndex];
+			for (Bodys::iterator it_body=m_FrameInfo->m_Bodys.begin(); it_body != m_FrameInfo->m_Bodys.end();it_body++)
+			{
+				PointManager pm;
+				for (Vec2s::iterator it_v = it_body->m_Area.Points().begin(); it_v !=it_body->m_Area.Points().end(); it_v++)
+				{
+					pm.Add(it_v->x,it_v->y,0,0,1);
+				}
+				pm.SetLineColor(0,0,1);
+				m_D3DApp.m_Body.push_back(pm);
+			}
 
-void CD3DPanelView::OnMButtonDown(UINT nFlags, CPoint point)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	m_MMouseHold =true;
-	CDockablePane::OnMButtonDown(nFlags, point);
-}
+			for (Attacks::iterator it_att=m_FrameInfo->m_Attacks.begin(); it_att != m_FrameInfo->m_Attacks.end();it_att++)
+			{
+				PointManager pm;
+				for (Vec2s::iterator it_v = it_att->m_Area.Points().begin(); it_v !=it_att->m_Area.Points().end(); it_v++)
+				{
+					pm.Add(it_v->x,it_v->y,1,0,0);
+				}
+				pm.SetLineColor(1,0,0);
+				m_D3DApp.m_Attack.push_back(pm);
+			}
 
-
-void CD3DPanelView::OnMButtonUp(UINT nFlags, CPoint point)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	m_MMouseHold =false;
-	CDockablePane::OnMButtonUp(nFlags, point);
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}else{
+			char buff[100];
+			sprintf(buff, "FrameEdit: Frame[%s][%d] does not exist",g_FrameName.c_str(),g_FrameIndex);
+			CString str(buff);
+			AfxMessageBox(str);
+			((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+			return;
+		}
+	}else{
+		char buff[100];
+		sprintf(buff, "FrameEdit: Frame[%s] does not exist",g_FrameName.c_str());
+		CString str(buff);
+		AfxMessageBox(str);
+		((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+		return;
+	}
 }
 
 void CD3DPanelView::InitEdit()
@@ -639,4 +700,8 @@ void CD3DPanelView::InitEdit()
 		}
 	}
 }
+
+
+
+
 
