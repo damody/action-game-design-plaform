@@ -90,10 +90,8 @@ enum e
 	CROUCH,
 	//受傷
 	INJURED,
-	//趴在地上
-	FORWARD_LYING,
-	//躺在地上
-	BACKWARD_LYING,
+	//倒在地上
+	LYING,
 	//空中，方向鍵可改變面對方向
 	IN_THE_AIR,
 	//預備放招
