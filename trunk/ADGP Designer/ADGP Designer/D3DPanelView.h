@@ -20,7 +20,7 @@ private:
 
 	FrameInfo *m_FrameInfo;
 
-	Points::iterator m_CtrlPoint;
+	int m_PointIndex;
 	float m_RecordX,m_RecordY;
 public:
 	void Init();
@@ -32,10 +32,15 @@ public:
 private:
 	void InitEdit();
 	void StopEdit();
-	int AddBody();
-	void DeleteBody(int id);
-	int AddAttack();
-	void DeleteAttack(int id);
+
+	
+	void UpdateCenter(float x,float y);
+	void UpdateBody();
+	void UpdateBody(int index);
+	void UpdateAddition_BodyPoint(float x,float y);
+	void UpdateAttack();
+	void UpdateAttack(int index);
+	void UpdateAddition_AttackPoint(float x,float y);
 	
 	virtual BOOL CanFloat() const;
 	virtual BOOL CanBeClosed() const;

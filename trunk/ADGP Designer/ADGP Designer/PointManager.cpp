@@ -37,7 +37,15 @@ void PointManager::Transale( Points::iterator it_point,float x,float y )
 	it_point->y += y;
 }
 
-Points::iterator PointManager::Select( float x, float y )
+void PointManager::Transale( int index,float x,float y )
+{
+	Points::iterator it_point = m_Point.begin()+index;
+	if(it_point == m_Point.end())return;
+	it_point->x += x;
+	it_point->y += y;
+}
+
+Points::iterator PointManager::Select_GetIterator( float x, float y )
 {
 	float error = 100;
 	Points::iterator it_point = m_Point.end();
@@ -53,13 +61,45 @@ Points::iterator PointManager::Select( float x, float y )
 	return it_point;
 }
 
+int PointManager::Select_GetIndex( float x, float y )
+{
+	float error = 100;
+	int target = -1;
+	for (int i=0; i < (int)m_Point.size(); i++)
+	{
+		float length = (m_Point[i].x-x)*(m_Point[i].x-x) + (m_Point[i].y-y)*(m_Point[i].y-y);
+		if (error > length)
+		{
+			error = length;
+			target = i;
+		}
+	}
+	return target;
+}
+
 void PointManager::Erase( Points::iterator it_point )
 {
+	if(it_point == m_Point.end())return;
+	m_Point.erase(it_point);
+}
+
+void PointManager::Erase( int index )
+{
+	Points::iterator it_point = m_Point.begin()+index;
+	if(it_point == m_Point.end())return;
 	m_Point.erase(it_point);
 }
 
 void PointManager::Modify( Points::iterator it_point,float x,float y )
 {
+	if(it_point == m_Point.end())return;
+	it_point->x = x;
+	it_point->y = y;
+}
+
+void PointManager::Modify( int index,float x,float y )
+{
+	Points::iterator it_point = m_Point.begin()+index;
 	if(it_point == m_Point.end())return;
 	it_point->x = x;
 	it_point->y = y;
@@ -151,6 +191,16 @@ void PointManager::ChangeColor( float r,float g, float b,float a/*=1.0f*/ )
 		it->b = b;
 		it->a = a;
 	}
+}
+
+void PointManager::ChangeColor( int index,float r,float g, float b,float a/*=1.0f*/ )
+{
+	Points::iterator it_point = m_Point.begin()+index;
+	if(it_point == m_Point.end())return;
+	it_point->r = r;
+	it_point->g = g;
+	it_point->b = b;
+	it_point->a = a;
 }
 
 void PointManager::SetLineColor( float r,float g,float b )

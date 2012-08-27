@@ -12,7 +12,8 @@
 
 IMPLEMENT_DYNAMIC(CD3DPanelView, CDockablePane)
 
-CD3DPanelView::CD3DPanelView(CWnd* pParent /*=NULL*/):m_TrackMouse(true),m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),m_BodyID(-1),m_AttackID(-1),m_FrameInfo(NULL)
+CD3DPanelView::CD3DPanelView(CWnd* pParent /*=NULL*/):m_TrackMouse(true),m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false),
+m_RecordX(0),m_RecordY(0),m_BodyID(-1),m_AttackID(-1),m_FrameInfo(NULL),m_PointIndex(-1)
 {
 	this->Init();
 }
@@ -77,19 +78,6 @@ void CD3DPanelView::InitDx11( HWND hWnd )
 	::UpdateWindow(m_hWndDX11);
 	m_D3DApp.initApp(m_hWndDX11, rect.Width(), rect.Height());
 	m_D3DApp.buildShaderFX();
-
-	//*test
-	PictureData* temp = new PictureData();
-	temp->m_Path = std::string("media\\davis_0.png");
-	temp->m_TextureID = m_D3DApp.GetTextureManager().AddTexture(temp->m_Path);
-	temp->m_Width = 79;
-	temp->m_Height = 79;
-	temp->m_Row = 10;
-	temp->m_Column = 7;
-	m_D3DApp.SetPic(temp,1,1);
-	m_D3DApp.buildPoint();
-	m_D3DApp.DrawScene();
-	//*/
 }
 
 
@@ -141,24 +129,29 @@ void CD3DPanelView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 
 	if(!m_D3DApp.m_Body.empty() && m_BodyID > -1){
-		if(m_CtrlPress && !m_ShiftPress &&m_CtrlPoint != m_D3DApp.m_Body[m_BodyID].End()){
+		if(m_CtrlPress && !m_ShiftPress && m_PointIndex > -1){
 			switch(nChar)
 			{
 			case KEY_LEFT:
-				m_D3DApp.m_Body[m_BodyID].Transale(m_CtrlPoint,-1,0);
+				m_D3DApp.m_Body[m_BodyID].Transale(m_PointIndex,-1,0);
+				UpdateAttack(m_PointIndex);
 				break;
 			case KEY_UP:
-				m_D3DApp.m_Body[m_BodyID].Transale(m_CtrlPoint,0,-1);
+				m_D3DApp.m_Body[m_BodyID].Transale(m_PointIndex,0,-1);
+				UpdateAttack(m_PointIndex);
 				break;
 			case KEY_RIGHT:
-				m_D3DApp.m_Body[m_BodyID].Transale(m_CtrlPoint,1,0);
+				m_D3DApp.m_Body[m_BodyID].Transale(m_PointIndex,1,0);
+				UpdateAttack(m_PointIndex);
 				break;
 			case KEY_DOWN:
-				m_D3DApp.m_Body[m_BodyID].Transale(m_CtrlPoint,0,1);
+				m_D3DApp.m_Body[m_BodyID].Transale(m_PointIndex,0,1);
+				UpdateAttack(m_PointIndex);
 				break;
 			case KEY_DELETE:
-				m_D3DApp.m_Body[m_BodyID].Erase(m_CtrlPoint);
-				m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].End();
+				m_D3DApp.m_Body[m_BodyID].Erase(m_PointIndex);
+				UpdateBody();
+				m_PointIndex = -1;
 				break;
 			}
 			m_D3DApp.buildPoint();
@@ -170,19 +163,23 @@ void CD3DPanelView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			{
 			case KEY_LEFT:
 				m_D3DApp.m_Body[m_BodyID].Transale(-1,0);
+				UpdateBody();
 				break;
 			case KEY_UP:
 				m_D3DApp.m_Body[m_BodyID].Transale(0,-1);
+				UpdateBody();
 				break;
 			case KEY_RIGHT:
 				m_D3DApp.m_Body[m_BodyID].Transale(1,0);
+				UpdateBody();
 				break;
 			case KEY_DOWN:
 				m_D3DApp.m_Body[m_BodyID].Transale(0,1);
+				UpdateBody();
 				break;
 			case KEY_DELETE:
 				m_D3DApp.m_Body[m_BodyID].Clear();
-				m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].End();
+				m_PointIndex = -1;
 				break;
 			}
 			m_D3DApp.buildPoint();
@@ -191,24 +188,29 @@ void CD3DPanelView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 
 	if(!m_D3DApp.m_Attack.empty() && m_AttackID > -1){
-		if(m_CtrlPress && !m_ShiftPress &&m_CtrlPoint != m_D3DApp.m_Attack[m_AttackID].End()){
+		if(m_CtrlPress && !m_ShiftPress && m_PointIndex > -1){
 			switch(nChar)
 			{
 			case KEY_LEFT:
-				m_D3DApp.m_Attack[m_AttackID].Transale(m_CtrlPoint,-1,0);
+				m_D3DApp.m_Attack[m_AttackID].Transale(m_PointIndex,-1,0);
+				UpdateAttack(m_PointIndex);
 				break;
 			case KEY_UP:
-				m_D3DApp.m_Attack[m_AttackID].Transale(m_CtrlPoint,0,-1);
+				m_D3DApp.m_Attack[m_AttackID].Transale(m_PointIndex,0,-1);
+				UpdateAttack(m_PointIndex);
 				break;
 			case KEY_RIGHT:
-				m_D3DApp.m_Attack[m_AttackID].Transale(m_CtrlPoint,1,0);
+				m_D3DApp.m_Attack[m_AttackID].Transale(m_PointIndex,1,0);
+				UpdateAttack(m_PointIndex);
 				break;
 			case KEY_DOWN:
-				m_D3DApp.m_Attack[m_AttackID].Transale(m_CtrlPoint,0,1);
+				m_D3DApp.m_Attack[m_AttackID].Transale(m_PointIndex,0,1);
+				UpdateAttack(m_PointIndex);
 				break;
 			case KEY_DELETE:
-				m_D3DApp.m_Attack[m_AttackID].Erase(m_CtrlPoint);
-				m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].End();
+				m_D3DApp.m_Attack[m_AttackID].Erase(m_PointIndex);
+				UpdateAttack();
+				m_PointIndex = -1;
 				break;
 			}
 			m_D3DApp.buildPoint();
@@ -220,19 +222,24 @@ void CD3DPanelView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			{
 			case KEY_LEFT:
 				m_D3DApp.m_Attack[m_AttackID].Transale(-1,0);
+				UpdateAttack();
 				break;
 			case KEY_UP:
 				m_D3DApp.m_Attack[m_AttackID].Transale(0,-1);
+				UpdateAttack();
 				break;
 			case KEY_RIGHT:
 				m_D3DApp.m_Attack[m_AttackID].Transale(1,0);
+				UpdateAttack();
 				break;
 			case KEY_DOWN:
 				m_D3DApp.m_Attack[m_AttackID].Transale(0,1);
+				UpdateAttack();
 				break;
 			case KEY_DELETE:
 				m_D3DApp.m_Attack[m_AttackID].Clear();
-				m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].End();
+				UpdateAttack();
+				m_PointIndex = -1;
 				break;
 			}
 			m_D3DApp.buildPoint();
@@ -252,9 +259,9 @@ void CD3DPanelView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 		if(!m_D3DApp.m_Body.empty() && m_BodyID > -1)
 		{
-			if(m_CtrlPoint != m_D3DApp.m_Body[m_BodyID].End()){
-				m_D3DApp.m_Body[m_BodyID].ChangeColor(m_CtrlPoint,0.0f,0.0f,0.0f);
-				m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].End();
+			if(m_PointIndex > -1){
+				m_D3DApp.m_Body[m_BodyID].ChangeColor(m_PointIndex,0.0f,0.0f,0.0f);
+				m_PointIndex = -1;
 				m_D3DApp.buildPoint();
 				m_D3DApp.DrawScene();
 			}
@@ -262,10 +269,9 @@ void CD3DPanelView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 		if(!m_D3DApp.m_Attack.empty() && m_AttackID > -1)
 		{
-			if(m_CtrlPoint != m_D3DApp.m_Attack[m_AttackID].End()){
-				m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_CtrlPoint,0.0f,0.0f,0.0f);
-				m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].End();
-				m_D3DApp.buildPoint();
+			if(m_PointIndex > -1){
+				m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_PointIndex,0.0f,0.0f,0.0f);
+				m_PointIndex = -1;
 				m_D3DApp.DrawScene();
 			}
 		}
@@ -280,22 +286,6 @@ void CD3DPanelView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		m_KeyAPress = false;
 	}
-
-	//*test
-	if(nChar==KEY_ADD)
-	{
-		EditBody(AddBody());
-	}
-	if(nChar==KEY_SUB)
-	{
-		DeleteBody(m_BodyID);
-
-	}
-	if (nChar==KEY_EQUAL)
-	{
-		EditAttack(AddAttack());
-	}
-	//*/
 
 	CDockablePane::OnKeyUp(nChar, nRepCnt, nFlags);
 }
@@ -318,37 +308,40 @@ void CD3DPanelView::OnLButtonDown(UINT nFlags, CPoint point)
 	if(!m_D3DApp.m_Body.empty() && m_BodyID > -1){
 		if(m_KeyAPress && !m_CtrlPress && !m_ShiftPress){
 			m_D3DApp.m_Body[m_BodyID].Add(point.x, point.y);
-			m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].End();
+			UpdateAddition_BodyPoint(point.x,point.y);
+			m_PointIndex = -1;
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
 		if(m_CtrlPress && !m_ShiftPress){
-			if(m_CtrlPoint==m_D3DApp.m_Body[m_BodyID].End()){
-				m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].Select(point.x, point.y);
-				m_D3DApp.m_Body[m_BodyID].ChangeColor(m_CtrlPoint,1.0f,1.0f,0.0f);
+			if(m_PointIndex < 0){
+				m_PointIndex = m_D3DApp.m_Body[m_BodyID].Select_GetIndex(point.x, point.y);
+				m_D3DApp.m_Body[m_BodyID].ChangeColor(m_PointIndex,1.0f,1.0f,0.0f);
 			}else{
-				m_D3DApp.m_Body[m_BodyID].Modify(m_CtrlPoint,point.x, point.y);
+				m_D3DApp.m_Body[m_BodyID].Modify(m_PointIndex,point.x, point.y);
+				UpdateBody(m_PointIndex);
 			}
 
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
-
 	}
 
 	if(!m_D3DApp.m_Attack.empty() && m_AttackID > -1){
 		if(m_KeyAPress && !m_CtrlPress && !m_ShiftPress){
 			m_D3DApp.m_Attack[m_AttackID].Add(point.x, point.y);
-			m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].End();
+			UpdateAddition_AttackPoint(point.x, point.y);
+			m_PointIndex = -1;
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
 		if(m_CtrlPress && !m_ShiftPress){
-			if(m_CtrlPoint==m_D3DApp.m_Attack[m_AttackID].End()){
-				m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].Select(point.x, point.y);
-				m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_CtrlPoint,1.0f,1.0f,0.0f);
+			if(m_PointIndex < 0){
+				m_PointIndex = m_D3DApp.m_Attack[m_AttackID].Select_GetIndex(point.x, point.y);
+				m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_PointIndex,1.0f,1.0f,0.0f);
 			}else{
-				m_D3DApp.m_Attack[m_AttackID].Modify(m_CtrlPoint,point.x, point.y);
+				m_D3DApp.m_Attack[m_AttackID].Modify(m_PointIndex,point.x, point.y);
+				UpdateAttack(m_PointIndex);
 			}
 
 			m_D3DApp.buildPoint();
@@ -395,8 +388,9 @@ void CD3DPanelView::OnMouseMove(UINT nFlags, CPoint point)
 
 
 	if(!m_D3DApp.m_Body.empty() && m_BodyID > -1){
-		if(m_CtrlPress && !m_ShiftPress && m_LMouseHold && m_CtrlPoint != m_D3DApp.m_Body[m_BodyID].End()){
-			m_D3DApp.m_Body[m_BodyID].Modify(m_CtrlPoint,point.x, point.y);
+		if(m_CtrlPress && !m_ShiftPress && m_LMouseHold && m_PointIndex > -1){
+			m_D3DApp.m_Body[m_BodyID].Modify(m_PointIndex,point.x, point.y);
+			UpdateBody(m_PointIndex);
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
@@ -405,13 +399,15 @@ void CD3DPanelView::OnMouseMove(UINT nFlags, CPoint point)
 		{
 			m_D3DApp.m_Body[m_BodyID].Transale(point.x-m_RecordX, point.y-m_RecordY);
 			m_D3DApp.buildPoint();
+			UpdateBody();
 			m_D3DApp.DrawScene();
 		}
 	}
 
 	if(!m_D3DApp.m_Attack.empty() && m_AttackID > -1){
-		if(m_CtrlPress && !m_ShiftPress && m_LMouseHold && m_CtrlPoint != m_D3DApp.m_Attack[m_AttackID].End()){
-			m_D3DApp.m_Attack[m_AttackID].Modify(m_CtrlPoint,point.x, point.y);
+		if(m_CtrlPress && !m_ShiftPress && m_LMouseHold && m_PointIndex > -1){
+			m_D3DApp.m_Attack[m_AttackID].Modify(m_PointIndex,point.x, point.y);
+			UpdateAttack(m_PointIndex);
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
@@ -419,6 +415,7 @@ void CD3DPanelView::OnMouseMove(UINT nFlags, CPoint point)
 		if (m_ShiftPress && m_CtrlPress && m_LMouseHold)
 		{
 			m_D3DApp.m_Attack[m_AttackID].Transale(dx,dy);
+			UpdateAttack();
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
@@ -427,6 +424,7 @@ void CD3DPanelView::OnMouseMove(UINT nFlags, CPoint point)
 	if (m_EnableCtrlCenter && m_CtrlPress && m_LMouseHold)
 	{
 		m_D3DApp.SetCenter(point.x,point.y);
+		UpdateCenter(point.x,point.y);
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
@@ -546,46 +544,14 @@ void CD3DPanelView::StopEdit()
 	m_EnableCtrlCenter = false;
 }
 
-int CD3DPanelView::AddBody()
-{
-	m_D3DApp.m_Body.push_back(PointManager());
-	return m_D3DApp.m_Body.size()-1;
-}
-
-void CD3DPanelView::DeleteBody( int id )
-{
-	StopEdit();
-	if(id < (int)m_D3DApp.m_Body.size() && id>-1){
-		m_D3DApp.m_Body.erase(m_D3DApp.m_Body.begin()+id);
-		m_D3DApp.buildPoint();
-		m_D3DApp.DrawScene();
-	}
-}
-
 void CD3DPanelView::EditBody( int id )
 {
 	StopEdit();
 	if(id < (int)m_D3DApp.m_Body.size() && id>-1){
 		m_BodyID=id;
-		m_CtrlPoint = m_D3DApp.m_Body[id].End();
+		m_PointIndex = -1;
 		m_D3DApp.m_Body[id].SetLineColor(0,0,0);
 		m_D3DApp.m_Body[id].ChangeColor(0,0,0);
-		m_D3DApp.buildPoint();
-		m_D3DApp.DrawScene();
-	}
-}
-
-int CD3DPanelView::AddAttack()
-{
-	m_D3DApp.m_Attack.push_back(PointManager());
-	return m_D3DApp.m_Attack.size()-1;
-}
-
-void CD3DPanelView::DeleteAttack( int id )
-{
-	StopEdit();
-	if(id < (int)m_D3DApp.m_Attack.size() && id>-1){
-		m_D3DApp.m_Attack.erase(m_D3DApp.m_Attack.begin()+id);
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
@@ -596,7 +562,7 @@ void CD3DPanelView::EditAttack( int id )
 	StopEdit();
 	if(id < (int)m_D3DApp.m_Attack.size() && id>-1){
 		m_AttackID=id;
-		m_CtrlPoint = m_D3DApp.m_Attack[id].End();
+		m_PointIndex = -1;
 		m_D3DApp.m_Attack[id].SetLineColor(0,0,0);
 		m_D3DApp.m_Attack[id].ChangeColor(0,0,0);
 		m_D3DApp.buildPoint();
@@ -613,6 +579,7 @@ void CD3DPanelView::EditCenter()
 void CD3DPanelView::Init()
 {
 	StopEdit();
+	InitEdit();
 	m_FrameInfo = NULL;
 	m_D3DApp.Init();
 }
@@ -682,9 +649,9 @@ void CD3DPanelView::InitEdit()
 
 	if(!m_D3DApp.m_Body.empty() && m_BodyID > -1)
 	{
-		if(m_CtrlPoint != m_D3DApp.m_Body[m_BodyID].End()){
-			m_D3DApp.m_Body[m_BodyID].ChangeColor(m_CtrlPoint,0.0f,0.0f,0.0f);
-			m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].End();
+		if(m_PointIndex > -1){
+			m_D3DApp.m_Body[m_BodyID].ChangeColor(m_PointIndex,0.0f,0.0f,0.0f);
+			m_PointIndex = -1;
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
@@ -692,14 +659,82 @@ void CD3DPanelView::InitEdit()
 
 	if(!m_D3DApp.m_Attack.empty() && m_AttackID > -1)
 	{
-		if(m_CtrlPoint != m_D3DApp.m_Attack[m_AttackID].End()){
-			m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_CtrlPoint,0.0f,0.0f,0.0f);
-			m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].End();
+		if(m_PointIndex > -1){
+			m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_PointIndex,0.0f,0.0f,0.0f);
+			m_PointIndex = -1;
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
 	}
 }
+
+void CD3DPanelView::UpdateCenter( float x,float y )
+{
+	if(m_FrameInfo != NULL){
+		m_FrameInfo->m_CenterX = x;
+		m_FrameInfo->m_CenterY = y;
+	}
+	//Refresh
+}
+
+void CD3DPanelView::UpdateBody()
+{
+	if(m_FrameInfo==NULL)return;
+	m_FrameInfo->m_Bodys[m_BodyID].m_Area.Clear();
+	for(Points::iterator it = m_D3DApp.m_Body[m_BodyID].GetPoints().begin(); it != m_D3DApp.m_Body[m_BodyID].GetPoints().end(); ++it)
+	{
+		m_FrameInfo->m_Bodys[m_BodyID].m_Area.AddPoint(it->x,it->y);
+	}
+
+	//Refresh
+}
+
+void CD3DPanelView::UpdateBody( int index )
+{
+	if(m_FrameInfo==NULL)return;
+	m_FrameInfo->m_Bodys[m_BodyID].m_Area.Points()[index].x = m_D3DApp.m_Body[m_BodyID].GetPoints()[index].x;
+	m_FrameInfo->m_Bodys[m_BodyID].m_Area.Points()[index].y = m_D3DApp.m_Body[m_BodyID].GetPoints()[index].y;
+
+	//Refresh
+}
+
+void CD3DPanelView::UpdateAddition_BodyPoint( float x,float y )
+{
+	if(m_FrameInfo==NULL)return;
+	m_FrameInfo->m_Bodys[m_BodyID].m_Area.AddPoint(x,y);
+
+	//Refresh
+}
+
+void CD3DPanelView::UpdateAttack()
+{
+	if(m_FrameInfo==NULL)return;
+	m_FrameInfo->m_Attacks[m_BodyID].m_Area.Clear();
+	for(Points::iterator it = m_D3DApp.m_Attack[m_BodyID].GetPoints().begin(); it != m_D3DApp.m_Attack[m_BodyID].GetPoints().end(); ++it)
+	{
+		m_FrameInfo->m_Attacks[m_BodyID].m_Area.AddPoint(it->x,it->y);
+	}
+
+	//Refresh
+}
+
+void CD3DPanelView::UpdateAttack( int index )
+{
+	if(m_FrameInfo==NULL)return;
+	m_FrameInfo->m_Attacks[m_BodyID].m_Area.Points()[index].x = m_D3DApp.m_Attack[m_BodyID].GetPoints()[index].x;
+	m_FrameInfo->m_Attacks[m_BodyID].m_Area.Points()[index].y = m_D3DApp.m_Attack[m_BodyID].GetPoints()[index].y;
+
+	//Refresh
+}
+
+void CD3DPanelView::UpdateAddition_AttackPoint( float x,float y )
+{
+	if(m_FrameInfo==NULL)return;
+	m_FrameInfo->m_Attacks[m_BodyID].m_Area.AddPoint(x,y);
+
+	//Refresh
+}
+
 
 
 
