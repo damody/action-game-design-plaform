@@ -905,16 +905,24 @@ int InitDirect3DApp::UpdateInput()
 		b_Pause = !b_Pause;
 	}
 
-	if (InputStateS::instance().isKeyDown(KEY_F2) && b_Pause)
+	if (InputStateS::instance().isKeyDown(KEY_F2))
 	{
+		if(b_Pause){
+			D3DApp::DrawScene(); // clear window
+			this->DrawScene();
+			m_SwapChain->Present(0, 0);
+
 			g_Time++;
 			UpdateCamera();
 			if(g_EffectMG != NULL)g_EffectMG->Update(m_RenderTargetView);
+			buildPoint();
 			//Hero Update
 			g_HeroMG.Update(0);
 
 			//Chee Update
 			g_ObjectMG.Update(0);
+
+			m_Player.Update();
 
 			//Background Update
 			if(g_BGManager.CurrentBG() != NULL)
@@ -922,6 +930,10 @@ int InitDirect3DApp::UpdateInput()
 				g_BGManager.CurrentBG()->Update(0);
 				BackgroundDataUpdate();
 			}
+		}
+		else{
+			b_Pause = true;
+		}
 	}
 	
 

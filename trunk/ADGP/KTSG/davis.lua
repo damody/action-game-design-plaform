@@ -899,7 +899,7 @@ frame.jump_kick[5] =
 frame.run_punch[0] =
 {
    pic_id = 1, pic_x = 1, pic_y = 4, state = Action.BeforeRunAttack, wait = 4, next = {"run_punch", 1},
-   dvx = 0, dvy = 0,  dvz = 0,  centerx = 35,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 35,  centery = 79,  clear_key_queue = 1,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},

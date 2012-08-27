@@ -112,7 +112,6 @@ void Hero::Update(float dt)
 	}
 
 	if(!inAir){	//地上
-		printf("onground\n");
 		//落地判定
 		if( m_Action != HeroAction::UNIQUE_SKILL){
 			//m_Position.y = 0;
@@ -165,7 +164,6 @@ void Hero::Update(float dt)
 		else m_Vel.z *= sign;
 	}
 	else{					//空中
-		printf("inAir\n");
 		//重力加速度
 		if(m_Action != HeroAction::AIR_SKILL && m_Action != HeroAction::UNIQUE_SKILL){
 			m_Vel.y -= G_ACCE;
@@ -251,7 +249,7 @@ NextLoop:
 	}
 	if(f->m_Consume.m_JumpRule <= 0){
 		printf("MaxHP:%d\tHP:%d\tMP:%d\n",m_MaxRecoverHP,m_HP,m_MP);
-		printf("consume: rule=%d, MP=%d, HP=%d, backFrame=%s, backFrameID=%d\n",f->m_Consume.m_JumpRule,f->m_Consume.m_MP,f->m_Consume.m_HP,f->m_Consume.m_NotEnoughFrameName.c_str(),f->m_Consume.m_NotEnoughFrame);
+		//printf("consume: rule=%d, MP=%d, HP=%d, backFrame=%s, backFrameID=%d\n",f->m_Consume.m_JumpRule,f->m_Consume.m_MP,f->m_Consume.m_HP,f->m_Consume.m_NotEnoughFrameName.c_str(),f->m_Consume.m_NotEnoughFrame);
 		if(m_HP >= f->m_Consume.m_HP && m_MP >= f->m_Consume.m_MP){
 			m_HP -= f->m_Consume.m_HP;
 			m_MP -= f->m_Consume.m_MP;
@@ -287,7 +285,6 @@ NextLoop:
 		Creations::iterator ic = f->m_Creations.begin();
 		while(ic != f->m_Creations.end()){
 			Vector3 pos( df * (ic->x - m_CenterX) * SCALE + m_Position.x, (ic->y + m_CenterY) * SCALE + m_Position.y, m_Position.z);//vel(ic->dvx,ic->dvy,ic->dvz);
-			//g_ObjectMG.CreateChee(ic->name, pos, ic->v0, ic->amount, m_Team);
 			Creat(pos,*ic,m_FaceSide,m_Record);
 			ic++;
 		}
@@ -922,7 +919,7 @@ KeyLoop:
 		//消耗
 		if(f->m_Consume.m_JumpRule >= 0){
 			printf("MaxHP:%d\tHP:%d\tMP:%d\n",m_MaxRecoverHP,m_HP,m_MP);
-			printf("consume: rule=%d, MP=%d, HP=%d, backFrame=%s, backFrameID=%d\n",f->m_Consume.m_JumpRule,f->m_Consume.m_MP,f->m_Consume.m_HP,f->m_Consume.m_NotEnoughFrameName.c_str(),f->m_Consume.m_NotEnoughFrame);
+			//printf("consume: rule=%d, MP=%d, HP=%d, backFrame=%s, backFrameID=%d\n",f->m_Consume.m_JumpRule,f->m_Consume.m_MP,f->m_Consume.m_HP,f->m_Consume.m_NotEnoughFrameName.c_str(),f->m_Consume.m_NotEnoughFrame);
 			if(m_HP >= f->m_Consume.m_HP && m_MP >= f->m_Consume.m_MP){
 				m_HP -= f->m_Consume.m_HP;
 				m_MP -= f->m_Consume.m_MP;
