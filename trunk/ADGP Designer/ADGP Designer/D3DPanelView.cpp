@@ -12,7 +12,7 @@
 
 IMPLEMENT_DYNAMIC(CD3DPanelView, CDockablePane)
 
-CD3DPanelView::CD3DPanelView(CWnd* pParent /*=NULL*/):m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),m_BodyID(-1),m_AttackID(-1)
+CD3DPanelView::CD3DPanelView(CWnd* pParent /*=NULL*/):m_TrackMouse(true),m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_EnableCtrlCenter(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),m_BodyID(-1),m_AttackID(-1)
 {
 	this->Init();
 }
@@ -38,6 +38,7 @@ BEGIN_MESSAGE_MAP(CD3DPanelView, CDockablePane)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_MBUTTONDOWN()
 	ON_WM_MBUTTONUP()
+	ON_WM_MOUSELEAVE()
 END_MESSAGE_MAP()
 
 
@@ -369,6 +370,16 @@ void CD3DPanelView::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CD3DPanelView::OnMouseMove(UINT nFlags, CPoint point)
 {
+	if(m_TrackMouse){
+		TRACKMOUSEEVENT tme;
+		tme.cbSize = sizeof(TRACKMOUSEEVENT);
+		tme.dwFlags = TME_LEAVE;
+		tme.hwndTrack = this->m_hWnd;
+		_TrackMouseEvent(&tme);
+		m_TrackMouse =false;
+	}
+	
+
 	float dx = point.x - m_RecordX;
 	float dy = point.y - m_RecordY;
 	m_RecordX = point.x;
@@ -462,6 +473,17 @@ BOOL CD3DPanelView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	return CDockablePane::OnMouseWheel(nFlags, zDelta, pt);
 }
 
+void CD3DPanelView::OnMouseLeave()
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+// 	char buff[100];
+// 	sprintf(buff, "Leave");
+// 	CString str(buff);
+// 	AfxMessageBox(str);
+	InitEdit();
+	
+	CDockablePane::OnMouseLeave();
+}
 //Functions
 
 void CD3DPanelView::SetPic( PictureData *pic,float x,float y )
@@ -587,3 +609,34 @@ void CD3DPanelView::OnMButtonUp(UINT nFlags, CPoint point)
 	m_MMouseHold =false;
 	CDockablePane::OnMButtonUp(nFlags, point);
 }
+
+void CD3DPanelView::InitEdit()
+{
+	m_TrackMouse = true;
+	m_LMouseHold = false;
+	m_MMouseHold = false;
+	m_CtrlPress = false;
+	m_KeyAPress = false;
+	m_ShiftPress = false;
+
+	if(!m_D3DApp.m_Body.empty() && m_BodyID > -1)
+	{
+		if(m_CtrlPoint != m_D3DApp.m_Body[m_BodyID].End()){
+			m_D3DApp.m_Body[m_BodyID].ChangeColor(m_CtrlPoint,0.0f,0.0f,0.0f);
+			m_CtrlPoint = m_D3DApp.m_Body[m_BodyID].End();
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+	}
+
+	if(!m_D3DApp.m_Attack.empty() && m_AttackID > -1)
+	{
+		if(m_CtrlPoint != m_D3DApp.m_Attack[m_AttackID].End()){
+			m_D3DApp.m_Attack[m_AttackID].ChangeColor(m_CtrlPoint,0.0f,0.0f,0.0f);
+			m_CtrlPoint = m_D3DApp.m_Attack[m_AttackID].End();
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+	}
+}
+

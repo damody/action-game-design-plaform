@@ -19,6 +19,7 @@
 class CADGPDesignerView : public CView
 {
 private:
+	bool m_TrackMouse;
 	bool m_LMouseHold;
 	bool m_MMouseHold;
 	bool m_CtrlPress;
@@ -34,7 +35,9 @@ private:
 	int   m_CutC;
 public:
 	void Init();
+	void Refresh();
 	//Init(FrameInfo *info);
+private:
 	void SetPic(PictureData* pic);
 	void Cut(int r,int c);
 protected: // 僅從序列化建立
@@ -85,6 +88,7 @@ public:
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnMouseLeave();
 };
 
 #ifndef _DEBUG  // ADGP DesignerView.cpp 中的偵錯版本

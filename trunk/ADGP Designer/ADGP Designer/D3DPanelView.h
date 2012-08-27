@@ -7,6 +7,7 @@ class CD3DPanelView : public CDockablePane
 {
 	DECLARE_DYNAMIC(CD3DPanelView)
 private:
+	bool m_TrackMouse;
 	bool m_LMouseHold;
 	bool m_MMouseHold;
 	bool m_CtrlPress;
@@ -20,15 +21,19 @@ private:
 	float m_RecordX,m_RecordY;
 public:
 	void Init();
-	//Init(FrameInfo *info);
+	void Refresh();
+	void EditBody(int id);
+	void EditAttack(int id);
 	void SetPic(PictureData  *pic,float x,float y);
+private:
+	void InitEdit();
+
 	void StopEdit();
 	int AddBody();
 	void DeleteBody(int id);
-	void EditBody(int id);
 	int AddAttack();
 	void DeleteAttack(int id);
-	void EditAttack(int id);
+	
 	virtual BOOL CanFloat() const;
 	virtual BOOL CanBeClosed() const;
 	virtual BOOL CanAutoHide() const;
@@ -59,4 +64,5 @@ public:
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnMouseLeave();
 };

@@ -52,11 +52,12 @@ BEGIN_MESSAGE_MAP(CADGPDesignerView, CView)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_MBUTTONDOWN()
 	ON_WM_MBUTTONUP()
+	ON_WM_MOUSELEAVE()
 END_MESSAGE_MAP()
 
 // CADGPDesignerView 建構/解構
 
-CADGPDesignerView::CADGPDesignerView():m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),
+CADGPDesignerView::CADGPDesignerView():m_TrackMouse(true),m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),
 m_Pic(0),m_CutH(1),m_CutW(1),m_CutR(1),m_CutC(1)
 {
 	// TODO: 在此加入建構程式碼
@@ -221,6 +222,14 @@ void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CADGPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
 {
+	if(m_TrackMouse){
+		TRACKMOUSEEVENT tme;
+		tme.cbSize = sizeof(TRACKMOUSEEVENT);
+		tme.dwFlags = TME_LEAVE;
+		tme.hwndTrack = this->m_hWnd;
+		_TrackMouseEvent(&tme);
+		m_TrackMouse =false;
+	}
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
 	float dx = point.x - m_RecordX;
 	float dy = point.y - m_RecordY;
@@ -250,6 +259,49 @@ void CADGPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
 
 	CView::OnMouseMove(nFlags, point);
 }
+
+BOOL CADGPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	if (m_CtrlPress && !m_ShiftPress)
+	{
+		if (zDelta > 0)
+		{
+			if (g_Picture_Scale < 10)
+			{
+				g_Picture_Scale += 0.1f;
+			}
+		}else{
+			if (g_Picture_Scale > 0.1)
+			{
+				g_Picture_Scale -= 0.1f;
+			}
+		}
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
+	char buff[100];
+	sprintf(buff, "   顯示比例 %.1f%%", g_Picture_Scale * 100);
+	CString str(buff);
+	((CMainFrame*)(this->GetParent()->GetParentFrame()))->SetStatus(str);
+	return CView::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+void CADGPDesignerView::OnMButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	m_MMouseHold = true;
+	CView::OnMButtonDown(nFlags, point);
+}
+
+
+void CADGPDesignerView::OnMButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	m_MMouseHold = false;
+	CView::OnMButtonUp(nFlags, point);
+}
+
 
 const unsigned int KEY_SHIFT	= 16;
 const unsigned int KEY_CTRL	= 17;
@@ -318,47 +370,6 @@ void CADGPDesignerView::OnPaint()
 }
 
 
-BOOL CADGPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	if (m_CtrlPress && !m_ShiftPress)
-	{
-		if (zDelta > 0)
-		{
-			if (g_Picture_Scale < 10)
-			{
-				g_Picture_Scale += 0.1f;
-			}
-		}else{
-			if (g_Picture_Scale > 0.1)
-			{
-				g_Picture_Scale -= 0.1f;
-			}
-		}
-		m_D3DApp.buildPoint();
-		m_D3DApp.DrawScene();
-	}
-	char buff[100];
-	sprintf(buff, "   顯示比例 %.1f%%", g_Picture_Scale * 100);
-	CString str(buff);
-	((CMainFrame*)(this->GetParent()->GetParentFrame()))->SetStatus(str);
-	return CView::OnMouseWheel(nFlags, zDelta, pt);
-}
-
-void CADGPDesignerView::OnMButtonDown(UINT nFlags, CPoint point)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	m_MMouseHold = true;
-	CView::OnMButtonDown(nFlags, point);
-}
-
-
-void CADGPDesignerView::OnMButtonUp(UINT nFlags, CPoint point)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	m_MMouseHold = false;
-	CView::OnMButtonUp(nFlags, point);
-}
 
 //Functions
 void CADGPDesignerView::Init()
@@ -387,3 +398,13 @@ void CADGPDesignerView::Cut( int r,int c )
 
 
 
+
+
+void CADGPDesignerView::OnMouseLeave()
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	m_TrackMouse = true;
+	m_MMouseHold = false;
+	m_CtrlPress  = false;
+	CView::OnMouseLeave();
+}
