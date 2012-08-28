@@ -869,7 +869,7 @@ void CClassView::OnSelectItem(HTREEITEM item)
 	CPropertiesWnd::GetInstance()->m_lastSelectedItem = item;
 	m_wndClassView.m_lastSelectedItem = item;*/
 	if(m_wndClassView.GetRootItem() == item){
-
+		
 		m_wndClassView.SelectItem(item);
 		m_wndClassView.SetFocus();
 	}else if(IsNumber(m_wndClassView.GetItemText(item))){
@@ -886,10 +886,9 @@ void CClassView::OnSelectItem(HTREEITEM item)
 				ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
 				std::string FrameName(buff);
 
-				if(g_FrameName == FrameName && g_FrameIndex == _ttoi(m_wndClassView.GetItemText(FrameIndex))){
-					g_FrameName = FrameName;
-					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
-				}
+				g_FrameName = FrameName;
+				g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
+				
 
 				((CMainFrame*)(this->GetParentFrame()))->EditBody(_ttoi(m_wndClassView.GetItemText(item)));
 
@@ -900,10 +899,8 @@ void CClassView::OnSelectItem(HTREEITEM item)
 				ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
 				std::string FrameName(buff);
 
-				if(g_FrameName == FrameName && g_FrameIndex == _ttoi(m_wndClassView.GetItemText(FrameIndex))){
-					g_FrameName = FrameName;
-					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
-				}
+				g_FrameName = FrameName;
+				g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
 
 				((CMainFrame*)(this->GetParentFrame()))->EditAttack(_ttoi(m_wndClassView.GetItemText(item)));
 
@@ -1184,37 +1181,37 @@ void CClassView::Refresh()
 
 				for (unsigned int j=0; j<it_FrameMap->second[i].m_Bodys.size() ; j++)
 				{
-					sprintf(buff,"%d", i);
+					sprintf(buff,"%d", j);
 					str = CString(buff);
 					m_wndClassView.InsertItem(str,3,3,hChild_Bodys);
 				}
 				for (unsigned int j=0; j<it_FrameMap->second[i].m_Attacks.size() ; j++)
 				{
-					sprintf(buff,"%d", i);
+					sprintf(buff,"%d", j);
 					str = CString(buff);
 					m_wndClassView.InsertItem(str,3,3,hChild_Attacks);
 				}
 				for (unsigned int j=0; j<it_FrameMap->second[i].m_HitDatas.size() ; j++)
 				{
-					sprintf(buff,"%d", i);
+					sprintf(buff,"%d", j);
 					str = CString(buff);
 					m_wndClassView.InsertItem(str,3,3,hChild_HitDatas);
 				}
 				for (unsigned int j=0; j<it_FrameMap->second[i].m_Catchs.size() ; j++)
 				{
-					sprintf(buff,"%d", i);
+					sprintf(buff,"%d", j);
 					str = CString(buff);
 					m_wndClassView.InsertItem(str,3,3,hChild_Catchs);
 				}
 				for (unsigned int j=0; j<it_FrameMap->second[i].m_BloodInfos.size() ; j++)
 				{
-					sprintf(buff,"%d", i);
+					sprintf(buff,"%d", j);
 					str = CString(buff);
 					m_wndClassView.InsertItem(str,3,3,hChild_BloodInfos);
 				}
 				for (unsigned int j=0; j<it_FrameMap->second[i].m_Creations.size() ; j++)
 				{
-					sprintf(buff,"%d", i);
+					sprintf(buff,"%d", j);
 					str = CString(buff);
 					m_wndClassView.InsertItem(str,3,3,hChild_Creations);
 				}

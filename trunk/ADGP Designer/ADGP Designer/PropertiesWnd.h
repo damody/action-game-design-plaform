@@ -98,6 +98,13 @@ public:
 	void InitPropList_HitData();
 	void InitPropList_CatchInfo();
 	void InitPropList_BloodInfo();
+	void RefreshPropList();
+	void RefreshPropList_Frame();
+	void RefreshPropList_Body();
+	void RefreshPropList_Attack();
+	void RefreshPropList_HitData();
+	void RefreshPropList_CatchInfo();
+	void RefreshPropList_BloodInfo();
 	void SetPropListFont();
 	static void AddNormalActionUcase(CMFCPropertyGridProperty* pProp);
 	static void AddNormalActionDcase(CMFCPropertyGridProperty* pProp);
