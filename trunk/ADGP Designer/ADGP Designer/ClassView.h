@@ -92,5 +92,6 @@ public:
 
 
 	DECLARE_MESSAGE_MAP()
+	afx_msg void OnPointsAdd();
 };
 

@@ -15,6 +15,7 @@
 #include "ADGP Designer.h"
 #include <comutil.h>
 #include <game/HeroAction.h>
+#include "ClassView.h"
 
 CClassView* CClassView::instance = NULL;
 
@@ -187,6 +188,7 @@ BEGIN_MESSAGE_MAP(CClassView, CDockablePane)
 	ON_WM_LBUTTONUP()
 	ON_COMMAND_RANGE(ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnSort)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnUpdateSort)
+	ON_COMMAND(ID_POINTS_ADD, &CClassView::OnPointsAdd)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -478,7 +480,7 @@ void CClassView::OnUpdateSort(CCmdUI* pCmdUI)
 void CClassView::OnAnimationAdd()
 {
 	HTREEITEM root = m_wndClassView.GetRootItem();
-	HTREEITEM item = m_wndClassView.InsertItem(_T("standing"), 1, 1, root);
+	HTREEITEM item = m_wndClassView.InsertItem(_T("standing123"), 1, 1, root);
 	FrameInfo fi;
 	fi.m_FrameName = std::string("standing");
 	fi.m_FrameIndex = 0;
@@ -512,10 +514,22 @@ void CClassView::OnAnimationAdd()
 
 	m_propMap[hClass] = fi;
 
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
+	HTREEITEM temp_item;
+
+	temp_item = m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+
+	temp_item = m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+
 	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
+
+	temp_item = m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
+	m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+
 	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
 	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
 
@@ -615,10 +629,22 @@ void CClassView::OnFrameAdd()
 
 		m_propMap[hClass] = fi;
 
-		m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
+		HTREEITEM temp_item;
+
+		temp_item = m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+
+		temp_item = m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+
 		m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
+
+		temp_item = m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+
 		m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
 		m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
 
@@ -1176,3 +1202,9 @@ CMFCPropertyGridProperty* CClassView::GetDefaultPropList()
 
 	return pGroup1;
 }*/
+
+
+void CClassView::OnPointsAdd()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+}
