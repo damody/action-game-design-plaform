@@ -32,7 +32,7 @@
 BEGIN_MESSAGE_MAP(CADGPDesignerApp, CWinAppEx)
 	ON_COMMAND(ID_APP_ABOUT, &CADGPDesignerApp::OnAppAbout)
 	// 依據文件命令的標準檔案
-	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
+	ON_COMMAND(ID_FILE_NEW, &CMainFrame::test)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 	// 標準列印設定命令
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
@@ -141,6 +141,7 @@ BOOL CADGPDesignerApp::InitInstance()
 	m_pMainWnd = pMainFrame;
 	// 只有在 MDI 應用程式中有後置字元時，才呼叫 DragAcceptFiles
 	// 這會立即發生在設定 m_pMainWnd 之後
+/*
 
 	// 剖析標準 Shell 命令、DDE、檔案開啟舊檔的命令列
 	CCommandLineInfo cmdInfo;
@@ -152,6 +153,7 @@ BOOL CADGPDesignerApp::InitInstance()
 	// /RegServer、/Register、/Unregserver 或 /Unregister 啟動應用程式，將傳回 FALSE。
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
+*/
 	// 已經初始設定主視窗，所以顯示並更新該視窗
 	pMainFrame->ShowWindow(m_nCmdShow);
 	pMainFrame->UpdateWindow();
@@ -228,6 +230,12 @@ void CADGPDesignerApp::LoadCustomState()
 void CADGPDesignerApp::SaveCustomState()
 {
 }
+
+void CADGPDesignerApp::OnFileNew()
+{
+	CWinApp::OnFileNew();
+}
+
 
 // CADGPDesignerApp 訊息處理常式
 

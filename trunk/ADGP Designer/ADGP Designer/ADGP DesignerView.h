@@ -15,6 +15,7 @@
 #pragma once
 #include "DX11\D3DApp_Picture.h"
 #include "game\PictureData.h"
+#include "ADGP DesignerDoc.h"
 
 class CADGPDesignerView : public CView
 {
