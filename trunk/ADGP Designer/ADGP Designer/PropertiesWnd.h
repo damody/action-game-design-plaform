@@ -12,6 +12,8 @@
 #pragma once
 #include "Resource.h"
 
+#define MAX_ACTIONS 52
+
 class CPropertiesToolBar : public CMFCToolBar
 {
 public:
@@ -68,6 +70,7 @@ protected:
 	CComboBox m_wndObjectCombo;
 	CPropertiesToolBar m_wndToolBar;
 	CMFCPropertyGridCtrl m_wndPropList;
+	static const CString actionMap[MAX_ACTIONS];
 
 // 程式碼實作
 public:

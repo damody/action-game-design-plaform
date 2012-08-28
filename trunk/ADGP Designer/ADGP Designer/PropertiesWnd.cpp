@@ -380,15 +380,6 @@ void CPropertiesWnd::InitPropList_Frame()
 	pCenterSize->AddSubItem(pProp);
 	pGroup1->AddSubItem(pCenterSize);
 
-	CMFCPropertyGridProperty* pPicturePos = new CMFCPropertyGridProperty(_T("Picture Offset"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("Picture X Offset"), varInt, _T("人物圖片X偏移量"));
-	pProp->EnableSpinControl(TRUE, -1000, 1000);
-	pPicturePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("Picture Y Offset"), varInt, _T("人物圖片Y偏移量"));
-	pProp->EnableSpinControl(TRUE, -1000, 1000);
-	pPicturePos->AddSubItem(pProp);
-	pGroup1->AddSubItem(pPicturePos);
-
 	CMFCPropertyGridProperty* pConsumePos = new CMFCPropertyGridProperty(_T("Consume"), 0, TRUE);
 	pProp = new CMFCPropertyGridProperty(_T("JumpRule"), varBool, _T("False 時只對next有用，True 時只對 hitdata有用"));
 	pConsumePos->AddSubItem(pProp);
@@ -404,10 +395,10 @@ void CPropertiesWnd::InitPropList_Frame()
 	pProp = new CMFCPropertyGridProperty(_T("Enough Frame Index"), (_variant_t) 0l, _T("夠的話跳到該格"));
 	pProp->EnableSpinControl(TRUE, 0, 300);
 	pConsumePos->AddSubItem(pProp);*/
-	pProp = new CMFCPropertyGridProperty( _T("Not Enough Frame Name"), _T("standing"), _T("不夠消耗的話跳到該 Frame"));
+	pProp = new CMFCPropertyGridProperty( _T("Jump: Frame Name"), _T("standing"), _T("不夠消耗的話跳到該 Frame"));
 	AddNormalActionDcase(pProp);
 	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Not Next Frame Index"), varInt, _T("不夠的話跳到該格"));
+	pProp = new CMFCPropertyGridProperty(_T("Jump: Frame Index"), varInt, _T("不夠的話跳到該格"));
 	pProp->EnableSpinControl(TRUE, 0, 300);
 	pConsumePos->AddSubItem(pProp);
 	pGroup1->AddSubItem(pConsumePos);
@@ -527,23 +518,25 @@ void CPropertiesWnd::AddNormalActionUcase( CMFCPropertyGridProperty* pProp )
 	pProp->AddOption(_T("JUMP"));
 	pProp->AddOption(_T("CROUCH"));
 	pProp->AddOption(_T("INJURED"));
-	pProp->AddOption(_T("FORWARD_LYING"));
-	pProp->AddOption(_T("BACKWARD_LYING"));
+	pProp->AddOption(_T("LYING"));
 	pProp->AddOption(_T("UNIQUE_SKILL"));
 }
 
 
 void CPropertiesWnd::AddNormalActionDcase( CMFCPropertyGridProperty* pProp )
 {
-/*
+
 	if (g_ActiveFramesMap != NULL)
 	{
-		for(FramesMap::iterator it=)
-		char buff[100];
-		sprintf(buff, "%s",g_HeroInfo->m_Name.c_str());
-		CString str(buff);
+		for(FramesMap::iterator it=g_ActiveFramesMap->begin(); it != g_ActiveFramesMap->end() ; it++){
+			char buff[100];
+			sprintf(buff, "%s",it->first.c_str());
+			CString str(buff);
+			pProp->AddOption(str);
+		}
+		
 	}
-*/
+/*
 	pProp->AddOption(_T("standing"));
 	pProp->AddOption(_T("walking"));
 	pProp->AddOption(_T("running"));
@@ -584,7 +577,7 @@ void CPropertiesWnd::AddNormalActionDcase( CMFCPropertyGridProperty* pProp )
 	pProp->AddOption(_T("injured"));
 	pProp->AddOption(_T("forward_lying"));
 	pProp->AddOption(_T("backward_lying"));
-	pProp->AddOption(_T("unique_skill"));
+	pProp->AddOption(_T("unique_skill"));*/
 }
 
 void CPropertiesWnd::AddPointXY( CMFCPropertyGridProperty*& pPolygon2D )
@@ -737,6 +730,56 @@ void CPropertiesWnd::RefreshPropList()
 void CPropertiesWnd::RefreshPropList_Frame()
 {
 	InitPropList_Frame();
+
+	VARIANT varFloat;
+	varFloat.vt = VT_R4;
+	varFloat.fltVal = 0.0f;
+
+	VARIANT varInt;
+	varInt.vt = VT_INT;
+	varInt.intVal = g_FrameIndex;
+
+	VARIANT varBool;
+	varBool.vt = VT_BOOL;
+	varBool.boolVal = false;
+
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty(0);
+
+	FrameInfo frameInfo = (*g_ActiveFramesMap)[g_FrameName][g_FrameIndex];
+
+	propRoot->GetSubItem(0)->SetValue(CString(g_FrameName.c_str()));
+	propRoot->GetSubItem(1)->SetValue(varInt);
+	propRoot->GetSubItem(2)->SetValue(CString(frameInfo.m_NextFrameName.c_str()));
+	varInt.intVal = frameInfo.m_NextFrameIndex;
+	propRoot->GetSubItem(3)->SetValue(varInt);
+	propRoot->GetSubItem(4)->SetValue(CString(actionMap[frameInfo.m_HeroAction]));
+	varInt.intVal = frameInfo.m_Wait;
+	propRoot->GetSubItem(5)->SetValue(varInt);
+	varBool.boolVal = frameInfo.m_ClearKeyQueue;
+	propRoot->GetSubItem(6)->SetValue(varBool);
+	varInt.intVal = frameInfo.m_PictureID;
+	propRoot->GetSubItem(7)->SetValue(varInt);
+	varFloat.fltVal = frameInfo.m_CenterX;
+	propRoot->GetSubItem(8)->GetSubItem(0)->SetValue(varFloat);
+	varFloat.fltVal = frameInfo.m_CenterY;
+	propRoot->GetSubItem(8)->GetSubItem(1)->SetValue(varFloat);
+	varBool.boolVal = frameInfo.m_Consume.m_JumpRule;
+	propRoot->GetSubItem(9)->GetSubItem(0)->SetValue(varBool);
+	varInt.intVal = frameInfo.m_Consume.m_HP;
+	propRoot->GetSubItem(9)->GetSubItem(1)->SetValue(varInt);
+	varInt.intVal = frameInfo.m_Consume.m_MP;
+	propRoot->GetSubItem(9)->GetSubItem(2)->SetValue(varInt);
+	propRoot->GetSubItem(9)->GetSubItem(3)->SetValue(CString(frameInfo.m_Consume.m_NotEnoughFrameName.c_str()));
+	varInt.intVal = frameInfo.m_Consume.m_NotEnoughFrame;
+	propRoot->GetSubItem(9)->GetSubItem(4)->SetValue(varInt);
+	varFloat.fltVal = frameInfo.m_DVX;
+	propRoot->GetSubItem(10)->GetSubItem(0)->SetValue(varFloat);
+	varFloat.fltVal = frameInfo.m_DVY;
+	propRoot->GetSubItem(10)->GetSubItem(1)->SetValue(varFloat);
+	varFloat.fltVal = frameInfo.m_DVZ;
+	propRoot->GetSubItem(10)->GetSubItem(2)->SetValue(varFloat);
+
+	
 }
 
 void CPropertiesWnd::RefreshPropList_Body()
@@ -758,3 +801,58 @@ void CPropertiesWnd::RefreshPropList_BloodInfo()
 {
 
 }
+
+const CString CPropertiesWnd::actionMap[MAX_ACTIONS] = {
+	CString("STANDING"),
+	CString("WALKING"),
+	CString("RUNNING"),
+	CString("STOP_RUNNING"),
+	CString("HEAVY_WEAPON_WALK"),
+	CString("HEAVY_WEAPON_RUN"),
+	CString("LIGHT_WEAPON_STAND_ATTACK"),
+	CString("LIGHT_WEAPON_JUMP_ATTACK"),
+	CString("LIGHT_WEAPON_RUN_ATTACK"),
+	CString("LIGHT_WEAPON_DASH_ATTACK"),
+	CString("LIGHT_WEAPON_THROW"),
+	CString("HEAVY_WEAPON_THROW"),
+	CString("LIGHT_WEAPON_JUMP_THROW"),
+	CString("HEAVY_WEAPON_JUMP_THROW"),
+	CString("DRINK"),
+	CString("BEFORE_ATTACK"),
+	CString("ATTACKING"),
+	CString("AFTER_ATTACK"),
+	CString("BEFORE_SUPER_ATTACK"),
+	CString("SUPER_ATTACKING"),
+	CString("AFTER_SUPER_ATTACK"),
+	CString("BEFORE_JUMP_ATTACK"),
+	CString("JUMP_ATTACKING"),
+	CString("AFTER_JUMP_ATTACK"),
+	CString("BEFORE_RUN_ATTACK"),
+	CString("RUN_ATTACKING"),
+	CString("AFTER_RUN_ATTACK"),
+	CString("BEFORE_DASH_ATTACK"),
+	CString("DASH_ATTACKING"),
+	CString("AFTER_DASH_ATTACK"),
+	CString("FLIP"),
+	CString("ROLLING"),
+	CString("DEFEND"),
+	CString("DEFEND_PUNCH"),
+	CString("DEFEND_KICK"),
+	CString("CATCHING"),
+	CString("CAUGHT"),
+	CString("FALLING"),
+	CString("JUMP"),
+	CString("DASH"),
+	CString("CROUCH"),
+	CString("INJURED"),
+	CString("FORWARD_LYING"),
+	CString("BACKWARD_LYING"),
+	CString("IN_THE_AIR"),
+	CString("BEFORE_SKILL"),
+	CString("AFTER_SKILL"),
+	CString("AIR_SKILL"),
+	CString("X_AXIS_SKILL"),
+	CString("Z_AXIS_SKILL"),
+	CString("GROUND_SKILL"),
+	CString("UNIQUE_SKILL"),
+};

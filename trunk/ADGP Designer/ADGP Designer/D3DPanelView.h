@@ -73,3 +73,5 @@ public:
 	afx_msg void OnMButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseLeave();
 };
+
+
