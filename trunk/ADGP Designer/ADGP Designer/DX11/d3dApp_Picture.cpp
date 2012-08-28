@@ -128,6 +128,7 @@ void D3DApp_Picture::initDirect3D()
 		&m_DeviceContext) );
 
 	m_TextureManager = new TextureManager(m_d3dDevice);
+	g_TextureMG_Picture = m_TextureManager;
 	OnResize(mClientWidth, mClientHeight);
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -213,7 +214,7 @@ void D3DApp_Picture::DrawScene()
 		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 		m_DeviceContext->IASetInputLayout(m_PLayout_Pics);
 		m_DeviceContext->IASetVertexBuffers(0, 1, &m_Buffer_Pics, &stride2, &offset);
-		m_PMap_Pics->SetResource(GetTextureManager().GetTexture(m_Pic->m_TextureID)->texture);
+		m_PMap_Pics->SetResource(GetTextureManager().GetTexture(m_PicID)->texture);
 		m_BMap_Pics->SetResource(m_Templete->texture);
 		m_PTech_Pics->GetPassByIndex(0)->Apply(0, m_DeviceContext);
 		m_DeviceContext->Draw(1,0);
@@ -352,8 +353,8 @@ void D3DApp_Picture::buildPoint()
 		PictureVertex pv;
 		pv.position.x = g_Picture_OffsetX;
 		pv.position.y = -g_Picture_OffsetY;
-		pv.size.x = GetTextureManager().GetTexture(m_Pic->m_TextureID)->w * g_Picture_Scale;
-		pv.size.y = GetTextureManager().GetTexture(m_Pic->m_TextureID)->h * g_Picture_Scale;
+		pv.size.x = GetTextureManager().GetTexture(m_PicID)->w * g_Picture_Scale;
+		pv.size.y = GetTextureManager().GetTexture(m_PicID)->h * g_Picture_Scale;
 		pv.picpos.x = 1;
 		pv.picpos.y = 1;
 		pv.picpos.z = 1;
@@ -417,7 +418,9 @@ void D3DApp_Picture::LoadBlend()
 
 void D3DApp_Picture::SetPic( PictureData *pic)
 {
+	m_PicID = m_TextureManager->AddTexture(pic->m_Path);
 	m_Pic = pic;
+	
 }
 
 void D3DApp_Picture::Cut( int r,int c )
@@ -425,8 +428,8 @@ void D3DApp_Picture::Cut( int r,int c )
 	if(m_Pic==NULL)return;
 	m_Cut.Clear();
 
-	float picW = GetTextureManager().GetTexture(m_Pic->m_TextureID)->w;
-	float picH = GetTextureManager().GetTexture(m_Pic->m_TextureID)->h;
+	float picW = GetTextureManager().GetTexture(m_PicID)->w;
+	float picH = GetTextureManager().GetTexture(m_PicID)->h;
 	float rW = picW / r;
 	float rH = picH / c;
 	for (int i=0; i <= r; i++)

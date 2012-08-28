@@ -21,6 +21,7 @@ public:
 private:
 	TextureManager* m_TextureManager;
 	PictureData  *m_Pic;
+	int	      m_PicID;
 	Texture*      m_Templete;
 public:
 	D3DApp_Picture();

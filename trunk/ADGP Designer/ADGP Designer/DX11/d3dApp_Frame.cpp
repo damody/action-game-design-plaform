@@ -130,6 +130,7 @@ void D3DApp_Frame::initDirect3D()
 		&m_DeviceContext) );
 
 	m_TextureManager = new TextureManager(m_d3dDevice);
+	g_TextureMG_Frame = m_TextureManager;
 	OnResize(mClientWidth, mClientHeight);
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;

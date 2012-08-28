@@ -519,16 +519,21 @@ void CMainFrame::OnButtonAddnewarea()
 void CMainFrame::OpenDesignerView( int index )
 {
 	DesignerViewMap::iterator it = m_DesignerViewMap.find(index);
-	if (it!=m_DesignerViewMap.end())
+	if (it==m_DesignerViewMap.end())
 	{
-			theApp.OnFileNew();
-			m_DesignerViewMap[index]=(CADGPDesignerView*)this->GetActiveView();
-			char buff[100];
-			sprintf(buff, "TEST");
-			CString str(buff);
+
+		
+		CADGPDesignerView *pView = (CADGPDesignerView *) this->GetActiveFrame()->GetActiveView();
+
+		theApp.OnFileNew();
+		this->GetActiveView();
+		m_DesignerViewMap[index]=pView;
+		char buff[100];
+		sprintf(buff, "TEST");
+		CString str(buff);
 			//((CADGPDesignerView*)this->GetActiveView())->GetWindowText(str);
 			//AfxMessageBox(str);
-			if(g_HeroInfo!=NULL)m_DesignerViewMap[index]->Refresh(&g_HeroInfo->m_PictureDatas[index]);
+		if(g_HeroInfo!=NULL)(pView)->Refresh(&g_HeroInfo->m_PictureDatas[index]);
 	}
 }
 
@@ -539,7 +544,14 @@ void CMainFrame::test()
 	{
 		g_HeroInfo = new HeroInfo();
 		g_HeroInfo->LoadHeroData(davis);
-		OpenDesignerView(0);
+		for(unsigned int i=0;i < g_HeroInfo->m_PictureDatas.size();i++)
+		{
+			OpenDesignerView(i);
+		}
+// 		for(unsigned int i=0;i < g_HeroInfo->m_PictureDatas.size();i++)
+// 		{
+// 			m_DesignerViewMap[i]->Refresh(&g_HeroInfo->m_PictureDatas[i]);
+// 		}
 	}else{
 		char buff[100];
 		sprintf(buff, "LoadLua Failed");

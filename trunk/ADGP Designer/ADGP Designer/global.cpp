@@ -13,3 +13,16 @@ float g_Frame_OffsetY = 100.0f;
 float g_Picture_Scale = 1.0f;
 float g_Picture_OffsetX = 100.0f;
 float g_Picture_OffsetY = 100.0f;
+
+TextureManager* g_TextureMG_Picture;
+TextureManager* g_TextureMG_Frame;
+
+int LoadTexture( std::string path )
+{
+	int id=-1;
+	if (g_TextureMG_Frame!=NULL)
+	{
+		id = g_TextureMG_Frame->AddTexture(path);
+	}
+	return id;
+}
