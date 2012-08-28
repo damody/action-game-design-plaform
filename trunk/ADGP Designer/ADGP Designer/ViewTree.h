@@ -36,4 +36,6 @@ protected:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 };

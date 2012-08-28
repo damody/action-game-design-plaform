@@ -548,6 +548,7 @@ void CMainFrame::test()
 		g_FrameName = "standing";
 		g_FrameIndex = 0;
 		m_D3DFrameView.Refresh();
+		m_wndClassView.Refresh();
 	}else{
 		char buff[100];
 		sprintf(buff, "LoadLua Failed");

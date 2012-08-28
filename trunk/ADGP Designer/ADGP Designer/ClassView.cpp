@@ -15,6 +15,7 @@
 #include "ADGP Designer.h"
 #include <comutil.h>
 #include <game/HeroAction.h>
+#include "ConvStr.h"
 
 CClassView* CClassView::instance = NULL;
 
@@ -615,12 +616,18 @@ void CClassView::OnFrameAdd()
 
 		m_propMap[hClass] = fi;
 
-		m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
+		HTREEITEM hClass2 = m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("0"), 3, 3, hClass2);
+		hClass2 = m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("0"), 3, 3, hClass2);
+		hClass2 = m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("0"), 3, 3, hClass2);
+		hClass2 = m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("0"), 3, 3, hClass2);
+		hClass2 = m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("0"), 3, 3, hClass2);
+		hClass2 = m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("0"), 3, 3, hClass2);
 
 		m_wndClassView.Expand(item, TVE_EXPAND);
 		m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
@@ -708,14 +715,14 @@ void CClassView::OnChangeVisualStyle()
 
 void CClassView::OnSelectItem(HTREEITEM item)
 {
-	CMFCPropertyGridCtrl* ctrl = CPropertiesWnd::GetInstance()->GetPropList();
+	/*CMFCPropertyGridCtrl* ctrl = CPropertiesWnd::GetInstance()->GetPropList();
 	ctrl->RemoveAll();
 	ctrl->RedrawWindow();
 	((CMainFrame*)(this->GetParentFrame()))->m_wndProperties.RedrawWindow();
 
 	if(m_wndClassView.GetRootItem() == item)
 	{
-		/*ctrl->AddProperty(CPropertiesWnd::GetInstance()->GetDefaultPropList());
+		ctrl->AddProperty(CPropertiesWnd::GetInstance()->GetDefaultPropList());
 
 		CMFCPropertyGridProperty* propRoot = ctrl->GetProperty(0);
 
@@ -765,7 +772,7 @@ void CClassView::OnSelectItem(HTREEITEM item)
 		varFloat.fltVal = m_propMap[item].m_DVY;
 		propRoot->GetSubItem(11)->GetSubItem(1)->SetValue(varFloat);
 		varFloat.fltVal = m_propMap[item].m_DVZ;
-		propRoot->GetSubItem(11)->GetSubItem(2)->SetValue(varFloat);*/
+		propRoot->GetSubItem(11)->GetSubItem(2)->SetValue(varFloat);
 	}
 	else if(IsNumber(m_wndClassView.GetItemText(item)))
 	{
@@ -860,10 +867,70 @@ void CClassView::OnSelectItem(HTREEITEM item)
 	}
 
 	CPropertiesWnd::GetInstance()->m_lastSelectedItem = item;
-	m_wndClassView.m_lastSelectedItem = item;
+	m_wndClassView.m_lastSelectedItem = item;*/
+	if(m_wndClassView.GetRootItem() == item){
 
-	m_wndClassView.SelectItem(item);
-	m_wndClassView.SetFocus();
+		m_wndClassView.SelectItem(item);
+		m_wndClassView.SetFocus();
+	}else if(IsNumber(m_wndClassView.GetItemText(item))){
+
+		HTREEITEM pItem = m_wndClassView.GetParentItem(item);
+		if (pItem != m_wndClassView.GetRootItem())
+		{
+			CString text = m_wndClassView.GetItemText(pItem);
+
+			if(!text.Compare(CString("Bodys"))){
+				HTREEITEM FrameIndex = m_wndClassView.GetParentItem(pItem);
+				HTREEITEM Frame	     = m_wndClassView.GetParentItem(FrameIndex);
+				char buff[1000];
+				ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
+				std::string FrameName(buff);
+
+				if(g_FrameName == FrameName && g_FrameIndex == _ttoi(m_wndClassView.GetItemText(FrameIndex))){
+					g_FrameName = FrameName;
+					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
+				}
+
+				((CMainFrame*)(this->GetParentFrame()))->EditBody(_ttoi(m_wndClassView.GetItemText(item)));
+
+			}else if(!text.Compare(CString("Attacks"))){
+				HTREEITEM FrameIndex = m_wndClassView.GetParentItem(pItem);
+				HTREEITEM Frame	     = m_wndClassView.GetParentItem(FrameIndex);
+				char buff[1000];
+				ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
+				std::string FrameName(buff);
+
+				if(g_FrameName == FrameName && g_FrameIndex == _ttoi(m_wndClassView.GetItemText(FrameIndex))){
+					g_FrameName = FrameName;
+					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
+				}
+
+				((CMainFrame*)(this->GetParentFrame()))->EditAttack(_ttoi(m_wndClassView.GetItemText(item)));
+
+			}else if(!text.Compare(CString("HitDatas"))){
+
+			}else if(!text.Compare(CString("Catchs"))){
+
+			}else if(!text.Compare(CString("BloodInfos"))){
+
+			}else if(!text.Compare(CString("Creations"))){
+
+			}else{
+				char buff[1000];
+				ConvStr::WcharToChar(text.GetBuffer(0),buff);
+				std::string FrameName(buff);
+				if(g_ActiveFramesMap->find(FrameName) != g_ActiveFramesMap->end()){
+					g_FrameName = FrameName;
+					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(item));
+					((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
+				}
+			}
+
+			m_wndClassView.SelectItem(item);
+			m_wndClassView.SetFocus();
+		}
+	}
+	
 }
 
 BOOL CClassView::IsAnAnimation(CTreeCtrl* treeCtrl, HTREEITEM item)
@@ -1084,6 +1151,79 @@ BOOL CClassView::CanAutoHide() const
 {
 	return FALSE;
 }
+
+void CClassView::Refresh()
+{
+	if(g_HeroInfo != NULL){
+		m_wndClassView.DeleteItem(m_wndClassView.GetRootItem());
+
+		char buff[100];
+		sprintf(buff, "%s",g_HeroInfo->m_Name.c_str());
+		CString str(buff);
+		HTREEITEM hRoot = m_wndClassView.InsertItem(str, 0, 0);
+		m_wndClassView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+
+		for (FramesMap::iterator it_FrameMap=g_HeroInfo->m_FramesMap.begin(); it_FrameMap != g_HeroInfo->m_FramesMap.end() ; it_FrameMap++)
+		{
+			sprintf(buff, "%s", it_FrameMap->first.c_str());
+			str = CString(buff);
+			HTREEITEM hChild = m_wndClassView.InsertItem(str,1,1,hRoot);
+
+			for (unsigned int i = 0; i < it_FrameMap->second.size() ; i++)
+			{
+				sprintf(buff,"%d", i);
+				str = CString(buff);
+				HTREEITEM hChild2 = m_wndClassView.InsertItem(str,3,3,hChild);
+
+				HTREEITEM hChild_Bodys		= m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hChild2);
+				HTREEITEM hChild_Attacks	= m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hChild2);
+				HTREEITEM hChild_HitDatas	= m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hChild2);
+				HTREEITEM hChild_Catchs		= m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hChild2);
+				HTREEITEM hChild_BloodInfos	= m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hChild2);
+				HTREEITEM hChild_Creations	= m_wndClassView.InsertItem(_T("Creations"), 3, 3, hChild2);
+
+				for (unsigned int j=0; j<it_FrameMap->second[i].m_Bodys.size() ; j++)
+				{
+					sprintf(buff,"%d", i);
+					str = CString(buff);
+					m_wndClassView.InsertItem(str,3,3,hChild_Bodys);
+				}
+				for (unsigned int j=0; j<it_FrameMap->second[i].m_Attacks.size() ; j++)
+				{
+					sprintf(buff,"%d", i);
+					str = CString(buff);
+					m_wndClassView.InsertItem(str,3,3,hChild_Attacks);
+				}
+				for (unsigned int j=0; j<it_FrameMap->second[i].m_HitDatas.size() ; j++)
+				{
+					sprintf(buff,"%d", i);
+					str = CString(buff);
+					m_wndClassView.InsertItem(str,3,3,hChild_HitDatas);
+				}
+				for (unsigned int j=0; j<it_FrameMap->second[i].m_Catchs.size() ; j++)
+				{
+					sprintf(buff,"%d", i);
+					str = CString(buff);
+					m_wndClassView.InsertItem(str,3,3,hChild_Catchs);
+				}
+				for (unsigned int j=0; j<it_FrameMap->second[i].m_BloodInfos.size() ; j++)
+				{
+					sprintf(buff,"%d", i);
+					str = CString(buff);
+					m_wndClassView.InsertItem(str,3,3,hChild_BloodInfos);
+				}
+				for (unsigned int j=0; j<it_FrameMap->second[i].m_Creations.size() ; j++)
+				{
+					sprintf(buff,"%d", i);
+					str = CString(buff);
+					m_wndClassView.InsertItem(str,3,3,hChild_Creations);
+				}
+			}
+		}
+		
+	}
+}
+
 
 
 /*

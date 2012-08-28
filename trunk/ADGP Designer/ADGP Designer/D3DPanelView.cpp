@@ -485,7 +485,7 @@ void CD3DPanelView::OnMouseLeave()
 
 BOOL CD3DPanelView::CanFloat() const
 {
-	return TRUE;
+	return FALSE;
 }
 
 BOOL CD3DPanelView::CanBeClosed() const
