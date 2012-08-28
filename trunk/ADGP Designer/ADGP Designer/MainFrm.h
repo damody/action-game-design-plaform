@@ -60,14 +60,17 @@ public:
 	void RefreshFrameEdit()
 	{
 		m_D3DFrameView.Refresh();
+		m_wndProperties.RefreshPropList_Frame();
 	}
 	void EditBody(int id)
 	{
 		m_D3DFrameView.EditBody(id);
+		m_wndProperties.RefreshPropList_Body();
 	}
 	void EditAttack(int id)
 	{
 		m_D3DFrameView.EditAttack(id);
+		m_wndProperties.RefreshPropList_Attack();
 	}
 	void EditAttack()
 	{

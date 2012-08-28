@@ -15,6 +15,7 @@
 #include "Resource.h"
 #include "MainFrm.h"
 #include "ADGP Designer.h"
+#include "global.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -339,7 +340,7 @@ void CPropertiesWnd::InitPropList_Frame()
 
 	CMFCPropertyGridProperty* pProp;
 	pProp = new CMFCPropertyGridProperty(_T("Frame Name"), _T("standing"), _T("表示這個 Frame 的名字"));
-	AddNormalActionDcase(pProp);
+	pProp->AllowEdit(FALSE);
 	pGroup1->AddSubItem(pProp);
 	
 	pProp = new CMFCPropertyGridProperty(_T("Frame Index"), varInt, _T("表示在這個 Frame 的哪一格"));
@@ -534,6 +535,15 @@ void CPropertiesWnd::AddNormalActionUcase( CMFCPropertyGridProperty* pProp )
 
 void CPropertiesWnd::AddNormalActionDcase( CMFCPropertyGridProperty* pProp )
 {
+/*
+	if (g_ActiveFramesMap != NULL)
+	{
+		for(FramesMap::iterator it=)
+		char buff[100];
+		sprintf(buff, "%s",g_HeroInfo->m_Name.c_str());
+		CString str(buff);
+	}
+*/
 	pProp->AddOption(_T("standing"));
 	pProp->AddOption(_T("walking"));
 	pProp->AddOption(_T("running"));
@@ -717,4 +727,34 @@ void CPropertiesWnd::SetVSDotNetLook( BOOL bSet )
 {
 	m_wndPropList.SetVSDotNetLook(bSet);
 	m_wndPropList.SetGroupNameFullWidth(bSet);
+}
+
+void CPropertiesWnd::RefreshPropList()
+{
+	InitPropList();
+}
+
+void CPropertiesWnd::RefreshPropList_Frame()
+{
+	InitPropList_Frame();
+}
+
+void CPropertiesWnd::RefreshPropList_Body()
+{
+	InitPropList_Body();
+}
+
+void CPropertiesWnd::RefreshPropList_Attack()
+{
+
+}
+
+void CPropertiesWnd::RefreshPropList_CatchInfo()
+{
+
+}
+
+void CPropertiesWnd::RefreshPropList_BloodInfo()
+{
+
 }

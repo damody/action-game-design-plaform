@@ -36,6 +36,7 @@ public:
 	CClassView();
 	virtual ~CClassView();
 
+	void Refresh();
 	void AdjustLayout();
 	void OnChangeVisualStyle();
 	void OnSelectItem(HTREEITEM item);

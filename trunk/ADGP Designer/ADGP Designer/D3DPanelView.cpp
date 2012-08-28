@@ -397,7 +397,7 @@ void CD3DPanelView::OnMouseMove(UINT nFlags, CPoint point)
 
 		if (m_ShiftPress && m_CtrlPress && m_LMouseHold)
 		{
-			m_D3DApp.m_Body[m_BodyID].Transale(point.x-m_RecordX, point.y-m_RecordY);
+			m_D3DApp.m_Body[m_BodyID].Transale(dx,dy);
 			m_D3DApp.buildPoint();
 			UpdateBody();
 			m_D3DApp.DrawScene();
@@ -485,7 +485,7 @@ void CD3DPanelView::OnMouseLeave()
 
 BOOL CD3DPanelView::CanFloat() const
 {
-	return TRUE;
+	return FALSE;
 }
 
 BOOL CD3DPanelView::CanBeClosed() const
