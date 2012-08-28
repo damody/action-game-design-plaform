@@ -62,7 +62,7 @@ END_MESSAGE_MAP()
 
 // CMainFrame 建構/解構
 
-CMainFrame::CMainFrame():m_DesignerViewMap()
+CMainFrame::CMainFrame():m_DesignerViews()
 {
 	// TODO: 在此加入成員初始化程式碼
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_OFF_2007_BLACK);
@@ -74,7 +74,7 @@ CMainFrame::~CMainFrame()
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	m_DesignerViewMap.clear();
+	m_DesignerViews.clear();
 	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
@@ -518,23 +518,19 @@ void CMainFrame::OnButtonAddnewarea()
 
 void CMainFrame::OpenDesignerView( int index )
 {
-	DesignerViewMap::iterator it = m_DesignerViewMap.find(index);
-	if (it==m_DesignerViewMap.end())
-	{
+	theApp.OnFileNew();
+	m_DesignerViews.push_back(g_NewView);
 
-		
-		CADGPDesignerView *pView = (CADGPDesignerView *) this->GetActiveFrame()->GetActiveView();
+	char buff[100];
+	sprintf(buff, "Picture %d",index);
+	CString str(buff);
+	g_NewView->GetWindowText(str);
 
-		theApp.OnFileNew();
-		this->GetActiveView();
-		m_DesignerViewMap[index]=pView;
-		char buff[100];
-		sprintf(buff, "TEST");
-		CString str(buff);
-			//((CADGPDesignerView*)this->GetActiveView())->GetWindowText(str);
-			//AfxMessageBox(str);
-		if(g_HeroInfo!=NULL)(pView)->Refresh(&g_HeroInfo->m_PictureDatas[index]);
+	if(g_HeroInfo!=NULL){
+		(g_NewView)->Refresh(&g_HeroInfo->m_PictureDatas[index]);
+		(g_NewView)->m_PictureID = index;
 	}
+	
 }
 
 void CMainFrame::test()
@@ -548,10 +544,10 @@ void CMainFrame::test()
 		{
 			OpenDesignerView(i);
 		}
-// 		for(unsigned int i=0;i < g_HeroInfo->m_PictureDatas.size();i++)
-// 		{
-// 			m_DesignerViewMap[i]->Refresh(&g_HeroInfo->m_PictureDatas[i]);
-// 		}
+		g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
+		g_FrameName = "standing";
+		g_FrameIndex = 0;
+		m_D3DFrameView.Refresh();
 	}else{
 		char buff[100];
 		sprintf(buff, "LoadLua Failed");
@@ -559,3 +555,5 @@ void CMainFrame::test()
 		AfxMessageBox(str);
 	}	
 }
+
+CADGPDesignerView* g_NewView=NULL;

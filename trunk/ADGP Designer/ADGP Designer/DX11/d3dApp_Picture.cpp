@@ -5,6 +5,10 @@
 
 D3DApp_Picture::D3DApp_Picture()
 {
+	m_Picture_Scale = 1.0f;
+	m_Picture_OffsetX = 100.0f;
+	m_Picture_OffsetY = 100.0f;
+
 	m_d3dDevice = NULL;
 	m_SwapChain = NULL;
 	m_DepthStencilBuffer = NULL;
@@ -128,7 +132,6 @@ void D3DApp_Picture::initDirect3D()
 		&m_DeviceContext) );
 
 	m_TextureManager = new TextureManager(m_d3dDevice);
-	g_TextureMG_Picture = m_TextureManager;
 	OnResize(mClientWidth, mClientHeight);
 
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -337,7 +340,7 @@ void D3DApp_Picture::buildPoint()
 	//Line
 	ReleaseCOM(m_Buffer_Lines);
 	m_LineVertices.clear();
-	LineVertices lvs = m_Cut.BuildLineP2P(g_Picture_Scale,g_Picture_OffsetX,g_Picture_OffsetY);
+	LineVertices lvs = m_Cut.BuildLineP2P(m_Picture_Scale,m_Picture_OffsetX,m_Picture_OffsetY);
 	m_LineVertices.assign(lvs.begin(),lvs.end());
 	if (!m_LineVertices.empty())
 	{
@@ -351,10 +354,10 @@ void D3DApp_Picture::buildPoint()
 	if (m_Pic != NULL)
 	{
 		PictureVertex pv;
-		pv.position.x = g_Picture_OffsetX;
-		pv.position.y = -g_Picture_OffsetY;
-		pv.size.x = GetTextureManager().GetTexture(m_PicID)->w * g_Picture_Scale;
-		pv.size.y = GetTextureManager().GetTexture(m_PicID)->h * g_Picture_Scale;
+		pv.position.x = m_Picture_OffsetX;
+		pv.position.y = -m_Picture_OffsetY;
+		pv.size.x = GetTextureManager().GetTexture(m_PicID)->w * m_Picture_Scale;
+		pv.size.y = GetTextureManager().GetTexture(m_PicID)->h * m_Picture_Scale;
 		pv.picpos.x = 1;
 		pv.picpos.y = 1;
 		pv.picpos.z = 1;

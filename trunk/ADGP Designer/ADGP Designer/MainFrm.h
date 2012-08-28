@@ -23,8 +23,10 @@
 #include "ADGP DesignerView.h"
 
 
-#include <map>
-typedef std::map<int,CADGPDesignerView*> DesignerViewMap;
+#include <vector>
+typedef std::vector<CADGPDesignerView*> DesignerViews;
+
+extern CADGPDesignerView* g_NewView;
 
 class COutlookBar : public CMFCOutlookBar
 {
@@ -102,7 +104,7 @@ public:  // 控制列內嵌的成員
 	CMFCShellTreeCtrl m_wndTree;
 	CMFCCaptionBar    m_wndCaptionBar;
 	CD3DPanelView	  m_D3DFrameView;
-	DesignerViewMap	  m_DesignerViewMap;
+	DesignerViews	  m_DesignerViews;
 // 產生的訊息對應函式
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

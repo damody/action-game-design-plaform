@@ -23,7 +23,6 @@
 #include "ADGP DesignerDoc.h"
 #include "ADGP DesignerView.h"
 #include "MainFrm.h"
-#include "global.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -53,6 +52,8 @@ BEGIN_MESSAGE_MAP(CADGPDesignerView, CView)
 	ON_WM_MBUTTONDOWN()
 	ON_WM_MBUTTONUP()
 	ON_WM_MOUSELEAVE()
+//	ON_WM_CREATE()
+ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 // CADGPDesignerView 建構/解構
@@ -192,8 +193,8 @@ void CADGPDesignerView::OnSize(UINT nType, int cx, int cy)
 void CADGPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	point.x = 1+(point.x-g_Picture_OffsetX)/g_Picture_Scale / (int)m_CutW; 
-	point.y = 1+(point.y-g_Picture_OffsetY)/g_Picture_Scale / (int)m_CutH;
+	point.x = 1+(point.x-m_D3DApp.m_Picture_OffsetX)/m_D3DApp.m_Picture_Scale / (int)m_CutW; 
+	point.y = 1+(point.y-m_D3DApp.m_Picture_OffsetY)/m_D3DApp.m_Picture_Scale / (int)m_CutH;
 	if (point.x <=0 || point.x >m_CutR || point.y <=0 || point.y >m_CutC)
 	{
 		return;
@@ -223,14 +224,14 @@ void CADGPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
 	m_RecordY = point.y;
 	if(m_MMouseHold)
 	{
-		g_Picture_OffsetX += dx;
-		g_Picture_OffsetY += dy;
+		m_D3DApp.m_Picture_OffsetX += dx;
+		m_D3DApp.m_Picture_OffsetY += dy;
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
 
-	point.x = 1+(point.x-g_Picture_OffsetX)/g_Picture_Scale / (int)m_CutW; 
-	point.y = 1+(point.y-g_Picture_OffsetY)/g_Picture_Scale / (int)m_CutH;
+	point.x = 1+(point.x-m_D3DApp.m_Picture_OffsetX)/m_D3DApp.m_Picture_Scale / (int)m_CutW; 
+	point.y = 1+(point.y-m_D3DApp.m_Picture_OffsetY)/m_D3DApp.m_Picture_Scale / (int)m_CutH;
 
 	if (point.x <=0 || point.x >m_CutR || point.y <=0 || point.y >m_CutC)
 	{
@@ -253,21 +254,21 @@ BOOL CADGPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	{
 		if (zDelta > 0)
 		{
-			if (g_Picture_Scale < 10)
+			if (m_D3DApp.m_Picture_Scale < 10)
 			{
-				g_Picture_Scale += 0.1f;
+				m_D3DApp.m_Picture_Scale += 0.1f;
 			}
 		}else{
-			if (g_Picture_Scale > 0.1)
+			if (m_D3DApp.m_Picture_Scale > 0.1)
 			{
-				g_Picture_Scale -= 0.1f;
+				m_D3DApp.m_Picture_Scale -= 0.1f;
 			}
 		}
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
 	char buff[100];
-	sprintf(buff, "   顯示比例 %.1f%%", g_Picture_Scale * 100);
+	sprintf(buff, "   顯示比例 %.1f%%", m_D3DApp.m_Picture_Scale * 100);
 	CString str(buff);
 	((CMainFrame*)(this->GetParent()->GetParentFrame()))->SetStatus(str);
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
@@ -380,8 +381,8 @@ void CADGPDesignerView::Refresh(PictureData* pic)
 	m_D3DApp.DrawScene();
 	m_CutR = m_Pic->m_Row;
 	m_CutC = m_Pic->m_Column;
-	m_CutW = m_D3DApp.GetTextureManager().GetTexture(m_Pic->m_TextureID)->w / m_Pic->m_Row;
-	m_CutH = m_D3DApp.GetTextureManager().GetTexture(m_Pic->m_TextureID)->h / m_Pic->m_Column;
+	m_CutW = m_D3DApp.GetTextureManager().GetTexture(m_D3DApp.m_PicID)->w / m_Pic->m_Row;
+	m_CutH = m_D3DApp.GetTextureManager().GetTexture(m_D3DApp.m_PicID)->h / m_Pic->m_Column;
 }
 
 void CADGPDesignerView::Update( int x,int y )
@@ -415,3 +416,14 @@ void CADGPDesignerView::Update( int x,int y )
 	}
 }
 
+
+int CADGPDesignerView::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	g_NewView = this;
+	// TODO:  在此加入特別建立的程式碼
+
+	return 0;
+}

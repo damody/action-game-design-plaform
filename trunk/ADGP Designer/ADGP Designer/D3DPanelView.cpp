@@ -592,16 +592,19 @@ void CD3DPanelView::Refresh()
 	{
 		if (g_FrameIndex > -1 && g_FrameIndex < it_FrameInfos->second.size())
 		{
+			m_FrameInfo = &it_FrameInfos->second[g_FrameIndex];
+
 			m_D3DApp.SetPic(&g_HeroInfo->m_PictureDatas[m_FrameInfo->m_PictureID],m_FrameInfo->m_PictureX,m_FrameInfo->m_PictureY);
 			m_D3DApp.SetCenter(m_FrameInfo->m_CenterX,m_FrameInfo->m_CenterY);
 
-			m_FrameInfo = &it_FrameInfos->second[g_FrameIndex];
+			
 			for (Bodys::iterator it_body=m_FrameInfo->m_Bodys.begin(); it_body != m_FrameInfo->m_Bodys.end();it_body++)
 			{
 				PointManager pm;
 				for (Vec2s::iterator it_v = it_body->m_Area.Points().begin(); it_v !=it_body->m_Area.Points().end(); it_v++)
 				{
-					pm.Add(it_v->x,it_v->y,0,0,1);
+
+					pm.Add(it_v->x,-it_v->y,0,0,1);
 				}
 				pm.SetLineColor(0,0,1);
 				m_D3DApp.m_Body.push_back(pm);

@@ -13,15 +13,19 @@
 class D3DApp_Picture
 {
 public:
+	float m_Picture_Scale;
+	float m_Picture_OffsetX;
+	float m_Picture_OffsetY;
+
 	PointManager m_Cut;
 	TextureManager& GetTextureManager()
 	{ return *m_TextureManager;}
-	
+	int  m_PicID;
 	void Cut(int r,int c);
 private:
 	TextureManager* m_TextureManager;
 	PictureData  *m_Pic;
-	int	      m_PicID;
+	
 	Texture*      m_Templete;
 public:
 	D3DApp_Picture();

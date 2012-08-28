@@ -17,7 +17,6 @@ int TextureManager::AddTexture( std::string path)
 		{
 			return index;
 		}
-		
 		m_Textures.push_back(Texture_Sptr(new Texture(path, m_d3dDevice)));
 		m_List.push_back(path);
 		m_index++;

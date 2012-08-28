@@ -143,16 +143,16 @@ BOOL CADGPDesignerApp::InitInstance()
 	// 這會立即發生在設定 m_pMainWnd 之後
 
 
-	// 剖析標準 Shell 命令、DDE、檔案開啟舊檔的命令列
-	CCommandLineInfo cmdInfo;
-	ParseCommandLine(cmdInfo);
-
-
-
-	// 在命令列中指定的分派命令。如果已使用 
-	// /RegServer、/Register、/Unregserver 或 /Unregister 啟動應用程式，將傳回 FALSE。
-	if (!ProcessShellCommand(cmdInfo))
-		return FALSE;
+// 	// 剖析標準 Shell 命令、DDE、檔案開啟舊檔的命令列
+// 	CCommandLineInfo cmdInfo;
+// 	ParseCommandLine(cmdInfo);
+// 
+// 
+// 
+// 	// 在命令列中指定的分派命令。如果已使用 
+// 	// /RegServer、/Register、/Unregserver 或 /Unregister 啟動應用程式，將傳回 FALSE。
+// 	if (!ProcessShellCommand(cmdInfo))
+// 		return FALSE;
 
 	// 已經初始設定主視窗，所以顯示並更新該視窗
 	pMainFrame->ShowWindow(m_nCmdShow);

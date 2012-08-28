@@ -16,6 +16,7 @@
 #include "DX11\D3DApp_Picture.h"
 #include "game\PictureData.h"
 #include "ADGP DesignerDoc.h"
+#include "global.h"
 
 class CADGPDesignerView : public CView
 {
@@ -90,6 +91,8 @@ public:
 	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseLeave();
+//	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
 
 #ifndef _DEBUG  // ADGP DesignerView.cpp ¤¤ªº°»¿ùª©¥»
