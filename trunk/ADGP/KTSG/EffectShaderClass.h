@@ -8,14 +8,13 @@
 #include "DX11/TextureManager.h"
 #include "game/EffectData.h"
 
+struct Vertex
+{
+	Vector2 position;
+	D3DXVECTOR4 picpos; // x, y, w, h
+};typedef std::vector<Vertex> Vertices;
 class EffectShaderClass
 {
-public:
-	struct Vertex
-	{
-		Vector2 position;
-		D3DXVECTOR4 picpos; // x, y, w, h
-	};typedef std::vector<Vertex> Vertices;
 public:
 	EffectShaderClass();
 	bool Initialize(ID3D11Device*,ID3D11DeviceContext* , WCHAR*, HWND);
@@ -27,8 +26,9 @@ public:
 
 	virtual void Render() = 0;
 	virtual void Update(float dt) = 0;
+	virtual void SetShaderParameters(int i, ... ) = 0;
 protected:
-	virtual void GetVariableByName() = 0;
+	virtual void SetEffectVariableByName() = 0;
 	virtual void CreateTexture() = 0;
 protected:
 	ID3D11Device* m_device;
