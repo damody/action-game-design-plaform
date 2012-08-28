@@ -42,6 +42,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_CAPTION_BAR, &CMainFrame::OnUpdateViewCaptionBar)
 	ON_COMMAND(ID_TOOLS_OPTIONS, &CMainFrame::OnOptions)
 	ON_WM_SETTINGCHANGE()
+	ON_COMMAND(ID_FILE_NEW, &CMainFrame::test)
 	ON_COMMAND(ID_BUTTON_AreaAdd, &CMainFrame::OnButtonAreaAdd)
 	ON_COMMAND(ID_BUTTON_AreaMove, &CMainFrame::OnButtonAreaMove)
 	ON_COMMAND(ID_BUTTON_AreaScale, &CMainFrame::OnButtonAreaScale)
@@ -74,7 +75,6 @@ CMainFrame::~CMainFrame()
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	m_DesignerViewMap.clear();
-
 	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
@@ -519,7 +519,7 @@ void CMainFrame::OnButtonAddnewarea()
 void CMainFrame::OpenDesignerView( int index )
 {
 	DesignerViewMap::iterator it = m_DesignerViewMap.find(index);
-	if (it==m_DesignerViewMap.end())
+	if (it!=m_DesignerViewMap.end())
 	{
 			theApp.OnFileNew();
 			m_DesignerViewMap[index]=(CADGPDesignerView*)this->GetActiveView();
@@ -529,10 +529,7 @@ void CMainFrame::OpenDesignerView( int index )
 			//((CADGPDesignerView*)this->GetActiveView())->GetWindowText(str);
 			//AfxMessageBox(str);
 			if(g_HeroInfo!=NULL)m_DesignerViewMap[index]->Refresh(&g_HeroInfo->m_PictureDatas[index]);
-	
 	}
-
-	
 }
 
 void CMainFrame::test()
@@ -542,6 +539,7 @@ void CMainFrame::test()
 	{
 		g_HeroInfo = new HeroInfo();
 		g_HeroInfo->LoadHeroData(davis);
+		OpenDesignerView(0);
 	}else{
 		char buff[100];
 		sprintf(buff, "LoadLua Failed");
