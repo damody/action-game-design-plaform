@@ -28,6 +28,7 @@ public:
 	void EditBody(int id);
 	void EditAttack(int id);
 	void EditCenter();
+	void EditCenter(float x,float y);
 	void SetPic(PictureData  *pic,float x,float y);
 private:
 	void InitEdit();

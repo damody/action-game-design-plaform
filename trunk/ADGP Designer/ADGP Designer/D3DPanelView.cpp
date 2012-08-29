@@ -92,10 +92,10 @@ void CD3DPanelView::OnSize(UINT nType, int cx, int cy)
 
 const unsigned int KEY_SHIFT	= 16;
 const unsigned int KEY_CTRL	= 17;
-const unsigned int KEY_LEFT	= 37;
-const unsigned int KEY_UP	= 38;
-const unsigned int KEY_RIGHT	= 39;
-const unsigned int KEY_DOWN	= 40;
+const unsigned int KEY_LEFT	= 100;
+const unsigned int KEY_UP	= 104;
+const unsigned int KEY_RIGHT	= 102;
+const unsigned int KEY_DOWN	= 98;
 const unsigned int KEY_DELETE	= 46;
 const unsigned int KEY_A	= 65;
 const unsigned int KEY_C	= 67;
@@ -106,26 +106,35 @@ const unsigned int KEY_EQUAL	= 187;
 
 void CD3DPanelView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
+// 	char buff[100];
+// 	sprintf(buff, "%d", nChar);
+// 	CString str(buff);
+// 	AfxMessageBox(str);
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	if (nChar==KEY_CTRL)
+	if (m_CtrlPress && m_EnableCtrlCenter )
 	{
-		m_CtrlPress = true;
-	}
-
-	if (nChar==KEY_SHIFT)
-	{
-		m_ShiftPress = true;
-	}
-
-	if (nChar==KEY_A)
-	{
-		m_KeyAPress = true;
-	}
-
-	if(nChar==KEY_C)
-	{
-		StopEdit();
-		m_EnableCtrlCenter = true;
+		
+		switch(nChar)
+		{
+		case KEY_LEFT:
+			m_D3DApp.SetCenter(m_D3DApp.m_CenterX-1,m_D3DApp.m_CenterY);
+			UpdateCenter(m_D3DApp.m_CenterX,m_D3DApp.m_CenterY);
+			break;
+		case KEY_UP:
+			m_D3DApp.SetCenter(m_D3DApp.m_CenterX,m_D3DApp.m_CenterY-1);
+			UpdateCenter(m_D3DApp.m_CenterX,m_D3DApp.m_CenterY);
+			break;
+		case KEY_RIGHT:
+			m_D3DApp.SetCenter(m_D3DApp.m_CenterX+1,m_D3DApp.m_CenterY);
+			UpdateCenter(m_D3DApp.m_CenterX,m_D3DApp.m_CenterY);
+			break;
+		case KEY_DOWN:
+			m_D3DApp.SetCenter(m_D3DApp.m_CenterX,m_D3DApp.m_CenterY+1);
+			UpdateCenter(m_D3DApp.m_CenterX,m_D3DApp.m_CenterY);
+			break;
+		}
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
 	}
 
 	if(!m_D3DApp.m_Body.empty() && m_BodyID > -1){
@@ -247,6 +256,22 @@ void CD3DPanelView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 	}
 
+	if (nChar==KEY_CTRL)
+	{
+		m_CtrlPress = true;
+	}
+
+	if (nChar==KEY_SHIFT)
+	{
+		m_ShiftPress = true;
+	}
+
+	if (nChar==KEY_A)
+	{
+		m_KeyAPress = true;
+	}
+
+	
 	CDockablePane::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
@@ -588,6 +613,13 @@ void CD3DPanelView::EditCenter()
 	m_EnableCtrlCenter = true;
 }
 
+void CD3DPanelView::EditCenter( float x,float y )
+{
+	m_D3DApp.SetCenter(x,y);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
+}
+
 void CD3DPanelView::Init()
 {
 	StopEdit();
@@ -690,6 +722,7 @@ void CD3DPanelView::UpdateCenter( float x,float y )
 		m_FrameInfo->m_CenterY = y;
 	}
 	//Refresh
+	((CMainFrame*)(this->GetParentFrame()))->m_wndProperties.RefreshCenter();
 }
 
 void CD3DPanelView::UpdateBody()

@@ -15,7 +15,7 @@ class D3DApp_Frame
 public:
 	Bounds  m_Body;
 	Bounds  m_Attack;
-
+	float	m_CenterX,m_CenterY;
 	TextureManager& GetTextureManager()
 	{ return *m_TextureManager;}
 private:
@@ -25,7 +25,7 @@ private:
 	Texture*      m_Templete;
 
 	PointManager  m_Center;
-	float	      m_CenterX,m_CenterY;
+	
 public:
 	D3DApp_Frame();
 	~D3DApp_Frame();

@@ -899,6 +899,7 @@ void CClassView::OnSelectItem(HTREEITEM item)
 					g_FrameName = FrameName;
 					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(item));
 					((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
+					((CMainFrame*)(this->GetParentFrame()))->m_D3DFrameView.EditCenter();
 				}
 			}
 

@@ -142,6 +142,8 @@ public:
 	static void AddNormalActionUcase(CMFCPropertyGridProperty* pProp);
 	static void AddNormalActionDcase(CMFCPropertyGridProperty* pProp);
 	static void AddPointXY(CMFCPropertyGridProperty*& pProp);
+
+	void RefreshCenter();
 public:
 	void Update();
 	void UpdatePropList_Frame();
