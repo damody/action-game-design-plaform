@@ -927,6 +927,23 @@ void CPropertiesWnd::RefreshPropList_Frame()
 
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty(0);
 
+	if(g_ActiveFramesMap->find(g_FrameName)==g_ActiveFramesMap->end()){
+		char buff[100];
+		sprintf(buff, "Properties: Frame[%s] does not exist",g_FrameName.c_str());
+		CString str(buff);
+		AfxMessageBox(str);
+		((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+		return;
+
+	}else if(g_FrameIndex < -1 || g_FrameIndex > (*g_ActiveFramesMap)[g_FrameName].size()-1){
+		char buff[100];
+		sprintf(buff, "Properties: Frame[%s][%d] does not exist",g_FrameName.c_str(),g_FrameIndex);
+		CString str(buff);
+		AfxMessageBox(str);
+		((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+		return;
+	}
+
 	FrameInfo frameInfo = (*g_ActiveFramesMap)[g_FrameName][g_FrameIndex];
 
 	propRoot->GetSubItem(0)->SetValue(CString(g_FrameName.c_str()));

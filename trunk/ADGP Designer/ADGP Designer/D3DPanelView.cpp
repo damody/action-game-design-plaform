@@ -554,6 +554,12 @@ void CD3DPanelView::EditBody( int id )
 		m_D3DApp.m_Body[id].ChangeColor(0,0,0);
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
+	}else{
+		char buff[100];
+		sprintf(buff, "Frame: Bodys[%d] does not exist",id);
+		CString str(buff);
+		AfxMessageBox(str);
+		((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
 	}
 }
 
@@ -567,6 +573,12 @@ void CD3DPanelView::EditAttack( int id )
 		m_D3DApp.m_Attack[id].ChangeColor(0,0,0);
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
+	}else{
+		char buff[100];
+		sprintf(buff, "Frame: Attacks[%d] does not exist",id);
+		CString str(buff);
+		AfxMessageBox(str);
+		((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
 	}
 }
 
