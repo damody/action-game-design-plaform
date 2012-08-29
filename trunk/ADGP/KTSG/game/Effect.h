@@ -4,6 +4,7 @@
 #include <DxErr.h>
 #include "DX11/TextureManager.h"
 #include "game/EffectData.h"
+#include "EffectShaderClass.h"
 #include "game/FireShaderClass.h"
 #include "game/PoisonShaderClass.h"
 #include "game/RenderTextureClass.h"
@@ -12,6 +13,9 @@ const int PIC_H = 2048;
 const int PIC_W = 2048;
 const int PASTE_H = 256;
 const int PASTE_W = 256;
+
+//const int EFFECT_SHADER_SIZE = 3;//n種效果
+
 //ShaderClass不用每張EFFECT都創 可以直接放在effectMG內 之後再改. 不然火焰shader會重複創4次 by holyk
 class Effect
 {
@@ -19,11 +23,17 @@ private:
 	Texture_Sptr m_Texture;
 	int	     m_TextureID;
 	int	     m_SerialNum;
-
-	EffectDatas m_FireEffect;
 	RenderTextureClass* m_RenderTexture;
+
+	typedef std::vector<EffectDatas> VEffectDatas;//放置所有狀態的EffectData之vector
+	VEffectDatas m_vEffect;
+	
+	typedef std::vector<EffectShaderClass*> EffectShaders;
+	EffectShaders m_EffectShaders;
+
+	//shader pointer
 	FireShaderClass* m_FireShader;
-	//PoisonShaderClass* m_PoisonShader;
+	PoisonShaderClass* m_PoisonShader;
 public:
 	Effect(void);
 	~Effect(void);
@@ -41,7 +51,7 @@ public:
 
 	ID3D11ShaderResourceView* GetTexture();
 private:
-	void RenderFire();
+	void RenderShader();
 };
 
 class EffectManager

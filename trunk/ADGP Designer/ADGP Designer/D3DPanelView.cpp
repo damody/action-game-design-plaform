@@ -615,7 +615,7 @@ void CD3DPanelView::Refresh()
 				PointManager pm;
 				for (Vec2s::iterator it_v = it_att->m_Area.Points().begin(); it_v !=it_att->m_Area.Points().end(); it_v++)
 				{
-					pm.Add(it_v->x,it_v->y,1,0,0);
+					pm.Add(it_v->x,-it_v->y,1,0,0);
 				}
 				pm.SetLineColor(1,0,0);
 				m_D3DApp.m_Attack.push_back(pm);
