@@ -181,7 +181,6 @@ BEGIN_MESSAGE_MAP(CClassView, CDockablePane)
 	ON_COMMAND(ID_ANIMATION_RENAME, OnAnimationRename)
 	ON_COMMAND(ID_FRAME_ADD, OnFrameAdd)
 	ON_COMMAND(ID_FRAME_DELETE, OnFrameDelete)
-	ON_COMMAND(ID_FRAME_RENAME, OnFrameRename)
 	ON_COMMAND(ID_PROPERTY_VIEW, OnPropertyView)
 	ON_COMMAND(ID_NEW_FOLDER, OnNewFolder)
 	ON_WM_PAINT()
@@ -189,7 +188,8 @@ BEGIN_MESSAGE_MAP(CClassView, CDockablePane)
 	ON_WM_LBUTTONUP()
 	ON_COMMAND_RANGE(ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnSort)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnUpdateSort)
-	ON_COMMAND(ID_POINTS_ADD, &CClassView::OnPointsAdd)
+	ON_COMMAND(ID_POINT_ADD, &CClassView::OnPointAdd)
+	ON_COMMAND(ID_POINT_DELETE, &CClassView::OnPointDelete)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -407,9 +407,17 @@ void CClassView::OnContextMenu(CWnd* pWnd, CPoint point)
 		{
 			menu.LoadMenu(IDR_POPUP_FRAME_EDIT);
 		}
+		else if(IsNumber(pWndTree->GetItemText(m_wndClassView.GetParentItem(hTreeItem))))
+		{
+			menu.LoadMenu(IDR_POPUP_POINTS_EDIT);
+		}
+		else if(1 == 1)
+		{
+			menu.LoadMenu(IDR_POPUP_POINT_EDIT);
+		}
 		else
 		{
-			menu.LoadMenu(IDR_POPUP_OTHER_EDIT);
+			//menu.LoadMenu(IDR_POPUP_OTHER_EDIT);
 		}
 	}
 	else
@@ -481,9 +489,9 @@ void CClassView::OnUpdateSort(CCmdUI* pCmdUI)
 void CClassView::OnAnimationAdd()
 {
 	HTREEITEM root = m_wndClassView.GetRootItem();
-	HTREEITEM item = m_wndClassView.InsertItem(_T("standing123"), 1, 1, root);
-	FrameInfo fi;
-	fi.m_FrameName = std::string("standing");
+	HTREEITEM item = m_wndClassView.InsertItem(_T("standing"), 1, 1, root);
+	FrameInfo fi = defaultFrameInfo(item);
+	/*fi.m_FrameName = std::string("standing");
 	fi.m_FrameIndex = 0;
 	fi.m_NextFrameName = fi.m_FrameName;
 	fi.m_NextFrameIndex = 0;
@@ -509,7 +517,7 @@ void CClassView::OnAnimationAdd()
 	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
 	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
 	fi.m_Bodys[0].m_ZWidth = 0.0f;
-	fi.m_Bodys[0].m_Kind = 0;
+	fi.m_Bodys[0].m_Kind = 0;*/
 
 	HTREEITEM hClass = m_wndClassView.InsertItem(_T("0"), 3, 3, item);
 
@@ -520,19 +528,18 @@ void CClassView::OnAnimationAdd()
 	HTREEITEM temp_item;
 
 	temp_item = m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
-	m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("0"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("1"), 3 , 3, temp_item);
 
 	temp_item = m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
-	m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("0"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("1"), 3 , 3, temp_item);
 
 	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
 
 	temp_item = m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
-	m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("0"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("1"), 3 , 3, temp_item);
 
 	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
 	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
@@ -636,45 +643,98 @@ void CClassView::OnFrameAdd()
 		HTREEITEM temp_item;
 
 		temp_item = m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
-		m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("0"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("1"), 3 , 3, temp_item);
 
 		temp_item = m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
-		m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("0"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("1"), 3 , 3, temp_item);
 
 		m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
 
 		temp_item = m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
-		m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("0"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("1"), 3 , 3, temp_item);
 
 		m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
 		m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
 
 		m_wndClassView.Expand(item, TVE_EXPAND);
-		m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
-		m_wndClassView.EditLabel(hClass);
+		//m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
+		//m_wndClassView.EditLabel(hClass);
 	}
 }
 
 void CClassView::OnFrameDelete()
 {
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	int count = _ttoi(m_wndClassView.GetItemText(item));
 	if(item!=NULL)
 	{
+		HTREEITEM tmp_item = m_wndClassView.GetNextSiblingItem(item);
+		for(int i=count;;i++)
+		{
+			if(tmp_item != NULL)
+			{
+				TCHAR num_str[10];
+				wsprintf(num_str, _T("%d"), i);
+				m_wndClassView.SetItemText(tmp_item, num_str);
+				tmp_item = m_wndClassView.GetNextSiblingItem(tmp_item);
+			}
+			else break;
+		}
 		m_wndClassView.DeleteItem(item);
 	}
+
 }
 
-void CClassView::OnFrameRename()
+void CClassView::OnPointAdd()
 {
-	/*HTREEITEM item = m_wndClassView.GetSelectedItem();
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	HTREEITEM tmp_item = m_wndClassView.GetChildItem(item);
+	for (int i=0;;++i)
+	{
+		// need get last node
+		if (m_wndClassView.GetNextSiblingItem(tmp_item) != NULL)
+		{
+			tmp_item = m_wndClassView.GetNextSiblingItem(tmp_item);
+			continue;
+		}
+		TCHAR num_str[10];
+		CString item_str = m_wndClassView.GetItemText(tmp_item);
+		wsprintf(num_str, _T("%d"), i);
+		if (i>298 || num_str == item_str)
+		{
+			wsprintf(num_str, _T("%d"), i+1);
+			m_wndClassView.InsertItem(num_str, 3, 3, item);
+			break;
+		}
+	}
+	// TODO: 在此加入您的命令處理常式程式碼
+}
+
+
+void CClassView::OnPointDelete()
+{
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	int count = _ttoi(m_wndClassView.GetItemText(item));
 	if(item!=NULL)
 	{
-		m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
-		m_wndClassView.EditLabel(item);
-	}*/
+		HTREEITEM tmp_item = m_wndClassView.GetNextSiblingItem(item);
+		for(int i=count;;i++)
+		{
+			if(tmp_item != NULL)
+			{
+				TCHAR num_str[10];
+				wsprintf(num_str, _T("%d"), i);
+				m_wndClassView.SetItemText(tmp_item, num_str);
+				tmp_item = m_wndClassView.GetNextSiblingItem(tmp_item);
+			}
+			else break;
+		}
+		m_wndClassView.DeleteItem(item);
+	}
+	// TODO: 在此加入您的命令處理常式程式碼
 }
 
 void CClassView::OnPropertyView()
@@ -1244,6 +1304,102 @@ void CClassView::Refresh()
 	}
 }
 
+FrameInfo CClassView::defaultFrameInfo(HTREEITEM item)
+{
+	CT2CA pszConvertedAnsiString (m_wndClassView.GetItemText(item));
+	std::string str2(pszConvertedAnsiString);
+
+	FrameInfo fi;
+	fi.m_FrameName = str2;
+	fi.m_FrameIndex = 0;
+	fi.m_NextFrameName = fi.m_FrameName;
+	fi.m_NextFrameIndex = 0;
+	fi.m_HeroAction = HeroAction::STANDING;
+	fi.m_Wait = 1;
+	fi.m_ClearKeyQueue = false;
+	fi.m_PictureID = 1;
+	fi.m_CenterX = 0.0f;
+	fi.m_CenterY = 0.0f;
+	fi.m_PictureX = 0;
+	fi.m_PictureY = 0;
+	fi.m_Consume.m_JumpRule = 0;
+	fi.m_Consume.m_HP = 1;
+	fi.m_Consume.m_MP = 1;
+	fi.m_Consume.m_NotEnoughFrameName = fi.m_FrameName;
+	fi.m_Consume.m_NotEnoughFrame = 0;
+	fi.m_DVX = 0.0f;
+	fi.m_DVY = 0.0f;
+	fi.m_DVZ = 0.0f;
+	
+	fi.m_Bodys.resize(1);
+	fi.m_Bodys[0].m_Area = Polygon2D();
+	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
+	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
+	fi.m_Bodys[0].m_ZWidth = 0.0f;
+	fi.m_Bodys[0].m_Kind = 0;
+
+	fi.m_Attacks.resize(1);
+	fi.m_Attacks[0].m_Area = Polygon2D();
+	fi.m_Attacks[0].m_Area.AddPoint(0.0f, 0.0f);
+	fi.m_Attacks[0].m_Area.AddPoint(0.0f, 0.0f);
+	fi.m_Attacks[0].m_Injury = 0;
+	fi.m_Attacks[0].m_Strength = 0;
+	fi.m_Attacks[0].m_Kind = 0;
+	fi.m_Attacks[0].m_Effect = 0;
+	fi.m_Attacks[0].m_DVX = 0.0f;
+	fi.m_Attacks[0].m_DVY = 0.0f;
+	fi.m_Attacks[0].m_DVZ = 0.0f;
+	fi.m_Attacks[0].m_ZWidth = 0.0f;
+	fi.m_Attacks[0].m_Fall = 0;
+	fi.m_Attacks[0].m_BreakDefend = 0;
+	fi.m_Attacks[0].m_AttackRest = 0;
+	fi.m_Attacks[0].m_ReAttackRest = 0;
+
+	fi.m_HitDatas.resize(1);
+	fi.m_HitDatas[0].m_KeyQueue = "";
+	fi.m_HitDatas[0].m_FrameName = "none";
+	fi.m_HitDatas[0].m_FrameOffset = 1;
+
+	fi.m_Catchs.resize(1);
+	fi.m_Catchs[0].m_Area = Polygon2D();
+	fi.m_Catchs[0].m_Area.AddPoint(0.0f, 0.0f);
+	fi.m_Catchs[0].m_Area.AddPoint(0.0f, 0.0f);
+	fi.m_Catchs[0].m_ZWidth = 0.0f;
+	fi.m_Catchs[0].m_Injury = 0;
+	fi.m_Catchs[0].m_Kind = 0;
+	fi.m_Catchs[0].m_CatchPosition.x = 0.0f;
+	fi.m_Catchs[0].m_CatchPosition.y = 0.0f;
+	fi.m_Catchs[0].m_CatchWhere = CatchInfo::CatchPosition::NECK;
+
+	fi.m_BeCatch.m_Neck.x = 0.0f;
+	fi.m_BeCatch.m_Neck.y = 0.0f;
+	fi.m_BeCatch.m_Leg.x = 0.0f;
+	fi.m_BeCatch.m_Leg.y = 0.0f;
+	fi.m_BeCatch.m_Waist.x = 0.0f;
+	fi.m_BeCatch.m_Waist.y = 0.0f;
+
+	fi.m_BloodInfos.resize(1);
+	fi.m_BloodInfos[0].m_Scale = 0.0f;
+	fi.m_BloodInfos[0].m_Position.x = 0.0f;
+	fi.m_BloodInfos[0].m_Position.y = 0.0f;
+	fi.m_BloodInfos[0].m_EnableValue = 0.0f;
+
+	fi.m_Creations.resize(1);
+	fi.m_Creations[0].name = "none";
+	fi.m_Creations[0].amount = 0;
+	fi.m_Creations[0].x = 0.0f;
+	fi.m_Creations[0].y = 0.0f;
+	fi.m_Creations[0].facing = 0;
+	fi.m_Creations[0].frame = "0";
+	fi.m_Creations[0].frameID = 0;
+	fi.m_Creations[0].HP = 0;
+	fi.m_Creations[0].v0.x = 0.0f;
+	fi.m_Creations[0].v0.y = 0.0f;
+	fi.m_Creations[0].v0.z = 0.0f;
+
+	return fi;
+}
+
 
 
 /*
@@ -1337,8 +1493,3 @@ CMFCPropertyGridProperty* CClassView::GetDefaultPropList()
 	return pGroup1;
 }*/
 
-
-void CClassView::OnPointsAdd()
-{
-	// TODO: 在此加入您的命令處理常式程式碼
-}

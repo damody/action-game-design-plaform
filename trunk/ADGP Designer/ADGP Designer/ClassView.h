@@ -60,6 +60,7 @@ protected:
 	CViewTree m_wndClassView;
 	CImageList m_ClassViewImages;
 	UINT m_nCurrSort;
+	FrameInfo defaultFrameInfo(HTREEITEM item);
 	
 	TreeItemMap	m_propMap;
 	FramesMap	m_FrameMap;
@@ -80,7 +81,8 @@ protected:
 	afx_msg void OnAnimationRename();
 	afx_msg void OnFrameAdd();
 	afx_msg void OnFrameDelete();
-	afx_msg void OnFrameRename();
+	afx_msg void OnPointAdd();
+	afx_msg void OnPointDelete();
 	afx_msg void OnPropertyView();
 	afx_msg void OnNewFolder();
 	afx_msg void OnPaint();
@@ -91,8 +93,6 @@ protected:
 public:
 	afx_msg LRESULT OnPropertyChanged( __in WPARAM wparam, __in LPARAM lparam, HTREEITEM item );
 
-
 	DECLARE_MESSAGE_MAP()
-	afx_msg void OnPointsAdd();
 };
 
