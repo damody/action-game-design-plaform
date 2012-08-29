@@ -546,7 +546,7 @@ frame.crouch[0] =
    pic_id = 0, pic_x = 1, pic_y = 7, state = Action.Crouch, wait = 6, next = {"default", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {},
+   hit = {{"D", "rolling", 0}},
    blood = {{scale = 1.0, x=42, y=55, value=150}},
    body = {
    {kind = 0, points = {{25,-26}, {25,-80}, {56,-80}, {56,-26}}, zwidth = 8}
@@ -1653,7 +1653,7 @@ frame.jump_hit[2] =
 frame.jump_hit[3] =
 {
    pic_id = 2, pic_x = 3, pic_y = 3, state = Action.GroundSkill, wait = 6, next = {"jump_hit", 4},
-   dvx = 0, dvy = 0,  dvz = 0,  centerx = 26,  centery = 72,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 26,  centery = 72,  clear_key_queue = 1,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
