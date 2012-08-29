@@ -458,14 +458,14 @@ void CPropertiesWnd::InitPropList_Frame()
 
 	CMFCPropertyGridProperty* pPicdate = new CMFCPropertyGridProperty(_T("Picture"), 0, TRUE);
 	pPicdate->AllowEdit(FALSE);
-	pPropItem = new CMFCPropItem(&m_wndPropList,_T("Picture ID"), varInt, _T("表示用哪一張圖裡面可以顯示的動作"));
-	pPropItem->EnableSpinControl(TRUE, 0, 300);
-	pPicdate->AddSubItem(pPropItem);
-	pPropItem = new CMFCPropItem(&m_wndPropList,_T("Picture X"), varInt, _T("行:第X個分割區塊"));
-	pPicdate->AddSubItem(pPropItem);
-	pPropItem = new CMFCPropItem(&m_wndPropList, _T("Picture Y"), varInt, _T("列:第Y個分割區塊"));
-	pPicdate->AddSubItem(pPropItem);
-	pGroup1->AddSubItem(pPicdate);
+	pProp = new CMFCPropItem(&m_wndPropList,_T("Picture ID"), varInt(), _T("表示用哪一張圖裡面可以顯示的動作"));
+	pProp->EnableSpinControl(TRUE, 0, 300);
+	pPicdate->AddSubItem(pProp);
+	pProp = new CMFCPropItem(&m_wndPropList,_T("Picture X"), varInt(), _T("行:第X個分割區塊"));
+	pPicdate->AddSubItem(pProp);
+	pProp = new CMFCPropItem(&m_wndPropList, _T("Picture Y"), varInt(), _T("列:第Y個分割區塊"));
+	pPicdate->AddSubItem(pProp);
+	pPropMain->AddSubItem(pPicdate);
 
 	CMFCPropertyGridProperty* pCenterSize = new CMFCPropertyGridProperty(_T("Center Offset"), 0, TRUE);
 	pProp = new CMFCPropertyGridProperty(_T("Center X Offset"), varFloat(), _T("人物X方向偏移修正量"));
