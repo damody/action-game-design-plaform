@@ -717,8 +717,21 @@ void CClassView::OnPointAdd()
 void CClassView::OnPointDelete()
 {
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	int count = _ttoi(m_wndClassView.GetItemText(item));
 	if(item!=NULL)
 	{
+		HTREEITEM tmp_item = m_wndClassView.GetNextSiblingItem(item);
+		for(int i=count;;i++)
+		{
+			if(tmp_item != NULL)
+			{
+				TCHAR num_str[10];
+				wsprintf(num_str, _T("%d"), i);
+				m_wndClassView.SetItemText(tmp_item, num_str);
+				tmp_item = m_wndClassView.GetNextSiblingItem(tmp_item);
+			}
+			else break;
+		}
 		m_wndClassView.DeleteItem(item);
 	}
 	// TODO: 在此加入您的命令處理常式程式碼
