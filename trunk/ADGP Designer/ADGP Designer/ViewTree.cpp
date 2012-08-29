@@ -99,6 +99,22 @@ void CViewTree::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	CTreeCtrl::OnLButtonDown(nFlags, point);
 
+	CString classCaption, caption;
+	ASSERT(classCaption.LoadString(IDS_CLASS_VIEW));
+
+	this->GetParent()->GetWindowText(caption);
+
+	if(classCaption.Compare(caption) == 0)
+	{
+		CPoint pt = point;
+
+		UINT flags = 0;
+		HTREEITEM hTreeItem = this->HitTest(pt, &flags);
+		if (hTreeItem != NULL)
+		{
+			((CClassView*)this->GetParent())->OnSelectItem(hTreeItem);
+		}
+	}
 	
 }
 
@@ -172,3 +188,4 @@ void CViewTree::OnLButtonDblClk(UINT nFlags, CPoint point)
 		}
 	}
 }
+

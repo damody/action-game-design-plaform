@@ -358,6 +358,7 @@ void CClassView::FillClassView()
 
 void CClassView::OnLButtonUp(UINT nFlags, CPoint point)
 {
+
 	CDockablePane::OnLButtonUp(nFlags, point);
 
 	//AfxMessageBox(_T("Click..."));
@@ -897,73 +898,101 @@ void CClassView::OnSelectItem(HTREEITEM item)
 
 	CPropertiesWnd::GetInstance()->m_lastSelectedItem = item;
 	m_wndClassView.m_lastSelectedItem = item;*/
-	if(m_wndClassView.GetRootItem() == item){
-		
+
+	CPropertiesWnd* _propWnd = CPropertiesWnd::GetInstance();
+	HTREEITEM pItem = m_wndClassView.GetParentItem(item);
+
+	if(m_wndClassView.GetRootItem() == item)
+	{
 		m_wndClassView.SelectItem(item);
 		m_wndClassView.SetFocus();
-	}else if(IsNumber(m_wndClassView.GetItemText(item))){
-
-		HTREEITEM pItem = m_wndClassView.GetParentItem(item);
-		if (pItem != m_wndClassView.GetRootItem())
+	}
+	else if(IsNumber(m_wndClassView.GetItemText(item)))
+	{
+		pItem = m_wndClassView.GetParentItem(pItem);
+		if(pItem == m_wndClassView.GetRootItem()){
+			_propWnd->InitPropList_Frame();
+		}
+		else
 		{
-			CString text = m_wndClassView.GetItemText(pItem);
-
-			if(!text.Compare(CString("Bodys"))){
-				HTREEITEM FrameIndex = m_wndClassView.GetParentItem(pItem);
-				HTREEITEM Frame	     = m_wndClassView.GetParentItem(FrameIndex);
-				char buff[1000];
-				ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
-				std::string FrameName(buff);
-
-				if (g_FrameName != FrameName || g_FrameIndex != _ttoi(m_wndClassView.GetItemText(FrameIndex)))
-				{
-					g_FrameName = FrameName;
-					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
-					((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
-				}
-				
-				((CMainFrame*)(this->GetParentFrame()))->EditBody(_ttoi(m_wndClassView.GetItemText(item)));
-
-			}else if(!text.Compare(CString("Attacks"))){
-				HTREEITEM FrameIndex = m_wndClassView.GetParentItem(pItem);
-				HTREEITEM Frame	     = m_wndClassView.GetParentItem(FrameIndex);
-				char buff[1000];
-				ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
-				std::string FrameName(buff);
-
-				if (g_FrameName != FrameName || g_FrameIndex != _ttoi(m_wndClassView.GetItemText(FrameIndex)))
-				{
-					g_FrameName = FrameName;
-					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
-					((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
-				}
-
-				((CMainFrame*)(this->GetParentFrame()))->EditAttack(_ttoi(m_wndClassView.GetItemText(item)));
-
-			}else if(!text.Compare(CString("HitDatas"))){
-
-			}else if(!text.Compare(CString("Catchs"))){
-
-			}else if(!text.Compare(CString("BloodInfos"))){
-
-			}else if(!text.Compare(CString("Creations"))){
-
-			}else{
-				char buff[1000];
-				ConvStr::WcharToChar(text.GetBuffer(0),buff);
-				std::string FrameName(buff);
-				if(g_ActiveFramesMap->find(FrameName) != g_ActiveFramesMap->end()){
-					g_FrameName = FrameName;
-					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(item));
-					((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
-				}
-			}
-
-			m_wndClassView.SelectItem(item);
-			m_wndClassView.SetFocus();
+			_propWnd->InitPropList_Point();
 		}
 	}
-	
+	else if (pItem != m_wndClassView.GetRootItem())
+	{
+		CString text = m_wndClassView.GetItemText(item);
+
+		if(!text.Compare(CString("Bodys"))){
+			_propWnd->InitPropList_Body();
+
+			HTREEITEM FrameIndex = m_wndClassView.GetParentItem(item);
+			HTREEITEM Frame	     = m_wndClassView.GetParentItem(FrameIndex);
+			char buff[1000];
+			ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
+			std::string FrameName(buff);
+
+			if (g_FrameName != FrameName || g_FrameIndex != _ttoi(m_wndClassView.GetItemText(FrameIndex)))
+			{
+				g_FrameName = FrameName;
+				g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
+				//((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
+			}
+			
+			//((CMainFrame*)(this->GetParentFrame()))->EditBody(_ttoi(m_wndClassView.GetItemText(item)));
+
+		}
+		else if(!text.Compare(CString("Attacks")))
+		{
+			_propWnd->InitPropList_Attack();
+
+			HTREEITEM FrameIndex = m_wndClassView.GetParentItem(item);
+			HTREEITEM Frame	     = m_wndClassView.GetParentItem(FrameIndex);
+			char buff[1000];
+			ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
+			std::string FrameName(buff);
+
+			if (g_FrameName != FrameName || g_FrameIndex != _ttoi(m_wndClassView.GetItemText(FrameIndex)))
+			{
+				g_FrameName = FrameName;
+				g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
+				//((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
+			}
+
+			//((CMainFrame*)(this->GetParentFrame()))->EditAttack(_ttoi(m_wndClassView.GetItemText(item)));
+
+		}
+		else if(!text.Compare(CString("HitDatas")))
+		{
+			_propWnd->InitPropList_HitData();
+		}
+		else if(!text.Compare(CString("Catchs")))
+		{
+			_propWnd->InitPropList_CatchInfo();
+		}
+		else if(!text.Compare(CString("BloodInfos")))
+		{
+			_propWnd->InitPropList_BloodInfo();
+		}
+		else if(!text.Compare(CString("Creations")))
+		{
+			
+		}
+		else
+		{
+			char buff[1000];
+			ConvStr::WcharToChar(text.GetBuffer(0),buff);
+			std::string FrameName(buff);
+			/*if(g_ActiveFramesMap->find(FrameName) != g_ActiveFramesMap->end())
+			{
+				g_FrameName = FrameName;
+				g_FrameIndex = _ttoi(m_wndClassView.GetItemText(item));
+				((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
+			}*/
+		}
+
+		m_wndClassView.SelectItem(item);
+		m_wndClassView.SetFocus();
+	}
 }
 
 BOOL CClassView::IsAnAnimation(CTreeCtrl* treeCtrl, HTREEITEM item)
