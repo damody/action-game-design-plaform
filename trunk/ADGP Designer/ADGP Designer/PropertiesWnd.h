@@ -44,6 +44,26 @@ public:
 		pDC->TextOut(rect.left+2,rect.top+2, m_Text);	
 	}
 	void OnClickName( CPoint point );
+
+};
+
+class CMFCPropItem : public CMFCPropertyGridProperty
+{
+private:
+	CMFCPropertyGridCtrl* m_MotherGrid;
+	bool m_Edited;
+	COleVariant m_Record;
+public:
+	CMFCPropItem(CMFCPropertyGridCtrl* grid,const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData = 0)
+	:CMFCPropertyGridProperty(strName, data, lpszDescr, dwData){m_MotherGrid = grid;m_Edited=false;m_Record = this->GetValue();}
+	~CMFCPropItem(){}
+	DECLARE_DYNAMIC(CMFCPropItem)
+protected:
+	virtual BOOL OnEdit(LPPOINT lptClick );
+	virtual BOOL OnEndEdit();
+public:
+	bool IsEdited();
+	virtual void SetValue(const COleVariant& varValue );
 };
 
 class CPropertiesWnd : public CDockablePane
@@ -114,12 +134,9 @@ public:
 	static void AddNormalActionUcase(CMFCPropertyGridProperty* pProp);
 	static void AddNormalActionDcase(CMFCPropertyGridProperty* pProp);
 	static void AddPointXY(CMFCPropertyGridProperty*& pProp);
-private:
-	void UpdatePropList_Frame();
-
 public:
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	void Update();
+	void UpdatePropList_Frame();
 };
 
 
