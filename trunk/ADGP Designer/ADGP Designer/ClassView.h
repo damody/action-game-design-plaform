@@ -80,7 +80,6 @@ protected:
 	afx_msg void OnAnimationRename();
 	afx_msg void OnFrameAdd();
 	afx_msg void OnFrameDelete();
-	afx_msg void OnFrameRename();
 	afx_msg void OnPropertyView();
 	afx_msg void OnNewFolder();
 	afx_msg void OnPaint();
@@ -93,6 +92,7 @@ public:
 
 
 	DECLARE_MESSAGE_MAP()
-	afx_msg void OnPointsAdd();
+	afx_msg void OnPointAdd();
+	afx_msg void OnPointDelete();
 };
 

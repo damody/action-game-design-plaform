@@ -181,7 +181,6 @@ BEGIN_MESSAGE_MAP(CClassView, CDockablePane)
 	ON_COMMAND(ID_ANIMATION_RENAME, OnAnimationRename)
 	ON_COMMAND(ID_FRAME_ADD, OnFrameAdd)
 	ON_COMMAND(ID_FRAME_DELETE, OnFrameDelete)
-	ON_COMMAND(ID_FRAME_RENAME, OnFrameRename)
 	ON_COMMAND(ID_PROPERTY_VIEW, OnPropertyView)
 	ON_COMMAND(ID_NEW_FOLDER, OnNewFolder)
 	ON_WM_PAINT()
@@ -189,7 +188,8 @@ BEGIN_MESSAGE_MAP(CClassView, CDockablePane)
 	ON_WM_LBUTTONUP()
 	ON_COMMAND_RANGE(ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnSort)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnUpdateSort)
-	ON_COMMAND(ID_POINTS_ADD, &CClassView::OnPointsAdd)
+	ON_COMMAND(ID_POINT_ADD, &CClassView::OnPointAdd)
+	ON_COMMAND(ID_POINT_DELETE, &CClassView::OnPointDelete)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -528,19 +528,18 @@ void CClassView::OnAnimationAdd()
 	HTREEITEM temp_item;
 
 	temp_item = m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
-	m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("0"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("1"), 3 , 3, temp_item);
 
 	temp_item = m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
-	m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("0"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("1"), 3 , 3, temp_item);
 
 	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
 
 	temp_item = m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
-	m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("0"), 3 , 3, temp_item);
+	m_wndClassView.InsertItem(_T("1"), 3 , 3, temp_item);
 
 	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
 	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
@@ -644,18 +643,18 @@ void CClassView::OnFrameAdd()
 		HTREEITEM temp_item;
 
 		temp_item = m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
-		m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("0"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("1"), 3 , 3, temp_item);
 
 		temp_item = m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
-		m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("0"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("1"), 3 , 3, temp_item);
 
 		m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
 
 		temp_item = m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Point1"), 3 , 3, temp_item);
-		m_wndClassView.InsertItem(_T("Point2"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("0"), 3 , 3, temp_item);
+		m_wndClassView.InsertItem(_T("1"), 3 , 3, temp_item);
 
 		m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
 		m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
@@ -673,16 +672,6 @@ void CClassView::OnFrameDelete()
 	{
 		m_wndClassView.DeleteItem(item);
 	}
-}
-
-void CClassView::OnFrameRename()
-{
-	/*HTREEITEM item = m_wndClassView.GetSelectedItem();
-	if(item!=NULL)
-	{
-		m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
-		m_wndClassView.EditLabel(item);
-	}*/
 }
 
 void CClassView::OnPropertyView()
@@ -1346,7 +1335,13 @@ CMFCPropertyGridProperty* CClassView::GetDefaultPropList()
 }*/
 
 
-void CClassView::OnPointsAdd()
+void CClassView::OnPointAdd()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+}
+
+
+void CClassView::OnPointDelete()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
 }
