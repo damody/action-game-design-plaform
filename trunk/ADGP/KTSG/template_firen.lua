@@ -24,6 +24,7 @@ file = {
 		}
 	},
 }
+
 --人物基本數據
 walking_speed=5.000000
 walking_speedz=2.500000
@@ -33,14 +34,23 @@ heavy_walking_speed=3.700000
 heavy_walking_speedz=1.850000
 heavy_running_speed=6.200000
 heavy_running_speedz=1.000000
-jump_height=-16.299999
-jump_distance=10.000000
-jump_distancez=3.750000
-dash_height=-10.000000
-dash_distance=18.000000
-dash_distancez=5.000000
-rowing_height=-2.000000
-rowing_distance=5.000000
+
+--人物預設動作
+action_key_map = {
+--格式： 套用的 Action, map = { {按鍵, Frame, FrameID}, ... }
+{Action.Standing, map={{'D', "defend", 0}, {'J', "jump", 0}, {'A', "punch", 0}}},
+{Action.Walking,  map={{'D', "defend", 0}, {'J', "jump", 0}, {'A', "punch", 0}}},
+{Action.Running,  map={{'D', "rolling", 0}, {'J', "dash", 0}, {'A', "run_punch", 0}}}
+}
+
+--落地切換設定
+air_crouch_map={
+{Action.in_the_air, "crouch", 0},
+{Action.Dash, "crouch", 1},
+{Action.BeforeDashAttack, "crouch", 1},
+{Action.DashAttacking, "crouch", 1},
+{Action.AfterDashAttack, "crouch", 1}
+}
 
 
 frame =
@@ -51,12 +61,12 @@ frame =
 frame.standing[1]=
 {
 	pic_id=0, pic_x=1, pic_y=2, --圖片資訊，pic_id: 第幾個圖檔，pic_x pic_y: 圖檔中的第幾欄第幾列
-	state=STANDING, 			--狀態
+	state=Action.Standing, 		--狀態
 	wait=60, 					--停留在此 frame 的時間
 	next={frame.standing, 2},	--此 frame 結束後的下一個 frame 之名稱及序號A
 	dvx=0, dvy=0, dvz=0, 		--進入此 frame 時得到的加速度
 	centerx=39, centery=79, 	--人物支點(position)相對於圖片左上角的位置
-	clear_key_queue=0,			--進入此 frame 時是否清除按鍵佇列
+	clear_key_queue=0,			--進入此 frame 時是否清除按鍵佇列，0：完全不清除，1：清除末項，2：清空
 
 	--進入此 frame 必須付出的代價(※未完成讀取)
 	consume = {
