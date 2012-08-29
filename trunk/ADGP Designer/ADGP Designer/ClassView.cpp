@@ -660,8 +660,8 @@ void CClassView::OnFrameAdd()
 		m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
 
 		m_wndClassView.Expand(item, TVE_EXPAND);
-		m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
-		m_wndClassView.EditLabel(hClass);
+		//m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
+		//m_wndClassView.EditLabel(hClass);
 	}
 }
 
@@ -1337,6 +1337,26 @@ CMFCPropertyGridProperty* CClassView::GetDefaultPropList()
 
 void CClassView::OnPointAdd()
 {
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	HTREEITEM tmp_item = m_wndClassView.GetChildItem(item);
+	for (int i=0;;++i)
+	{
+		// need get last node
+		if (m_wndClassView.GetNextSiblingItem(tmp_item) != NULL)
+		{
+			tmp_item = m_wndClassView.GetNextSiblingItem(tmp_item);
+			continue;
+		}
+		TCHAR num_str[10];
+		CString item_str = m_wndClassView.GetItemText(tmp_item);
+		wsprintf(num_str, _T("%d"), i);
+		if (i>298 || num_str == item_str)
+		{
+			wsprintf(num_str, _T("%d"), i+1);
+			m_wndClassView.InsertItem(num_str, 3, 3, item);
+			break;
+		}
+	}
 	// TODO: 在此加入您的命令處理常式程式碼
 }
 
