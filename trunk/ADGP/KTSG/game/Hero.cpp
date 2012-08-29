@@ -33,6 +33,28 @@ bool isKeyUp(char r){
 	}
 }
 
+inline char keyTrans(CtrlKey::v r ){
+	switch(r){
+	case CtrlKey::ATK1: return 'A';
+	case CtrlKey::ATK2: return 'B';
+	case CtrlKey::DEF: return 'D';
+	case CtrlKey::JUMP: return 'J';
+	case CtrlKey::ATK1_KEYUP: return 'a';
+	case CtrlKey::ATK2_KEYUP: return 'b';
+	case CtrlKey::DEF_KEYUP: return 'd';
+	case CtrlKey::JUMP_KEYUP: return 'j';
+	case CtrlKey::UP: return '^';
+	case CtrlKey::DOWN: return 'v';
+	case CtrlKey::LEFT: return '<';
+	case CtrlKey::RIGHT: return '>';
+	case CtrlKey::UP_KEYUP: return '8';
+	case CtrlKey::DOWN_KEYUP: return '2';
+	case CtrlKey::LEFT_KEYUP: return '4';
+	case CtrlKey::RIGHT_KEYUP: return '6';
+	default: throw "error: wrong key";
+	}
+}
+
 Hero::Hero()
 {
 
@@ -298,53 +320,62 @@ bool Hero::ScanKeyQue()
 	int nFramID=0;
 	//bool eeTime = true;	//換 frame 時是否更新 TimeTic
 	//Vector3 dv;
+
 	KeyQueue::iterator i=m_KeyQue.begin();
+	int dx=0,dz=0;
+	while(i!=m_KeyQue.end()){
+		if(i->key == CtrlKey::LEFT ){
+			dx = -1;
+		}
+		else if(i->key == CtrlKey::RIGHT ){
+			dx = +1;
+		}
+		else if(i->key == CtrlKey::UP ){
+			dz = +1;
+		}
+		else if(i->key == CtrlKey::DOWN ){
+			dz = -1;
+		}
+		i++;
+	}
 
 	//決定方向按鍵動作
 	if(m_Action == HeroAction::STANDING)
 	{
-		while(i!=m_KeyQue.end())
-		{
-			if(i->key == CtrlKey::UP)
-			{
-				nFrame = "walking";
-				m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
-			}
-			else if(i->key == CtrlKey::DOWN)
-			{
-				nFrame = "walking";
-				m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
-			}
-			else if(i->key == CtrlKey::LEFT)
-			{
-				if( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
-					//跑
-					nFrame = "running";
-					m_Vel.x = -m_HeroInfo->m_RunningSpeed;
-				}else{
-					//走
-					nFrame = "walking";
-					m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
-					m_FaceSide = false;
-				}
-			}
-			else if(i->key == CtrlKey::RIGHT)
-			{
-				if( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
-					//跑
-					nFrame = "running";
-					m_Vel.x = m_HeroInfo->m_RunningSpeed;
-				}
-				else{
-					//走
-					nFrame = "walking";
-					m_Vel.x = m_HeroInfo->m_WalkingSpeed;
-					m_FaceSide = true;
-				}
-			}
-			i++;
+		if(dz > 0){
+			nFrame = "walking";
+			m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
 		}
-		//非方向按鍵判斷
+		else if(dz < 0){
+			nFrame = "walking";
+			m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
+		}
+		if(dx > 0){
+			if( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
+				//跑
+				nFrame = "running";
+				m_Vel.x = m_HeroInfo->m_RunningSpeed;
+			}
+			else{
+				//走
+				nFrame = "walking";
+				m_Vel.x = m_HeroInfo->m_WalkingSpeed;
+				m_FaceSide = true;
+			}
+		}
+		else if(dx < 0){
+			if( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
+				//跑
+				nFrame = "running";
+				m_Vel.x = -m_HeroInfo->m_RunningSpeed;
+			}else{
+				//走
+				nFrame = "walking";
+				m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
+				m_FaceSide = false;
+			}
+		}
+		/*非方向按鍵判斷
 		if(m_KeyQue.empty()){
 			return false;
 		}
@@ -367,54 +398,49 @@ bool Hero::ScanKeyQue()
 			//擋
 			nFrame = "defend";
 			d_key[3] = true;
-		}
+		}//*/
 	}
 	else if(m_Action == HeroAction::WALKING )
 	{
-		while(i!=m_KeyQue.end()){
-			if(i->key == CtrlKey::UP)
-			{
+		if(dz > 0){
+			if(m_TimeTik == 0) nFrame = "walking";
+			m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
+		}
+		else if(dz < 0){
+			if(m_TimeTik == 0) nFrame = "walking";
+			m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
+		}
+		if(dx > 0){
+			if( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
+				//跑
+				nFrame = "running";
+				m_Vel.x = m_HeroInfo->m_RunningSpeed;
+			}
+			else{
+				//走
 				if(m_TimeTik == 0) nFrame = "walking";
-				m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
+				m_Vel.x = m_HeroInfo->m_WalkingSpeed;
+				m_FaceSide = true;
 			}
-			else if(i->key == CtrlKey::DOWN)
-			{
+		}
+		else if(dx < 0){
+			if( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
+				//跑
+				nFrame = "running";
+				m_Vel.x = -m_HeroInfo->m_RunningSpeed;
+			}else{
+				//走
 				if(m_TimeTik == 0) nFrame = "walking";
-				m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
+				m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
+				m_FaceSide = false;
 			}
-			else if(i->key == CtrlKey::LEFT)
-			{
-				if( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide){
-					//跑
-					nFrame = "running";
-					m_Vel.x = -m_HeroInfo->m_RunningSpeed;
-				}
-				else{
-					if(m_TimeTik == 0) nFrame = "walking";
-					m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
-					m_FaceSide = false;
-				}
-			}
-			else if(i->key == CtrlKey::RIGHT)
-			{
-				if( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide){
-					//跑
-					nFrame = "running";
-					m_Vel.x = m_HeroInfo->m_RunningSpeed;
-				}else{
-					if(m_TimeTik == 0) nFrame = "walking";
-					m_Vel.x = m_HeroInfo->m_WalkingSpeed;
-					m_FaceSide = true;
-				}
-			}
-			i++;
 		}
 		if(!nFrame.empty() )
 		{
 			nFramID = (m_FrameID+1) % (m_HeroInfo->m_FramesMap[nFrame].size());
 		}
 
-		//非方向按鍵判斷
+		/*非方向按鍵判斷
 		if(m_KeyQue.empty()){
 			return false;
 		}
@@ -441,38 +467,22 @@ bool Hero::ScanKeyQue()
 			nFrame = "defend";
 			nFramID = 0;
 			d_key[3] = true;
-		}
+		}//*/
 	}
 	else if(m_Action == HeroAction::RUNNING){
 		m_Vel.x = (m_FaceSide ? m_HeroInfo->m_RunningSpeed : -m_HeroInfo->m_RunningSpeed);
-		while(i!=m_KeyQue.end()){
-			if(i->key == CtrlKey::UP)
-			{
-				if(m_TimeTik == 0) nFrame = "running";
-				nFramID = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_NextFrameIndex;
-				m_Vel.z = m_HeroInfo->m_RunningSpeedZ;
-			}
-			else if(i->key == CtrlKey::DOWN)
-			{
-				if(m_TimeTik == 0) nFrame = "running";
-				nFramID = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_NextFrameIndex;
-				m_Vel.z = -m_HeroInfo->m_RunningSpeedZ;
-			}
-			else if(i->key == CtrlKey::LEFT  && m_FaceSide){
-				nFrame = "stop_running";
-				nFramID = 0;
-				d_run = 0;
-				break;
-			}
-			else if(i->key == CtrlKey::RIGHT && !m_FaceSide){
-				nFrame = "stop_running";
-				nFramID = 0;
-				d_run = 0;
-				break;
-			}
-			i++;
+		if(dz > 0){
+			m_Vel.z = m_HeroInfo->m_RunningSpeedZ;
 		}
-		//非方向按鍵判斷
+		else if(dz < 0){
+			m_Vel.z = -m_HeroInfo->m_RunningSpeedZ;
+		}
+		if((dx > 0 && !m_FaceSide) || (dx < 0 && m_FaceSide)){
+			nFrame = "stop_running";
+			nFramID = 0;
+			d_run = 0;
+		}
+		/*非方向按鍵判斷
 		if(m_KeyQue.empty()){
 			return false;
 		}
@@ -507,9 +517,9 @@ bool Hero::ScanKeyQue()
 			nFrame = "rolling";
 			nFramID= 0;
 			d_key[3] = true;
-		}
+		}//*/
 	}
-	else if(m_Action == HeroAction::JUMP && m_TimeTik < 2){
+	/*else if(m_Action == HeroAction::JUMP && m_TimeTik < 2){
 		m_Vel.y = m_HeroInfo->m_JumpHeight;
 		while(i!=m_KeyQue.end()){
 			if(i->key == CtrlKey::UP)
@@ -532,20 +542,16 @@ bool Hero::ScanKeyQue()
 			}
 			i++;
 		}
-	}
+	}//*/
 	else if(m_Action == HeroAction::IN_THE_AIR){
-		while(i!=m_KeyQue.end()){
-			if(i->key == CtrlKey::LEFT ){
-				m_FaceSide = false;
-				break;
-			}
-			else if(i->key == CtrlKey::RIGHT ){
-				m_FaceSide = true;
-				break;
-			}
-			i++;
+		if(dx > 0){
+			m_FaceSide = true;
 		}
-		//非方向按鍵判斷
+		else if(dx < 0){
+			m_FaceSide = false;
+		}
+		
+		/*非方向按鍵判斷
 		if(m_KeyQue.empty()){
 			return false;
 		}
@@ -553,7 +559,7 @@ bool Hero::ScanKeyQue()
 			//拳
 			nFrame = "jump_punch";
 			d_key[0] = true;
-		}//*/
+		}
 		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
 			//腳
 			nFrame = "jump_kick";
@@ -567,51 +573,41 @@ bool Hero::ScanKeyQue()
 		}//*/
 	}
 	else if(m_Action == HeroAction::DEFEND){
-		while(i!=m_KeyQue.end()){
-			if(i->key == CtrlKey::LEFT ){
-				m_FaceSide = false;
-				break;
-			}
-			else if(i->key == CtrlKey::RIGHT ){
-				m_FaceSide = true;
-				break;
-			}
-			i++;
+		if(dx > 0){
+			m_FaceSide = true;
+		}
+		else if(dx < 0){
+			m_FaceSide = false;
 		}
 	}
 	else if(m_Action == HeroAction::DASH){
-		while(i!=m_KeyQue.end()){
-			if(i->key == CtrlKey::LEFT && m_FaceSide){
-				m_FaceSide = false;
-				if(m_Frame.compare("dash_front") == 0){
-					nFrame = "dash_back";
-					nFramID= m_FrameID;
-					//wwTime = false;
-				}
-				else if(m_Frame.compare("dash_back") == 0){
-					nFrame = "dash_front";
-					nFramID= m_FrameID;
-					//wwTime = false;
-				}
-				break;
+		if(dx < 0 && m_FaceSide){
+			m_FaceSide = false;
+			if(m_Frame.compare("dash_front") == 0){
+				nFrame = "dash_back";
+				nFramID= m_FrameID;
+				//wwTime = false;
 			}
-			else if(i->key == CtrlKey::RIGHT && !m_FaceSide){
-				m_FaceSide = true;
-				if(m_Frame.compare("dash_front") == 0){
-					nFrame = "dash_back";
-					nFramID= m_FrameID;
-					//wwTime = false;
-				}
-				else if(m_Frame.compare("dash_back") == 0){
-					nFrame = "dash_front";
-					nFramID= m_FrameID;
-					//wwTime = false;
-				}
-				break;
+			else if(m_Frame.compare("dash_back") == 0){
+				nFrame = "dash_front";
+				nFramID= m_FrameID;
+				//wwTime = false;
 			}
-			i++;
 		}
-		//非方向按鍵判斷
+		else if(dx > 0 && !m_FaceSide){
+			m_FaceSide = true;
+			if(m_Frame.compare("dash_front") == 0){
+				nFrame = "dash_back";
+				nFramID= m_FrameID;
+				//wwTime = false;
+			}
+			else if(m_Frame.compare("dash_back") == 0){
+				nFrame = "dash_front";
+				nFramID= m_FrameID;
+				//wwTime = false;
+			}
+		}
+		/*非方向按鍵判斷
 		if(m_KeyQue.empty()){
 			return false;
 		}
@@ -619,7 +615,7 @@ bool Hero::ScanKeyQue()
 			//拳
 			nFrame = "dash_punch";
 			d_key[0] = true;
-		}//*/
+		}
 		else if(m_KeyQue.back().key == CtrlKey::ATK2 && !d_key[1]){
 			//腳
 			nFrame = "dash_kick";
@@ -646,22 +642,7 @@ bool Hero::ScanKeyQue()
 		}
 		else{
 			//收集按鍵
-			int dx=0,dz=0,dj=0;
-			while(i!=m_KeyQue.end()){
-				if(i->key == CtrlKey::LEFT ){
-					dx = -1;
-				}
-				else if(i->key == CtrlKey::RIGHT ){
-					dx = +1;
-				}
-				else if(i->key == CtrlKey::UP ){
-					dz = +1;
-				}
-				else if(i->key == CtrlKey::DOWN ){
-					dz = -1;
-				}
-				i++;
-			}
+			int dj=0;
 			if(!m_KeyQue.empty() && m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2]){
 				dj = 1;
 				d_key[2] = true;
@@ -715,6 +696,8 @@ bool Hero::ScanKeyQue()
 			while( *rHit != 0 ) rHit ++;
 			rHit--;
 			while( riKey != m_KeyQue.rend() && rHit+1 != pHit && flag){
+				
+				//*old
 				KeyQueue::reverse_iterator ho,ch;
 				switch(*rHit){
 				case '^':
@@ -876,6 +859,7 @@ bool Hero::ScanKeyQue()
 					}
 					break;
 				}
+				//*/
 				riKey ++;
 				rHit --;
 			}
@@ -883,7 +867,7 @@ bool Hero::ScanKeyQue()
 				nFrame = hit[i].m_FrameName;
 				nFramID= hit[i].m_FrameOffset;
 				m_Vel.z = 0; // fix skill z up down problem 
-				m_KeyQue.clear();
+				m_KeyQue.pop_back();
 				break;
 			}
 		}

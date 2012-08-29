@@ -107,7 +107,7 @@ enum e
 	//地面絕招，方向鍵無效
 	GROUND_SKILL,
 	//地面任意移動絕招，四方向鍵有效
-	//FREE_SKILL, 可以直接使用walking
+	FREE_SKILL,
 
 	//特殊絕招，方向鍵無效，可以遁地且無重力
 	UNIQUE_SKILL,

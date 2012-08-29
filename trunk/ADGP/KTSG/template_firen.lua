@@ -45,6 +45,7 @@ action_key_map = {
 
 --落地切換設定
 air_crouch_map={
+--格式： { Action, Frame, FrameID }
 {Action.in_the_air, "crouch", 0},
 {Action.Dash, "crouch", 1},
 {Action.BeforeDashAttack, "crouch", 1},
