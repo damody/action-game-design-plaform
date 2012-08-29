@@ -407,9 +407,17 @@ void CClassView::OnContextMenu(CWnd* pWnd, CPoint point)
 		{
 			menu.LoadMenu(IDR_POPUP_FRAME_EDIT);
 		}
+		else if(IsNumber(pWndTree->GetItemText(m_wndClassView.GetParentItem(hTreeItem))))
+		{
+			menu.LoadMenu(IDR_POPUP_POINTS_EDIT);
+		}
+		else if(1 == 1)
+		{
+			menu.LoadMenu(IDR_POPUP_POINT_EDIT);
+		}
 		else
 		{
-			menu.LoadMenu(IDR_POPUP_OTHER_EDIT);
+			//menu.LoadMenu(IDR_POPUP_OTHER_EDIT);
 		}
 	}
 	else
