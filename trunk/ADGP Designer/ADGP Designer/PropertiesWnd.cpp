@@ -1162,7 +1162,8 @@ VARIANT CPropertiesWnd::varBool(bool _value)
 	_varBool.boolVal = _value;
 	return _varBool;
 }
-pertiesWnd::Update()
+
+void CPropertiesWnd::Update()
 {
 	switch(EditProp)
 	{
