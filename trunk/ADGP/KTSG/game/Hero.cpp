@@ -161,7 +161,8 @@ void Hero::Update(float dt)
 					m_FrameID = 0;
 				}
 				FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
-				if(f->m_ClearKeyQueue == 1){
+				if(m_KeyQue.empty()){}
+				else if(f->m_ClearKeyQueue == 1){
 					m_KeyQue.pop_back();
 				}
 				else if(f->m_ClearKeyQueue == 2){
@@ -210,7 +211,8 @@ void Hero::Update(float dt)
 			m_Frame = "in_the_air";
 			m_FrameID = 0;
 			FrameInfo *f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
-			if(f->m_ClearKeyQueue == 1){
+			if(m_KeyQue.empty()){}
+			else if(f->m_ClearKeyQueue == 1){
 				m_KeyQue.pop_back();
 			}
 			else if(f->m_ClearKeyQueue == 2){
@@ -296,11 +298,15 @@ NextLoop:
 			goto NextLoop;
 		}
 	}
-	if(f->m_ClearKeyQueue == 1){
+	if(m_KeyQue.empty()){}
+	else if(f->m_ClearKeyQueue == 1){
 		m_KeyQue.pop_back();
 	}
 	else if(f->m_ClearKeyQueue == 2){
 		m_KeyQue.clear();
+	}
+	if(m_Action == HeroAction::CROUCH){
+		m_Vel = Vector3(0,0,0);
 	}
 	m_PicID = f->m_PictureID;
 	m_PicX = f->m_PictureX;
@@ -501,9 +507,9 @@ bool Hero::ScanKeyQue()
 	}
 	else if(m_Action == HeroAction::CROUCH){
 		if(m_KeyQue.empty()){
-			if(m_TimeTik == 0){
+			/*if(m_TimeTik == 0){
 				m_Vel.x = 0, m_Vel.y = 0, m_Vel.z = 0;
-			}
+			}//*/
 			return false;
 		}
 		/*else if(m_KeyQue.back().key == CtrlKey::DEF && m_Frame.compare("crouch") == 0 && m_FrameID == 0){
@@ -517,21 +523,14 @@ bool Hero::ScanKeyQue()
 				if(dx != 0){
 					nFrame = "dash_front";
 					m_FaceSide = dx > 0;
-					m_Vel.x = dx * m_HeroInfo->m_DashDistance;
-					m_Vel.y = m_HeroInfo->m_DashHeight;
-					if(dz != 0) m_Vel.z = dz * m_HeroInfo->m_DashDistanceZ;
 				}
 				else if(m_Vel.x != 0 ){
 					if((m_Vel.x > 0) == m_FaceSide){
 						nFrame = "dash_front";
-						m_Vel.x = m_FaceSide ? m_HeroInfo->m_DashDistance : -m_HeroInfo->m_DashDistance;
 					}
 					else{
 						nFrame = "dash_back";
-						m_Vel.x = m_FaceSide ? -m_HeroInfo->m_DashDistance : m_HeroInfo->m_DashDistance;
 					}
-					m_Vel.y = m_HeroInfo->m_DashHeight;
-					if(dz != 0) m_Vel.z = dz * m_HeroInfo->m_DashDistanceZ;
 				}else{
 					nFrame = "jump";
 				}
@@ -541,9 +540,9 @@ bool Hero::ScanKeyQue()
 			}
 		}
 		//蹲完速度歸零
-		if(m_TimeTik == 0){
+		/*if(m_TimeTik == 0){
 			m_Vel.x = 0, m_Vel.y = 0, m_Vel.z = 0;
-		}
+		}//*/
 	}
 	//決定招式按鍵動作
 	int cface = 0;
@@ -784,11 +783,15 @@ KeyLoop:
 				goto KeyLoop;
 			}
 		}
-		if(f->m_ClearKeyQueue == 1){
+		if(m_KeyQue.empty()){}
+		else if(f->m_ClearKeyQueue == 1){
 			m_KeyQue.pop_back();
 		}
 		else if(f->m_ClearKeyQueue == 2){
 			m_KeyQue.clear();
+		}
+		if(m_Action == HeroAction::CROUCH){
+			m_Vel = Vector3(0,0,0);
 		}
 		m_PicID = f->m_PictureID;
 		m_PicX = f->m_PictureX;
