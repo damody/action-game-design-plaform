@@ -71,7 +71,6 @@ bool HeroInfo::CheckHeroDataVaild( LuaCell_Sptr luadata )
 			testOK &= luadata->HasValue("frame/%s/%d/clear_key_queue", frameName, frames);
 			testOK &= luadata->HasValue("frame/%s/%d/hit", frameName, frames);
 			testOK &= luadata->HasValue("frame/%s/%d/blood", frameName, frames);
-			testOK &= luadata->HasValue("frame/%s/%d/clear_key_queue", frameName, frames);
 		}
 	}
 	return testOK;

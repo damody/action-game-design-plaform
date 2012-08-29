@@ -45,7 +45,7 @@ private:
 	Vector3		m_Position;
 	float		m_CenterX,m_CenterY;
 	Vector3		m_Vel;
-	Bodys		m_Bodys;
+	FrameInfo	*m_FrameInfo;
 	float		m_Angle;
 	bool		m_FaceSide; //true ¥k, false ¥ª
 	int		d_run;		//§P©w¶]¨B¥Î¡A¥k¥¿¥ª­t
@@ -81,7 +81,7 @@ private:
 
 		ar &	m_Position;
 		ar &	m_Vel;
-		ar &	m_Bodys;
+		ar &	m_FrameInfo;
 		ar &	m_Angle;
 		ar &	m_FaceSide;
 
@@ -125,7 +125,11 @@ protected:
 	void Flicker();//°{Ã{
 	void Recover();//¦^¦å¡B®ð¡B¯}¨¾­È.....
 	void CreateEffect();
-
+	void UpdateVel(int dx, int dz);
+	
+	bool isKeyUsed(char);
+	void keyUsed(char);
+	void newKey(char);
 };
 SHARE_PTR(Hero)
 typedef std::vector <Hero_RawPtr> Heroes;

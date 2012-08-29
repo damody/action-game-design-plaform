@@ -46,7 +46,7 @@ struct FrameInfo
 	//這個 Frame 執行圈數，一圈1/60秒
 	int	m_Wait;
 	//是否要清掉 KeyQueue 的資料
-	bool	m_ClearKeyQueue;
+	int	m_ClearKeyQueue;
 	//身體
 	Bodys		m_Bodys;
 	//攻擊判定

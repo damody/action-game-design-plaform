@@ -16,6 +16,7 @@
 #include "MainFrm.h"
 #include "ADGP Designer.h"
 #include "global.h"
+#include "ConvStr.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -48,13 +49,109 @@ void CMFCPropertyGridPropertyButton::OnClickName( CPoint point )
 	pProp1->AddSubItem(pProp);
 	m_MotherGrid->AdjustLayout();
 }
+/////////////////////////////////////////////////////////////////////////////
+IMPLEMENT_DYNAMIC(CMFCPropItem, CMFCPropertyGridProperty)
+
+BOOL CMFCPropItem::OnEndEdit()
+{
+	if(m_Edited){
+		((CPropertiesWnd*)m_MotherGrid->GetParent())->Update();
+		m_Edited = false;
+	}
+	return CMFCPropertyGridProperty::OnEndEdit();
+}
+
+BOOL CMFCPropItem::OnEdit( LPPOINT lptClick )
+{
+	if (CMFCPropertyGridProperty::OnEdit(lptClick))
+	{
+		m_Edited = true;
+		m_Record = this->GetValue();
+		return TRUE;
+	}else return FALSE;
+}
+
+bool CMFCPropItem::IsEdited()
+{
+	const COleVariant& var = m_varValue;
+	const COleVariant  var1 = m_Record;
+	m_Record = m_varValue;
+
+	switch (m_varValue.vt)
+	{
+	case VT_BSTR:
+		{
+			CString str1 = var.bstrVal;
+			CString str2 = var1.bstrVal;
+
+			return str1 != str2;
+		}
+		break;
+
+	case VT_I2:
+		return(short)var.iVal != (short)var1.iVal;
+
+	case VT_I4:
+	case VT_INT:
+		return(long)var.lVal != (long)var1.lVal;
+
+	case VT_UI1:
+		return(BYTE)var.bVal != (BYTE)var1.bVal;
+
+	case VT_UI2:
+		return var.uiVal != var1.uiVal;
+
+	case VT_UINT:
+	case VT_UI4:
+		return var.ulVal != var1.ulVal;
+
+	case VT_R4:
+		return(float)var.fltVal != (float)var1.fltVal;
+
+	case VT_R8:
+		return(double)var.dblVal != (double)var1.dblVal;
+
+	case VT_BOOL:
+		return(VARIANT_BOOL)var.boolVal != (VARIANT_BOOL)var1.boolVal;
+	}
+}
+
+void CMFCPropItem::SetValue( const COleVariant&  varValue )
+{
+	ASSERT_VALID(this);
+
+	if (m_varValue.vt != VT_EMPTY && m_varValue.vt != varValue.vt)
+	{
+		ASSERT(FALSE);
+		return;
+	}
+
+	BOOL bInPlaceEdit = m_bInPlaceEdit;
+	if (bInPlaceEdit)
+	{
+		OnEndEdit();
+	}
+
+	m_varValue = varValue;
+	if (!m_Edited)
+	{
+		m_Record = m_varValue;
+	}
+	Redraw();
+
+	if (bInPlaceEdit)
+	{
+		ASSERT_VALID(m_pWndList);
+		m_pWndList->EditItem(this);
+	}
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // CResourceViewBar
 
 CPropertiesWnd* CPropertiesWnd::instance = NULL;
 
-CPropertiesWnd::CPropertiesWnd()
+CPropertiesWnd::CPropertiesWnd():EditProp(0)
 {
 	instance = this;
 	m_lastSelectedItem = NULL;
@@ -78,6 +175,8 @@ BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_REGISTERED_MESSAGE(AFX_WM_PROPERTY_CHANGED, OnPropertyChanged)
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
+	ON_WM_MOUSEMOVE()
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -148,6 +247,8 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndToolBar.SetRouteCommandsViaFrame(FALSE);
 
 	AdjustLayout();
+
+	//SetTimer(0,)
 
 	return 0;
 }
@@ -355,10 +456,17 @@ void CPropertiesWnd::InitPropList_Frame()
 	pProp = new CMFCPropertyGridProperty( _T("ClearKeyQueue"), varBool(), _T("是否要清掉 KeyQueue 的資料"));
 	pPropMain->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty(_T("Picture ID"), varInt(), _T("表示用哪一張圖裡面可以顯示的動作"));
-	pProp->EnableSpinControl(TRUE, 0, 300);
-	pPropMain->AddSubItem(pProp);
-	
+	CMFCPropertyGridProperty* pPicdate = new CMFCPropertyGridProperty(_T("Picture"), 0, TRUE);
+	pPicdate->AllowEdit(FALSE);
+	pPropItem = new CMFCPropItem(&m_wndPropList,_T("Picture ID"), varInt, _T("表示用哪一張圖裡面可以顯示的動作"));
+	pPropItem->EnableSpinControl(TRUE, 0, 300);
+	pPicdate->AddSubItem(pPropItem);
+	pPropItem = new CMFCPropItem(&m_wndPropList,_T("Picture X"), varInt, _T("行:第X個分割區塊"));
+	pPicdate->AddSubItem(pPropItem);
+	pPropItem = new CMFCPropItem(&m_wndPropList, _T("Picture Y"), varInt, _T("列:第Y個分割區塊"));
+	pPicdate->AddSubItem(pPropItem);
+	pGroup1->AddSubItem(pPicdate);
+
 	CMFCPropertyGridProperty* pCenterSize = new CMFCPropertyGridProperty(_T("Center Offset"), 0, TRUE);
 	pProp = new CMFCPropertyGridProperty(_T("Center X Offset"), varFloat(), _T("人物X方向偏移修正量"));
 	pCenterSize->AddSubItem(pProp);
@@ -706,7 +814,7 @@ CMFCPropertyGridProperty* CPropertiesWnd::GetDefaultPropList()
 	pProp->AllowEdit(FALSE);
 	pGroup1->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty(_T("Next Frame Name"), _T("standing"), _T("表示跳到哪一個 Frame"));
+	pProp = new CMFCPropertyGridProperty(_T("Next Frame Name"), _T("standing"), _T("表示跳到哪一個 Frame"),0);
 	AddNormalActionDcase(pProp);
 	pGroup1->AddSubItem(pProp);
 
@@ -757,13 +865,7 @@ CMFCPropertyGridProperty* CPropertiesWnd::GetDefaultPropList()
 	pProp = new CMFCPropertyGridProperty( _T("MP"), varInt(), _T("要消耗的 mp"));
 //	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pConsumePos->AddSubItem(pProp);
-/*
-	pProp = new CMFCPropertyGridProperty( _T("Enough Frame Name"), _T("standing"), _T("夠消耗的話跳到該 Frame"));
-	AddNormalActionDcase(pProp);
-	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Enough Frame Index"), varInt, _T("夠的話跳到該格"));
-//	pProp->EnableSpinControl(TRUE, 0, 300);
-	pConsumePos->AddSubItem(pProp);*/
+
 	pProp = new CMFCPropertyGridProperty( _T("Not Enough Frame Name"), _T("standing"), _T("不夠消耗的話跳到該 Frame"));
 	AddNormalActionDcase(pProp);
 	pConsumePos->AddSubItem(pProp);
@@ -817,7 +919,11 @@ void CPropertiesWnd::RefreshPropList()
 
 void CPropertiesWnd::RefreshPropList_Frame()
 {
-	InitPropList_Frame();
+	if (EditProp != 1)
+	{
+		InitPropList_Frame();
+		EditProp = 1;
+	}
 
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty(0);
 
@@ -825,7 +931,7 @@ void CPropertiesWnd::RefreshPropList_Frame()
 
 	propRoot->GetSubItem(0)->SetValue(CString(g_FrameName.c_str()));
 	propRoot->GetSubItem(1)->SetValue(varInt(g_FrameIndex));
-	propRoot->GetSubItem(2)->SetValue(CString(frameInfo.m_NextFrameName.c_str()));
+	((CMFCPropItem*)propRoot->GetSubItem(2))->SetValue(CString(frameInfo.m_NextFrameName.c_str()));
 	propRoot->GetSubItem(3)->SetValue(varInt(frameInfo.m_NextFrameIndex));
 	propRoot->GetSubItem(4)->SetValue(CString(actionMap[frameInfo.m_HeroAction]));
 	propRoot->GetSubItem(5)->SetValue(varInt(frameInfo.m_Wait));
@@ -843,6 +949,91 @@ void CPropertiesWnd::RefreshPropList_Frame()
 	propRoot->GetSubItem(10)->GetSubItem(2)->SetValue(varFloat(frameInfo.m_DVZ));
 	
 }
+
+void CPropertiesWnd::UpdatePropList_Frame()
+{
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty(0);
+
+	FrameInfo frameInfo = (*g_ActiveFramesMap)[g_FrameName][g_FrameIndex];
+
+	if (((CMFCPropItem*)propRoot->GetSubItem(2))->IsEdited())
+	{
+		char buff[1000];
+		COleVariant v = propRoot->GetSubItem(2)->GetValue();
+		v.ChangeType(VT_BSTR, NULL); 
+		ConvStr::WcharToChar(CString(v).GetBuffer(0),buff);
+		std::string FrameName(buff);
+		if (g_ActiveFramesMap->find(FrameName) != g_ActiveFramesMap->end())
+		{
+			frameInfo.m_NextFrameName = FrameName;
+		}else{
+			CString str("Error Frame does not exist");
+			AfxMessageBox(str);
+		}
+	}
+	if (((CMFCPropItem*)propRoot->GetSubItem(3))->IsEdited())
+	{
+		COleVariant v = propRoot->GetSubItem(3)->GetValue();
+		v.ChangeType(VT_INT, NULL);
+		int i = v.intVal;
+	}
+
+/*
+	if (propRoot->GetSubItem(4)->OnEndEdit())
+	{
+
+	}
+	if (propRoot->GetSubItem(5)->OnEndEdit())
+	{
+
+	}
+	if (propRoot->GetSubItem(6)->OnEndEdit())
+	{
+
+	}
+	if (propRoot->GetSubItem(7)->OnEndEdit())
+	{
+
+	}
+	if (propRoot->GetSubItem(9)->GetSubItem(0)->OnEndEdit())
+	{
+
+	}
+	if (propRoot->GetSubItem(9)->GetSubItem(1)->OnEndEdit())
+	{
+
+	}
+	if (propRoot->GetSubItem(9)->GetSubItem(2)->OnEndEdit())
+	{
+
+	}
+
+	if (propRoot->GetSubItem(9)->GetSubItem(3)->OnEndEdit())
+	{
+	}
+
+	if (propRoot->GetSubItem(9)->GetSubItem(4)->OnEndEdit())
+	{
+
+	}
+	;
+	if (propRoot->GetSubItem(10)->GetSubItem(0)->OnEndEdit())
+	{
+	}
+
+	if (propRoot->GetSubItem(10)->GetSubItem(1)->OnEndEdit())
+	{
+	}
+
+	if (propRoot->GetSubItem(10)->GetSubItem(2)->OnEndEdit())
+	{
+	}
+	*/
+
+	propRoot->GetSubItem(8)->GetSubItem(0)->OnEndEdit();
+	propRoot->GetSubItem(8)->GetSubItem(1)->OnEndEdit();
+}
+
 
 void CPropertiesWnd::RefreshPropList_Body()
 {
@@ -971,4 +1162,12 @@ VARIANT CPropertiesWnd::varBool(bool _value)
 	_varBool.boolVal = _value;
 	return _varBool;
 }
-
+pertiesWnd::Update()
+{
+	switch(EditProp)
+	{
+	case 1:
+		UpdatePropList_Frame();
+		break;
+	}
+}
