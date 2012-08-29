@@ -745,164 +745,10 @@ void CClassView::OnChangeVisualStyle()
 
 void CClassView::OnSelectItem(HTREEITEM item)
 {
-	/*CMFCPropertyGridCtrl* ctrl = CPropertiesWnd::GetInstance()->GetPropList();
-	ctrl->RemoveAll();
-	ctrl->RedrawWindow();
-	((CMainFrame*)(this->GetParentFrame()))->m_wndProperties.RedrawWindow();
-
-	if(m_wndClassView.GetRootItem() == item)
-	{
-		ctrl->AddProperty(CPropertiesWnd::GetInstance()->GetDefaultPropList());
-
-		CMFCPropertyGridProperty* propRoot = ctrl->GetProperty(0);
-
-		VARIANT varFloat;
-		varFloat.vt = VT_R4;
-		varFloat.fltVal = 0.0f;
-
-		VARIANT varInt;
-		varInt.vt = VT_INT;
-		varInt.intVal = m_propMap[item].m_FrameIndex;
-
-		VARIANT varBool;
-		varBool.vt = VT_BOOL;
-		varBool.boolVal = false;
-
-		propRoot->GetSubItem(0)->SetValue(CString(m_propMap[item].m_Name.c_str()));
-		propRoot->GetSubItem(1)->SetValue(varInt);
-		propRoot->GetSubItem(2)->SetValue(CString(m_propMap[item].m_NextFrameName.c_str()));
-		varInt.intVal = m_propMap[item].m_NextFrameIndex;
-		propRoot->GetSubItem(3)->SetValue(varInt);
-		propRoot->GetSubItem(4)->SetValue(CString(actionMap[m_propMap[item].m_HeroAction]));
-		varInt.intVal = m_propMap[item].m_Wait;
-		propRoot->GetSubItem(5)->SetValue(varInt);
-		varBool.boolVal = m_propMap[item].m_ClearKeyQueue;
-		propRoot->GetSubItem(6)->SetValue(varBool);
-		varInt.intVal = m_propMap[item].m_PictureID;
-		propRoot->GetSubItem(7)->SetValue(varInt);
-		varFloat.fltVal = m_propMap[item].m_CenterX;
-		propRoot->GetSubItem(8)->GetSubItem(0)->SetValue(varFloat);
-		varFloat.fltVal = m_propMap[item].m_CenterY;
-		propRoot->GetSubItem(8)->GetSubItem(1)->SetValue(varFloat);
-		varInt.intVal = m_propMap[item].m_PictureX;
-		propRoot->GetSubItem(9)->GetSubItem(0)->SetValue(varInt);
-		varInt.intVal = m_propMap[item].m_PictureY;
-		propRoot->GetSubItem(9)->GetSubItem(1)->SetValue(varInt);
-		varBool.boolVal = m_propMap[item].m_Consume.m_JumpRule;
-		propRoot->GetSubItem(10)->GetSubItem(0)->SetValue(varBool);
-		varInt.intVal = m_propMap[item].m_Consume.m_HP;
-		propRoot->GetSubItem(10)->GetSubItem(1)->SetValue(varInt);
-		varInt.intVal = m_propMap[item].m_Consume.m_MP;
-		propRoot->GetSubItem(10)->GetSubItem(2)->SetValue(varInt);
-		propRoot->GetSubItem(10)->GetSubItem(3)->SetValue(CString(m_propMap[item].m_Consume.m_NotEnoughFrameName.c_str()));
-		varInt.intVal = m_propMap[item].m_Consume.m_NotEnoughFrame;
-		propRoot->GetSubItem(10)->GetSubItem(4)->SetValue(varInt);
-		varFloat.fltVal = m_propMap[item].m_DVX;
-		propRoot->GetSubItem(11)->GetSubItem(0)->SetValue(varFloat);
-		varFloat.fltVal = m_propMap[item].m_DVY;
-		propRoot->GetSubItem(11)->GetSubItem(1)->SetValue(varFloat);
-		varFloat.fltVal = m_propMap[item].m_DVZ;
-		propRoot->GetSubItem(11)->GetSubItem(2)->SetValue(varFloat);
-	}
-	else if(IsNumber(m_wndClassView.GetItemText(item)))
-	{
-		CPropertiesWnd* _propWnd = CPropertiesWnd::GetInstance();
-		_propWnd->InitPropList_Frame();
-
-		CMFCPropertyGridProperty* propRoot = ctrl->GetProperty(0);
-
-		VARIANT varFloat;
-		varFloat.vt = VT_R4;
-		varFloat.fltVal = 0.0f;
-
-		VARIANT varInt;
-		varInt.vt = VT_INT;
-		varInt.intVal = m_propMap[item].m_FrameIndex;
-
-		VARIANT varBool;
-		varBool.vt = VT_BOOL;
-		varBool.boolVal = false;
-
-		propRoot->GetSubItem(0)->SetValue(CString(m_propMap[item].m_FrameName.c_str()));
-		propRoot->GetSubItem(1)->SetValue(varInt);
-		propRoot->GetSubItem(2)->SetValue(CString(m_propMap[item].m_NextFrameName.c_str()));
-		varInt.intVal = m_propMap[item].m_NextFrameIndex;
-		propRoot->GetSubItem(3)->SetValue(varInt);
-		propRoot->GetSubItem(4)->SetValue(CString(actionMap[m_propMap[item].m_HeroAction]));
-		varInt.intVal = m_propMap[item].m_Wait;
-		propRoot->GetSubItem(5)->SetValue(varInt);
-		varBool.boolVal = m_propMap[item].m_ClearKeyQueue;
-		propRoot->GetSubItem(6)->SetValue(varBool);
-		varInt.intVal = m_propMap[item].m_PictureID;
-		propRoot->GetSubItem(7)->SetValue(varInt);
-		varFloat.fltVal = m_propMap[item].m_CenterX;
-		propRoot->GetSubItem(8)->GetSubItem(0)->SetValue(varFloat);
-		varFloat.fltVal = m_propMap[item].m_CenterY;
-		propRoot->GetSubItem(8)->GetSubItem(1)->SetValue(varFloat);
-		varInt.intVal = m_propMap[item].m_PictureX;
-		propRoot->GetSubItem(9)->GetSubItem(0)->SetValue(varInt);
-		varInt.intVal = m_propMap[item].m_PictureY;
-		propRoot->GetSubItem(9)->GetSubItem(1)->SetValue(varInt);
-		varBool.boolVal = m_propMap[item].m_Consume.m_JumpRule;
-		propRoot->GetSubItem(10)->GetSubItem(0)->SetValue(varBool);
-		varInt.intVal = m_propMap[item].m_Consume.m_HP;
-		propRoot->GetSubItem(10)->GetSubItem(1)->SetValue(varInt);
-		varInt.intVal = m_propMap[item].m_Consume.m_MP;
-		propRoot->GetSubItem(10)->GetSubItem(2)->SetValue(varInt);
-		propRoot->GetSubItem(10)->GetSubItem(3)->SetValue(CString(m_propMap[item].m_Consume.m_NotEnoughFrameName.c_str()));
-		varInt.intVal = m_propMap[item].m_Consume.m_NotEnoughFrame;
-		propRoot->GetSubItem(10)->GetSubItem(4)->SetValue(varInt);
-		varFloat.fltVal = m_propMap[item].m_DVX;
-		propRoot->GetSubItem(11)->GetSubItem(0)->SetValue(varFloat);
-		varFloat.fltVal = m_propMap[item].m_DVY;
-		propRoot->GetSubItem(11)->GetSubItem(1)->SetValue(varFloat);
-		varFloat.fltVal = m_propMap[item].m_DVZ;
-		propRoot->GetSubItem(11)->GetSubItem(2)->SetValue(varFloat);
-	}
-	else if(!m_wndClassView.GetItemText(item).Compare(CString("Bodys"))){
-		HTREEITEM pItem = m_wndClassView.GetParentItem(item);
-		CPropertiesWnd* _propWnd = CPropertiesWnd::GetInstance();
-		_propWnd->InitPropList_Body();
-
-		CMFCPropertyGridProperty* propRoot = ctrl->GetProperty(0);
-
-		VARIANT varFloat;
-		varFloat.vt = VT_R4;
-		varFloat.fltVal = 0.0f;
-
-		VARIANT varInt;
-		varInt.vt = VT_INT;
-		varInt.intVal = m_propMap[item].m_FrameIndex;
-
-		VARIANT varBool;
-		varBool.vt = VT_BOOL;
-		varBool.boolVal = false;
-
-		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(0).x;
-		propRoot->GetSubItem(0)->GetSubItem(1)->GetSubItem(0)->SetValue(varFloat);
-		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(0).y;
-		propRoot->GetSubItem(0)->GetSubItem(1)->GetSubItem(1)->SetValue(varFloat);
-		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(1).x;
-		propRoot->GetSubItem(0)->GetSubItem(2)->GetSubItem(0)->SetValue(varFloat);
-		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(1).y;
-		propRoot->GetSubItem(0)->GetSubItem(2)->GetSubItem(1)->SetValue(varFloat);
-		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(2).x;
-		propRoot->GetSubItem(0)->GetSubItem(3)->GetSubItem(0)->SetValue(varFloat);
-		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_Area.Points().at(2).y;
-		propRoot->GetSubItem(0)->GetSubItem(3)->GetSubItem(1)->SetValue(varFloat);
-		varFloat.fltVal = m_propMap[pItem].m_Bodys.at(0).m_ZWidth;
-		propRoot->GetSubItem(1)->SetValue(varFloat);
-		varInt.intVal = m_propMap[pItem].m_Bodys.at(0).m_Kind;
-		propRoot->GetSubItem(2)->SetValue(varInt);
-	}
-
-	CPropertiesWnd::GetInstance()->m_lastSelectedItem = item;
-	m_wndClassView.m_lastSelectedItem = item;*/
-
 	CPropertiesWnd* _propWnd = CPropertiesWnd::GetInstance();
 	HTREEITEM pItem = m_wndClassView.GetParentItem(item);
 
-	if(m_wndClassView.GetRootItem() == item)
+	/*if(m_wndClassView.GetRootItem() == item)
 	{
 		m_wndClassView.SelectItem(item);
 		m_wndClassView.SetFocus();
@@ -982,16 +828,83 @@ void CClassView::OnSelectItem(HTREEITEM item)
 			char buff[1000];
 			ConvStr::WcharToChar(text.GetBuffer(0),buff);
 			std::string FrameName(buff);
-			/*if(g_ActiveFramesMap->find(FrameName) != g_ActiveFramesMap->end())
+			/ *if(g_ActiveFramesMap->find(FrameName) != g_ActiveFramesMap->end())
 			{
 				g_FrameName = FrameName;
 				g_FrameIndex = _ttoi(m_wndClassView.GetItemText(item));
 				((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
-			}*/
+			}* /
 		}
 
 		m_wndClassView.SelectItem(item);
 		m_wndClassView.SetFocus();
+	}*/
+
+	if(m_wndClassView.GetRootItem() == item){
+
+		m_wndClassView.SelectItem(item);
+		m_wndClassView.SetFocus();
+	}else if(IsNumber(m_wndClassView.GetItemText(item))){
+
+		HTREEITEM pItem = m_wndClassView.GetParentItem(item);
+		if (pItem != m_wndClassView.GetRootItem())
+		{
+			CString text = m_wndClassView.GetItemText(pItem);
+
+			if(!text.Compare(CString("Bodys"))){
+				HTREEITEM FrameIndex = m_wndClassView.GetParentItem(pItem);
+				HTREEITEM Frame	     = m_wndClassView.GetParentItem(FrameIndex);
+				char buff[1000];
+				ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
+				std::string FrameName(buff);
+
+				if (g_FrameName != FrameName || g_FrameIndex != _ttoi(m_wndClassView.GetItemText(FrameIndex)))
+				{
+					g_FrameName = FrameName;
+					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
+					((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
+				}
+
+				((CMainFrame*)(this->GetParentFrame()))->EditBody(_ttoi(m_wndClassView.GetItemText(item)));
+
+			}else if(!text.Compare(CString("Attacks"))){
+				HTREEITEM FrameIndex = m_wndClassView.GetParentItem(pItem);
+				HTREEITEM Frame	     = m_wndClassView.GetParentItem(FrameIndex);
+				char buff[1000];
+				ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
+				std::string FrameName(buff);
+
+				if (g_FrameName != FrameName || g_FrameIndex != _ttoi(m_wndClassView.GetItemText(FrameIndex)))
+				{
+					g_FrameName = FrameName;
+					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
+					((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
+				}
+
+				((CMainFrame*)(this->GetParentFrame()))->EditAttack(_ttoi(m_wndClassView.GetItemText(item)));
+
+			}else if(!text.Compare(CString("HitDatas"))){
+
+			}else if(!text.Compare(CString("Catchs"))){
+
+			}else if(!text.Compare(CString("BloodInfos"))){
+
+			}else if(!text.Compare(CString("Creations"))){
+
+			}else{
+				char buff[1000];
+				ConvStr::WcharToChar(text.GetBuffer(0),buff);
+				std::string FrameName(buff);
+				if(g_ActiveFramesMap->find(FrameName) != g_ActiveFramesMap->end()){
+					g_FrameName = FrameName;
+					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(item));
+					((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
+				}
+			}
+
+			m_wndClassView.SelectItem(item);
+			m_wndClassView.SetFocus();
+		}
 	}
 }
 

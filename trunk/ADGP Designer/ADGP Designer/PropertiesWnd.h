@@ -69,7 +69,7 @@ public:
 class CPropertiesWnd : public CDockablePane
 {
 private: 
-	int EditProp;// 0-None 1-Basic 2-Frame 3-Bodys 4-Attack 5-Hit 6-Catch 7-Blood
+	int m_EditProp;// 0-None 1-Basic 2-Frame 3-Bodys 4-Attack 5-Hit 6-Catch 7-Blood
 // «Øºc
 public:
 	CPropertiesWnd();

@@ -95,29 +95,6 @@ void CViewTree::OnEndLabelEdit( NMHDR* pNMHDR, LRESULT* pResult )
 	this->ModifyStyle(TVS_EDITLABELS, 0);
 }
 
-void CViewTree::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	CTreeCtrl::OnLButtonDown(nFlags, point);
-
-	CString classCaption, caption;
-	ASSERT(classCaption.LoadString(IDS_CLASS_VIEW));
-
-	this->GetParent()->GetWindowText(caption);
-
-	if(classCaption.Compare(caption) == 0)
-	{
-		CPoint pt = point;
-
-		UINT flags = 0;
-		HTREEITEM hTreeItem = this->HitTest(pt, &flags);
-		if (hTreeItem != NULL)
-		{
-			((CClassView*)this->GetParent())->OnSelectItem(hTreeItem);
-		}
-	}
-	
-}
-
 void CViewTree::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
 	if(nChar == VK_F2)

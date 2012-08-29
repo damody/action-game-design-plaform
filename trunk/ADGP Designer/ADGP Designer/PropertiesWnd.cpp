@@ -151,7 +151,7 @@ void CMFCPropItem::SetValue( const COleVariant&  varValue )
 
 CPropertiesWnd* CPropertiesWnd::instance = NULL;
 
-CPropertiesWnd::CPropertiesWnd():EditProp(0)
+CPropertiesWnd::CPropertiesWnd():m_EditProp(0)
 {
 	instance = this;
 	m_lastSelectedItem = NULL;
@@ -417,6 +417,7 @@ void CPropertiesWnd::SetPropListFont()
 
 void CPropertiesWnd::InitPropList_Frame()
 {
+	m_EditProp = 2;
 	m_wndPropList.RemoveAll();
 	SetPropListFont();
 
@@ -506,6 +507,7 @@ void CPropertiesWnd::InitPropList_Frame()
 
 void CPropertiesWnd::InitPropList_Body()
 {
+	m_EditProp = 3;
 	m_wndPropList.RemoveAll();
 	SetPropListFont();
 
@@ -528,6 +530,7 @@ void CPropertiesWnd::InitPropList_Body()
 
 void CPropertiesWnd::InitPropList_Attack()
 {
+	m_EditProp = 4;
 	m_wndPropList.RemoveAll();
 	SetPropListFont();
 
@@ -574,6 +577,7 @@ void CPropertiesWnd::InitPropList_Attack()
 
 void CPropertiesWnd::InitPropList_HitData()
 {
+	m_EditProp = 5;
 	m_wndPropList.RemoveAll();
 	SetPropListFont();
 
@@ -598,6 +602,7 @@ void CPropertiesWnd::InitPropList_HitData()
 
 void CPropertiesWnd::InitPropList_CatchInfo()
 {
+	m_EditProp = 6;
 	m_wndPropList.RemoveAll();
 	SetPropListFont();
 
@@ -636,6 +641,7 @@ void CPropertiesWnd::InitPropList_CatchInfo()
 
 void CPropertiesWnd::InitPropList_BloodInfo()
 {
+	m_EditProp = 7;
 	m_wndPropList.RemoveAll();
 	SetPropListFont();
 
@@ -919,13 +925,11 @@ void CPropertiesWnd::RefreshPropList()
 
 void CPropertiesWnd::RefreshPropList_Frame()
 {
-	if (EditProp != 1)
+	if (m_EditProp != 2)
 	{
 		InitPropList_Frame();
-		EditProp = 1;
+		m_EditProp = 2;
 	}
-
-	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty(0);
 
 	if(g_ActiveFramesMap->find(g_FrameName)==g_ActiveFramesMap->end()){
 		char buff[100];
@@ -946,6 +950,7 @@ void CPropertiesWnd::RefreshPropList_Frame()
 
 	FrameInfo frameInfo = (*g_ActiveFramesMap)[g_FrameName][g_FrameIndex];
 
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty(0);
 	propRoot->GetSubItem(0)->SetValue(CString(g_FrameName.c_str()));
 	propRoot->GetSubItem(1)->SetValue(varInt(g_FrameIndex));
 	((CMFCPropItem*)propRoot->GetSubItem(2))->SetValue(CString(frameInfo.m_NextFrameName.c_str()));
@@ -1251,7 +1256,7 @@ VARIANT CPropertiesWnd::varBool(bool _value)
 
 void CPropertiesWnd::Update()
 {
-	switch(EditProp)
+	switch(m_EditProp)
 	{
 	case 1:
 		UpdatePropList_Frame();
