@@ -436,24 +436,24 @@ void CPropertiesWnd::InitPropList_Frame()
 	pProp->AllowEdit(FALSE);
 	pPropMain->AddSubItem(pProp);
 	
-	pProp = new CMFCPropertyGridProperty(_T("Next Frame Name"), _T("standing"), _T("表示跳到哪一個 Frame"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("Next Frame Name"), _T("standing"), _T("表示跳到哪一個 Frame"));
 	AddNormalActionDcase(pProp);
 	pPropMain->AddSubItem(pProp);
 	
-	pProp = new CMFCPropertyGridProperty(_T("Next Frame Index"), varInt(), _T("表示跳到 Frame 的哪一格"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("Next Frame Index"), varInt(), _T("表示跳到 Frame 的哪一格"));
 	pProp->EnableSpinControl(TRUE, 0, 300);
 	pPropMain->AddSubItem(pProp);
 	
-	pProp = new CMFCPropertyGridProperty(_T("Hero Action"), _T("STANDING"), _T("表示動作的狀態"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("Hero Action"), _T("STANDING"), _T("表示動作的狀態"));
 	AddNormalActionUcase(pProp);
 	pProp->AllowEdit(TRUE);
 	pPropMain->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty( _T("Wait"), varInt(), _T("這個 Frame 執行圈數，一圈1/60秒"));
+	pProp = new CMFCPropItem(&m_wndPropList, _T("Wait"), varInt(), _T("這個 Frame 執行圈數，一圈1/60秒"));
 	pProp->EnableSpinControl(TRUE, 0, 10000);
 	pPropMain->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty( _T("ClearKeyQueue"), varBool(), _T("是否要清掉 KeyQueue 的資料"));
+	pProp = new CMFCPropItem(&m_wndPropList, _T("ClearKeyQueue"), varBool(), _T("是否要清掉 KeyQueue 的資料"));
 	pPropMain->AddSubItem(pProp);
 
 	CMFCPropertyGridProperty* pPicdate = new CMFCPropertyGridProperty(_T("Picture"), 0, TRUE);
@@ -468,35 +468,35 @@ void CPropertiesWnd::InitPropList_Frame()
 	pPropMain->AddSubItem(pPicdate);
 
 	CMFCPropertyGridProperty* pCenterSize = new CMFCPropertyGridProperty(_T("Center Offset"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("Center X Offset"), varFloat(), _T("人物X方向偏移修正量"));
+	pProp = new CMFCPropItem(&m_wndPropList, _T("Center X Offset"), varFloat(), _T("人物X方向偏移修正量"));
 	pCenterSize->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("Center Y Offset"), varFloat(), _T("人物Y方向偏移修正量"));
+	pProp = new CMFCPropItem(&m_wndPropList, _T("Center Y Offset"), varFloat(), _T("人物Y方向偏移修正量"));
 	pCenterSize->AddSubItem(pProp);
 	pPropMain->AddSubItem(pCenterSize);
 
 	CMFCPropertyGridProperty* pConsumePos = new CMFCPropertyGridProperty(_T("Consume"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("JumpRule"), varBool(), _T("False 時只對next有用，True 時只對 hitdata有用"));
+	pProp = new CMFCPropItem(&m_wndPropList, _T("JumpRule"), varBool(), _T("False 時只對next有用，True 時只對 hitdata有用"));
 	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("HP"), varInt(), _T("要消耗的 hp"));
+	pProp = new CMFCPropItem(&m_wndPropList, _T("HP"), varInt(), _T("要消耗的 hp"));
 	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("MP"), varInt(), _T("要消耗的 mp"));
+	pProp = new CMFCPropItem(&m_wndPropList, _T("MP"), varInt(), _T("要消耗的 mp"));
 	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("Jump: Frame Name"), _T("standing"), _T("不夠消耗的話跳到該 Frame"));
+	pProp = new CMFCPropItem(&m_wndPropList, _T("Jump: Frame Name"), _T("standing"), _T("不夠消耗的話跳到該 Frame"));
 	AddNormalActionDcase(pProp);
 	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Jump: Frame Index"), varInt(), _T("不夠的話跳到該格"));
+	pProp = new CMFCPropItem(&m_wndPropList, _T("Jump: Frame Index"), varInt(), _T("不夠的話跳到該格"));
 	pProp->EnableSpinControl(TRUE, 0, 300);
 	pConsumePos->AddSubItem(pProp);
 	pPropMain->AddSubItem(pConsumePos);
 
 	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty(_T("Direction Vector"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("DVX"), varFloat(), _T("X方向左右的移動向量"));
+	pProp = new CMFCPropItem(&m_wndPropList, _T("DVX"), varFloat(), _T("X方向左右的移動向量"));
 	pDirectionVector->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("DVY"), varFloat(), _T("Y方向左右的移動向量"));
+	pProp = new CMFCPropItem(&m_wndPropList, _T("DVY"), varFloat(), _T("Y方向左右的移動向量"));
 	pDirectionVector->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("DVZ"), varFloat(), _T("Z方向左右的移動向量"));
+	pProp = new CMFCPropItem(&m_wndPropList, _T("DVZ"), varFloat(), _T("Z方向左右的移動向量"));
 	pDirectionVector->AddSubItem(pProp);
 	pPropMain->AddSubItem(pDirectionVector);
 
@@ -517,9 +517,9 @@ void CPropertiesWnd::InitPropList_Body()
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
 	CMFCPropertyGridProperty* pProp;
 
-	pProp = new CMFCPropertyGridProperty(_T("m_ZWidth"), varFloat(), _T("m_ZWidth"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_ZWidth"), varFloat(), _T("m_ZWidth"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_Kind"), varInt(), _T("m_Kind"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_Kind"), varInt(), _T("m_Kind"));
 	pPropMain->AddSubItem(pProp);
 	
 	m_wndPropList.AddProperty(pPropMain);
@@ -539,33 +539,33 @@ void CPropertiesWnd::InitPropList_Attack()
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
 	CMFCPropertyGridProperty* pProp;
 
-	pProp = new CMFCPropertyGridProperty(_T("m_Injury"), varInt(), _T("m_Injury"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_Injury"), varInt(), _T("m_Injury"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_Strength"), varInt(), _T("m_Strength"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_Strength"), varInt(), _T("m_Strength"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_Kind"), varInt(), _T("m_Kind"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_Kind"), varInt(), _T("m_Kind"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_Effect"), varInt(), _T("m_Effect"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_Effect"), varInt(), _T("m_Effect"));
 	pPropMain->AddSubItem(pProp);
 
 	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty(_T("Direction Vector"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("DVX"), varFloat(), _T("X方向左右的移動向量"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("DVX"), varFloat(), _T("X方向左右的移動向量"));
 	pDirectionVector->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("DVY"), varFloat(), _T("Y方向左右的移動向量"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("DVY"), varFloat(), _T("Y方向左右的移動向量"));
 	pDirectionVector->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("DVZ"), varFloat(), _T("Z方向左右的移動向量"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("DVZ"), varFloat(), _T("Z方向左右的移動向量"));
 	pDirectionVector->AddSubItem(pProp);
 	pPropMain->AddSubItem(pDirectionVector);
 
-	pProp = new CMFCPropertyGridProperty(_T("m_ZWidth"), varFloat(), _T("m_ZWidth"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_ZWidth"), varFloat(), _T("m_ZWidth"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_Fall"), varInt(), _T("m_Fall"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_Fall"), varInt(), _T("m_Fall"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_BreakDefend"), varInt(), _T("m_BreakDefend"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_BreakDefend"), varInt(), _T("m_BreakDefend"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_AttackRest"), varInt(), _T("m_AttackRest"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_AttackRest"), varInt(), _T("m_AttackRest"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_ReAttackRest"), varInt(), _T("m_ReAttackRest"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_ReAttackRest"), varInt(), _T("m_ReAttackRest"));
 	pPropMain->AddSubItem(pProp);
 
 	m_wndPropList.AddProperty(pPropMain);
@@ -585,11 +585,11 @@ void CPropertiesWnd::InitPropList_HitData()
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
 	CMFCPropertyGridProperty* pProp;
 
-	pProp = new CMFCPropertyGridProperty(_T("m_KeyQueue"), _T(""), _T("m_KeyQueue"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_KeyQueue"), _T(""), _T("m_KeyQueue"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_FrameName"), _T("none"), _T("m_FrameName"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_FrameName"), _T("none"), _T("m_FrameName"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_FrameOffest"), varInt(), _T("m_FrameOffest"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_FrameOffest"), varInt(), _T("m_FrameOffest"));
 	pPropMain->AddSubItem(pProp);
 
 	m_wndPropList.AddProperty(pPropMain);
@@ -609,21 +609,21 @@ void CPropertiesWnd::InitPropList_CatchInfo()
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
 	CMFCPropertyGridProperty* pProp;
 
-	pProp = new CMFCPropertyGridProperty(_T("m_ZWidth"), varFloat(), _T("m_ZWidth"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_ZWidth"), varFloat(), _T("m_ZWidth"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_Strength"), varInt(), _T("m_Strength"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_Strength"), varInt(), _T("m_Strength"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_Kind"), varInt(), _T("m_Kind"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_Kind"), varInt(), _T("m_Kind"));
 	pPropMain->AddSubItem(pProp);
 
 	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty(_T("m_CatchPosition"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("X"), varFloat(), _T("X"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("X"), varFloat(), _T("X"));
 	pDirectionVector->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Y"), varFloat(), _T("Y"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("Y"), varFloat(), _T("Y"));
 	pDirectionVector->AddSubItem(pProp);
 	pPropMain->AddSubItem(pDirectionVector);
 
-	pProp = new CMFCPropertyGridProperty(_T("m_CatchWhere"), _T("NECK"), _T("m_CatchWhere"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_CatchWhere"), _T("NECK"), _T("m_CatchWhere"));
 	pProp->AddOption(_T("NECK"));
 	pProp->AddOption(_T("LEG"));
 	pProp->AddOption(_T("WAIST"));
@@ -651,13 +651,13 @@ void CPropertiesWnd::InitPropList_BloodInfo()
 	pPropMain->AddSubItem(pProp);
 
 	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty(_T("m_Position"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("X"), varFloat(), _T("X"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("X"), varFloat(), _T("X"));
 	pDirectionVector->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Y"), varFloat(), _T("Y"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("Y"), varFloat(), _T("Y"));
 	pDirectionVector->AddSubItem(pProp);
 	pPropMain->AddSubItem(pDirectionVector);
 
-	pProp = new CMFCPropertyGridProperty(_T("m_EnableValue"), varFloat(), _T("m_EnableValue"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("m_EnableValue"), varFloat(), _T("m_EnableValue"));
 	pPropMain->AddSubItem(pProp);
 
 	m_wndPropList.AddProperty(pPropMain);
@@ -677,9 +677,9 @@ void CPropertiesWnd::InitPropList_Point()
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
 	CMFCPropertyGridProperty* pProp;
 
-	pProp = new CMFCPropertyGridProperty(_T("X"), varFloat(), _T("X"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("X"), varFloat(), _T("X"));
 	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Y"), varFloat(), _T("Y"));
+	pProp = new CMFCPropItem(&m_wndPropList,_T("Y"), varFloat(), _T("Y"));
 	pPropMain->AddSubItem(pProp);
 
 	m_wndPropList.AddProperty(pPropMain);
@@ -927,26 +927,43 @@ void CPropertiesWnd::RefreshPropList_Frame()
 
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty(0);
 
+	if(g_ActiveFramesMap->find(g_FrameName)==g_ActiveFramesMap->end()){
+		char buff[100];
+		sprintf(buff, "Properties: Frame[%s] does not exist",g_FrameName.c_str());
+		CString str(buff);
+		AfxMessageBox(str);
+		((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+		return;
+
+	}else if(g_FrameIndex < -1 || g_FrameIndex > (*g_ActiveFramesMap)[g_FrameName].size()-1){
+		char buff[100];
+		sprintf(buff, "Properties: Frame[%s][%d] does not exist",g_FrameName.c_str(),g_FrameIndex);
+		CString str(buff);
+		AfxMessageBox(str);
+		((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+		return;
+	}
+
 	FrameInfo frameInfo = (*g_ActiveFramesMap)[g_FrameName][g_FrameIndex];
 
 	propRoot->GetSubItem(0)->SetValue(CString(g_FrameName.c_str()));
 	propRoot->GetSubItem(1)->SetValue(varInt(g_FrameIndex));
 	((CMFCPropItem*)propRoot->GetSubItem(2))->SetValue(CString(frameInfo.m_NextFrameName.c_str()));
-	propRoot->GetSubItem(3)->SetValue(varInt(frameInfo.m_NextFrameIndex));
-	propRoot->GetSubItem(4)->SetValue(CString(actionMap[frameInfo.m_HeroAction]));
-	propRoot->GetSubItem(5)->SetValue(varInt(frameInfo.m_Wait));
-	propRoot->GetSubItem(6)->SetValue(varBool(frameInfo.m_ClearKeyQueue));
-	propRoot->GetSubItem(7)->SetValue(varInt(frameInfo.m_PictureID));
-	propRoot->GetSubItem(8)->GetSubItem(0)->SetValue(varFloat(frameInfo.m_CenterX));
-	propRoot->GetSubItem(8)->GetSubItem(1)->SetValue(varFloat(frameInfo.m_CenterY));
-	propRoot->GetSubItem(9)->GetSubItem(0)->SetValue(varBool(frameInfo.m_Consume.m_JumpRule));
-	propRoot->GetSubItem(9)->GetSubItem(1)->SetValue(varInt(frameInfo.m_Consume.m_HP));
-	propRoot->GetSubItem(9)->GetSubItem(2)->SetValue(varInt(frameInfo.m_Consume.m_MP));
-	propRoot->GetSubItem(9)->GetSubItem(3)->SetValue(CString(frameInfo.m_Consume.m_NotEnoughFrameName.c_str()));
-	propRoot->GetSubItem(9)->GetSubItem(4)->SetValue(varInt(frameInfo.m_Consume.m_NotEnoughFrame));
-	propRoot->GetSubItem(10)->GetSubItem(0)->SetValue(varFloat(frameInfo.m_DVX));
-	propRoot->GetSubItem(10)->GetSubItem(1)->SetValue(varFloat(frameInfo.m_DVY));
-	propRoot->GetSubItem(10)->GetSubItem(2)->SetValue(varFloat(frameInfo.m_DVZ));
+	((CMFCPropItem*)propRoot->GetSubItem(3))->SetValue(varInt(frameInfo.m_NextFrameIndex));
+	((CMFCPropItem*)propRoot->GetSubItem(4))->SetValue(CString(actionMap[frameInfo.m_HeroAction]));
+	((CMFCPropItem*)propRoot->GetSubItem(5))->SetValue(varInt(frameInfo.m_Wait));
+	((CMFCPropItem*)propRoot->GetSubItem(6))->SetValue(varBool(frameInfo.m_ClearKeyQueue));
+	((CMFCPropItem*)propRoot->GetSubItem(7))->SetValue(varInt(frameInfo.m_PictureID));
+	((CMFCPropItem*)propRoot->GetSubItem(8)->GetSubItem(0))->SetValue(varFloat(frameInfo.m_CenterX));
+	((CMFCPropItem*)propRoot->GetSubItem(8)->GetSubItem(1))->SetValue(varFloat(frameInfo.m_CenterY));
+	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(0))->SetValue(varBool(frameInfo.m_Consume.m_JumpRule));
+	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(1))->SetValue(varInt(frameInfo.m_Consume.m_HP));
+	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(2))->SetValue(varInt(frameInfo.m_Consume.m_MP));
+	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(3))->SetValue(CString(frameInfo.m_Consume.m_NotEnoughFrameName.c_str()));
+	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(4))->SetValue(varInt(frameInfo.m_Consume.m_NotEnoughFrame));
+	((CMFCPropItem*)propRoot->GetSubItem(10)->GetSubItem(0))->SetValue(varFloat(frameInfo.m_DVX));
+	((CMFCPropItem*)propRoot->GetSubItem(10)->GetSubItem(1))->SetValue(varFloat(frameInfo.m_DVY));
+	((CMFCPropItem*)propRoot->GetSubItem(10)->GetSubItem(2))->SetValue(varFloat(frameInfo.m_DVZ));
 	
 }
 
