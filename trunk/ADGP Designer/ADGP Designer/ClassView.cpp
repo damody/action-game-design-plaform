@@ -489,9 +489,9 @@ void CClassView::OnUpdateSort(CCmdUI* pCmdUI)
 void CClassView::OnAnimationAdd()
 {
 	HTREEITEM root = m_wndClassView.GetRootItem();
-	HTREEITEM item = m_wndClassView.InsertItem(_T("standing123"), 1, 1, root);
-	FrameInfo fi;
-	fi.m_FrameName = std::string("standing");
+	HTREEITEM item = m_wndClassView.InsertItem(_T("standing"), 1, 1, root);
+	FrameInfo fi = defaultFrameInfo(item);
+	/*fi.m_FrameName = std::string("standing");
 	fi.m_FrameIndex = 0;
 	fi.m_NextFrameName = fi.m_FrameName;
 	fi.m_NextFrameIndex = 0;
@@ -517,7 +517,7 @@ void CClassView::OnAnimationAdd()
 	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
 	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
 	fi.m_Bodys[0].m_ZWidth = 0.0f;
-	fi.m_Bodys[0].m_Kind = 0;
+	fi.m_Bodys[0].m_Kind = 0;*/
 
 	HTREEITEM hClass = m_wndClassView.InsertItem(_T("0"), 3, 3, item);
 
@@ -1302,6 +1302,102 @@ void CClassView::Refresh()
 		}
 		
 	}
+}
+
+FrameInfo CClassView::defaultFrameInfo(HTREEITEM item)
+{
+	CT2CA pszConvertedAnsiString (m_wndClassView.GetItemText(item));
+	std::string str2(pszConvertedAnsiString);
+
+	FrameInfo fi;
+	fi.m_FrameName = str2;
+	fi.m_FrameIndex = 0;
+	fi.m_NextFrameName = fi.m_FrameName;
+	fi.m_NextFrameIndex = 0;
+	fi.m_HeroAction = HeroAction::STANDING;
+	fi.m_Wait = 1;
+	fi.m_ClearKeyQueue = false;
+	fi.m_PictureID = 1;
+	fi.m_CenterX = 0.0f;
+	fi.m_CenterY = 0.0f;
+	fi.m_PictureX = 0;
+	fi.m_PictureY = 0;
+	fi.m_Consume.m_JumpRule = 0;
+	fi.m_Consume.m_HP = 1;
+	fi.m_Consume.m_MP = 1;
+	fi.m_Consume.m_NotEnoughFrameName = fi.m_FrameName;
+	fi.m_Consume.m_NotEnoughFrame = 0;
+	fi.m_DVX = 0.0f;
+	fi.m_DVY = 0.0f;
+	fi.m_DVZ = 0.0f;
+	
+	fi.m_Bodys.resize(1);
+	fi.m_Bodys[0].m_Area = Polygon2D();
+	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
+	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
+	fi.m_Bodys[0].m_ZWidth = 0.0f;
+	fi.m_Bodys[0].m_Kind = 0;
+
+	fi.m_Attacks.resize(1);
+	fi.m_Attacks[0].m_Area = Polygon2D();
+	fi.m_Attacks[0].m_Area.AddPoint(0.0f, 0.0f);
+	fi.m_Attacks[0].m_Area.AddPoint(0.0f, 0.0f);
+	fi.m_Attacks[0].m_Injury = 0;
+	fi.m_Attacks[0].m_Strength = 0;
+	fi.m_Attacks[0].m_Kind = 0;
+	fi.m_Attacks[0].m_Effect = 0;
+	fi.m_Attacks[0].m_DVX = 0.0f;
+	fi.m_Attacks[0].m_DVY = 0.0f;
+	fi.m_Attacks[0].m_DVZ = 0.0f;
+	fi.m_Attacks[0].m_ZWidth = 0.0f;
+	fi.m_Attacks[0].m_Fall = 0;
+	fi.m_Attacks[0].m_BreakDefend = 0;
+	fi.m_Attacks[0].m_AttackRest = 0;
+	fi.m_Attacks[0].m_ReAttackRest = 0;
+
+	fi.m_HitDatas.resize(1);
+	fi.m_HitDatas[0].m_KeyQueue = "";
+	fi.m_HitDatas[0].m_FrameName = "none";
+	fi.m_HitDatas[0].m_FrameOffset = 1;
+
+	fi.m_Catchs.resize(1);
+	fi.m_Catchs[0].m_Area = Polygon2D();
+	fi.m_Catchs[0].m_Area.AddPoint(0.0f, 0.0f);
+	fi.m_Catchs[0].m_Area.AddPoint(0.0f, 0.0f);
+	fi.m_Catchs[0].m_ZWidth = 0.0f;
+	fi.m_Catchs[0].m_Injury = 0;
+	fi.m_Catchs[0].m_Kind = 0;
+	fi.m_Catchs[0].m_CatchPosition.x = 0.0f;
+	fi.m_Catchs[0].m_CatchPosition.y = 0.0f;
+	fi.m_Catchs[0].m_CatchWhere = CatchInfo::CatchPosition::NECK;
+
+	fi.m_BeCatch.m_Neck.x = 0.0f;
+	fi.m_BeCatch.m_Neck.y = 0.0f;
+	fi.m_BeCatch.m_Leg.x = 0.0f;
+	fi.m_BeCatch.m_Leg.y = 0.0f;
+	fi.m_BeCatch.m_Waist.x = 0.0f;
+	fi.m_BeCatch.m_Waist.y = 0.0f;
+
+	fi.m_BloodInfos.resize(1);
+	fi.m_BloodInfos[0].m_Scale = 0.0f;
+	fi.m_BloodInfos[0].m_Position.x = 0.0f;
+	fi.m_BloodInfos[0].m_Position.y = 0.0f;
+	fi.m_BloodInfos[0].m_EnableValue = 0.0f;
+
+	fi.m_Creations.resize(1);
+	fi.m_Creations[0].name = "none";
+	fi.m_Creations[0].amount = 0;
+	fi.m_Creations[0].x = 0.0f;
+	fi.m_Creations[0].y = 0.0f;
+	fi.m_Creations[0].facing = 0;
+	fi.m_Creations[0].frame = "0";
+	fi.m_Creations[0].frameID = 0;
+	fi.m_Creations[0].HP = 0;
+	fi.m_Creations[0].v0.x = 0.0f;
+	fi.m_Creations[0].v0.y = 0.0f;
+	fi.m_Creations[0].v0.z = 0.0f;
+
+	return fi;
 }
 
 

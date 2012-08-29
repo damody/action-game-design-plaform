@@ -60,6 +60,7 @@ protected:
 	CViewTree m_wndClassView;
 	CImageList m_ClassViewImages;
 	UINT m_nCurrSort;
+	FrameInfo defaultFrameInfo(HTREEITEM item);
 	
 	TreeItemMap	m_propMap;
 	FramesMap	m_FrameMap;
