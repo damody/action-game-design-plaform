@@ -433,26 +433,149 @@ void CPropertiesWnd::InitPropList_Attack()
 
 	pProp = new CMFCPropertyGridProperty(_T("m_Injury"), varInt(), _T("m_Injury"));
 	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("m_Strength"), varInt(), _T("m_Strength"));
+	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("m_Kind"), varInt(), _T("m_Kind"));
+	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("m_Effect"), varInt(), _T("m_Effect"));
+	pPropMain->AddSubItem(pProp);
+
+	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty(_T("Direction Vector"), 0, TRUE);
+	pProp = new CMFCPropertyGridProperty(_T("DVX"), varFloat(), _T("X方向左右的移動向量"));
+	pDirectionVector->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("DVY"), varFloat(), _T("Y方向左右的移動向量"));
+	pDirectionVector->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("DVZ"), varFloat(), _T("Z方向左右的移動向量"));
+	pDirectionVector->AddSubItem(pProp);
+	pPropMain->AddSubItem(pDirectionVector);
+
+	pProp = new CMFCPropertyGridProperty(_T("m_ZWidth"), varFloat(), _T("m_ZWidth"));
+	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("m_Fall"), varInt(), _T("m_Fall"));
+	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("m_BreakDefend"), varInt(), _T("m_BreakDefend"));
+	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("m_AttackRest"), varInt(), _T("m_AttackRest"));
+	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("m_ReAttackRest"), varInt(), _T("m_ReAttackRest"));
+	pPropMain->AddSubItem(pProp);
+
+	m_wndPropList.AddProperty(pPropMain);
+	m_wndPropList.ExpandAll();
 }
 
 void CPropertiesWnd::InitPropList_HitData()
 {
+	m_wndPropList.RemoveAll();
+	SetPropListFont();
 
+	m_wndPropList.EnableHeaderCtrl(FALSE);
+	m_wndPropList.EnableDescriptionArea();
+	m_wndPropList.SetVSDotNetLook();
+	m_wndPropList.MarkModifiedProperties();
+
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
+	CMFCPropertyGridProperty* pProp;
+
+	pProp = new CMFCPropertyGridProperty(_T("m_KeyQueue"), _T(""), _T("m_KeyQueue"));
+	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("m_FrameName"), _T("none"), _T("m_FrameName"));
+	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("m_FrameOffest"), varInt(), _T("m_FrameOffest"));
+	pPropMain->AddSubItem(pProp);
+
+	m_wndPropList.AddProperty(pPropMain);
+	m_wndPropList.ExpandAll();
 }
 
 void CPropertiesWnd::InitPropList_CatchInfo()
 {
+	m_wndPropList.RemoveAll();
+	SetPropListFont();
 
+	m_wndPropList.EnableHeaderCtrl(FALSE);
+	m_wndPropList.EnableDescriptionArea();
+	m_wndPropList.SetVSDotNetLook();
+	m_wndPropList.MarkModifiedProperties();
+
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
+	CMFCPropertyGridProperty* pProp;
+
+	pProp = new CMFCPropertyGridProperty(_T("m_ZWidth"), varFloat(), _T("m_ZWidth"));
+	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("m_Strength"), varInt(), _T("m_Strength"));
+	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("m_Kind"), varInt(), _T("m_Kind"));
+	pPropMain->AddSubItem(pProp);
+
+	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty(_T("m_CatchPosition"), 0, TRUE);
+	pProp = new CMFCPropertyGridProperty(_T("X"), varFloat(), _T("X"));
+	pDirectionVector->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("Y"), varFloat(), _T("Y"));
+	pDirectionVector->AddSubItem(pProp);
+	pPropMain->AddSubItem(pDirectionVector);
+
+	pProp = new CMFCPropertyGridProperty(_T("m_CatchWhere"), _T("NECK"), _T("m_CatchWhere"));
+	pProp->AddOption(_T("NECK"));
+	pProp->AddOption(_T("LEG"));
+	pProp->AddOption(_T("WAIST"));
+	pProp->AllowEdit(TRUE);
+	pPropMain->AddSubItem(pProp);
+
+	m_wndPropList.AddProperty(pPropMain);
+	m_wndPropList.ExpandAll();
 }
 
 void CPropertiesWnd::InitPropList_BloodInfo()
 {
+	m_wndPropList.RemoveAll();
+	SetPropListFont();
 
+	m_wndPropList.EnableHeaderCtrl(FALSE);
+	m_wndPropList.EnableDescriptionArea();
+	m_wndPropList.SetVSDotNetLook();
+	m_wndPropList.MarkModifiedProperties();
+
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
+	CMFCPropertyGridProperty* pProp;
+
+	pProp = new CMFCPropertyGridProperty(_T("m_Scale"), varFloat(), _T("m_Scale"));
+	pPropMain->AddSubItem(pProp);
+
+	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty(_T("m_Position"), 0, TRUE);
+	pProp = new CMFCPropertyGridProperty(_T("X"), varFloat(), _T("X"));
+	pDirectionVector->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("Y"), varFloat(), _T("Y"));
+	pDirectionVector->AddSubItem(pProp);
+	pPropMain->AddSubItem(pDirectionVector);
+
+	pProp = new CMFCPropertyGridProperty(_T("m_EnableValue"), varFloat(), _T("m_EnableValue"));
+	pPropMain->AddSubItem(pProp);
+
+	m_wndPropList.AddProperty(pPropMain);
+	m_wndPropList.ExpandAll();
 }
 
 void CPropertiesWnd::InitPropList_Point()
 {
+	m_wndPropList.RemoveAll();
+	SetPropListFont();
 
+	m_wndPropList.EnableHeaderCtrl(FALSE);
+	m_wndPropList.EnableDescriptionArea();
+	m_wndPropList.SetVSDotNetLook();
+	m_wndPropList.MarkModifiedProperties();
+
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
+	CMFCPropertyGridProperty* pProp;
+
+	pProp = new CMFCPropertyGridProperty(_T("X"), varFloat(), _T("X"));
+	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("Y"), varFloat(), _T("Y"));
+	pPropMain->AddSubItem(pProp);
+
+	m_wndPropList.AddProperty(pPropMain);
+	m_wndPropList.ExpandAll();
 }
 
 void CPropertiesWnd::AddNormalActionUcase( CMFCPropertyGridProperty* pProp )
