@@ -731,7 +731,7 @@ void CD3DPanelView::UpdateBody()
 	m_FrameInfo->m_Bodys[m_BodyID].m_Area.Clear();
 	for(Points::iterator it = m_D3DApp.m_Body[m_BodyID].GetPoints().begin(); it != m_D3DApp.m_Body[m_BodyID].GetPoints().end(); ++it)
 	{
-		m_FrameInfo->m_Bodys[m_BodyID].m_Area.AddPoint(it->x,it->y);
+		m_FrameInfo->m_Bodys[m_BodyID].m_Area.AddPoint(it->x,-it->y);
 	}
 
 	//Refresh
@@ -741,7 +741,7 @@ void CD3DPanelView::UpdateBody( int index )
 {
 	if(m_FrameInfo==NULL)return;
 	m_FrameInfo->m_Bodys[m_BodyID].m_Area.Points()[index].x = m_D3DApp.m_Body[m_BodyID].GetPoints()[index].x;
-	m_FrameInfo->m_Bodys[m_BodyID].m_Area.Points()[index].y = m_D3DApp.m_Body[m_BodyID].GetPoints()[index].y;
+	m_FrameInfo->m_Bodys[m_BodyID].m_Area.Points()[index].y = -m_D3DApp.m_Body[m_BodyID].GetPoints()[index].y;
 
 	//Refresh
 }
@@ -757,10 +757,10 @@ void CD3DPanelView::UpdateAddition_BodyPoint( float x,float y )
 void CD3DPanelView::UpdateAttack()
 {
 	if(m_FrameInfo==NULL)return;
-	m_FrameInfo->m_Attacks[m_BodyID].m_Area.Clear();
-	for(Points::iterator it = m_D3DApp.m_Attack[m_BodyID].GetPoints().begin(); it != m_D3DApp.m_Attack[m_BodyID].GetPoints().end(); ++it)
+	m_FrameInfo->m_Attacks[m_AttackID].m_Area.Clear();
+	for(Points::iterator it = m_D3DApp.m_Attack[m_AttackID].GetPoints().begin(); it != m_D3DApp.m_Attack[m_AttackID].GetPoints().end(); ++it)
 	{
-		m_FrameInfo->m_Attacks[m_BodyID].m_Area.AddPoint(it->x,it->y);
+		m_FrameInfo->m_Attacks[m_AttackID].m_Area.AddPoint(it->x,-it->y);
 	}
 
 	//Refresh
@@ -769,8 +769,8 @@ void CD3DPanelView::UpdateAttack()
 void CD3DPanelView::UpdateAttack( int index )
 {
 	if(m_FrameInfo==NULL)return;
-	m_FrameInfo->m_Attacks[m_BodyID].m_Area.Points()[index].x = m_D3DApp.m_Attack[m_BodyID].GetPoints()[index].x;
-	m_FrameInfo->m_Attacks[m_BodyID].m_Area.Points()[index].y = m_D3DApp.m_Attack[m_BodyID].GetPoints()[index].y;
+	m_FrameInfo->m_Attacks[m_AttackID].m_Area.Points()[index].x = m_D3DApp.m_Attack[m_AttackID].GetPoints()[index].x;
+	m_FrameInfo->m_Attacks[m_AttackID].m_Area.Points()[index].y = -m_D3DApp.m_Attack[m_AttackID].GetPoints()[index].y;
 
 	//Refresh
 }
