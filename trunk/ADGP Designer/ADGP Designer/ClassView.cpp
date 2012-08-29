@@ -668,10 +668,60 @@ void CClassView::OnFrameAdd()
 void CClassView::OnFrameDelete()
 {
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	int count = _ttoi(m_wndClassView.GetItemText(item));
+	if(item!=NULL)
+	{
+		HTREEITEM tmp_item = m_wndClassView.GetNextSiblingItem(item);
+		for(int i=count;;i++)
+		{
+			if(tmp_item != NULL)
+			{
+				TCHAR num_str[10];
+				wsprintf(num_str, _T("%d"), i);
+				m_wndClassView.SetItemText(tmp_item, num_str);
+				tmp_item = m_wndClassView.GetNextSiblingItem(tmp_item);
+			}
+			else break;
+		}
+		m_wndClassView.DeleteItem(item);
+	}
+
+}
+
+void CClassView::OnPointAdd()
+{
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	HTREEITEM tmp_item = m_wndClassView.GetChildItem(item);
+	for (int i=0;;++i)
+	{
+		// need get last node
+		if (m_wndClassView.GetNextSiblingItem(tmp_item) != NULL)
+		{
+			tmp_item = m_wndClassView.GetNextSiblingItem(tmp_item);
+			continue;
+		}
+		TCHAR num_str[10];
+		CString item_str = m_wndClassView.GetItemText(tmp_item);
+		wsprintf(num_str, _T("%d"), i);
+		if (i>298 || num_str == item_str)
+		{
+			wsprintf(num_str, _T("%d"), i+1);
+			m_wndClassView.InsertItem(num_str, 3, 3, item);
+			break;
+		}
+	}
+	// TODO: 在此加入您的命令處理常式程式碼
+}
+
+
+void CClassView::OnPointDelete()
+{
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
 	if(item!=NULL)
 	{
 		m_wndClassView.DeleteItem(item);
 	}
+	// TODO: 在此加入您的命令處理常式程式碼
 }
 
 void CClassView::OnPropertyView()
@@ -1334,34 +1384,3 @@ CMFCPropertyGridProperty* CClassView::GetDefaultPropList()
 	return pGroup1;
 }*/
 
-
-void CClassView::OnPointAdd()
-{
-	HTREEITEM item = m_wndClassView.GetSelectedItem();
-	HTREEITEM tmp_item = m_wndClassView.GetChildItem(item);
-	for (int i=0;;++i)
-	{
-		// need get last node
-		if (m_wndClassView.GetNextSiblingItem(tmp_item) != NULL)
-		{
-			tmp_item = m_wndClassView.GetNextSiblingItem(tmp_item);
-			continue;
-		}
-		TCHAR num_str[10];
-		CString item_str = m_wndClassView.GetItemText(tmp_item);
-		wsprintf(num_str, _T("%d"), i);
-		if (i>298 || num_str == item_str)
-		{
-			wsprintf(num_str, _T("%d"), i+1);
-			m_wndClassView.InsertItem(num_str, 3, 3, item);
-			break;
-		}
-	}
-	// TODO: 在此加入您的命令處理常式程式碼
-}
-
-
-void CClassView::OnPointDelete()
-{
-	// TODO: 在此加入您的命令處理常式程式碼
-}
