@@ -48,6 +48,8 @@ public:
 
 class CPropertiesWnd : public CDockablePane
 {
+private: 
+	int EditProp;// 0-None 1-Basic 2-Frame 3-Bodys 4-Attack 5-Hit 6-Catch 7-Blood
 // «Øºc
 public:
 	CPropertiesWnd();
@@ -112,7 +114,12 @@ public:
 	static void AddNormalActionUcase(CMFCPropertyGridProperty* pProp);
 	static void AddNormalActionDcase(CMFCPropertyGridProperty* pProp);
 	static void AddPointXY(CMFCPropertyGridProperty*& pProp);
+private:
+	void UpdatePropList_Frame();
 
+public:
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 

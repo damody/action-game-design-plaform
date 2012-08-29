@@ -16,6 +16,7 @@
 #include "MainFrm.h"
 #include "ADGP Designer.h"
 #include "global.h"
+#include "ConvStr.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -54,7 +55,7 @@ void CMFCPropertyGridPropertyButton::OnClickName( CPoint point )
 
 CPropertiesWnd* CPropertiesWnd::instance = NULL;
 
-CPropertiesWnd::CPropertiesWnd()
+CPropertiesWnd::CPropertiesWnd():EditProp(0)
 {
 	instance = this;
 	m_lastSelectedItem = NULL;
@@ -78,6 +79,8 @@ BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_REGISTERED_MESSAGE(AFX_WM_PROPERTY_CHANGED, OnPropertyChanged)
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
+	ON_WM_MOUSEMOVE()
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -730,7 +733,7 @@ void CPropertiesWnd::RefreshPropList()
 void CPropertiesWnd::RefreshPropList_Frame()
 {
 	InitPropList_Frame();
-
+	EditProp = 1;
 	VARIANT varFloat;
 	varFloat.vt = VT_R4;
 	varFloat.fltVal = 0.0f;
@@ -752,6 +755,7 @@ void CPropertiesWnd::RefreshPropList_Frame()
 	propRoot->GetSubItem(2)->SetValue(CString(frameInfo.m_NextFrameName.c_str()));
 	varInt.intVal = frameInfo.m_NextFrameIndex;
 	propRoot->GetSubItem(3)->SetValue(varInt);
+	propRoot->GetSubItem(3)->EnableSpinControl(TRUE, 0, (*g_ActiveFramesMap)[frameInfo.m_NextFrameName].size()-1);
 	propRoot->GetSubItem(4)->SetValue(CString(actionMap[frameInfo.m_HeroAction]));
 	varInt.intVal = frameInfo.m_Wait;
 	propRoot->GetSubItem(5)->SetValue(varInt);
@@ -856,3 +860,105 @@ const CString CPropertiesWnd::actionMap[MAX_ACTIONS] = {
 	CString("GROUND_SKILL"),
 	CString("UNIQUE_SKILL"),
 };
+
+void CPropertiesWnd::UpdatePropList_Frame()
+{
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty(0);
+
+	FrameInfo frameInfo = (*g_ActiveFramesMap)[g_FrameName][g_FrameIndex];
+
+	if (propRoot->GetSubItem(2)->IsModified())
+	{
+		char buff[1000];
+		COleVariant v = propRoot->GetSubItem(2)->GetValue();
+		v.ChangeType(VT_BSTR, NULL); 
+		ConvStr::WcharToChar(CString(v).GetBuffer(0),buff);
+		std::string FrameName(buff);
+		frameInfo.m_NextFrameName = FrameName;
+		
+	}
+	if (propRoot->GetSubItem(3)->OnEndEdit())
+	{
+
+	}
+
+	if (propRoot->GetSubItem(4)->OnEndEdit())
+	{
+
+	}
+	if (propRoot->GetSubItem(5)->OnEndEdit())
+	{
+
+	}
+	if (propRoot->GetSubItem(6)->OnEndEdit())
+	{
+
+	}
+	if (propRoot->GetSubItem(7)->OnEndEdit())
+	{
+
+	}
+	if (propRoot->GetSubItem(9)->GetSubItem(0)->OnEndEdit())
+	{
+
+	}
+	if (propRoot->GetSubItem(9)->GetSubItem(1)->OnEndEdit())
+	{
+
+	}
+	if (propRoot->GetSubItem(9)->GetSubItem(2)->OnEndEdit())
+	{
+
+	}
+		
+	if (propRoot->GetSubItem(9)->GetSubItem(3)->OnEndEdit())
+	{
+	}
+		
+	if (propRoot->GetSubItem(9)->GetSubItem(4)->OnEndEdit())
+	{
+
+	}
+		;
+	if (propRoot->GetSubItem(10)->GetSubItem(0)->OnEndEdit())
+	{
+	}
+
+	if (propRoot->GetSubItem(10)->GetSubItem(1)->OnEndEdit())
+	{
+	}
+
+	if (propRoot->GetSubItem(10)->GetSubItem(2)->OnEndEdit())
+	{
+	}
+
+	propRoot->GetSubItem(8)->GetSubItem(0)->OnEndEdit();
+	propRoot->GetSubItem(8)->GetSubItem(1)->OnEndEdit();
+}
+
+
+void CPropertiesWnd::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+
+	switch(EditProp)
+	{
+	case 1:
+		UpdatePropList_Frame();
+		break;
+	}
+	CDockablePane::OnMouseMove(nFlags, point);
+}
+
+
+void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	switch(EditProp)
+	{
+	case 1:
+		UpdatePropList_Frame();
+		break;
+	}
+	CDockablePane::OnTimer(nIDEvent);
+}

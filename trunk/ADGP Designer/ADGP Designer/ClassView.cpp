@@ -909,10 +909,13 @@ void CClassView::OnSelectItem(HTREEITEM item)
 				ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
 				std::string FrameName(buff);
 
-				g_FrameName = FrameName;
-				g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
+				if (g_FrameName != FrameName || g_FrameIndex != _ttoi(m_wndClassView.GetItemText(FrameIndex)))
+				{
+					g_FrameName = FrameName;
+					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
+					((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
+				}
 				
-
 				((CMainFrame*)(this->GetParentFrame()))->EditBody(_ttoi(m_wndClassView.GetItemText(item)));
 
 			}else if(!text.Compare(CString("Attacks"))){
@@ -922,8 +925,12 @@ void CClassView::OnSelectItem(HTREEITEM item)
 				ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
 				std::string FrameName(buff);
 
-				g_FrameName = FrameName;
-				g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
+				if (g_FrameName != FrameName || g_FrameIndex != _ttoi(m_wndClassView.GetItemText(FrameIndex)))
+				{
+					g_FrameName = FrameName;
+					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
+					((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
+				}
 
 				((CMainFrame*)(this->GetParentFrame()))->EditAttack(_ttoi(m_wndClassView.GetItemText(item)));
 
