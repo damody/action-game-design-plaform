@@ -35,21 +35,31 @@ bool Effect::Initialize(HWND hwnd)
 	}
 	m_Texture = Texture_Sptr(new Texture(m_RenderTexture->GetShaderResourceView()));
 	m_TextureID = g_TextureManager.AddTexture("EffectTexture",m_Texture);
-	SetFireParameters();
 	//
-	//m_PoisonShader = new PoisonShaderClass();
-
+	m_EffectShaders.push_back(m_FireShader);//push Fire
+	//push Poison
+	//push Freeze
+	//push else...
+	//
+	m_vEffect.resize(m_EffectShaders.size());
+	//
+	SetFireParameters();
 
 	return true;
 }
 void Effect::Updata( float dt )
 {
-	if(!m_FireEffect.empty())
+	for(int i=0;i<m_vEffect.size();i++)
 	{
-		m_FireShader->Update(dt);
-		m_FireShader->CreatVertex(m_FireEffect.begin(),m_FireEffect.end());
+		if(!m_vEffect[i].empty())
+		{
+			if(i<m_EffectShaders.size())
+			{
+				m_EffectShaders[i]->Update(dt);
+				m_EffectShaders[i]->CreatVertex(m_vEffect[i].begin(),m_vEffect[i].end());
+			}
+		}
 	}
-	
 }
 
 void Effect::SetFireParameters()
@@ -65,8 +75,8 @@ void Effect::SetFireParameters()
 	distortionScale = 1.2f;
 	distortionBias = 1.2f;
 
-	m_FireShader->SetShaderParameters(scrollSpeeds,scales,distortion1,distortion2,distortion3,distortionScale,distortionBias);
 
+	m_EffectShaders[EffectType::FIRE]->SetShaderParameters(7,scrollSpeeds,scales,distortion1,distortion2,distortion3,distortionScale,distortionBias);
 }
 
 bool Effect::CreateEffect( EffectType::e type,EffectData* ed )
@@ -78,18 +88,22 @@ bool Effect::CreateEffect( EffectType::e type,EffectData* ed )
 
 	switch(type)
 	{
-	case	EffectType::FIRE:
-		m_FireEffect.push_back(*ed);
-		break;
+		case	EffectType::FIRE:
+			m_vEffect[EffectType::FIRE].push_back(*ed);
+			break;
+		case	EffectType::POISON:
+
+			break;
 	}
 	m_SerialNum++;
-	//std::cout<<"x = "<<ed.m_Pos.x<<"y = "<<ed.m_Pos.y<<std::endl;
 	return true;
 }
 
 void Effect::Clear()
 {
-	m_FireEffect.clear();
+	for(int i=0;i<m_vEffect.size();i++)
+		m_vEffect[i].clear();
+	//m_FireEffect.clear();
 	m_SerialNum = 0;
 }
 
@@ -100,7 +114,18 @@ bool Effect::Overflow()
 
 bool Effect::Check( EffectType::e type,EffectData* ed )
 {
-
+	for(int i=0;i<m_vEffect.size();i++)
+	{
+		for (EffectDatas::iterator it = m_vEffect[i].begin();it != m_vEffect[i].end();it++)
+		{
+			if((*ed) == (*it))
+			{
+				ed->m_Pos = it->m_Pos;
+				return true;
+			}
+		}
+	}
+	/*
 	for (EffectDatas::iterator it = m_FireEffect.begin();it != m_FireEffect.end();it++)
 	{
 		if((*ed) == (*it))
@@ -108,7 +133,7 @@ bool Effect::Check( EffectType::e type,EffectData* ed )
 			ed->m_Pos = it->m_Pos;
 			return true;
 		}
-	}
+	}*/
 	return false;
 }
 
@@ -124,13 +149,16 @@ void Effect::Render()
 		m_RenderTexture->SetRenderTarget(g_DeviceContext,0);
 		m_RenderTexture->ClearRenderTarget(g_DeviceContext,NULL,0.0f,0.0f,0.0f,0.0f);
 
-		RenderFire();
+		RenderShader();
 	}
 }
-void Effect::RenderFire()
+void Effect::RenderShader()
 {
 	//Render
-	m_FireShader->Render();
+	for(int i=0;i<m_EffectShaders.size();i++)
+	{
+		m_EffectShaders[i]->Render();
+	}
 }
 ID3D11ShaderResourceView* Effect::GetTexture()
 {

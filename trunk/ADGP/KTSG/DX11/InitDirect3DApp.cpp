@@ -1312,6 +1312,7 @@ void InitDirect3DApp::TestFire()
 	if (InputStateS::instance().isKeyDown(KEY_F))
 	{
 		m_Player.m_Hero->SetEffect(EffectType::FIRE);
+		//m_Player.m_Hero->SetEffect(EffectType::POISON);
 	}
 }
 

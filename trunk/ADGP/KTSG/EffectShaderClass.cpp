@@ -55,8 +55,8 @@ bool EffectShaderClass::Initialize(ID3D11Device* device,ID3D11DeviceContext* dev
 		MessageBox(hwnd, L"Failed to CreateInputLayout", fxFilename, MB_OK);
 		return false;
 	}
-	//Get variable by name
-	GetVariableByName();
+	//Set variable by name
+	SetEffectVariableByName();
 	//Create Texture
 	CreateTexture();
 

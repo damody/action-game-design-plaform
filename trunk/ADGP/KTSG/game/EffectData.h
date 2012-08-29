@@ -7,10 +7,10 @@ struct EffectType
 {
 	enum e
 	{
-		NONE,
-		FIRE,
-		FREEZE,
-		POISON
+		NONE = -1,
+		FIRE = 0,
+		POISON,
+		FREEZE
 	};
 };
 
