@@ -971,7 +971,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 {
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty(0);
 
-	FrameInfo frameInfo = (*g_ActiveFramesMap)[g_FrameName][g_FrameIndex];
+	FrameInfo* frameInfo = &(*g_ActiveFramesMap)[g_FrameName][g_FrameIndex];
 
 	if (((CMFCPropItem*)propRoot->GetSubItem(2))->IsEdited())
 	{
@@ -982,10 +982,13 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		std::string FrameName(buff);
 		if (g_ActiveFramesMap->find(FrameName) != g_ActiveFramesMap->end())
 		{
-			frameInfo.m_NextFrameName = FrameName;
+			frameInfo->m_NextFrameName = FrameName;
 		}else{
-			CString str("Error Frame does not exist");
+			char buff[100];
+			sprintf(buff, "Properties: Frame[%s] does not exist",FrameName);
+			CString str(buff);
 			AfxMessageBox(str);
+			((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
 		}
 	}
 	if (((CMFCPropItem*)propRoot->GetSubItem(3))->IsEdited())
@@ -993,62 +996,128 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		COleVariant v = propRoot->GetSubItem(3)->GetValue();
 		v.ChangeType(VT_INT, NULL);
 		int i = v.intVal;
-	}
 
-/*
-	if (propRoot->GetSubItem(4)->OnEndEdit())
+
+		if (i <(*g_ActiveFramesMap)[frameInfo->m_NextFrameName].size() && i > -1)
+		{
+			frameInfo->m_NextFrameIndex = i;
+		}else{
+			char buff[100];
+			sprintf(buff, "Properties: Frame[%s][%d] does not exist",frameInfo->m_NextFrameName,i);
+			CString str(buff);
+			AfxMessageBox(str);
+			((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+		}
+	}
+	if (((CMFCPropItem*)propRoot->GetSubItem(4))->IsEdited())
 	{
 
 	}
-	if (propRoot->GetSubItem(5)->OnEndEdit())
+	if (((CMFCPropItem*)propRoot->GetSubItem(5))->IsEdited())
 	{
-
+		COleVariant v = propRoot->GetSubItem(5)->GetValue();
+		v.ChangeType(VT_INT, NULL);
+		int i = v.intVal;
+		frameInfo->m_Wait = i;
 	}
 	if (propRoot->GetSubItem(6)->OnEndEdit())
 	{
-
+		COleVariant v = propRoot->GetSubItem(6)->GetValue();
+		v.ChangeType(VT_BOOL, NULL);
+		if(v.boolVal){
+			frameInfo->m_ClearKeyQueue = true;
+		}else{
+			frameInfo->m_ClearKeyQueue = false;
+		}
 	}
-	if (propRoot->GetSubItem(7)->OnEndEdit())
+	if (((CMFCPropItem*)propRoot->GetSubItem(7)->GetSubItem(0))->IsEdited())
 	{
+		COleVariant v = propRoot->GetSubItem(7)->GetSubItem(0)->GetValue();
+		v.ChangeType(VT_INT, NULL);
+		int i = v.intVal;
+		if(i < g_HeroInfo->m_PictureDatas.size() && i > -1)
+		{
+			frameInfo->m_PictureID = i;
+			frameInfo->m_PictureX  = 1;
+			frameInfo->m_PictureY  = 1;
+			((CMFCPropItem*)propRoot->GetSubItem(7)->GetSubItem(1))->SetValue(varInt(1));
+			((CMFCPropItem*)propRoot->GetSubItem(7)->GetSubItem(1))->SetValue(varInt(1));
+			((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
 
+		}else{
+			char buff[100];
+			sprintf(buff, "Properties: PictureData[%d] does not exist",i);
+			CString str(buff);
+			AfxMessageBox(str);
+			((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+		}
 	}
-	if (propRoot->GetSubItem(9)->GetSubItem(0)->OnEndEdit())
+	if (((CMFCPropItem*)propRoot->GetSubItem(7)->GetSubItem(1))->IsEdited())
 	{
-
+		COleVariant v = propRoot->GetSubItem(7)->GetSubItem(0)->GetValue();
+		v.ChangeType(VT_INT, NULL);
+		int i = v.intVal;
+		if (i <= g_HeroInfo->m_PictureDatas[frameInfo->m_PictureID].m_Row && i>0)
+		{
+			frameInfo->m_PictureX  = i;
+		}else{
+			char buff[100];
+			sprintf(buff, "Properties: PictureX Cannot be %d",i);
+			CString str(buff);
+			AfxMessageBox(str);
+			((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+		}
 	}
-	if (propRoot->GetSubItem(9)->GetSubItem(1)->OnEndEdit())
+	if (((CMFCPropItem*)propRoot->GetSubItem(7)->GetSubItem(2))->IsEdited())
 	{
-
+		COleVariant v = propRoot->GetSubItem(7)->GetSubItem(0)->GetValue();
+		v.ChangeType(VT_INT, NULL);
+		int i = v.intVal;
+		if (i <= g_HeroInfo->m_PictureDatas[frameInfo->m_PictureID].m_Column && i>0)
+		{
+			frameInfo->m_PictureY  = i;
+		}else{
+			char buff[100];
+			sprintf(buff, "Properties: PictureY Cannot be %d",i);
+			CString str(buff);
+			AfxMessageBox(str);
+			((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+		}
 	}
-	if (propRoot->GetSubItem(9)->GetSubItem(2)->OnEndEdit())
-	{
-
-	}
-
-	if (propRoot->GetSubItem(9)->GetSubItem(3)->OnEndEdit())
-	{
-	}
-
-	if (propRoot->GetSubItem(9)->GetSubItem(4)->OnEndEdit())
-	{
-
-	}
-	;
-	if (propRoot->GetSubItem(10)->GetSubItem(0)->OnEndEdit())
-	{
-	}
-
-	if (propRoot->GetSubItem(10)->GetSubItem(1)->OnEndEdit())
-	{
-	}
-
-	if (propRoot->GetSubItem(10)->GetSubItem(2)->OnEndEdit())
-	{
-	}
-	*/
-
-	propRoot->GetSubItem(8)->GetSubItem(0)->OnEndEdit();
-	propRoot->GetSubItem(8)->GetSubItem(1)->OnEndEdit();
+// 	if (propRoot->GetSubItem(9)->GetSubItem(0)->IsEdited())
+// 	{
+// 
+// 	}
+// 	if (propRoot->GetSubItem(9)->GetSubItem(1)->IsEdited())
+// 	{
+// 
+// 	}
+// 	if (propRoot->GetSubItem(9)->GetSubItem(2)->IsEdited())
+// 	{
+// 
+// 	}
+// 
+// 	if (propRoot->GetSubItem(9)->GetSubItem(3)->IsEdited())
+// 	{
+// 	}
+// 
+// 	if (propRoot->GetSubItem(9)->GetSubItem(4)->IsEdited())
+// 	{
+// 
+// 	}
+// 	;
+// 	if (propRoot->GetSubItem(10)->GetSubItem(0)->IsEdited())
+// 	{
+// 	}
+// 
+// 	if (propRoot->GetSubItem(10)->GetSubItem(1)->IsEdited())
+// 	{
+// 	}
+// 
+// 	if (propRoot->GetSubItem(10)->GetSubItem(2)->IsEdited())
+// 	{
+// 
+// 	}
 }
 
 
