@@ -324,95 +324,75 @@ void CPropertiesWnd::InitPropList_Frame()
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
 
-	VARIANT varFloat;
-	varFloat.vt = VT_R4;
-	varFloat.fltVal = 0.0f;
-
-	VARIANT varInt;
-	varInt.vt = VT_INT;
-	varInt.intVal = 0;
-
-	VARIANT varBool;
-	varBool.vt = VT_BOOL;
-	varBool.boolVal = false;
-
-	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("主要屬性"));
-
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
 	CMFCPropertyGridProperty* pProp;
+
 	pProp = new CMFCPropertyGridProperty(_T("Frame Name"), _T("standing"), _T("表示這個 Frame 的名字"));
 	pProp->AllowEdit(FALSE);
-	pGroup1->AddSubItem(pProp);
+	pPropMain->AddSubItem(pProp);
 	
-	pProp = new CMFCPropertyGridProperty(_T("Frame Index"), varInt, _T("表示在這個 Frame 的哪一格"));
+	pProp = new CMFCPropertyGridProperty(_T("Frame Index"), varInt(), _T("表示在這個 Frame 的哪一格"));
 	pProp->AllowEdit(FALSE);
-	pGroup1->AddSubItem(pProp);
+	pPropMain->AddSubItem(pProp);
 	
 	pProp = new CMFCPropertyGridProperty(_T("Next Frame Name"), _T("standing"), _T("表示跳到哪一個 Frame"));
 	AddNormalActionDcase(pProp);
-	pGroup1->AddSubItem(pProp);
+	pPropMain->AddSubItem(pProp);
 	
-	pProp = new CMFCPropertyGridProperty(_T("Next Frame Index"), varInt, _T("表示跳到 Frame 的哪一格"));
+	pProp = new CMFCPropertyGridProperty(_T("Next Frame Index"), varInt(), _T("表示跳到 Frame 的哪一格"));
 	pProp->EnableSpinControl(TRUE, 0, 300);
-	pGroup1->AddSubItem(pProp);
+	pPropMain->AddSubItem(pProp);
 	
 	pProp = new CMFCPropertyGridProperty(_T("Hero Action"), _T("STANDING"), _T("表示動作的狀態"));
 	AddNormalActionUcase(pProp);
 	pProp->AllowEdit(TRUE);
-	pGroup1->AddSubItem(pProp);
+	pPropMain->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty( _T("Wait"), varInt, _T("這個 Frame 執行圈數，一圈1/60秒"));
+	pProp = new CMFCPropertyGridProperty( _T("Wait"), varInt(), _T("這個 Frame 執行圈數，一圈1/60秒"));
 	pProp->EnableSpinControl(TRUE, 0, 10000);
-	pGroup1->AddSubItem(pProp);
+	pPropMain->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty( _T("ClearKeyQueue"), varBool, _T("是否要清掉 KeyQueue 的資料"));
-	pGroup1->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty( _T("ClearKeyQueue"), varBool(), _T("是否要清掉 KeyQueue 的資料"));
+	pPropMain->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty(_T("Picture ID"), varInt, _T("表示用哪一張圖裡面可以顯示的動作"));
+	pProp = new CMFCPropertyGridProperty(_T("Picture ID"), varInt(), _T("表示用哪一張圖裡面可以顯示的動作"));
 	pProp->EnableSpinControl(TRUE, 0, 300);
-	pGroup1->AddSubItem(pProp);
+	pPropMain->AddSubItem(pProp);
 	
 	CMFCPropertyGridProperty* pCenterSize = new CMFCPropertyGridProperty(_T("Center Offset"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("Center X Offset"), varFloat, _T("人物X方向偏移修正量"));
-	//pProp->EnableSpinControl(TRUE, -1000, 1000);
+	pProp = new CMFCPropertyGridProperty(_T("Center X Offset"), varFloat(), _T("人物X方向偏移修正量"));
 	pCenterSize->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("Center Y Offset"), varFloat, _T("人物Y方向偏移修正量"));
-	//pProp->EnableSpinControl(TRUE, -1000, 1000);
+	pProp = new CMFCPropertyGridProperty( _T("Center Y Offset"), varFloat(), _T("人物Y方向偏移修正量"));
 	pCenterSize->AddSubItem(pProp);
-	pGroup1->AddSubItem(pCenterSize);
+	pPropMain->AddSubItem(pCenterSize);
 
 	CMFCPropertyGridProperty* pConsumePos = new CMFCPropertyGridProperty(_T("Consume"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("JumpRule"), varBool, _T("False 時只對next有用，True 時只對 hitdata有用"));
+	pProp = new CMFCPropertyGridProperty(_T("JumpRule"), varBool(), _T("False 時只對next有用，True 時只對 hitdata有用"));
 	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("HP"), varInt, _T("要消耗的 hp"));
+	pProp = new CMFCPropertyGridProperty( _T("HP"), varInt(), _T("要消耗的 hp"));
 	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("MP"), varInt, _T("要消耗的 mp"));
+	pProp = new CMFCPropertyGridProperty( _T("MP"), varInt(), _T("要消耗的 mp"));
 	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pConsumePos->AddSubItem(pProp);
-	/*pProp = new CMFCPropertyGridProperty( _T("Enough Frame Name"), _T("standing"), _T("夠消耗的話跳到該 Frame"));
-	AddNormalActionDcase(pProp);
-	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Enough Frame Index"), (_variant_t) 0l, _T("夠的話跳到該格"));
-	pProp->EnableSpinControl(TRUE, 0, 300);
-	pConsumePos->AddSubItem(pProp);*/
 	pProp = new CMFCPropertyGridProperty( _T("Jump: Frame Name"), _T("standing"), _T("不夠消耗的話跳到該 Frame"));
 	AddNormalActionDcase(pProp);
 	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Jump: Frame Index"), varInt, _T("不夠的話跳到該格"));
+	pProp = new CMFCPropertyGridProperty(_T("Jump: Frame Index"), varInt(), _T("不夠的話跳到該格"));
 	pProp->EnableSpinControl(TRUE, 0, 300);
 	pConsumePos->AddSubItem(pProp);
-	pGroup1->AddSubItem(pConsumePos);
+	pPropMain->AddSubItem(pConsumePos);
 
 	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty(_T("Direction Vector"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("DVX"), varFloat, _T("X方向左右的移動向量"));
+	pProp = new CMFCPropertyGridProperty(_T("DVX"), varFloat(), _T("X方向左右的移動向量"));
 	pDirectionVector->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("DVY"), varFloat, _T("Y方向左右的移動向量"));
+	pProp = new CMFCPropertyGridProperty(_T("DVY"), varFloat(), _T("Y方向左右的移動向量"));
 	pDirectionVector->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("DVZ"), varFloat, _T("Z方向左右的移動向量"));
+	pProp = new CMFCPropertyGridProperty(_T("DVZ"), varFloat(), _T("Z方向左右的移動向量"));
 	pDirectionVector->AddSubItem(pProp);
-	pGroup1->AddSubItem(pDirectionVector);
+	pPropMain->AddSubItem(pDirectionVector);
 
-	m_wndPropList.AddProperty(pGroup1);
+	m_wndPropList.AddProperty(pPropMain);
 	m_wndPropList.ExpandAll();
 }
 
@@ -426,56 +406,53 @@ void CPropertiesWnd::InitPropList_Body()
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
 
-	VARIANT varFloat;
-	varFloat.vt = VT_R4;
-	varFloat.fltVal = 0.0f;
-
-	VARIANT varInt;
-	varInt.vt = VT_INT;
-	varInt.intVal = 0;
-
-	VARIANT varBool;
-	varBool.vt = VT_BOOL;
-	varBool.boolVal = false;
-
-	CMFCPropertyGridProperty* m_pBodyGroup = new CMFCPropertyGridProperty(_T("主要屬性"));
-
-	CMFCPropertyGridProperty* pProp1;
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
 	CMFCPropertyGridProperty* pProp;
-	CMFCPropertyGridProperty* pPolygon2D = new CMFCPropertyGridProperty(_T("Direction Vector"), 0, TRUE);
 
-	pProp = new CMFCPropertyGridPropertyButton(&m_wndPropList, _T("Add Point"),  _T(""), _T("增加頂點"), 0);
-	pPolygon2D->AddSubItem(pProp);
-
-	pProp1 = new CMFCPropertyGridProperty(_T("Point1"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("X"), varFloat, _T("X位置"));
-	pProp1->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Y"), varFloat, _T("Y位置"));
-	pProp1->AddSubItem(pProp);
-	pPolygon2D->AddSubItem(pProp1);
+	pProp = new CMFCPropertyGridProperty(_T("m_ZWidth"), varFloat(), _T("m_ZWidth"));
+	pPropMain->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty(_T("m_Kind"), varInt(), _T("m_Kind"));
+	pPropMain->AddSubItem(pProp);
 	
-	pProp1 = new CMFCPropertyGridProperty(_T("Point2"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("X"), varFloat, _T("X位置"));
-	pProp1->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Y"), varFloat, _T("Y位置"));
-	pProp1->AddSubItem(pProp);
-	pPolygon2D->AddSubItem(pProp1);
-
-	pProp1 = new CMFCPropertyGridProperty(_T("Point3"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("X"), varFloat, _T("X位置"));
-	pProp1->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Y"), varFloat, _T("Y位置"));
-	pProp1->AddSubItem(pProp);
-	pPolygon2D->AddSubItem(pProp1);
-	m_pBodyGroup->AddSubItem(pPolygon2D);
-
-	pProp = new CMFCPropertyGridProperty(_T("m_ZWidth"), varFloat, _T("m_ZWidth"));
-	m_pBodyGroup->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("m_Kind"), varInt, _T("m_Kind"));
-	m_pBodyGroup->AddSubItem(pProp);
-	
-	m_wndPropList.AddProperty(m_pBodyGroup);
+	m_wndPropList.AddProperty(pPropMain);
 	m_wndPropList.ExpandAll();
+}
+
+void CPropertiesWnd::InitPropList_Attack()
+{
+	m_wndPropList.RemoveAll();
+	SetPropListFont();
+
+	m_wndPropList.EnableHeaderCtrl(FALSE);
+	m_wndPropList.EnableDescriptionArea();
+	m_wndPropList.SetVSDotNetLook();
+	m_wndPropList.MarkModifiedProperties();
+
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
+	CMFCPropertyGridProperty* pProp;
+
+	pProp = new CMFCPropertyGridProperty(_T("m_Injury"), varInt(), _T("m_Injury"));
+	pPropMain->AddSubItem(pProp);
+}
+
+void CPropertiesWnd::InitPropList_HitData()
+{
+
+}
+
+void CPropertiesWnd::InitPropList_CatchInfo()
+{
+
+}
+
+void CPropertiesWnd::InitPropList_BloodInfo()
+{
+
+}
+
+void CPropertiesWnd::InitPropList_Point()
+{
+
 }
 
 void CPropertiesWnd::AddNormalActionUcase( CMFCPropertyGridProperty* pProp )
@@ -595,18 +572,6 @@ void CPropertiesWnd::AddPointXY( CMFCPropertyGridProperty*& pPolygon2D )
 
 CMFCPropertyGridProperty* CPropertiesWnd::GetDefaultPropList()
 {
-	VARIANT varFloat;
-	varFloat.vt = VT_R4;
-	varFloat.fltVal = 0.0f;
-
-	VARIANT varInt;
-	varInt.vt = VT_INT;
-	varInt.intVal = 0;
-
-	VARIANT varBool;
-	varBool.vt = VT_BOOL;
-	varBool.boolVal = false;
-
 	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("主要屬性"));
 
 	CMFCPropertyGridProperty* pProp;
@@ -614,7 +579,7 @@ CMFCPropertyGridProperty* CPropertiesWnd::GetDefaultPropList()
 	AddNormalActionDcase(pProp);
 	pGroup1->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty(_T("Frame Index"), varInt, _T("表示在這個 Frame 的哪一格"));
+	pProp = new CMFCPropertyGridProperty(_T("Frame Index"), varInt(), _T("表示在這個 Frame 的哪一格"));
 	pProp->AllowEdit(FALSE);
 	pGroup1->AddSubItem(pProp);
 
@@ -622,7 +587,7 @@ CMFCPropertyGridProperty* CPropertiesWnd::GetDefaultPropList()
 	AddNormalActionDcase(pProp);
 	pGroup1->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty(_T("Next Frame Index"), varInt, _T("表示跳到 Frame 的哪一格"));
+	pProp = new CMFCPropertyGridProperty(_T("Next Frame Index"), varInt(), _T("表示跳到 Frame 的哪一格"));
 	pProp->EnableSpinControl(TRUE, 0, 300);
 	pGroup1->AddSubItem(pProp);
 
@@ -631,42 +596,42 @@ CMFCPropertyGridProperty* CPropertiesWnd::GetDefaultPropList()
 	pProp->AllowEdit(TRUE);
 	pGroup1->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty( _T("Wait"), varInt, _T("這個 Frame 執行圈數，一圈1/60秒"));
+	pProp = new CMFCPropertyGridProperty( _T("Wait"), varInt(), _T("這個 Frame 執行圈數，一圈1/60秒"));
 	pProp->EnableSpinControl(TRUE, 0, 10000);
 	pGroup1->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty( _T("ClearKeyQueue"), varBool, _T("是否要清掉 KeyQueue 的資料"));
+	pProp = new CMFCPropertyGridProperty( _T("ClearKeyQueue"), varBool(), _T("是否要清掉 KeyQueue 的資料"));
 	pGroup1->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty(_T("Picture ID"), varInt, _T("表示用哪一張圖裡面可以顯示的動作"));
+	pProp = new CMFCPropertyGridProperty(_T("Picture ID"), varInt(), _T("表示用哪一張圖裡面可以顯示的動作"));
 	pProp->EnableSpinControl(TRUE, 0, 300);
 	pGroup1->AddSubItem(pProp);
 
 	CMFCPropertyGridProperty* pCenterSize = new CMFCPropertyGridProperty(_T("Center Offset"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("Center X Offset"), varFloat, _T("人物X方向偏移修正量"));
+	pProp = new CMFCPropertyGridProperty(_T("Center X Offset"), varFloat(), _T("人物X方向偏移修正量"));
 //	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pCenterSize->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("Center Y Offset"), varFloat, _T("人物Y方向偏移修正量"));
+	pProp = new CMFCPropertyGridProperty( _T("Center Y Offset"), varFloat(), _T("人物Y方向偏移修正量"));
 //	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pCenterSize->AddSubItem(pProp);
 	pGroup1->AddSubItem(pCenterSize);
 
 	CMFCPropertyGridProperty* pPicturePos = new CMFCPropertyGridProperty(_T("Picture Offset"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("Picture X Offset"), varInt, _T("人物圖片X偏移量"));
+	pProp = new CMFCPropertyGridProperty(_T("Picture X Offset"), varInt(), _T("人物圖片X偏移量"));
 //	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pPicturePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("Picture Y Offset"), varInt, _T("人物圖片Y偏移量"));
+	pProp = new CMFCPropertyGridProperty( _T("Picture Y Offset"), varInt(), _T("人物圖片Y偏移量"));
 //	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pPicturePos->AddSubItem(pProp);
 	pGroup1->AddSubItem(pPicturePos);
 
 	CMFCPropertyGridProperty* pConsumePos = new CMFCPropertyGridProperty(_T("Consume"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("JumpRule"), varBool, _T("False 時只對next有用，True 時只對 hitdata有用"));
+	pProp = new CMFCPropertyGridProperty(_T("JumpRule"), varBool(), _T("False 時只對next有用，True 時只對 hitdata有用"));
 	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("HP"), varInt, _T("要消耗的 hp"));
+	pProp = new CMFCPropertyGridProperty( _T("HP"), varInt(), _T("要消耗的 hp"));
 //	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("MP"), varInt, _T("要消耗的 mp"));
+	pProp = new CMFCPropertyGridProperty( _T("MP"), varInt(), _T("要消耗的 mp"));
 //	pProp->EnableSpinControl(TRUE, -1000, 1000);
 	pConsumePos->AddSubItem(pProp);
 /*
@@ -679,17 +644,17 @@ CMFCPropertyGridProperty* CPropertiesWnd::GetDefaultPropList()
 	pProp = new CMFCPropertyGridProperty( _T("Not Enough Frame Name"), _T("standing"), _T("不夠消耗的話跳到該 Frame"));
 	AddNormalActionDcase(pProp);
 	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Not Next Frame Index"), varInt, _T("不夠的話跳到該格"));
+	pProp = new CMFCPropertyGridProperty(_T("Not Next Frame Index"), varInt(), _T("不夠的話跳到該格"));
 //	pProp->EnableSpinControl(TRUE, 0, 300);
 	pConsumePos->AddSubItem(pProp);
 	pGroup1->AddSubItem(pConsumePos);
 
 	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty(_T("Direction Vector"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("DVX"), varFloat, _T("X方向左右的移動向量"));
+	pProp = new CMFCPropertyGridProperty(_T("DVX"), varFloat(), _T("X方向左右的移動向量"));
 	pDirectionVector->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("DVY"), varFloat, _T("Y方向左右的移動向量"));
+	pProp = new CMFCPropertyGridProperty(_T("DVY"), varFloat(), _T("Y方向左右的移動向量"));
 	pDirectionVector->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("DVZ"), varFloat, _T("Z方向左右的移動向量"));
+	pProp = new CMFCPropertyGridProperty(_T("DVZ"), varFloat(), _T("Z方向左右的移動向量"));
 	pDirectionVector->AddSubItem(pProp);
 	pGroup1->AddSubItem(pDirectionVector);
 
@@ -731,54 +696,28 @@ void CPropertiesWnd::RefreshPropList_Frame()
 {
 	InitPropList_Frame();
 
-	VARIANT varFloat;
-	varFloat.vt = VT_R4;
-	varFloat.fltVal = 0.0f;
-
-	VARIANT varInt;
-	varInt.vt = VT_INT;
-	varInt.intVal = g_FrameIndex;
-
-	VARIANT varBool;
-	varBool.vt = VT_BOOL;
-	varBool.boolVal = false;
-
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty(0);
 
 	FrameInfo frameInfo = (*g_ActiveFramesMap)[g_FrameName][g_FrameIndex];
 
 	propRoot->GetSubItem(0)->SetValue(CString(g_FrameName.c_str()));
-	propRoot->GetSubItem(1)->SetValue(varInt);
+	propRoot->GetSubItem(1)->SetValue(varInt(g_FrameIndex));
 	propRoot->GetSubItem(2)->SetValue(CString(frameInfo.m_NextFrameName.c_str()));
-	varInt.intVal = frameInfo.m_NextFrameIndex;
-	propRoot->GetSubItem(3)->SetValue(varInt);
+	propRoot->GetSubItem(3)->SetValue(varInt(frameInfo.m_NextFrameIndex));
 	propRoot->GetSubItem(4)->SetValue(CString(actionMap[frameInfo.m_HeroAction]));
-	varInt.intVal = frameInfo.m_Wait;
-	propRoot->GetSubItem(5)->SetValue(varInt);
-	varBool.boolVal = frameInfo.m_ClearKeyQueue;
-	propRoot->GetSubItem(6)->SetValue(varBool);
-	varInt.intVal = frameInfo.m_PictureID;
-	propRoot->GetSubItem(7)->SetValue(varInt);
-	varFloat.fltVal = frameInfo.m_CenterX;
-	propRoot->GetSubItem(8)->GetSubItem(0)->SetValue(varFloat);
-	varFloat.fltVal = frameInfo.m_CenterY;
-	propRoot->GetSubItem(8)->GetSubItem(1)->SetValue(varFloat);
-	varBool.boolVal = frameInfo.m_Consume.m_JumpRule;
-	propRoot->GetSubItem(9)->GetSubItem(0)->SetValue(varBool);
-	varInt.intVal = frameInfo.m_Consume.m_HP;
-	propRoot->GetSubItem(9)->GetSubItem(1)->SetValue(varInt);
-	varInt.intVal = frameInfo.m_Consume.m_MP;
-	propRoot->GetSubItem(9)->GetSubItem(2)->SetValue(varInt);
+	propRoot->GetSubItem(5)->SetValue(varInt(frameInfo.m_Wait));
+	propRoot->GetSubItem(6)->SetValue(varBool(frameInfo.m_ClearKeyQueue));
+	propRoot->GetSubItem(7)->SetValue(varInt(frameInfo.m_PictureID));
+	propRoot->GetSubItem(8)->GetSubItem(0)->SetValue(varFloat(frameInfo.m_CenterX));
+	propRoot->GetSubItem(8)->GetSubItem(1)->SetValue(varFloat(frameInfo.m_CenterY));
+	propRoot->GetSubItem(9)->GetSubItem(0)->SetValue(varBool(frameInfo.m_Consume.m_JumpRule));
+	propRoot->GetSubItem(9)->GetSubItem(1)->SetValue(varInt(frameInfo.m_Consume.m_HP));
+	propRoot->GetSubItem(9)->GetSubItem(2)->SetValue(varInt(frameInfo.m_Consume.m_MP));
 	propRoot->GetSubItem(9)->GetSubItem(3)->SetValue(CString(frameInfo.m_Consume.m_NotEnoughFrameName.c_str()));
-	varInt.intVal = frameInfo.m_Consume.m_NotEnoughFrame;
-	propRoot->GetSubItem(9)->GetSubItem(4)->SetValue(varInt);
-	varFloat.fltVal = frameInfo.m_DVX;
-	propRoot->GetSubItem(10)->GetSubItem(0)->SetValue(varFloat);
-	varFloat.fltVal = frameInfo.m_DVY;
-	propRoot->GetSubItem(10)->GetSubItem(1)->SetValue(varFloat);
-	varFloat.fltVal = frameInfo.m_DVZ;
-	propRoot->GetSubItem(10)->GetSubItem(2)->SetValue(varFloat);
-
+	propRoot->GetSubItem(9)->GetSubItem(4)->SetValue(varInt(frameInfo.m_Consume.m_NotEnoughFrame));
+	propRoot->GetSubItem(10)->GetSubItem(0)->SetValue(varFloat(frameInfo.m_DVX));
+	propRoot->GetSubItem(10)->GetSubItem(1)->SetValue(varFloat(frameInfo.m_DVY));
+	propRoot->GetSubItem(10)->GetSubItem(2)->SetValue(varFloat(frameInfo.m_DVZ));
 	
 }
 
@@ -798,6 +737,11 @@ void CPropertiesWnd::RefreshPropList_CatchInfo()
 }
 
 void CPropertiesWnd::RefreshPropList_BloodInfo()
+{
+
+}
+
+void CPropertiesWnd::RefreshPropList_Point()
 {
 
 }
@@ -856,3 +800,52 @@ const CString CPropertiesWnd::actionMap[MAX_ACTIONS] = {
 	CString("GROUND_SKILL"),
 	CString("UNIQUE_SKILL"),
 };
+
+VARIANT CPropertiesWnd::varFloat()
+{
+	VARIANT _varFloat;
+	_varFloat.vt = VT_R4;
+	_varFloat.fltVal = 0.0f;
+	return _varFloat;
+}
+
+VARIANT CPropertiesWnd::varFloat(float _value)
+{
+	VARIANT _varFloat;
+	_varFloat.vt = VT_R4;
+	_varFloat.fltVal = _value;
+	return _varFloat;
+}
+
+VARIANT CPropertiesWnd::varInt()
+{
+	VARIANT _varInt;
+	_varInt.vt = VT_INT;
+	_varInt.intVal = 0;
+	return _varInt;
+}
+
+VARIANT CPropertiesWnd::varInt(int _value)
+{
+	VARIANT _varInt;
+	_varInt.vt = VT_INT;
+	_varInt.intVal = _value;
+	return _varInt;
+}
+
+VARIANT CPropertiesWnd::varBool()
+{
+	VARIANT _varBool;
+	_varBool.vt = VT_BOOL;
+	_varBool.boolVal = false;
+	return _varBool;
+}
+
+VARIANT CPropertiesWnd::varBool(bool _value)
+{
+	VARIANT _varBool;
+	_varBool.vt = VT_BOOL;
+	_varBool.boolVal = _value;
+	return _varBool;
+}
+

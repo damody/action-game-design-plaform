@@ -491,33 +491,6 @@ void CClassView::OnAnimationAdd()
 	HTREEITEM root = m_wndClassView.GetRootItem();
 	HTREEITEM item = m_wndClassView.InsertItem(_T("standing"), 1, 1, root);
 	FrameInfo fi = defaultFrameInfo(item);
-	/*fi.m_FrameName = std::string("standing");
-	fi.m_FrameIndex = 0;
-	fi.m_NextFrameName = fi.m_FrameName;
-	fi.m_NextFrameIndex = 0;
-	fi.m_HeroAction = HeroAction::STANDING;
-	fi.m_Wait = 1;
-	fi.m_ClearKeyQueue = false;
-	fi.m_PictureID = 1;
-	fi.m_CenterX = 0.0f;
-	fi.m_CenterY = 0.0f;
-	fi.m_PictureX = 0;
-	fi.m_PictureY = 0;
-	fi.m_Consume.m_JumpRule = 0;
-	fi.m_Consume.m_HP = 1;
-	fi.m_Consume.m_MP = 1;
-	fi.m_Consume.m_NotEnoughFrameName = fi.m_FrameName;
-	fi.m_Consume.m_NotEnoughFrame = 0;
-	fi.m_DVX = 0.0f;
-	fi.m_DVY = 0.0f;
-	fi.m_DVZ = 0.0f;
-	fi.m_Bodys.resize(1);
-	fi.m_Bodys[0].m_Area = Polygon2D();
-	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
-	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
-	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
-	fi.m_Bodys[0].m_ZWidth = 0.0f;
-	fi.m_Bodys[0].m_Kind = 0;*/
 
 	HTREEITEM hClass = m_wndClassView.InsertItem(_T("0"), 3, 3, item);
 
@@ -588,34 +561,7 @@ void CClassView::OnFrameAdd()
 		CT2CA pszConvertedAnsiString (m_wndClassView.GetItemText(item));
 		std::string str2(pszConvertedAnsiString);
 
-		FrameInfo fi;
-		fi.m_FrameName = str2;
-		fi.m_FrameIndex = 0;
-		fi.m_NextFrameName = fi.m_FrameName;
-		fi.m_NextFrameIndex = 0;
-		fi.m_HeroAction = HeroAction::STANDING;
-		fi.m_Wait = 1;
-		fi.m_ClearKeyQueue = false;
-		fi.m_PictureID = 1;
-		fi.m_CenterX = 0.0f;
-		fi.m_CenterY = 0.0f;
-		fi.m_PictureX = 0;
-		fi.m_PictureY = 0;
-		fi.m_Consume.m_JumpRule = 0;
-		fi.m_Consume.m_HP = 1;
-		fi.m_Consume.m_MP = 1;
-		fi.m_Consume.m_NotEnoughFrameName = fi.m_FrameName;
-		fi.m_Consume.m_NotEnoughFrame = 0;
-		fi.m_DVX = 0.0f;
-		fi.m_DVY = 0.0f;
-		fi.m_DVZ = 0.0f;
-		fi.m_Bodys.resize(1);
-		fi.m_Bodys[0].m_Area = Polygon2D();
-		fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
-		fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
-		fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
-		fi.m_Bodys[0].m_ZWidth = 0.0f;
-		fi.m_Bodys[0].m_Kind = 0;
+		FrameInfo fi = defaultFrameInfo(item);
 
 		HTREEITEM hClass;
 		HTREEITEM tmp_item = m_wndClassView.GetChildItem(item);

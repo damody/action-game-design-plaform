@@ -71,6 +71,12 @@ protected:
 	CPropertiesToolBar m_wndToolBar;
 	CMFCPropertyGridCtrl m_wndPropList;
 	static const CString actionMap[MAX_ACTIONS];
+	static VARIANT varFloat();
+	static VARIANT varFloat(float _value);
+	static VARIANT varInt();
+	static VARIANT varInt(int _value);
+	static VARIANT varBool();
+	static VARIANT varBool(bool _value);
 
 // 程式碼實作
 public:
@@ -101,6 +107,7 @@ public:
 	void InitPropList_HitData();
 	void InitPropList_CatchInfo();
 	void InitPropList_BloodInfo();
+	void InitPropList_Point();
 	void RefreshPropList();
 	void RefreshPropList_Frame();
 	void RefreshPropList_Body();
@@ -108,6 +115,7 @@ public:
 	void RefreshPropList_HitData();
 	void RefreshPropList_CatchInfo();
 	void RefreshPropList_BloodInfo();
+	void RefreshPropList_Point();
 	void SetPropListFont();
 	static void AddNormalActionUcase(CMFCPropertyGridProperty* pProp);
 	static void AddNormalActionDcase(CMFCPropertyGridProperty* pProp);
