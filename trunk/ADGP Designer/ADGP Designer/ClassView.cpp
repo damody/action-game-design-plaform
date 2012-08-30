@@ -900,6 +900,7 @@ void CClassView::OnSelectItem(HTREEITEM item)
 				if(g_ActiveFramesMap->find(FrameName) != g_ActiveFramesMap->end()){
 					g_FrameName = FrameName;
 					g_FrameIndex = _ttoi(m_wndClassView.GetItemText(item));
+					_propWnd->InitPropList_Frame();
 					((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
 					((CMainFrame*)(this->GetParentFrame()))->m_D3DFrameView.EditCenter();
 				}

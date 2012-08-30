@@ -516,45 +516,20 @@ void CMainFrame::OnButtonAddnewarea()
 	// TODO: 在此加入您的命令處理常式程式碼
 }
 
-void CMainFrame::OpenDesignerView( int index )
+void CMainFrame::OpenDesignerView( CString& name,int index )
 {
 	theApp.OnFileNew();
-	m_DesignerViews.push_back(g_NewView);
-
-	char buff[100];
-	sprintf(buff, "Picture %d",index);
-	CString str(buff);
-	g_NewView->GetWindowText(str);
-
+	g_NewView->GetWindowText(name);
 	if(g_HeroInfo!=NULL){
 		(g_NewView)->Refresh(&g_HeroInfo->m_PictureDatas[index]);
 		(g_NewView)->m_PictureID = index;
 	}
-	
+	m_DesignerViews[name]=g_NewView;
 }
 
 void CMainFrame::test()
 {
-	LuaCell_Sptr davis = LuaCell_Sptr(new LuaCell);
-	if (davis->InputLuaFile("davis.lua"))
-	{
-		g_HeroInfo = new HeroInfo();
-		g_HeroInfo->LoadHeroData(davis);
-		for(unsigned int i=0;i < g_HeroInfo->m_PictureDatas.size();i++)
-		{
-			OpenDesignerView(i);
-		}
-		g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
-		g_FrameName = "standing";
-		g_FrameIndex = 0;
-		m_D3DFrameView.Refresh();
-		m_wndClassView.Refresh();
-	}else{
-		char buff[100];
-		sprintf(buff, "LoadLua Failed");
-		CString str(buff);
-		AfxMessageBox(str);
-	}	
+		
 }
 
 CADGPDesignerView* g_NewView=NULL;

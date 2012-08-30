@@ -329,7 +329,13 @@ void CFileView::OnSelectItem( HTREEITEM item )
 		g_HeroInfo = it->second;
 		for(unsigned int i=0;i < g_HeroInfo->m_PictureDatas.size();i++)
 		{
-			((CMainFrame*)this->GetParentFrame())->OpenDesignerView(i);
+			std::string pic = g_HeroInfo->m_PictureDatas[i].m_Path;
+			size_t found;
+			found=pic.rfind('\\');
+			char buff[100];
+			sprintf(buff,"%s",pic.substr(found+1,pic.length()).c_str());
+			CString str(buff);
+			((CMainFrame*)this->GetParentFrame())->OpenDesignerView(str,i);
 		}
 		g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
 		g_FrameName = "";

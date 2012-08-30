@@ -51,11 +51,11 @@ class CMFCPropItem : public CMFCPropertyGridProperty
 {
 private:
 	CMFCPropertyGridCtrl* m_MotherGrid;
-	bool m_Edited;
+	bool m_Update;
 	COleVariant m_Record;
 public:
 	CMFCPropItem(CMFCPropertyGridCtrl* grid,const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData = 0)
-	:CMFCPropertyGridProperty(strName, data, lpszDescr, dwData){m_MotherGrid = grid;m_Edited=false;m_Record = this->GetValue();}
+	:CMFCPropertyGridProperty(strName, data, lpszDescr, dwData){m_MotherGrid = grid;m_Update=false;m_Record = this->GetValue();}
 	~CMFCPropItem(){}
 	DECLARE_DYNAMIC(CMFCPropItem)
 protected:

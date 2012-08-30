@@ -54,9 +54,13 @@ IMPLEMENT_DYNAMIC(CMFCPropItem, CMFCPropertyGridProperty)
 
 BOOL CMFCPropItem::OnEndEdit()
 {
-	if(m_Edited){
-		((CPropertiesWnd*)m_MotherGrid->GetParent())->Update();
-		m_Edited = false;
+	if(m_Update){
+		m_Update = false;
+		if (IsEdited())
+		{
+			((CPropertiesWnd*)m_MotherGrid->GetParent())->Update();
+			m_Record = m_varValue;
+		}	
 	}
 	return CMFCPropertyGridProperty::OnEndEdit();
 }
@@ -65,7 +69,7 @@ BOOL CMFCPropItem::OnEdit( LPPOINT lptClick )
 {
 	if (CMFCPropertyGridProperty::OnEdit(lptClick))
 	{
-		m_Edited = true;
+		m_Update = true;
 		m_Record = this->GetValue();
 		return TRUE;
 	}else return FALSE;
@@ -75,7 +79,6 @@ bool CMFCPropItem::IsEdited()
 {
 	const COleVariant& var = m_varValue;
 	const COleVariant  var1 = m_Record;
-	m_Record = m_varValue;
 
 	switch (m_varValue.vt)
 	{
@@ -120,11 +123,13 @@ void CMFCPropItem::SetValue( const COleVariant&  varValue )
 {
 	ASSERT_VALID(this);
 
+
 	if (m_varValue.vt != VT_EMPTY && m_varValue.vt != varValue.vt)
 	{
 		ASSERT(FALSE);
 		return;
 	}
+
 
 	BOOL bInPlaceEdit = m_bInPlaceEdit;
 	if (bInPlaceEdit)
@@ -133,10 +138,8 @@ void CMFCPropItem::SetValue( const COleVariant&  varValue )
 	}
 
 	m_varValue = varValue;
-	if (!m_Edited)
-	{
-		m_Record = m_varValue;
-	}
+	m_Update = false;
+	m_Record = m_varValue;
 	Redraw();
 
 	if (bInPlaceEdit)
@@ -990,6 +993,7 @@ void CPropertiesWnd::RefreshPropList_Frame()
 	((CMFCPropItem*)propRoot->GetSubItem(8)->GetSubItem(0))->SetValue(varFloat(frameInfo.m_CenterX));
 	((CMFCPropItem*)propRoot->GetSubItem(8)->GetSubItem(1))->SetValue(varFloat(frameInfo.m_CenterY));
 	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(0))->SetValue(varBool(frameInfo.m_Consume.m_JumpRule));
+	//((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(0))->SetValue(varBool(true));
 	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(1))->SetValue(varInt(frameInfo.m_Consume.m_HP));
 	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(2))->SetValue(varInt(frameInfo.m_Consume.m_MP));
 	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(3))->SetValue(CString(frameInfo.m_Consume.m_NotEnoughFrameName.c_str()));
@@ -1057,7 +1061,6 @@ void CPropertiesWnd::UpdatePropList_Frame()
 	if (propRoot->GetSubItem(6)->OnEndEdit())
 	{
 		COleVariant v = propRoot->GetSubItem(6)->GetValue();
-		v.ChangeType(VT_BOOL, NULL);
 		if(v.boolVal){
 			frameInfo->m_ClearKeyQueue = true;
 		}else{

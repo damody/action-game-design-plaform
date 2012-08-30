@@ -23,8 +23,8 @@
 #include "ADGP DesignerView.h"
 
 
-#include <vector>
-typedef std::vector<CADGPDesignerView*> DesignerViews;
+#include <map>
+typedef std::map<CString,CADGPDesignerView*> DesignerViews;
 
 extern CADGPDesignerView* g_NewView;
 
@@ -99,7 +99,7 @@ public:
 		m_D3DFrameView.Clear();
 	}
 	void test();
-	void OpenDesignerView(int index);
+	void OpenDesignerView(CString& namr,int index);
 public:  // 控制列內嵌的成員
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;

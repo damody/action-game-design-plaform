@@ -403,7 +403,7 @@ void CADGPDesignerView::Update( int x,int y )
 			sprintf(buff, "PictureEdit: Frame[%s][%d] does not exist",g_FrameName.c_str(),g_FrameIndex);
 			CString str(buff);
 			AfxMessageBox(str);
-			((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+			((CMainFrame*)(this->GetParent()->GetParentFrame()))->AddStrToOutputBuild(str);
 			return;
 		}
 	}else{
@@ -411,7 +411,7 @@ void CADGPDesignerView::Update( int x,int y )
 		sprintf(buff, "PictureEdit: Frame[%s] does not exist",g_FrameName.c_str());
 		CString str(buff);
 		AfxMessageBox(str);
-		((CMainFrame*)(this->GetParentFrame()))->AddStrToOutputBuild(str);
+		((CMainFrame*)(this->GetParent()->GetParentFrame()))->AddStrToOutputBuild(str);
 		return;
 	}
 }
