@@ -318,6 +318,10 @@ BOOL CFileView::CanAutoHide() const
 
 void CFileView::OnSelectItem( HTREEITEM item )
 {
+	if(item==hHeroDoc )return;
+	if(item==hObjectDoc)return;
+	if(item==hBackgroundDoc)return;
+	
 	HeroInfohMap::iterator it = m_HeroInfoMap.find(item);
 
 	if (it!= m_HeroInfoMap.end())
