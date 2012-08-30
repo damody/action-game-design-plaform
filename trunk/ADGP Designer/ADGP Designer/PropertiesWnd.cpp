@@ -38,16 +38,31 @@ CMFCPropertyGridPropertyButton::CMFCPropertyGridPropertyButton( CMFCPropertyGrid
 
 void CMFCPropertyGridPropertyButton::OnClickName( CPoint point )
 {
-	wchar_t tbuffer[10];
-	wsprintf(tbuffer, L"%d", m_Count++);
-	CMFCPropertyGridProperty* pProp1 = new CMFCPropertyGridProperty(tbuffer, 0, TRUE);
-	CMFCPropertyGridProperty* pProp;
-	this->GetParent()->AddSubItem(pProp1);
-	pProp = new CMFCPropertyGridProperty(_T("X"), (_variant_t) 0.f, _T("X位置"));
-	pProp1->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Y"), (_variant_t) 0.f, _T("Y位置"));
-	pProp1->AddSubItem(pProp);
-	m_MotherGrid->AdjustLayout();
+	CString _name = this->GetName();
+	if(!_name.Compare(CString("Add point")))
+	{
+		wchar_t tbuffer[10];
+		wsprintf(tbuffer, L"%d", m_Count++);
+		CMFCPropertyGridProperty* pProp1 = new CMFCPropertyGridProperty(tbuffer, 0, TRUE);
+		CMFCPropertyGridProperty* pProp;
+		this->GetParent()->AddSubItem(pProp1);
+		pProp = new CMFCPropertyGridProperty(_T("X"), CPropertiesWnd::varFloat(0.0f), _T("X位置"));
+		pProp1->AddSubItem(pProp);
+		pProp = new CMFCPropertyGridProperty(_T("Y"), CPropertiesWnd::varFloat(0.0f), _T("Y位置"));
+		pProp1->AddSubItem(pProp);
+		pProp = new CMFCPropertyGridPropertyButton(m_MotherGrid, _T("Delete point"), _T(""), _T("Delete point"), 0);
+		pProp1->AddSubItem(pProp);
+		m_MotherGrid->AdjustLayout();
+	}
+	else if(!_name.Compare(CString("Delete point")))
+	{
+		CMFCPropertyGridProperty* _tmp = this->GetParent();
+		
+		
+		//_tmp = CMFCPropItem(m_MotherGrid, _T("Delete point"), _T(""), _T("Delete point"));
+		//_tmp->
+		//m_MotherGrid->DeleteProperty(_tmp);
+	}
 }
 /////////////////////////////////////////////////////////////////////////////
 IMPLEMENT_DYNAMIC(CMFCPropItem, CMFCPropertyGridProperty)
@@ -70,6 +85,17 @@ BOOL CMFCPropItem::OnEdit( LPPOINT lptClick )
 		return TRUE;
 	}else return FALSE;
 }
+
+/*
+BOOL CMFCPropItem::DeleteProperty(CMFCPropertyGridProperty*& pProp)
+{
+	if(pProp != NULL)
+	{
+		(pProp->GetParent())->DeleteProperty(pProp);
+		return TRUE;
+	}
+	return FALSE;
+}*/
 
 bool CMFCPropItem::IsEdited()
 {
@@ -145,7 +171,6 @@ void CMFCPropItem::SetValue( const COleVariant&  varValue )
 		m_pWndList->EditItem(this);
 	}
 }
-
 /////////////////////////////////////////////////////////////////////////////
 // CResourceViewBar
 
@@ -525,23 +550,29 @@ void CPropertiesWnd::InitPropList_Body()
 	CMFCPropertyGridProperty* pPropPointGroup;
 	CMFCPropertyGridProperty* pPropPoint;
 
-	pPropPointGroup = new CMFCPropertyGridProperty(_T("0"), 0, TRUE);
+	pPropPointGroup = new CMFCPropItem(&m_wndPropList, _T("0"), 0, TRUE);
 	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(0.0f), _T("X位置"));
 	pPropPointGroup->AddSubItem(pPropPoint);
 	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(0.0f), _T("Y位置"));
 	pPropPointGroup->AddSubItem(pPropPoint);
+	pPropButton = new CMFCPropertyGridPropertyButton(&m_wndPropList, _T("Delete point"), _T(""), _T("Delete point"), 0);
+	pPropPointGroup->AddSubItem(pPropButton);
 	pProp->AddSubItem(pPropPointGroup);
-	pPropPointGroup = new CMFCPropertyGridProperty(_T("1"), 0, TRUE);
+	pPropPointGroup = new CMFCPropItem(&m_wndPropList, _T("1"), 0, TRUE);
 	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(0.0f), _T("X位置"));
 	pPropPointGroup->AddSubItem(pPropPoint);
 	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(0.0f), _T("Y位置"));
 	pPropPointGroup->AddSubItem(pPropPoint);
+	pPropButton = new CMFCPropertyGridPropertyButton(&m_wndPropList, _T("Delete point"), _T(""), _T("Delete point"), 0);
+	pPropPointGroup->AddSubItem(pPropButton);
 	pProp->AddSubItem(pPropPointGroup);
-	pPropPointGroup = new CMFCPropertyGridProperty(_T("2"), 0, TRUE);
+	pPropPointGroup = new CMFCPropItem(&m_wndPropList, _T("2"), 0, TRUE);
 	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(0.0f), _T("X位置"));
 	pPropPointGroup->AddSubItem(pPropPoint);
 	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(0.0f), _T("Y位置"));
 	pPropPointGroup->AddSubItem(pPropPoint);
+	pPropButton = new CMFCPropertyGridPropertyButton(&m_wndPropList, _T("Delete point"), _T(""), _T("Delete point"), 0);
+	pPropPointGroup->AddSubItem(pPropButton);
 	pProp->AddSubItem(pPropPointGroup);
 	pPropMain->AddSubItem(pProp);
 
@@ -1368,3 +1399,9 @@ void CPropertiesWnd::RefreshCenter()
 		RefreshPropList_Frame();
 	}
 }
+
+/*
+void CPropertiesWnd::DeleteProperty(CMFCPropertyGridProperty* pProp)
+{
+	m_wndPropList.DeleteProperty(pProp);
+}*/

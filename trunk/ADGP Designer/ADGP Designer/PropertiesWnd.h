@@ -56,11 +56,15 @@ private:
 public:
 	CMFCPropItem(CMFCPropertyGridCtrl* grid,const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData = 0)
 	:CMFCPropertyGridProperty(strName, data, lpszDescr, dwData){m_MotherGrid = grid;m_Edited=false;m_Record = this->GetValue();}
+	CMFCPropItem(CMFCPropertyGridCtrl* grid,const CString& strGroupName, DWORD_PTR dwData = 0, BOOL bIsValueList = FALSE)
+	:CMFCPropertyGridProperty(strGroupName, dwData, bIsValueList){m_MotherGrid = grid;m_Edited=false;m_Record = this->GetValue();}
 	~CMFCPropItem(){}
 	DECLARE_DYNAMIC(CMFCPropItem)
 protected:
 	virtual BOOL OnEdit(LPPOINT lptClick );
 	virtual BOOL OnEndEdit();
+	//virtual BOOL RemoveSubItem(CMFCPropertyGridProperty*& pProp, BOOL bDelete = TRUE);
+	//virtual BOOL DeleteProperty(CMFCPropertyGridProperty*& pProp);
 public:
 	bool IsEdited();
 	virtual void SetValue(const COleVariant& varValue );
@@ -93,6 +97,7 @@ protected:
 	CPropertiesToolBar m_wndToolBar;
 	CMFCPropertyGridCtrl m_wndPropList;
 	static const CString actionMap[MAX_ACTIONS];
+public:
 	static VARIANT varFloat();
 	static VARIANT varFloat(float _value);
 	static VARIANT varInt();
@@ -147,6 +152,7 @@ public:
 public:
 	void Update();
 	void UpdatePropList_Frame();
+	//void DeleteProperty(CMFCPropertyGridProperty* pProp);
 };
 
 
