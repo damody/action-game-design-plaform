@@ -30,7 +30,7 @@ CMFCPropertyGridPropertyButton::CMFCPropertyGridPropertyButton( CMFCPropertyGrid
 	const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData ) 
 	: CMFCPropertyGridProperty(strName, data, lpszDescr, dwData)
 {
-	m_Count = 4;
+	m_Count = 3;
 	m_MotherGrid = grid;
 	m_Text = strName;
 	AllowEdit(false);
@@ -39,7 +39,7 @@ CMFCPropertyGridPropertyButton::CMFCPropertyGridPropertyButton( CMFCPropertyGrid
 void CMFCPropertyGridPropertyButton::OnClickName( CPoint point )
 {
 	wchar_t tbuffer[10];
-	wsprintf(tbuffer, L"Point%d", m_Count++);
+	wsprintf(tbuffer, L"%d", m_Count++);
 	CMFCPropertyGridProperty* pProp1 = new CMFCPropertyGridProperty(tbuffer, 0, TRUE);
 	CMFCPropertyGridProperty* pProp;
 	this->GetParent()->AddSubItem(pProp1);
@@ -518,6 +518,32 @@ void CPropertiesWnd::InitPropList_Body()
 
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty(_T("主要屬性"));
 	CMFCPropertyGridProperty* pProp;
+
+	pProp = new CMFCPropertyGridProperty(_T("m_Area"));
+	CMFCPropertyGridProperty* pPropButton = new CMFCPropertyGridPropertyButton(&m_wndPropList, _T("Add point") , _T("") , _T("Add point"), 0);
+	pProp->AddSubItem(pPropButton);
+	CMFCPropertyGridProperty* pPropPointGroup;
+	CMFCPropertyGridProperty* pPropPoint;
+
+	pPropPointGroup = new CMFCPropertyGridProperty(_T("0"), 0, TRUE);
+	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(0.0f), _T("X位置"));
+	pPropPointGroup->AddSubItem(pPropPoint);
+	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(0.0f), _T("Y位置"));
+	pPropPointGroup->AddSubItem(pPropPoint);
+	pProp->AddSubItem(pPropPointGroup);
+	pPropPointGroup = new CMFCPropertyGridProperty(_T("1"), 0, TRUE);
+	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(0.0f), _T("X位置"));
+	pPropPointGroup->AddSubItem(pPropPoint);
+	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(0.0f), _T("Y位置"));
+	pPropPointGroup->AddSubItem(pPropPoint);
+	pProp->AddSubItem(pPropPointGroup);
+	pPropPointGroup = new CMFCPropertyGridProperty(_T("2"), 0, TRUE);
+	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(0.0f), _T("X位置"));
+	pPropPointGroup->AddSubItem(pPropPoint);
+	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(0.0f), _T("Y位置"));
+	pPropPointGroup->AddSubItem(pPropPoint);
+	pProp->AddSubItem(pPropPointGroup);
+	pPropMain->AddSubItem(pProp);
 
 	pProp = new CMFCPropItem(&m_wndPropList,_T("m_ZWidth"), varFloat(), _T("m_ZWidth"));
 	pPropMain->AddSubItem(pProp);
