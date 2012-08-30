@@ -192,4 +192,3 @@ void CViewTree::OnLButtonDblClk(UINT nFlags, CPoint point)
 		((CClassView*)this->GetParent())->OnSelectItem(hTreeItem);
 	}
 }
-

@@ -14,6 +14,10 @@
 #include "FileView.h"
 #include "Resource.h"
 #include "ADGP Designer.h"
+#include "ConvStr.h"
+
+#include "game/HeroInfo.h"
+#include "Lua/LuaCell.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -100,15 +104,16 @@ void CFileView::OnSize(UINT nType, int cx, int cy)
 
 void CFileView::FillFileView()
 {
-	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("專案一"), 0, 0);
-	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+	hHeroDoc = m_wndFileView.InsertItem(_T("Hero 資料"), 0, 0);
+	m_wndFileView.SetItemState(hHeroDoc, TVIS_BOLD, TVIS_BOLD);
+	
+	hObjectDoc = m_wndFileView.InsertItem(_T("Object 資料"), 0, 0);
+	m_wndFileView.SetItemState(hObjectDoc, TVIS_BOLD, TVIS_BOLD);
 
-	HTREEITEM hSrc = m_wndFileView.InsertItem(_T("davis 資料"), 0, 0, hRoot);
+	hBackgroundDoc = m_wndFileView.InsertItem(_T("Background 資料"), 0, 0);
+	m_wndFileView.SetItemState(hBackgroundDoc, TVIS_BOLD, TVIS_BOLD);
 
-	m_wndFileView.InsertItem(_T("davis.lua"), 1, 1, hSrc);
-	m_wndFileView.InsertItem(_T("davis_0.png"), 1, 1, hSrc);
-	m_wndFileView.InsertItem(_T("davis_1.png"), 1, 1, hSrc);
-
+/*
 	HTREEITEM hInc = m_wndFileView.InsertItem(_T("FakeApp 標頭檔"), 0, 0, hRoot);
 
 	m_wndFileView.InsertItem(_T("FakeApp.h"), 2, 2, hInc);
@@ -128,6 +133,7 @@ void CFileView::FillFileView()
 	m_wndFileView.Expand(hRoot, TVE_EXPAND);
 	m_wndFileView.Expand(hSrc, TVE_EXPAND);
 	m_wndFileView.Expand(hInc, TVE_EXPAND);
+*/
 }
 
 void CFileView::OnContextMenu(CWnd* pWnd, CPoint point)
@@ -184,6 +190,40 @@ void CFileView::OnProperties()
 void CFileView::OnFileOpen()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
+	CFileDialog dlgFile(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Lua Files (*.lua)|*.lua||"), NULL, 0);
+	
+	if (dlgFile.DoModal()==IDOK)
+	{
+		LuaCell_Sptr data = LuaCell_Sptr(new LuaCell);
+		if (data->InputLuaFile(dlgFile.GetPathName()))
+		{
+// 			if (HeroInfo::CheckHeroDataVaild(data))
+// 			{
+				HTREEITEM hHero = m_wndFileView.InsertItem(dlgFile.GetFileTitle(),2,2,hHeroDoc);
+				HeroInfo_RawPtr hero =HeroInfo_RawPtr(new HeroInfo);
+				hero->LoadHeroData(data);
+				for (unsigned int i=0;i<hero->m_PictureDatas.size();i++)
+				{
+					std::string pic = hero->m_PictureDatas[i].m_Path;
+					size_t found;
+					found=pic.rfind('\\');
+					char buff[100];
+					sprintf(buff,"%s",pic.substr(found+1,pic.length()).c_str());
+					CString str(buff);
+					m_wndFileView.InsertItem(str,2,2,hHero);
+				}
+				m_HeroInfoMap[hHero]=hero;
+				m_wndFileView.Expand(hHeroDoc, TVE_EXPAND);
+//			}
+		}else{
+			char buff[100];
+			sprintf(buff, "Lua Loading Failed");
+			CString str(buff);
+			AfxMessageBox(str);
+		}	
+	}
+	
+	
 }
 
 void CFileView::OnFileOpenWith()
@@ -275,4 +315,26 @@ BOOL CFileView::CanAutoHide() const
 {
 	return FALSE;
 }
+
+void CFileView::OnSelectItem( HTREEITEM item )
+{
+	HeroInfohMap::iterator it = m_HeroInfoMap.find(item);
+
+	if (it!= m_HeroInfoMap.end())
+	{
+		g_HeroInfo = it->second;
+		for(unsigned int i=0;i < g_HeroInfo->m_PictureDatas.size();i++)
+		{
+			((CMainFrame*)this->GetParentFrame())->OpenDesignerView(i);
+		}
+		g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
+		g_FrameName = "";
+		g_FrameIndex = -1;
+		((CMainFrame*)this->GetParentFrame())->m_wndClassView.Refresh();
+		((CMainFrame*)this->GetParentFrame())->Clear();
+	}
+	
+	
+}
+
 

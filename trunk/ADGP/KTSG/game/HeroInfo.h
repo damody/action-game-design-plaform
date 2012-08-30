@@ -96,7 +96,7 @@ struct HeroInfo
 	}
 public:
 	HeroInfo();
-	bool	CheckHeroDataVaild(LuaCell_Sptr luadata);
+	static bool CheckHeroDataVaild(LuaCell_Sptr luadata);
 	void	LoadHeroData(LuaCell_Sptr luadata);
 	LuaCell_Sptr	m_LuaCell;
 };
