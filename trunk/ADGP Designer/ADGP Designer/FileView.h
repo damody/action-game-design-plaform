@@ -11,7 +11,10 @@
 
 #pragma once
 
-#include "ViewTree.h"
+#include "FileTree.h"
+#include "game/HeroInfo.h"
+
+typedef std::map<HTREEITEM,HeroInfo_RawPtr> HeroInfohMap;
 
 class CFileViewToolBar : public CMFCToolBar
 {
@@ -37,7 +40,7 @@ public:
 // 屬性
 protected:
 
-	CViewTree m_wndFileView;
+	CFileTree m_wndFileView;
 	CImageList m_FileViewImages;
 	CFileViewToolBar m_wndToolBar;
 
@@ -47,6 +50,14 @@ protected:
 // 程式碼實作
 public:
 	virtual ~CFileView();
+	void OnSelectItem(HTREEITEM item);
+private:
+	HTREEITEM hHeroDoc;
+	HTREEITEM hObjectDoc;
+	HTREEITEM hBackgroundDoc;
+
+	HeroInfohMap m_HeroInfoMap;
+
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

@@ -93,6 +93,11 @@ public:
 	{
 		m_wndOutput.AddStrToOutputFind(CString(strAddToList));
 	}
+	void Clear()
+	{
+		m_wndProperties.Clear();
+		m_D3DFrameView.Clear();
+	}
 	void test();
 	void OpenDesignerView(int index);
 public:  // 控制列內嵌的成員

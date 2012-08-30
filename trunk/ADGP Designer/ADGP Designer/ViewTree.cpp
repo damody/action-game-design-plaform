@@ -78,6 +78,14 @@ void CViewTree::OnEndLabelEdit( NMHDR* pNMHDR, LRESULT* pResult )
 	LPNMTVDISPINFO pTVDispInfo = reinterpret_cast<LPNMTVDISPINFO>(pNMHDR); 
 	HTREEITEM item = pTVDispInfo->item.hItem;
 
+	//AfxMessageBox(this->GetItemText(item));
+	//AfxMessageBox(pTVDispInfo->item.pszText);
+
+	if (pTVDispInfo->item.pszText==LPWSTR())
+	{
+		return;
+	}
+	
 
 	CString str(this->GetItemText(item));
 	CT2CA pszConvertedAnsiString (str);
@@ -184,4 +192,3 @@ void CViewTree::OnLButtonDblClk(UINT nFlags, CPoint point)
 		((CClassView*)this->GetParent())->OnSelectItem(hTreeItem);
 	}
 }
-
