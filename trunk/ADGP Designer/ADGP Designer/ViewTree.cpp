@@ -13,7 +13,10 @@
 #include "ViewTree.h"
 #include "resource.h"
 #include "ClassView.h"
+#include "global.h"
+#include "MainFrm.h"
 
+#include <wchar.h>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -75,20 +78,47 @@ void CViewTree::OnEndLabelEdit( NMHDR* pNMHDR, LRESULT* pResult )
 	LPNMTVDISPINFO pTVDispInfo = reinterpret_cast<LPNMTVDISPINFO>(pNMHDR); 
 	HTREEITEM item = pTVDispInfo->item.hItem;
 
-	CString str(pTVDispInfo->item.pszText);
+
+	CString str(this->GetItemText(item));
 	CT2CA pszConvertedAnsiString (str);
-	std::string str2(pszConvertedAnsiString);
+	std::string origFrameName(pszConvertedAnsiString);
 
-	if(this->GetRootItem() != item && m_lastSelectedItem == item)
+	str=CString(pTVDispInfo->item.pszText);
+	CT2CA pszConvertedAnsiString2 (str);
+	std::string newFrameName(pszConvertedAnsiString2);
+
+	if (g_ActiveFramesMap->find(newFrameName)!=g_ActiveFramesMap->end())
 	{
-		HTREEITEM hNextItem;
-		HTREEITEM hChildItem = this->GetChildItem(item);
-
-		while (hChildItem != NULL)
+		char buff[100];
+		sprintf(buff,"Class View: Frame[%s] has existed",newFrameName.c_str());
+		str = CString(buff);
+		((CMainFrame*)this->GetParent()->GetParentFrame())->AddStrToOutputBuild(str);
+		AfxMessageBox(str);
+		pTVDispInfo->item.pszText = this->GetItemText(item).AllocSysString();
+	}else{
+		FramesMap::iterator it = g_ActiveFramesMap->find(origFrameName);
+		for (FrameInfos::iterator it_info = it->second.begin(); it_info != it->second.end(); it_info++)
 		{
-			hNextItem = this->GetNextItem(hChildItem, TVGN_NEXT);
-			CClassView::GetInstance()->GetPropMap()[hChildItem].m_FrameName = str2;
-			hChildItem = hNextItem;
+			it_info->m_FrameName = newFrameName;
+		}
+
+		(*g_ActiveFramesMap)[newFrameName] = it->second;
+		g_ActiveFramesMap->erase(it);
+
+		for (FramesMap::iterator it_map = g_ActiveFramesMap->begin(); it_map != g_ActiveFramesMap->end(); it_map++)
+		{
+			for (FrameInfos::iterator it_info = it_map->second.begin(); it_info != it_map->second.end(); it_info++)
+			{
+				if (it_info->m_NextFrameName == origFrameName)
+				{
+					it_info->m_NextFrameName = newFrameName;
+				}
+
+				if (it_info->m_Consume.m_NotEnoughFrameName == origFrameName)
+				{
+					it_info->m_Consume.m_NotEnoughFrameName == newFrameName;
+				}
+			}
 		}
 	}
 
@@ -144,25 +174,14 @@ void CViewTree::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
 
 void CViewTree::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
 
-	CTreeCtrl::OnLButtonDblClk(nFlags, point);
+	CPoint pt = point;
+	UINT flags = 0;
 
-	CString classCaption, caption;
-	ASSERT(classCaption.LoadString(IDS_CLASS_VIEW));
-
-	this->GetParent()->GetWindowText(caption);
-
-	if(classCaption.Compare(caption) == 0)
+	HTREEITEM hTreeItem = this->HitTest(pt, &flags);
+	if (hTreeItem != NULL)
 	{
-		CPoint pt = point;
-
-		UINT flags = 0;
-		HTREEITEM hTreeItem = this->HitTest(pt, &flags);
-		if (hTreeItem != NULL)
-		{
-			((CClassView*)this->GetParent())->OnSelectItem(hTreeItem);
-		}
+		((CClassView*)this->GetParent())->OnSelectItem(hTreeItem);
 	}
 }
 
