@@ -1024,7 +1024,6 @@ void CPropertiesWnd::RefreshPropList_Frame()
 	((CMFCPropItem*)propRoot->GetSubItem(8)->GetSubItem(0))->SetValue(varFloat(frameInfo.m_CenterX));
 	((CMFCPropItem*)propRoot->GetSubItem(8)->GetSubItem(1))->SetValue(varFloat(frameInfo.m_CenterY));
 	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(0))->SetValue(varBool(frameInfo.m_Consume.m_JumpRule));
-	//((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(0))->SetValue(varBool(true));
 	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(1))->SetValue(varInt(frameInfo.m_Consume.m_HP));
 	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(2))->SetValue(varInt(frameInfo.m_Consume.m_MP));
 	((CMFCPropItem*)propRoot->GetSubItem(9)->GetSubItem(3))->SetValue(CString(frameInfo.m_Consume.m_NotEnoughFrameName.c_str()));
@@ -1332,28 +1331,12 @@ const CString CPropertiesWnd::actionMap[MAX_ACTIONS] = {
 	CString("UNIQUE_SKILL"),
 };
 
-VARIANT CPropertiesWnd::varFloat()
-{
-	VARIANT _varFloat;
-	_varFloat.vt = VT_R4;
-	_varFloat.fltVal = 0.0f;
-	return _varFloat;
-}
-
 VARIANT CPropertiesWnd::varFloat(float _value)
 {
 	VARIANT _varFloat;
 	_varFloat.vt = VT_R4;
 	_varFloat.fltVal = _value;
 	return _varFloat;
-}
-
-VARIANT CPropertiesWnd::varInt()
-{
-	VARIANT _varInt;
-	_varInt.vt = VT_INT;
-	_varInt.intVal = 0;
-	return _varInt;
 }
 
 VARIANT CPropertiesWnd::varInt(int _value)
@@ -1364,19 +1347,14 @@ VARIANT CPropertiesWnd::varInt(int _value)
 	return _varInt;
 }
 
-VARIANT CPropertiesWnd::varBool()
-{
-	VARIANT _varBool;
-	_varBool.vt = VT_BOOL;
-	_varBool.boolVal = false;
-	return _varBool;
-}
-
 VARIANT CPropertiesWnd::varBool(bool _value)
 {
 	VARIANT _varBool;
 	_varBool.vt = VT_BOOL;
-	_varBool.boolVal = _value;
+	if (_value)
+		_varBool.boolVal = -1;
+	else
+		_varBool.boolVal = 0;
 	return _varBool;
 }
 

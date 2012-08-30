@@ -52,6 +52,7 @@ class CMFCPropItem : public CMFCPropertyGridProperty
 private:
 	CMFCPropertyGridCtrl* m_MotherGrid;
 	bool m_Update;
+	bool m_Edited;
 	COleVariant m_Record;
 public:
 	CMFCPropItem(CMFCPropertyGridCtrl* grid,const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData = 0)
@@ -98,12 +99,9 @@ protected:
 	CMFCPropertyGridCtrl m_wndPropList;
 	static const CString actionMap[MAX_ACTIONS];
 public:
-	static VARIANT varFloat();
-	static VARIANT varFloat(float _value);
-	static VARIANT varInt();
-	static VARIANT varInt(int _value);
-	static VARIANT varBool();
-	static VARIANT varBool(bool _value);
+	static VARIANT varFloat(float _value = 0);
+	static VARIANT varInt(int _value = 0);
+	static VARIANT varBool(bool _value = false);
 
 // 程式碼實作
 public:
