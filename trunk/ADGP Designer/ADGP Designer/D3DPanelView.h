@@ -23,6 +23,12 @@ private:
 	int m_PointIndex;
 	float m_RecordX,m_RecordY;
 public:
+	void Clear()
+	{
+		Init();
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
 	void Init();
 	void Refresh();
 	void EditBody(int id);

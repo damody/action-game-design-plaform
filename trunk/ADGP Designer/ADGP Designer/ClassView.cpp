@@ -503,7 +503,9 @@ void CClassView::OnAnimationAdd()
 		
 		HTREEITEM item = m_wndClassView.InsertItem(str, 1, 1, root);
 		(*g_ActiveFramesMap)[frameName].push_back(defaultFrameInfo(item));
-		HTREEITEM hClass = m_wndClassView.InsertItem(CString("0"), 3, 3, item);
+		sprintf(buff, "%d", 0);
+		CString str(buff);
+		HTREEITEM hClass = m_wndClassView.InsertItem(str, 3, 3, item);
 		m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
 		m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
 		m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
@@ -511,11 +513,17 @@ void CClassView::OnAnimationAdd()
 		m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
 		m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
 
-		//Refresh();
+		
 		m_wndClassView.Expand(root, TVE_EXPAND);
 		m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
 		m_wndClassView.EditLabel(item);
 		num++;
+
+		//Refresh
+		g_FrameName = frameName;
+		g_FrameIndex = 0;
+		((CMainFrame*)this->GetParentFrame())->RefreshFrameEdit();
+		((CMainFrame*)this->GetParentFrame())->m_wndProperties.RefreshPropList_Frame();
 	}
 }
 
@@ -551,8 +559,14 @@ void CClassView::OnAnimationDelete()
 			m_wndClassView.DeleteItem(hChildItem);
 			hChildItem = hNextItem;
 		}
-
 		m_wndClassView.DeleteItem(item);
+		//Clear
+		if (g_FrameName == str)
+		{
+			g_FrameName = "";
+			g_FrameIndex = -1;
+			((CMainFrame*)this->GetParentFrame())->Clear();
+		}
 	}
 }
 
@@ -583,6 +597,11 @@ void CClassView::OnFrameAdd()
 		m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
 
 		m_wndClassView.Expand(item, TVE_EXPAND);
+
+		g_FrameName = frameName;
+		g_FrameIndex = index;
+		((CMainFrame*)this->GetParentFrame())->RefreshFrameEdit();
+		((CMainFrame*)this->GetParentFrame())->m_wndProperties.RefreshPropList_Frame();
 	}
 }
 
@@ -609,6 +628,11 @@ void CClassView::OnFrameDelete()
 			else break;
 		}
 		m_wndClassView.DeleteItem(item);
+		//Clear
+		if (g_FrameName == frameName && g_FrameIndex == count)
+		{
+			((CMainFrame*)this->GetParentFrame())->Clear();
+		}
 	}
 
 }
@@ -1204,7 +1228,7 @@ FrameInfo CClassView::defaultFrameInfo(HTREEITEM item)
 	fi.m_DVX = 0.0f;
 	fi.m_DVY = 0.0f;
 	fi.m_DVZ = 0.0f;
-	
+	/*
 	fi.m_Bodys.resize(1);
 	fi.m_Bodys[0].m_Area = Polygon2D();
 	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
@@ -1270,7 +1294,7 @@ FrameInfo CClassView::defaultFrameInfo(HTREEITEM item)
 	fi.m_Creations[0].v0.x = 0.0f;
 	fi.m_Creations[0].v0.y = 0.0f;
 	fi.m_Creations[0].v0.z = 0.0f;
-
+	*/
 	return fi;
 }
 

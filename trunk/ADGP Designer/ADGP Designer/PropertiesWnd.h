@@ -78,7 +78,7 @@ public:
 	virtual BOOL CanFloat() const;
 	virtual BOOL CanBeClosed() const;
 	virtual BOOL CanAutoHide() const;
-
+	
 	static CPropertiesWnd* GetInstance(){return instance;}
 	static CMFCPropertyGridProperty* GetDefaultPropList();
 	void SetVSDotNetLook(BOOL bSet);
@@ -122,6 +122,12 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
+	void Clear()
+	{
+		m_EditProp = 0;
+		m_wndPropList.RemoveAll();
+		SetPropListFont();
+	}
 	void InitPropList();
 	void InitPropList_Frame();
 	void InitPropList_Body();
