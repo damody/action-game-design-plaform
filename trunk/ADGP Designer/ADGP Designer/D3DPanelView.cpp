@@ -78,6 +78,7 @@ void CD3DPanelView::InitDx11( HWND hWnd )
 	::UpdateWindow(m_hWndDX11);
 	m_D3DApp.initApp(m_hWndDX11, rect.Width(), rect.Height());
 	m_D3DApp.buildShaderFX();
+	m_D3DApp.OnResize(rect.Width(), rect.Height());
 }
 
 
