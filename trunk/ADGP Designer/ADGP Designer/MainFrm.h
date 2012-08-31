@@ -22,7 +22,6 @@
 #include "D3DPanelView.h"
 #include "ADGP DesignerView.h"
 
-
 #include <map>
 typedef std::map<CString,CADGPDesignerView*> DesignerViews;
 
@@ -49,7 +48,7 @@ public:
 // 覆寫
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-
+	CMFCTabCtrl m_Tab;
 // 程式碼實作
 public:
 	virtual ~CMainFrame();
@@ -99,7 +98,8 @@ public:
 		m_D3DFrameView.Clear();
 	}
 	void test();
-	void OpenDesignerView(CString& namr,int index);
+	void OpenDesignerView(CString& name,int index);
+	void SwitchDesigerView(CString& name);
 public:  // 控制列內嵌的成員
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;
@@ -107,6 +107,7 @@ public:  // 控制列內嵌的成員
 	CMFCRibbonStatusBar  m_wndStatusBar;
 	CFileView         m_wndFileView;
 	CClassView        m_wndClassView;
+	CDockablePane*	  m_AttachPane;
 	COutputWnd        m_wndOutput;
 	CPropertiesWnd    m_wndProperties;
 	CMFCShellTreeCtrl m_wndTree;
@@ -124,7 +125,7 @@ protected:
 	afx_msg void OnOptions();
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 	DECLARE_MESSAGE_MAP()
-
+	
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
 	BOOL CreateCaptionBar();

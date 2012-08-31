@@ -42,7 +42,7 @@ public:
 private:
 	void Update(int x,int y);
 
-protected: // 僅從序列化建立
+public: // 僅從序列化建立
 	CADGPDesignerView();
 	DECLARE_DYNCREATE(CADGPDesignerView)
 

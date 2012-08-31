@@ -342,9 +342,9 @@ void CFileView::OnSelectItem( HTREEITEM item )
 		g_FrameIndex = -1;
 		((CMainFrame*)this->GetParentFrame())->m_wndClassView.Refresh();
 		((CMainFrame*)this->GetParentFrame())->Clear();
+	}else{
+		((CMainFrame*)this->GetParentFrame())->SwitchDesigerView(m_wndFileView.GetItemText(item));
 	}
-	
-	
 }
 
 

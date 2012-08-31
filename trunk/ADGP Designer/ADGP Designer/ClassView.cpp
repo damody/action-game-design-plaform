@@ -1300,7 +1300,6 @@ FrameInfo CClassView::defaultFrameInfo(HTREEITEM item)
 }
 
 
-
 /*
 CMFCPropertyGridProperty* CClassView::GetDefaultPropList()
 {

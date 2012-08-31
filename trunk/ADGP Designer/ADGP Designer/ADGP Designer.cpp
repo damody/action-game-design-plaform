@@ -143,7 +143,7 @@ BOOL CADGPDesignerApp::InitInstance()
 	// 這會立即發生在設定 m_pMainWnd 之後
 
 
-// 	// 剖析標準 Shell 命令、DDE、檔案開啟舊檔的命令列
+ 	// 剖析標準 Shell 命令、DDE、檔案開啟舊檔的命令列
 // 	CCommandLineInfo cmdInfo;
 // 	ParseCommandLine(cmdInfo);
 // 

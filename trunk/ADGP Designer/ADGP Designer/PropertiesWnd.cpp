@@ -959,7 +959,7 @@ LRESULT CPropertiesWnd::OnPropertyChanged( __in WPARAM wparam, __in LPARAM lpara
 
 BOOL CPropertiesWnd::CanFloat() const
 {
-	return TRUE;
+	return FALSE;
 }
 
 BOOL CPropertiesWnd::CanBeClosed() const

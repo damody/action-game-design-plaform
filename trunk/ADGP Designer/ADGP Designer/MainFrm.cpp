@@ -89,6 +89,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	mdiTabParams.m_bAutoColor = TRUE;    // 設定為 FALSE 可停用 MDI 索引標籤的自動著色
 	mdiTabParams.m_bDocumentMenu = TRUE; // 啟用索引標籤區域右側的文件功能表
 	EnableMDITabbedGroups(TRUE, mdiTabParams);
+// 	CRect rectTab; 
+// 	this->GetWindowRect(&rectTab);  
+// 	ScreenToClient(&rectTab);  
+// 	m_Tab.Create(CMFCTabCtrl::STYLE_3D, rectTab, this, 1,CMFCTabCtrl::LOCATION_TOP);  
+// 	m_wnd1.Create (WS_CHILD | WS_VISIBLE, CRect (0, 0, 0, 0), &m_wndTab, 1); 
+// 	m_wnd1.SetFont (&afxGlobalData.fontRegular); 
+// 	m_wnd1.SetWindowText (_T("Edit 1"));  
+
 
 	m_wndRibbonBar.Create(this);
 	m_wndRibbonBar.LoadFromResource(IDR_RIBBON);
@@ -146,9 +154,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndProperties.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndProperties, 0, CRect(0, 0, 200, 200));
 
+	m_wndClassView.AttachToTabWnd(&m_wndFileView, DM_SHOW, TRUE, &m_AttachPane);
+	m_AttachPane->ToggleAutoHide();
+
 	CString strPropertiesWnd;
 	bNameValid = strPropertiesWnd.LoadString(IDS_VIEW_FRAMEEDIT);
-	if (!m_D3DFrameView.Create(strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, 
+	if (!m_D3DFrameView.Create(strPropertiesWnd, this, CRect(0, 0, 400, 400), TRUE, 
 		ID_VIEW_FRAMEEDIT, 
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI ))
 	{
@@ -519,17 +530,50 @@ void CMainFrame::OnButtonAddnewarea()
 void CMainFrame::OpenDesignerView( CString& name,int index )
 {
 	theApp.OnFileNew();
-	g_NewView->GetWindowText(name);
+	
+	g_NewView->SetWindowText(name);
 	if(g_HeroInfo!=NULL){
 		(g_NewView)->Refresh(&g_HeroInfo->m_PictureDatas[index]);
 		(g_NewView)->m_PictureID = index;
 	}
 	m_DesignerViews[name]=g_NewView;
+//	m_Tab.AddTab(g_NewView,name,index,FALSE);
+// 	CADGPDesignerDoc* pCurrentDoc = (CADGPDesignerDoc*)this->GetActiveDocument();
+// 	CADGPDesignerView* pNewView = new CADGPDesignerView();
+// 	CCreateContext newContext;
+// 	newContext.m_pNewViewClass = NULL;
+// 	newContext.m_pNewDocTemplate = NULL;
+// 	newContext.m_pLastView = NULL;
+// 	newContext.m_pCurrentFrame = NULL;
+// 	newContext.m_pCurrentDoc = pCurrentDoc;
+// 	UINT viewID = AFX_IDW_PANE_FIRST + 1;
+// 	CRect rect(0, 0, 0, 0); // Gets resized later.
+//  	pNewView->Create(NULL, name, WS_CHILD, rect, this, viewID, &newContext);
+// 	pNewView->Refresh(&g_HeroInfo->m_PictureDatas[index]);
+// 	pNewView->m_PictureID = index;
+// 	m_DesignerViews[name]=pNewView;
 }
 
 void CMainFrame::test()
 {
-		
+	CString str("Test");
+	//m_wndClientArea.GetMDITabs().GetTabLabel(1,str);
+	AfxMessageBox(str);
+}
+
+void CMainFrame::SwitchDesigerView( CString& name )
+{
+
+	DesignerViews::iterator it = m_DesignerViews.find(name);
+	if(it != m_DesignerViews.end()){
+		//this->SetActiveWindow(it->second);
+		//this->ShowWindow(SW_HIDE);
+		this->RecalcLayout();
+		it->second->UpdateWindow();
+		this->SetActiveView(it->second);
+		//m_wndClientArea.GetMDITabs().SetActiveTab(0);
+		//m_wndClientArea.GetMDITabs().SetDrawFrame();
+	}
 }
 
 CADGPDesignerView* g_NewView=NULL;
