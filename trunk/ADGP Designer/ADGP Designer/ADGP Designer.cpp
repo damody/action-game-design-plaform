@@ -165,7 +165,7 @@ int CADGPDesignerApp::ExitInstance()
 {
 	// TODO: 處理其他您已經加入的資源
 	AfxOleTerm(FALSE);
-	CleanState();
+	//CleanState();
 	return CWinAppEx::ExitInstance();
 }
 
