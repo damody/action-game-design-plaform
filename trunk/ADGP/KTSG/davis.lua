@@ -1622,6 +1622,7 @@ frame.many_punch[0] =
    body = {
    {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
    }
+   -- sound: data\007.wav
 }
 
 frame.many_punch[1] =
@@ -1632,17 +1633,235 @@ frame.many_punch[1] =
    hit = {},
    blood = {},
    attack={
-		{kind = 0, effect = Effect.Punch,
+		{
+		kind = 0, effect = Effect.Punch,
 		points = {{63,-9}, {63,-76}, {79,-76}, {79,-9}}, zwidth = 8,
 		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
 		arest = 8, reAttackRest = 14,
 		injury = 45, strength = 50},
-		{kind = 0, effect = Effect.Punch,
+		{
+		kind = 0, effect = Effect.Punch,
 		points = {{17,-35}, {17,-48}, {78,-48}, {78,-35}}, zwidth = 8,
 		dvx = 7, dvy = 0, dvz = 0, fall = 1, breakDefend = 16,
 		arest = 8, reAttackRest = 14,
 		injury = 25, strength = 50}
 	},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.many_punch[2] =
+{
+   pic_id = 2, pic_x = 6, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 3},
+   dvx = 3, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0, effect = Effect.Punch,
+		points = {{49,-9}, {49,-73}, {67,-73}, {67,-9}}, zwidth = 8,
+		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
+		arest = 8, reAttackRest = 14,
+		injury = 45, strength = 50},
+   },
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+   -- sound: data\007.wav
+}
+
+frame.many_punch[3] =
+{
+   pic_id = 2, pic_x = 7, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 4},
+   dvx = 3, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{
+		kind = 0, effect = Effect.Punch,
+		points = {{57,-9}, {57,-76}, {75,-76}, {75,-9}}, zwidth = 8,
+		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
+		arest = 8, reAttackRest = 14,
+		injury = 45, strength = 50},
+		{
+		kind = 0, effect = Effect.Punch,
+		points = {{14,-35}, {14,-53}, {72,-53}, {72,-35}}, zwidth = 8,
+		dvx = 7, dvy = 0, dvz = 0, fall = 1, breakDefend = 16,
+		arest = 8, reAttackRest = 14,
+		injury = 25, strength = 50}
+	},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.many_punch[4] =
+{
+   pic_id = 2, pic_x = 8, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 5},
+   dvx = 3, dvy = 0,  dvz = 0,  centerx = 24,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0, effect = Effect.Punch,
+		points = {{49,-9}, {49,-73}, {67,-73}, {67,-9}}, zwidth = 8,
+		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
+		arest = 8, reAttackRest = 14,
+		injury = 45, strength = 50},
+   },
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.many_punch[5] =
+{
+   pic_id = 2, pic_x = 9, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 6},
+   dvx = 5, dvy = 0,  dvz = 0,  centerx = 24,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0, effect = Effect.Punch,
+		points = {{49,-9}, {49,-73}, {67,-73}, {67,-9}}, zwidth = 8,
+		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
+		arest = 8, reAttackRest = 14,
+		injury = 45, strength = 50},
+   },
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+   -- sound: data\007.wav
+}
+
+frame.many_punch[6] =
+{
+   pic_id = 2, pic_x = 10, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 7},
+   dvx = 5, dvy = 0,  dvz = 0,  centerx = 22,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{
+		kind = 0, effect = Effect.Punch,
+		points = {{64,-10}, {64,-78}, {82,-78}, {82,-10}}, zwidth = 8,
+		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
+		arest = 8, reAttackRest = 14,
+		injury = 45, strength = 50},
+		{
+		kind = 0, effect = Effect.Punch,
+		points = {{-1,-22}, {-1,-47}, {80,-47}, {80,-22}}, zwidth = 8,
+		dvx = 10, dvy = 0, dvz = 0, fall = 1, breakDefend = 16,
+		arest = 8, reAttackRest = 14,
+		injury = 25, strength = 50}
+	},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.many_punch[7] =
+{
+   pic_id = 2, pic_x = 10, pic_y = 3, state = Action.GroundSkill, wait = 2, next = {"many_punch", 8},
+   dvx = 3, dvy = 0,  dvz = 0,  centerx = 18,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{kind = 0, effect = Effect.Punch,
+		points = {{49,-9}, {49,-73}, {67,-73}, {67,-9}}, zwidth = 8,
+		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
+		arest = 8, reAttackRest = 14,
+		injury = 45, strength = 50},
+   },
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.many_punch[8] =
+{
+   pic_id = 2, pic_x = 9, pic_y = 3, state = Action.GroundSkill, wait = 2, next = {"many_punch", 9},
+   dvx = 5, dvy = 0,  dvz = 0,  centerx = 22,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"D^A", "singlong", 0}},
+   blood = {},
+   attack={
+		{kind = 0, effect = Effect.Punch,
+		points = {{49,-9}, {49,-73}, {67,-73}, {67,-9}}, zwidth = 8,
+		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
+		arest = 8, reAttackRest = 14,
+		injury = 45, strength = 50},
+   },
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.many_punch[9] =
+{
+   pic_id = 2, pic_x = 8, pic_y = 3, state = Action.GroundSkill, wait = 2, next = {"many_punch", 10},
+   dvx = 7, dvy = 0,  dvz = 0,  centerx = 26,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"D^A", "singlong", 0}},
+   blood = {},
+   attack={
+		{kind = 0, effect = Effect.Punch,
+		points = {{49,-9}, {49,-73}, {67,-73}, {67,-9}}, zwidth = 8,
+		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
+		arest = 8, reAttackRest = 14,
+		injury = 45, strength = 50},
+   },
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.many_punch[10] =
+{
+   pic_id = 2, pic_x = 7, pic_y = 3, state = Action.GroundSkill, wait = 2, next = {"many_punch", 11},
+   dvx = 3, dvy = 0,  dvz = 0,  centerx = 22,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{
+		kind = 0, effect = Effect.Punch,
+		points = {{10,-2}, {10,-70}, {85,-70}, {85,-2}}, zwidth = 8,
+		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
+		arest = 8, reAttackRest = 14,
+		injury = 45, strength = 50},
+		{
+		kind = 0, effect = Effect.Punch,
+		points = {{12,-11}, {12,-62}, {82,-62}, {82,-11}}, zwidth = 8,
+		dvx = 7, dvy = 15, dvz = 0, fall = 70, breakDefend = 60,
+		arest = 8, reAttackRest = 30,
+		injury = 25, strength = 50}
+	},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.many_punch[11] =
+{
+   pic_id = 2, pic_x = 6, pic_y = 3, state = Action.AfterSkill, wait = 4, next = {"many_punch", 12},
+   dvx = 3, dvy = 0,  dvz = 0,  centerx = 27,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"J", "jump_hit", 0}},
+   body = {
+   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   }
+}
+
+frame.many_punch[12] =
+{
+   pic_id = 2, pic_x = 5, pic_y = 3, state = Action.AfterSkill, wait = 6, next = {"default", 0},
+   dvx = 3, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {{"J", "jump_hit", 0}},
    body = {
    {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
    }
@@ -1723,7 +1942,7 @@ frame.singlong[0] =
 {
    pic_id = 2, pic_x = 1, pic_y = 4, state = Action.BeforeSkill, wait = 2, next = {"singlong", 1},
    dvx = 7, dvy = 36,  dvz = 0,  centerx = 30,  centery = 76,  clear_key_queue = 0,
-   consume = {rule = 1, HP = 0, MP = 225, backFrame = "default", backFrameID = 0},
+   consume = {rule = 1, HP = 0, MP = 225, backFrame = "super_punch", backFrameID = 0},
    hit = {},
    blood = {},
    body = {
