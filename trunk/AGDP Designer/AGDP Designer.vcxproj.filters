@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="原始程式檔">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="標頭檔">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="資源檔">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="File">
+      <UniqueIdentifier>{a6cf5d1b-1d19-4db5-9bd3-79cefaff813e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11">
+      <UniqueIdentifier>{3f9d9efe-93f2-4a43-96ca-b7177969590b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader">
+      <UniqueIdentifier>{e870cc9e-d94c-462f-aa4d-5c50cb229233}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="res\file_view.ico">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\file_view_hc.ico">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\class_view.ico">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\class_view_hc.ico">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\fileview.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\fileview_hc.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\classview.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\classview_hc.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\explorer.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\explorer_hc.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\sort.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\sort_hc.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\menuimages.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\menuimages_hc.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\output_wnd.ico">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\output_wnd_hc.ico">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\properties_wnd.ico">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\properties_wnd_hc.ico">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\properties.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\properties_hc.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\nav_large.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\nav_large_hc.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\pages.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\pages_hc.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\pages_small.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\pages_small_hc.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\info.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\buttons.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\filelarge.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\filesmall.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\main.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\writelarge.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\writesmall.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\ribbon.mfcribbon-ms">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\AGDPDesigner.rc2">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\AGDP DesignerDoc.ico">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\AGDP Designer.ico">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\Toolbar.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="res\Toolbar256.bmp">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="Shader\Line.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="Shader\picture.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="Shader\point.fx">
+      <Filter>shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="ChildFrm.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="FileView.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassView.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewTree.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputWnd.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertiesWnd.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="File\ZipData.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="File\ZipFolder.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvStr.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="File\CryptoData.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\Timer.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\Vertex.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="PointManager.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\TextureManager.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\d3dApp_Frame.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\d3dApp_Picture.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DPanelView.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="FileTree.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="AGDP Designer.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="AGDP DesignerDoc.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="AGDP DesignerView.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildFrm.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="FileView.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassView.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewTree.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputWnd.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertiesWnd.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="File\ZipData.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="File\ZipFolder.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvStr.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="File\CryptoData.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\Timer.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\Vertex.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="PointManager.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="global.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\TextureManager.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\d3dApp_Frame.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11\d3dApp_Picture.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DPanelView.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="HeroInfo.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaCell.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="FileTree.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="AGDP Designer.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="AGDP DesignerDoc.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="AGDP DesignerView.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AGDP Designer.rc">
+      <Filter>資源檔</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

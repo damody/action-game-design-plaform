@@ -96,7 +96,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 	//HolyK
 
 	PrintInfo();
-	UpdateInput();
+	
 	
 	//m_DXUT_UI->UpdataUI(dt);
 	
@@ -109,6 +109,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 		timp_count+=dt;
 		if (timp_count > 1/60.0f)
 		{
+			UpdateInput();
 			D3DApp::DrawScene(); // clear window
 			this->DrawScene();
 			m_SwapChain->Present(0, 0);
