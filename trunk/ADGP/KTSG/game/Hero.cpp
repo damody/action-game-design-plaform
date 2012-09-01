@@ -767,9 +767,7 @@ KeyLoop:
 	else{
 		if(cface != 0) m_FaceSide = cface > 0;
 		//m_Vel += dv;
-		m_Frame = nFrame;
-		m_FrameID = nFramID;
-		FrameInfo *f = &iframe->second[m_FrameID];
+		FrameInfo *f = &iframe->second[nFramID];
 		//®ø¯Ó
 		if(f->m_Consume.m_JumpRule >= 0){
 			printf("MaxHP:%d\tHP:%d\tMP:%d\n",m_MaxRecoverHP,m_HP,m_MP);
@@ -778,11 +776,16 @@ KeyLoop:
 				m_HP -= f->m_Consume.m_HP;
 				m_MP -= f->m_Consume.m_MP;
 			}else{
+				if(f->m_Consume.m_NotEnoughFrameName.compare("default") == 0){
+					return false;
+				}
 				nFrame = f->m_Consume.m_NotEnoughFrameName;
 				nFramID = f->m_Consume.m_NotEnoughFrame;
 				goto KeyLoop;
 			}
 		}
+		m_Frame = nFrame;
+		m_FrameID = nFramID;
 		if(m_KeyQue.empty()){}
 		else if(f->m_ClearKeyQueue == 1){
 			m_KeyQue.pop_back();

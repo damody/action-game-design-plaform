@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="原始程式檔">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="標頭檔">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="資源檔">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="原始程式檔\game">
+      <UniqueIdentifier>{1b084fc3-8b4b-494d-a4e2-78973a730ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="標頭檔\game">
+      <UniqueIdentifier>{d9407ea2-083c-4153-b4e6-4f8891f6c20d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="原始程式檔\Lua">
+      <UniqueIdentifier>{3f9fa3b1-d37b-4ab7-978c-e960e80792f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="標頭檔\Lua">
+      <UniqueIdentifier>{a613586a-0e60-4106-9f9f-f56acee2b16f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\auto_link_agal.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\Body.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\CatchInfo.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\CheeAction.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\ColorRect.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\Consume.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\Creation.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\CtrlKey.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\Effect.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\EffectData.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\FlyingPath.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\FrameInfo.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\HeroAction.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\HeroInfo.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\HeroInfoManager.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\HeroManager.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\HitData.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\ObjectInfo.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\ObjectInfoManager.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\ObjectType.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\PictureData.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\Player.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\Record.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\WeaponAction.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\Attack.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\BeCatch.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\BloodInfo.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAGAL.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lua\LuaCell.h">
+      <Filter>標頭檔\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lua\CreateLua.h">
+      <Filter>標頭檔\Lua</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\game\FlyingPath.cpp">
+      <Filter>原始程式檔\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\HeroInfo.cpp">
+      <Filter>原始程式檔\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\HeroInfoManager.cpp">
+      <Filter>原始程式檔\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\ObjectInfo.cpp">
+      <Filter>原始程式檔\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\ObjectInfoManager.cpp">
+      <Filter>原始程式檔\game</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAGAL.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Lua\CreateLua.cpp">
+      <Filter>原始程式檔\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Lua\LuaCell.cpp">
+      <Filter>原始程式檔\Lua</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
