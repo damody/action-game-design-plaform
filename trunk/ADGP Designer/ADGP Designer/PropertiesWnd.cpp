@@ -65,6 +65,44 @@ void CMFCPropertyGridPropertyButton::OnClickName( CPoint point )
 	}
 }
 /////////////////////////////////////////////////////////////////////////////
+
+IMPLEMENT_DYNAMIC(CMFCPropertyGridPropertyVButton, CMFCPropertyGridProperty)
+
+CMFCPropertyGridPropertyVButton::CMFCPropertyGridPropertyVButton( CMFCPropertyGridCtrl* grid, const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData ) : CMFCPropertyGridProperty(strName, data, lpszDescr, dwData)
+{
+	m_Count = 3;
+	m_MotherGrid = grid;
+	this->AllowEdit(FALSE);
+}
+
+BOOL CMFCPropertyGridPropertyVButton::OnClickValue(UINT uiMsg, CPoint point)
+{
+	CString _name = this->GetValue();
+	if(!_name.Compare(CString("Add point")))
+	{
+		wchar_t tbuffer[10];
+		wsprintf(tbuffer, L"%d", m_Count++);
+		CMFCPropertyGridProperty* pProp1 = new CMFCPropertyGridProperty(tbuffer, 0, TRUE);
+		CMFCPropertyGridProperty* pProp;
+		this->GetParent()->AddSubItem(pProp1);
+		pProp = new CMFCPropertyGridProperty(_T("X"), CPropertiesWnd::varFloat(0.0f), _T("X¦ì¸m"));
+		pProp1->AddSubItem(pProp);
+		pProp = new CMFCPropertyGridProperty(_T("Y"), CPropertiesWnd::varFloat(0.0f), _T("Y¦ì¸m"));
+		pProp1->AddSubItem(pProp);
+		pProp = new CMFCPropertyGridPropertyButton(m_MotherGrid, _T("Delete point"), _T(""), _T("Delete point"), 0);
+		pProp1->AddSubItem(pProp);
+		m_MotherGrid->AdjustLayout();
+	}
+	else if(!_name.Compare(CString("Delete point")))
+	{
+		CMFCPropertyGridProperty* _tmp = this;
+		m_MotherGrid->DeleteProperty(_tmp);
+	}
+	return CMFCPropertyGridProperty::OnClickValue(uiMsg, point);
+}
+
+
+
 IMPLEMENT_DYNAMIC(CMFCPropItem, CMFCPropertyGridProperty)
 
 BOOL CMFCPropItem::OnEndEdit()
@@ -548,7 +586,7 @@ void CPropertiesWnd::InitPropList_Body()
 	CMFCPropertyGridProperty* pProp;
 
 	pProp = new CMFCPropertyGridProperty(_T("m_Area"));
-	CMFCPropertyGridProperty* pPropButton = new CMFCPropertyGridPropertyButton(&m_wndPropList, _T("Add point") , _T("") , _T("Add point"), 0);
+	CMFCPropertyGridProperty* pPropButton = new CMFCPropertyGridPropertyVButton(&m_wndPropList, _T("Add point") , _T("Add point") , _T("Add point"), 0);
 	pProp->AddSubItem(pPropButton);
 	CMFCPropertyGridProperty* pPropPointGroup;
 	CMFCPropertyGridProperty* pPropPoint;

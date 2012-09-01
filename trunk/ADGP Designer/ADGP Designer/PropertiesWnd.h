@@ -47,6 +47,28 @@ public:
 
 };
 
+class CMFCPropertyGridPropertyVButton : public CMFCPropertyGridProperty
+{
+private:
+	CBrush m_Brush;
+	CString m_Text;
+	CMFCPropertyGridCtrl* m_MotherGrid;
+public:
+	int	m_Count;
+	CMFCPropertyGridPropertyVButton(CMFCPropertyGridCtrl* grid, const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData = 0);
+	virtual ~CMFCPropertyGridPropertyVButton(){}
+	DECLARE_DYNAMIC(CMFCPropertyGridPropertyVButton)
+	void OnDrawValue( CDC* pDC, CRect rect )
+	{
+		if (m_Brush.m_hObject == NULL)
+			m_Brush.CreateSolidBrush(RGB(220,220,220));
+		pDC->FillRect(rect,&m_Brush);
+		pDC->TextOut(rect.left+2 , rect.top+2 , m_Text);	
+	}
+	BOOL OnClickValue(UINT uiMsg, CPoint point);
+
+};
+
 class CMFCPropItem : public CMFCPropertyGridProperty
 {
 private:
