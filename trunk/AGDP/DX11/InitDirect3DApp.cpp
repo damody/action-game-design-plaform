@@ -908,7 +908,7 @@ void InitDirect3DApp::LoadHero()
 	m_Player.SetHero("Davis");
 	m_Player.SetTeam(0);
 	m_Player.m_Hero = g_HeroMG.Create(m_Player.HeroName(),Vector3(1000,500,100));
-	m_Player.SetUserName(L"<?????測試人-Testing...>");
+	m_Player.SetUserName(L"<こんにちは測試人-Testing...>");
 }
 
 int InitDirect3DApp::UpdateInput()
