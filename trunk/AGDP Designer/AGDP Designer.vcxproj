@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SDKs)lzma\C;$(SDKs)zlib-1.2.7\include;$(SDKs)lzo-2.06\include;$(SDKs)lzma-9.20\include;$(SDKs)cryptopp561\include;$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;$(SDKs)freetype-2.4.9\include;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SDKs)lzo-2.06;$(SDKs)lzo-2.06\lib;$(SDKs)zlib-1.2.7\lib;$(SDKs)lzma-9.20\lib;$(SDKs)cryptopp561\lib;$(SDKs)freetype-2.4.9\lib\vc10;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Debug;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(SDKs)lzma\C\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(DXSDK_DIR)Samples\C++\Effects11\debug;$(SDKs)lzo-2.06;$(SDKs)lzo-2.06\lib;$(SDKs)zlib-1.2.7\lib;$(SDKs)lzma-9.20\lib;$(SDKs)cryptopp561\lib;$(SDKs)freetype-2.4.9\lib\vc10;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Debug;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(SDKs)lzma\C\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\Bin</OutDir>
     <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>

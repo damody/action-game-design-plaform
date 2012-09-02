@@ -53,6 +53,7 @@ public:
 	void OnSelectItem(HTREEITEM item);
 private:
 	HTREEITEM hHeroDoc;
+	HTREEITEM hHero_Select;
 	HTREEITEM hObjectDoc;
 	HTREEITEM hBackgroundDoc;
 
@@ -65,14 +66,12 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnProperties();
 	afx_msg void OnFileOpen();
-	afx_msg void OnFileOpenWith();
-	afx_msg void OnDummyCompile();
-	afx_msg void OnEditCut();
-	afx_msg void OnEditCopy();
-	afx_msg void OnEditClear();
 	afx_msg void OnPaint();
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 
 	DECLARE_MESSAGE_MAP()
+public:
+	//afx_msg void OnPicturedataAdd();
+	afx_msg void OnPicturedataAdd();
 };
 

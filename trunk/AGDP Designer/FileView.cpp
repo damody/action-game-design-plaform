@@ -42,13 +42,10 @@ BEGIN_MESSAGE_MAP(CFileView, CDockablePane)
 	ON_WM_CONTEXTMENU()
 	ON_COMMAND(ID_PROPERTIES, OnProperties)
 	ON_COMMAND(ID_OPEN, OnFileOpen)
-	ON_COMMAND(ID_OPEN_WITH, OnFileOpenWith)
-	ON_COMMAND(ID_DUMMY_COMPILE, OnDummyCompile)
-	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
-	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
+	//ON_COMMAND(ID_PictureData_Add, &CFileView::OnPicturedataAdd)
+	ON_COMMAND(ID_PICTUREDATA_ADD, &CFileView::OnPicturedataAdd)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -138,14 +135,18 @@ void CFileView::FillFileView()
 
 void CFileView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-	CTreeCtrl* pWndTree = (CTreeCtrl*) &m_wndFileView;
+	CTreeCtrl* pWndTree = (CTreeCtrl*)&m_wndFileView;
 	ASSERT_VALID(pWndTree);
+
+	CMenu menu;
 
 	if (pWnd != pWndTree)
 	{
 		CDockablePane::OnContextMenu(pWnd, point);
 		return;
 	}
+
+	HTREEITEM hTreeItem = NULL;
 
 	if (point != CPoint(-1, -1))
 	{
@@ -154,15 +155,43 @@ void CFileView::OnContextMenu(CWnd* pWnd, CPoint point)
 		pWndTree->ScreenToClient(&ptTree);
 
 		UINT flags = 0;
-		HTREEITEM hTreeItem = pWndTree->HitTest(ptTree, &flags);
-		if (hTreeItem != NULL)
+		hTreeItem = pWndTree->HitTest(ptTree, &flags);
+	}
+	else
+	{
+		hTreeItem = pWndTree->GetSelectedItem();
+	}
+
+	if (hTreeItem != NULL)
+	{
+		if (m_HeroInfoMap.find(hTreeItem) != m_HeroInfoMap.end())
 		{
-			pWndTree->SelectItem(hTreeItem);
+			menu.LoadMenu(IDR_MENU1);
+			//menu.LoadMenu(IDR_POPUP_EXPLORER);
+			hHero_Select = hTreeItem;
+		}else{
+			menu.LoadMenu(IDR_POPUP_EXPLORER);
 		}
+	}
+	else
+	{
+		menu.LoadMenu(IDR_POPUP_EXPLORER);
 	}
 
 	pWndTree->SetFocus();
-	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EXPLORER, point.x, point.y, this, TRUE);
+
+	CMenu* pSumMenu = menu.GetSubMenu(0);
+
+	if (AfxGetMainWnd()->IsKindOf(RUNTIME_CLASS(CMDIFrameWndEx)))
+	{
+		CMFCPopupMenu* pPopupMenu = new CMFCPopupMenu;
+
+		if (!pPopupMenu->Create(this, point.x, point.y, (HMENU)pSumMenu->m_hMenu, FALSE, TRUE))
+			return;
+
+		((CMDIFrameWndEx*)AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
+		UpdateDialogControls(this, FALSE);
+	}
 }
 
 void CFileView::AdjustLayout()
@@ -224,31 +253,6 @@ void CFileView::OnFileOpen()
 	}
 	
 	
-}
-
-void CFileView::OnFileOpenWith()
-{
-	// TODO: 在此加入您的命令處理常式程式碼
-}
-
-void CFileView::OnDummyCompile()
-{
-	// TODO: 在此加入您的命令處理常式程式碼
-}
-
-void CFileView::OnEditCut()
-{
-	// TODO: 在此加入您的命令處理常式程式碼
-}
-
-void CFileView::OnEditCopy()
-{
-	// TODO: 在此加入您的命令處理常式程式碼
-}
-
-void CFileView::OnEditClear()
-{
-	// TODO: 在此加入您的命令處理常式程式碼
 }
 
 void CFileView::OnPaint()
@@ -347,4 +351,31 @@ void CFileView::OnSelectItem( HTREEITEM item )
 	}
 }
 
+void CFileView::OnPicturedataAdd()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	CFileDialog dlgFile(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Data Files (*.bmp;*.png;*.jpg; *.gif)|*.bmp; *.png; *.jpg; *.gif;||"), NULL, 0);
+	if (dlgFile.DoModal()==IDOK)
+	{
+		HeroInfohMap::iterator it_Hero = m_HeroInfoMap.find(hHero_Select);
+		if (it_Hero == m_HeroInfoMap.end())return;
 
+		
+		PictureData pic;
+		char buff[1000];
+		ConvStr::WcharToChar(dlgFile.GetPathName().GetBuffer(0),buff);
+		std::string path(buff);
+		
+		pic.m_Path = path;
+		pic.m_Width  = 128;
+		pic.m_Height = 128;
+		pic.m_Row = 1;
+		pic.m_Column = 1;
+
+		m_wndFileView.InsertItem(dlgFile.GetFileName(),2,2,hHero_Select);
+		it_Hero->second->m_PictureDatas.push_back(pic);
+		((CMainFrame*)this->GetParentFrame())->OpenDesignerView(dlgFile.GetFileName(),it_Hero->second->m_PictureDatas.size()-1);
+		
+		
+	}
+}

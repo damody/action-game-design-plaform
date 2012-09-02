@@ -40,9 +40,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>..\Bin</OutDir>
+    <IncludePath>$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\Bin</OutDir>
+    <IncludePath>$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

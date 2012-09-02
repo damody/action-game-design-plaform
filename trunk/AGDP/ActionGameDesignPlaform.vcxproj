@@ -86,7 +86,7 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;lib\;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">lib\;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Release;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(DXSDK_DIR)Samples\C++\Effects11\debug;lib\;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Release;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;lib\;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">lib\;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Release;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
