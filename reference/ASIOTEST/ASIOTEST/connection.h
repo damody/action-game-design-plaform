@@ -12,6 +12,8 @@
 #include <boost/shared_ptr.hpp>
 #include "message.h"
 #include "defines.h"
+#include "boost/thread/mutex.hpp"
+extern boost::mutex mtx;
 
 using boost::asio::ip::tcp;
 
@@ -55,6 +57,8 @@ public:
 
 	void sendMessage(message& mes)
 	{
+		
+
 		char command[COMMAND_TOTAL_SIZE+1];
 		message2_ = "SENDMESSAGE";
 
@@ -79,24 +83,27 @@ public:
 		sprintf(command, "%-*s %.*d", COMMAND_TYPE_SIZE, message2_.c_str(), COMMAND_LENGTH_SIZE, buffer_size(stream.data()));
 		message2_ = std::string(command);
 
-		boost::asio::async_write(socket_, boost::asio::buffer(message2_),
-			boost::bind(&tcp_connection::handle_write, shared_from_this(),
+		commandStr.push_back(boost::asio::buffer(message2_));
+
+		boost::asio::async_write(socket_, commandStr.back(),
+			boost::bind(&tcp_connection::handle_command_write, shared_from_this(),
 			boost::asio::placeholders::error,
 			boost::asio::placeholders::bytes_transferred));
+		//boost::asio::write(socket_, boost::asio::buffer(message2_));
 
 		boost::asio::async_write(socket_, messagesStr.back(),
-			boost::bind(&tcp_connection::handle_write, shared_from_this(),
+			boost::bind(&tcp_connection::handle_command_message_write, shared_from_this(),
 			boost::asio::placeholders::error,
 			boost::asio::placeholders::bytes_transferred));
 	}
 
 private:
-	tcp_connection(boost::asio::io_service& io_service/*, tcp_server::pointer server_*/)
-		: socket_(io_service), disconnected(FALSE)/*, server(server_)*/
+	tcp_connection(boost::asio::io_service& io_service)
+		: socket_(io_service), disconnected(FALSE), sendedMessage(0)
 	{
 	}
 
-	void handle_write(const boost::system::error_code& error,
+	void handle_command_write(const boost::system::error_code& error,
 		size_t bytes_transferred)
 	{
 		//std::cout << bytes_transferred << std::endl;
@@ -106,13 +113,35 @@ private:
 		}
 	}
 
+	void handle_command_message_write(const boost::system::error_code& error,
+		size_t bytes_transferred)
+	{
+		//std::cout << bytes_transferred << std::endl;
+		if(error)
+		{
+			disconnected = TRUE;
+		}
+
+		sendedMessage++;
+
+		if(sendedMessage == messagesStr.size() && messagesStr.size() >= 30)
+		{
+			commandStr.clear();
+			messages_.clear();
+			messagesStr.clear();
+			sendedMessage = 0;
+		}
+	}
+
 	bool disconnected;
 	tcp::socket socket_;
 	boost::array<char, COMMAND_TOTAL_SIZE> command_;
 	boost::asio::streambuf commmandMessage;
 	std::vector<message> messages_;
+	std::vector<boost::asio::const_buffers_1> commandStr;
 	std::vector<boost::asio::const_buffers_1> messagesStr;
 	std::string message_;
 	std::string message2_;
+	unsigned int sendedMessage;
 	/*tcp_server::pointer server;*/
 };
