@@ -31,12 +31,12 @@
 
 // CAGDPDesignerView
 
-IMPLEMENT_DYNCREATE(CAGDPDesignerView, CView)
+IMPLEMENT_DYNCREATE(CAGDPDesignerView, CTabView)
 
-BEGIN_MESSAGE_MAP(CAGDPDesignerView, CView)
+BEGIN_MESSAGE_MAP(CAGDPDesignerView, CTabView)
 	// 標準列印命令
-	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT, &CTabView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CTabView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CAGDPDesignerView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
@@ -73,7 +73,7 @@ BOOL CAGDPDesignerView::PreCreateWindow(CREATESTRUCT& cs)
 	// TODO: 在此經由修改 CREATESTRUCT cs 
 	// 達到修改視窗類別或樣式的目的
 
-	return CView::PreCreateWindow(cs);
+	return CTabView::PreCreateWindow(cs);
 }
 
 // CAGDPDesignerView 描繪
@@ -138,12 +138,12 @@ void CAGDPDesignerView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 #ifdef _DEBUG
 void CAGDPDesignerView::AssertValid() const
 {
-	CView::AssertValid();
+	CTabView::AssertValid();
 }
 
 void CAGDPDesignerView::Dump(CDumpContext& dc) const
 {
-	CView::Dump(dc);
+	CTabView::Dump(dc);
 }
 
 CAGDPDesignerDoc* CAGDPDesignerView::GetDocument() const // 內嵌非偵錯版本
@@ -174,7 +174,7 @@ void CAGDPDesignerView::InitDx11( HWND hWnd )
 
 void CAGDPDesignerView::OnInitialUpdate()
 {
-	CView::OnInitialUpdate();
+	CTabView::OnInitialUpdate();
 
 	// TODO: 在此加入特定的程式碼和 (或) 呼叫基底類別
 	InitDx11(this->GetParent()->GetSafeHwnd());
@@ -183,7 +183,7 @@ void CAGDPDesignerView::OnInitialUpdate()
 
 void CAGDPDesignerView::OnSize(UINT nType, int cx, int cy)
 {
-	CView::OnSize(nType, cx, cy);
+	CTabView::OnSize(nType, cx, cy);
 
 	// TODO: 在此加入您的訊息處理常式程式碼
 	if (cx > 0 && cy >0)
@@ -204,7 +204,7 @@ void CAGDPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	
 
-	CView::OnLButtonDown(nFlags, point);
+	CTabView::OnLButtonDown(nFlags, point);
 }
 
 void CAGDPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
@@ -244,7 +244,7 @@ void CAGDPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
 	CString str(buff);
 	((CMainFrame*)(this->GetParent()->GetParentFrame()))->SetStatus(str);
 
-	CView::OnMouseMove(nFlags, point);
+	CTabView::OnMouseMove(nFlags, point);
 }
 
 BOOL CAGDPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
@@ -271,14 +271,14 @@ BOOL CAGDPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	sprintf(buff, "   顯示比例 %.1f%%", m_D3DApp.m_Picture_Scale * 100);
 	CString str(buff);
 	((CMainFrame*)(this->GetParent()->GetParentFrame()))->SetStatus(str);
-	return CView::OnMouseWheel(nFlags, zDelta, pt);
+	return CTabView::OnMouseWheel(nFlags, zDelta, pt);
 }
 
 void CAGDPDesignerView::OnMButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
 	m_MMouseHold = true;
-	CView::OnMButtonDown(nFlags, point);
+	CTabView::OnMButtonDown(nFlags, point);
 }
 
 
@@ -286,7 +286,7 @@ void CAGDPDesignerView::OnMButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
 	m_MMouseHold = false;
-	CView::OnMButtonUp(nFlags, point);
+	CTabView::OnMButtonUp(nFlags, point);
 }
 
 
@@ -323,7 +323,7 @@ void CAGDPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	
 
-	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+	CTabView::OnKeyDown(nChar, nRepCnt, nFlags);
 
 }
 
@@ -340,7 +340,7 @@ void CAGDPDesignerView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 		m_ShiftPress = false;
 	}
 	
-	CView::OnKeyUp(nChar, nRepCnt, nFlags);
+	CTabView::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
 
@@ -349,7 +349,7 @@ void CAGDPDesignerView::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	// TODO: 在此加入您的訊息處理常式程式碼
-	// 不要呼叫圖片訊息的 CView::OnPaint()
+	// 不要呼叫圖片訊息的 CTabView::OnPaint()
 	CRect rect;
 	GetClientRect(&rect);
 	m_D3DApp.OnResize(rect.Width(), rect.Height());
@@ -362,7 +362,7 @@ void CAGDPDesignerView::OnMouseLeave()
 	m_TrackMouse = true;
 	m_MMouseHold = false;
 	m_CtrlPress  = false;
-	CView::OnMouseLeave();
+	CTabView::OnMouseLeave();
 }
 
 //Functions
@@ -419,7 +419,7 @@ void CAGDPDesignerView::Update( int x,int y )
 
 int CAGDPDesignerView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (CView::OnCreate(lpCreateStruct) == -1)
+	if (CTabView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
 	g_NewView = this;
