@@ -18,7 +18,7 @@
 #include "AGDP DesignerDoc.h"
 #include "global.h"
 
-class CAGDPDesignerView : public CView
+class CAGDPDesignerView : public CTabView
 {
 private:
 	bool m_TrackMouse;

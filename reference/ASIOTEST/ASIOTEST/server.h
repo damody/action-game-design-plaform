@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <cstdio>
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/bind.hpp>
@@ -13,8 +14,11 @@
 #include <boost/archive/text_iarchive.hpp>
 #include "connection.h"
 #include "message.h"
+#include "boost/thread/mutex.hpp"
+boost::mutex mtx;
 
 using boost::asio::ip::tcp;
+extern std::ofstream logFile;
 
 class tcp_server
 	: public boost::enable_shared_from_this<tcp_server>
@@ -59,22 +63,27 @@ private:
 		messagePool.push_back(boost::asio::buffer(std::string(command)));
 		messagePool.push_back(boost::asio::buffer(stream.data()));*/
 
+
+		logFile << "[" << mes.time << "]" << mes.sender << ":" << mes.text << std::endl;
+		//fprintf(logFile, "[%s]%s:%s\n", mes.time, mes.sender, mes.text);
+		logFile.flush();
+		Sleep(1);
 		for(size_t i=0;i<players.size();i++)
 		{
 			if(players[i]->available())
 			{
-				std::cout << "Sending message to client " + players[i]->socket().remote_endpoint().address().to_string() + ":"
+				logFile << "Sending message to client " + players[i]->socket().remote_endpoint().address().to_string() + ":"
 					<< players[i]->socket().remote_endpoint().port()
 					<< std::endl;
 				players[i]->sendMessage(mes);
 			}
-			else
-			{
-				std::cout << "Disconnected client " + players[i]->socket().remote_endpoint().address().to_string() + ":"
-					<< players[i]->socket().remote_endpoint().port()
-					<< std::endl;
-				disconnectPlayer(players[i]);
-			}
+// 			else
+// 			{
+// 				logFile << "Disconnected client " + players[i]->socket().remote_endpoint().address().to_string() + ":"
+// 					<< players[i]->socket().remote_endpoint().port()
+// 					<< std::endl;
+// 				disconnectPlayer(players[i]);
+// 			}
 		}
 
 		/*std::time_t now = time(0);
@@ -93,7 +102,7 @@ private:
 
 		acceptor_.async_accept(new_connection->socket(),
 			boost::bind(&tcp_server::handle_accept, this, new_connection,
-			boost::asio::placeholders::error));
+ 			boost::asio::placeholders::error));
 	}
 	void handle_accept(tcp_connection::pointer new_connection,
 		const boost::system::error_code& error)
@@ -107,13 +116,14 @@ private:
 
 			boost::asio::async_read(new_connection->socket(),
 				boost::asio::buffer(new_connection->getCommand()),
-				boost::bind(&tcp_server::handle_command_read, shared_from_this(), boost::asio::placeholders::error, new_connection)
+				boost::asio::transfer_exactly(COMMAND_TOTAL_SIZE),
+				boost::bind(&tcp_server::handle_command_read, shared_from_this(), boost::asio::placeholders::error, new_connection->shared_from_this())
 				);
 		}
 
 		start_accept();
 	}
-	void handle_command_read(const boost::system::error_code& error, tcp_connection::pointer player)
+	void handle_command_read(const boost::system::error_code& error, tcp_connection::pointer& player)
 	{
 		if (error == boost::asio::error::eof)
 		{
@@ -122,23 +132,26 @@ private:
 		}
 		else if (error)
 		{
-			//throw boost::system::system_error(error); // Some other error.
+			throw boost::system::system_error(error); // Some other error.
 			disconnectPlayer(player);
 			return;
 		}
 
+		std::string str(player->getCommand().data());
+		str.at(COMMAND_TOTAL_SIZE) = 0;
+
 		char commandType[COMMAND_TYPE_SIZE+1];
 		int commandBytes = 0;
-		sscanf(player->getCommand().data(), "%s %d", commandType, &commandBytes);
+		sscanf(str.c_str(), "%s %d", commandType, &commandBytes);
 
 		boost::asio::async_read(player->socket(),
 			player->getCommandMessage(),
-			boost::asio::transfer_at_least(commandBytes),
-			boost::bind(&tcp_server::handle_command_message_read, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred, player)
+			boost::asio::transfer_exactly(commandBytes),
+			boost::bind(&tcp_server::handle_command_message_read, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred, player->shared_from_this())
 			);
 	}
 
-	void handle_command_message_read(const boost::system::error_code& error, std::size_t bytes_transferred, tcp_connection::pointer player)
+	void handle_command_message_read(const boost::system::error_code& error, std::size_t bytes_transferred, tcp_connection::pointer& player)
 	{
 		if (error == boost::asio::error::eof)
 		{
@@ -147,14 +160,17 @@ private:
 		}
 		else if (error)
 		{
-			//throw boost::system::system_error(error); // Some other error.
+			throw boost::system::system_error(error); // Some other error.
 			disconnectPlayer(player);
 			return;
 		}
 
+		std::string str(player->getCommand().data());
+		str.at(COMMAND_TOTAL_SIZE) = 0;
+
 		char commandType[COMMAND_TYPE_SIZE+1];
 		int commandBytes = 0;
-		sscanf(player->getCommand().data(), "%s %d", commandType, &commandBytes);
+		sscanf(str.c_str(), "%s %d", commandType, &commandBytes);
 
 		if(std::string("SENDMESSAGE").compare(commandType) == 0)
 		{
@@ -170,7 +186,8 @@ private:
 		player->getCommandMessage().consume(player->getCommandMessage().size());
 		boost::asio::async_read(player->socket(),
 			boost::asio::buffer(player->getCommand()),
-			boost::bind(&tcp_server::handle_command_read, shared_from_this(), boost::asio::placeholders::error, player)
+			boost::asio::transfer_exactly(COMMAND_TOTAL_SIZE),
+			boost::bind(&tcp_server::handle_command_read, this, boost::asio::placeholders::error, player->shared_from_this())
 			);
 	}
 

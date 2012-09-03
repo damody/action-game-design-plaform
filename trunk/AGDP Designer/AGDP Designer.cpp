@@ -127,6 +127,7 @@ BOOL CAGDPDesignerApp::InitInstance()
 		RUNTIME_CLASS(CAGDPDesignerDoc),
 		RUNTIME_CLASS(CChildFrame), // ¦Û­q MDI ¤l®Ø¬[
 		RUNTIME_CLASS(CAGDPDesignerView));
+
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);

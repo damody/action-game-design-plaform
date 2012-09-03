@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "luabind_test", "luabind_test\luabind_test.vcxproj", "{F8C961D2-DD9E-469B-9202-9AC65548E88E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8C961D2-DD9E-469B-9202-9AC65548E88E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F8C961D2-DD9E-469B-9202-9AC65548E88E}.Debug|Win32.Build.0 = Debug|Win32
+		{F8C961D2-DD9E-469B-9202-9AC65548E88E}.Release|Win32.ActiveCfg = Release|Win32
+		{F8C961D2-DD9E-469B-9202-9AC65548E88E}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
