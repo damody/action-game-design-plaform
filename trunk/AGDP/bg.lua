@@ -13,7 +13,7 @@ space_bounding =
 
 ban_bounding =
 {
-	{xmin=100, ymin=0, zmin=100, xmax=500, ymax=100, zmax=500},
+	{xmin=100, ymin=-100, zmin=100, xmax=500, ymax=100, zmax=500},
 }
 
 layer =
