@@ -144,7 +144,7 @@ void Hero::Update(float dt)
 		//SetPosition(g_BGManager.CurrentBG()->AlignmentBan(m_Position,pastPos));
 		//inAir	= g_BGManager.CurrentBG()->AboveGround(m_Position) == 1;
 	}
-
+	
 	if(!inAir){	//地上
 		//落地判定
 		if( m_Action != HeroAction::UNIQUE_SKILL){
