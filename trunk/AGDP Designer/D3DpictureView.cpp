@@ -157,7 +157,7 @@ void CD3DpictureView::OnMouseMove(UINT nFlags, CPoint point)
 	char buff[100];
 	sprintf(buff, "   行: %d 列: %d  ",point.x,point.y);
 	CString str(buff);
-	((CMainFrame*)(this->GetParent()->GetParent()->GetParentFrame()))->SetStatus(str);
+	((CMainFrame*)(this->GetParent()->GetParent()->GetParent()->GetParentFrame()))->SetStatus(str);
 	CView::OnMouseMove(nFlags, point);
 }
 
@@ -185,7 +185,7 @@ BOOL CD3DpictureView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	char buff[100];
 	sprintf(buff, "   顯示比例 %.1f%%", m_D3DApp.m_Picture_Scale * 100);
 	CString str(buff);
-	((CMainFrame*)(this->GetParent()->GetParent()->GetParentFrame()))->SetStatus(str);
+	((CMainFrame*)(this->GetParent()->GetParent()->GetParent()->GetParentFrame()))->SetStatus(str);
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }
 

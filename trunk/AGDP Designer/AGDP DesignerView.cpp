@@ -39,21 +39,10 @@ BEGIN_MESSAGE_MAP(CAGDPDesignerView, CTabView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CTabView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CAGDPDesignerView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
-	ON_WM_RBUTTONUP()
-	ON_WM_SIZE()
-	ON_WM_LBUTTONDOWN()
-	ON_WM_KEYDOWN()
-	ON_WM_LBUTTONDBLCLK()
-	ON_WM_KEYUP()
-	ON_WM_MOUSEMOVE()
-	ON_WM_LBUTTONUP()
-	ON_WM_PAINT()
-	ON_WM_MOUSEWHEEL()
-	ON_WM_MBUTTONDOWN()
-	ON_WM_MBUTTONUP()
-	ON_WM_MOUSELEAVE()
-//	ON_WM_CREATE()
+	ON_WM_CREATE()
 ON_WM_CREATE()
+ON_WM_CREATE()
+ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 // CAGDPDesignerView 建構/解構
@@ -61,6 +50,7 @@ END_MESSAGE_MAP()
 CAGDPDesignerView::CAGDPDesignerView()
 {
 	// TODO: 在此加入建構程式碼
+	g_NewView = this;
 }
 
 CAGDPDesignerView::~CAGDPDesignerView()
@@ -79,10 +69,10 @@ BOOL CAGDPDesignerView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CAGDPDesignerView::OnDraw(CDC* /*pDC*/)
 {
-	CAGDPDesignerDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
+// 	CAGDPDesignerDoc* pDoc = GetDocument();
+// 	ASSERT_VALID(pDoc);
+// 	if (!pDoc)
+// 		return;
 
 	// TODO: 在此加入原生資料的描繪程式碼
 }
@@ -114,12 +104,6 @@ void CAGDPDesignerView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 	// TODO: 加入列印後的清除程式碼
 }
 
-void CAGDPDesignerView::OnRButtonUp(UINT /* nFlags */, CPoint point)
-{
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
-}
-
 void CAGDPDesignerView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 {
 #ifndef SHARED_HANDLERS
@@ -147,109 +131,37 @@ CAGDPDesignerDoc* CAGDPDesignerView::GetDocument() const // 內嵌非偵錯版本
 	return (CAGDPDesignerDoc*)m_pDocument;
 }
 
-
 #endif //_DEBUG
 
 
 // CAGDPDesignerView 訊息處理常式
 
-void CAGDPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	
-	
-	
-
-	CTabView::OnLButtonDown(nFlags, point);
-}
-
-void CAGDPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
-{
-	
-
-	CTabView::OnMouseMove(nFlags, point);
-}
-
-BOOL CAGDPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	
-	return CTabView::OnMouseWheel(nFlags, zDelta, pt);
-}
-
-void CAGDPDesignerView::OnMButtonDown(UINT nFlags, CPoint point)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	
-	CTabView::OnMButtonDown(nFlags, point);
-}
-
-
-void CAGDPDesignerView::OnMButtonUp(UINT nFlags, CPoint point)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	CTabView::OnMButtonUp(nFlags, point);
-}
-
-
-const unsigned int KEY_SHIFT	= 16;
-const unsigned int KEY_CTRL	= 17;
-const unsigned int KEY_LEFT	= 37;
-const unsigned int KEY_UP	= 38;
-const unsigned int KEY_RIGHT	= 39;
-const unsigned int KEY_DOWN	= 40;
-const unsigned int KEY_DELETE	= 46;
-const unsigned int KEY_A	= 65;
-const unsigned int KEY_C	= 67;
-const unsigned int KEY_E	= 69;
-const unsigned int KEY_ADD	= 107;
-const unsigned int KEY_SUB	= 109;
-const unsigned int KEY_EQUAL	= 187;
-
-void CAGDPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-
-// 	char buff[100];
-// 	sprintf(buff, "%d", nChar);
-// 	CString str(buff);
-// 	AfxMessageBox(str);
-	
-	
-
-	CTabView::OnKeyDown(nChar, nRepCnt, nFlags);
-
-}
-
-void CAGDPDesignerView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	
-}
-
-
-
-void CAGDPDesignerView::OnPaint()
-{
-	CPaintDC dc(this); // device context for painting
-	// TODO: 在此加入您的訊息處理常式程式碼
-	// 不要呼叫圖片訊息的 CTabView::OnPaint()
-}
-
-void CAGDPDesignerView::OnMouseLeave()
-{
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	
-	CTabView::OnMouseLeave();
-}
 
 int CAGDPDesignerView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CTabView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	g_NewView = this;
 	// TODO:  在此加入特別建立的程式碼
+	
+
+	AddView(RUNTIME_CLASS(CD3DpictureView),_T("Test1"),1);
+	AddView(RUNTIME_CLASS(CD3DpictureView),_T("Test2"),2);
+
+	this -> GetTabControl().SetLocation( CMFCTabCtrl:: LOCATION_BOTTOM); 
+	this -> GetTabControl().ModifyTabStyle( CMFCTabCtrl:: STYLE_3D); 
+	this -> GetTabControl().EnableAutoColor( TRUE ); 
+	this -> GetTabControl().HideSingleTab( FALSE ); 
+	this -> GetTabControl().EnableTabSwap( FALSE ); 
+	this -> GetTabControl().SetTabBorderSize( 2 );
 
 	return 0;
+}
+
+
+BOOL CAGDPDesignerView::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+
+	return TRUE;
 }
