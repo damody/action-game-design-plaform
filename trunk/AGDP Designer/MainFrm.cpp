@@ -543,8 +543,8 @@ void CMainFrame::OpenDesignerView( CString& name,int index )
 	
 	g_NewView->SetWindowText(name);
 	if(g_HeroInfo!=NULL){
-		(g_NewView)->Refresh(&g_HeroInfo->m_PictureDatas[index]);
-		(g_NewView)->m_PictureID = index;
+		//(g_NewView)->Refresh(&g_HeroInfo->m_PictureDatas[index]);
+		//(g_NewView)->m_PictureID = index;
 	}
 	m_DesignerViews[name]=g_NewView;
 //	m_Tab.AddTab(g_NewView,name,index,FALSE);
