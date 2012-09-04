@@ -6,6 +6,7 @@
 
 // CD3DpictureView ÀËµø
 
+
 class CD3DpictureView : public CView
 {
 	DECLARE_DYNCREATE(CD3DpictureView)
@@ -63,6 +64,7 @@ public:
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnPaint();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
-
+extern CD3DpictureView *g_NewPictureView;
 

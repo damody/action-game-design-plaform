@@ -12,6 +12,7 @@ TextureManager::~TextureManager(void)
 
 int TextureManager::AddTexture( std::string path)
 {
+
 		int index=Find(path);
 		if (index != -1)
 		{

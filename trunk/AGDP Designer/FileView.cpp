@@ -339,7 +339,8 @@ void CFileView::OnSelectItem( HTREEITEM item )
 			char buff[100];
 			sprintf(buff,"%s",pic.substr(found+1,pic.length()).c_str());
 			CString str(buff);
-			((CMainFrame*)this->GetParentFrame())->OpenDesignerView(str,i);
+			((CMainFrame*)this->GetParentFrame())->OpenDesignerView(str,&g_HeroInfo->m_PictureDatas[i],i);
+			
 		}
 		g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
 		g_FrameName = "";
@@ -374,7 +375,7 @@ void CFileView::OnPicturedataAdd()
 
 		m_wndFileView.InsertItem(dlgFile.GetFileName(),2,2,hHero_Select);
 		it_Hero->second->m_PictureDatas.push_back(pic);
-		((CMainFrame*)this->GetParentFrame())->OpenDesignerView(dlgFile.GetFileName(),it_Hero->second->m_PictureDatas.size()-1);
+		//((CMainFrame*)this->GetParentFrame())->OpenDesignerView(dlgFile.GetFileName(),it_Hero->second->m_PictureDatas.size()-1);
 		
 		
 	}

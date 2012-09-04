@@ -8,13 +8,16 @@
 
 // CD3DpictureView
 
+
+
 IMPLEMENT_DYNCREATE(CD3DpictureView, CView)
+CD3DpictureView *g_NewPictureView = NULL;
 
 CD3DpictureView::CD3DpictureView()
 :m_TrackMouse(true),m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),
  m_Pic(0),m_CutH(1),m_CutW(1),m_CutR(1),m_CutC(1)
 {
-
+	g_NewPictureView = this;
 }
 
 CD3DpictureView::~CD3DpictureView()
@@ -33,6 +36,7 @@ BEGIN_MESSAGE_MAP(CD3DpictureView, CView)
 	ON_WM_KEYDOWN()
 	ON_WM_KEYUP()
 	ON_WM_PAINT()
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 
@@ -82,7 +86,18 @@ void CD3DpictureView::InitDx11( HWND hWnd )
 void CD3DpictureView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
-	InitDx11(this->GetParent()->GetSafeHwnd());
+	//InitDx11(this->GetParent()->GetParent()->GetParent()->GetSafeHwnd());
+	InitDx11(this->GetSafeHwnd());
+}
+
+int CD3DpictureView::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	// TODO:  在此加入特別建立的程式碼
+	
+	return 0;
 }
 
 void CD3DpictureView::OnSize(UINT nType, int cx, int cy)
@@ -93,9 +108,6 @@ void CD3DpictureView::OnSize(UINT nType, int cx, int cy)
 	if (cx > 0 && cy >0)
 		m_D3DApp.OnResize(cx, cy);
 }
-
-
-
 
 void CD3DpictureView::OnLButtonDown(UINT nFlags, CPoint point)
 {
@@ -280,6 +292,7 @@ void CD3DpictureView::Init()
 
 void CD3DpictureView::Refresh( PictureData* pic )
 {
+	this;
 	m_D3DApp.SetPic(pic);
 	m_Pic = pic;
 
@@ -331,4 +344,7 @@ void CD3DpictureView::Update( int x,int y )
 		return;
 	}
 }
+
+
+
 

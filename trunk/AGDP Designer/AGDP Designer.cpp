@@ -134,6 +134,7 @@ BOOL CAGDPDesignerApp::InitInstance()
 
 	// 建立主 MDI 框架視窗
 	CMainFrame* pMainFrame = new CMainFrame;
+
 	if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME))
 	{
 		delete pMainFrame;

@@ -21,8 +21,6 @@
 
 class CAGDPDesignerView : public CTabView
 {
-
-
 public: // 僅從序列化建立
 	CAGDPDesignerView();
 	DECLARE_DYNCREATE(CAGDPDesignerView)
@@ -61,6 +59,8 @@ protected:
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+public:
+	void AddPicturedata(CString name,PictureData *pic,int index);
 };
 
 #ifndef _DEBUG  // AGDP DesignerView.cpp 中的偵錯版本

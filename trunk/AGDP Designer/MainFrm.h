@@ -98,7 +98,7 @@ public:
 		m_D3DFrameView.Clear();
 	}
 	void test();
-	void OpenDesignerView(CString& name,int index);
+	void OpenDesignerView(CString& name,PictureData *pic,int index);
 	void SwitchDesigerView(CString& name);
 public:  // 控制列內嵌的成員
 	CMFCRibbonBar     m_wndRibbonBar;

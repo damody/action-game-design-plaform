@@ -144,9 +144,8 @@ int CAGDPDesignerView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// TODO:  在此加入特別建立的程式碼
 	
-
-	AddView(RUNTIME_CLASS(CD3DpictureView),_T("Test1"),1);
-	AddView(RUNTIME_CLASS(CD3DpictureView),_T("Test2"),2);
+// 	AddView(RUNTIME_CLASS(CD3DpictureView),_T("Test1"),1);
+// 	AddView(RUNTIME_CLASS(CD3DpictureView),_T("Test2"),2);
 
 	this -> GetTabControl().SetLocation( CMFCTabCtrl:: LOCATION_BOTTOM); 
 	this -> GetTabControl().ModifyTabStyle( CMFCTabCtrl:: STYLE_3D); 
@@ -164,4 +163,19 @@ BOOL CAGDPDesignerView::OnEraseBkgnd(CDC* pDC)
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
 
 	return TRUE;
+}
+
+void CAGDPDesignerView::AddPicturedata( CString name,PictureData *pic,int index )
+{
+	int viewID = AddView(RUNTIME_CLASS(CD3DpictureView),name,index);
+	
+	this -> GetTabControl().SetLocation( CMFCTabCtrl:: LOCATION_BOTTOM); 
+	this -> GetTabControl().ModifyTabStyle( CMFCTabCtrl:: STYLE_3D); 
+	this -> GetTabControl().EnableAutoColor( TRUE ); 
+	this -> GetTabControl().HideSingleTab( FALSE ); 
+	this -> GetTabControl().EnableTabSwap( FALSE ); 
+	this -> GetTabControl().SetTabBorderSize( 2 );
+
+	g_NewPictureView->OnInitialUpdate();
+	g_NewPictureView->Refresh(pic);
 }

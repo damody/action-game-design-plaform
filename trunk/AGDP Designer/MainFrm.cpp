@@ -537,8 +537,9 @@ void CMainFrame::OnButtonAddnewarea()
 	// TODO: 在此加入您的命令處理常式程式碼
 }
 
-void CMainFrame::OpenDesignerView( CString& name,int index )
+void CMainFrame::OpenDesignerView( CString& name,PictureData *pic,int index )
 {
+	g_NewView->AddPicturedata(name,pic,index);
 // 	theApp.OnFileNew();
 // 	
 // 	g_NewView->SetWindowText(name);
