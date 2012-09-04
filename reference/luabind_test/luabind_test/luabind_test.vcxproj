@@ -24,7 +24,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -37,13 +37,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SDKs)luabind-0.9.1;$(SDKs)LuaJIT-2.0.0-beta10;$(SDKs)boost_1_50_0;$(IncludePath)</IncludePath>
+    <IncludePath>$(SDKs)luabind-0.9.1;$(SDKs)LuaJIT-2.0.0-beta10\src;$(SDKs)boost_1_50_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(SDKs)luabind-0.9.1\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(SDKs)boost_1_50_0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SDKs)luabind-0.9.1;$(SDKs)LuaJIT-2.0.0-beta10;$(SDKs)boost_1_50_0;$(IncludePath)</IncludePath>
+    <IncludePath>$(SDKs)luabind-0.9.1;$(SDKs)LuaJIT-2.0.0-beta10\src;$(SDKs)boost_1_50_0;$(IncludePath)</IncludePath>
     <LibraryPath>$(SDKs)luabind-0.9.1\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(SDKs)boost_1_50_0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -53,7 +53,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>luabindd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>luabind-MTd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -62,16 +62,18 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>luabind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>luabind-MT.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="main2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
