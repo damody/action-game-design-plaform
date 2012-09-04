@@ -64,7 +64,7 @@ public:
 	void EditBody(int id)
 	{
 		m_D3DFrameView.EditBody(id);
-		m_wndProperties.RefreshPropList_Body();
+		m_wndProperties.RefreshPropList_Body(id);
 	}
 	void EditAttack(int id)
 	{
@@ -99,7 +99,7 @@ public:
 	}
 	void test();
 	void OpenDesignerView(CString& name,PictureData *pic,int index);
-	void SwitchDesigerView(CString& name);
+	void SwitchDesigerView(int index);
 public:  // 控制列內嵌的成員
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;

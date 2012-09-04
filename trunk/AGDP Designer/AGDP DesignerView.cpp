@@ -40,10 +40,8 @@ BEGIN_MESSAGE_MAP(CAGDPDesignerView, CTabView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CAGDPDesignerView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_CREATE()
-ON_WM_CREATE()
-ON_WM_CREATE()
-ON_WM_ERASEBKGND()
-END_MESSAGE_MAP()
+	ON_WM_ERASEBKGND()
+	END_MESSAGE_MAP()
 
 // CAGDPDesignerView «Øºc/¸Ñºc
 
@@ -175,7 +173,18 @@ void CAGDPDesignerView::AddPicturedata( CString name,PictureData *pic,int index 
 	this -> GetTabControl().HideSingleTab( FALSE ); 
 	this -> GetTabControl().EnableTabSwap( FALSE ); 
 	this -> GetTabControl().SetTabBorderSize( 2 );
-
+	
 	g_NewPictureView->OnInitialUpdate();
 	g_NewPictureView->Refresh(pic);
+	m_Views.push_back(g_NewPictureView);
+}
+
+void CAGDPDesignerView::SwitchPicture(int index)
+{
+	SetActiveView(index);
+}
+
+void CAGDPDesignerView::Refresh( PictureData *pic )
+{
+	((CD3DpictureView*)GetActiveView())->Refresh(pic);
 }

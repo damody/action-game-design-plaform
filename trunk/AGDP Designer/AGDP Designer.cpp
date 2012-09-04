@@ -141,6 +141,7 @@ BOOL CAGDPDesignerApp::InitInstance()
 		return FALSE;
 	}
 	m_pMainWnd = pMainFrame;
+
 	// 只有在 MDI 應用程式中有後置字元時，才呼叫 DragAcceptFiles
 	// 這會立即發生在設定 m_pMainWnd 之後
 

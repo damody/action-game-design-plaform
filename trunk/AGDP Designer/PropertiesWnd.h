@@ -141,7 +141,7 @@ public:
 	void InitPropList_Point();
 	void RefreshPropList();
 	void RefreshPropList_Frame();
-	void RefreshPropList_Body();
+	void RefreshPropList_Body(int index);
 	void RefreshPropList_Attack();
 	void RefreshPropList_HitData();
 	void RefreshPropList_CatchInfo();

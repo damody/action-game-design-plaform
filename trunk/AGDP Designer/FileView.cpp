@@ -340,7 +340,6 @@ void CFileView::OnSelectItem( HTREEITEM item )
 			sprintf(buff,"%s",pic.substr(found+1,pic.length()).c_str());
 			CString str(buff);
 			((CMainFrame*)this->GetParentFrame())->OpenDesignerView(str,&g_HeroInfo->m_PictureDatas[i],i);
-			
 		}
 		g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
 		g_FrameName = "";
@@ -348,7 +347,15 @@ void CFileView::OnSelectItem( HTREEITEM item )
 		((CMainFrame*)this->GetParentFrame())->m_wndClassView.Refresh();
 		((CMainFrame*)this->GetParentFrame())->Clear();
 	}else{
-		((CMainFrame*)this->GetParentFrame())->SwitchDesigerView(m_wndFileView.GetItemText(item));
+		/*((CMainFrame*)this->GetParentFrame())->SwitchDesigerView(m_wndFileView.GetItemText(item));*/
+		HTREEITEM cItem = m_wndFileView.GetChildItem(m_wndFileView.GetParentItem(item));
+		int i=0;
+		while(cItem != item && cItem!=NULL)
+		{
+			i++;
+			cItem = m_wndFileView.GetNextSiblingItem(cItem);
+		}
+		((CMainFrame*)this->GetParentFrame())->SwitchDesigerView(i);
 	}
 }
 

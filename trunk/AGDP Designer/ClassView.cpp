@@ -868,7 +868,6 @@ void CClassView::OnSelectItem(HTREEITEM item)
 				}
 
 				((CMainFrame*)(this->GetParentFrame()))->EditBody(_ttoi(m_wndClassView.GetItemText(item)));
-
 			}else if(!text.Compare(CString("Attacks"))){
 				HTREEITEM FrameIndex = m_wndClassView.GetParentItem(pItem);
 				HTREEITEM Frame	     = m_wndClassView.GetParentItem(FrameIndex);

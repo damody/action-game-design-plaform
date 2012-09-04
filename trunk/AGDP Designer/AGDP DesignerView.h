@@ -18,9 +18,12 @@
 #include "AGDP DesignerDoc.h"
 #include "global.h"
 #include "D3DpictureView.h"
+#include <vector>
 
 class CAGDPDesignerView : public CTabView
 {
+public:
+	std::vector<CD3DpictureView*> m_Views;
 public: // 僅從序列化建立
 	CAGDPDesignerView();
 	DECLARE_DYNCREATE(CAGDPDesignerView)
@@ -61,6 +64,8 @@ public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 public:
 	void AddPicturedata(CString name,PictureData *pic,int index);
+	void SwitchPicture(int index);
+	void Refresh(PictureData *pic);
 };
 
 #ifndef _DEBUG  // AGDP DesignerView.cpp 中的偵錯版本

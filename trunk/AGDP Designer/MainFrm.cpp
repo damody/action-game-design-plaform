@@ -572,19 +572,9 @@ void CMainFrame::test()
 	AfxMessageBox(str);
 }
 
-void CMainFrame::SwitchDesigerView( CString& name )
+void CMainFrame::SwitchDesigerView( int index)
 {
-
-	DesignerViews::iterator it = m_DesignerViews.find(name);
-	if(it != m_DesignerViews.end()){
-		//this->SetActiveWindow(it->second);
-		//this->ShowWindow(SW_HIDE);
-		this->RecalcLayout();
-		it->second->UpdateWindow();
-		this->SetActiveView(it->second);
-		//m_wndClientArea.GetMDITabs().SetActiveTab(0);
-		//m_wndClientArea.GetMDITabs().SetDrawFrame();
-	}
+	g_NewView->SwitchPicture(index);
 }
 
 CAGDPDesignerView* g_NewView=NULL;

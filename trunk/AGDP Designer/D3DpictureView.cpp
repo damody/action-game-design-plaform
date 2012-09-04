@@ -87,7 +87,7 @@ void CD3DpictureView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
 	//InitDx11(this->GetParent()->GetParent()->GetParent()->GetSafeHwnd());
-	InitDx11(this->GetSafeHwnd());
+	this->InitDx11(this->GetSafeHwnd());
 }
 
 int CD3DpictureView::OnCreate(LPCREATESTRUCT lpCreateStruct)

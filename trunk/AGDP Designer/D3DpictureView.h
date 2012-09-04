@@ -30,10 +30,10 @@ public:
 	HWND		m_hWndDX11;
 	D3DApp_Picture	m_D3DApp;
 
-	void InitDx11(HWND hWnd);
-
 	void Init();
 	void Refresh(PictureData* pic);
+protected:
+	void InitDx11(HWND hWnd);
 private:
 	void Update(int x,int y);
 protected:

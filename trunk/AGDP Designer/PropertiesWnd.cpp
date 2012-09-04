@@ -1251,14 +1251,19 @@ void CPropertiesWnd::UpdatePropList_Frame()
 }
 
 
-void CPropertiesWnd::RefreshPropList_Body()
+void CPropertiesWnd::RefreshPropList_Body(int index)
 {
-	InitPropList_Body();
+	if (m_EditProp != 3)
+	{
+		InitPropList_Body();
+		m_EditProp = 3;
+	}
+	
 }
 
 void CPropertiesWnd::RefreshPropList_Attack()
 {
-
+	
 }
 
 void CPropertiesWnd::RefreshPropList_CatchInfo()
