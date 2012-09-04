@@ -18,29 +18,9 @@
 #include "AGDP DesignerDoc.h"
 #include "global.h"
 
-class CAGDPDesignerView : public CView
+class CAGDPDesignerView : public CTabView
 {
-private:
-	bool m_TrackMouse;
-	bool m_LMouseHold;
-	bool m_MMouseHold;
-	bool m_CtrlPress;
-	bool m_ShiftPress;
-	bool m_KeyAPress;
-	PictureData *m_Pic;
 
-	float m_RecordX,m_RecordY;
-
-	float m_CutH;
-	float m_CutW;
-	int   m_CutR;
-	int   m_CutC;
-public:
-	int  m_PictureID;
-	void Init();
-	void Refresh(PictureData* pic);
-private:
-	void Update(int x,int y);
 
 public: // 僅從序列化建立
 	CAGDPDesignerView();
@@ -52,8 +32,7 @@ public:
 
 // 作業
 public:
-	HWND		m_hWndDX11;
-	D3DApp_Picture	m_D3DApp;
+	
 // 覆寫
 public:
 	virtual void OnDraw(CDC* pDC);  // 覆寫以描繪此檢視
@@ -70,7 +49,7 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
-	void InitDx11(HWND hWnd);
+	
 protected:
 
 // 產生的訊息對應函式
@@ -80,8 +59,6 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 public:
-	virtual void OnInitialUpdate();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);

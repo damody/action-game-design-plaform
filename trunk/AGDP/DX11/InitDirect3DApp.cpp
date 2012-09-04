@@ -102,6 +102,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 	D3DApp::DrawScene(); // clear window
 	this->DrawScene();
 	m_SwapChain->Present(0, 0);
+	UpdateInput();
 
 	if(!b_Pause)
 	{
@@ -110,7 +111,6 @@ void InitDirect3DApp::UpdateScene(float dt)
 
 		if (timp_count > 1/60.0f)
 		{
-			UpdateInput();
 			g_Time++;
 			UpdateCamera();
 

@@ -31,12 +31,12 @@
 
 // CAGDPDesignerView
 
-IMPLEMENT_DYNCREATE(CAGDPDesignerView, CView)
+IMPLEMENT_DYNCREATE(CAGDPDesignerView, CTabView)
 
-BEGIN_MESSAGE_MAP(CAGDPDesignerView, CView)
+BEGIN_MESSAGE_MAP(CAGDPDesignerView, CTabView)
 	// 標準列印命令
-	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT, &CTabView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CTabView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CAGDPDesignerView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
@@ -58,8 +58,7 @@ END_MESSAGE_MAP()
 
 // CAGDPDesignerView 建構/解構
 
-CAGDPDesignerView::CAGDPDesignerView():m_TrackMouse(true),m_LMouseHold(false),m_MMouseHold(false),m_CtrlPress(false),m_KeyAPress(false),m_ShiftPress(false),m_RecordX(0),m_RecordY(0),
-m_Pic(0),m_CutH(1),m_CutW(1),m_CutR(1),m_CutC(1),m_PictureID(0)
+CAGDPDesignerView::CAGDPDesignerView()
 {
 	// TODO: 在此加入建構程式碼
 }
@@ -73,7 +72,7 @@ BOOL CAGDPDesignerView::PreCreateWindow(CREATESTRUCT& cs)
 	// TODO: 在此經由修改 CREATESTRUCT cs 
 	// 達到修改視窗類別或樣式的目的
 
-	return CView::PreCreateWindow(cs);
+	return CTabView::PreCreateWindow(cs);
 }
 
 // CAGDPDesignerView 描繪
@@ -86,10 +85,6 @@ void CAGDPDesignerView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: 在此加入原生資料的描繪程式碼
-	
-	
-	m_D3DApp.buildPoint();
-	m_D3DApp.DrawScene();
 }
 
 
@@ -138,12 +133,12 @@ void CAGDPDesignerView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 #ifdef _DEBUG
 void CAGDPDesignerView::AssertValid() const
 {
-	CView::AssertValid();
+	CTabView::AssertValid();
 }
 
 void CAGDPDesignerView::Dump(CDumpContext& dc) const
 {
-	CView::Dump(dc);
+	CTabView::Dump(dc);
 }
 
 CAGDPDesignerDoc* CAGDPDesignerView::GetDocument() const // 內嵌非偵錯版本
@@ -155,138 +150,45 @@ CAGDPDesignerDoc* CAGDPDesignerView::GetDocument() const // 內嵌非偵錯版本
 
 #endif //_DEBUG
 
-void CAGDPDesignerView::InitDx11( HWND hWnd )
-{
-	CRect rect;
-	GetWindowRect(&rect);
-	// 	m_hWndDX11 = CreateWindowA("edit", "", WS_CHILD | WS_DISABLED | WS_VISIBLE
-	// 		, 0, 0, rect.right-rect.left, rect.bottom-rect.top, hWnd, 
-	// 		(HMENU)"", 0, NULL);
-	m_hWndDX11 = hWnd;
-	::ShowWindow(m_hWndDX11, true);
-	::UpdateWindow(m_hWndDX11);
-	m_D3DApp.initApp(m_hWndDX11, rect.Width(), rect.Height());
-	m_D3DApp.buildShaderFX();
-}
 
 // CAGDPDesignerView 訊息處理常式
-
-
-void CAGDPDesignerView::OnInitialUpdate()
-{
-	CView::OnInitialUpdate();
-
-	// TODO: 在此加入特定的程式碼和 (或) 呼叫基底類別
-	InitDx11(this->GetParent()->GetSafeHwnd());
-}
-
-
-void CAGDPDesignerView::OnSize(UINT nType, int cx, int cy)
-{
-	CView::OnSize(nType, cx, cy);
-
-	// TODO: 在此加入您的訊息處理常式程式碼
-	if (cx > 0 && cy >0)
-		m_D3DApp.OnResize(cx, cy);
-}
 
 void CAGDPDesignerView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	point.x = 1+(point.x-m_D3DApp.m_Picture_OffsetX)/m_D3DApp.m_Picture_Scale / (int)m_CutW; 
-	point.y = 1+(point.y-m_D3DApp.m_Picture_OffsetY)/m_D3DApp.m_Picture_Scale / (int)m_CutH;
-	if (point.x <=0 || point.x >m_CutR || point.y <=0 || point.y >m_CutC)
-	{
-		return;
-	}else{
-		Update(point.x,point.y);
-	}
-
+	
+	
 	
 
-	CView::OnLButtonDown(nFlags, point);
+	CTabView::OnLButtonDown(nFlags, point);
 }
 
 void CAGDPDesignerView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	if(m_TrackMouse){
-		TRACKMOUSEEVENT tme;
-		tme.cbSize = sizeof(TRACKMOUSEEVENT);
-		tme.dwFlags = TME_LEAVE;
-		tme.hwndTrack = this->m_hWnd;
-		_TrackMouseEvent(&tme);
-		m_TrackMouse =false;
-	}
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	float dx = point.x - m_RecordX;
-	float dy = point.y - m_RecordY;
-	m_RecordX = point.x;
-	m_RecordY = point.y;
-	if(m_MMouseHold)
-	{
-		m_D3DApp.m_Picture_OffsetX += dx;
-		m_D3DApp.m_Picture_OffsetY += dy;
-		m_D3DApp.buildPoint();
-		m_D3DApp.DrawScene();
-	}
+	
 
-	point.x = 1+(point.x-m_D3DApp.m_Picture_OffsetX)/m_D3DApp.m_Picture_Scale / (int)m_CutW; 
-	point.y = 1+(point.y-m_D3DApp.m_Picture_OffsetY)/m_D3DApp.m_Picture_Scale / (int)m_CutH;
-
-	if (point.x <=0 || point.x >m_CutR || point.y <=0 || point.y >m_CutC)
-	{
-		point.x = 0;
-		point.y = 0;
-	}
-
-	char buff[100];
-	sprintf(buff, "   行: %d 列: %d  ",point.x,point.y);
-	CString str(buff);
-	((CMainFrame*)(this->GetParent()->GetParentFrame()))->SetStatus(str);
-
-	CView::OnMouseMove(nFlags, point);
+	CTabView::OnMouseMove(nFlags, point);
 }
 
 BOOL CAGDPDesignerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	if (m_CtrlPress && !m_ShiftPress)
-	{
-		if (zDelta > 0)
-		{
-			if (m_D3DApp.m_Picture_Scale < 10)
-			{
-				m_D3DApp.m_Picture_Scale += 0.1f;
-			}
-		}else{
-			if (m_D3DApp.m_Picture_Scale > 0.1)
-			{
-				m_D3DApp.m_Picture_Scale -= 0.1f;
-			}
-		}
-		m_D3DApp.buildPoint();
-		m_D3DApp.DrawScene();
-	}
-	char buff[100];
-	sprintf(buff, "   顯示比例 %.1f%%", m_D3DApp.m_Picture_Scale * 100);
-	CString str(buff);
-	((CMainFrame*)(this->GetParent()->GetParentFrame()))->SetStatus(str);
-	return CView::OnMouseWheel(nFlags, zDelta, pt);
+	
+	return CTabView::OnMouseWheel(nFlags, zDelta, pt);
 }
 
 void CAGDPDesignerView::OnMButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	m_MMouseHold = true;
-	CView::OnMButtonDown(nFlags, point);
+	
+	CTabView::OnMButtonDown(nFlags, point);
 }
 
 
 void CAGDPDesignerView::OnMButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	m_MMouseHold = false;
-	CView::OnMButtonUp(nFlags, point);
+	CTabView::OnMButtonUp(nFlags, point);
 }
 
 
@@ -312,35 +214,17 @@ void CAGDPDesignerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 // 	sprintf(buff, "%d", nChar);
 // 	CString str(buff);
 // 	AfxMessageBox(str);
-	if (nChar==KEY_CTRL)
-	{
-		m_CtrlPress = true;
-	}
-
-	if (nChar==KEY_SHIFT)
-	{
-		m_ShiftPress = true;
-	}
+	
 	
 
-	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+	CTabView::OnKeyDown(nChar, nRepCnt, nFlags);
 
 }
 
 void CAGDPDesignerView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	if (nChar==KEY_CTRL)
-	{
-		m_CtrlPress = false;
-	}
-
-	if (nChar==KEY_SHIFT)
-	{
-		m_ShiftPress = false;
-	}
 	
-	CView::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
 
@@ -349,77 +233,19 @@ void CAGDPDesignerView::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	// TODO: 在此加入您的訊息處理常式程式碼
-	// 不要呼叫圖片訊息的 CView::OnPaint()
-	CRect rect;
-	GetClientRect(&rect);
-	m_D3DApp.OnResize(rect.Width(), rect.Height());
-	m_D3DApp.DrawScene();
+	// 不要呼叫圖片訊息的 CTabView::OnPaint()
 }
 
 void CAGDPDesignerView::OnMouseLeave()
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	m_TrackMouse = true;
-	m_MMouseHold = false;
-	m_CtrlPress  = false;
-	CView::OnMouseLeave();
+	
+	CTabView::OnMouseLeave();
 }
-
-//Functions
-void CAGDPDesignerView::Init()
-{
-	m_Pic = NULL;
-}
-
-void CAGDPDesignerView::Refresh(PictureData* pic)
-{
-	m_D3DApp.SetPic(pic);
-	m_Pic = pic;
-
-	m_D3DApp.Cut(pic->m_Row,pic->m_Column);
-	m_D3DApp.buildPoint();
-	m_D3DApp.DrawScene();
-	m_CutR = m_Pic->m_Row;
-	m_CutC = m_Pic->m_Column;
-	m_CutW = m_D3DApp.GetTextureManager().GetTexture(m_D3DApp.m_PicID)->w / m_Pic->m_Row;
-	m_CutH = m_D3DApp.GetTextureManager().GetTexture(m_D3DApp.m_PicID)->h / m_Pic->m_Column;
-}
-
-void CAGDPDesignerView::Update( int x,int y )
-{
-	FramesMap::iterator it_FrameInfos = g_ActiveFramesMap->find(g_FrameName);
-	if (it_FrameInfos != g_ActiveFramesMap->end())
-	{
-		if (g_FrameIndex > -1 && g_FrameIndex < it_FrameInfos->second.size())
-		{
-			it_FrameInfos->second[g_FrameIndex].m_PictureID = m_PictureID;
-			it_FrameInfos->second[g_FrameIndex].m_PictureX = x;
-			it_FrameInfos->second[g_FrameIndex].m_PictureY = y;
-
-			//Refresh
-			((CMainFrame*)(this->GetParent()->GetParentFrame()))->RefreshFrameEdit();
-		}else{
-			char buff[100];
-			sprintf(buff, "PictureEdit: Frame[%s][%d] does not exist",g_FrameName.c_str(),g_FrameIndex);
-			CString str(buff);
-			AfxMessageBox(str);
-			((CMainFrame*)(this->GetParent()->GetParentFrame()))->AddStrToOutputBuild(str);
-			return;
-		}
-	}else{
-		char buff[100];
-		sprintf(buff, "PictureEdit: Frame[%s] does not exist",g_FrameName.c_str());
-		CString str(buff);
-		AfxMessageBox(str);
-		((CMainFrame*)(this->GetParent()->GetParentFrame()))->AddStrToOutputBuild(str);
-		return;
-	}
-}
-
 
 int CAGDPDesignerView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (CView::OnCreate(lpCreateStruct) == -1)
+	if (CTabView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
 	g_NewView = this;

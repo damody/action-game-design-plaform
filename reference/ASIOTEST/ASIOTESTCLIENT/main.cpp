@@ -7,6 +7,9 @@
 #include <message.h>
 #include <Windows.h>
 #include <defines.h>
+#include <fstream>
+#include "boost/thread/mutex.hpp"
+boost::mutex mtx;
 
 using boost::asio::ip::tcp;
 
@@ -15,10 +18,15 @@ tcp::socket socket_(io_service);
 boost::array<char, COMMAND_TOTAL_SIZE> buf;
 boost::asio::streambuf buf2;
 std::vector<message> inputMessage;
+std::vector<std::string> commandMessage;
+std::vector<boost::asio::const_buffers_1> outputMessage;
 std::vector<bool> messageProcessed;
 int lastProcessedMessage = -1;
 std::string playerName;
+std::ofstream logFile;
 
+void handle_command_write(const boost::system::error_code& error, std::size_t bytes_transferred, unsigned int idx);
+void handle_command_message_write(const boost::system::error_code& error, std::size_t bytes_transferred, unsigned int idx);
 void handle_command_read(const boost::system::error_code& error);
 void handle_command_message_read(const boost::system::error_code& error, std::size_t bytes_transferred, std::string& commandType, int commandBytes);
 
@@ -49,7 +57,7 @@ DWORD WINAPI thread_function(LPVOID param)
 			continue;
 		}
 #else
-		if(i % 10000000 != 0)
+		if(i % 100 != 0)
 		{
 			i++;
 			continue;
@@ -78,13 +86,24 @@ DWORD WINAPI thread_function(LPVOID param)
 			sprintf(command, "%-*s %.*d", COMMAND_TYPE_SIZE, "SENDMESSAGE", COMMAND_LENGTH_SIZE, buffer_size(stream.data()));
 
 			inputMessage.push_back(mes);
-			boost::asio::write(socket_, boost::asio::buffer(std::string(command)));
-			boost::asio::write(socket_, boost::asio::buffer(stream.data()));
+			commandMessage.push_back(std::string(command));
+			outputMessage.push_back(stream.data());
+			boost::asio::write(socket_, boost::asio::buffer(commandMessage.back()));
+			boost::asio::write(socket_, boost::asio::buffer(outputMessage.back()));
+			//boost::asio::async_write(socket_, boost::asio::buffer(commandMessage.back()), boost::bind(handle_command_write, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred, commandMessage.size()-1));
+			//boost::asio::async_write(socket_, boost::asio::buffer(outputMessage.back()), boost::bind(handle_command_message_write, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred, outputMessage.size()-1));
 
 			//printf("Send message: %s completed\n", command);
 		}
 
 		std::fflush(stdin);
+
+		if(inputMessage.size() >= 30)
+		{
+			inputMessage.clear();
+			commandMessage.clear();
+			outputMessage.clear();
+		}
 
 		i = 1;
 	}
@@ -94,7 +113,7 @@ DWORD WINAPI thread_function(LPVOID param)
 
 int main(int argc, char* argv[])
 {
-	try
+	//try
 	{
 		/*if (argc != 2)
 		{
@@ -102,19 +121,36 @@ int main(int argc, char* argv[])
 			return 1;
 		}*/
 
+		std::time_t now = time(0);
+		std::string time(std::ctime(&now));
+
+		char str[256];
+		sprintf(str, "ClientLog%s.txt", time.c_str());
+
+		for(int i=0;i<strlen(str);i++)
+		{
+			if(str[i]==':' || str[i]==' ' || str[i]==10)
+				str[i] = '_';
+		}
+
+		logFile.open(str);
+
 		char pName[64+1];
 		char ip[16];
 		char port[6];
 
 		printf("Please enter your name: ");
-		scanf("%[^\n]s", pName);
+		//scanf("%[^\n]s", pName);
+		strcpy(pName, "joj");
 		playerName = pName;
 		std::fflush(stdin);
 		printf("Please enter the host's ip: ");
-		scanf("%s", ip);
+		strcpy(ip, "127.0.0.1");
+		//scanf("%s", ip);
 		std::fflush(stdin);
 		printf("Please enter the host's port: ");
-		scanf("%s", port);
+		strcpy(port, "7777");
+		//scanf("%s", port);
 		std::fflush(stdin);
 
 		tcp::resolver resolver(io_service);
@@ -124,6 +160,7 @@ int main(int argc, char* argv[])
 
 		boost::asio::async_read(socket_,
 			boost::asio::buffer(buf),
+			boost::asio::transfer_exactly(COMMAND_TOTAL_SIZE),
 			boost::bind(handle_command_read, boost::asio::placeholders::error)
 			);
 
@@ -182,13 +219,35 @@ int main(int argc, char* argv[])
 		socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
 		socket_.close();
 	}
-	catch (std::exception& e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
+// 	catch (std::exception& e)
+// 	{
+// 		std::cerr << e.what() << std::endl;
+// 	}
 	
 	system("pause");
 	return 0;
+}
+
+void handle_command_write(const boost::system::error_code& error, std::size_t bytes_transferred, unsigned int idx)
+{
+	if (error == boost::asio::error::eof)
+	{
+		return;
+	}
+	else if (error)
+		throw boost::system::system_error(error); // Some other error.
+
+	//boost::asio::async_write(socket_, boost::asio::buffer(outputMessage.at(idx)), boost::bind(handle_command_message_write, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred, idx));
+}
+
+void handle_command_message_write(const boost::system::error_code& error, std::size_t bytes_transferred, unsigned int idx)
+{
+	if (error == boost::asio::error::eof)
+	{
+		return;
+	}
+	else if (error)
+		throw boost::system::system_error(error); // Some other error.
 }
 
 void handle_command_read(const boost::system::error_code& error)
@@ -200,9 +259,13 @@ void handle_command_read(const boost::system::error_code& error)
 	else if (error)
 		throw boost::system::system_error(error); // Some other error.
 
+	std::string str(buf.data());
+	str.resize(COMMAND_TOTAL_SIZE+1);
+	str.at(COMMAND_TOTAL_SIZE) = 0;
+
 	char commandType[COMMAND_TYPE_SIZE+1];
 	int commandBytes = 0;
-	sscanf(buf.data(), "%s %d", commandType, &commandBytes);
+	sscanf(str.c_str(), "%s %d", commandType, &commandBytes);
 
 	std::string command(commandType);
 
@@ -238,7 +301,13 @@ void handle_command_message_read(const boost::system::error_code& error, std::si
 		ar & mes;
 
 		//if(playerName.compare(mes.sender) != 0)
-			std::cout << "[" << mes.time << "]" << mes.sender << ":" << mes.text << std::endl;
+		{
+			boost::mutex::scoped_lock lLock(mtx);
+			logFile << "[" << mes.time << "]" << mes.sender << ":" << mes.text << std::endl;
+			//fprintf(logFile, "[%s]%s:%s\n", mes.time, mes.sender, mes.text);
+			logFile.flush();
+		}
+		//logFile, "[%s]%s:%s\n", mes.time, mes.sender, mes.text);
 	}
 
 
