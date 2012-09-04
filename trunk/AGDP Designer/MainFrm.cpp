@@ -104,11 +104,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	pBtnWindows->SetMenu (IDR_WINDOWS_MENU, TRUE);
 	CMFCRibbonCategory* pCategory = m_wndRibbonBar.AddCategory (
 		_T("&Home"),
-		IDB_WRITE,
-		IDB_WRITELARGE);
+		0,
+		0);
 	CMFCRibbonPanel* pPanelWindow = pCategory->AddPanel (
 		_T("Window\nw"), 
-		m_PanelImages.ExtractIcon (7));
+		m_PanelImages.ExtractIcon (0));
 	pPanelWindow->Add (pBtnWindows);
 
 	if (!m_wndStatusBar.Create(this))
