@@ -51,21 +51,6 @@ void CD3DpictureView::OnDraw(CDC* pDC)
 	m_D3DApp.DrawScene();
 }
 
-
-// CD3DpictureView 診斷
-
-#ifdef _DEBUG
-void CD3DpictureView::AssertValid() const
-{
-	CView::AssertValid();
-}
-
-#ifndef _WIN32_WCE
-void CD3DpictureView::Dump(CDumpContext& dc) const
-{
-	CView::Dump(dc);
-}
-
 void CD3DpictureView::InitDx11( HWND hWnd )
 {
 	CRect rect;
@@ -76,10 +61,6 @@ void CD3DpictureView::InitDx11( HWND hWnd )
 	m_D3DApp.initApp(m_hWndDX11, rect.Width(), rect.Height());
 	m_D3DApp.buildShaderFX();
 }
-
-#endif
-#endif //_DEBUG
-
 
 // CD3DpictureView 訊息處理常式
 
@@ -346,4 +327,20 @@ void CD3DpictureView::Update( int x,int y )
 
 
 
+// CD3DpictureView 診斷
+
+#ifdef _DEBUG
+void CD3DpictureView::AssertValid() const
+{
+	CView::AssertValid();
+}
+
+#ifndef _WIN32_WCE
+void CD3DpictureView::Dump(CDumpContext& dc) const
+{
+	CView::Dump(dc);
+}
+
+#endif
+#endif //_DEBUG
 
