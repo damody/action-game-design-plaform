@@ -23,7 +23,7 @@
 #include "AGDP DesignerView.h"
 
 #include <map>
-typedef std::map<CString,CAGDPDesignerView*> DesignerViews;
+typedef std::map<HeroInfo*,CAGDPDesignerView*> HeroViews;
 
 extern CAGDPDesignerView* g_NewView;
 
@@ -98,8 +98,9 @@ public:
 		m_D3DFrameView.Clear();
 	}
 	void test();
-	void OpenDesignerView(CString& name,PictureData *pic,int index);
-	void SwitchDesigerView(int index);
+	bool NewHeroViews(HeroInfo* hero);
+	void OpenPictureView(CString& name,PictureData *pic,int index);
+	void SwitchPictureView(int index);
 public:  // 控制列內嵌的成員
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;
@@ -113,7 +114,7 @@ public:  // 控制列內嵌的成員
 	CMFCShellTreeCtrl m_wndTree;
 	CMFCCaptionBar    m_wndCaptionBar;
 	CD3DPanelView	  m_D3DFrameView;
-	DesignerViews	  m_DesignerViews;
+	HeroViews	  m_HeroViews;
 // 產生的訊息對應函式
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

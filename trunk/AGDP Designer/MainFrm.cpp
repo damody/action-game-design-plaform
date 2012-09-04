@@ -62,7 +62,7 @@ END_MESSAGE_MAP()
 
 // CMainFrame 建構/解構
 
-CMainFrame::CMainFrame():m_DesignerViews()
+CMainFrame::CMainFrame()
 {
 	// TODO: 在此加入成員初始化程式碼
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_OFF_2007_BLACK);
@@ -74,7 +74,6 @@ CMainFrame::~CMainFrame()
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	m_DesignerViews.clear();
 	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
@@ -537,32 +536,13 @@ void CMainFrame::OnButtonAddnewarea()
 	// TODO: 在此加入您的命令處理常式程式碼
 }
 
-void CMainFrame::OpenDesignerView( CString& name,PictureData *pic,int index )
+void CMainFrame::OpenPictureView( CString& name,PictureData *pic,int index )
 {
-	g_NewView->AddPicturedata(name,pic,index);
-// 	theApp.OnFileNew();
-// 	
-// 	g_NewView->SetWindowText(name);
-// 	if(g_HeroInfo!=NULL){
-// 		//(g_NewView)->Refresh(&g_HeroInfo->m_PictureDatas[index]);
-// 		//(g_NewView)->m_PictureID = index;
-// 	}
-// 	m_DesignerViews[name]=g_NewView;
-//	m_Tab.AddTab(g_NewView,name,index,FALSE);
-// 	CAGDPDesignerDoc* pCurrentDoc = (CAGDPDesignerDoc*)this->GetActiveDocument();
-// 	CAGDPDesignerView* pNewView = new CAGDPDesignerView();
-// 	CCreateContext newContext;
-// 	newContext.m_pNewViewClass = NULL;
-// 	newContext.m_pNewDocTemplate = NULL;
-// 	newContext.m_pLastView = NULL;
-// 	newContext.m_pCurrentFrame = NULL;
-// 	newContext.m_pCurrentDoc = pCurrentDoc;
-// 	UINT viewID = AFX_IDW_PANE_FIRST + 1;
-// 	CRect rect(0, 0, 0, 0); // Gets resized later.
-//  	pNewView->Create(NULL, name, WS_CHILD, rect, this, viewID, &newContext);
-// 	pNewView->Refresh(&g_HeroInfo->m_PictureDatas[index]);
-// 	pNewView->m_PictureID = index;
-// 	m_DesignerViews[name]=pNewView;
+	HeroViews::iterator it = m_HeroViews.find(g_HeroInfo);
+	if(it != m_HeroViews.end()){
+			it->second->AddPicturedata(name,pic,index);
+	}
+	
 }
 
 void CMainFrame::test()
@@ -572,9 +552,24 @@ void CMainFrame::test()
 	AfxMessageBox(str);
 }
 
-void CMainFrame::SwitchDesigerView( int index)
+void CMainFrame::SwitchPictureView( int index)
 {
-	g_NewView->SwitchPicture(index);
+	HeroViews::iterator it = m_HeroViews.find(g_HeroInfo);
+	if(it != m_HeroViews.end()){
+		it->second->SwitchPicture(index);
+	}
 }
+
+bool CMainFrame::NewHeroViews( HeroInfo* hero )
+{
+	if(m_HeroViews.find(hero) == m_HeroViews.end())
+	{
+		theApp.OnFileNew();
+		m_HeroViews[hero] = g_NewView;
+		return true;
+	}
+	return false;
+}
+
 
 CAGDPDesignerView* g_NewView=NULL;

@@ -230,19 +230,40 @@ void CFileView::OnFileOpen()
 // 			{
 				HTREEITEM hHero = m_wndFileView.InsertItem(dlgFile.GetFileTitle(),2,2,hHeroDoc);
 				HeroInfo_RawPtr hero =HeroInfo_RawPtr(new HeroInfo);
+				g_HeroInfo = hero;
 				hero->LoadHeroData(data);
-				for (unsigned int i=0;i<hero->m_PictureDatas.size();i++)
-				{
-					std::string pic = hero->m_PictureDatas[i].m_Path;
-					size_t found;
-					found=pic.rfind('\\');
-					char buff[100];
-					sprintf(buff,"%s",pic.substr(found+1,pic.length()).c_str());
-					CString str(buff);
-					m_wndFileView.InsertItem(str,2,2,hHero);
+				if(((CMainFrame*)this->GetParentFrame())->NewHeroViews(hero)){
+					for (unsigned int i=0;i<hero->m_PictureDatas.size();i++)
+					{
+						std::string pic = hero->m_PictureDatas[i].m_Path;
+						size_t found;
+						found=pic.rfind('\\');
+						char buff[100];
+						sprintf(buff,"%s",pic.substr(found+1,pic.length()).c_str());
+						CString str(buff);
+						m_wndFileView.InsertItem(str,2,2,hHero);
+					}
+					for(unsigned int i=0;i < hero->m_PictureDatas.size();i++)
+					{
+						std::string pic = hero->m_PictureDatas[i].m_Path;
+						size_t found;
+						found=pic.rfind('\\');
+						char buff[100];
+						sprintf(buff,"%s",pic.substr(found+1,pic.length()).c_str());
+						CString str(buff);
+						((CMainFrame*)this->GetParentFrame())->OpenPictureView(str,&hero->m_PictureDatas[i],i);
+					}
+					m_HeroInfoMap[hHero]=hero;
+					m_wndFileView.Expand(hHeroDoc, TVE_EXPAND);
+
+					
+					g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
+					g_FrameName = "";
+					g_FrameIndex = -1;
+					((CMainFrame*)this->GetParentFrame())->m_wndClassView.Refresh();
+					((CMainFrame*)this->GetParentFrame())->Clear();
 				}
-				m_HeroInfoMap[hHero]=hero;
-				m_wndFileView.Expand(hHeroDoc, TVE_EXPAND);
+				
 //			}
 		}else{
 			char buff[100];
@@ -330,7 +351,9 @@ void CFileView::OnSelectItem( HTREEITEM item )
 
 	if (it!= m_HeroInfoMap.end())
 	{
+		
 		g_HeroInfo = it->second;
+		/*
 		for(unsigned int i=0;i < g_HeroInfo->m_PictureDatas.size();i++)
 		{
 			std::string pic = g_HeroInfo->m_PictureDatas[i].m_Path;
@@ -339,13 +362,15 @@ void CFileView::OnSelectItem( HTREEITEM item )
 			char buff[100];
 			sprintf(buff,"%s",pic.substr(found+1,pic.length()).c_str());
 			CString str(buff);
-			((CMainFrame*)this->GetParentFrame())->OpenDesignerView(str,&g_HeroInfo->m_PictureDatas[i],i);
+			((CMainFrame*)this->GetParentFrame())->OpenPictureView(str,&g_HeroInfo->m_PictureDatas[i],i);
 		}
+		*/
 		g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
 		g_FrameName = "";
 		g_FrameIndex = -1;
 		((CMainFrame*)this->GetParentFrame())->m_wndClassView.Refresh();
 		((CMainFrame*)this->GetParentFrame())->Clear();
+		
 	}else{
 		/*((CMainFrame*)this->GetParentFrame())->SwitchDesigerView(m_wndFileView.GetItemText(item));*/
 		HTREEITEM cItem = m_wndFileView.GetChildItem(m_wndFileView.GetParentItem(item));
@@ -355,7 +380,7 @@ void CFileView::OnSelectItem( HTREEITEM item )
 			i++;
 			cItem = m_wndFileView.GetNextSiblingItem(cItem);
 		}
-		((CMainFrame*)this->GetParentFrame())->SwitchDesigerView(i);
+		((CMainFrame*)this->GetParentFrame())->SwitchPictureView(i);
 	}
 }
 
@@ -382,7 +407,7 @@ void CFileView::OnPicturedataAdd()
 
 		m_wndFileView.InsertItem(dlgFile.GetFileName(),2,2,hHero_Select);
 		it_Hero->second->m_PictureDatas.push_back(pic);
-		//((CMainFrame*)this->GetParentFrame())->OpenDesignerView(dlgFile.GetFileName(),it_Hero->second->m_PictureDatas.size()-1);
+		((CMainFrame*)this->GetParentFrame())->OpenPictureView(dlgFile.GetFileName(),&it_Hero->second->m_PictureDatas.back(),it_Hero->second->m_PictureDatas.size()-1);
 		
 		
 	}

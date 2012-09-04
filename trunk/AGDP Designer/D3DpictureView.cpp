@@ -326,13 +326,13 @@ void CD3DpictureView::Update( int x,int y )
 			it_FrameInfos->second[g_FrameIndex].m_PictureY = y;
 
 			//Refresh
-			((CMainFrame*)(this->GetParent()->GetParentFrame()))->RefreshFrameEdit();
+			((CMainFrame*)(this->GetParent()->GetParent()->GetParent()->GetParentFrame()))->RefreshFrameEdit();
 		}else{
 			char buff[100];
 			sprintf(buff, "PictureEdit: Frame[%s][%d] does not exist",g_FrameName.c_str(),g_FrameIndex);
 			CString str(buff);
 			AfxMessageBox(str);
-			((CMainFrame*)(this->GetParent()->GetParentFrame()))->AddStrToOutputBuild(str);
+			((CMainFrame*)(this->GetParent()->GetParent()->GetParent()->GetParentFrame()))->AddStrToOutputBuild(str);
 			return;
 		}
 	}else{
@@ -340,8 +340,7 @@ void CD3DpictureView::Update( int x,int y )
 		sprintf(buff, "PictureEdit: Frame[%s] does not exist",g_FrameName.c_str());
 		CString str(buff);
 		AfxMessageBox(str);
-		((CMainFrame*)(this->GetParent()->GetParentFrame()))->AddStrToOutputBuild(str);
-		return;
+		((CMainFrame*)(this->GetParent()->GetParent()->GetParent()->GetParentFrame()))->AddStrToOutputBuild(str);
 	}
 }
 

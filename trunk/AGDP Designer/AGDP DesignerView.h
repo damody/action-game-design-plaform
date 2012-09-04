@@ -18,12 +18,14 @@
 #include "AGDP DesignerDoc.h"
 #include "global.h"
 #include "D3DpictureView.h"
-#include <vector>
+#include <map>
+
+typedef std::map<PictureData*,CD3DpictureView*> ViewMap;
 
 class CAGDPDesignerView : public CTabView
 {
 public:
-	std::vector<CD3DpictureView*> m_Views;
+	ViewMap m_ViewMap;
 public: // 僅從序列化建立
 	CAGDPDesignerView();
 	DECLARE_DYNCREATE(CAGDPDesignerView)

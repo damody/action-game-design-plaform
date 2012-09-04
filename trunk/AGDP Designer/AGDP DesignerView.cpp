@@ -165,18 +165,13 @@ BOOL CAGDPDesignerView::OnEraseBkgnd(CDC* pDC)
 
 void CAGDPDesignerView::AddPicturedata( CString name,PictureData *pic,int index )
 {
-	int viewID = AddView(RUNTIME_CLASS(CD3DpictureView),name,index);
-	
-	this -> GetTabControl().SetLocation( CMFCTabCtrl:: LOCATION_BOTTOM); 
-	this -> GetTabControl().ModifyTabStyle( CMFCTabCtrl:: STYLE_3D); 
-	this -> GetTabControl().EnableAutoColor( TRUE ); 
-	this -> GetTabControl().HideSingleTab( FALSE ); 
-	this -> GetTabControl().EnableTabSwap( FALSE ); 
-	this -> GetTabControl().SetTabBorderSize( 2 );
-	
-	g_NewPictureView->OnInitialUpdate();
-	g_NewPictureView->Refresh(pic);
-	m_Views.push_back(g_NewPictureView);
+	if (m_ViewMap.find(pic) == m_ViewMap.end())
+	{
+		AddView(RUNTIME_CLASS(CD3DpictureView),name,index);
+		g_NewPictureView->OnInitialUpdate();
+		g_NewPictureView->Refresh(pic);
+		m_ViewMap[pic]=g_NewPictureView;
+	}
 }
 
 void CAGDPDesignerView::SwitchPicture(int index)
