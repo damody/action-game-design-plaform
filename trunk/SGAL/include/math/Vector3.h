@@ -42,7 +42,7 @@ public:
 	float x, y, z;
 
 public:
-	inline Vector3():x(0), y(0), z(0)
+	inline Vector3(): x( 0 ), y( 0 ), z( 0 )
 	{
 	}
 
@@ -53,16 +53,16 @@ public:
 
 	inline explicit Vector3( const float afCoordinate[3] )
 		: x( afCoordinate[0] ),
-		y( afCoordinate[1] ),
-		z( afCoordinate[2] )
+		  y( afCoordinate[1] ),
+		  z( afCoordinate[2] )
 	{
 	}
 
 	inline explicit Vector3( const int afCoordinate[3] )
 	{
-		x = (float)afCoordinate[0];
-		y = (float)afCoordinate[1];
-		z = (float)afCoordinate[2];
+		x = ( float )afCoordinate[0];
+		y = ( float )afCoordinate[1];
+		z = ( float )afCoordinate[2];
 	}
 
 	inline explicit Vector3( float* const r )
@@ -78,27 +78,25 @@ public:
 	}
 
 
-	/** Exchange the contents of this vector with another. 
+	/** Exchange the contents of this vector with another.
 	*/
-	inline void swap(Vector3& other)
+	inline void swap( Vector3& other )
 	{
-		std::swap(x, other.x);
-		std::swap(y, other.y);
-		std::swap(z, other.z);
+		std::swap( x, other.x );
+		std::swap( y, other.y );
+		std::swap( z, other.z );
 	}
 
 	inline float operator [] ( const size_t i ) const
 	{
 		assert( i < 3 );
-
-		return *(&x+i);
+		return *( &x + i );
 	}
 
 	inline float& operator [] ( const size_t i )
 	{
 		assert( i < 3 );
-
-		return *(&x+i);
+		return *( &x + i );
 	}
 	/// Pointer accessor for direct copying
 	inline float* ptr()
@@ -120,7 +118,6 @@ public:
 		x = rkVector.x;
 		y = rkVector.y;
 		z = rkVector.z;
-
 		return *this;
 	}
 
@@ -129,7 +126,6 @@ public:
 		x = fScaler;
 		y = fScaler;
 		z = fScaler;
-
 		return *this;
 	}
 
@@ -147,53 +143,51 @@ public:
 	inline Vector3 operator + ( const Vector3& rkVector ) const
 	{
 		return Vector3(
-			x + rkVector.x,
-			y + rkVector.y,
-			z + rkVector.z);
+		               x + rkVector.x,
+		               y + rkVector.y,
+		               z + rkVector.z );
 	}
 
 	inline Vector3 operator - ( const Vector3& rkVector ) const
 	{
 		return Vector3(
-			x - rkVector.x,
-			y - rkVector.y,
-			z - rkVector.z);
+		               x - rkVector.x,
+		               y - rkVector.y,
+		               z - rkVector.z );
 	}
 
 	inline Vector3 operator * ( const float fScalar ) const
 	{
 		return Vector3(
-			x * fScalar,
-			y * fScalar,
-			z * fScalar);
+		               x * fScalar,
+		               y * fScalar,
+		               z * fScalar );
 	}
 
-	inline Vector3 operator * ( const Vector3& rhs) const
+	inline Vector3 operator * ( const Vector3& rhs ) const
 	{
 		return Vector3(
-			x * rhs.x,
-			y * rhs.y,
-			z * rhs.z);
+		               x * rhs.x,
+		               y * rhs.y,
+		               z * rhs.z );
 	}
 
 	inline Vector3 operator / ( const float fScalar ) const
 	{
 		assert( fScalar != 0.0f );
-
 		float fInv = 1.0f / fScalar;
-
 		return Vector3(
-			x * fInv,
-			y * fInv,
-			z * fInv);
+		               x * fInv,
+		               y * fInv,
+		               z * fInv );
 	}
 
-	inline Vector3 operator / ( const Vector3& rhs) const
+	inline Vector3 operator / ( const Vector3& rhs ) const
 	{
 		return Vector3(
-			x / rhs.x,
-			y / rhs.y,
-			z / rhs.z);
+		               x / rhs.x,
+		               y / rhs.y,
+		               z / rhs.z );
 	}
 
 	inline const Vector3& operator + () const
@@ -203,56 +197,56 @@ public:
 
 	inline Vector3 operator - () const
 	{
-		return Vector3(-x, -y, -z);
+		return Vector3( -x, -y, -z );
 	}
 
 	// overloaded operators to help Vector3
 	inline friend Vector3 operator * ( const float fScalar, const Vector3& rkVector )
 	{
 		return Vector3(
-			fScalar * rkVector.x,
-			fScalar * rkVector.y,
-			fScalar * rkVector.z);
+		               fScalar * rkVector.x,
+		               fScalar * rkVector.y,
+		               fScalar * rkVector.z );
 	}
 
 	inline friend Vector3 operator / ( const float fScalar, const Vector3& rkVector )
 	{
 		return Vector3(
-			fScalar / rkVector.x,
-			fScalar / rkVector.y,
-			fScalar / rkVector.z);
+		               fScalar / rkVector.x,
+		               fScalar / rkVector.y,
+		               fScalar / rkVector.z );
 	}
 
-	inline friend Vector3 operator + (const Vector3& lhs, const float rhs)
+	inline friend Vector3 operator + ( const Vector3& lhs, const float rhs )
 	{
 		return Vector3(
-			lhs.x + rhs,
-			lhs.y + rhs,
-			lhs.z + rhs);
+		               lhs.x + rhs,
+		               lhs.y + rhs,
+		               lhs.z + rhs );
 	}
 
-	inline friend Vector3 operator + (const float lhs, const Vector3& rhs)
+	inline friend Vector3 operator + ( const float lhs, const Vector3& rhs )
 	{
 		return Vector3(
-			lhs + rhs.x,
-			lhs + rhs.y,
-			lhs + rhs.z);
+		               lhs + rhs.x,
+		               lhs + rhs.y,
+		               lhs + rhs.z );
 	}
 
-	inline friend Vector3 operator - (const Vector3& lhs, const float rhs)
+	inline friend Vector3 operator - ( const Vector3& lhs, const float rhs )
 	{
 		return Vector3(
-			lhs.x - rhs,
-			lhs.y - rhs,
-			lhs.z - rhs);
+		               lhs.x - rhs,
+		               lhs.y - rhs,
+		               lhs.z - rhs );
 	}
 
-	inline friend Vector3 operator - (const float lhs, const Vector3& rhs)
+	inline friend Vector3 operator - ( const float lhs, const Vector3& rhs )
 	{
 		return Vector3(
-			lhs - rhs.x,
-			lhs - rhs.y,
-			lhs - rhs.z);
+		               lhs - rhs.x,
+		               lhs - rhs.y,
+		               lhs - rhs.z );
 	}
 
 	// arithmetic updates
@@ -261,7 +255,6 @@ public:
 		x += rkVector.x;
 		y += rkVector.y;
 		z += rkVector.z;
-
 		return *this;
 	}
 
@@ -278,7 +271,6 @@ public:
 		x -= rkVector.x;
 		y -= rkVector.y;
 		z -= rkVector.z;
-
 		return *this;
 	}
 
@@ -303,20 +295,16 @@ public:
 		x *= rkVector.x;
 		y *= rkVector.y;
 		z *= rkVector.z;
-
 		return *this;
 	}
 
 	inline Vector3& operator /= ( const float fScalar )
 	{
 		assert( fScalar != 0.0 );
-
 		float fInv = 1.0f / fScalar;
-
 		x *= fInv;
 		y *= fInv;
 		z *= fInv;
-
 		return *this;
 	}
 
@@ -325,10 +313,9 @@ public:
 		x /= rkVector.x;
 		y /= rkVector.y;
 		z /= rkVector.z;
-
 		return *this;
 	}
-	
+
 	/** Returns the length (magnitude) of the vector.
 	@warning
 	This operation requires a square root and is expensive in
@@ -363,9 +350,9 @@ public:
 	distance (e.g. for just comparing distances) use squaredDistance()
 	instead.
 	*/
-	inline float distance(const Vector3& rhs) const
+	inline float distance( const Vector3& rhs ) const
 	{
-		return (*this - rhs).length();
+		return ( *this - rhs ).length();
 	}
 
 	/** Returns the square of the distance to another vector.
@@ -378,9 +365,9 @@ public:
 	Use this if you want to find the longest / shortest distance
 	without incurring the square root.
 	*/
-	inline float squaredDistance(const Vector3& rhs) const
+	inline float squaredDistance( const Vector3& rhs ) const
 	{
-		return (*this - rhs).squaredLength();
+		return ( *this - rhs ).squaredLength();
 	}
 
 	/** Calculates the dot (scalar) product of this vector with another.
@@ -397,7 +384,7 @@ public:
 	@returns
 	A float representing the dot product value.
 	*/
-	inline float dotProduct(const Vector3& vec) const
+	inline float dotProduct( const Vector3& vec ) const
 	{
 		return x * vec.x + y * vec.y + z * vec.z;
 	}
@@ -412,9 +399,9 @@ public:
 	@returns
 	A Real representing the absolute dot product value.
 	*/
-	inline float absDotProduct(const Vector3& vec) const
+	inline float absDotProduct( const Vector3& vec ) const
 	{
-		return Math::Abs(x * vec.x) + Math::Abs(y * vec.y) + Math::Abs(z * vec.z);
+		return Math::Abs( x * vec.x ) + Math::Abs( y * vec.y ) + Math::Abs( z * vec.z );
 	}
 
 	/** Normalises the vector.
@@ -473,9 +460,9 @@ public:
 	inline Vector3 crossProduct( const Vector3& rkVector ) const
 	{
 		return Vector3(
-			y * rkVector.z - z * rkVector.y,
-			z * rkVector.x - x * rkVector.z,
-			x * rkVector.y - y * rkVector.x);
+		               y * rkVector.z - z * rkVector.y,
+		               z * rkVector.x - x * rkVector.z,
+		               x * rkVector.y - y * rkVector.x );
 	}
 
 	/** Returns a vector at a point half way between this and the passed
@@ -484,9 +471,9 @@ public:
 	inline Vector3 midPoint( const Vector3& vec ) const
 	{
 		return Vector3(
-			( x + vec.x ) * 0.5f,
-			( y + vec.y ) * 0.5f,
-			( z + vec.z ) * 0.5f );
+		               ( x + vec.x ) * 0.5f,
+		               ( y + vec.y ) * 0.5f,
+		               ( z + vec.z ) * 0.5f );
 	}
 
 	/** Returns true if the vector's scalar components are all greater
@@ -494,8 +481,11 @@ public:
 	*/
 	inline bool operator < ( const Vector3& rhs ) const
 	{
-		if( x < rhs.x && y < rhs.y && z < rhs.z )
+		if ( x < rhs.x && y < rhs.y && z < rhs.z )
+		{
 			return true;
+		}
+
 		return false;
 	}
 
@@ -504,8 +494,11 @@ public:
 	*/
 	inline bool operator > ( const Vector3& rhs ) const
 	{
-		if( x > rhs.x && y > rhs.y && z > rhs.z )
+		if ( x > rhs.x && y > rhs.y && z > rhs.z )
+		{
 			return true;
+		}
+
 		return false;
 	}
 
@@ -518,9 +511,11 @@ public:
 	*/
 	inline void makeFloor( const Vector3& cmp )
 	{
-		if( cmp.x < x ) x = cmp.x;
-		if( cmp.y < y ) y = cmp.y;
-		if( cmp.z < z ) z = cmp.z;
+		if ( cmp.x < x ) { x = cmp.x; }
+
+		if ( cmp.y < y ) { y = cmp.y; }
+
+		if ( cmp.z < z ) { z = cmp.z; }
 	}
 
 	/** Sets this vector's components to the maximum of its own and the
@@ -532,9 +527,11 @@ public:
 	*/
 	inline void makeCeil( const Vector3& cmp )
 	{
-		if( cmp.x > x ) x = cmp.x;
-		if( cmp.y > y ) y = cmp.y;
-		if( cmp.z > z ) z = cmp.z;
+		if ( cmp.x > x ) { x = cmp.x; }
+
+		if ( cmp.y > y ) { y = cmp.y; }
+
+		if ( cmp.z > z ) { z = cmp.z; }
 	}
 
 	/** Generates a vector perpendicular to this vector (eg an 'up' vector).
@@ -544,54 +541,52 @@ public:
 	method will guarantee to generate one of them. If you need more
 	control you should use the Quaternion class.
 	*/
-	inline Vector3 perpendicular(void) const
+	inline Vector3 perpendicular( void ) const
 	{
-		static const float fSquareZero = (float)(1e-06 * 1e-06);
-
+		static const float fSquareZero = ( float )( 1e-06 * 1e-06 );
 		Vector3 perp = this->crossProduct( Vector3::UNIT_X );
 
 		// Check length
-		if( perp.squaredLength() < fSquareZero )
+		if ( perp.squaredLength() < fSquareZero )
 		{
 			/* This vector is the Y axis multiplied by a scalar, so we have
 			to use another axis.
 			*/
 			perp = this->crossProduct( Vector3::UNIT_Y );
 		}
-		perp.normalise();
 
+		perp.normalise();
 		return perp;
 	}
 	/** Gets the angle between 2 vectors.
 	@remarks
 	Vectors do not have to be unit-length but must represent directions.
 	*/
-	inline Radian angleBetween(const Vector3& dest)
+	inline Radian angleBetween( const Vector3& dest )
 	{
 		float lenProduct = length() * dest.length();
 
 		// Divide by zero check
-		if(lenProduct < 1e-6f)
+		if ( lenProduct < 1e-6f )
+		{
 			lenProduct = 1e-6f;
+		}
 
-		float f = dotProduct(dest) / lenProduct;
-
-		f = Math::Clamp(f, (float)-1.0f, (float)1.0f);
-		return Math::ACos(f);
-
+		float f = dotProduct( dest ) / lenProduct;
+		f = Math::Clamp( f, ( float ) - 1.0f, ( float )1.0f );
+		return Math::ACos( f );
 	}
-	
-	/** Returns true if this vector is zero length. */
-	inline bool isZeroLength(void) const
-	{
-		float sqlen = (x * x) + (y * y) + (z * z);
-		return (sqlen < (1e-06 * 1e-06));
 
+	/** Returns true if this vector is zero length. */
+	inline bool isZeroLength( void ) const
+	{
+		float sqlen = ( x * x ) + ( y * y ) + ( z * z );
+		return ( sqlen < ( 1e-06 * 1e-06 ) );
 	}
 
 	/** As normalise, except that this vector is unaffected and the
 	normalised vector is returned as a copy. */
-	inline Vector3 normalisedCopy(void) const
+	inline Vector3 normalisedCopy( void ) const
 	{
 		Vector3 ret = *this;
 		ret.normalise();
@@ -601,9 +596,9 @@ public:
 	/** Calculates a reflection vector to the plane with the given normal .
 	@remarks NB assumes 'this' is pointing AWAY FROM the plane, invert if it is not.
 	*/
-	inline Vector3 reflect(const Vector3& normal) const
+	inline Vector3 reflect( const Vector3& normal ) const
 	{
-		return Vector3( *this - ( 2 * this->dotProduct(normal) * normal ) );
+		return Vector3( *this - ( 2 * this->dotProduct( normal ) * normal ) );
 	}
 
 	/** Returns whether this vector is within a positional tolerance
@@ -612,12 +607,11 @@ public:
 	@param tolerance The amount that each element of the vector may vary by
 	and still be considered equal
 	*/
-	inline bool positionEquals(const Vector3& rhs, float tolerance = 1e-03) const
+	inline bool positionEquals( const Vector3& rhs, float tolerance = 1e-03 ) const
 	{
-		return Math::RealEqual(x, rhs.x, tolerance) &&
-			Math::RealEqual(y, rhs.y, tolerance) &&
-			Math::RealEqual(z, rhs.z, tolerance);
-
+		return Math::RealEqual( x, rhs.x, tolerance ) &&
+		       Math::RealEqual( y, rhs.y, tolerance ) &&
+		       Math::RealEqual( z, rhs.z, tolerance );
 	}
 
 	/** Returns whether this vector is within a positional tolerance
@@ -626,10 +620,10 @@ public:
 	@param tolerance The amount (related to the scale of vectors) that distance
 	of the vector may vary by and still be considered close
 	*/
-	inline bool positionCloses(const Vector3& rhs, float tolerance = 1e-03f) const
+	inline bool positionCloses( const Vector3& rhs, float tolerance = 1e-03f ) const
 	{
-		return squaredDistance(rhs) <=
-			(squaredLength() + rhs.squaredLength()) * tolerance;
+		return squaredDistance( rhs ) <=
+		       ( squaredLength() + rhs.squaredLength() ) * tolerance;
 	}
 
 	/** Returns whether this vector is within a directional tolerance
@@ -639,23 +633,21 @@ public:
 	still be considered equal
 	@note Both vectors should be normalised.
 	*/
-	inline bool directionEquals(const Vector3& rhs,
-		const Radian& tolerance) const
+	inline bool directionEquals( const Vector3& rhs,
+	                             const Radian& tolerance ) const
 	{
-		float dot = dotProduct(rhs);
-		Radian angle = Math::ACos(dot);
-
-		return Math::Abs(angle.valueRadians()) <= tolerance.valueRadians();
-
+		float dot = dotProduct( rhs );
+		Radian angle = Math::ACos( dot );
+		return Math::Abs( angle.valueRadians() ) <= tolerance.valueRadians();
 	}
 
 	/// Check whether this vector contains valid values
 	inline bool isNaN() const
 	{
-		return _isnan(x) || _isnan(y) || _isnan(z);
+		return _isnan( x ) || _isnan( y ) || _isnan( z );
 	}
 
-	
+
 
 	// special points
 	static const Vector3 ZERO;
@@ -670,7 +662,7 @@ public:
 	/** Function for writing to a stream.
 	*/
 	inline friend std::ostream& operator <<
-		( std::ostream& o, const Vector3& v )
+	( std::ostream& o, const Vector3& v )
 	{
 		o << "Vector3(" << v.x << ", " << v.y << ", " << v.z << ")";
 		return o;

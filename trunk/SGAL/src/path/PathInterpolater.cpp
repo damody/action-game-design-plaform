@@ -5,17 +5,17 @@
 //  @ Project : Untitled
 //  @ File Name : PathInterpolater.cpp
 //  @ Date : 2011/9/3
-//  @ Author : 
+//  @ Author :
 //
 //
 
 
 #include "path\PathInterpolater.h"
 
-void PathInterpolater::AddPoint(float time, Vector3 p)
+void PathInterpolater::AddPoint( float time, Vector3 p )
 {
 	m_needsort = true;
-	m_points.push_back(PathPoint(time, p));
+	m_points.push_back( PathPoint( time, p ) );
 }
 
 void PathInterpolater::Clear()
@@ -26,9 +26,9 @@ void PathInterpolater::Clear()
 
 void PathInterpolater::CheckSort()
 {
-	if (m_needsort)
+	if ( m_needsort )
 	{
-		std::sort(m_points.begin(), m_points.end());
+		std::sort( m_points.begin(), m_points.end() );
 		m_needsort = false;
 	}
 }

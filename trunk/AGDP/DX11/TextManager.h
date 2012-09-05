@@ -6,10 +6,10 @@ class TextManager
 private:
 	TextLetterMap m_TextLetterMap;
 public:
-	TextManager(void);
-	~TextManager(void);
+	TextManager( void );
+	~TextManager( void );
 
 	void Initialize();
-	TextLetters GetLetters(const std::wstring& str);
+	TextLetters GetLetters( const std::wstring& str );
 };
 

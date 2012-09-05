@@ -14,25 +14,26 @@
 class InputState
 {
 public:
-	enum {
-		MOUSE_LEFT,	///< 滑鼠左鍵
-		MOUSE_RIGHT,	///< 滑鼠右鍵
-		MOUSE_MIDDLE	///< 滑鼠中鍵
+	enum
+	{
+	        MOUSE_LEFT,	///< 滑鼠左鍵
+	        MOUSE_RIGHT,	///< 滑鼠右鍵
+	        MOUSE_MIDDLE	///< 滑鼠中鍵
 	};
 	InputState();
 	~InputState();
 	/// 更新輸入訊號
 	void GetInput();
 	/// 設定輸入端
-	int InputInit(HWND hWnd, HINSTANCE Instance);
+	int InputInit( HWND hWnd, HINSTANCE Instance );
 	/// 確認 代碼為index的鍵 是否為按下鍵的瞬間
-	bool isKeyDown(int index);
+	bool isKeyDown( int index );
 	/// 確認 代碼為index的鍵 是否為放開鍵的瞬間
-	bool isKeyUp(int index);
+	bool isKeyUp( int index );
 	/// 確認 代碼為index的鍵 是否為按住鍵不放
-	bool isKeyHold(int index);
+	bool isKeyHold( int index );
 	/// 確認 代碼為index的鍵 是否為按下鍵
-	bool isKeyPress(int index);
+	bool isKeyPress( int index );
 	/// 確認 滑鼠左鍵 是否為按下鍵的瞬間
 	bool isMouseLDown();
 	/// 確認 滑鼠右鍵 是否為按下鍵的瞬間
@@ -64,8 +65,8 @@ public:
 	/// 取得所有按下的鍵值
 	std::queue<int> GetKeyDownQue();
 private:
-	char m_NowKeyState[256],m_LastKeyState[256];
-	GetDirectXInput *m_lpDxInput;
+	char m_NowKeyState[256], m_LastKeyState[256];
+	GetDirectXInput* m_lpDxInput;
 	MouseInfo m_MouseInfo;
 	MouseInfo m_LastMouseInfo;
 };

@@ -14,10 +14,10 @@
 #include "game/ColorRect.h"
 #include "path/HSplineCurve.h"
 
-namespace boost{namespace serialization{class access;}}
+namespace boost {namespace serialization {class access;}}
 struct BGLayer
-{ 
-	
+{
+
 	std::string	m_PicturePath;
 	int		m_PicID;
 	Vector3		m_Position;
@@ -31,18 +31,18 @@ struct BGLayer
 
 	friend class boost::serialization::access;
 	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
+	void serialize( Archive& ar, const unsigned int version )
 	{
-		ar &	m_PicturePath;
-		ar &	m_PicID;
-		ar &	m_Position;
-		ar &	m_Width;
-		ar &	m_Height;
-		ar &	m_LoopDistance;
-		ar &	m_TimeLine;
-		ar &	m_TimeStart;
-		ar &	m_TimeEnd;
-		ar &	m_IsGround;
+		ar& 	m_PicturePath;
+		ar& 	m_PicID;
+		ar& 	m_Position;
+		ar& 	m_Width;
+		ar& 	m_Height;
+		ar& 	m_LoopDistance;
+		ar& 	m_TimeLine;
+		ar& 	m_TimeStart;
+		ar& 	m_TimeEnd;
+		ar& 	m_IsGround;
 	}
 };
 typedef std::vector<BGLayer> BGLayers;
@@ -61,7 +61,7 @@ struct LightPath
 {
 	HsplineCurve m_Direction;
 	HsplineCurve m_LightStrength;
-}typedef LightPath;
+} typedef LightPath;
 
 class BackGround
 {
@@ -84,45 +84,45 @@ private:
 	ParallelLights	m_ParallelLights;
 	LightPath	m_LightPath;
 	ParallelLight	m_CurrentLight;
-	
+
 //	int _isOnBan(Vector3 &pos);
 //	int _isOnSpace(Vector3 &pos);
 //	int _isOnGround(Vector3 &pos);
-	
+
 public:
-	BackGround(){}
-	~BackGround(){}
+	BackGround() {}
+	~BackGround() {}
 
 	std::string	 m_Name;
 	BGVerteices	 m_BGVerteices;
 	CRVerteices	 m_CRVerteices;
 	DrawVertexGroups m_DrawVertexGroups;
 
-	void Update(float dt);
+	void Update( float dt );
 	void BuildPoint();
 
-	bool	CheckDataVaild(LuaCell_Sptr luadata);
-	void	LoadData(LuaCell_Sptr luadata);
+	bool	CheckDataVaild( LuaCell_Sptr luadata );
+	void	LoadData( LuaCell_Sptr luadata );
 
 	float   Width();
 	float   Gravity();
 
 	ParallelLight GetParallelLight();
 
-	bool    InSpace(const Vector3& pIn);//判斷vIn是否在地圖的可行範圍
-	Vector3	AlignmentSpace(const Vector3& pIn);//判斷vIn是否在地圖的可行範圍，並校正
-	int    AboveSpaceBottom(const Vector3& pIn);
+	bool    InSpace( const Vector3& pIn ); //判斷vIn是否在地圖的可行範圍
+	Vector3	AlignmentSpace( const Vector3& pIn ); //判斷vIn是否在地圖的可行範圍，並校正
+	int    AboveSpaceBottom( const Vector3& pIn );
 
 
-	bool    InBan(const Vector3& pIn);//判斷vIn是否在地圖的禁足範圍
-	AxisAlignedBoxs::iterator InWhichBan(const Vector3& pIn);
+	bool    InBan( const Vector3& pIn ); //判斷vIn是否在地圖的禁足範圍
+	AxisAlignedBoxs::iterator InWhichBan( const Vector3& pIn );
 	AxisAlignedBoxs::iterator InWhichSpace( const Vector3& pIn );
-	Vector3	AlignmentBan(const Vector3& pIn ,const Vector3& pIn_past);//判斷vIn是否在地圖的禁足範圍，並校正
+	Vector3	AlignmentBan( const Vector3& pIn , const Vector3& pIn_past ); //判斷vIn是否在地圖的禁足範圍，並校正
 	//-1: under ground, 0:on ground, 1:above ground, 2:not in
-	int		AboveBanTop(const Vector3& pIn);
-	int		AboveGround(const Vector3& pIn);
-	bool 	isOnGround(const Vector3& pIn ,const Vector3& dp, Vector3 *pOut);
+	int		AboveBanTop( const Vector3& pIn );
+	int		AboveGround( const Vector3& pIn );
+	bool 	isOnGround( const Vector3& pIn , const Vector3& dp, Vector3* pOut );
 };
-SHARE_PTR(BackGround);
+SHARE_PTR( BackGround );
 
-typedef std::map<std::string,BackGround_RawPtr> BGMaps;
+typedef std::map<std::string, BackGround_RawPtr> BGMaps;

@@ -3,7 +3,7 @@
 // MFC 參考及 MFC C++ 程式庫軟體
 // 隨附相關電子文件的補充。
 // 關於 Fluent UI 之複製、使用或散發的授權條款則分別提供。
-// 如需 Fluent UI 授權計劃的詳細資訊，請造訪 
+// 如需 Fluent UI 授權計劃的詳細資訊，請造訪
 // http://msdn.microsoft.com/officeui。
 //
 // Copyright (C) Microsoft Corporation
@@ -32,9 +32,9 @@
 
 // CAGDPDesignerDoc
 
-IMPLEMENT_DYNCREATE(CAGDPDesignerDoc, CDocument)
+IMPLEMENT_DYNCREATE( CAGDPDesignerDoc, CDocument )
 
-BEGIN_MESSAGE_MAP(CAGDPDesignerDoc, CDocument)
+BEGIN_MESSAGE_MAP( CAGDPDesignerDoc, CDocument )
 END_MESSAGE_MAP()
 
 
@@ -43,7 +43,6 @@ END_MESSAGE_MAP()
 CAGDPDesignerDoc::CAGDPDesignerDoc()
 {
 	// TODO: 在此加入一次建構程式碼
-
 }
 
 CAGDPDesignerDoc::~CAGDPDesignerDoc()
@@ -52,9 +51,11 @@ CAGDPDesignerDoc::~CAGDPDesignerDoc()
 
 BOOL CAGDPDesignerDoc::OnNewDocument()
 {
-	if (!CDocument::OnNewDocument())
+	if ( !CDocument::OnNewDocument() )
+	{
 		return FALSE;
-	
+	}
+
 	return TRUE;
 }
 
@@ -63,9 +64,9 @@ BOOL CAGDPDesignerDoc::OnNewDocument()
 
 // CAGDPDesignerDoc 序列化
 
-void CAGDPDesignerDoc::Serialize(CArchive& ar)
+void CAGDPDesignerDoc::Serialize( CArchive& ar )
 {
-	if (ar.IsStoring())
+	if ( ar.IsStoring() )
 	{
 		// TODO: 在此加入儲存程式碼
 	}
@@ -78,24 +79,20 @@ void CAGDPDesignerDoc::Serialize(CArchive& ar)
 #ifdef SHARED_HANDLERS
 
 // 縮圖的支援
-void CAGDPDesignerDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
+void CAGDPDesignerDoc::OnDrawThumbnail( CDC& dc, LPRECT lprcBounds )
 {
 	// 修改這段程式碼以繪製文件的資料
-	dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
-
-	CString strText = _T("TODO: implement thumbnail drawing here");
+	dc.FillSolidRect( lprcBounds, RGB( 255, 255, 255 ) );
+	CString strText = _T( "TODO: implement thumbnail drawing here" );
 	LOGFONT lf;
-
-	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
-	pDefaultGUIFont->GetLogFont(&lf);
+	CFont* pDefaultGUIFont = CFont::FromHandle( ( HFONT ) GetStockObject( DEFAULT_GUI_FONT ) );
+	pDefaultGUIFont->GetLogFont( &lf );
 	lf.lfHeight = 36;
-
 	CFont fontDraw;
-	fontDraw.CreateFontIndirect(&lf);
-
-	CFont* pOldFont = dc.SelectObject(&fontDraw);
-	dc.DrawText(strText, lprcBounds, DT_CENTER | DT_WORDBREAK);
-	dc.SelectObject(pOldFont);
+	fontDraw.CreateFontIndirect( &lf );
+	CFont* pOldFont = dc.SelectObject( &fontDraw );
+	dc.DrawText( strText, lprcBounds, DT_CENTER | DT_WORDBREAK );
+	dc.SelectObject( pOldFont );
 }
 
 // 搜尋處理常式的支援
@@ -104,25 +101,25 @@ void CAGDPDesignerDoc::InitializeSearchContent()
 	CString strSearchContent;
 	// 設定來自文件資料的搜尋內容。
 	// 內容部分應該以 ";" 隔開
-
 	// 範例:  strSearchContent = _T("point;rectangle;circle;ole object;");
-	SetSearchContent(strSearchContent);
+	SetSearchContent( strSearchContent );
 }
 
-void CAGDPDesignerDoc::SetSearchContent(const CString& value)
+void CAGDPDesignerDoc::SetSearchContent( const CString& value )
 {
-	if (value.IsEmpty())
+	if ( value.IsEmpty() )
 	{
-		RemoveChunk(PKEY_Search_Contents.fmtid, PKEY_Search_Contents.pid);
+		RemoveChunk( PKEY_Search_Contents.fmtid, PKEY_Search_Contents.pid );
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = NULL;
-		ATLTRY(pChunk = new CMFCFilterChunkValueImpl);
-		if (pChunk != NULL)
+		CMFCFilterChunkValueImpl* pChunk = NULL;
+		ATLTRY( pChunk = new CMFCFilterChunkValueImpl );
+
+		if ( pChunk != NULL )
 		{
-			pChunk->SetTextValue(PKEY_Search_Contents, value, CHUNK_TEXT);
-			SetChunkValue(pChunk);
+			pChunk->SetTextValue( PKEY_Search_Contents, value, CHUNK_TEXT );
+			SetChunkValue( pChunk );
 		}
 	}
 }
@@ -137,9 +134,9 @@ void CAGDPDesignerDoc::AssertValid() const
 	CDocument::AssertValid();
 }
 
-void CAGDPDesignerDoc::Dump(CDumpContext& dc) const
+void CAGDPDesignerDoc::Dump( CDumpContext& dc ) const
 {
-	CDocument::Dump(dc);
+	CDocument::Dump( dc );
 }
 #endif //_DEBUG
 

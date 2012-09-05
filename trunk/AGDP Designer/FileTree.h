@@ -5,7 +5,7 @@
 
 class CFileTree : public CTreeCtrl
 {
-	DECLARE_DYNAMIC(CFileTree)
+	DECLARE_DYNAMIC( CFileTree )
 
 public:
 	CFileTree();
@@ -14,7 +14,7 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDblClk( UINT nFlags, CPoint point );
 };
 
 

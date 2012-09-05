@@ -67,175 +67,176 @@
 
 #define TOTAL_FEATURE_LEVLES                            6
 //--------------------------------------------------------------------------------------
-// Dialog for selection of device settings 
+// Dialog for selection of device settings
 // Use DXUTGetD3DSettingsDialog() to access global instance
 // To control the contents of the dialog, use the CD3D9Enumeration class.
 //--------------------------------------------------------------------------------------
 class CD3DSettingsDlg
 {
 public:
-                        CD3DSettingsDlg();
-                        ~CD3DSettingsDlg();
+	CD3DSettingsDlg();
+	~CD3DSettingsDlg();
 
-    void                Init( CDXUTDialogResourceManager* pManager );
-    void                Init( CDXUTDialogResourceManager* pManager, LPCWSTR szControlTextureFileName );
-    void                Init( CDXUTDialogResourceManager* pManager, LPCWSTR pszControlTextureResourcename,
-                              HMODULE hModule );
+	void                Init( CDXUTDialogResourceManager* pManager );
+	void                Init( CDXUTDialogResourceManager* pManager, LPCWSTR szControlTextureFileName );
+	void                Init( CDXUTDialogResourceManager* pManager, LPCWSTR pszControlTextureResourcename,
+	                          HMODULE hModule );
 
-    HRESULT             Refresh();
-    void                OnRender( float fElapsedTime );
-    void                OnRender9( float fElapsedTime );
-    void                OnRender10( float fElapsedTime );
-    void                OnRender11( float fElapsedTime );
+	HRESULT             Refresh();
+	void                OnRender( float fElapsedTime );
+	void                OnRender9( float fElapsedTime );
+	void                OnRender10( float fElapsedTime );
+	void                OnRender11( float fElapsedTime );
 
-    HRESULT             OnD3D9CreateDevice( IDirect3DDevice9* pd3dDevice );
-    HRESULT             OnD3D9ResetDevice();
-    void                OnD3D9LostDevice();
-    void                OnD3D9DestroyDevice();
+	HRESULT             OnD3D9CreateDevice( IDirect3DDevice9* pd3dDevice );
+	HRESULT             OnD3D9ResetDevice();
+	void                OnD3D9LostDevice();
+	void                OnD3D9DestroyDevice();
 
-    HRESULT             OnD3D11CreateDevice( ID3D11Device* pd3dDevice );
-    HRESULT             OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice,
-                                                 const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc );
-    void                OnD3D11DestroyDevice();
+	HRESULT             OnD3D11CreateDevice( ID3D11Device* pd3dDevice );
+	HRESULT             OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice,
+	                const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc );
+	void                OnD3D11DestroyDevice();
 
-    CDXUTDialog* GetDialogControl()
-    {
-        return &m_Dialog;
-    }
-    bool                IsActive()
-    {
-        return m_bActive;
-    }
-    void                SetActive( bool bActive )
-    {
-        m_bActive = bActive; if( bActive ) Refresh();
-    }
-    void                ShowControlSet( DXUTDeviceVersion ver );
+	CDXUTDialog* GetDialogControl()
+	{
+		return &m_Dialog;
+	}
+	bool                IsActive()
+	{
+		return m_bActive;
+	}
+	void                SetActive( bool bActive )
+	{
 
-    LRESULT             MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		m_bActive = bActive; if ( bActive ) { Refresh(); }
+	}
+	void                ShowControlSet( DXUTDeviceVersion ver );
+
+	LRESULT             MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 
 protected:
-    friend CD3DSettingsDlg* WINAPI DXUTGetD3DSettingsDialog();
+	friend CD3DSettingsDlg* WINAPI DXUTGetD3DSettingsDialog();
 
-    void                CreateControls();
-    HRESULT             SetDeviceSettingsFromUI();
-    void                SetSelectedD3D11RefreshRate( DXGI_RATIONAL RefreshRate );
-    HRESULT             UpdateD3D11Resolutions();
+	void                CreateControls();
+	HRESULT             SetDeviceSettingsFromUI();
+	void                SetSelectedD3D11RefreshRate( DXGI_RATIONAL RefreshRate );
+	HRESULT             UpdateD3D11Resolutions();
 
-    void                OnEvent( UINT nEvent, int nControlID, CDXUTControl* pControl );
-    static void WINAPI  StaticOnEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, void* pUserData );
-    static void WINAPI  StaticOnModeChangeTimer( UINT nIDEvent, void* pUserContext );
+	void                OnEvent( UINT nEvent, int nControlID, CDXUTControl* pControl );
+	static void WINAPI  StaticOnEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, void* pUserData );
+	static void WINAPI  StaticOnModeChangeTimer( UINT nIDEvent, void* pUserContext );
 
-    CD3D9EnumAdapterInfo* GetCurrentAdapterInfo();
-    CD3D9EnumDeviceInfo* GetCurrentDeviceInfo();
-    CD3D9EnumDeviceSettingsCombo* GetCurrentDeviceSettingsCombo();
+	CD3D9EnumAdapterInfo* GetCurrentAdapterInfo();
+	CD3D9EnumDeviceInfo* GetCurrentDeviceInfo();
+	CD3D9EnumDeviceSettingsCombo* GetCurrentDeviceSettingsCombo();
 
-    CD3D11EnumAdapterInfo* GetCurrentD3D11AdapterInfo();
-    CD3D11EnumDeviceInfo* GetCurrentD3D11DeviceInfo();
-    CD3D11EnumOutputInfo* GetCurrentD3D11OutputInfo();
-    CD3D11EnumDeviceSettingsCombo* GetCurrentD3D11DeviceSettingsCombo();
+	CD3D11EnumAdapterInfo* GetCurrentD3D11AdapterInfo();
+	CD3D11EnumDeviceInfo* GetCurrentD3D11DeviceInfo();
+	CD3D11EnumOutputInfo* GetCurrentD3D11OutputInfo();
+	CD3D11EnumDeviceSettingsCombo* GetCurrentD3D11DeviceSettingsCombo();
 
-    void                AddAPIVersion( DXUTDeviceVersion version );
-    DXUTDeviceVersion   GetSelectedAPIVersion();
+	void                AddAPIVersion( DXUTDeviceVersion version );
+	DXUTDeviceVersion   GetSelectedAPIVersion();
 
-    void                AddAdapter( const WCHAR* strDescription, UINT iAdapter );
-    UINT                GetSelectedAdapter();
+	void                AddAdapter( const WCHAR* strDescription, UINT iAdapter );
+	UINT                GetSelectedAdapter();
 
-    void                AddDeviceType( D3DDEVTYPE devType );
-    D3DDEVTYPE          GetSelectedDeviceType();
+	void                AddDeviceType( D3DDEVTYPE devType );
+	D3DDEVTYPE          GetSelectedDeviceType();
 
-    void                SetWindowed( bool bWindowed );
-    bool                IsWindowed();
+	void                SetWindowed( bool bWindowed );
+	bool                IsWindowed();
 
-    void                AddAdapterFormat( D3DFORMAT format );
-    D3DFORMAT           GetSelectedAdapterFormat();
+	void                AddAdapterFormat( D3DFORMAT format );
+	D3DFORMAT           GetSelectedAdapterFormat();
 
-    void                AddResolution( DWORD dwWidth, DWORD dwHeight );
-    void                GetSelectedResolution( DWORD* pdwWidth, DWORD* pdwHeight );
+	void                AddResolution( DWORD dwWidth, DWORD dwHeight );
+	void                GetSelectedResolution( DWORD* pdwWidth, DWORD* pdwHeight );
 
-    void                AddRefreshRate( DWORD dwRate );
-    DWORD               GetSelectedRefreshRate();
+	void                AddRefreshRate( DWORD dwRate );
+	DWORD               GetSelectedRefreshRate();
 
-    void                AddBackBufferFormat( D3DFORMAT format );
-    D3DFORMAT           GetSelectedBackBufferFormat();
+	void                AddBackBufferFormat( D3DFORMAT format );
+	D3DFORMAT           GetSelectedBackBufferFormat();
 
-    void                AddDepthStencilBufferFormat( D3DFORMAT format );
-    D3DFORMAT           GetSelectedDepthStencilBufferFormat();
+	void                AddDepthStencilBufferFormat( D3DFORMAT format );
+	D3DFORMAT           GetSelectedDepthStencilBufferFormat();
 
-    void                AddMultisampleType( D3DMULTISAMPLE_TYPE type );
-    D3DMULTISAMPLE_TYPE GetSelectedMultisampleType();
+	void                AddMultisampleType( D3DMULTISAMPLE_TYPE type );
+	D3DMULTISAMPLE_TYPE GetSelectedMultisampleType();
 
-    void                AddMultisampleQuality( DWORD dwQuality );
-    DWORD               GetSelectedMultisampleQuality();
+	void                AddMultisampleQuality( DWORD dwQuality );
+	DWORD               GetSelectedMultisampleQuality();
 
-    void                AddVertexProcessingType( DWORD dwType );
-    DWORD               GetSelectedVertexProcessingType();
+	void                AddVertexProcessingType( DWORD dwType );
+	DWORD               GetSelectedVertexProcessingType();
 
-    DWORD               GetSelectedPresentInterval();
+	DWORD               GetSelectedPresentInterval();
 
-    void                SetDeviceClip( bool bDeviceClip );
-    bool                IsDeviceClip();
+	void                SetDeviceClip( bool bDeviceClip );
+	bool                IsDeviceClip();
 
-    // D3D11
-    void                AddD3D11DeviceType( D3D_DRIVER_TYPE devType );
-    D3D_DRIVER_TYPE   GetSelectedD3D11DeviceType();
+	// D3D11
+	void                AddD3D11DeviceType( D3D_DRIVER_TYPE devType );
+	D3D_DRIVER_TYPE   GetSelectedD3D11DeviceType();
 
-    void                AddD3D11AdapterOutput( const WCHAR* strName, UINT nOutput );
-    UINT                GetSelectedD3D11AdapterOutput();
+	void                AddD3D11AdapterOutput( const WCHAR* strName, UINT nOutput );
+	UINT                GetSelectedD3D11AdapterOutput();
 
-    void                AddD3D11Resolution( DWORD dwWidth, DWORD dwHeight );
-    void                GetSelectedD3D11Resolution( DWORD* pdwWidth, DWORD* pdwHeight );
+	void                AddD3D11Resolution( DWORD dwWidth, DWORD dwHeight );
+	void                GetSelectedD3D11Resolution( DWORD* pdwWidth, DWORD* pdwHeight );
 
-    void                AddD3D11FeatureLevel(D3D_FEATURE_LEVEL);
-    D3D_FEATURE_LEVEL   GetSelectedFeatureLevel();
+	void                AddD3D11FeatureLevel( D3D_FEATURE_LEVEL );
+	D3D_FEATURE_LEVEL   GetSelectedFeatureLevel();
 
-    void                AddD3D11RefreshRate( DXGI_RATIONAL RefreshRate );
-    DXGI_RATIONAL       GetSelectedD3D11RefreshRate();
+	void                AddD3D11RefreshRate( DXGI_RATIONAL RefreshRate );
+	DXGI_RATIONAL       GetSelectedD3D11RefreshRate();
 
-    void                AddD3D11BackBufferFormat( DXGI_FORMAT format );
-    DXGI_FORMAT         GetSelectedD3D11BackBufferFormat();
+	void                AddD3D11BackBufferFormat( DXGI_FORMAT format );
+	DXGI_FORMAT         GetSelectedD3D11BackBufferFormat();
 
-    void                AddD3D11MultisampleCount( UINT count );
-    UINT                GetSelectedD3D11MultisampleCount();
+	void                AddD3D11MultisampleCount( UINT count );
+	UINT                GetSelectedD3D11MultisampleCount();
 
-    void                AddD3D11MultisampleQuality( UINT Quality );
-    UINT                GetSelectedD3D11MultisampleQuality();
+	void                AddD3D11MultisampleQuality( UINT Quality );
+	UINT                GetSelectedD3D11MultisampleQuality();
 
-    DWORD               GetSelectedD3D11PresentInterval();
-    bool                GetSelectedDebugDeviceValue();
+	DWORD               GetSelectedD3D11PresentInterval();
+	bool                GetSelectedDebugDeviceValue();
 
 
 
-    HRESULT             OnD3D11ResolutionChanged ();
-    HRESULT             OnAPIVersionChanged( bool bRefresh=false );
-    HRESULT             OnFeatureLevelChanged();
-    HRESULT             OnAdapterChanged();
-    HRESULT             OnDeviceTypeChanged();
-    HRESULT             OnWindowedFullScreenChanged();
-    HRESULT             OnAdapterOutputChanged();
-    HRESULT             OnAdapterFormatChanged();
-    HRESULT             OnResolutionChanged();
-    HRESULT             OnRefreshRateChanged();
-    HRESULT             OnBackBufferFormatChanged();
-    HRESULT             OnDepthStencilBufferFormatChanged();
-    HRESULT             OnMultisampleTypeChanged();
-    HRESULT             OnMultisampleQualityChanged();
-    HRESULT             OnVertexProcessingChanged();
-    HRESULT             OnPresentIntervalChanged();
-    HRESULT             OnDebugDeviceChanged();
-    HRESULT             OnDeviceClipChanged();
+	HRESULT             OnD3D11ResolutionChanged ();
+	HRESULT             OnAPIVersionChanged( bool bRefresh = false );
+	HRESULT             OnFeatureLevelChanged();
+	HRESULT             OnAdapterChanged();
+	HRESULT             OnDeviceTypeChanged();
+	HRESULT             OnWindowedFullScreenChanged();
+	HRESULT             OnAdapterOutputChanged();
+	HRESULT             OnAdapterFormatChanged();
+	HRESULT             OnResolutionChanged();
+	HRESULT             OnRefreshRateChanged();
+	HRESULT             OnBackBufferFormatChanged();
+	HRESULT             OnDepthStencilBufferFormatChanged();
+	HRESULT             OnMultisampleTypeChanged();
+	HRESULT             OnMultisampleQualityChanged();
+	HRESULT             OnVertexProcessingChanged();
+	HRESULT             OnPresentIntervalChanged();
+	HRESULT             OnDebugDeviceChanged();
+	HRESULT             OnDeviceClipChanged();
 
-    void                UpdateModeChangeTimeoutText( int nSecRemaining );
+	void                UpdateModeChangeTimeoutText( int nSecRemaining );
 
-    IDirect3DStateBlock9* m_pStateBlock;
-    CDXUTDialog* m_pActiveDialog;
-    CDXUTDialog m_Dialog;
-    CDXUTDialog m_RevertModeDialog;
-    int m_nRevertModeTimeout;
-    UINT m_nIDEvent;
-    bool m_bActive;
+	IDirect3DStateBlock9* m_pStateBlock;
+	CDXUTDialog* m_pActiveDialog;
+	CDXUTDialog m_Dialog;
+	CDXUTDialog m_RevertModeDialog;
+	int m_nRevertModeTimeout;
+	UINT m_nIDEvent;
+	bool m_bActive;
 
-    D3D_FEATURE_LEVEL m_Levels[TOTAL_FEATURE_LEVLES];
+	D3D_FEATURE_LEVEL m_Levels[TOTAL_FEATURE_LEVLES];
 
 };
 

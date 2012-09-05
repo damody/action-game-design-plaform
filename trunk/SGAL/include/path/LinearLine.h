@@ -5,7 +5,7 @@
 //  @ Project : Untitled
 //  @ File Name : LinearLine.h
 //  @ Date : 2011/9/3
-//  @ Author : 
+//  @ Author :
 //
 //
 
@@ -18,10 +18,10 @@
 class LinearLine : public PathInterpolater
 {
 public:
-	Vector3 GetValue(float time);
-	static Vector3 CalcStraightPos(const Vector3& p1, const Vector3& p2, float scalar)
+	Vector3 GetValue( float time );
+	static Vector3 CalcStraightPos( const Vector3& p1, const Vector3& p2, float scalar )
 	{
-		Vector3 out = p1 * (1.0f-scalar) + p2 * scalar;
+		Vector3 out = p1 * ( 1.0f - scalar ) + p2 * scalar;
 		return out;
 	}
 };

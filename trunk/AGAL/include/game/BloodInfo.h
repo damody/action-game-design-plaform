@@ -1,9 +1,9 @@
 #pragma once
 #include "math/Vector2.h"
-namespace boost{namespace serialization{class access;}}
+namespace boost {namespace serialization {class access;}}
 struct BloodInfo
 {
-	
+
 	//血塊的縮放大小
 	float	m_Scale;
 	//血顯示的位置
@@ -13,11 +13,11 @@ struct BloodInfo
 
 	friend class boost::serialization::access;
 	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
+	void serialize( Archive& ar, const unsigned int version )
 	{
-		ar &	m_Scale;
-		ar &	m_Position;
-		ar &	m_EnableValue;
+		ar& 	m_Scale;
+		ar& 	m_Position;
+		ar& 	m_EnableValue;
 	}
 };
 typedef std::vector<BloodInfo> BloodInfos;

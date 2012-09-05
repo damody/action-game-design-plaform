@@ -19,32 +19,32 @@ private:
 	};
 	struct work_info
 	{
-		work_info():work_done(true)
+		work_info(): work_done( true )
 		{}
 		MUTEX	m;
 		std::vector<work> works;
 		float	time;
 		bool	work_done;
 	};
-	SHARE_PTR(work_info)
+	SHARE_PTR( work_info )
 	work_info* mThreadsWork[SGA_MAX_THREADS];
 	bool mOver;
-#endif	
+#endif
 public:
 #if (SGA_USE_MUTITHREAD > 0)
-	BallManager(int _mNumThreads=1);
+	BallManager( int _mNumThreads = 1 );
 	~BallManager();
 #else
-	BallManager(int _mNumThreads=1)
-		:mNumThreads(_mNumThreads)
+	BallManager( int _mNumThreads = 1 )
+		: mNumThreads( _mNumThreads )
 	{
 	}
 #endif
-	void SetNumThreads(int i);
-	void AddTrajectory(Trajectory* t);
-	void Update(float time);
+	void SetNumThreads( int i );
+	void AddTrajectory( Trajectory* t );
+	void Update( float time );
 #if (SGA_USE_MUTITHREAD > 0)
-	void MutiThreadUpdate(int i);
+	void MutiThreadUpdate( int i );
 #endif
 };
 

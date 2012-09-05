@@ -3,7 +3,7 @@
 // MFC 參考及 MFC C++ 程式庫軟體
 // 隨附相關電子文件的補充。
 // 關於 Fluent UI 之複製、使用或散發的授權條款則分別提供。
-// 如需 Fluent UI 授權計劃的詳細資訊，請造訪 
+// 如需 Fluent UI 授權計劃的詳細資訊，請造訪
 // http://msdn.microsoft.com/officeui。
 //
 // Copyright (C) Microsoft Corporation
@@ -20,7 +20,7 @@
 #include "D3DpictureView.h"
 #include <map>
 
-typedef std::map<PictureData*,CD3DpictureView*> ViewMap;
+typedef std::map<PictureData*, CD3DpictureView*> ViewMap;
 
 class CAGDPDesignerView : public CTabView
 {
@@ -28,7 +28,7 @@ public:
 	ViewMap m_ViewMap;
 public: // 僅從序列化建立
 	CAGDPDesignerView();
-	DECLARE_DYNCREATE(CAGDPDesignerView)
+	DECLARE_DYNCREATE( CAGDPDesignerView )
 
 // 屬性
 public:
@@ -36,42 +36,42 @@ public:
 
 // 作業
 public:
-	
+
 // 覆寫
 public:
-	virtual void OnDraw(CDC* pDC);  // 覆寫以描繪此檢視
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual void OnDraw( CDC* pDC ); // 覆寫以描繪此檢視
+	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
 protected:
-	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual BOOL OnPreparePrinting( CPrintInfo* pInfo );
+	virtual void OnBeginPrinting( CDC* pDC, CPrintInfo* pInfo );
+	virtual void OnEndPrinting( CDC* pDC, CPrintInfo* pInfo );
 
 // 程式碼實作
 public:
 	virtual ~CAGDPDesignerView();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	virtual void Dump( CDumpContext& dc ) const;
 #endif
-	
+
 protected:
 
 // 產生的訊息對應函式
 protected:
 	afx_msg void OnFilePrintPreview();
-	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg void OnContextMenu( CWnd* pWnd, CPoint point );
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
+	afx_msg BOOL OnEraseBkgnd( CDC* pDC );
 public:
-	void AddPicturedata(CString name,PictureData *pic,int index);
-	void SwitchPicture(int index);
-	void Refresh(PictureData *pic);
+	void AddPicturedata( CString name, PictureData* pic, int index );
+	void SwitchPicture( int index );
+	void Refresh( PictureData* pic );
 };
 
 #ifndef _DEBUG  // AGDP DesignerView.cpp 中的偵錯版本
 inline CAGDPDesignerDoc* CAGDPDesignerView::GetDocument() const
-   { return reinterpret_cast<CAGDPDesignerDoc*>(m_pDocument); }
+{ return reinterpret_cast<CAGDPDesignerDoc*>( m_pDocument ); }
 #endif
 

@@ -3,7 +3,7 @@
 // MFC 參考及 MFC C++ 程式庫軟體
 // 隨附相關電子文件的補充。
 // 關於 Fluent UI 之複製、使用或散發的授權條款則分別提供。
-// 如需 Fluent UI 授權計劃的詳細資訊，請造訪 
+// 如需 Fluent UI 授權計劃的詳細資訊，請造訪
 // http://msdn.microsoft.com/officeui。
 //
 // Copyright (C) Microsoft Corporation
@@ -20,7 +20,7 @@ class CAGDPDesignerDoc : public CDocument
 {
 protected: // 僅從序列化建立
 	CAGDPDesignerDoc();
-	DECLARE_DYNCREATE(CAGDPDesignerDoc)
+	DECLARE_DYNCREATE( CAGDPDesignerDoc )
 
 // 屬性
 public:
@@ -31,10 +31,10 @@ public:
 // 覆寫
 public:
 	virtual BOOL OnNewDocument();
-	virtual void Serialize(CArchive& ar);
+	virtual void Serialize( CArchive& ar );
 #ifdef SHARED_HANDLERS
 	virtual void InitializeSearchContent();
-	virtual void OnDrawThumbnail(CDC& dc, LPRECT lprcBounds);
+	virtual void OnDrawThumbnail( CDC& dc, LPRECT lprcBounds );
 #endif // SHARED_HANDLERS
 
 // 程式碼實作
@@ -42,7 +42,7 @@ public:
 	virtual ~CAGDPDesignerDoc();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	virtual void Dump( CDumpContext& dc ) const;
 #endif
 
 protected:
@@ -53,6 +53,6 @@ protected:
 
 #ifdef SHARED_HANDLERS
 	// 為搜尋處理常式設定搜尋內容的 Helper 函式
-	void SetSearchContent(const CString& value);
+	void SetSearchContent( const CString& value );
 #endif // SHARED_HANDLERS
 };

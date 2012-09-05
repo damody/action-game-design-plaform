@@ -13,63 +13,73 @@
 #include "path\BezierCurve.h"
 #include <stdio.h>
 
-Vector3 BezierCurve::GetValue(float time)
+Vector3 BezierCurve::GetValue( float time )
 {
 	CheckSort();
 
-	if (m_points.empty())
+	if ( m_points.empty() )
+	{
 		return Vector3::ZERO;
+	}
 
 	int index[4] = {0};
-	const int size = (int)m_points.size();
+	const int size = ( int )m_points.size();
 
-	if (size == 1)
+	if ( size == 1 )
+	{
 		return m_points[0].pos;
-	else if (m_points[0].time > time)
+	}
+	else if ( m_points[0].time > time )
+	{
 		return m_points[0].pos;
+	}
 
 	int i;
 
-	if (m_points.back().time >= time)
+	if ( m_points.back().time >= time )
 	{
-		for(i=0; i < size; i+=3)
+		for ( i = 0; i < size; i += 3 )
 		{
-			int id2 = i+3;
+			int id2 = i + 3;
 
-			if (id2>=size) id2 = size-1;
+			if ( id2 >= size ) { id2 = size - 1; }
 
-			if (m_points[i].time <= time && m_points[id2].time > time)
+			if ( m_points[i].time <= time && m_points[id2].time > time )
 			{
-				time = (time - m_points[i].time)/(m_points[id2].time-m_points[i].time);
+				time = ( time - m_points[i].time ) / ( m_points[id2].time - m_points[i].time );
 				break;
 			}
 		}
 	}
 	else
 	{
-		i = (size/4)*4;
-		time = time-m_points[size-1].time;
+		i = ( size / 4 ) * 4;
+		time = time - m_points[size - 1].time;
 	}
 
 	index[0] = i;
-	index[1] = i+1;
-	index[2] = i+2;
-	index[3] = i+3;
+	index[1] = i + 1;
+	index[2] = i + 2;
+	index[3] = i + 3;
 
-	for (int j = 0; j<4; ++j)
+	for ( int j = 0; j < 4; ++j )
 	{
-		if (index[j] < 0)
+		if ( index[j] < 0 )
+		{
 			index[j] = 0;
+		}
 
-		if (index[j] >= size)
-			index[j] = size-1;
+		if ( index[j] >= size )
+		{
+			index[j] = size - 1;
+		}
 	}
 
-	Vector3 out1 = CalcBezierCurvePos(m_points[index[0]].pos,
-	                                  m_points[index[1]].pos,
-	                                  m_points[index[2]].pos,
-	                                  m_points[index[3]].pos,
-	                                  time);
-	return out1+m_position;
+	Vector3 out1 = CalcBezierCurvePos( m_points[index[0]].pos,
+	                                   m_points[index[1]].pos,
+	                                   m_points[index[2]].pos,
+	                                   m_points[index[3]].pos,
+	                                   time );
+	return out1 + m_position;
 }
 

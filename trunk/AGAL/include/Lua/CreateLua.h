@@ -16,19 +16,19 @@ public:
 	typedef std::vector< std::pair<std::string, double> > sdVector;
 	typedef std::vector< std::pair<std::string, std::string> > ssVector;
 	/// 加入int型態的變數到全域
-	void AddInt(std::string name, int num);
+	void AddInt( std::string name, int num );
 	/// 加入double型態的變數到全域
-	void AddDouble(std::string name, double num);
+	void AddDouble( std::string name, double num );
 	/// 加入字串型態的變數到全域
-	void AddString(std::string name, std::string num);
+	void AddString( std::string name, std::string num );
 	/// 加入原始字串的到全域，會換行
-	void AddRawString(std::string name, std::string num);
+	void AddRawString( std::string name, std::string num );
 	/// 存檔，傳入要儲存的路徑
-	void SaveLua(std::wstring str);
+	void SaveLua( std::wstring str );
 	/// 清除記錄
 	void clear();
 private:
 	siVector siv;
 	sdVector sdv;
-	ssVector ssv,rsv;
+	ssVector ssv, rsv;
 };

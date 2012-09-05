@@ -8,10 +8,10 @@ class FireShaderClass : public EffectShaderClass
 public:
 	FireShaderClass();
 	void Render();
-	void Update(float dt);
-	void SetShaderParameters(int i, ... );
-	/*void SetShaderParameters(D3DXVECTOR3 scrollSpeeds, D3DXVECTOR3 scales, D3DXVECTOR2 distortion1, 
-		D3DXVECTOR2 distortion2, D3DXVECTOR2 distortion3, float distortionScale, 
+	void Update( float dt );
+	void SetShaderParameters( int i, ... );
+	/*void SetShaderParameters(D3DXVECTOR3 scrollSpeeds, D3DXVECTOR3 scales, D3DXVECTOR2 distortion1,
+		D3DXVECTOR2 distortion2, D3DXVECTOR2 distortion3, float distortionScale,
 		float distortionBias);*/
 private:
 	void SetEffectVariableByName();

@@ -1,14 +1,14 @@
 #pragma once
 #include "math/Polygon2D.h"
 #include "math/Vector2.h"
-namespace boost{namespace serialization{class access;}}
+namespace boost {namespace serialization {class access;}}
 struct CatchInfo
 {
 	enum	CatchPosition
 	{
-		NECK,
-		LEG,
-		WAIST
+	        NECK,
+	        LEG,
+	        WAIST
 	};
 	//§ðÀ»½d³ò
 	Polygon2D m_Area;
@@ -26,14 +26,14 @@ struct CatchInfo
 
 	friend class boost::serialization::access;
 	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
+	void serialize( Archive& ar, const unsigned int version )
 	{
-		ar &	m_Area;
-		ar &	m_ZWidth;
-		ar &	m_Injury;
-		ar &	m_Kind;
-		ar &	m_CatchPosition;
-		ar &	m_CatchWhere;
+		ar& 	m_Area;
+		ar& 	m_ZWidth;
+		ar& 	m_Injury;
+		ar& 	m_Kind;
+		ar& 	m_CatchPosition;
+		ar& 	m_CatchWhere;
 	}
 };
 typedef std::vector<CatchInfo> CatchInfos;

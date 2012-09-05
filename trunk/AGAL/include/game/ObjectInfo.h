@@ -8,7 +8,7 @@
 #include "game\ObjectType.h"
 #include "game\FlyingPath.h"
 
-namespace boost{namespace serialization{class access;}}
+namespace boost {namespace serialization {class access;}}
 
 
 //每一個物件需要用到的資訊
@@ -32,9 +32,9 @@ struct ObjectInfo
 	FlyingType::e   m_FlyingType;
 
 public:
-	bool	CheckObjectDataVaild(LuaCell_Sptr luadata);
-	void	LoadObjectData(LuaCell_Sptr luadata);
-	LuaCell_Sptr	m_LuaCell;	
+	bool	CheckObjectDataVaild( LuaCell_Sptr luadata );
+	void	LoadObjectData( LuaCell_Sptr luadata );
+	LuaCell_Sptr	m_LuaCell;
 };
-SHARE_PTR(ObjectInfo)
-typedef std::map<std::string, ObjectInfo_Sptr> ObjectInfoMap; 
+SHARE_PTR( ObjectInfo )
+typedef std::map<std::string, ObjectInfo_Sptr> ObjectInfoMap;

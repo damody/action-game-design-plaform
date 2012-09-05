@@ -4,13 +4,13 @@
 
 class ObjectInfoMG
 {
-private: 
+private:
 	ObjectInfoMap m_ObjectInfoMap;
 public:
-	ObjectInfoMG(void);
-	~ObjectInfoMG(void);
+	ObjectInfoMG( void );
+	~ObjectInfoMG( void );
 
-	void AddObjectInfo(std::string name,ObjectInfo_Sptr info);
-	ObjectInfo_Sptr GetObjectInfo(std::string name);
+	void AddObjectInfo( std::string name, ObjectInfo_Sptr info );
+	ObjectInfo_Sptr GetObjectInfo( std::string name );
 };
 

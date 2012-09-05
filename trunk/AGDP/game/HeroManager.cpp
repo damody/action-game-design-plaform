@@ -2,39 +2,41 @@
 #include "HeroManager.h"
 #include "global.h"
 
-HeroManager::HeroManager(void)
+HeroManager::HeroManager( void )
 {
 }
 
 
-HeroManager::~HeroManager(void)
+HeroManager::~HeroManager( void )
 {
 }
 
 void HeroManager::Update( float dt )
 {
 	CleanTrash();
-	for (Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end();it++)
+
+	for ( Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end(); it++ )
 	{
-		(*it)->Update(dt);	
+		( *it )->Update( dt );
 	}
 }
 
 void HeroManager::UpdateDataToDraw()
 {
-	for (Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end();it++)
+	for ( Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end(); it++ )
 	{
-		(*it)->UpdateDataToDraw();	
+		( *it )->UpdateDataToDraw();
 	}
-	std::stable_sort(m_Heroes.begin(),m_Heroes.end(),SortHero);
+
+	std::stable_sort( m_Heroes.begin(), m_Heroes.end(), SortHero );
 }
 
-Hero* HeroManager::Create(const std::string& hero,const Vector3& pos,int team/*=0*/ )
+Hero* HeroManager::Create( const std::string& hero, const Vector3& pos, int team/*=0*/ )
 {
-	Hero_RawPtr h = Hero_RawPtr(new Hero(hero));
-	h->SetPosition(pos);
-	h->SetTeam(team);
-	m_Heroes.push_back(h);
+	Hero_RawPtr h = Hero_RawPtr( new Hero( hero ) );
+	h->SetPosition( pos );
+	h->SetTeam( team );
+	m_Heroes.push_back( h );
 	return m_Heroes.back();
 }
 
@@ -46,7 +48,6 @@ void HeroManager::Clear()
 
 void HeroManager::ClearDeadBody()
 {
-
 }
 
 bool HeroManager::Empty()
@@ -69,108 +70,128 @@ int HeroManager::AmountHeroes()
 	return m_Heroes.size();
 }
 
-int HeroManager::AmountEnemy(int team)
+int HeroManager::AmountEnemy( int team )
 {
-	int amount=0;
-	for (Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end();it++)
+	int amount = 0;
+
+	for ( Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end(); it++ )
 	{
-		if((*it)->Team()!=0 && (*it)->Team() == team)
-							continue;
+		if ( ( *it )->Team() != 0 && ( *it )->Team() == team )
+		{
+			continue;
+		}
+
 		amount++;
 	}
+
 	return amount;
 }
 
-Hero* HeroManager::GetClosestHero(const Vector3& pos )
+Hero* HeroManager::GetClosestHero( const Vector3& pos )
 {
 	float d = 99999;
 	Hero* h = NULL;
-	for (Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end();it++)
+
+	for ( Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end(); it++ )
 	{
-		if((*it)->Position().distance(pos) < d)
+		if ( ( *it )->Position().distance( pos ) < d )
 		{
-			d = (*it)->Position().distance(pos);
-			h = (*it);
-		}	
+			d = ( *it )->Position().distance( pos );
+			h = ( *it );
+		}
 	}
+
 	return h;
 }
 
-Hero* HeroManager::GetClosestFriend(const Vector3& pos,int team )
+Hero* HeroManager::GetClosestFriend( const Vector3& pos, int team )
 {
 	float d = 99999;
 	Hero* h = NULL;
-	for (Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end();it++)
-	{
-		if((*it)->Team()==0 || (*it)->Team() != team)
-							continue;
-		if((*it)->Position().distance(pos) < d)
-		{
-			d = (*it)->Position().distance(pos);
-			h = (*it);
-		}	
-	}
-	return h;
-}
 
-Hero* HeroManager::GetClosestEnemy(const Vector3& pos,int team )
-{
-	float d = 99999;
-	Hero* h = NULL;
-	for (Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end();it++)
+	for ( Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end(); it++ )
 	{
-		if((*it)->Team()!=0 && (*it)->Team() == team)
+		if ( ( *it )->Team() == 0 || ( *it )->Team() != team )
+		{
 			continue;
-		if((*it)->Position().distance(pos) < d)
+		}
+
+		if ( ( *it )->Position().distance( pos ) < d )
 		{
-			d = (*it)->Position().distance(pos);
-			h = (*it);
-		}	
+			d = ( *it )->Position().distance( pos );
+			h = ( *it );
+		}
 	}
+
 	return h;
 }
 
-void HeroManager::Distory( Heroes::iterator it,int time/*=0*/ )
+Hero* HeroManager::GetClosestEnemy( const Vector3& pos, int team )
 {
-	if (!InTrashCan(*it))
+	float d = 99999;
+	Hero* h = NULL;
+
+	for ( Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end(); it++ )
+	{
+		if ( ( *it )->Team() != 0 && ( *it )->Team() == team )
+		{
+			continue;
+		}
+
+		if ( ( *it )->Position().distance( pos ) < d )
+		{
+			d = ( *it )->Position().distance( pos );
+			h = ( *it );
+		}
+	}
+
+	return h;
+}
+
+void HeroManager::Distory( Heroes::iterator it, int time/*=0*/ )
+{
+	if ( !InTrashCan( *it ) )
 	{
 		Trash th;
-		th.m_Trash=it;
-		th.m_Time=time;
-		m_TrashCan.push_back(th);
-	}	
+		th.m_Trash = it;
+		th.m_Time = time;
+		m_TrashCan.push_back( th );
+	}
 }
 
-void HeroManager::Distory( Hero_RawPtr hero,int time/*=0*/ )
+void HeroManager::Distory( Hero_RawPtr hero, int time/*=0*/ )
 {
-	if (!InTrashCan(hero))
+	if ( !InTrashCan( hero ) )
 	{
 		Heroes::iterator it;
-		for (it = m_Heroes.begin(); it != m_Heroes.end();it++)
+
+		for ( it = m_Heroes.begin(); it != m_Heroes.end(); it++ )
 		{
-			if(*it == hero)
+			if ( *it == hero )
 			{
 				break;
 			}
 		}
+
 		Trash th;
-		th.m_Trash=it;
-		th.m_Time=time;
-		m_TrashCan.push_back(th);
+		th.m_Trash = it;
+		th.m_Time = time;
+		m_TrashCan.push_back( th );
 	}
 }
 
 void HeroManager::CleanTrash()
 {
-	for (TrashCan::iterator it= m_TrashCan.begin(); it != m_TrashCan.end() ; )
+	for ( TrashCan::iterator it = m_TrashCan.begin(); it != m_TrashCan.end() ; )
 	{
-		if (it->m_Time <= 0)
+		if ( it->m_Time <= 0 )
 		{
-			delete(*(it->m_Trash));
-			m_Heroes.erase(it->m_Trash);
-			it=m_TrashCan.erase(it);
-			
-		}else{
+			delete( *( it->m_Trash ) );
+			m_Heroes.erase( it->m_Trash );
+			it = m_TrashCan.erase( it );
+		}
+		else
+		{
 			it->m_Time--;
 			it++;
 		}
@@ -179,10 +200,12 @@ void HeroManager::CleanTrash()
 
 bool HeroManager::InTrashCan( Hero_RawPtr hero )
 {
-	for (TrashCan::iterator it=m_TrashCan.begin();it != m_TrashCan.end();it++)
+	for ( TrashCan::iterator it = m_TrashCan.begin(); it != m_TrashCan.end(); it++ )
 	{
-		if(*(it->m_Trash) ==hero) 
+		if ( *( it->m_Trash ) == hero )
+		{
 			return true;
+		}
 	}
 
 	return false;

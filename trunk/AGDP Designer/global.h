@@ -6,7 +6,7 @@
 #include <game/Frameinfo.h>
 #include <string>
 
-extern HeroInfo *g_HeroInfo;
+extern HeroInfo* g_HeroInfo;
 
 extern std::string g_FrameName;
 extern int	g_FrameIndex;
@@ -18,4 +18,4 @@ extern float g_Frame_OffsetY;
 
 extern TextureManager* g_TextureMG_Frame;
 
-int LoadTexture(std::string path);
+int LoadTexture( std::string path );

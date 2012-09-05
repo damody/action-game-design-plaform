@@ -5,14 +5,14 @@
 //  @ Project : Untitled
 //  @ File Name : MathFunctionCurve.cpp
 //  @ Date : 2011/9/3
-//  @ Author : 
+//  @ Author :
 //
 //
 
 
 #include "path\MathFunctionCurve.h"
 
-Vector3 MathFunctionCurve::GetValue(float time)
+Vector3 MathFunctionCurve::GetValue( float time )
 {
 	CheckSort();
 	return m_position;

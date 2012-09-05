@@ -9,7 +9,7 @@ struct Creation
 	//創造物件之數量
 	int amount;
 	//創造物件之位置
-	float x,y;
+	float x, y;
 	//初生物件之面向
 	int facing;
 	//物件初始 frame
