@@ -163,7 +163,7 @@ public:
 	void Initialize( HWND hWnd , DWORD Channels = 2 , DWORD Freq =  22050 , DWORD BitRate = 16 );
 	~WavPlayer();
 
-	int CreatSound( const std::string& filename, int dupnum );
+	int CreatSound( const std::string& filename, int dupnum = 20);
 
 	void StopDevice();
 	void PauseDevice();

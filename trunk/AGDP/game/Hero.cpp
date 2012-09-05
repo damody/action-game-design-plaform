@@ -137,28 +137,19 @@ void Hero::Init()
 
 void Hero::Update( float dt )
 {
-	if ( !ScanKeyQue() ) //無控制動作時，跑Wait Time
-	{
-		if ( m_TimeTik <= 0 )
-		{
-			NextFrame();
-		}
-		else
-		{
-			m_TimeTik--;
-		}
+	if ( !ScanKeyQue() ) {//無控制動作時，跑Wait Time
+		if ( m_TimeTik <= 0 ) { NextFrame(); }
+		else { m_TimeTik--; }
 	}
 
 	//恢復
-	if ( m_MP < 500 )
-	{
+	if ( m_MP < 500 ) {
 		m_MP += 1 + 200 / m_HP;
 
 		if ( m_MP > 500 ) { m_MP = 500; }
 	}
 
-	if ( m_HP < m_MaxRecoverHP )
-	{
+	if ( m_HP < m_MaxRecoverHP ) {
 		m_HP += 1;
 
 		if ( m_HP > m_MaxRecoverHP ) { m_HP = m_MaxRecoverHP; }
@@ -180,39 +171,35 @@ void Hero::Update( float dt )
 		//inAir	= g_BGManager.CurrentBG()->AboveGround(m_Position) == 1;
 	}
 
-	if ( !inAir ) 	//地上
-	{
+	if ( !inAir ) {	//地上
 		//落地判定
-		if ( m_Action != HeroAction::UNIQUE_SKILL )
-		{
+		if ( m_Action != HeroAction::UNIQUE_SKILL ) {
 			//m_Position.y = 0;
 			m_Vel.y = 0;
 
-			if ( pastInAir || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH )
-			{
+			if ( pastInAir || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH ) {
 				//Frame 改到蹲
 				m_Frame = "crouch";
 
 				if ( m_Action == HeroAction::DASH || m_Action == HeroAction::BEFORE_DASH_ATTACK ||
-				                m_Action == HeroAction::DASH_ATTACKING || m_Action == HeroAction::AFTER_DASH_ATTACK )
+				     m_Action == HeroAction::DASH_ATTACKING || m_Action == HeroAction::AFTER_DASH_ATTACK )
 				{
 					m_FrameID = 1;
 				}
-				else
-				{
-					m_FrameID = 0;
-				}
+				else { m_FrameID = 0; }
 
 				FrameInfo* f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
-
+				//clear keyQue
 				if ( m_KeyQue.empty() ) {}
-				else if ( f->m_ClearKeyQueue == 1 )
-				{
+				else if ( f->m_ClearKeyQueue == 1 ) {
 					m_KeyQue.pop_back();
 				}
-				else if ( f->m_ClearKeyQueue == 2 )
-				{
+				else if ( f->m_ClearKeyQueue == 2 ) {
 					m_KeyQue.clear();
+				}
+				//sound
+				if( !f->m_sound.empty() ) {
+					g_WavPlayer.Play ( g_WavPlayer.CreatSound(f->m_sound) );
 				}
 
 				m_PicID = f->m_PictureID;
@@ -231,8 +218,7 @@ void Hero::Update( float dt )
 				CreateEffect();
 			}
 		}
-		else
-		{
+		else {
 			m_Position = pastPos + m_Vel;
 		}
 
@@ -266,7 +252,7 @@ void Hero::Update( float dt )
 			m_Frame = "in_the_air";
 			m_FrameID = 0;
 			FrameInfo* f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
-
+			//clear keyQue
 			if ( m_KeyQue.empty() ) {}
 			else if ( f->m_ClearKeyQueue == 1 )
 			{
@@ -275,6 +261,10 @@ void Hero::Update( float dt )
 			else if ( f->m_ClearKeyQueue == 2 )
 			{
 				m_KeyQue.clear();
+			}
+			//sound
+			if( !f->m_sound.empty() ) {
+				g_WavPlayer.Play ( g_WavPlayer.CreatSound(f->m_sound) );
 			}
 
 			m_PicID = f->m_PictureID;
@@ -359,22 +349,22 @@ NextLoop:
 			goto NextLoop;
 		}
 	}
-
+	//clear keyQue
 	if ( m_KeyQue.empty() ) {}
-	else if ( f->m_ClearKeyQueue == 1 )
-	{
+	else if ( f->m_ClearKeyQueue == 1 ) {
 		m_KeyQue.pop_back();
 	}
-	else if ( f->m_ClearKeyQueue == 2 )
-	{
+	else if ( f->m_ClearKeyQueue == 2 ) {
 		m_KeyQue.clear();
 	}
 
-	if ( m_Action == HeroAction::CROUCH )
-	{
+	if ( m_Action == HeroAction::CROUCH ) {
 		m_Vel = Vector3( 0, 0, 0 );
 	}
-
+	//sound
+	if( !f->m_sound.empty() ) {
+		g_WavPlayer.Play ( g_WavPlayer.CreatSound(f->m_sound) );
+	}
 	m_PicID = f->m_PictureID;
 	m_PicX = f->m_PictureX;
 	m_PicY = f->m_PictureY;
@@ -437,24 +427,11 @@ bool Hero::ScanKeyQue()
 	KeyQueue::iterator i = m_KeyQue.begin();
 	int dx = 0, dz = 0;
 
-	while ( i != m_KeyQue.end() )
-	{
-		if ( i->key == CtrlKey::LEFT )
-		{
-			dx = -1;
-		}
-		else if ( i->key == CtrlKey::RIGHT )
-		{
-			dx = +1;
-		}
-		else if ( i->key == CtrlKey::UP )
-		{
-			dz = +1;
-		}
-		else if ( i->key == CtrlKey::DOWN )
-		{
-			dz = -1;
-		}
+	while ( i != m_KeyQue.end() ){
+		if ( i->key == CtrlKey::LEFT ) { dx = -1; }
+		else if ( i->key == CtrlKey::RIGHT ) { dx = +1; }
+		else if ( i->key == CtrlKey::UP ) { dz = +1; }
+		else if ( i->key == CtrlKey::DOWN ) { dz = -1; }
 
 		i++;
 	}
@@ -540,8 +517,7 @@ bool Hero::ScanKeyQue()
 		}
 		else if ( dx < 0 )
 		{
-			if ( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide )
-			{
+			if ( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide ){
 				//跑
 				nFrame = "running";
 				m_Vel.x = -m_HeroInfo->m_RunningSpeed;
@@ -1050,7 +1026,7 @@ KeyLoop:
 
 		m_Frame = nFrame;
 		m_FrameID = nFramID;
-
+		//clear keyQue
 		if ( m_KeyQue.empty() ) {}
 		else if ( f->m_ClearKeyQueue == 1 )
 		{
@@ -1060,12 +1036,15 @@ KeyLoop:
 		{
 			m_KeyQue.clear();
 		}
-
+		//蹲的煞車效果
 		if ( m_Action == HeroAction::CROUCH )
 		{
 			m_Vel = Vector3( 0, 0, 0 );
 		}
-
+		//sound
+		if( !f->m_sound.empty() ) {
+			g_WavPlayer.Play ( g_WavPlayer.CreatSound(f->m_sound) );
+		}
 		m_PicID = f->m_PictureID;
 		m_PicX = f->m_PictureX;
 		m_PicY = f->m_PictureY;

@@ -1946,9 +1946,9 @@ frame.singlong[0] =
    hit = {},
    blood = {},
    body = {
-   }
+   },
 
-   --sound: data\095.wav
+   sound = "media\\music\\095.wav"
 }
 
 frame.singlong[1] =
@@ -1966,9 +1966,9 @@ frame.singlong[1] =
 		injury = 85, strength = 50,
 	},
    body = {
-   }
+   },
 
-   --sound: data\031.wav
+   sound = "media\\music\\031.wav"
 }
 
 frame.singlong[2] =

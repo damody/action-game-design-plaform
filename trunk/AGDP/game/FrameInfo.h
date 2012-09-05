@@ -61,6 +61,8 @@ struct FrameInfo
 	BloodInfos	m_BloodInfos;
 	//物件創造
 	Creations	m_Creations;
+	//音效
+	std::string m_sound;
 
 	friend class boost::serialization::access;
 	template<class Archive>
