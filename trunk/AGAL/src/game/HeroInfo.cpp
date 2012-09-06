@@ -1,4 +1,3 @@
-#include "StdAGAL.h"
 #include "game\HeroInfo.h"
 
 HeroInfo::HeroInfo(): m_Name(), m_MaxHP( 500 ), m_MaxMP( 500 )
@@ -119,7 +118,7 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 			pd.m_Height	= luadata->GetLua<int>( "file/%d/h", i );
 			pd.m_Row	= luadata->GetLua<int>( "file/%d/row", i );
 			pd.m_Column	= luadata->GetLua<int>( "file/%d/col", i );
-			//pd.m_TextureID  = g_TextureManager.AddTexture(pd.m_Path);
+			//pd.m_TextureID  = g_TextureManager.AddTexture( pd.m_Path );
 			m_PictureDatas.push_back( pd );
 		}
 		else
@@ -346,6 +345,10 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 					break;
 				}
 			}//*/
+
+			if ( luadata->HasValue( "frame/%s/%d/sound", frameName, frameCount ) ) {
+				newData.m_sound = luadata->GetLua<const char*>("frame/%s/%d/sound", frameName, frameCount );
+			}
 
 			fFrame->push_back( newData );
 		}

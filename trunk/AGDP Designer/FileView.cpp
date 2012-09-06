@@ -18,6 +18,7 @@
 
 #include "game/HeroInfo.h"
 #include "Lua/LuaCell.h"
+#include <auto_link_agal.hpp>
 
 #ifdef _DEBUG
 #undef THIS_FILE

@@ -2,7 +2,7 @@
 
 struct WeaponAction
 {
-	enum e
+	enum 
 	{
 	        //
 	        ONFLOOR,
@@ -16,5 +16,5 @@ struct WeaponAction
 	        HIT,
 	        //
 	        THROW
-	}
+	}eWeaponAction;
 };

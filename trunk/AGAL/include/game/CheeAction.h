@@ -2,11 +2,11 @@
 
 struct CheeAction
 {
-	enum e
+	enum 
 	{
 	        //­¸¦æ
 	        FLYING,
 	        //·´·À
 	        BREAK
-	}
+	}eCheeAction;
 };

@@ -1,4 +1,3 @@
-#include "StdAGAL.h"
 #include "game\ObjectInfo.h"
 
 bool	ObjectInfo::CheckObjectDataVaild( LuaCell_Sptr luadata )
@@ -28,7 +27,7 @@ void	ObjectInfo::LoadObjectData( LuaCell_Sptr luadata )
 			pd.m_Height	= luadata->GetLua<int>( "file/%d/h", i );
 			pd.m_Row	= luadata->GetLua<int>( "file/%d/row", i );
 			pd.m_Column	= luadata->GetLua<int>( "file/%d/col", i );
-			//pd.m_TextureID  = g_TextureManager.AddTexture(pd.m_Path);
+			//pd.m_TextureID  = g_TextureManager.AddTexture( pd.m_Path );
 			m_PictureDatas.push_back( pd );
 		}
 		else

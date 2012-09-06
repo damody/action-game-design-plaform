@@ -1,4 +1,3 @@
-#include "StdAGAL.h"
 #include "game\HeroInfoManager.h"
 
 void HeroInfoMG::AddHeroInfo( std::string name, HeroInfo_Sptr info )

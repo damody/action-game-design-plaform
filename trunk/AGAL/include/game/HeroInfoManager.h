@@ -1,10 +1,9 @@
 #pragma once
-#include "StdAGAL.h"
 #include <cstdio>
 #include <windows.h>
 
 #include "common\shared_ptr.h"
-#include "game/HeroInfo.h"
+#include "game\HeroInfo.h"
 namespace boost {namespace serialization {class access;}}
 class HeroInfoMG
 {

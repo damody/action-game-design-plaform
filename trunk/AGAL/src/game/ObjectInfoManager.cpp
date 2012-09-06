@@ -1,4 +1,4 @@
-#include "StdAGAL.h"
+
 #include "game\ObjectInfoManager.h"
 
 ObjectInfoMG::ObjectInfoMG( void )

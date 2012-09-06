@@ -9,8 +9,8 @@
 #include "common\shared_ptr.h"
 #include "game\EffectData.h"
 #include "CtrlKey.h"
-#include "HeroInfo.h"
-#include "HeroAction.h"
+#include "game\HeroInfo.h"
+#include "game\HeroAction.h"
 #include "Record.h"
 #include <string>
 #include <cmath>

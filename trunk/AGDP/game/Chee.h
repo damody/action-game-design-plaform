@@ -3,7 +3,7 @@
 #include "DX11\Vertex.h"
 #include "DX11\TextureManager.h"
 #include "math\Vector3.h"
-#include "HeroAction.h"
+#include "game\HeroAction.h"
 #include "game\FlyingPath.h"
 #include "common\shared_ptr.h"
 #include "game\ObjectInfo.h"
