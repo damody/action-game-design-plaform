@@ -1,7 +1,13 @@
 #include "game\HeroInfoManager.h"
+#include "global.h"
 
 void HeroInfoMG::AddHeroInfo( std::string name, HeroInfo_Sptr info )
 {
+	
+	for (unsigned int i=0 ; i < info->m_PictureDatas.size(); ++i)
+	{
+		info->m_PictureDatas[i].m_TextureID =  g_TextureManager.AddTexture(info->m_PictureDatas[i].m_Path);
+	}
 	m_List.push_back( name );
 	m_HeroInfoMaps[name] = info;
 }

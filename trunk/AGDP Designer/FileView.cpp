@@ -244,7 +244,9 @@ void CFileView::OnFileOpen()
 					char buff[100];
 					sprintf( buff, "%s", pic.substr( found + 1, pic.length() ).c_str() );
 					CString str( buff );
+					hero->m_PictureDatas[i].m_TextureID = g_TextureMG_Frame->AddTexture(hero->m_PictureDatas[i].m_Path);
 					( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( str, &hero->m_PictureDatas[i], i );
+					
 				}
 
 				m_HeroInfoMap[hHero] = hero;
@@ -337,18 +339,6 @@ void CFileView::OnSelectItem( HTREEITEM item )
 	if ( it != m_HeroInfoMap.end() )
 	{
 		g_HeroInfo = it->second;
-		/*
-		for(unsigned int i=0;i < g_HeroInfo->m_PictureDatas.size();i++)
-		{
-			std::string pic = g_HeroInfo->m_PictureDatas[i].m_Path;
-			size_t found;
-			found=pic.rfind('\\');
-			char buff[100];
-			sprintf(buff,"%s",pic.substr(found+1,pic.length()).c_str());
-			CString str(buff);
-			((CMainFrame*)this->GetParentFrame())->OpenPictureView(str,&g_HeroInfo->m_PictureDatas[i],i);
-		}
-		*/
 		g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
 		g_FrameName = "";
 		g_FrameIndex = -1;
@@ -387,6 +377,7 @@ void CFileView::OnPicturedataAdd()
 		ConvStr::WcharToChar( dlgFile.GetPathName().GetBuffer( 0 ), buff );
 		std::string path( buff );
 		pic.m_Path = path;
+		pic.m_TextureID = g_TextureMG_Frame->AddTexture(path);
 		pic.m_Width  = 128;
 		pic.m_Height = 128;
 		pic.m_Row = 1;
@@ -394,5 +385,6 @@ void CFileView::OnPicturedataAdd()
 		m_wndFileView.InsertItem( dlgFile.GetFileName(), 2, 2, hHero_Select );
 		it_Hero->second->m_PictureDatas.push_back( pic );
 		( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( dlgFile.GetFileName(), &it_Hero->second->m_PictureDatas.back(), it_Hero->second->m_PictureDatas.size() - 1 );
+		
 	}
 }

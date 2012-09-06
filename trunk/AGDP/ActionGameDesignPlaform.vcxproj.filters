@@ -179,6 +179,12 @@
     <ClCompile Include="game\PoisonShaderClass.cpp">
       <Filter>src\game\EffectShader</Filter>
     </ClCompile>
+    <ClCompile Include="game\ObjectInfoManager.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\HeroInfoManager.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -368,6 +374,12 @@
       <Filter>inc\game\EffectShader</Filter>
     </ClInclude>
     <ClInclude Include="game\Record.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ObjectInfoManager.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\HeroInfoManager.h">
       <Filter>inc\game</Filter>
     </ClInclude>
   </ItemGroup>

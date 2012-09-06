@@ -260,12 +260,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="game\HeroInfoManager.cpp" />
     <ClCompile Include="game\HeroManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="game\ObjectInfoManager.cpp" />
     <ClCompile Include="game\ObjectManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -473,7 +475,9 @@
     <ClInclude Include="game\Effect.h" />
     <ClInclude Include="game\EffectData.h" />
     <ClInclude Include="game\FireShaderClass.h" />
+    <ClInclude Include="game\HeroInfoManager.h" />
     <ClInclude Include="game\HeroManager.h" />
+    <ClInclude Include="game\ObjectInfoManager.h" />
     <ClInclude Include="game\Record.h" />
     <ClInclude Include="game\ObjectManager.h" />
     <ClInclude Include="game\ObjectType.h" />

@@ -60,16 +60,10 @@
     <ClInclude Include="include\game\HeroInfo.h">
       <Filter>標頭檔\game</Filter>
     </ClInclude>
-    <ClInclude Include="include\game\HeroInfoManager.h">
-      <Filter>標頭檔\game</Filter>
-    </ClInclude>
     <ClInclude Include="include\game\HitData.h">
       <Filter>標頭檔\game</Filter>
     </ClInclude>
     <ClInclude Include="include\game\ObjectInfo.h">
-      <Filter>標頭檔\game</Filter>
-    </ClInclude>
-    <ClInclude Include="include\game\ObjectInfoManager.h">
       <Filter>標頭檔\game</Filter>
     </ClInclude>
     <ClInclude Include="include\game\ObjectType.h">
@@ -113,13 +107,7 @@
     <ClCompile Include="src\game\HeroInfo.cpp">
       <Filter>原始程式檔\game</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\HeroInfoManager.cpp">
-      <Filter>原始程式檔\game</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\ObjectInfo.cpp">
-      <Filter>原始程式檔\game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\ObjectInfoManager.cpp">
       <Filter>原始程式檔\game</Filter>
     </ClCompile>
     <ClCompile Include="StdAGAL.cpp">
