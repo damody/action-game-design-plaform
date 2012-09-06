@@ -3,7 +3,7 @@
 // MFC 參考及 MFC C++ 程式庫軟體
 // 隨附相關電子文件的補充。
 // 關於 Fluent UI 之複製、使用或散發的授權條款則分別提供。
-// 如需 Fluent UI 授權計劃的詳細資訊，請造訪 
+// 如需 Fluent UI 授權計劃的詳細資訊，請造訪
 // http://msdn.microsoft.com/officeui。
 //
 // Copyright (C) Microsoft Corporation
@@ -14,13 +14,13 @@
 #include "FileTree.h"
 #include "game/HeroInfo.h"
 
-typedef std::map<HTREEITEM,HeroInfo_RawPtr> HeroInfohMap;
+typedef std::map<HTREEITEM, HeroInfo_RawPtr> HeroInfohMap;
 
 class CFileViewToolBar : public CMFCToolBar
 {
-	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler)
+	virtual void OnUpdateCmdUI( CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler )
 	{
-		CMFCToolBar::OnUpdateCmdUI((CFrameWnd*) GetOwner(), bDisableIfNoHndler);
+		CMFCToolBar::OnUpdateCmdUI( ( CFrameWnd* ) GetOwner(), bDisableIfNoHndler );
 	}
 
 	virtual BOOL AllowShowOnList() const { return FALSE; }
@@ -50,7 +50,7 @@ protected:
 // 程式碼實作
 public:
 	virtual ~CFileView();
-	void OnSelectItem(HTREEITEM item);
+	void OnSelectItem( HTREEITEM item );
 private:
 	HTREEITEM hHeroDoc;
 	HTREEITEM hHero_Select;
@@ -61,13 +61,13 @@ private:
 
 
 protected:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
+	afx_msg void OnSize( UINT nType, int cx, int cy );
+	afx_msg void OnContextMenu( CWnd* pWnd, CPoint point );
 	afx_msg void OnProperties();
 	afx_msg void OnFileOpen();
 	afx_msg void OnPaint();
-	afx_msg void OnSetFocus(CWnd* pOldWnd);
+	afx_msg void OnSetFocus( CWnd* pOldWnd );
 
 	DECLARE_MESSAGE_MAP()
 public:

@@ -11,7 +11,7 @@
 struct MouseInfo
 {
 	// 滑鼠相對移動的位置
-	int x,y;
+	int x, y;
 	// 滑鼠滾輪的滾動狀態
 	int z;
 	// 滑鼠按鈕的狀態
@@ -28,45 +28,49 @@ struct JoystickInfo
 
 enum InputDevice
 {
-	GINPUT_KEYBOARD,
-	GINPUT_MOUSE,
-	GINPUT_JOYSTICK
+        GINPUT_KEYBOARD,
+        GINPUT_MOUSE,
+        GINPUT_JOYSTICK
 };
 
-typedef void (*pFunc)(void);
-typedef void (*KeyHandlerProc)(void);
+typedef void ( *pFunc )( void );
+typedef void ( *KeyHandlerProc )( void );
 
-class GetDirectXInput 
+class GetDirectXInput
 {
 public:
-	int InputInit(HWND hWnd, HINSTANCE Instance);
-	int InputClose(void);
-	int InputRestore(void);
+	int InputInit( HWND hWnd, HINSTANCE Instance );
+	int InputClose( void );
+	int InputRestore( void );
 	//char keyboard_state[256];
 	//GDI8->ReadKeyboard(keyboard_state);
 	//這樣就可以得到所有鍵盤的key了
-	int ReadKeyboard(char buffer[256]);
-	int ReadMouse(MouseInfo *mouse);
-	int ReadJoystick(JoystickInfo *joystick);
-	int ReadJoystick(JoystickInfo *jostick, int whichone);
-	void ReadKeyboard(void);
-	void RegisterKeyDown(int key, void (*pKeyDownFunc)(void));
-	void RegisterKeyUp  (int key, void (*pKeyDownUp)(void));
-	void RegisterKeyPressed(int key, void (*pKeyDownPressed)(void));
+	int ReadKeyboard( char buffer[256] );
+	int ReadMouse( MouseInfo* mouse );
+	int ReadJoystick( JoystickInfo* joystick );
+	int ReadJoystick( JoystickInfo* jostick, int whichone );
+	void ReadKeyboard( void );
+	void RegisterKeyDown( int key, void ( *pKeyDownFunc )( void ) );
+	void RegisterKeyUp  ( int key, void ( *pKeyDownUp )( void ) );
+	void RegisterKeyPressed( int key, void ( *pKeyDownPressed )( void ) );
 	static BOOL CALLBACK EnumJoysticksCallback( const DIDEVICEINSTANCE* pdidInstance, VOID* pContext )
 	{
 		HRESULT hr;
 		// Obtain an interface to the enumerated joystick.
 		hr = m_pDI->CreateDevice( pdidInstance->guidInstance, &m_pJoystick, NULL );
-		if( FAILED(hr) ) 
+
+		if ( FAILED( hr ) )
+		{
 			return DIENUM_CONTINUE;
+		}
+
 		return DIENUM_STOP;
 	}
 	HWND	 m_hWnd;
 private:
 	HINSTANCE m_Instance;
-	static LPDIRECTINPUT8       m_pDI;         
-	static LPDIRECTINPUTDEVICE8 m_pMouse;     
+	static LPDIRECTINPUT8       m_pDI;
+	static LPDIRECTINPUTDEVICE8 m_pMouse;
 	static LPDIRECTINPUTDEVICE8 m_pKeyboard;
 	static LPDIRECTINPUTDEVICE8 m_pJoystick;
 	static POINT m_op;

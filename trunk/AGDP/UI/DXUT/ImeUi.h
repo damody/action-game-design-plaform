@@ -13,56 +13,56 @@
 class CImeUiFont_Base
 {
 public:
-    virtual void    SetHeight( UINT uHeight )
-    {
-        uHeight;
-    }; // for backward compatibility
-    virtual void    SetColor( DWORD color ) = 0;
-    virtual void    SetPosition( int x, int y ) = 0;
-    virtual void    GetTextExtent( LPCTSTR szText, DWORD* puWidth, DWORD* puHeight ) = 0;
-    virtual void    DrawText( LPCTSTR pszText ) = 0;
+	virtual void    SetHeight( UINT uHeight )
+	{
+		uHeight;
+	}; // for backward compatibility
+	virtual void    SetColor( DWORD color ) = 0;
+	virtual void    SetPosition( int x, int y ) = 0;
+	virtual void    GetTextExtent( LPCTSTR szText, DWORD* puWidth, DWORD* puHeight ) = 0;
+	virtual void    DrawText( LPCTSTR pszText ) = 0;
 };
 
 typedef struct
 {
-    // symbol (Henkan-kyu)
-    DWORD symbolColor;
-    DWORD symbolColorOff;
-    DWORD symbolColorText;
-    BYTE symbolHeight;
-    BYTE symbolTranslucence;
-    BYTE symbolPlacement;
-    CImeUiFont_Base* symbolFont;
+	// symbol (Henkan-kyu)
+	DWORD symbolColor;
+	DWORD symbolColorOff;
+	DWORD symbolColorText;
+	BYTE symbolHeight;
+	BYTE symbolTranslucence;
+	BYTE symbolPlacement;
+	CImeUiFont_Base* symbolFont;
 
-    // candidate list
-    DWORD candColorBase;
-    DWORD candColorBorder;
-    DWORD candColorText;
+	// candidate list
+	DWORD candColorBase;
+	DWORD candColorBorder;
+	DWORD candColorText;
 
-    // composition string
-    DWORD compColorInput;
-    DWORD compColorTargetConv;
-    DWORD compColorConverted;
-    DWORD compColorTargetNotConv;
-    DWORD compColorInputErr;
-    BYTE compTranslucence;
-    DWORD compColorText;
+	// composition string
+	DWORD compColorInput;
+	DWORD compColorTargetConv;
+	DWORD compColorConverted;
+	DWORD compColorTargetNotConv;
+	DWORD compColorInputErr;
+	BYTE compTranslucence;
+	DWORD compColorText;
 
-    // caret
-    BYTE caretWidth;
-    BYTE caretYMargin;
+	// caret
+	BYTE caretWidth;
+	BYTE caretYMargin;
 }               IMEUI_APPEARANCE;
 
 typedef struct	// D3DTLVERTEX compatible
 {
-    float sx;
-    float sy;
-    float sz;
-    float rhw;
-    DWORD color;
-    DWORD specular;
-    float tu;
-    float tv;
+	float sx;
+	float sy;
+	float sz;
+	float rhw;
+	DWORD color;
+	DWORD specular;
+	float tu;
+	float tv;
 }               IMEUI_VERTEX;
 
 // IME States
@@ -115,10 +115,10 @@ DWORD ImeUi_GetCandidateCount();
 BYTE*           ImeUi_GetCompStringAttr();
 DWORD ImeUi_GetImeCursorChars();
 
-extern void ( CALLBACK*ImeUiCallback_DrawRect )( int x1, int y1, int x2, int y2, DWORD color );
-extern void*    ( __cdecl*ImeUiCallback_Malloc )( size_t bytes );
-extern void ( __cdecl*ImeUiCallback_Free )( void* ptr );
-extern void ( CALLBACK*ImeUiCallback_DrawFans )( const IMEUI_VERTEX* paVertex, UINT uNum );
-extern void ( CALLBACK*ImeUiCallback_OnChar )( WCHAR wc );
+extern void ( CALLBACK* ImeUiCallback_DrawRect )( int x1, int y1, int x2, int y2, DWORD color );
+extern void*    ( __cdecl* ImeUiCallback_Malloc )( size_t bytes );
+extern void ( __cdecl* ImeUiCallback_Free )( void* ptr );
+extern void ( CALLBACK* ImeUiCallback_DrawFans )( const IMEUI_VERTEX* paVertex, UINT uNum );
+extern void ( CALLBACK* ImeUiCallback_OnChar )( WCHAR wc );
 
 #endif //_IMEUI_H_

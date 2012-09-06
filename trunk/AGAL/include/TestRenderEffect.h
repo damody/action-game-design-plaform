@@ -28,13 +28,13 @@ public:
 	TestRenderEffect();
 	~TestRenderEffect();
 
-	bool Initialize(ID3D11Device*,ID3D11DeviceContext*, WCHAR*,HWND);
+	bool Initialize( ID3D11Device*, ID3D11DeviceContext*, WCHAR*, HWND );
 	void Shutdown();
-	void Render(int, ID3D11ShaderResourceView*);
+	void Render( int, ID3D11ShaderResourceView* );
 
 private:
-	bool InitializeShader(ID3D11Device*, WCHAR*,HWND);
-	void OutputShaderErrorMessage(ID3D10Blob*, WCHAR*,HWND);
+	bool InitializeShader( ID3D11Device*, WCHAR*, HWND );
+	void OutputShaderErrorMessage( ID3D10Blob*, WCHAR*, HWND );
 
 private:
 	ID3D11Device* m_Device;
@@ -42,8 +42,8 @@ private:
 	ID3D11InputLayout* m_layout;
 
 	ID3DX11EffectTechnique* m_PTech_Heroes;
-	ID3DX11EffectVariable *m_Heroes_cLootAt;
-	ID3DX11EffectVariable *m_Heroes_cPos;
+	ID3DX11EffectVariable* m_Heroes_cLootAt;
+	ID3DX11EffectVariable* m_Heroes_cPos;
 	ID3DX11EffectScalarVariable* m_Heroes_Width;
 	ID3DX11EffectScalarVariable* m_Heroes_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Heroes;

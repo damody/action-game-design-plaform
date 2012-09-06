@@ -10,26 +10,26 @@
 
 struct Texture
 {
-	Texture(std::string path);
-	Texture(std::wstring path);
-	Texture(ID3D11ShaderResourceView* rc);
+	Texture( std::string path );
+	Texture( std::wstring path );
+	Texture( ID3D11ShaderResourceView* rc );
 	~Texture();
 	ID3D11ShaderResourceView* texture;
-	operator ID3D11ShaderResourceView*()
+	operator ID3D11ShaderResourceView* ()
 	{
 		return texture;
 	}
-	bool operator < (const Texture& rhs)
+	bool operator < ( const Texture& rhs )
 	{
 		return texture < rhs.texture;
 	}
-	bool operator == (const Texture& rhs)
+	bool operator == ( const Texture& rhs )
 	{
 		return texture == rhs.texture;
 	}
 	int w, h;
 };
-SHARE_PTR(Texture)
+SHARE_PTR( Texture )
 
 typedef std::vector<Texture_Sptr> Textures;
 typedef std::map<int, Texture_Sptr> TextureMaps;
@@ -37,12 +37,12 @@ typedef std::map<int, Texture_Sptr> TextureMaps;
 class TextureManager
 {
 public:
-	TextureManager(void);
-	~TextureManager(void);
-	int AddTexture(std::string path);
-	int AddTexture(std::string name , Texture_Sptr texture);
-	int Find(std::string path);
-	Texture_Sptr GetTexture(unsigned int index);
+	TextureManager( void );
+	~TextureManager( void );
+	int AddTexture( std::string path );
+	int AddTexture( std::string name , Texture_Sptr texture );
+	int Find( std::string path );
+	Texture_Sptr GetTexture( unsigned int index );
 private:
 	Textures	m_Textures;
 	std::vector<std::string> m_List;

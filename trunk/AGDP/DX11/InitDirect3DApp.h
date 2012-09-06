@@ -26,8 +26,8 @@ private:
 	ID3DX11Effect*		m_Effect_Body;
 	ID3DX11EffectTechnique* m_PTech_Body;
 	ID3D11InputLayout*	m_PLayout_Body;
-	ID3DX11EffectVariable *	m_Body_cLootAt;
-	ID3DX11EffectVariable *	m_Body_cPos;
+	ID3DX11EffectVariable* 	m_Body_cLootAt;
+	ID3DX11EffectVariable* 	m_Body_cPos;
 	ID3DX11EffectScalarVariable* m_Body_Width;
 	ID3DX11EffectScalarVariable* m_Body_Height;
 
@@ -60,7 +60,7 @@ private:
 	void OnResize();
 
 	void DrawScene();
-	void UpdateScene(float dt);
+	void UpdateScene( float dt );
 	void UpdateCamera();
 	int  UpdateInput();
 	void BackgroundDataUpdate();
@@ -72,7 +72,7 @@ private:
 	void DealOptionPage();
 	void DealTowerSettingPage();
 	void DealGamePlayPage();
-	void ChangeUI(int i);
+	void ChangeUI( int i );
 	void GoBackUI();
 	void ReflashTowerState();
 private:
@@ -86,8 +86,8 @@ private:
 
 	ID3D11BlendState*	m_pBlendState_ADD;
 	ID3D11BlendState*	m_pBlendState_BLEND;
-	ID3D11DepthStencilState*m_pDepthStencil_ZWriteON;
-	ID3D11DepthStencilState*m_pDepthStencil_ZWriteOFF;
+	ID3D11DepthStencilState* m_pDepthStencil_ZWriteON;
+	ID3D11DepthStencilState* m_pDepthStencil_ZWriteOFF;
 
 	D3D11_BUFFER_DESC	m_vbd;
 
@@ -96,14 +96,14 @@ private:
 
 	ClipVertexs		m_EntityVertex;
 	DrawVertexGroups	m_DrawVertexGroups;
-	
+
 
 	ID3D11Buffer*		m_Buffer_Entity;
 	ID3DX11Effect*		m_Effect_Entity;
 	ID3DX11EffectTechnique* m_PTech_Entity;
 	ID3D11InputLayout*	m_PLayout_Entity;
-	ID3DX11EffectVariable *	m_Entity_cLootAt;
-	ID3DX11EffectVariable *	m_Entity_cPos;
+	ID3DX11EffectVariable* 	m_Entity_cLootAt;
+	ID3DX11EffectVariable* 	m_Entity_cPos;
 	ID3DX11EffectScalarVariable* m_Entity_Width;
 	ID3DX11EffectScalarVariable* m_Entity_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Entity;
@@ -115,8 +115,8 @@ private:
 	ID3DX11Effect*		m_Effect_Chee;
 	ID3DX11EffectTechnique* m_PTech_Chee;
 	ID3D11InputLayout*	m_PLayout_Chee;
-	ID3DX11EffectVariable *	m_Chee_cLootAt;
-	ID3DX11EffectVariable *	m_Chee_cPos;
+	ID3DX11EffectVariable* 	m_Chee_cLootAt;
+	ID3DX11EffectVariable* 	m_Chee_cPos;
 	ID3DX11EffectScalarVariable* m_Chee_Width;
 	ID3DX11EffectScalarVariable* m_Chee_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Chee;
@@ -125,8 +125,8 @@ private:
 	ID3DX11Effect*		m_Effect_Background;
 	ID3DX11EffectTechnique* m_PTech_Background;
 	ID3D11InputLayout*	m_PLayout_Background;
-	ID3DX11EffectVariable *	m_Background_cLootAt;
-	ID3DX11EffectVariable *	m_Background_cPos;
+	ID3DX11EffectVariable* 	m_Background_cLootAt;
+	ID3DX11EffectVariable* 	m_Background_cPos;
 	ID3DX11EffectScalarVariable* m_Background_Width;
 	ID3DX11EffectScalarVariable* m_Background_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Background;
@@ -137,17 +137,17 @@ private:
 	ID3DX11Effect*		m_Effect_ColorRect;
 	ID3DX11EffectTechnique* m_PTech_ColorRect;
 	ID3D11InputLayout*	m_PLayout_ColorRect;
-	ID3DX11EffectVariable *	m_ColorRect_cLootAt;
-	ID3DX11EffectVariable *	m_ColorRect_cPos;
+	ID3DX11EffectVariable* 	m_ColorRect_cLootAt;
+	ID3DX11EffectVariable* 	m_ColorRect_cPos;
 	ID3DX11EffectScalarVariable* m_ColorRect_Width;
 	ID3DX11EffectScalarVariable* m_ColorRect_Height;
 
 	ID3DX11Effect*		m_Effect_Shadow;
 	ID3DX11EffectTechnique* m_PTech_Shadow;
 	ID3D11InputLayout*	m_PLayout_Shadow;
-	ID3DX11EffectVariable *	m_Shadow_cLootAt;
-	ID3DX11EffectVariable *	m_Shadow_cPos;
-	ID3DX11EffectVariable *	m_Shadow_lightDir;
+	ID3DX11EffectVariable* 	m_Shadow_cLootAt;
+	ID3DX11EffectVariable* 	m_Shadow_cPos;
+	ID3DX11EffectVariable* 	m_Shadow_lightDir;
 	ID3DX11EffectScalarVariable* m_Shadow_lightStr;
 	ID3DX11EffectScalarVariable* m_Shadow_Width;
 	ID3DX11EffectScalarVariable* m_Shadow_Height;
@@ -161,8 +161,8 @@ private:
 	ID3DX11Effect*		m_Effect_Text;
 	ID3DX11EffectTechnique* m_PTech_Text;
 	ID3D11InputLayout*	m_PLayout_Text;
-	ID3DX11EffectVariable *	m_Text_cLootAt;
-	ID3DX11EffectVariable *	m_Text_cPos;
+	ID3DX11EffectVariable* 	m_Text_cLootAt;
+	ID3DX11EffectVariable* 	m_Text_cPos;
 	ID3DX11EffectScalarVariable* m_Text_Width;
 	ID3DX11EffectScalarVariable* m_Text_Height;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Text;
@@ -176,19 +176,19 @@ private:
 
 struct CD3D11_BLEND_DESCX : public D3D11_BLEND_DESC
 {
-	CD3D11_BLEND_DESCX(){}
-	explicit CD3D11_BLEND_DESCX(const D3D11_BLEND_DESC& o) : D3D11_BLEND_DESC( o ){}
+	CD3D11_BLEND_DESCX() {}
+	explicit CD3D11_BLEND_DESCX( const D3D11_BLEND_DESC& o ) : D3D11_BLEND_DESC( o ) {}
 	explicit CD3D11_BLEND_DESCX(
-		BOOL AlphaToCoverageEnable,
-		BOOL IndependentBlendEnable,
-		BOOL BlendEnable0,
-		D3D11_BLEND SrcBlend0,
-		D3D11_BLEND DestBlend0,
-		D3D11_BLEND_OP BlendOp0,
-		D3D11_BLEND SrcBlendAlpha0,
-		D3D11_BLEND DestBlendAlpha0,
-		D3D11_BLEND_OP BlendOpAlpha0,
-		UINT8 RenderTargetWriteMask0 )
+	        BOOL AlphaToCoverageEnable,
+	        BOOL IndependentBlendEnable,
+	        BOOL BlendEnable0,
+	        D3D11_BLEND SrcBlend0,
+	        D3D11_BLEND DestBlend0,
+	        D3D11_BLEND_OP BlendOp0,
+	        D3D11_BLEND SrcBlendAlpha0,
+	        D3D11_BLEND DestBlendAlpha0,
+	        D3D11_BLEND_OP BlendOpAlpha0,
+	        UINT8 RenderTargetWriteMask0 )
 	{
 		this->AlphaToCoverageEnable = AlphaToCoverageEnable;
 		this->IndependentBlendEnable = IndependentBlendEnable;
@@ -199,9 +199,9 @@ struct CD3D11_BLEND_DESCX : public D3D11_BLEND_DESC
 		this->RenderTarget[0].SrcBlendAlpha = SrcBlendAlpha0;
 		this->RenderTarget[0].DestBlendAlpha = DestBlendAlpha0;
 		this->RenderTarget[0].BlendOpAlpha = BlendOpAlpha0;
-		this->RenderTarget[0].RenderTargetWriteMask = RenderTargetWriteMask0; 
+		this->RenderTarget[0].RenderTargetWriteMask = RenderTargetWriteMask0;
 	}
-	~CD3D11_BLEND_DESCX(){}
-	operator const D3D11_BLEND_DESC&() const { return *this; }
+	~CD3D11_BLEND_DESCX() {}
+	operator const D3D11_BLEND_DESC& () const { return *this; }
 };
 

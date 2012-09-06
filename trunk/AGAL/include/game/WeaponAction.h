@@ -1,19 +1,20 @@
 #pragma once
 
-struct WeaponAction 
+struct WeaponAction
 {
-	enum e{
-		//
-		ONFLOOR,
-		//º¢ªÅ
-		INAIR,
-		//
-		ONHAND,
-		//·´·À
-		BREAK,
-		//
-		HIT,
-		//
-		THROW
-	}
+	enum 
+	{
+	        //
+	        ONFLOOR,
+	        //º¢ªÅ
+	        INAIR,
+	        //
+	        ONHAND,
+	        //·´·À
+	        BREAK,
+	        //
+	        HIT,
+	        //
+	        THROW
+	}eWeaponAction;
 };

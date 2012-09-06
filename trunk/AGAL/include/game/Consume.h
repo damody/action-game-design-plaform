@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
-namespace boost{namespace serialization{class access;}}
+namespace boost {namespace serialization {class access;}}
 struct Consume
 {
 	// -1 時只對next有用，0 時兩者皆有用，1 時只對 hitdata有用
@@ -21,13 +21,13 @@ struct Consume
 
 	friend class boost::serialization::access;
 	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
+	void serialize( Archive& ar, const unsigned int version )
 	{
-		ar &	m_JumpRule;
-		ar &	m_HP;
-		ar &	m_MP;
-		ar &	m_NotEnoughFrameName;
-		ar &	m_NotEnoughFrame;
+		ar& 	m_JumpRule;
+		ar& 	m_HP;
+		ar& 	m_MP;
+		ar& 	m_NotEnoughFrameName;
+		ar& 	m_NotEnoughFrame;
 	}
 };
 typedef std::vector<Consume> Consumes;

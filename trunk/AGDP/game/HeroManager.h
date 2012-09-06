@@ -4,7 +4,7 @@
 
 class HeroManager
 {
-public: 
+public:
 	struct Trash
 	{
 		Heroes::iterator m_Trash;
@@ -15,30 +15,30 @@ private:
 	Heroes m_Heroes;
 	TrashCan m_TrashCan;
 public:
-	HeroManager(void);
-	~HeroManager(void);
-	
-	void Update(float dt);
+	HeroManager( void );
+	~HeroManager( void );
+
+	void Update( float dt );
 	void UpdateDataToDraw();
 
-	Hero* Create(const std::string& hero,const Vector3& pos,int team=0);
-	void Distory(Heroes::iterator it,int time=0);
-	void Distory(Hero_RawPtr hero,int time=0);
+	Hero* Create( const std::string& hero, const Vector3& pos, int team = 0 );
+	void Distory( Heroes::iterator it, int time = 0 );
+	void Distory( Hero_RawPtr hero, int time = 0 );
 	void Clear();
 	void ClearDeadBody();//Undo
 
 	bool Empty();
 	int  AmountHeroes();
-	int  AmountEnemy(int team);
+	int  AmountEnemy( int team );
 	Heroes::iterator HeroVectorBegin();
 	Heroes::iterator HeroVectorEnd();
 
-	Hero* GetClosestHero(const Vector3& pos);
-	Hero* GetClosestFriend(const Vector3& pos,int team);
-	Hero* GetClosestEnemy(const Vector3& pos,int team);
+	Hero* GetClosestHero( const Vector3& pos );
+	Hero* GetClosestFriend( const Vector3& pos, int team );
+	Hero* GetClosestEnemy( const Vector3& pos, int team );
 
 protected:
 	void CleanTrash();
-	bool InTrashCan(Hero_RawPtr hero);
+	bool InTrashCan( Hero_RawPtr hero );
 };
 

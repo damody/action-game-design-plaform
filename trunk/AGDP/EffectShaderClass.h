@@ -12,21 +12,21 @@ struct Vertex
 {
 	Vector2 position;
 	D3DXVECTOR4 picpos; // x, y, w, h
-};typedef std::vector<Vertex> Vertices;
+}; typedef std::vector<Vertex> Vertices;
 class EffectShaderClass
 {
 public:
 	EffectShaderClass();
-	bool Initialize(ID3D11Device*,ID3D11DeviceContext* , WCHAR*, HWND);
+	bool Initialize( ID3D11Device*, ID3D11DeviceContext* , WCHAR*, HWND );
 	void Shutdown();//not yet
 	void ShutdownShader();//not yet
-	bool CreatVertex(EffectDatas::iterator begin,EffectDatas::iterator end);
-	void OutputShaderErrorMessage(ID3D10Blob*, WCHAR*, HWND);
+	bool CreatVertex( EffectDatas::iterator begin, EffectDatas::iterator end );
+	void OutputShaderErrorMessage( ID3D10Blob*, WCHAR*, HWND );
 
 
 	virtual void Render() = 0;
-	virtual void Update(float dt) = 0;
-	virtual void SetShaderParameters(int i, ... ) = 0;
+	virtual void Update( float dt ) = 0;
+	virtual void SetShaderParameters( int i, ... ) = 0;
 protected:
 	virtual void SetEffectVariableByName() = 0;
 	virtual void CreateTexture() = 0;

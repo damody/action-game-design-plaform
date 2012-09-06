@@ -1,11 +1,12 @@
 #pragma once
 
-struct CheeAction 
+struct CheeAction
 {
-	enum e{
-		//飛行
-		FLYING,
-		//毀滅
-		BREAK
-	}
+	enum 
+	{
+	        //飛行
+	        FLYING,
+	        //毀滅
+	        BREAK
+	}eCheeAction;
 };

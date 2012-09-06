@@ -27,7 +27,7 @@ private:
 
 	typedef std::vector<EffectDatas> VEffectDatas;//放置所有狀態的EffectData之vector
 	VEffectDatas m_vEffect;
-	
+
 	typedef std::vector<EffectShaderClass*> EffectShaders;
 	EffectShaders m_EffectShaders;
 
@@ -35,16 +35,16 @@ private:
 	FireShaderClass* m_FireShader;
 	PoisonShaderClass* m_PoisonShader;
 public:
-	Effect(void);
-	~Effect(void);
-	bool Initialize(HWND hwnd);
+	Effect( void );
+	~Effect( void );
+	bool Initialize( HWND hwnd );
 	void Render();
-	void Updata(float dt);
+	void Updata( float dt );
 	void SetFireParameters();
 
-	bool CreateEffect(EffectType::e type,EffectData* ed);//直接改ed回傳
+	bool CreateEffect( EffectType::e type, EffectData* ed ); //直接改ed回傳
 	void Clear();//清除 EffectDatas
-	bool Check(EffectType::e type,EffectData* ed);//判斷是否有重複的圖
+	bool Check( EffectType::e type, EffectData* ed ); //判斷是否有重複的圖
 	bool Overflow();//貼圖溢位
 
 	int  GetTextureID();
@@ -61,18 +61,18 @@ public:
 	int	m_Size;
 	int	m_Page;
 
-	int	m_ScreanW,m_ScreanH;
+	int	m_ScreanW, m_ScreanH;
 public:
-	EffectManager(void);
-	EffectManager(HWND hwnd);
-	~EffectManager(void);
+	EffectManager( void );
+	EffectManager( HWND hwnd );
+	~EffectManager( void );
 
-	int CreateEffect(EffectType::e type,int textureID,D3DXVECTOR4 *picpos);//直接改texture & picpos回傳
+	int CreateEffect( EffectType::e type, int textureID, D3DXVECTOR4* picpos ); //直接改texture & picpos回傳
 
-	void Update(ID3D11RenderTargetView* originRTV);
-	void OnResize(int W,int H);
+	void Update( ID3D11RenderTargetView* originRTV );
+	void OnResize( int W, int H );
 
-	float	EffectScale(EffectType::e type);
+	float	EffectScale( EffectType::e type );
 
 	ID3D11ShaderResourceView* Test_GetNowTexture();
 };

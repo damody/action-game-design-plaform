@@ -3,22 +3,22 @@
 
 void TrajectoryAnimator::AddTrajectory( Trajectory* b, float time )
 {
-	mBehaviorFrames.push_back(TrajectoryFrame(b, time));
+	mBehaviorFrames.push_back( TrajectoryFrame( b, time ) );
 }
 
 void TrajectoryAnimator::AddTrajectoryFrame( TrajectoryFrame& b )
 {
-	mBehaviorFrames.push_back(b);
+	mBehaviorFrames.push_back( b );
 }
 
 void TrajectoryAnimator::Sort()
 {
-	sort(mBehaviorFrames.begin(), mBehaviorFrames.end());
+	sort( mBehaviorFrames.begin(), mBehaviorFrames.end() );
 }
 
 Trajectory* TrajectoryAnimator::GetNowTrajectory( float time )
 {
-	return lower_bound(mBehaviorFrames.begin(), mBehaviorFrames.end(), time)->mTrajectory;
+	return lower_bound( mBehaviorFrames.begin(), mBehaviorFrames.end(), time )->mTrajectory;
 }
 
 void TrajectoryAnimator::Start()
@@ -34,25 +34,24 @@ void TrajectoryAnimator::Stop()
 	mElapsedTime = 0;
 }
 
-Trajectory* TrajectoryAnimator::Pause(float stopTime)
+Trajectory* TrajectoryAnimator::Pause( float stopTime )
 {
 	mPaused = true;
 	mStopTime = stopTime;
-
-	return GetNowTrajectory(mElapsedTime);
+	return GetNowTrajectory( mElapsedTime );
 }
 
-void TrajectoryAnimator::Update(float dt)
+void TrajectoryAnimator::Update( float dt )
 {
-	if(!mPaused && mStarted)
+	if ( !mPaused && mStarted )
 	{
 		mElapsedTime += dt;
 	}
-	else if(mPaused && mStopTime > 0)
+	else if ( mPaused && mStopTime > 0 )
 	{
 		mStopTime -= dt;
 
-		if(mStopTime < 0)
+		if ( mStopTime < 0 )
 		{
 			mStopTime = 0;
 			mPaused = false;

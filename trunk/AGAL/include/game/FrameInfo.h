@@ -3,7 +3,7 @@
 #include <map>
 #include "HeroAction.h"
 #include "Consume.h"
-#include <math\Polygon2D.h>
+#include "math\Polygon2D.h"
 #include "Attack.h"
 #include "HitData.h"
 #include "CatchInfo.h"
@@ -11,7 +11,7 @@
 #include "BloodInfo.h"
 #include "Body.h"
 #include "Creation.h"
-namespace boost{namespace serialization{class access;}}
+namespace boost {namespace serialization {class access;}}
 //每一個動作 Frame 所含的資訊
 struct FrameInfo
 {
@@ -61,34 +61,36 @@ struct FrameInfo
 	BloodInfos	m_BloodInfos;
 	//物件創造
 	Creations	m_Creations;
+	//音效
+	std::string m_sound;
 
 	friend class boost::serialization::access;
 	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
+	void serialize( Archive& ar, const unsigned int version )
 	{
-		ar &	m_HeroAction;
-		ar &	m_FrameName;
-		ar &	m_FrameIndex;
-		ar &	m_NextFrameName;
-		ar &	m_NextFrameIndex;
-		ar &	m_PictureID;
-		ar &	m_PictureX;
-		ar &	m_PictureY;
-		ar &	m_CenterX;
-		ar &	m_CenterY;
-		ar &	m_Consume;
-		ar &	m_DVX;
-		ar &	m_DVY;
-		ar &	m_DVZ;
-		ar &	m_Wait;
-		ar &	m_ClearKeyQueue;
-		ar &	m_Bodys;
-		ar &	m_Attacks;
-		ar &	m_HitDatas;
-		ar &	m_Catchs;
-		ar &	m_BeCatch;
-		ar &	m_BloodInfos;
-		ar &	m_Creations;
+		ar& 	m_HeroAction;
+		ar& 	m_FrameName;
+		ar& 	m_FrameIndex;
+		ar& 	m_NextFrameName;
+		ar& 	m_NextFrameIndex;
+		ar& 	m_PictureID;
+		ar& 	m_PictureX;
+		ar& 	m_PictureY;
+		ar& 	m_CenterX;
+		ar& 	m_CenterY;
+		ar& 	m_Consume;
+		ar& 	m_DVX;
+		ar& 	m_DVY;
+		ar& 	m_DVZ;
+		ar& 	m_Wait;
+		ar& 	m_ClearKeyQueue;
+		ar& 	m_Bodys;
+		ar& 	m_Attacks;
+		ar& 	m_HitDatas;
+		ar& 	m_Catchs;
+		ar& 	m_BeCatch;
+		ar& 	m_BloodInfos;
+		ar& 	m_Creations;
 	}
 };
 typedef std::vector<FrameInfo> FrameInfos;

@@ -20,14 +20,14 @@ public:
 	int run();
 	virtual void initApp();
 	virtual void OnResize();// reset projection/etc
-	virtual void UpdateScene(float dt)=0;
-	virtual void DrawScene(); 
-	virtual LRESULT msgProc(UINT msg, WPARAM wParam, LPARAM lParam);
+	virtual void UpdateScene( float dt ) = 0;
+	virtual void DrawScene();
+	virtual LRESULT msgProc( UINT msg, WPARAM wParam, LPARAM lParam );
 
 protected:
 	void initMainWindow();
 	void initDirect3D();
-	
+
 protected:
 	HINSTANCE m_hAppInst;
 	HWND      m_hMainWnd;
@@ -36,7 +36,7 @@ protected:
 	bool      m_Maximized;
 	bool      m_Resizing;
 	GameTimer m_Timer;
-	std::wstring m_FrameStats; 
+	std::wstring m_FrameStats;
 	ID3D11Device*    m_d3dDevice;
 	IDXGISwapChain*  m_SwapChain;
 	ID3D11Texture2D* m_DepthStencilBuffer;

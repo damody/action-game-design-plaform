@@ -49,10 +49,10 @@
 #ifndef HR
 #define HR(x)                                      \
 	{                                                  \
-	HRESULT hr = x;                                \
-	if(FAILED(hr))                                 \
+		HRESULT hr = x;                                \
+		if(FAILED(hr))                                 \
 		{                                              \
-		DXTrace(__FILE__, __LINE__, hr, _T(#x), TRUE); \
+			DXTrace(__FILE__, __LINE__, hr, _T(#x), TRUE); \
 		}                                              \
 	}
 #endif
@@ -60,7 +60,7 @@
 #ifndef HR
 #define HR(x) x;
 #endif
-#endif 
+#endif
 
 #define CTRL_KEY_MAX 6
 #define DEFAULT_CTRL_KEY_UP 0xC8

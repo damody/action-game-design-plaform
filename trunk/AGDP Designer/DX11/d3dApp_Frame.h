@@ -15,17 +15,17 @@ class D3DApp_Frame
 public:
 	Bounds  m_Body;
 	Bounds  m_Attack;
-	float	m_CenterX,m_CenterY;
+	float	m_CenterX, m_CenterY;
 	TextureManager& GetTextureManager()
 	{ return *m_TextureManager;}
 private:
 	TextureManager* m_TextureManager;
-	PictureData  *m_Pic;
-	float         m_picX,m_picY;
+	PictureData*  m_Pic;
+	float         m_picX, m_picY;
 	Texture*      m_Templete;
 
 	PointManager  m_Center;
-	
+
 public:
 	D3DApp_Frame();
 	~D3DApp_Frame();
@@ -33,16 +33,16 @@ public:
 	HINSTANCE	getAppInst();
 	HWND		getMainWnd();
 
-	void initApp(HWND hWnd, int w, int h);
+	void initApp( HWND hWnd, int w, int h );
 	void Init();
-	void OnResize(int w, int h);// reset projection/etc
-	void DrawScene(); 
+	void OnResize( int w, int h ); // reset projection/etc
+	void DrawScene();
 	void LoadBlend();
 	void buildShaderFX();
 	void buildPoint();
 
-	void SetPic(PictureData  *pic,float x,float y);
-	void SetCenter(float x,float y);
+	void SetPic( PictureData*  pic, float x, float y );
+	void SetCenter( float x, float y );
 
 	ID3D11Device* GetDevice()
 	{
@@ -50,7 +50,7 @@ public:
 	}
 protected:
 	void initDirect3D();
-	
+
 protected:
 	HINSTANCE	m_hAppInst;
 	HWND		m_hMainWnd;
@@ -59,7 +59,7 @@ protected:
 	bool		m_Maximized;
 	bool		m_Resizing;
 	GameTimer	m_Timer;
-	std::wstring	m_FrameStats; 
+	std::wstring	m_FrameStats;
 	ID3D11Device*	m_d3dDevice;
 	IDXGISwapChain*	m_SwapChain;
 	ID3D11Texture2D*	m_DepthStencilBuffer;
@@ -70,8 +70,8 @@ protected:
 
 	ID3D11BlendState*	m_pBlendState_ADD;
 	ID3D11BlendState*	m_pBlendState_BLEND;
-	ID3D11DepthStencilState *m_pDepthStencil_ZWriteON;
-	ID3D11DepthStencilState *m_pDepthStencil_ZWriteOFF;
+	ID3D11DepthStencilState* m_pDepthStencil_ZWriteON;
+	ID3D11DepthStencilState* m_pDepthStencil_ZWriteOFF;
 
 	PointVertices			m_PointVertices;
 
@@ -84,7 +84,7 @@ protected:
 	ID3DX11EffectScalarVariable*	m_Points_Scale;
 	ID3DX11EffectScalarVariable*	m_Points_OffsetX;
 	ID3DX11EffectScalarVariable*	m_Points_OffsetY;
-	
+
 	LineVertices			m_LineVertices;
 
 	ID3D11Buffer*			m_Buffer_Lines;
@@ -96,7 +96,7 @@ protected:
 	ID3DX11EffectScalarVariable*	m_Lines_Scale;
 	ID3DX11EffectScalarVariable*	m_Lines_OffsetX;
 	ID3DX11EffectScalarVariable*	m_Lines_OffsetY;
-	
+
 	ID3DX11Effect*			m_Effect_Pics;
 	ID3D11Buffer*			m_Buffer_Pics;
 	ID3DX11EffectTechnique*		m_PTech_Pics;
@@ -108,7 +108,7 @@ protected:
 	ID3DX11EffectScalarVariable*	m_Pics_OffsetY;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Pics;
 	ID3DX11EffectShaderResourceVariable*  m_BMap_Pics;
-	
+
 
 	D3D11_BUFFER_DESC		m_vbd;
 	// Derived class should set these in derived constructor to customize starting values.
@@ -122,19 +122,19 @@ protected:
 
 struct CD3D11_BLEND_DESCX2 : public D3D11_BLEND_DESC
 {
-	CD3D11_BLEND_DESCX2(){}
-	explicit CD3D11_BLEND_DESCX2(const D3D11_BLEND_DESC& o) : D3D11_BLEND_DESC( o ){}
+	CD3D11_BLEND_DESCX2() {}
+	explicit CD3D11_BLEND_DESCX2( const D3D11_BLEND_DESC& o ) : D3D11_BLEND_DESC( o ) {}
 	explicit CD3D11_BLEND_DESCX2(
-		BOOL AlphaToCoverageEnable,
-		BOOL IndependentBlendEnable,
-		BOOL BlendEnable0,
-		D3D11_BLEND SrcBlend0,
-		D3D11_BLEND DestBlend0,
-		D3D11_BLEND_OP BlendOp0,
-		D3D11_BLEND SrcBlendAlpha0,
-		D3D11_BLEND DestBlendAlpha0,
-		D3D11_BLEND_OP BlendOpAlpha0,
-		UINT8 RenderTargetWriteMask0 )
+	        BOOL AlphaToCoverageEnable,
+	        BOOL IndependentBlendEnable,
+	        BOOL BlendEnable0,
+	        D3D11_BLEND SrcBlend0,
+	        D3D11_BLEND DestBlend0,
+	        D3D11_BLEND_OP BlendOp0,
+	        D3D11_BLEND SrcBlendAlpha0,
+	        D3D11_BLEND DestBlendAlpha0,
+	        D3D11_BLEND_OP BlendOpAlpha0,
+	        UINT8 RenderTargetWriteMask0 )
 	{
 		this->AlphaToCoverageEnable = AlphaToCoverageEnable;
 		this->IndependentBlendEnable = IndependentBlendEnable;
@@ -145,8 +145,8 @@ struct CD3D11_BLEND_DESCX2 : public D3D11_BLEND_DESC
 		this->RenderTarget[0].SrcBlendAlpha = SrcBlendAlpha0;
 		this->RenderTarget[0].DestBlendAlpha = DestBlendAlpha0;
 		this->RenderTarget[0].BlendOpAlpha = BlendOpAlpha0;
-		this->RenderTarget[0].RenderTargetWriteMask = RenderTargetWriteMask0; 
+		this->RenderTarget[0].RenderTargetWriteMask = RenderTargetWriteMask0;
 	}
-	~CD3D11_BLEND_DESCX2(){}
-	operator const D3D11_BLEND_DESC&() const { return *this; }
+	~CD3D11_BLEND_DESCX2() {}
+	operator const D3D11_BLEND_DESC& () const { return *this; }
 };

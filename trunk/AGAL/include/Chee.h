@@ -28,7 +28,7 @@ private:
 	int		m_PicY;
 
 	Vector3		m_Position;
-	float		m_CenterX,m_CenterY;
+	float		m_CenterX, m_CenterY;
 	Vector3		m_Vel;
 	Bodys		m_Bodys;
 	float		m_Angle;
@@ -44,28 +44,28 @@ protected:
 	void NextFrame();
 public:
 	std::string chee;
-	Chee(void);
-	Chee(std::string c);
-	~Chee(void);
+	Chee( void );
+	Chee( std::string c );
+	~Chee( void );
 
-	void Update(float dt);
+	void Update( float dt );
 	void UpdateDataToDraw();//Data To m_Pic
 
-	void SetTeam(int index);
+	void SetTeam( int index );
 
-	void SetPosition(Vector3 p);
-	void Translation(Vector3 t);
-	void SetVelocity(Vector3 v);
+	void SetPosition( Vector3 p );
+	void Translation( Vector3 t );
+	void SetVelocity( Vector3 v );
 
 	int GetTextureID();
 	Texture_Sptr GetTexture();
 	ClipVertex GetPic();
 	int Team();
 	Vector3 Position();
-	Vector3 BackPosition(float back);
-	friend bool Creat(const Vector3 &pos, const Creation &obj, bool face, const Record_Sptr owner);
+	Vector3 BackPosition( float back );
+	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 };
-SHARE_PTR(Chee)
+SHARE_PTR( Chee )
 typedef std::vector <Chee_RawPtr> Chees;
 
-bool SortChee(Chee_RawPtr a,Chee_RawPtr b);
+bool SortChee( Chee_RawPtr a, Chee_RawPtr b );

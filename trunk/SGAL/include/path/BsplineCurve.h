@@ -5,7 +5,7 @@
 //  @ Project : Untitled
 //  @ File Name : BsplineCurve.h
 //  @ Date : 2011/9/3
-//  @ Author : 
+//  @ Author :
 //
 //
 
@@ -18,15 +18,15 @@
 class BsplineCurve : public PathInterpolater
 {
 public:
-	Vector3 GetValue(float time);
-	static Vector3 CalcBSplineCurvePos(const Vector3& start, const Vector3& cnt1,
-		const Vector3& cnt2, const Vector3& end, float Scalar)
+	Vector3 GetValue( float time );
+	static Vector3 CalcBSplineCurvePos( const Vector3& start, const Vector3& cnt1,
+	                                    const Vector3& cnt2, const Vector3& end, float Scalar )
 	{
-		float S2 = Scalar*Scalar, S3 = Scalar*Scalar*Scalar;
-		Vector3 out = (start * (1.0f + 3.0f *(S2 - Scalar) - S3) +
-			cnt1 * (4.0f - 6.0f *S2 + 3.0f *S3) +
-			cnt2 * (1.0f + 3.0f * (Scalar + S2 - S3)) +
-			end * S3)/6.0f;
+		float S2 = Scalar * Scalar, S3 = Scalar * Scalar * Scalar;
+		Vector3 out = ( start * ( 1.0f + 3.0f * ( S2 - Scalar ) - S3 ) +
+		                cnt1 * ( 4.0f - 6.0f * S2 + 3.0f * S3 ) +
+		                cnt2 * ( 1.0f + 3.0f * ( Scalar + S2 - S3 ) ) +
+		                end * S3 ) / 6.0f;
 		return out;
 	}
 };

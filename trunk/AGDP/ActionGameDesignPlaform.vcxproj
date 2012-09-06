@@ -254,48 +254,20 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="game\FlyingPath.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
-    </ClCompile>
     <ClCompile Include="game\Hero.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="game\HeroInfo.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <ClCompile Include="game\HeroInfoManager.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
-    </ClCompile>
+    <ClCompile Include="game\HeroInfoManager.cpp" />
     <ClCompile Include="game\HeroManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="game\ObjectInfo.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <ClCompile Include="game\ObjectInfoManager.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
-    </ClCompile>
+    <ClCompile Include="game\ObjectInfoManager.cpp" />
     <ClCompile Include="game\ObjectManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -492,13 +464,8 @@
     <ClInclude Include="DX11\TextLetter.h" />
     <ClInclude Include="DX11\TextManager.h" />
     <ClInclude Include="EffectShaderClass.h" />
-    <ClInclude Include="game\Attack.h" />
     <ClInclude Include="game\BackGround.h" />
-    <ClInclude Include="game\BeCatch.h" />
     <ClInclude Include="game\BGManager.h" />
-    <ClInclude Include="game\BloodInfo.h" />
-    <ClInclude Include="game\Body.h" />
-    <ClInclude Include="game\CatchInfo.h" />
     <ClInclude Include="game\Chee.h" />
     <ClInclude Include="game\CheeAction.h" />
     <ClInclude Include="game\ColorRect.h" />
@@ -508,20 +475,16 @@
     <ClInclude Include="game\Effect.h" />
     <ClInclude Include="game\EffectData.h" />
     <ClInclude Include="game\FireShaderClass.h" />
-    <ClInclude Include="game\FlyingPath.h" />
+    <ClInclude Include="game\HeroInfoManager.h" />
     <ClInclude Include="game\HeroManager.h" />
-    <ClInclude Include="game\Record.h" />
     <ClInclude Include="game\ObjectInfoManager.h" />
+    <ClInclude Include="game\Record.h" />
     <ClInclude Include="game\ObjectManager.h" />
     <ClInclude Include="game\ObjectType.h" />
     <ClInclude Include="game\FrameInfo.h" />
     <ClInclude Include="game\Hero.h" />
     <ClInclude Include="game\HeroAction.h" />
-    <ClInclude Include="game\HeroInfo.h" />
-    <ClInclude Include="game\HeroInfoManager.h" />
     <ClInclude Include="game\HitData.h" />
-    <ClInclude Include="game\ObjectInfo.h" />
-    <ClInclude Include="game\PictureData.h" />
     <ClInclude Include="game\Player.h" />
     <ClInclude Include="game\PoisonShaderClass.h" />
     <ClInclude Include="game\RenderTextureClass.h" />

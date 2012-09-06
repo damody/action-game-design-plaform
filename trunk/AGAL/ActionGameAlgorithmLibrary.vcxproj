@@ -99,21 +99,14 @@
     <ClInclude Include="include\game\Body.h" />
     <ClInclude Include="include\game\CatchInfo.h" />
     <ClInclude Include="include\game\CheeAction.h" />
-    <ClInclude Include="include\game\ColorRect.h" />
     <ClInclude Include="include\game\Consume.h" />
     <ClInclude Include="include\game\Creation.h" />
-    <ClInclude Include="include\game\CtrlKey.h" />
-    <ClInclude Include="include\game\Effect.h" />
-    <ClInclude Include="include\game\EffectData.h" />
     <ClInclude Include="include\game\FlyingPath.h" />
     <ClInclude Include="include\game\FrameInfo.h" />
     <ClInclude Include="include\game\HeroAction.h" />
     <ClInclude Include="include\game\HeroInfo.h" />
-    <ClInclude Include="include\game\HeroInfoManager.h" />
-    <ClInclude Include="include\game\HeroManager.h" />
     <ClInclude Include="include\game\HitData.h" />
     <ClInclude Include="include\game\ObjectInfo.h" />
-    <ClInclude Include="include\game\ObjectInfoManager.h" />
     <ClInclude Include="include\game\ObjectType.h" />
     <ClInclude Include="include\game\PictureData.h" />
     <ClInclude Include="include\game\Player.h" />
@@ -126,9 +119,7 @@
   <ItemGroup>
     <ClCompile Include="src\game\FlyingPath.cpp" />
     <ClCompile Include="src\game\HeroInfo.cpp" />
-    <ClCompile Include="src\game\HeroInfoManager.cpp" />
     <ClCompile Include="src\game\ObjectInfo.cpp" />
-    <ClCompile Include="src\game\ObjectInfoManager.cpp" />
     <ClCompile Include="src\Lua\CreateLua.cpp" />
     <ClCompile Include="src\Lua\LuaCell.cpp" />
     <ClCompile Include="StdAGAL.cpp" />

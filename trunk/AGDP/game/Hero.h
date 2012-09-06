@@ -9,8 +9,8 @@
 #include "common\shared_ptr.h"
 #include "game\EffectData.h"
 #include "CtrlKey.h"
-#include "HeroInfo.h"
-#include "HeroAction.h"
+#include "game\HeroInfo.h"
+#include "game\HeroAction.h"
 #include "Record.h"
 #include <string>
 #include <cmath>
@@ -23,7 +23,7 @@
 #define G_ACCE g_BGManager.CurrentBG()->Gravity()
 #define SCALE 3.0f
 
-namespace boost{namespace serialization{class access;}}
+namespace boost {namespace serialization {class access;}}
 
 class Hero
 {
@@ -41,11 +41,11 @@ private:
 	int		m_PicH;//HºI¤Á¦¸¼Æ
 	int		m_PicX;
 	int		m_PicY;
-	
+
 	Vector3		m_Position;
-	float		m_CenterX,m_CenterY;
+	float		m_CenterX, m_CenterY;
 	Vector3		m_Vel;
-	FrameInfo	*m_FrameInfo;
+	FrameInfo*	m_FrameInfo;
 	float		m_Angle;
 	bool		m_FaceSide; //true ¥k, false ¥ª
 	int		d_run;		//§P©w¶]¨B¥Î¡A¥k¥¿¥ª­t
@@ -63,43 +63,39 @@ private:
 
 	friend class boost::serialization::access;
 	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
+	void serialize( Archive& ar, const unsigned int version )
 	{
-		ar &	m_TimeTik;
-		ar &	m_Pic;
-		ar &	m_HeroInfo;
-		ar &	m_Action;
-		ar &    m_Frame;
-		ar &	m_FrameID;
-
-		ar &	m_Texture;
-		ar &    m_PicID;
-		ar &	m_PicW;
-		ar &	m_PicH;
-		ar &	m_PicX;
-		ar &	m_PicY;
-
-		ar &	m_Position;
-		ar &	m_Vel;
-		ar &	m_FrameInfo;
-		ar &	m_Angle;
-		ar &	m_FaceSide;
-
-		ar &	m_Team;
-		ar &	m_MaxRecoverHP;
-		ar &	m_HP;
-		ar &	m_MP;
-		ar &    m_Record;
-
-		ar &	m_KeyQue; 
+		ar& 	m_TimeTik;
+		ar& 	m_Pic;
+		ar& 	m_HeroInfo;
+		ar& 	m_Action;
+		ar&     m_Frame;
+		ar& 	m_FrameID;
+		ar& 	m_Texture;
+		ar&     m_PicID;
+		ar& 	m_PicW;
+		ar& 	m_PicH;
+		ar& 	m_PicX;
+		ar& 	m_PicY;
+		ar& 	m_Position;
+		ar& 	m_Vel;
+		ar& 	m_FrameInfo;
+		ar& 	m_Angle;
+		ar& 	m_FaceSide;
+		ar& 	m_Team;
+		ar& 	m_MaxRecoverHP;
+		ar& 	m_HP;
+		ar& 	m_MP;
+		ar&     m_Record;
+		ar& 	m_KeyQue;
 	}
 
 public:
 	const std::string hero;
 
 	Hero();
-	Hero(std::string h);
-	void Update(float dt);
+	Hero( std::string h );
+	void Update( float dt );
 	void UpdateDataToDraw();//Data To m_Pic
 
 	Texture_Sptr GetTexture();
@@ -107,16 +103,16 @@ public:
 	ClipVertex GetPic();
 	int Team() const;
 	const Vector3& Position();
-	const Vector3& Velocity(); 
+	const Vector3& Velocity();
 
-	void SetRecord(Record_Sptr r);
-	void SetTeam(int team);
-	void SetPosition(Vector3 pos);
-	void SetEffect(EffectType::e effect);
-	void PushKey(KeyInfo k);
+	void SetRecord( Record_Sptr r );
+	void SetTeam( int team );
+	void SetPosition( Vector3 pos );
+	void SetEffect( EffectType::e effect );
+	void PushKey( KeyInfo k );
 	BodyVerteices GetBodyVerteices();
 	BodyVerteices GetBodyLineVerteices();
-	friend bool Creat(const Vector3 &pos, const Creation &obj, bool face, const Record_Sptr owner);
+	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 protected:
 	void Init();
 	void NextFrame();
@@ -125,14 +121,14 @@ protected:
 	void Flicker();//°{Ã{
 	void Recover();//¦^¦å¡B®ð¡B¯}¨¾­È.....
 	void CreateEffect();
-	void UpdateVel(int dx, int dz);
-	
-	bool isKeyUsed(char);
-	void keyUsed(char);
-	void newKey(char);
+	void UpdateVel( int dx, int dz );
+
+	bool isKeyUsed( char );
+	void keyUsed( char );
+	void newKey( char );
 };
-SHARE_PTR(Hero)
+SHARE_PTR( Hero )
 typedef std::vector <Hero_RawPtr> Heroes;
 
 //bool Creat(Vector3 pos, Creation obj, const Hero *owner);
-bool SortHero( Hero_RawPtr a,Hero_RawPtr b);
+bool SortHero( Hero_RawPtr a, Hero_RawPtr b );

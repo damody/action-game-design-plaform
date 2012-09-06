@@ -21,11 +21,11 @@ public:
 	TextureManager& GetTextureManager()
 	{ return *m_TextureManager;}
 	int  m_PicID;
-	void Cut(int r,int c);
+	void Cut( int r, int c );
 private:
 	TextureManager* m_TextureManager;
-	PictureData  *m_Pic;
-	
+	PictureData*  m_Pic;
+
 	Texture*      m_Templete;
 public:
 	D3DApp_Picture();
@@ -34,14 +34,14 @@ public:
 	HINSTANCE	getAppInst();
 	HWND		getMainWnd();
 
-	void initApp(HWND hWnd, int w, int h);
-	void OnResize(int w, int h);// reset projection/etc
-	void DrawScene(); 
+	void initApp( HWND hWnd, int w, int h );
+	void OnResize( int w, int h ); // reset projection/etc
+	void DrawScene();
 	void LoadBlend();
 	void buildShaderFX();
 	void buildPoint();
 
-	void SetPic(PictureData  *pic);
+	void SetPic( PictureData*  pic );
 
 	ID3D11Device* GetDevice()
 	{
@@ -58,7 +58,7 @@ protected:
 	bool		m_Maximized;
 	bool		m_Resizing;
 	GameTimer	m_Timer;
-	std::wstring	m_FrameStats; 
+	std::wstring	m_FrameStats;
 	ID3D11Device*	m_d3dDevice;
 	IDXGISwapChain*	m_SwapChain;
 	ID3D11Texture2D*	m_DepthStencilBuffer;
@@ -69,8 +69,8 @@ protected:
 
 	ID3D11BlendState*	m_pBlendState_ADD;
 	ID3D11BlendState*	m_pBlendState_BLEND;
-	ID3D11DepthStencilState *m_pDepthStencil_ZWriteON;
-	ID3D11DepthStencilState *m_pDepthStencil_ZWriteOFF;
+	ID3D11DepthStencilState* m_pDepthStencil_ZWriteON;
+	ID3D11DepthStencilState* m_pDepthStencil_ZWriteOFF;
 
 	PointVertices			m_PointVertices;
 
@@ -122,19 +122,19 @@ protected:
 
 struct CD3D11_BLEND_DESCX : public D3D11_BLEND_DESC
 {
-	CD3D11_BLEND_DESCX(){}
-	explicit CD3D11_BLEND_DESCX(const D3D11_BLEND_DESC& o) : D3D11_BLEND_DESC( o ){}
+	CD3D11_BLEND_DESCX() {}
+	explicit CD3D11_BLEND_DESCX( const D3D11_BLEND_DESC& o ) : D3D11_BLEND_DESC( o ) {}
 	explicit CD3D11_BLEND_DESCX(
-		BOOL AlphaToCoverageEnable,
-		BOOL IndependentBlendEnable,
-		BOOL BlendEnable0,
-		D3D11_BLEND SrcBlend0,
-		D3D11_BLEND DestBlend0,
-		D3D11_BLEND_OP BlendOp0,
-		D3D11_BLEND SrcBlendAlpha0,
-		D3D11_BLEND DestBlendAlpha0,
-		D3D11_BLEND_OP BlendOpAlpha0,
-		UINT8 RenderTargetWriteMask0 )
+	        BOOL AlphaToCoverageEnable,
+	        BOOL IndependentBlendEnable,
+	        BOOL BlendEnable0,
+	        D3D11_BLEND SrcBlend0,
+	        D3D11_BLEND DestBlend0,
+	        D3D11_BLEND_OP BlendOp0,
+	        D3D11_BLEND SrcBlendAlpha0,
+	        D3D11_BLEND DestBlendAlpha0,
+	        D3D11_BLEND_OP BlendOpAlpha0,
+	        UINT8 RenderTargetWriteMask0 )
 	{
 		this->AlphaToCoverageEnable = AlphaToCoverageEnable;
 		this->IndependentBlendEnable = IndependentBlendEnable;
@@ -145,9 +145,9 @@ struct CD3D11_BLEND_DESCX : public D3D11_BLEND_DESC
 		this->RenderTarget[0].SrcBlendAlpha = SrcBlendAlpha0;
 		this->RenderTarget[0].DestBlendAlpha = DestBlendAlpha0;
 		this->RenderTarget[0].BlendOpAlpha = BlendOpAlpha0;
-		this->RenderTarget[0].RenderTargetWriteMask = RenderTargetWriteMask0; 
+		this->RenderTarget[0].RenderTargetWriteMask = RenderTargetWriteMask0;
 	}
-	~CD3D11_BLEND_DESCX(){}
-	operator const D3D11_BLEND_DESC&() const { return *this; }
+	~CD3D11_BLEND_DESCX() {}
+	operator const D3D11_BLEND_DESC& () const { return *this; }
 };
 

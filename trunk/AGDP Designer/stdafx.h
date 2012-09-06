@@ -3,7 +3,7 @@
 // MFC 參考及 MFC C++ 程式庫軟體
 // 隨附相關電子文件的補充。
 // 關於 Fluent UI 之複製、使用或散發的授權條款則分別提供。
-// 如需 Fluent UI 授權計劃的詳細資訊，請造訪 
+// 如需 Fluent UI 授權計劃的詳細資訊，請造訪
 // http://msdn.microsoft.com/officeui。
 //
 // Copyright (C) Microsoft Corporation
@@ -55,10 +55,10 @@
 #ifndef HR
 #define HR(x)                                      \
 	{                                                  \
-	HRESULT hr = x;                                \
-	if(FAILED(hr))                                 \
+		HRESULT hr = x;                                \
+		if(FAILED(hr))                                 \
 		{                                              \
-		DXTrace(__FILE__, __LINE__, hr, _T(#x), TRUE); \
+			DXTrace(__FILE__, __LINE__, hr, _T(#x), TRUE); \
 		}                                              \
 	}
 #endif
@@ -66,7 +66,7 @@
 #ifndef HR
 #define HR(x) x;
 #endif
-#endif 
+#endif
 
 #ifdef _UNICODE
 #if defined _M_IX86

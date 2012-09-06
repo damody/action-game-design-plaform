@@ -1,11 +1,11 @@
 #pragma once
 #include <vector>
 
-namespace boost{namespace serialization{class access;}}
+namespace boost {namespace serialization {class access;}}
 //每一個攻擊判定所含的資訊
 struct Attack
 {
-	
+
 	//範圍
 	Polygon2D m_Area;
 	//傷害
@@ -36,21 +36,21 @@ struct Attack
 
 	friend class boost::serialization::access;
 	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
+	void serialize( Archive& ar, const unsigned int version )
 	{
-		ar & m_Area;
-		ar & m_Injury;
-		ar & m_Strength;
-		ar & m_Kind;
-		ar & m_Effect;
-		ar & m_DVX;
-		ar & m_DVY;
-		ar & m_DVZ;
-		ar & m_ZWidth;
-		ar & m_Fall;
-		ar & m_BreakDefend;
-		ar & m_AttackRest;
-		ar & m_ReAttackRest;
+		ar& m_Area;
+		ar& m_Injury;
+		ar& m_Strength;
+		ar& m_Kind;
+		ar& m_Effect;
+		ar& m_DVX;
+		ar& m_DVY;
+		ar& m_DVZ;
+		ar& m_ZWidth;
+		ar& m_Fall;
+		ar& m_BreakDefend;
+		ar& m_AttackRest;
+		ar& m_ReAttackRest;
 	}
 };
 typedef std::vector<Attack> Attacks;

@@ -9,10 +9,10 @@ public:
 	float mElapsedTime;
 	float mLaunchTime;
 	float mVelocity;
-	GET_CLASS_SIZE(Delay)
+	GET_CLASS_SIZE( Delay )
 	inline Delay()
-	{m_typehash = strhasher("Delay");}
-	virtual int UpdateBall(Ball* b, float elapsedtime);
+	{m_typehash = strhasher( "Delay" );}
+	virtual int UpdateBall( Ball* b, float elapsedtime );
 	virtual ~Delay()
 	{}
 };

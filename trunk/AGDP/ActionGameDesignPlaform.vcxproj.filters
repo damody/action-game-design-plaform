@@ -122,12 +122,6 @@
     <ClCompile Include="game\Hero.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
-    <ClCompile Include="game\HeroInfo.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\HeroInfoManager.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
     <ClCompile Include="game\Player.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
@@ -144,15 +138,6 @@
       <Filter>src\game</Filter>
     </ClCompile>
     <ClCompile Include="game\Chee.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\ObjectInfoManager.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\FlyingPath.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\ObjectInfo.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
     <ClCompile Include="game\ObjectManager.cpp">
@@ -193,6 +178,12 @@
     </ClCompile>
     <ClCompile Include="game\PoisonShaderClass.cpp">
       <Filter>src\game\EffectShader</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ObjectInfoManager.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\HeroInfoManager.cpp">
+      <Filter>src\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,18 +274,6 @@
     <ClInclude Include="memory\VMemPool.h">
       <Filter>inc\memory</Filter>
     </ClInclude>
-    <ClInclude Include="game\BeCatch.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\BloodInfo.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\Body.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\CatchInfo.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
     <ClInclude Include="game\Consume.h">
       <Filter>inc\game</Filter>
     </ClInclude>
@@ -310,22 +289,10 @@
     <ClInclude Include="game\HeroAction.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="game\HeroInfo.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\HeroInfoManager.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
     <ClInclude Include="game\HitData.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="game\PictureData.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
     <ClInclude Include="game\Player.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\Attack.h">
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\BackGround.h">
@@ -340,25 +307,16 @@
     <ClInclude Include="game\ColorRect.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="game\ObjectInfo.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
     <ClInclude Include="game\ObjectType.h">
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>inc</Filter>
     </ClInclude>
-    <ClInclude Include="game\ObjectInfoManager.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
     <ClInclude Include="game\Weapon.h">
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\Chee.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\FlyingPath.h">
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\HeroManager.h">
@@ -416,6 +374,12 @@
       <Filter>inc\game\EffectShader</Filter>
     </ClInclude>
     <ClInclude Include="game\Record.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ObjectInfoManager.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\HeroInfoManager.h">
       <Filter>inc\game</Filter>
     </ClInclude>
   </ItemGroup>

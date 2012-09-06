@@ -11,7 +11,8 @@
 
 const std::string DEFAULT_FONT = "Media\\unifont.ttf";
 
-typedef struct CharBitmap_ {
+typedef struct CharBitmap_
+{
 	int             x;
 	int             y;
 	unsigned int    width;
@@ -22,8 +23,8 @@ typedef struct CharBitmap_ {
 
 enum RenderFlag
 {
-	BEGIN,
-	END
+        BEGIN,
+        END
 };
 
 class TextGeneratorDX11
@@ -42,22 +43,22 @@ private:
 	float m_BackAlpha;
 	RenderFlag m_RenderFlag;
 
-	bool rasters(const wchar_t texts, CharBitmap& bitmap);
+	bool rasters( const wchar_t texts, CharBitmap& bitmap );
 public:
 
 	TextGeneratorDX11();
-	~TextGeneratorDX11(void);
+	~TextGeneratorDX11( void );
 
 	void Initialize();
 
-	bool SetFont(std::string& font);
-	bool SetFontSize(int width, int height);
-	void SetForeColor(BYTE r, BYTE g, BYTE b);
-	void SetBackColor(BYTE r, BYTE g, BYTE b);
-	void SetForeAlpha(BYTE alpha);
-	void SetBackAlpha(BYTE alpha);
+	bool SetFont( std::string& font );
+	bool SetFontSize( int width, int height );
+	void SetForeColor( BYTE r, BYTE g, BYTE b );
+	void SetBackColor( BYTE r, BYTE g, BYTE b );
+	void SetForeAlpha( BYTE alpha );
+	void SetBackAlpha( BYTE alpha );
 	void WriteBegin();
 	TextLetters WriteEnd();
-	void Write(std::wstring& str);
+	void Write( std::wstring& str );
 };
 
