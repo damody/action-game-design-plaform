@@ -493,7 +493,6 @@ void CPropertiesWnd::InitPropList_Body()
 	m_wndPropList.MarkModifiedProperties();
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
 	CMFCPropertyGridProperty* pProp;
-<<<<<<< HEAD
 
 	pProp = new CMFCPropertyGridProperty(_T("m_Area"));
 
@@ -525,43 +524,6 @@ void CPropertiesWnd::InitPropList_Body()
 	pPropMain->AddSubItem(pProp);
 	
 	m_wndPropList.AddProperty(pPropMain);
-=======
-	pProp = new CMFCPropertyGridProperty( _T( "m_Area" ) );
-	CMFCPropertyGridProperty* pPropButton = new CMFCPropertyGridPropertyButton( &m_wndPropList, _T( "Add point" ) , _T( "" ) , _T( "Add point" ), 0 );
-	pProp->AddSubItem( pPropButton );
-	CMFCPropertyGridProperty* pPropPointGroup;
-	CMFCPropertyGridProperty* pPropPoint;
-	pPropPointGroup = new CMFCPropItem( &m_wndPropList, _T( "0" ), 0, TRUE );
-	pPropPoint = new CMFCPropItem( &m_wndPropList, _T( "X" ), varFloat( 0.0f ), _T( "X位置" ) );
-	pPropPointGroup->AddSubItem( pPropPoint );
-	pPropPoint = new CMFCPropItem( &m_wndPropList, _T( "Y" ), varFloat( 0.0f ), _T( "Y位置" ) );
-	pPropPointGroup->AddSubItem( pPropPoint );
-	pPropButton = new CMFCPropertyGridPropertyButton( &m_wndPropList, _T( "Delete point" ), _T( "" ), _T( "Delete point" ), 0 );
-	pPropPointGroup->AddSubItem( pPropButton );
-	pProp->AddSubItem( pPropPointGroup );
-	pPropPointGroup = new CMFCPropItem( &m_wndPropList, _T( "1" ), 0, TRUE );
-	pPropPoint = new CMFCPropItem( &m_wndPropList, _T( "X" ), varFloat( 0.0f ), _T( "X位置" ) );
-	pPropPointGroup->AddSubItem( pPropPoint );
-	pPropPoint = new CMFCPropItem( &m_wndPropList, _T( "Y" ), varFloat( 0.0f ), _T( "Y位置" ) );
-	pPropPointGroup->AddSubItem( pPropPoint );
-	pPropButton = new CMFCPropertyGridPropertyButton( &m_wndPropList, _T( "Delete point" ), _T( "" ), _T( "Delete point" ), 0 );
-	pPropPointGroup->AddSubItem( pPropButton );
-	pProp->AddSubItem( pPropPointGroup );
-	pPropPointGroup = new CMFCPropItem( &m_wndPropList, _T( "2" ), 0, TRUE );
-	pPropPoint = new CMFCPropItem( &m_wndPropList, _T( "X" ), varFloat( 0.0f ), _T( "X位置" ) );
-	pPropPointGroup->AddSubItem( pPropPoint );
-	pPropPoint = new CMFCPropItem( &m_wndPropList, _T( "Y" ), varFloat( 0.0f ), _T( "Y位置" ) );
-	pPropPointGroup->AddSubItem( pPropPoint );
-	pPropButton = new CMFCPropertyGridPropertyButton( &m_wndPropList, _T( "Delete point" ), _T( "" ), _T( "Delete point" ), 0 );
-	pPropPointGroup->AddSubItem( pPropButton );
-	pProp->AddSubItem( pPropPointGroup );
-	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_ZWidth" ), varFloat(), _T( "m_ZWidth" ) );
-	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_Kind" ), varInt(), _T( "m_Kind" ) );
-	pPropMain->AddSubItem( pProp );
-	m_wndPropList.AddProperty( pPropMain );
->>>>>>> 53d5bd8c1f511c6cf908f3ee1366c4ee60246b60
 	m_wndPropList.ExpandAll();
 }
 
