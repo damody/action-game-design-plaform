@@ -81,8 +81,6 @@ protected:
 	afx_msg void OnAnimationRename();
 	afx_msg void OnFrameAdd();
 	afx_msg void OnFrameDelete();
-	afx_msg void OnPointAdd();
-	afx_msg void OnPointDelete();
 	afx_msg void OnPropertyView();
 	afx_msg void OnNewFolder();
 	afx_msg void OnPaint();
@@ -94,5 +92,17 @@ public:
 	afx_msg LRESULT OnPropertyChanged( __in WPARAM wparam, __in LPARAM lparam, HTREEITEM item );
 
 	DECLARE_MESSAGE_MAP()
+	afx_msg void OnBodyAdd();
+	afx_msg void OnBodyDelete();
+	afx_msg void OnAttackDelete();
+	afx_msg void OnAttackAdd();
+	afx_msg void OnHitdataAdd();
+	afx_msg void OnHitdataDelete();
+	afx_msg void OnCatchAdd();
+	afx_msg void OnCatchDelete();
+	afx_msg void OnBloodinfoAdd();
+	afx_msg void OnBloodinfoDelete();
+	afx_msg void OnCreationAdd();
+	afx_msg void OnCreationDelete();
 };
 
