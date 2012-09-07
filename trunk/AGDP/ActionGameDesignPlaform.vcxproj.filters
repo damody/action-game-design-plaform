@@ -33,12 +33,6 @@
     <Filter Include="src\game">
       <UniqueIdentifier>{731a8886-6c46-4f71-a582-c6931474b208}</UniqueIdentifier>
     </Filter>
-    <Filter Include="inc\game\EffectShader">
-      <UniqueIdentifier>{a9440995-56cd-47a0-84c7-e419306a7b66}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\game\EffectShader">
-      <UniqueIdentifier>{394f6a8a-4808-4327-90a4-d359c8902b69}</UniqueIdentifier>
-    </Filter>
     <Filter Include="inc\memory">
       <UniqueIdentifier>{cd19a7f0-b0bc-4ac2-a6ca-64d55bf26430}</UniqueIdentifier>
     </Filter>
@@ -170,19 +164,13 @@
     <ClCompile Include="game\CtrlKey.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
-    <ClCompile Include="EffectShaderClass.cpp">
-      <Filter>src\game\EffectShader</Filter>
-    </ClCompile>
-    <ClCompile Include="game\FireShaderClass.cpp">
-      <Filter>src\game\EffectShader</Filter>
-    </ClCompile>
-    <ClCompile Include="game\PoisonShaderClass.cpp">
-      <Filter>src\game\EffectShader</Filter>
-    </ClCompile>
     <ClCompile Include="game\ObjectInfoManager.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
     <ClCompile Include="game\HeroInfoManager.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\EffectShaderClass.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -364,15 +352,6 @@
     <ClInclude Include="game\Creation.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="EffectShaderClass.h">
-      <Filter>inc\game\EffectShader</Filter>
-    </ClInclude>
-    <ClInclude Include="game\FireShaderClass.h">
-      <Filter>inc\game\EffectShader</Filter>
-    </ClInclude>
-    <ClInclude Include="game\PoisonShaderClass.h">
-      <Filter>inc\game\EffectShader</Filter>
-    </ClInclude>
     <ClInclude Include="game\Record.h">
       <Filter>inc\game</Filter>
     </ClInclude>
@@ -380,6 +359,9 @@
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\HeroInfoManager.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectShaderClass.h">
       <Filter>inc\game</Filter>
     </ClInclude>
   </ItemGroup>

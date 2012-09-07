@@ -31,27 +31,24 @@ bool Effect::Initialize( HWND hwnd )
 		return false;
 	}
 
-	//
-	m_FireShader = new FireShaderClass();
-	result = m_FireShader->Initialize( g_d3dDevice, g_DeviceContext, L"shader\\FireShaderScale.fx", hwnd );
-
-	if ( !result )
+	//Init shader //push Fire ,Poison ,Freeze ...
+	m_EffectShaders.resize(1);//目前只有火焰1種 所以size=1
+	for(int i=0;i<m_EffectShaders.size();i++)
 	{
-		MessageBox( hwnd, L"Could not initialize the FireShaderClass object.", L"Error", MB_OK );
-		return false;
+		m_EffectShaders[0] = new EffectShaderClass();
+		result = m_EffectShaders[0]->Initialize( L"FireShader.lua",g_d3dDevice, g_DeviceContext,hwnd );
+		if( !result )
+		{
+			MessageBox( hwnd, L"Could not init EffectShader.", L"FireShader.Lua", MB_OK );
+			return false;
+		}
 	}
-
+	//Set this effect texture info
 	m_Texture = Texture_Sptr( new Texture( m_RenderTexture->GetShaderResourceView() ) );
 	m_TextureID = g_TextureManager.AddTexture( "EffectTexture", m_Texture );
-	//
-	m_EffectShaders.push_back( m_FireShader ); //push Fire
-	//push Poison
-	//push Freeze
-	//push else...
+	
 	//
 	m_vEffect.resize( m_EffectShaders.size() );
-	//
-	SetFireParameters();
 	return true;
 }
 void Effect::Updata( float dt )
@@ -67,21 +64,6 @@ void Effect::Updata( float dt )
 			}
 		}
 	}
-}
-
-void Effect::SetFireParameters()
-{
-	D3DXVECTOR3 scrollSpeeds, scales;
-	D3DXVECTOR2 distortion1, distortion2, distortion3;
-	float distortionScale, distortionBias;
-	scrollSpeeds = D3DXVECTOR3( 1.0f, 2.0f, 5.0f );
-	scales = D3DXVECTOR3( 20.0f, 30.0f, 40.0f );
-	distortion1 = D3DXVECTOR2( 0.03f, 0.07f );
-	distortion2 = D3DXVECTOR2( 0.02f, 0.05f );
-	distortion3 = D3DXVECTOR2( 0.01f, 0.1f );
-	distortionScale = 1.2f;
-	distortionBias = 1.2f;
-	m_EffectShaders[EffectType::FIRE]->SetShaderParameters( 7, scrollSpeeds, scales, distortion1, distortion2, distortion3, distortionScale, distortionBias );
 }
 
 bool Effect::CreateEffect( EffectType::e type, EffectData* ed )
@@ -134,16 +116,6 @@ bool Effect::Check( EffectType::e type, EffectData* ed )
 			}
 		}
 	}
-
-	/*
-	for (EffectDatas::iterator it = m_FireEffect.begin();it != m_FireEffect.end();it++)
-	{
-		if((*ed) == (*it))
-		{
-			ed->m_Pos = it->m_Pos;
-			return true;
-		}
-	}*/
 	return false;
 }
 

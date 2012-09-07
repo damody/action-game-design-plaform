@@ -212,12 +212,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="EffectShaderClass.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
-    </ClCompile>
     <ClCompile Include="game\BackGround.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -248,11 +242,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="game\FireShaderClass.cpp">
+    <ClCompile Include="game\EffectShaderClass.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="game\Hero.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
@@ -275,12 +267,6 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="game\Player.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <ClCompile Include="game\PoisonShaderClass.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
@@ -474,7 +460,6 @@
     <ClInclude Include="game\CtrlKey.h" />
     <ClInclude Include="game\Effect.h" />
     <ClInclude Include="game\EffectData.h" />
-    <ClInclude Include="game\FireShaderClass.h" />
     <ClInclude Include="game\HeroInfoManager.h" />
     <ClInclude Include="game\HeroManager.h" />
     <ClInclude Include="game\ObjectInfoManager.h" />
@@ -486,7 +471,6 @@
     <ClInclude Include="game\HeroAction.h" />
     <ClInclude Include="game\HitData.h" />
     <ClInclude Include="game\Player.h" />
-    <ClInclude Include="game\PoisonShaderClass.h" />
     <ClInclude Include="game\RenderTextureClass.h" />
     <ClInclude Include="game\StdGame.h" />
     <ClInclude Include="game\TestRenderEffect.h" />

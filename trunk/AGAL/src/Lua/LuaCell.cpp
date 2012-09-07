@@ -655,7 +655,7 @@ strings LuaCell::GetLuaTableKeys( const char* pathString, ... )
 			}
 
 			lua_pop( m_LuaState, pathLayer );
-			break;
+			return data;
 		}
 		else
 		{

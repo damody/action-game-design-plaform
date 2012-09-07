@@ -4,9 +4,7 @@
 #include <DxErr.h>
 #include "DX11/TextureManager.h"
 #include "game/EffectData.h"
-#include "EffectShaderClass.h"
-#include "game/FireShaderClass.h"
-#include "game/PoisonShaderClass.h"
+#include "game/EffectShaderClass.h"
 #include "game/RenderTextureClass.h"
 
 const int PIC_H = 2048;
@@ -31,9 +29,7 @@ private:
 	typedef std::vector<EffectShaderClass*> EffectShaders;
 	EffectShaders m_EffectShaders;
 
-	//shader pointer
-	FireShaderClass* m_FireShader;
-	PoisonShaderClass* m_PoisonShader;
+
 public:
 	Effect( void );
 	~Effect( void );
