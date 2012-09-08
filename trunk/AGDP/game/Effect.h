@@ -12,9 +12,12 @@ const int PIC_W = 2048;
 const int PASTE_H = 256;
 const int PASTE_W = 256;
 
+//ShaderClass不用每張EFFECT都創 可以直接放在effectMG內 已經改好effectShaders. 不然火焰shader會重複創4次 by holyk
+typedef std::vector<EffectShaderClass*> EffectShaders;
+
 //const int EFFECT_SHADER_SIZE = 3;//n種效果
 
-//ShaderClass不用每張EFFECT都創 可以直接放在effectMG內 之後再改. 不然火焰shader會重複創4次 by holyk
+
 class Effect
 {
 private:
@@ -25,11 +28,6 @@ private:
 
 	typedef std::vector<EffectDatas> VEffectDatas;//放置所有狀態的EffectData之vector
 	VEffectDatas m_vEffect;
-
-	typedef std::vector<EffectShaderClass*> EffectShaders;
-	EffectShaders m_EffectShaders;
-
-
 public:
 	Effect( void );
 	~Effect( void );

@@ -3,6 +3,9 @@
 #include "global.h"
 #include <iostream>
 
+
+EffectShaders effectShaders;
+
 Effect::Effect( void ): m_SerialNum( 1 )
 {
 }
@@ -30,25 +33,13 @@ bool Effect::Initialize( HWND hwnd )
 		MessageBox( hwnd, L"Could not initialize the texture RenderTextureClass object.", L"Error", MB_OK );
 		return false;
 	}
-
-	//Init shader //push Fire ,Poison ,Freeze ...
-	m_EffectShaders.resize(1);//目前只有火焰1種 所以size=1
-	for(int i=0;i<m_EffectShaders.size();i++)
-	{
-		m_EffectShaders[0] = new EffectShaderClass();
-		result = m_EffectShaders[0]->Initialize( L"FireShader.lua",g_d3dDevice, g_DeviceContext,hwnd );
-		if( !result )
-		{
-			MessageBox( hwnd, L"Could not init EffectShader.", L"FireShader.Lua", MB_OK );
-			return false;
-		}
-	}
+	
 	//Set this effect texture info
 	m_Texture = Texture_Sptr( new Texture( m_RenderTexture->GetShaderResourceView() ) );
 	m_TextureID = g_TextureManager.AddTexture( "EffectTexture", m_Texture );
 	
 	//
-	m_vEffect.resize( m_EffectShaders.size() );
+	m_vEffect.resize( effectShaders.size() );
 	return true;
 }
 void Effect::Updata( float dt )
@@ -57,11 +48,8 @@ void Effect::Updata( float dt )
 	{
 		if ( !m_vEffect[i].empty() )
 		{
-			if ( i < m_EffectShaders.size() )
-			{
-				m_EffectShaders[i]->Update( dt );
-				m_EffectShaders[i]->CreatVertex( m_vEffect[i].begin(), m_vEffect[i].end() );
-			}
+			effectShaders[i]->Update( dt );
+			effectShaders[i]->CreatVertex( m_vEffect[i].begin(), m_vEffect[i].end() );
 		}
 	}
 }
@@ -136,9 +124,9 @@ void Effect::Render()
 void Effect::RenderShader()
 {
 	//Render
-	for ( int i = 0; i < m_EffectShaders.size(); i++ )
+	for ( int i = 0; i < effectShaders.size(); i++ )
 	{
-		m_EffectShaders[i]->Render();
+		effectShaders[i]->Render();
 	}
 }
 ID3D11ShaderResourceView* Effect::GetTexture()
@@ -158,11 +146,26 @@ EffectManager::EffectManager( HWND hwnd ): m_Page( 0 ), m_Size( 4 )
 	//test
 	m_Effect = new Effect*[m_Size];
 
+	//Init shader //push Fire ,Poison ,Freeze ...
+	effectShaders.resize(1);//目前只有火焰1種 所以size=1
+	for(int i=0;i<effectShaders.size();i++)
+	{
+		bool result;
+		effectShaders[0] = new EffectShaderClass();
+		result = effectShaders[0]->Initialize( L"FireShader.lua",g_d3dDevice, g_DeviceContext,hwnd );
+		if( !result )
+		{
+			MessageBox( hwnd, L"Could not init EffectShader.", L"FireShader.Lua", MB_OK );
+		}
+	}
+
 	for ( int i = 0; i < m_Size; i++ )
 	{
 		m_Effect[i] = new Effect();
 		m_Effect[i]->Initialize( hwnd );
 	}
+
+	
 }
 
 int EffectManager::CreateEffect( EffectType::e type, int textureID, D3DXVECTOR4* picpos )

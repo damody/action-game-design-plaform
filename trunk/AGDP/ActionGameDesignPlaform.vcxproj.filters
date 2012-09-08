@@ -361,7 +361,7 @@
     <ClInclude Include="game\HeroInfoManager.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="EffectShaderClass.h">
+    <ClInclude Include="game\EffectShaderClass.h">
       <Filter>inc\game</Filter>
     </ClInclude>
   </ItemGroup>

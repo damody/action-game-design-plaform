@@ -449,7 +449,6 @@
     <ClInclude Include="DX11\TextGeneratorDX11.h" />
     <ClInclude Include="DX11\TextLetter.h" />
     <ClInclude Include="DX11\TextManager.h" />
-    <ClInclude Include="EffectShaderClass.h" />
     <ClInclude Include="game\BackGround.h" />
     <ClInclude Include="game\BGManager.h" />
     <ClInclude Include="game\Chee.h" />
@@ -460,6 +459,7 @@
     <ClInclude Include="game\CtrlKey.h" />
     <ClInclude Include="game\Effect.h" />
     <ClInclude Include="game\EffectData.h" />
+    <ClInclude Include="game\EffectShaderClass.h" />
     <ClInclude Include="game\HeroInfoManager.h" />
     <ClInclude Include="game\HeroManager.h" />
     <ClInclude Include="game\ObjectInfoManager.h" />
