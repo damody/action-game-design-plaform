@@ -579,9 +579,8 @@ void CMainFrame::OnFileSave()
 		dlgFile.DoModal();
 		//AfxMessageBox( dlgFile.GetPathName() );
 		std::wstring path = dlgFile.GetPathName();
-		/* //To Do
-			WriteLua(path,g_HeroInfo);
-		*/
+		//To Do
+		HeroInfo::WriteLua(g_HeroInfo,path);
 	}
 }
 
