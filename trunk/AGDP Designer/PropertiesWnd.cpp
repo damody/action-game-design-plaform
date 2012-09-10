@@ -482,7 +482,7 @@ void CPropertiesWnd::InitPropList_Frame()
 	m_wndPropList.ExpandAll();
 }
 
-void CPropertiesWnd::InitPropList_Body()
+void CPropertiesWnd::InitPropList_Body(int polygonCount)
 {
 	m_EditProp = 3;
 	m_wndPropList.RemoveAll();
@@ -495,27 +495,18 @@ void CPropertiesWnd::InitPropList_Body()
 	CMFCPropertyGridProperty* pProp;
 
 	pProp = new CMFCPropertyGridProperty(_T("m_Area"));
-
 	CMFCPropertyGridProperty* pPropPointGroup;
 	CMFCPropertyGridProperty* pPropPoint;
-	pPropPointGroup = new CMFCPropItem(&m_wndPropList, _T("0"), 0, TRUE);
-	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(0.0f), _T("X位置"));
-	pPropPointGroup->AddSubItem(pPropPoint);
-	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(0.0f), _T("Y位置"));
-	pPropPointGroup->AddSubItem(pPropPoint);
-	pProp->AddSubItem(pPropPointGroup);
-	pPropPointGroup = new CMFCPropItem(&m_wndPropList, _T("1"), 0, TRUE);
-	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(0.0f), _T("X位置"));
-	pPropPointGroup->AddSubItem(pPropPoint);
-	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(0.0f), _T("Y位置"));
-	pPropPointGroup->AddSubItem(pPropPoint);
-	pProp->AddSubItem(pPropPointGroup);
-	pPropPointGroup = new CMFCPropItem(&m_wndPropList, _T("2"), 0, TRUE);
-	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(0.0f), _T("X位置"));
-	pPropPointGroup->AddSubItem(pPropPoint);
-	pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(0.0f), _T("Y位置"));
-	pPropPointGroup->AddSubItem(pPropPoint);
-	pProp->AddSubItem(pPropPointGroup);
+	for(int i=0; i<polygonCount; i++)
+	{
+		CString s_count; s_count.Format(_T("%d"), i);
+		pPropPointGroup = new CMFCPropItem(&m_wndPropList, s_count, 0, TRUE);
+		pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(), _T("X位置"));
+		pPropPointGroup->AddSubItem(pPropPoint);
+		pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(), _T("Y位置"));
+		pPropPointGroup->AddSubItem(pPropPoint);
+		pProp->AddSubItem(pPropPointGroup);
+	}
 	pPropMain->AddSubItem(pProp);
 
 	pProp = new CMFCPropItem(&m_wndPropList,_T("m_ZWidth"), varFloat(), _T("m_ZWidth"));
@@ -527,7 +518,7 @@ void CPropertiesWnd::InitPropList_Body()
 	m_wndPropList.ExpandAll();
 }
 
-void CPropertiesWnd::InitPropList_Attack()
+void CPropertiesWnd::InitPropList_Attack(int polygonCount)
 {
 	m_EditProp = 4;
 	m_wndPropList.RemoveAll();
@@ -538,6 +529,22 @@ void CPropertiesWnd::InitPropList_Attack()
 	m_wndPropList.MarkModifiedProperties();
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
 	CMFCPropertyGridProperty* pProp;
+
+	pProp = new CMFCPropertyGridProperty(_T("m_Area"));
+	CMFCPropertyGridProperty* pPropPointGroup;
+	CMFCPropertyGridProperty* pPropPoint;
+	for(int i=0; i<polygonCount; i++)
+	{
+		CString s_count; s_count.Format(_T("%d"), i);
+		pPropPointGroup = new CMFCPropItem(&m_wndPropList, s_count, 0, TRUE);
+		pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(), _T("X位置"));
+		pPropPointGroup->AddSubItem(pPropPoint);
+		pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(), _T("Y位置"));
+		pPropPointGroup->AddSubItem(pPropPoint);
+		pProp->AddSubItem(pPropPointGroup);
+	}
+	pPropMain->AddSubItem(pProp);
+
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_Injury" ), varInt(), _T( "m_Injury" ) );
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_Strength" ), varInt(), _T( "m_Strength" ) );
@@ -546,6 +553,7 @@ void CPropertiesWnd::InitPropList_Attack()
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_Effect" ), varInt(), _T( "m_Effect" ) );
 	pPropMain->AddSubItem( pProp );
+
 	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty( _T( "Direction Vector" ), 0, TRUE );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "DVX" ), varFloat(), _T( "X方向左右的移動向量" ) );
 	pDirectionVector->AddSubItem( pProp );
@@ -554,6 +562,7 @@ void CPropertiesWnd::InitPropList_Attack()
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "DVZ" ), varFloat(), _T( "Z方向左右的移動向量" ) );
 	pDirectionVector->AddSubItem( pProp );
 	pPropMain->AddSubItem( pDirectionVector );
+
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_ZWidth" ), varFloat(), _T( "m_ZWidth" ) );
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_Fall" ), varInt(), _T( "m_Fall" ) );
@@ -589,7 +598,7 @@ void CPropertiesWnd::InitPropList_HitData()
 	m_wndPropList.ExpandAll();
 }
 
-void CPropertiesWnd::InitPropList_CatchInfo()
+void CPropertiesWnd::InitPropList_CatchInfo(int polygonCount)
 {
 	m_EditProp = 6;
 	m_wndPropList.RemoveAll();
@@ -600,6 +609,22 @@ void CPropertiesWnd::InitPropList_CatchInfo()
 	m_wndPropList.MarkModifiedProperties();
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
 	CMFCPropertyGridProperty* pProp;
+
+	pProp = new CMFCPropertyGridProperty(_T("m_Area"));
+	CMFCPropertyGridProperty* pPropPointGroup;
+	CMFCPropertyGridProperty* pPropPoint;
+	for(int i=0; i<polygonCount; i++)
+	{
+		CString s_count; s_count.Format(_T("%d"), i);
+		pPropPointGroup = new CMFCPropItem(&m_wndPropList, s_count, 0, TRUE);
+		pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(), _T("X位置"));
+		pPropPointGroup->AddSubItem(pPropPoint);
+		pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(), _T("Y位置"));
+		pPropPointGroup->AddSubItem(pPropPoint);
+		pProp->AddSubItem(pPropPointGroup);
+	}
+	pPropMain->AddSubItem(pProp);
+
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_ZWidth" ), varFloat(), _T( "m_ZWidth" ) );
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_Strength" ), varInt(), _T( "m_Strength" ) );
@@ -642,24 +667,6 @@ void CPropertiesWnd::InitPropList_BloodInfo()
 	pDirectionVector->AddSubItem( pProp );
 	pPropMain->AddSubItem( pDirectionVector );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_EnableValue" ), varFloat(), _T( "m_EnableValue" ) );
-	pPropMain->AddSubItem( pProp );
-	m_wndPropList.AddProperty( pPropMain );
-	m_wndPropList.ExpandAll();
-}
-
-void CPropertiesWnd::InitPropList_Point()
-{
-	m_wndPropList.RemoveAll();
-	SetPropListFont();
-	m_wndPropList.EnableHeaderCtrl( FALSE );
-	m_wndPropList.EnableDescriptionArea();
-	m_wndPropList.SetVSDotNetLook();
-	m_wndPropList.MarkModifiedProperties();
-	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
-	CMFCPropertyGridProperty* pProp;
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "X" ), varFloat(), _T( "X" ) );
-	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "Y" ), varFloat(), _T( "Y" ) );
 	pPropMain->AddSubItem( pProp );
 	m_wndPropList.AddProperty( pPropMain );
 	m_wndPropList.ExpandAll();
@@ -1200,6 +1207,48 @@ void CPropertiesWnd::RefreshPropList_Body( int index )
 		InitPropList_Body();
 		m_EditProp = 3;
 	}
+
+	if ( g_ActiveFramesMap->find( g_FrameName ) == g_ActiveFramesMap->end() )
+	{
+		char buff[100];
+		sprintf( buff, "Properties: Frame[%s] does not exist", g_FrameName.c_str() );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		return;
+	}
+	else if ( g_FrameIndex < -1 || g_FrameIndex > ( *g_ActiveFramesMap )[g_FrameName].size() - 1 )
+	{
+		char buff[100];
+		sprintf( buff, "Properties: Frame[%s][%d] does not exist", g_FrameName.c_str(), g_FrameIndex );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		return;
+	}
+
+	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 )->GetSubItem(0);
+	propRoot->GetSubItem( 0 )->SetValue( CString( g_FrameName.c_str() ) );
+	propRoot->GetSubItem( 1 )->SetValue( varInt( g_FrameIndex ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( CString( frameInfo.m_NextFrameName.c_str() ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varInt( frameInfo.m_NextFrameIndex ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue( CString( actionMap[frameInfo.m_HeroAction] ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( varInt( frameInfo.m_Wait ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 6 ) )->SetValue( varBool( frameInfo.m_ClearKeyQueue ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 0 ) )->SetValue( varInt( frameInfo.m_PictureID ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varInt( frameInfo.m_PictureX ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_PictureY ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 8 )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_CenterX ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 8 )->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_CenterY ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 0 ) )->SetValue( varBool( frameInfo.m_Consume.m_JumpRule ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 1 ) )->SetValue( varInt( frameInfo.m_Consume.m_HP ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_Consume.m_MP ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 3 ) )->SetValue( CString( frameInfo.m_Consume.m_NotEnoughFrameName.c_str() ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 4 ) )->SetValue( varInt( frameInfo.m_Consume.m_NotEnoughFrame ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_DVX ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_DVY ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 2 ) )->SetValue( varFloat( frameInfo.m_DVZ ) );
 }
 
 void CPropertiesWnd::RefreshPropList_Attack()
@@ -1214,9 +1263,6 @@ void CPropertiesWnd::RefreshPropList_BloodInfo()
 {
 }
 
-void CPropertiesWnd::RefreshPropList_Point()
-{
-}
 
 const CString CPropertiesWnd::actionMap[MAX_ACTIONS] =
 {
