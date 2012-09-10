@@ -1,4 +1,4 @@
-require "effect"
+require	"effect"
 require "action"
 
 name= "Davis"

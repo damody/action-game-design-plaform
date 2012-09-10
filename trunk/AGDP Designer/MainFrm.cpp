@@ -579,9 +579,8 @@ void CMainFrame::OnFileSave()
 		CFileDialog dlgFile( FALSE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T( "Lua File (*.lua)|*.lua||" ), NULL, 0 );
 		dlgFile.DoModal();
 		std::wstring path = dlgFile.GetPathName();
-		/* //To Do
-			WriteLua(path,g_HeroInfo);
-		*/
+		//To Do
+		HeroInfo::WriteLua(g_HeroInfo,path);
 	}
 }
 
