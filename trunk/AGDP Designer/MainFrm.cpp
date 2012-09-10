@@ -16,6 +16,7 @@
 #include "AGDP Designer.h"
 #include "AGDP DesignerView.h"
 #include "MainFrm.h"
+#include "FileNewDialog.h"
 #include "global.h"
 
 #include "game/HeroInfo.h"
@@ -541,9 +542,11 @@ void CMainFrame::OpenPictureView( CString& name, PictureData* pic, int index )
 
 void CMainFrame::test()
 {
-	CString str( "Test" );
-	//m_wndClientArea.GetMDITabs().GetTabLabel(1,str);
-	AfxMessageBox( str );
+// 	CString str( "Test" );
+// 	//m_wndClientArea.GetMDITabs().GetTabLabel(1,str);
+// 	AfxMessageBox( str );
+	CFileNewDialog fileNew;
+	fileNew.DoModal();
 }
 
 void CMainFrame::SwitchPictureView( int index )
