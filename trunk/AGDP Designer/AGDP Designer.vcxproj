@@ -170,6 +170,7 @@
     <ClInclude Include="DX11\TextureManager.h" />
     <ClInclude Include="DX11\Timer.h" />
     <ClInclude Include="DX11\Vertex.h" />
+    <ClInclude Include="FileNewDialog.h" />
     <ClInclude Include="FileTree.h" />
     <ClInclude Include="FileView.h" />
     <ClInclude Include="File\CryptoData.h" />
@@ -226,6 +227,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="DX11\Vertex.cpp" />
+    <ClCompile Include="FileNewDialog.cpp" />
     <ClCompile Include="FileTree.cpp" />
     <ClCompile Include="FileView.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
