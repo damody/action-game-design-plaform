@@ -119,7 +119,8 @@ public:  // 控制列內嵌的成員
 // 產生的訊息對應函式
 protected:
 	afx_msg void OnFileSave();
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
+	afx_msg void OnFileOpen();
+	afx_msg int  OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnWindowManager();
 	afx_msg void OnApplicationLook( UINT id );
 	afx_msg void OnUpdateApplicationLook( CCmdUI* pCmdUI );

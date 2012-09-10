@@ -43,11 +43,8 @@ BEGIN_MESSAGE_MAP( CMainFrame, CMDIFrameWndEx )
 	ON_COMMAND( ID_TOOLS_OPTIONS, &CMainFrame::OnOptions )
 	ON_WM_SETTINGCHANGE()
 	ON_COMMAND( ID_FILE_NEW, &CMainFrame::test )
+	ON_COMMAND( ID_FILE_OPEN,  &CMainFrame::OnFileOpen  )
 	ON_COMMAND( ID_LUA_SAVE, &CMainFrame::OnFileSave )
-	ON_COMMAND( ID_FILE_SAVE_AS, &CMainFrame::OnFileSave )
-	ON_COMMAND( ID_BUTTON_AreaAdd, &CMainFrame::OnButtonAreaAdd )
-	ON_COMMAND( ID_BUTTON_AreaMove, &CMainFrame::OnButtonAreaMove )
-	ON_COMMAND( ID_BUTTON_AreaScale, &CMainFrame::OnButtonAreaScale )
 	ON_COMMAND( ID_CHECK_FrameView, &CMainFrame::OnCheckFrameview )
 	ON_UPDATE_COMMAND_UI( ID_CHECK_FrameView, &CMainFrame::OnUpdateCheckFrameview )
 	ON_COMMAND( ID_CHECK_OutputWindow, &CMainFrame::OnCheckOutputwindow )
@@ -573,16 +570,22 @@ bool CMainFrame::NewHeroViews( HeroInfo* hero )
 
 void CMainFrame::OnFileSave()
 {
-// 	CString str( "Test" );
-// 	AfxMessageBox( str );
 	if(g_HeroInfo!=NULL){
-		CFileDialog dlgFile( FALSE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T( "Lua File (*.lua)|*.lua||" ), NULL, 0 );
+		CString defaultName(g_HeroInfo->m_Name.c_str());
+		CFileDialog dlgFile( FALSE, _T("lua"),defaultName , OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T( "Lua File (*.lua)|*.lua||" ), NULL, 0 );
 		dlgFile.DoModal();
+		//AfxMessageBox( dlgFile.GetPathName() );
 		std::wstring path = dlgFile.GetPathName();
 		//To Do
 		HeroInfo::WriteLua(g_HeroInfo,path);
 	}
 }
+
+void CMainFrame::OnFileOpen()
+{
+	m_wndFileView.OnFileOpen();
+}
+
 
 
 
