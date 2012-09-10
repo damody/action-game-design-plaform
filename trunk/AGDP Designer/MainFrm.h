@@ -101,6 +101,7 @@ public:
 	bool NewHeroViews( HeroInfo* hero );
 	void OpenPictureView( CString& name, PictureData* pic, int index );
 	void SwitchPictureView( int index );
+
 public:  // 控制列內嵌的成員
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;
@@ -117,6 +118,7 @@ public:  // 控制列內嵌的成員
 	HeroViews	  m_HeroViews;
 // 產生的訊息對應函式
 protected:
+	afx_msg void OnFileSave();
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnWindowManager();
 	afx_msg void OnApplicationLook( UINT id );

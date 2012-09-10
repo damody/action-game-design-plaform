@@ -32,10 +32,11 @@
 BEGIN_MESSAGE_MAP( CAGDPDesignerApp, CWinAppEx )
 	ON_COMMAND( ID_APP_ABOUT, &CAGDPDesignerApp::OnAppAbout )
 	// 依據文件命令的標準檔案
-	//ON_COMMAND(ID_FILE_NEW, &CMainFrame::test)
-	ON_COMMAND( ID_FILE_OPEN, &CWinAppEx::OnFileOpen )
+	//ON_COMMAND( ID_FILE_OPEN, &CWinAppEx::OnFileOpen )
 	// 標準列印設定命令
-	ON_COMMAND( ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup )
+	//ON_COMMAND( ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup )
+	//ON_COMMAND( ID_FILE_SAVE, &CAGDPDesignerApp::OnFileSave )
+	//ON_COMMAND( ID_FILE_SAVE_AS, &CAGDPDesignerApp::OnFileSave )
 END_MESSAGE_MAP()
 
 
@@ -86,7 +87,7 @@ BOOL CAGDPDesignerApp::InitInstance()
 		AfxMessageBox( IDP_OLE_INIT_FAILED );
 		return FALSE;
 	}
-
+	
 	AfxEnableControlContainer();
 	EnableTaskbarInteraction();
 	// 需要有 AfxInitRichEdit2() 才能使用 RichEdit 控制項
@@ -224,6 +225,11 @@ void CAGDPDesignerApp::OnFileNew()
 {
 	CWinApp::OnFileNew();
 }
+
+void CAGDPDesignerApp::OnFileSave()
+{
+}
+
 
 
 // CAGDPDesignerApp 訊息處理常式

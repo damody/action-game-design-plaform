@@ -43,6 +43,8 @@ BEGIN_MESSAGE_MAP( CMainFrame, CMDIFrameWndEx )
 	ON_COMMAND( ID_TOOLS_OPTIONS, &CMainFrame::OnOptions )
 	ON_WM_SETTINGCHANGE()
 	ON_COMMAND( ID_FILE_NEW, &CMainFrame::test )
+	ON_COMMAND( ID_LUA_SAVE, &CMainFrame::OnFileSave )
+	ON_COMMAND( ID_FILE_SAVE_AS, &CMainFrame::OnFileSave )
 	ON_COMMAND( ID_BUTTON_AreaAdd, &CMainFrame::OnButtonAreaAdd )
 	ON_COMMAND( ID_BUTTON_AreaMove, &CMainFrame::OnButtonAreaMove )
 	ON_COMMAND( ID_BUTTON_AreaScale, &CMainFrame::OnButtonAreaScale )
@@ -436,6 +438,11 @@ void CMainFrame::OnButtonAreaScale()
 BOOL CMainFrame::OnCmdMsg( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo )
 {
 	// TODO: 在此加入特定的程式碼和 (或) 呼叫基底類別
+	if (nID==ID_FILE_SAVE && nCode > 0 )
+	{
+		AfxMessageBox(_T("save"));
+	}
+
 	if ( m_D3DFrameView.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) )
 	{
 		return TRUE;
@@ -563,6 +570,21 @@ bool CMainFrame::NewHeroViews( HeroInfo* hero )
 
 	return false;
 }
+
+void CMainFrame::OnFileSave()
+{
+// 	CString str( "Test" );
+// 	AfxMessageBox( str );
+	if(g_HeroInfo!=NULL){
+		CFileDialog dlgFile( FALSE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T( "Lua File (*.lua)|*.lua||" ), NULL, 0 );
+		dlgFile.DoModal();
+		std::wstring path = dlgFile.GetPathName();
+		/* //To Do
+			WriteLua(path,g_HeroInfo);
+		*/
+	}
+}
+
 
 
 CAGDPDesignerView* g_NewView = NULL;

@@ -55,7 +55,7 @@ BOOL CAGDPDesignerDoc::OnNewDocument()
 	{
 		return FALSE;
 	}
-
+	
 	return TRUE;
 }
 
@@ -138,6 +138,12 @@ void CAGDPDesignerDoc::Dump( CDumpContext& dc ) const
 {
 	CDocument::Dump( dc );
 }
+
+void CAGDPDesignerDoc::OnFileSave()
+{
+	return;
+}
+
 #endif //_DEBUG
 
 
