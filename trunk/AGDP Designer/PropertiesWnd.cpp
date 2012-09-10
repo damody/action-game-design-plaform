@@ -1200,7 +1200,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 }
 
 
-void CPropertiesWnd::RefreshPropList_Body( int index )
+void CPropertiesWnd::RefreshPropList_Body(int index)
 {
 	if ( m_EditProp != 3 )
 	{
@@ -1228,38 +1228,26 @@ void CPropertiesWnd::RefreshPropList_Body( int index )
 	}
 
 	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 )->GetSubItem(0);
-	propRoot->GetSubItem( 0 )->SetValue( CString( g_FrameName.c_str() ) );
-	propRoot->GetSubItem( 1 )->SetValue( varInt( g_FrameIndex ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( CString( frameInfo.m_NextFrameName.c_str() ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varInt( frameInfo.m_NextFrameIndex ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue( CString( actionMap[frameInfo.m_HeroAction] ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( varInt( frameInfo.m_Wait ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 6 ) )->SetValue( varBool( frameInfo.m_ClearKeyQueue ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 0 ) )->SetValue( varInt( frameInfo.m_PictureID ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varInt( frameInfo.m_PictureX ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_PictureY ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 8 )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_CenterX ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 8 )->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_CenterY ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 0 ) )->SetValue( varBool( frameInfo.m_Consume.m_JumpRule ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 1 ) )->SetValue( varInt( frameInfo.m_Consume.m_HP ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_Consume.m_MP ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 3 ) )->SetValue( CString( frameInfo.m_Consume.m_NotEnoughFrameName.c_str() ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 4 ) )->SetValue( varInt( frameInfo.m_Consume.m_NotEnoughFrame ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_DVX ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_DVY ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 2 ) )->SetValue( varFloat( frameInfo.m_DVZ ) );
+	if(frameInfo.m_Bodys[index].m_Area.Points().size() != 1) {InitPropList_Body(frameInfo.m_Bodys[index].m_Area.Points().size());}
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+	for(int i=0; i<frameInfo.m_Bodys[index].m_Area.Points().size(); i++)
+	{
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->SetValue( varFloat(frameInfo.m_Bodys[index].m_Area.Points()[i].x) );
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->SetValue( varFloat(frameInfo.m_Bodys[index].m_Area.Points()[i].y) );
+	}
+	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_Bodys[index].m_ZWidth ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_Bodys[index].m_Kind ) );
 }
 
-void CPropertiesWnd::RefreshPropList_Attack()
+void CPropertiesWnd::RefreshPropList_Attack(int index)
 {
 }
 
-void CPropertiesWnd::RefreshPropList_CatchInfo()
+void CPropertiesWnd::RefreshPropList_CatchInfo(int index)
 {
 }
 
-void CPropertiesWnd::RefreshPropList_BloodInfo()
+void CPropertiesWnd::RefreshPropList_BloodInfo(int index)
 {
 }
 

@@ -146,11 +146,16 @@ public:
 	void InitPropList_BloodInfo();
 	void RefreshPropList();
 	void RefreshPropList_Frame();
-	void RefreshPropList_Body( int index );
-	void RefreshPropList_Attack();
-	void RefreshPropList_HitData();
-	void RefreshPropList_CatchInfo();
-	void RefreshPropList_BloodInfo();
+	void RefreshPropList_Body() {RefreshPropList_Body(0);}
+	void RefreshPropList_Body(int index);
+	void RefreshPropList_Attack() {RefreshPropList_Attack(0);}
+	void RefreshPropList_Attack(int index);
+	void RefreshPropList_HitData() {RefreshPropList_HitData(0);}
+	void RefreshPropList_HitData(int index);
+	void RefreshPropList_CatchInfo() {RefreshPropList_CatchInfo(0);}
+	void RefreshPropList_CatchInfo(int index);
+	void RefreshPropList_BloodInfo() {RefreshPropList_BloodInfo(0);}
+	void RefreshPropList_BloodInfo(int index);
 	void SetPropListFont();
 	static void AddNormalActionUcase( CMFCPropertyGridProperty* pProp );
 	static void AddNormalActionDcase( CMFCPropertyGridProperty* pProp );
