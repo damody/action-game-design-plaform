@@ -2,24 +2,23 @@
 #include "..\..\..\AGDP\ConvStr.h"
 
 HeroInfo::HeroInfo(): m_Name(), m_MaxHP( 500 ), m_MaxMP( 500 ),
-m_WalkingSpeed(0),
-m_WalkingSpeedZ(0),
-m_RunningSpeed(0),
-m_RunningSpeedZ(0),
-m_HeavyWalkingSpeed(0),
-m_HeavyWalkingSpeedZ(0),
-m_HeavyRunningSpeed(0),
-m_HeavyRunningSpeedZ(0),
-m_JumpHeight(0),
-m_JumpDistance(0),
-m_JumpDistanceZ(0),
-m_DashHeight(0),
-m_DashDistance(0),
-m_DashDistanceZ(0),
-m_RowingHeight(0),
-m_RowingDistance(0)
+	m_WalkingSpeed( 0 ),
+	m_WalkingSpeedZ( 0 ),
+	m_RunningSpeed( 0 ),
+	m_RunningSpeedZ( 0 ),
+	m_HeavyWalkingSpeed( 0 ),
+	m_HeavyWalkingSpeedZ( 0 ),
+	m_HeavyRunningSpeed( 0 ),
+	m_HeavyRunningSpeedZ( 0 ),
+	m_JumpHeight( 0 ),
+	m_JumpDistance( 0 ),
+	m_JumpDistanceZ( 0 ),
+	m_DashHeight( 0 ),
+	m_DashDistance( 0 ),
+	m_DashDistanceZ( 0 ),
+	m_RowingHeight( 0 ),
+	m_RowingDistance( 0 )
 {
-
 }
 
 bool HeroInfo::CheckHeroDataVaild( LuaCell_Sptr luadata )
@@ -138,6 +137,24 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 			pd.m_Column	= luadata->GetLua<int>( "file/%d/col", i );
 			//pd.m_TextureID  = g_TextureManager.AddTexture( pd.m_Path );
 			m_PictureDatas.push_back( pd );
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	for ( int i = 1;; ++i )
+	{
+		if ( luadata->HasValue( "air_crouch_map/%d/1", i ) )
+		{
+			CrouchData cd;
+			int action = luadata->GetLua<int>( "air_crouch_map/%d/1", i );
+			// get action name "many_punch"
+			cd.m_FrameName	= luadata->GetLua<const char*>( "air_crouch_map/%d/2", i );
+			// get frame offset
+			cd.m_FrameOffset = luadata->GetLua<int>( "air_crouch_map/%d/3", i );
+			m_CrouchMap[action] = cd;
 		}
 		else
 		{
@@ -364,8 +381,9 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 				}
 			}//*/
 
-			if ( luadata->HasValue( "frame/%s/%d/sound", frameName, frameCount ) ) {
-				newData.m_sound = luadata->GetLua<const char*>("frame/%s/%d/sound", frameName, frameCount );
+			if ( luadata->HasValue( "frame/%s/%d/sound", frameName, frameCount ) )
+			{
+				newData.m_sound = luadata->GetLua<const char*>( "frame/%s/%d/sound", frameName, frameCount );
 			}
 
 			fFrame->push_back( newData );
@@ -376,30 +394,30 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 {
 	//判斷結尾是否有.lua 沒有則加上
-	if( !( filePath.size() >= 4 &&
-	    filePath[filePath.size()-4] == '.' &&
-	    filePath[filePath.size()-3] == 'l' &&
-	    filePath[filePath.size()-2] == 'u' &&
-	    filePath[filePath.size()-1] == 'a' ) )
+	if ( !( filePath.size() >= 4 &&
+	                filePath[filePath.size() - 4] == '.' &&
+	                filePath[filePath.size() - 3] == 'l' &&
+	                filePath[filePath.size() - 2] == 'u' &&
+	                filePath[filePath.size() - 1] == 'a' ) )
 	{
-		filePath.resize(filePath.size()+4);
-		filePath[filePath.size()-4] = '.';
-		filePath[filePath.size()-3] = 'l';
-		filePath[filePath.size()-2] = 'u';
-		filePath[filePath.size()-1] = 'a';
+		filePath.resize( filePath.size() + 4 );
+		filePath[filePath.size() - 4] = '.';
+		filePath[filePath.size() - 3] = 'l';
+		filePath[filePath.size() - 2] = 'u';
+		filePath[filePath.size() - 1] = 'a';
 	}
 
-	FILE *file = fopen(ConvStr::GetStr(filePath).c_str(),"w");
+	FILE* file = fopen( ConvStr::GetStr( filePath ).c_str(), "w" );
+	fprintf( file, "require\t\"effect\"\n" );
+	fprintf( file, "require\t\"action\"\n" );
+	fprintf( file, "\n" );
+	fprintf( file, "name\t=\t\"%s\"\n", hero->m_Name.c_str() );
+	fprintf( file, "head\t=\t\"%s\"\n", hero->m_Headpic.c_str() );
+	fprintf( file, "small\t=\t\"%s\"\n", hero->m_Smallpic.c_str() );
+	fprintf( file, "\n" );
+	fprintf( file, "file = {\n" );
 
-	fprintf(file, "require\t\"effect\"\n");
-	fprintf(file, "require\t\"action\"\n");
-	fprintf(file, "\n");
-	fprintf(file, "name\t=\t\"%s\"\n",hero->m_Name.c_str());
-	fprintf(file, "head\t=\t\"%s\"\n",hero->m_Headpic.c_str());
-	fprintf(file, "small\t=\t\"%s\"\n",hero->m_Smallpic.c_str());
-	fprintf(file, "\n");
-	fprintf(file, "file = {\n");
-	for(int i=0;i<hero->m_PictureDatas.size();i++)
+	for ( int i = 0; i < hero->m_PictureDatas.size(); i++ )
 	{
 		std::string path = hero->m_PictureDatas[i].m_Path;
 		bool autoclip = hero->m_PictureDatas[i].m_AutoClip;
@@ -407,32 +425,31 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 		int h = hero->m_PictureDatas[i].m_Height;
 		int row = hero->m_PictureDatas[i].m_Row;
 		int col = hero->m_PictureDatas[i].m_Column;
-
-		fprintf(file, "{path\t=\t\"%s\",\t",path.c_str());
-		fprintf(file, "autoclip\t=\t%d,\t",autoclip);
-		fprintf(file, "w\t=\t%d,\t",w);
-		fprintf(file, "h\t=\t%d,\t",h);
-		fprintf(file, "row\t=\t%d,\t",row);
-		fprintf(file, "col\t=\t%d,\t},\n",col);
+		fprintf( file, "{path\t=\t\"%s\",\t", path.c_str() );
+		fprintf( file, "autoclip\t=\t%d,\t", autoclip );
+		fprintf( file, "w\t=\t%d,\t", w );
+		fprintf( file, "h\t=\t%d,\t", h );
+		fprintf( file, "row\t=\t%d,\t", row );
+		fprintf( file, "col\t=\t%d,\t},\n", col );
 	}
-	fprintf(file, "}\n");
-	fprintf(file, "\n");
-	fprintf(file,"walking_speed\t=\t%f\n",hero->m_WalkingSpeed);
-	fprintf(file,"walking_speedz\t=\t%f\n",hero->m_WalkingSpeedZ);
-	fprintf(file,"running_speed\t=\t%f\n",hero->m_RunningSpeed);
-	fprintf(file,"running_speedz\t=\t%f\n",hero->m_RunningSpeedZ);
-	fprintf(file,"heavy_walking_speed\t=\t%f\n",hero->m_HeavyWalkingSpeed);
-	fprintf(file,"heavy_walking_speedz\t=\t%f\n",hero->m_HeavyWalkingSpeedZ);
-	fprintf(file,"heavy_running_speed\t=\t%f\n",hero->m_HeavyRunningSpeed);
-	fprintf(file,"heavy_running_speedz\t=\t%f\n",hero->m_HeavyRunningSpeedZ);
-	fprintf(file,"jump_height\t=\t%f\n",hero->m_JumpHeight);
-	fprintf(file,"jump_distance\t=\t%f\n",hero->m_JumpDistance);
-	fprintf(file,"jump_distancez\t=\t%f\n",hero->m_JumpDistanceZ);
-	fprintf(file,"dash_height\t=\t%f\n",hero->m_DashHeight);
-	fprintf(file,"dash_distance\t=\t%f\n",hero->m_DashDistance);
-	fprintf(file,"dash_distancez\t=\t%f\n",hero->m_DashDistanceZ);
-	fprintf(file,"rowing_height\t=\t%f\n",hero->m_RowingHeight);
-	fprintf(file,"rowing_distance\t=\t%f\n",hero->m_RowingDistance);
 
-	fclose(file);
+	fprintf( file, "}\n" );
+	fprintf( file, "\n" );
+	fprintf( file, "walking_speed\t=\t%f\n", hero->m_WalkingSpeed );
+	fprintf( file, "walking_speedz\t=\t%f\n", hero->m_WalkingSpeedZ );
+	fprintf( file, "running_speed\t=\t%f\n", hero->m_RunningSpeed );
+	fprintf( file, "running_speedz\t=\t%f\n", hero->m_RunningSpeedZ );
+	fprintf( file, "heavy_walking_speed\t=\t%f\n", hero->m_HeavyWalkingSpeed );
+	fprintf( file, "heavy_walking_speedz\t=\t%f\n", hero->m_HeavyWalkingSpeedZ );
+	fprintf( file, "heavy_running_speed\t=\t%f\n", hero->m_HeavyRunningSpeed );
+	fprintf( file, "heavy_running_speedz\t=\t%f\n", hero->m_HeavyRunningSpeedZ );
+	fprintf( file, "jump_height\t=\t%f\n", hero->m_JumpHeight );
+	fprintf( file, "jump_distance\t=\t%f\n", hero->m_JumpDistance );
+	fprintf( file, "jump_distancez\t=\t%f\n", hero->m_JumpDistanceZ );
+	fprintf( file, "dash_height\t=\t%f\n", hero->m_DashHeight );
+	fprintf( file, "dash_distance\t=\t%f\n", hero->m_DashDistance );
+	fprintf( file, "dash_distancez\t=\t%f\n", hero->m_DashDistanceZ );
+	fprintf( file, "rowing_height\t=\t%f\n", hero->m_RowingHeight );
+	fprintf( file, "rowing_distance\t=\t%f\n", hero->m_RowingDistance );
+	fclose( file );
 }

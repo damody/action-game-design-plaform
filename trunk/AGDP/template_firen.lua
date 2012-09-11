@@ -35,18 +35,10 @@ heavy_walking_speedz=1.850000
 heavy_running_speed=6.200000
 heavy_running_speedz=1.000000
 
---人物預設動作
-action_key_map = {
---格式： 套用的 Action, map = { {按鍵, Frame, FrameID}, ... }
-{Action.Standing, map={{'D', "defend", 0}, {'J', "jump", 0}, {'A', "punch", 0}}},
-{Action.Walking,  map={{'D', "defend", 0}, {'J', "jump", 0}, {'A', "punch", 0}}},
-{Action.Running,  map={{'D', "rolling", 0}, {'J', "dash", 0}, {'A', "run_punch", 0}}}
-}
-
 --落地切換設定
 air_crouch_map={
 --格式： { Action, Frame, FrameID }
-{Action.in_the_air, "crouch", 0},
+{Action.InTheAir, "crouch", 0},
 {Action.Dash, "crouch", 1},
 {Action.BeforeDashAttack, "crouch", 1},
 {Action.DashAttacking, "crouch", 1},
@@ -132,6 +124,6 @@ frame.standing[1]=
 	--持有武器
 	--未完成
 
-	--進入此 frame 播放之音效
-	--未完成
+	--進入此 frame 播放之音效，直接以字串輸入該音效檔路徑
+	sound = "data\\001.wav"
 }

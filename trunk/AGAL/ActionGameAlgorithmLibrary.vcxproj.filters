@@ -99,6 +99,9 @@
     <ClInclude Include="include\Lua\CreateLua.h">
       <Filter>標頭檔\Lua</Filter>
     </ClInclude>
+    <ClInclude Include="include\game\CrouchData.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\FlyingPath.cpp">
