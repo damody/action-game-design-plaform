@@ -1346,7 +1346,7 @@ void Hero::CreateEffect()
 {
 	if ( m_Effect != EffectType::NONE )
 	{
-		D3DXVECTOR4 v = D3DXVECTOR4( ( float )m_PicX, ( float )m_PicY, ( float )m_PicH, ( float )m_PicW );
+		Vector4 v = Vector4( ( float )m_PicX, ( float )m_PicY, ( float )m_PicH, ( float )m_PicW );
 		m_Texture = g_EffectMG->CreateEffect( m_Effect, m_Texture, &v );
 		m_PicX = ( int )v.x;
 		m_PicY = ( int )v.y;

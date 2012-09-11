@@ -61,7 +61,7 @@ public:
 	EffectManager( HWND hwnd );
 	~EffectManager( void );
 
-	int CreateEffect( EffectType::e type, int textureID, D3DXVECTOR4* picpos ); //直接改texture & picpos回傳
+	int CreateEffect( EffectType::e type, int textureID, Vector4* picpos ); //直接改texture & picpos回傳
 
 	void Update( ID3D11RenderTargetView* originRTV );
 	void OnResize( int W, int H );

@@ -168,7 +168,7 @@ EffectManager::EffectManager( HWND hwnd ): m_Page( 0 ), m_Size( 4 )
 	
 }
 
-int EffectManager::CreateEffect( EffectType::e type, int textureID, D3DXVECTOR4* picpos )
+int EffectManager::CreateEffect( EffectType::e type, int textureID, Vector4* picpos )
 {
 	EffectData ed;
 	ed.m_TextureID = textureID;
@@ -180,7 +180,7 @@ int EffectManager::CreateEffect( EffectType::e type, int textureID, D3DXVECTOR4*
 
 		if ( m_Effect[i]->Check( type, &ed ) )
 		{
-			*picpos = D3DXVECTOR4( ed.m_Pos.x, ed.m_Pos.y, ( PIC_W / PASTE_W ), ( PIC_H / PASTE_H ) );
+			*picpos = Vector4( ed.m_Pos.x, ed.m_Pos.y, ( PIC_W / PASTE_W ), ( PIC_H / PASTE_H ) );
 			return m_Effect[i]->GetTextureID();
 		}
 	}
@@ -192,7 +192,7 @@ int EffectManager::CreateEffect( EffectType::e type, int textureID, D3DXVECTOR4*
 		m_Effect[m_Page % m_Size]->CreateEffect( type, &ed );
 	}
 
-	*picpos = D3DXVECTOR4( ed.m_Pos.x, ed.m_Pos.y, ( PIC_W / PASTE_W ), ( PIC_H / PASTE_H ) );
+	*picpos = Vector4( ed.m_Pos.x, ed.m_Pos.y, ( PIC_W / PASTE_W ), ( PIC_H / PASTE_H ) );
 	return m_Effect[m_Page % m_Size]->GetTextureID();
 }
 

@@ -33,7 +33,7 @@ private:
 	struct Vertex
 	{
 		Vector2 position;
-		D3DXVECTOR4 picpos; // x, y, w, h
+		Vector4 picpos; // x, y, w, h
 	}; typedef std::vector<Vertex> Vertices;
 private:
 	void OutputShaderErrorMessage( ID3D10Blob*, const wchar_t*, HWND );

@@ -17,7 +17,7 @@ struct EffectType
 struct EffectData
 {
 	int	m_TextureID;
-	D3DXVECTOR4	m_PicPos;
+	Vector4	m_PicPos;
 	Vector2 m_Pos;
 
 	bool operator == ( const EffectData& index )

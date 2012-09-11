@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 //必要的基本動作定義
 struct HeroAction
@@ -116,4 +117,58 @@ struct HeroAction
 	        BASIC_ACTION_END
 	};
 };
-
+const std::string HeroActionTable[] =
+{
+	"Standing",
+	"Walking",
+	"Running",
+	"StopRunning",
+	"HeavyWeaponWalk",
+	"HeavyWeaponRun",
+	"LightWeaponStandAttack",
+	"LightWeaponJumpAttack",
+	"LightWeaponRunAttack",
+	"LightWeaponDashAttack",
+	"LightWeaponThrow",
+	"HeavyWeaponThrow",
+	"LightWeaponJumpThrow",
+	"HeavyWeaponJumpThrow",
+	"Drink",
+	"BeforeAttack",
+	"Attacking",
+	"AfterAttack",
+	"BeforeSuperAttack",
+	"SuperAttacking",
+	"AfterSuperAttack",
+	"BeforeJumpAttack",
+	"JumpAttacking",
+	"AfterJumpAttack",
+	"BeforeRunAttack",
+	"RunAttacking",
+	"AfterRunAttack",
+	"BeforeDashAttack",
+	"DashAttacking",
+	"AfterDashAttack",
+	"Flip",
+	"Rolling",
+	"Defend",
+	"DefendPunch",
+	"DefendKick",
+	"Catching",
+	"Caught",
+	"Falling",
+	"Jump",
+	"Dash",
+	"Crouch",
+	"Injured",
+	"Lying",
+	"InTheAir",
+	"BeforeSkill",
+	"AfterSkill",
+	"AirSkill",
+	"XAxisSkill",
+	"ZAxisSkill",
+	"GroundSkill",
+	"UniqueSkill",
+	"BasicActionEnd"
+};

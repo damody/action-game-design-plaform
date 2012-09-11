@@ -11,6 +11,8 @@
 #include "BloodInfo.h"
 #include "Body.h"
 #include "Creation.h"
+#include "EffectData.h"
+
 namespace boost {namespace serialization {class access;}}
 //每一個動作 Frame 所含的資訊
 struct FrameInfo
