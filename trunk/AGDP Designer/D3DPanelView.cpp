@@ -814,8 +814,9 @@ void CD3DPanelView::UpdateBody()
 	{
 		m_FrameInfo->m_Bodys[m_BodyID].m_Area.AddPoint( it->x, -it->y );
 	}
-
+	
 	//Refresh
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Body();
 }
 
 void CD3DPanelView::UpdateBody( int index )
@@ -833,6 +834,7 @@ void CD3DPanelView::UpdateAddition_BodyPoint( float x, float y )
 
 	m_FrameInfo->m_Bodys[m_BodyID].m_Area.AddPoint( x, y );
 	//Refresh
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Body();
 }
 
 void CD3DPanelView::UpdateAttack()
@@ -869,10 +871,17 @@ void CD3DPanelView::UpdateAddition_AttackPoint( float x, float y )
 void CD3DPanelView::OnButtonPointadd()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
-	CPointAddDiolog PointAdd;
-	if(PointAdd.DoModal()==IDOK)
+	CPointAddDiolog pointAdd;
+	if(pointAdd.DoModal()==IDOK)
 	{
-	
+		if (m_BodyID != -1)
+		{
+			m_D3DApp.m_Body[m_BodyID].Add( pointAdd.x, pointAdd.y );
+			UpdateAddition_BodyPoint( pointAdd.x, pointAdd.y );
+			m_PointIndex = -1;
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
 	}
 }
 
