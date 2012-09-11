@@ -19,6 +19,7 @@
 #include "FileNewDialog.h"
 #include "global.h"
 
+#include "ConvStr.h"
 #include "game/HeroInfo.h"
 #include "Lua/LuaCell.h"
 
@@ -547,6 +548,15 @@ void CMainFrame::test()
 // 	AfxMessageBox( str );
 	CFileNewDialog fileNew;
 	fileNew.DoModal();
+	/*AfxMessageBox(fileNew.m_Name);*/
+	if (fileNew.m_Type==0)
+	{
+		HeroInfo_RawPtr hero = HeroInfo_RawPtr(new HeroInfo);
+		char buff[1000];
+		ConvStr::WcharToChar( fileNew.m_Name.GetBuffer( 0 ), buff );
+		hero->m_Name = std::string( buff );
+		m_wndFileView.AddFile(hero);
+	}
 }
 
 void CMainFrame::SwitchPictureView( int index )

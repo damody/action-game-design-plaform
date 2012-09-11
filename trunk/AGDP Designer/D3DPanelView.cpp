@@ -698,7 +698,12 @@ void CD3DPanelView::Refresh()
 		if ( g_FrameIndex > -1 && g_FrameIndex < it_FrameInfos->second.size() )
 		{
 			m_FrameInfo = &it_FrameInfos->second[g_FrameIndex];
-			m_D3DApp.SetPic( &g_HeroInfo->m_PictureDatas[m_FrameInfo->m_PictureID], m_FrameInfo->m_PictureX, m_FrameInfo->m_PictureY );
+			if (g_HeroInfo->m_PictureDatas.empty() || m_FrameInfo->m_PictureID >= g_HeroInfo->m_PictureDatas.size())
+			{
+				AfxMessageBox(_T("Picture Data does not existed"));
+			}else{
+				m_D3DApp.SetPic( &g_HeroInfo->m_PictureDatas[m_FrameInfo->m_PictureID], m_FrameInfo->m_PictureX, m_FrameInfo->m_PictureY );
+			}
 			m_D3DApp.SetCenter( m_FrameInfo->m_CenterX, m_FrameInfo->m_CenterY );
 
 			for ( Bodys::iterator it_body = m_FrameInfo->m_Bodys.begin(); it_body != m_FrameInfo->m_Bodys.end(); it_body++ )

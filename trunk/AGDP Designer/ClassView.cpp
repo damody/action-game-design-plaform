@@ -245,7 +245,7 @@ int CClassView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	}
 
 	// 填入一些靜態樹狀檢視資料 (假程式碼，不需要什麼特別的內容)
-	FillClassView();
+	//FillClassView();
 	return 0;
 }
 
@@ -490,34 +490,6 @@ void CClassView::OnAnimationAdd()
 	CString str(buff);
 	std::string frameName(buff);
 
-	if(g_ActiveFramesMap != NULL){
-		(*g_ActiveFramesMap)[frameName]=FrameInfos();
-		
-		HTREEITEM item = m_wndClassView.InsertItem(str, 1, 1, root);
-		(*g_ActiveFramesMap)[frameName].push_back(defaultFrameInfo(item));
-		sprintf(buff, "%d", 0);
-		CString str(buff);
-		HTREEITEM hClass = m_wndClassView.InsertItem(str, 3, 3, item);
-		HTREEITEM vClass = m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("0"), 3, 3, vClass);
-		vClass = m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("0"), 3, 3, vClass);
-		vClass = m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("0"), 3, 3, vClass);
-		vClass = m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("0"), 3, 3, vClass);
-		vClass = m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("0"), 3, 3, vClass);
-		vClass = m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("0"), 3, 3, vClass);
-
-		
-		m_wndClassView.Expand(root, TVE_EXPAND);
-		m_wndClassView.ModifyStyle(0, TVS_EDITLABELS);
-		m_wndClassView.EditLabel(item);
-		num++;
-	}
-
 	if ( g_ActiveFramesMap != NULL )
 	{
 		( *g_ActiveFramesMap )[frameName] = FrameInfos();
@@ -607,18 +579,12 @@ void CClassView::OnFrameAdd()
 		CString str(buff);
 
 		HTREEITEM hClass =  m_wndClassView.InsertItem(str, 3, 3, item);
-		HTREEITEM vClass = m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("0"), 3, 3, vClass);
-		vClass = m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("0"), 3, 3, vClass);
-		vClass = m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("0"), 3, 3, vClass);
-		vClass = m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("0"), 3, 3, vClass);
-		vClass = m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("0"), 3, 3, vClass);
-		vClass = m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("0"), 3, 3, vClass);
+		m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
+		m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
 
 		m_wndClassView.Expand(item, TVE_EXPAND);
 

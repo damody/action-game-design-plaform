@@ -1,8 +1,25 @@
 #include "game\HeroInfo.h"
 #include "..\..\..\AGDP\ConvStr.h"
 
-HeroInfo::HeroInfo(): m_Name(), m_MaxHP( 500 ), m_MaxMP( 500 )
+HeroInfo::HeroInfo(): m_Name(), m_MaxHP( 500 ), m_MaxMP( 500 ),
+m_WalkingSpeed(0),
+m_WalkingSpeedZ(0),
+m_RunningSpeed(0),
+m_RunningSpeedZ(0),
+m_HeavyWalkingSpeed(0),
+m_HeavyWalkingSpeedZ(0),
+m_HeavyRunningSpeed(0),
+m_HeavyRunningSpeedZ(0),
+m_JumpHeight(0),
+m_JumpDistance(0),
+m_JumpDistanceZ(0),
+m_DashHeight(0),
+m_DashDistance(0),
+m_DashDistanceZ(0),
+m_RowingHeight(0),
+m_RowingDistance(0)
 {
+
 }
 
 bool HeroInfo::CheckHeroDataVaild( LuaCell_Sptr luadata )

@@ -257,9 +257,9 @@ int CPropertiesWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	}
 
 	InitPropList();
-	InitPropList_Frame();
-	InitPropList_Body();
-	//m_wndPropList.RemoveAll();
+	//InitPropList_Frame();
+	//InitPropList_Body();
+	m_wndPropList.RemoveAll();
 	//InitPropList_Body();
 	m_wndToolBar.Create( this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_PROPERTIES );
 	m_wndToolBar.LoadToolBar( IDR_PROPERTIES, 0, 0, TRUE /* ¤wÂê©w */ );
