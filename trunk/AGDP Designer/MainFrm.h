@@ -97,7 +97,7 @@ public:
 		m_wndProperties.Clear();
 		m_D3DFrameView.Clear();
 	}
-	void test();
+	void OnFileNew();
 	bool NewHeroViews( HeroInfo* hero );
 	void OpenPictureView( CString& name, PictureData* pic, int index );
 	void SwitchPictureView( int index );

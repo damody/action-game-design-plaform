@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "AGDP Designer.h"
 #include "D3DPanelView.h"
+#include "PointAddDiolog.h"
+#include "PointDeleteDialog.h"
 #include "afxdialogex.h"
 #include "global.h"
 #include "MainFrm.h"
@@ -41,6 +43,8 @@ BEGIN_MESSAGE_MAP( CD3DPanelView, CDockablePane )
 	ON_WM_MBUTTONDOWN()
 	ON_WM_MBUTTONUP()
 	ON_WM_MOUSELEAVE()
+	ON_COMMAND(ID_BUTTON_POINTADD, &CD3DPanelView::OnButtonPointadd)
+	ON_COMMAND(ID_BUTTON_POINTSUB, &CD3DPanelView::OnButtonPointsub)
 END_MESSAGE_MAP()
 
 
@@ -862,3 +866,23 @@ void CD3DPanelView::UpdateAddition_AttackPoint( float x, float y )
 	//Refresh
 }
 
+void CD3DPanelView::OnButtonPointadd()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	CPointAddDiolog PointAdd;
+	if(PointAdd.DoModal()==IDOK)
+	{
+	
+	}
+}
+
+
+void CD3DPanelView::OnButtonPointsub()
+{
+	CPointDeleteDialog PointDelete;
+	if(PointDelete.DoModal()==IDOK)
+	{
+
+	}
+	// TODO: 在此加入您的命令處理常式程式碼
+}
