@@ -316,9 +316,6 @@
     <ClInclude Include="game\Effect.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="game\EffectData.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
     <ClInclude Include="game\RenderTextureClass.h">
       <Filter>inc\game</Filter>
     </ClInclude>
