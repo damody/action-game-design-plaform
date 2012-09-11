@@ -627,7 +627,7 @@ void CPropertiesWnd::InitPropList_CatchInfo(int polygonCount)
 
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_ZWidth" ), varFloat(), _T( "m_ZWidth" ) );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_Strength" ), varInt(), _T( "m_Strength" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_Injury" ), varInt(), _T( "m_Injury" ) );
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_Kind" ), varInt(), _T( "m_Kind" ) );
 	pPropMain->AddSubItem( pProp );
@@ -1241,14 +1241,174 @@ void CPropertiesWnd::RefreshPropList_Body(int index)
 
 void CPropertiesWnd::RefreshPropList_Attack(int index)
 {
+	if ( m_EditProp != 4 )
+	{
+		InitPropList_Attack();
+		m_EditProp = 4;
+	}
+
+	if ( g_ActiveFramesMap->find( g_FrameName ) == g_ActiveFramesMap->end() )
+	{
+		char buff[100];
+		sprintf( buff, "Properties: Frame[%s] does not exist", g_FrameName.c_str() );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		return;
+	}
+	else if ( g_FrameIndex < -1 || g_FrameIndex > ( *g_ActiveFramesMap )[g_FrameName].size() - 1 )
+	{
+		char buff[100];
+		sprintf( buff, "Properties: Frame[%s][%d] does not exist", g_FrameName.c_str(), g_FrameIndex );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		return;
+	}
+
+	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	if(frameInfo.m_Attacks[index].m_Area.Points().size() != 1) {InitPropList_Attack(frameInfo.m_Attacks[index].m_Area.Points().size());}
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+	for(int i=0; i<frameInfo.m_Attacks[index].m_Area.Points().size(); i++)
+	{
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->SetValue( varFloat(frameInfo.m_Attacks[index].m_Area.Points()[i].x) );
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->SetValue( varFloat(frameInfo.m_Attacks[index].m_Area.Points()[i].y) );
+	}
+	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Injury ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Strength ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Kind ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Effect ) );
+
+	( ( CMFCPropItem* )propRoot->GetSubItem( 5 )->GetSubItem ( 0 ) )->SetValue( varFloat( frameInfo.m_Attacks[index].m_DVX ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 5 )->GetSubItem ( 1 ) )->SetValue( varFloat( frameInfo.m_Attacks[index].m_DVY ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 5 )->GetSubItem ( 2 ) )->SetValue( varFloat( frameInfo.m_Attacks[index].m_DVZ ) );
+
+	( ( CMFCPropItem* )propRoot->GetSubItem( 6 ) )->SetValue( varFloat( frameInfo.m_Attacks[index].m_ZWidth ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 7 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Fall ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 8 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_BreakDefend ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 9 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_AttackRest ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 10 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_ReAttackRest ) );
 }
+
+
+void CPropertiesWnd::RefreshPropList_HitData( int index )
+{
+	if ( m_EditProp != 5 )
+	{
+		InitPropList_Body();
+		m_EditProp = 5;
+	}
+
+	if ( g_ActiveFramesMap->find( g_FrameName ) == g_ActiveFramesMap->end() )
+	{
+		char buff[100];
+		sprintf( buff, "Properties: Frame[%s] does not exist", g_FrameName.c_str() );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		return;
+	}
+	else if ( g_FrameIndex < -1 || g_FrameIndex > ( *g_ActiveFramesMap )[g_FrameName].size() - 1 )
+	{
+		char buff[100];
+		sprintf( buff, "Properties: Frame[%s][%d] does not exist", g_FrameName.c_str(), g_FrameIndex );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		return;
+	}
+
+	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+
+	CString _tmpstr; _tmpstr = frameInfo.m_HitDatas[index].m_KeyQueue.c_str();
+	( ( CMFCPropItem* )propRoot->GetSubItem( 0 ) )->SetValue( _tmpstr );
+	_tmpstr = frameInfo.m_HitDatas[index].m_FrameName.c_str();
+	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( _tmpstr );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_HitDatas[index].m_FrameOffset ) );
+}
+
 
 void CPropertiesWnd::RefreshPropList_CatchInfo(int index)
 {
+	if ( m_EditProp != 6 )
+	{
+		InitPropList_Body();
+		m_EditProp = 6;
+	}
+
+	if ( g_ActiveFramesMap->find( g_FrameName ) == g_ActiveFramesMap->end() )
+	{
+		char buff[100];
+		sprintf( buff, "Properties: Frame[%s] does not exist", g_FrameName.c_str() );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		return;
+	}
+	else if ( g_FrameIndex < -1 || g_FrameIndex > ( *g_ActiveFramesMap )[g_FrameName].size() - 1 )
+	{
+		char buff[100];
+		sprintf( buff, "Properties: Frame[%s][%d] does not exist", g_FrameName.c_str(), g_FrameIndex );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		return;
+	}
+
+	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	if(frameInfo.m_Catchs[index].m_Area.Points().size() != 1) {InitPropList_Body(frameInfo.m_Catchs[index].m_Area.Points().size());}
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+	for(int i=0; i<frameInfo.m_Catchs[index].m_Area.Points().size(); i++)
+	{
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->SetValue( varFloat(frameInfo.m_Catchs[index].m_Area.Points()[i].x) );
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->SetValue( varFloat(frameInfo.m_Catchs[index].m_Area.Points()[i].y) );
+	}
+	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_Catchs[index].m_ZWidth ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_Catchs[index].m_Injury ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varInt( frameInfo.m_Catchs[index].m_Kind ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 4 )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_Catchs[index].m_CatchPosition.x ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 4 )->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_Catchs[index].m_CatchPosition.y ) );
+	if(frameInfo.m_Catchs[index].m_CatchWhere == CatchInfo::CatchPosition::NECK) ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( _T( "NECK" ) );
+	else if(frameInfo.m_Catchs[index].m_CatchWhere == CatchInfo::CatchPosition::LEG) ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( _T( "LEG" ) );
+	else ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( _T( "WAIST" ) );
 }
 
 void CPropertiesWnd::RefreshPropList_BloodInfo(int index)
 {
+	if ( m_EditProp != 7 )
+	{
+		InitPropList_Body();
+		m_EditProp = 7;
+	}
+
+	if ( g_ActiveFramesMap->find( g_FrameName ) == g_ActiveFramesMap->end() )
+	{
+		char buff[100];
+		sprintf( buff, "Properties: Frame[%s] does not exist", g_FrameName.c_str() );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		return;
+	}
+	else if ( g_FrameIndex < -1 || g_FrameIndex > ( *g_ActiveFramesMap )[g_FrameName].size() - 1 )
+	{
+		char buff[100];
+		sprintf( buff, "Properties: Frame[%s][%d] does not exist", g_FrameName.c_str(), g_FrameIndex );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		return;
+	}
+
+	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+
+	( ( CMFCPropItem* )propRoot->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_BloodInfos[index].m_Scale ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 1 )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_BloodInfos[index].m_Position.x ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 1 )->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_BloodInfos[index].m_Position.y ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varFloat( frameInfo.m_BloodInfos[index].m_EnableValue ) );
 }
 
 
@@ -1365,7 +1525,6 @@ void CPropertiesWnd::RefreshCenter()
 		RefreshPropList_Frame();
 	}
 }
-
 /*
 void CPropertiesWnd::DeleteProperty(CMFCPropertyGridProperty* pProp)
 {
