@@ -249,3 +249,8 @@ LineVertices PointManager::BuildLineP2P( float scale, float offsetX, float offse
 
 	return lvs;
 }
+
+int PointManager::Size()
+{
+	return m_Point.size();
+}

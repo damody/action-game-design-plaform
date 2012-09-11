@@ -101,27 +101,6 @@ void CFileView::FillFileView()
 	m_wndFileView.SetItemState( hObjectDoc, TVIS_BOLD, TVIS_BOLD );
 	hBackgroundDoc = m_wndFileView.InsertItem( _T( "Background 資料" ), 0, 0 );
 	m_wndFileView.SetItemState( hBackgroundDoc, TVIS_BOLD, TVIS_BOLD );
-	/*
-		HTREEITEM hInc = m_wndFileView.InsertItem(_T("FakeApp 標頭檔"), 0, 0, hRoot);
-
-		m_wndFileView.InsertItem(_T("FakeApp.h"), 2, 2, hInc);
-		m_wndFileView.InsertItem(_T("FakeAppDoc.h"), 2, 2, hInc);
-		m_wndFileView.InsertItem(_T("FakeAppView.h"), 2, 2, hInc);
-		m_wndFileView.InsertItem(_T("Resource.h"), 2, 2, hInc);
-		m_wndFileView.InsertItem(_T("MainFrm.h"), 2, 2, hInc);
-		m_wndFileView.InsertItem(_T("StdAfx.h"), 2, 2, hInc);
-
-		HTREEITEM hRes = m_wndFileView.InsertItem(_T("FakeApp 資源檔"), 0, 0, hRoot);
-
-		m_wndFileView.InsertItem(_T("FakeApp.ico"), 2, 2, hRes);
-		m_wndFileView.InsertItem(_T("FakeApp.rc2"), 2, 2, hRes);
-		m_wndFileView.InsertItem(_T("FakeAppDoc.ico"), 2, 2, hRes);
-		m_wndFileView.InsertItem(_T("FakeToolbar.bmp"), 2, 2, hRes);
-
-		m_wndFileView.Expand(hRoot, TVE_EXPAND);
-		m_wndFileView.Expand(hSrc, TVE_EXPAND);
-		m_wndFileView.Expand(hInc, TVE_EXPAND);
-	*/
 }
 
 void CFileView::OnContextMenu( CWnd* pWnd, CPoint point )
@@ -234,19 +213,8 @@ void CFileView::OnFileOpen()
 					sprintf( buff, "%s", pic.substr( found + 1, pic.length() ).c_str() );
 					CString str( buff );
 					m_wndFileView.InsertItem( str, 2, 2, hHero );
-				}
-
-				for ( unsigned int i = 0; i < hero->m_PictureDatas.size(); i++ )
-				{
-					std::string pic = hero->m_PictureDatas[i].m_Path;
-					size_t found;
-					found = pic.rfind( '\\' );
-					char buff[100];
-					sprintf( buff, "%s", pic.substr( found + 1, pic.length() ).c_str() );
-					CString str( buff );
 					hero->m_PictureDatas[i].m_TextureID = g_TextureMG_Frame->AddTexture(hero->m_PictureDatas[i].m_Path);
 					( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( str, &hero->m_PictureDatas[i], i );
-					
 				}
 
 				m_HeroInfoMap[hHero] = hero;
@@ -388,3 +356,34 @@ void CFileView::OnPicturedataAdd()
 		
 	}
 }
+
+void CFileView::AddFile(HeroInfo *hero)
+{
+	g_HeroInfo = hero;
+	HTREEITEM hHero = m_wndFileView.InsertItem( CString(hero->m_Name.c_str()), 2, 2, hHeroDoc );
+
+	if ( ( ( CMainFrame* )this->GetParentFrame() )->NewHeroViews( hero ) )
+	{
+		for ( unsigned int i = 0; i < hero->m_PictureDatas.size(); i++ )
+		{
+			std::string pic = hero->m_PictureDatas[i].m_Path;
+			size_t found;
+			found = pic.rfind( '\\' );
+			char buff[100];
+			sprintf( buff, "%s", pic.substr( found + 1, pic.length() ).c_str() );
+			CString str( buff );
+			m_wndFileView.InsertItem( str, 2, 2, hHero );
+			hero->m_PictureDatas[i].m_TextureID = g_TextureMG_Frame->AddTexture(hero->m_PictureDatas[i].m_Path);
+			( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( str, &hero->m_PictureDatas[i], i );
+		}
+
+		m_HeroInfoMap[hHero] = hero;
+		m_wndFileView.Expand( hHeroDoc, TVE_EXPAND );
+		g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
+		g_FrameName = "";
+		g_FrameIndex = -1;
+		( ( CMainFrame* )this->GetParentFrame() )->m_wndClassView.Refresh();
+		( ( CMainFrame* )this->GetParentFrame() )->Clear();
+	}
+}
+

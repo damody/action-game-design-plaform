@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "AGDP Designer.h"
 #include "D3DPanelView.h"
+#include "PointAddDiolog.h"
+#include "PointDeleteDialog.h"
 #include "afxdialogex.h"
 #include "global.h"
 #include "MainFrm.h"
@@ -41,6 +43,8 @@ BEGIN_MESSAGE_MAP( CD3DPanelView, CDockablePane )
 	ON_WM_MBUTTONDOWN()
 	ON_WM_MBUTTONUP()
 	ON_WM_MOUSELEAVE()
+	ON_COMMAND(ID_BUTTON_POINTADD, &CD3DPanelView::OnButtonPointadd)
+	ON_COMMAND(ID_BUTTON_POINTSUB, &CD3DPanelView::OnButtonPointsub)
 END_MESSAGE_MAP()
 
 
@@ -698,7 +702,12 @@ void CD3DPanelView::Refresh()
 		if ( g_FrameIndex > -1 && g_FrameIndex < it_FrameInfos->second.size() )
 		{
 			m_FrameInfo = &it_FrameInfos->second[g_FrameIndex];
-			m_D3DApp.SetPic( &g_HeroInfo->m_PictureDatas[m_FrameInfo->m_PictureID], m_FrameInfo->m_PictureX, m_FrameInfo->m_PictureY );
+			if (g_HeroInfo->m_PictureDatas.empty() || m_FrameInfo->m_PictureID >= g_HeroInfo->m_PictureDatas.size())
+			{
+				AfxMessageBox(_T("Picture Data does not existed"));
+			}else{
+				m_D3DApp.SetPic( &g_HeroInfo->m_PictureDatas[m_FrameInfo->m_PictureID], m_FrameInfo->m_PictureX, m_FrameInfo->m_PictureY );
+			}
 			m_D3DApp.SetCenter( m_FrameInfo->m_CenterX, m_FrameInfo->m_CenterY );
 
 			for ( Bodys::iterator it_body = m_FrameInfo->m_Bodys.begin(); it_body != m_FrameInfo->m_Bodys.end(); it_body++ )
@@ -805,8 +814,9 @@ void CD3DPanelView::UpdateBody()
 	{
 		m_FrameInfo->m_Bodys[m_BodyID].m_Area.AddPoint( it->x, -it->y );
 	}
-
+	
 	//Refresh
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Body();
 }
 
 void CD3DPanelView::UpdateBody( int index )
@@ -824,6 +834,7 @@ void CD3DPanelView::UpdateAddition_BodyPoint( float x, float y )
 
 	m_FrameInfo->m_Bodys[m_BodyID].m_Area.AddPoint( x, y );
 	//Refresh
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Body();
 }
 
 void CD3DPanelView::UpdateAttack()
@@ -857,3 +868,62 @@ void CD3DPanelView::UpdateAddition_AttackPoint( float x, float y )
 	//Refresh
 }
 
+void CD3DPanelView::OnButtonPointadd()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	if (m_BodyID == -1 && m_AttackID == -1)return;
+
+	CPointAddDiolog pointAdd;
+	if(pointAdd.DoModal()==IDOK)
+	{
+		if (m_BodyID != -1)
+		{
+			m_D3DApp.m_Body[m_BodyID].Add( pointAdd.x, pointAdd.y );
+			UpdateAddition_BodyPoint( pointAdd.x, pointAdd.y );
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+
+		if (m_AttackID != -1)
+		{
+			m_D3DApp.m_Attack[m_AttackID].Add( pointAdd.x, pointAdd.y );
+			UpdateAddition_BodyPoint( pointAdd.x, pointAdd.y );
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+	}
+}
+
+
+void CD3DPanelView::OnButtonPointsub()
+{
+
+	
+	if (m_BodyID != -1)
+	{
+		CPointDeleteDialog PointDelete(m_D3DApp.m_Body[m_BodyID].Size());
+		if(PointDelete.DoModal()==IDOK)
+		{
+			m_D3DApp.m_Body[m_BodyID].Erase( PointDelete.m_CurID );
+			UpdateBody();
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+		
+	}
+
+	if (m_AttackID != -1)
+	{
+		CPointDeleteDialog PointDelete(m_D3DApp.m_Attack[m_AttackID].Size());
+		if(PointDelete.DoModal()==IDOK)
+		{
+			m_D3DApp.m_Attack[m_AttackID].Erase( PointDelete.m_CurID );
+			UpdateAttack();
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+
+	}
+	
+	// TODO: 在此加入您的命令處理常式程式碼
+}

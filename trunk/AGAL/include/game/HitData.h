@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <map>
 namespace boost {namespace serialization {class access;}}
 struct HitData
 {
@@ -22,3 +23,4 @@ struct HitData
 	}
 };
 typedef std::vector<HitData> HitDatas;
+typedef std::map<int, HitDatas> ActionKeyMap;

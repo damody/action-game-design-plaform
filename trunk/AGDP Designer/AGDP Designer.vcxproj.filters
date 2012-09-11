@@ -234,6 +234,15 @@
     <ClInclude Include="D3DpictureView.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="FileNewDialog.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="PointAddDiolog.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="PointDeleteDialog.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -312,6 +321,15 @@
       <Filter>原始程式檔</Filter>
     </ClCompile>
     <ClCompile Include="D3DpictureView.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="FileNewDialog.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="PointAddDiolog.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="PointDeleteDialog.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
   </ItemGroup>

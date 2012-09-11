@@ -16,8 +16,10 @@
 #include "AGDP Designer.h"
 #include "AGDP DesignerView.h"
 #include "MainFrm.h"
+#include "FileNewDialog.h"
 #include "global.h"
 
+#include "ConvStr.h"
 #include "game/HeroInfo.h"
 #include "Lua/LuaCell.h"
 
@@ -42,10 +44,9 @@ BEGIN_MESSAGE_MAP( CMainFrame, CMDIFrameWndEx )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_CAPTION_BAR, &CMainFrame::OnUpdateViewCaptionBar )
 	ON_COMMAND( ID_TOOLS_OPTIONS, &CMainFrame::OnOptions )
 	ON_WM_SETTINGCHANGE()
-	ON_COMMAND( ID_FILE_NEW, &CMainFrame::test )
-	ON_COMMAND( ID_BUTTON_AreaAdd, &CMainFrame::OnButtonAreaAdd )
-	ON_COMMAND( ID_BUTTON_AreaMove, &CMainFrame::OnButtonAreaMove )
-	ON_COMMAND( ID_BUTTON_AreaScale, &CMainFrame::OnButtonAreaScale )
+	ON_COMMAND( ID_FILE_NEW, &CMainFrame::OnFileNew )
+	ON_COMMAND( ID_FILE_OPEN,  &CMainFrame::OnFileOpen  )
+	ON_COMMAND( ID_LUA_SAVE, &CMainFrame::OnFileSave )
 	ON_COMMAND( ID_CHECK_FrameView, &CMainFrame::OnCheckFrameview )
 	ON_UPDATE_COMMAND_UI( ID_CHECK_FrameView, &CMainFrame::OnUpdateCheckFrameview )
 	ON_COMMAND( ID_CHECK_OutputWindow, &CMainFrame::OnCheckOutputwindow )
@@ -89,16 +90,11 @@ int CMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	mdiTabParams.m_bAutoColor = TRUE;    // 設定為 FALSE 可停用 MDI 索引標籤的自動著色
 	mdiTabParams.m_bDocumentMenu = TRUE; // 啟用索引標籤區域右側的文件功能表
 	EnableMDITabbedGroups( TRUE, mdiTabParams );
-// 	CRect rectTab;
-// 	this->GetWindowRect(&rectTab);
-// 	ScreenToClient(&rectTab);
-// 	m_Tab.Create(CMFCTabCtrl::STYLE_3D, rectTab, this, 1,CMFCTabCtrl::LOCATION_TOP);
-// 	m_wnd1.Create (WS_CHILD | WS_VISIBLE, CRect (0, 0, 0, 0), &m_wndTab, 1);
-// 	m_wnd1.SetFont (&afxGlobalData.fontRegular);
-// 	m_wnd1.SetWindowText (_T("Edit 1"));
+
 	m_wndRibbonBar.Create( this );
 	m_wndRibbonBar.LoadFromResource( IDR_RIBBON );
-	CMFCRibbonButton* pBtnWindows = new CMFCRibbonButton ( 0, _T( "Windows\ni" ), -1, 1 );
+
+	/*CMFCRibbonButton* pBtnWindows = new CMFCRibbonButton ( 0, _T( "Windows\ni" ), -1, 1 );
 	pBtnWindows->SetMenu ( IDR_WINDOWS_MENU, TRUE );
 	CMFCRibbonCategory* pCategory = m_wndRibbonBar.AddCategory (
 	                                        _T( "&Home" ),
@@ -107,7 +103,7 @@ int CMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	CMFCRibbonPanel* pPanelWindow = pCategory->AddPanel (
 	                                        _T( "Window\nw" ),
 	                                        m_PanelImages.ExtractIcon ( 0 ) );
-	pPanelWindow->Add ( pBtnWindows );
+	pPanelWindow->Add ( pBtnWindows );*/
 
 	if ( !m_wndStatusBar.Create( this ) )
 	{
@@ -436,6 +432,11 @@ void CMainFrame::OnButtonAreaScale()
 BOOL CMainFrame::OnCmdMsg( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo )
 {
 	// TODO: 在此加入特定的程式碼和 (或) 呼叫基底類別
+	if (nID==ID_FILE_SAVE && nCode > 0 )
+	{
+		AfxMessageBox(_T("save"));
+	}
+
 	if ( m_D3DFrameView.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) )
 	{
 		return TRUE;
@@ -535,11 +536,19 @@ void CMainFrame::OpenPictureView( CString& name, PictureData* pic, int index )
 	}
 }
 
-void CMainFrame::test()
+void CMainFrame::OnFileNew()
 {
-	CString str( "Test" );
-	//m_wndClientArea.GetMDITabs().GetTabLabel(1,str);
-	AfxMessageBox( str );
+	CFileNewDialog fileNew;
+	if(fileNew.DoModal()==IDOK){
+		if (fileNew.m_Type==0)
+		{
+			HeroInfo_RawPtr hero = HeroInfo_RawPtr(new HeroInfo);
+			char buff[1000];
+			ConvStr::WcharToChar( fileNew.m_Name.GetBuffer( 0 ), buff );
+			hero->m_Name = std::string( buff );
+			m_wndFileView.AddFile(hero);
+		}
+	}	
 }
 
 void CMainFrame::SwitchPictureView( int index )
@@ -563,6 +572,26 @@ bool CMainFrame::NewHeroViews( HeroInfo* hero )
 
 	return false;
 }
+
+void CMainFrame::OnFileSave()
+{
+	if(g_HeroInfo!=NULL){
+		CString defaultName(g_HeroInfo->m_Name.c_str());
+		CFileDialog dlgFile( FALSE, _T("lua"),defaultName , OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T( "Lua File (*.lua)|*.lua||" ), NULL, 0 );
+		dlgFile.DoModal();
+		//AfxMessageBox( dlgFile.GetPathName() );
+		std::wstring path = dlgFile.GetPathName();
+		//To Do
+		HeroInfo::WriteLua(g_HeroInfo,path);
+	}
+}
+
+void CMainFrame::OnFileOpen()
+{
+	m_wndFileView.OnFileOpen();
+}
+
+
 
 
 CAGDPDesignerView* g_NewView = NULL;

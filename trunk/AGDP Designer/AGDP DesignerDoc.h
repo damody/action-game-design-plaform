@@ -31,6 +31,7 @@ public:
 // ÂÐ¼g
 public:
 	virtual BOOL OnNewDocument();
+	virtual void OnFileSave();
 	virtual void Serialize( CArchive& ar );
 #ifdef SHARED_HANDLERS
 	virtual void InitializeSearchContent();

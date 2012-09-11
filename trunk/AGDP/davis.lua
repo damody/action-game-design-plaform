@@ -1,4 +1,4 @@
-require "effect"
+require	"effect"
 require "action"
 
 name= "Davis"
@@ -28,9 +28,17 @@ dash_distancez  = 5.000000
 rowing_height   = 6.000000
 rowing_distance = 5.000000
 
+--人物預設動作
+action_key_map = {
+--格式： 套用的 Action, map = { {按鍵, Frame, FrameID}, ... }
+{Action.Standing, map={{'D', "defend", 0}, {'J', "jump", 0}, {'A', "punch", 0}}},
+{Action.Walking,  map={{'D', "defend", 0}, {'J', "jump", 0}, {'A', "punch", 0}}},
+{Action.Running,  map={{'D', "rolling", 0}, {'J', "dash", 0}, {'A', "run_punch", 0}}}
+}
+
 --落地切換設定
 air_crouch_map={
-{Action.in_the_air, "crouch", 0},
+{Action.InTheAir, "crouch", 0},
 {Action.Dash, "crouch", 1},
 {Action.BeforeDashAttack, "crouch", 1},
 {Action.DashAttacking, "crouch", 1},

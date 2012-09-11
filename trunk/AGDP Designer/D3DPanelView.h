@@ -79,6 +79,8 @@ public:
 	afx_msg void OnMButtonDown( UINT nFlags, CPoint point );
 	afx_msg void OnMButtonUp( UINT nFlags, CPoint point );
 	afx_msg void OnMouseLeave();
+	afx_msg void OnButtonPointadd();
+	afx_msg void OnButtonPointsub();
 };
 
 
