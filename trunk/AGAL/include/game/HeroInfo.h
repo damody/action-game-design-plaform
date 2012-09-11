@@ -1,11 +1,16 @@
 #pragma once
 #include <string>
 #include <vector>
+
 #include "PictureData.h"
 #include "Lua/LuaCell.h"
 #include "FrameInfo.h"
-#include "common\shared_ptr.h"
+#include "CrouchData.h"
+#include "common/shared_ptr.h"
 namespace boost {namespace serialization {class access;}}
+
+
+
 //每一個英雄需要用到的資訊
 struct HeroInfo
 {
@@ -19,6 +24,10 @@ struct HeroInfo
 	PictureDatas	m_PictureDatas;
 	//frame inforamtion
 	FramesMap	m_FramesMap;
+	//crouch inforamtion 落地切換資訊
+	CrouchMap	m_CrouchMap;
+	//action default inforamtion 人物預設動作
+	ActionKeyMap	m_ActionKeyMap;
 	//走路速度
 	float		m_WalkingSpeed;
 	//走路的z(按↑↓時)速度

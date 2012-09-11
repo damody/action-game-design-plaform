@@ -101,6 +101,7 @@
     <ClInclude Include="include\game\CheeAction.h" />
     <ClInclude Include="include\game\Consume.h" />
     <ClInclude Include="include\game\Creation.h" />
+    <ClInclude Include="include\game\CrouchData.h" />
     <ClInclude Include="include\game\FlyingPath.h" />
     <ClInclude Include="include\game\FrameInfo.h" />
     <ClInclude Include="include\game\HeroAction.h" />
