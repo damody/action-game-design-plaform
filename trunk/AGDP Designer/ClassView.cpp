@@ -259,100 +259,6 @@ void CClassView::FillClassView()
 {
 	HTREEITEM hRoot = m_wndClassView.InsertItem( _T( "John/Jane Doe" ), 0, 0 );
 	m_wndClassView.SetItemState( hRoot, TVIS_BOLD, TVIS_BOLD );
-	/*HTREEITEM hClass = m_wndClassView.InsertItem(_T("standing"), 1, 1, hRoot);
-	HTREEITEM hClass2 = m_wndClassView.InsertItem(_T("0"), 3, 3, hClass);
-
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-	hClass2 = m_wndClassView.InsertItem(_T("1"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-	hClass2 = m_wndClassView.InsertItem(_T("2"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-	hClass2 = m_wndClassView.InsertItem(_T("3"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-
-	hClass = m_wndClassView.InsertItem(_T("walking"), 1, 1, hRoot);
-	hClass2 = m_wndClassView.InsertItem(_T("0"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-	hClass2 = m_wndClassView.InsertItem(_T("1"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-	hClass2 = m_wndClassView.InsertItem(_T("2"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-	hClass2 = m_wndClassView.InsertItem(_T("3"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-
-	hClass = m_wndClassView.InsertItem(_T("jump"), 1, 1, hRoot);
-	hClass2 = m_wndClassView.InsertItem(_T("0"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-	hClass2 = m_wndClassView.InsertItem(_T("1"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-	hClass2 = m_wndClassView.InsertItem(_T("2"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-	hClass2 = m_wndClassView.InsertItem(_T("3"), 3, 3, hClass);
-	m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass2);
-	m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass2);
-
-	m_wndClassView.Expand(hRoot, TVE_EXPAND);
-	m_wndClassView.Expand(hClass, TVE_EXPAND);
-	m_wndClassView.Expand(hClass2, TVE_EXPAND);*/
 }
 
 void CClassView::OnLButtonUp( UINT nFlags, CPoint point )
@@ -392,29 +298,29 @@ void CClassView::OnContextMenu( CWnd* pWnd, CPoint point )
 	{
 		pWndTree->SelectItem( hTreeItem );
 
-		if ( IsAnAnimation( pWndTree, hTreeItem ) )
-		{
-			menu.LoadMenu( IDR_POPUP_ANIMATION_EDIT );
-		}
-		else if ( pWndTree->GetRootItem() == hTreeItem )
+		if ( pWndTree->GetRootItem() == hTreeItem )
 		{
 			menu.LoadMenu( IDR_POPUP_CHARACTER_EDIT );
 		}
-		else if ( IsNumber( pWndTree->GetItemText( hTreeItem ) ) )
+		else if ( IsAnAnimation( pWndTree, hTreeItem ) )
+		{
+			menu.LoadMenu( IDR_POPUP_ANIMATION_EDIT );
+		}
+		else if ( IsNumber( pWndTree->GetItemText( hTreeItem ) ) && IsAnAnimation( pWndTree, m_wndClassView.GetParentItem( hTreeItem ) ))
 		{
 			menu.LoadMenu( IDR_POPUP_FRAME_EDIT );
 		}
-		else if ( IsNumber( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) ) )
+		else if ( pWndTree->GetItemText( hTreeItem ) == CString("Bodys") )
 		{
-			//menu.LoadMenu(IDR_POPUP_POINTS_EDIT);
+			menu.LoadMenu(IDR_POPUP_BODYADD);
 		}
-		else if ( 1 == 1 )
+		else if ( pWndTree->GetItemText( hTreeItem ) == CString("Attacks") )
 		{
-			//menu.LoadMenu(IDR_POPUP_POINT_EDIT);
+			menu.LoadMenu(IDR_POPUP_ATTACKADD);
 		}
-		else
+		else if ( pWndTree->GetItemText( hTreeItem ) == CString("Bodys") )
 		{
-			//menu.LoadMenu(IDR_POPUP_OTHER_EDIT);
+
 		}
 	}
 	else
@@ -682,99 +588,6 @@ void CClassView::OnSelectItem( HTREEITEM item )
 {
 	CPropertiesWnd* _propWnd = CPropertiesWnd::GetInstance();
 	HTREEITEM pItem = m_wndClassView.GetParentItem( item );
-
-	/*if(m_wndClassView.GetRootItem() == item)
-	{
-		m_wndClassView.SelectItem(item);
-		m_wndClassView.SetFocus();
-	}
-	else if(IsNumber(m_wndClassView.GetItemText(item)))
-	{
-		pItem = m_wndClassView.GetParentItem(pItem);
-		if(pItem == m_wndClassView.GetRootItem()){
-			_propWnd->InitPropList_Frame();
-		}
-		else
-		{
-			_propWnd->InitPropList_Point();
-		}
-	}
-	else if (pItem != m_wndClassView.GetRootItem())
-	{
-		CString text = m_wndClassView.GetItemText(item);
-
-		if(!text.Compare(CString("Bodys"))){
-			_propWnd->InitPropList_Body();
-
-			HTREEITEM FrameIndex = m_wndClassView.GetParentItem(item);
-			HTREEITEM Frame	     = m_wndClassView.GetParentItem(FrameIndex);
-			char buff[1000];
-			ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
-			std::string FrameName(buff);
-
-			if (g_FrameName != FrameName || g_FrameIndex != _ttoi(m_wndClassView.GetItemText(FrameIndex)))
-			{
-				g_FrameName = FrameName;
-				g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
-				//((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
-			}
-
-			//((CMainFrame*)(this->GetParentFrame()))->EditBody(_ttoi(m_wndClassView.GetItemText(item)));
-
-		}
-		else if(!text.Compare(CString("Attacks")))
-		{
-			_propWnd->InitPropList_Attack();
-
-			HTREEITEM FrameIndex = m_wndClassView.GetParentItem(item);
-			HTREEITEM Frame	     = m_wndClassView.GetParentItem(FrameIndex);
-			char buff[1000];
-			ConvStr::WcharToChar(m_wndClassView.GetItemText(Frame).GetBuffer(0),buff);
-			std::string FrameName(buff);
-
-			if (g_FrameName != FrameName || g_FrameIndex != _ttoi(m_wndClassView.GetItemText(FrameIndex)))
-			{
-				g_FrameName = FrameName;
-				g_FrameIndex = _ttoi(m_wndClassView.GetItemText(FrameIndex));
-				//((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
-			}
-
-			//((CMainFrame*)(this->GetParentFrame()))->EditAttack(_ttoi(m_wndClassView.GetItemText(item)));
-
-		}
-		else if(!text.Compare(CString("HitDatas")))
-		{
-			_propWnd->InitPropList_HitData();
-		}
-		else if(!text.Compare(CString("Catchs")))
-		{
-			_propWnd->InitPropList_CatchInfo();
-		}
-		else if(!text.Compare(CString("BloodInfos")))
-		{
-			_propWnd->InitPropList_BloodInfo();
-		}
-		else if(!text.Compare(CString("Creations")))
-		{
-
-		}
-		else
-		{
-			char buff[1000];
-			ConvStr::WcharToChar(text.GetBuffer(0),buff);
-			std::string FrameName(buff);
-			/ *if(g_ActiveFramesMap->find(FrameName) != g_ActiveFramesMap->end())
-			{
-				g_FrameName = FrameName;
-				g_FrameIndex = _ttoi(m_wndClassView.GetItemText(item));
-				((CMainFrame*)(this->GetParentFrame()))->RefreshFrameEdit();
-			}* /
-		}
-
-		m_wndClassView.SelectItem(item);
-		m_wndClassView.SetFocus();
-	}*/
-	/*AfxMessageBox(m_wndClassView.GetItemText(item));*/
 	if ( m_wndClassView.GetRootItem() == item )
 	{
 		m_wndClassView.SelectItem( item );
@@ -858,12 +671,6 @@ void CClassView::OnSelectItem( HTREEITEM item )
 
 BOOL CClassView::IsAnAnimation( CTreeCtrl* treeCtrl, HTREEITEM item )
 {
-	/*CString caption = treeCtrl->GetItemText(item);
-	for(unsigned int i=0;i<MAX_ANIMATIONS;i++)
-	{
-		if(anims[i].Compare(caption) == 0)
-			return TRUE;
-	}*/
 	return treeCtrl->GetParentItem( item ) == treeCtrl->GetRootItem();
 }
 
@@ -1185,172 +992,25 @@ FrameInfo CClassView::defaultFrameInfo( HTREEITEM item )
 	fi.m_DVX = 0.0f;
 	fi.m_DVY = 0.0f;
 	fi.m_DVZ = 0.0f;
-	/*
-	fi.m_Bodys.resize(1);
-	fi.m_Bodys[0].m_Area = Polygon2D();
-	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
-	fi.m_Bodys[0].m_Area.AddPoint(0.0f, 0.0f);
-	fi.m_Bodys[0].m_ZWidth = 0.0f;
-	fi.m_Bodys[0].m_Kind = 0;
-
-	fi.m_Attacks.resize(1);
-	fi.m_Attacks[0].m_Area = Polygon2D();
-	fi.m_Attacks[0].m_Area.AddPoint(0.0f, 0.0f);
-	fi.m_Attacks[0].m_Area.AddPoint(0.0f, 0.0f);
-	fi.m_Attacks[0].m_Injury = 0;
-	fi.m_Attacks[0].m_Strength = 0;
-	fi.m_Attacks[0].m_Kind = 0;
-	fi.m_Attacks[0].m_Effect = 0;
-	fi.m_Attacks[0].m_DVX = 0.0f;
-	fi.m_Attacks[0].m_DVY = 0.0f;
-	fi.m_Attacks[0].m_DVZ = 0.0f;
-	fi.m_Attacks[0].m_ZWidth = 0.0f;
-	fi.m_Attacks[0].m_Fall = 0;
-	fi.m_Attacks[0].m_BreakDefend = 0;
-	fi.m_Attacks[0].m_AttackRest = 0;
-	fi.m_Attacks[0].m_ReAttackRest = 0;
-
-	fi.m_HitDatas.resize(1);
-	fi.m_HitDatas[0].m_KeyQueue = "";
-	fi.m_HitDatas[0].m_FrameName = "none";
-	fi.m_HitDatas[0].m_FrameOffset = 1;
-
-	fi.m_Catchs.resize(1);
-	fi.m_Catchs[0].m_Area = Polygon2D();
-	fi.m_Catchs[0].m_Area.AddPoint(0.0f, 0.0f);
-	fi.m_Catchs[0].m_Area.AddPoint(0.0f, 0.0f);
-	fi.m_Catchs[0].m_ZWidth = 0.0f;
-	fi.m_Catchs[0].m_Injury = 0;
-	fi.m_Catchs[0].m_Kind = 0;
-	fi.m_Catchs[0].m_CatchPosition.x = 0.0f;
-	fi.m_Catchs[0].m_CatchPosition.y = 0.0f;
-	fi.m_Catchs[0].m_CatchWhere = CatchInfo::CatchPosition::NECK;
-
-	fi.m_BeCatch.m_Neck.x = 0.0f;
-	fi.m_BeCatch.m_Neck.y = 0.0f;
-	fi.m_BeCatch.m_Leg.x = 0.0f;
-	fi.m_BeCatch.m_Leg.y = 0.0f;
-	fi.m_BeCatch.m_Waist.x = 0.0f;
-	fi.m_BeCatch.m_Waist.y = 0.0f;
-
-	fi.m_BloodInfos.resize(1);
-	fi.m_BloodInfos[0].m_Scale = 0.0f;
-	fi.m_BloodInfos[0].m_Position.x = 0.0f;
-	fi.m_BloodInfos[0].m_Position.y = 0.0f;
-	fi.m_BloodInfos[0].m_EnableValue = 0.0f;
-
-	fi.m_Creations.resize(1);
-	fi.m_Creations[0].name = "none";
-	fi.m_Creations[0].amount = 0;
-	fi.m_Creations[0].x = 0.0f;
-	fi.m_Creations[0].y = 0.0f;
-	fi.m_Creations[0].facing = 0;
-	fi.m_Creations[0].frame = "0";
-	fi.m_Creations[0].frameID = 0;
-	fi.m_Creations[0].HP = 0;
-	fi.m_Creations[0].v0.x = 0.0f;
-	fi.m_Creations[0].v0.y = 0.0f;
-	fi.m_Creations[0].v0.z = 0.0f;
-	*/
 	return fi;
 }
-
-
-/*
-CMFCPropertyGridProperty* CClassView::GetDefaultPropList()
-{
-	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("主要屬性"));
-
-	CMFCPropertyGridProperty* pProp;
-	pProp = new CMFCPropertyGridProperty(_T("Frame Name"), _T("standing"), _T("表示這個 Frame 的名字"));
-	AddNormalActionDcase(pProp);
-	pGroup1->AddSubItem(pProp);
-
-	pProp = new CMFCPropertyGridProperty(_T("Frame Index"), (_variant_t) 0l, _T("表示在這個 Frame 的哪一格"));
-	pProp->AllowEdit(FALSE);
-	pGroup1->AddSubItem(pProp);
-
-	pProp = new CMFCPropertyGridProperty(_T("Next Frame Name"), _T("standing"), _T("表示跳到哪一個 Frame"));
-	AddNormalActionDcase(pProp);
-	pGroup1->AddSubItem(pProp);
-
-	pProp = new CMFCPropertyGridProperty(_T("Next Frame Index"), (_variant_t) 0l, _T("表示跳到 Frame 的哪一格"));
-	pProp->EnableSpinControl(TRUE, 0, 300);
-	pGroup1->AddSubItem(pProp);
-
-	pProp = new CMFCPropertyGridProperty(_T("Hero Action"), _T("STANDING"), _T("表示動作的狀態"));
-	AddNormalActionUcase(pProp);
-	pProp->AllowEdit(TRUE);
-	pGroup1->AddSubItem(pProp);
-
-	pProp = new CMFCPropertyGridProperty( _T("Wait"), (_variant_t) 0l, _T("這個 Frame 執行圈數，一圈1/60秒"));
-	pProp->EnableSpinControl(TRUE, 0, 10000);
-	pGroup1->AddSubItem(pProp);
-
-	pProp = new CMFCPropertyGridProperty( _T("ClearKeyQueue"), (_variant_t) false, _T("是否要清掉 KeyQueue 的資料"));
-	pGroup1->AddSubItem(pProp);
-
-	pProp = new CMFCPropertyGridProperty(_T("Picture ID"), (_variant_t) 0l, _T("表示用哪一張圖裡面可以顯示的動作"));
-	pProp->EnableSpinControl(TRUE, 0, 300);
-	pGroup1->AddSubItem(pProp);
-
-	CMFCPropertyGridProperty* pCenterSize = new CMFCPropertyGridProperty(_T("Center Offset"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("Center X Offset"), (_variant_t) 0l, _T("人物X方向偏移修正量"));
-	pProp->EnableSpinControl(TRUE, -1000, 1000);
-	pCenterSize->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("Center Y Offset"), (_variant_t) 0l, _T("人物Y方向偏移修正量"));
-	pProp->EnableSpinControl(TRUE, -1000, 1000);
-	pCenterSize->AddSubItem(pProp);
-	pGroup1->AddSubItem(pCenterSize);
-
-	CMFCPropertyGridProperty* pPicturePos = new CMFCPropertyGridProperty(_T("Picture Offset"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("Picture X Offset"), (_variant_t) 0l, _T("人物圖片X偏移量"));
-	pProp->EnableSpinControl(TRUE, -1000, 1000);
-	pPicturePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("Picture Y Offset"), (_variant_t) 0l, _T("人物圖片Y偏移量"));
-	pProp->EnableSpinControl(TRUE, -1000, 1000);
-	pPicturePos->AddSubItem(pProp);
-	pGroup1->AddSubItem(pPicturePos);
-
-	CMFCPropertyGridProperty* pConsumePos = new CMFCPropertyGridProperty(_T("Consume"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("JumpRule"), (_variant_t) false, _T("False 時只對next有用，True 時只對 hitdata有用"));
-	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("HP"), (_variant_t) 0l, _T("要消耗的 hp"));
-	pProp->EnableSpinControl(TRUE, -1000, 1000);
-	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("MP"), (_variant_t) 0l, _T("要消耗的 mp"));
-	pProp->EnableSpinControl(TRUE, -1000, 1000);
-	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("Enough Frame Name"), _T("standing"), _T("夠消耗的話跳到該 Frame"));
-	AddNormalActionDcase(pProp);
-	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Enough Frame Index"), (_variant_t) 0l, _T("夠的話跳到該格"));
-	pProp->EnableSpinControl(TRUE, 0, 300);
-	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty( _T("Not Enough Frame Name"), _T("standing"), _T("不夠消耗的話跳到該 Frame"));
-	AddNormalActionDcase(pProp);
-	pConsumePos->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("Not Next Frame Index"), (_variant_t) 0l, _T("不夠的話跳到該格"));
-	pProp->EnableSpinControl(TRUE, 0, 300);
-	pConsumePos->AddSubItem(pProp);
-	pGroup1->AddSubItem(pConsumePos);
-
-	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty(_T("Direction Vector"), 0, TRUE);
-	pProp = new CMFCPropertyGridProperty(_T("DVX"), (_variant_t) 0.f, _T("X方向左右的移動向量"));
-	pDirectionVector->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("DVY"), (_variant_t) 0.f, _T("Y方向左右的移動向量"));
-	pDirectionVector->AddSubItem(pProp);
-	pProp = new CMFCPropertyGridProperty(_T("DVZ"), (_variant_t) 0.f, _T("Z方向左右的移動向量"));
-	pDirectionVector->AddSubItem(pProp);
-	pGroup1->AddSubItem(pDirectionVector);
-
-	return pGroup1;
-}*/
-
 
 void CClassView::OnBodyAdd()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	int frameIndex = _ttoi(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(item)));
+	char buff[100];
+	ConvStr::WcharToChar(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item))),buff);
+	std::string frameName(buff);
+	Body body;
+	body.m_Kind = 1;
+	body.m_ZWidth = 1;
+	(*g_ActiveFramesMap)[frameName][frameIndex].m_Bodys.push_back(body);
+	sprintf(buff,"%d",(*g_ActiveFramesMap)[frameName][frameIndex].m_Bodys.size()-1);
+	CString str(buff);
+	m_wndClassView.InsertItem( str , 3, 3, item );
+	m_wndClassView.Expand(item, TVE_EXPAND);
 }
 
 
