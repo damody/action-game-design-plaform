@@ -26,6 +26,7 @@ public:
 
 	Points& GetPoints() {return m_Point;}
 
+	int Size();
 	void Clear();
 	bool Empty();
 	Points::iterator End();

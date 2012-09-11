@@ -28,7 +28,7 @@ void CPointAddDiolog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CPointAddDiolog, CDialogEx)
-	ON_EN_CHANGE(IDC_Xvaule, &CPointAddDiolog::OnEnChangeXvaule)
+	ON_EN_CHANGE(IDC_Xvalue, &CPointAddDiolog::OnEnChangeXvaule)
 	ON_EN_CHANGE(IDC_Yvalue, &CPointAddDiolog::OnEnChangeYvalue)
 END_MESSAGE_MAP()
 
@@ -46,7 +46,7 @@ void CPointAddDiolog::OnEnChangeXvaule()
 	// TODO:  在此加入控制項告知處理常式程式碼
 
 	CString str;
-	GetDlgItem(IDC_Xvaule)-> GetWindowText(str);
+	GetDlgItem(IDC_Xvalue)-> GetWindowText(str);
 	if (!str.IsEmpty())
 	{
 		wchar_t r = str.Right(1).GetBuffer(0)[0];

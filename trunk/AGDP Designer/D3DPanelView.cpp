@@ -871,6 +871,8 @@ void CD3DPanelView::UpdateAddition_AttackPoint( float x, float y )
 void CD3DPanelView::OnButtonPointadd()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
+	if (m_BodyID == -1 && m_AttackID == -1)return;
+
 	CPointAddDiolog pointAdd;
 	if(pointAdd.DoModal()==IDOK)
 	{
@@ -878,7 +880,14 @@ void CD3DPanelView::OnButtonPointadd()
 		{
 			m_D3DApp.m_Body[m_BodyID].Add( pointAdd.x, pointAdd.y );
 			UpdateAddition_BodyPoint( pointAdd.x, pointAdd.y );
-			m_PointIndex = -1;
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+
+		if (m_AttackID != -1)
+		{
+			m_D3DApp.m_Attack[m_AttackID].Add( pointAdd.x, pointAdd.y );
+			UpdateAddition_BodyPoint( pointAdd.x, pointAdd.y );
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
@@ -888,10 +897,33 @@ void CD3DPanelView::OnButtonPointadd()
 
 void CD3DPanelView::OnButtonPointsub()
 {
-	CPointDeleteDialog PointDelete;
-	if(PointDelete.DoModal()==IDOK)
+
+	
+	if (m_BodyID != -1)
 	{
+		CPointDeleteDialog PointDelete(m_D3DApp.m_Body[m_BodyID].Size());
+		if(PointDelete.DoModal()==IDOK)
+		{
+			m_D3DApp.m_Body[m_BodyID].Erase( PointDelete.m_CurID );
+			UpdateBody();
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+		
+	}
+
+	if (m_AttackID != -1)
+	{
+		CPointDeleteDialog PointDelete(m_D3DApp.m_Attack[m_AttackID].Size());
+		if(PointDelete.DoModal()==IDOK)
+		{
+			m_D3DApp.m_Attack[m_AttackID].Erase( PointDelete.m_CurID );
+			UpdateAttack();
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
 
 	}
+	
 	// TODO: 在此加入您的命令處理常式程式碼
 }
