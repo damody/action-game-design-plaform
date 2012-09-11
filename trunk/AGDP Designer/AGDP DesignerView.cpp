@@ -164,6 +164,7 @@ void CAGDPDesignerView::AddPicturedata( CString name, PictureData* pic, int inde
 	if ( m_ViewMap.find( pic ) == m_ViewMap.end() )
 	{
 		AddView( RUNTIME_CLASS( CD3DpictureView ), name, index );
+		g_NewPictureView->m_PictureID = index;
 		g_NewPictureView->OnInitialUpdate();
 		g_NewPictureView->Refresh( pic );
 		m_ViewMap[pic] = g_NewPictureView;

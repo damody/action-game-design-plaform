@@ -371,7 +371,7 @@ void CD3DPanelView::OnLButtonDown( UINT nFlags, CPoint point )
 
 	if ( !m_D3DApp.m_Body.empty() && m_BodyID > -1 )
 	{
-		if ( m_KeyAPress && !m_CtrlPress && !m_ShiftPress )
+	if ( m_KeyAPress && !m_CtrlPress && !m_ShiftPress )
 		{
 			m_D3DApp.m_Body[m_BodyID].Add( point.x, point.y );
 			UpdateAddition_BodyPoint( point.x, point.y );
@@ -816,7 +816,7 @@ void CD3DPanelView::UpdateBody()
 	}
 	
 	//Refresh
-	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Body();
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Body(m_BodyID);
 }
 
 void CD3DPanelView::UpdateBody( int index )
@@ -834,7 +834,7 @@ void CD3DPanelView::UpdateAddition_BodyPoint( float x, float y )
 
 	m_FrameInfo->m_Bodys[m_BodyID].m_Area.AddPoint( x, y );
 	//Refresh
-	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Body();
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Body(m_BodyID);
 }
 
 void CD3DPanelView::UpdateAttack()

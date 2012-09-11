@@ -1202,11 +1202,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 
 void CPropertiesWnd::RefreshPropList_Body(int index)
 {
-	if ( m_EditProp != 3 )
-	{
-		InitPropList_Body();
-		m_EditProp = 3;
-	}
+	m_EditProp = 3;
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) == g_ActiveFramesMap->end() )
 	{
@@ -1228,12 +1224,13 @@ void CPropertiesWnd::RefreshPropList_Body(int index)
 	}
 
 	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-	if(frameInfo.m_Bodys[index].m_Area.Points().size() != 1) {InitPropList_Body(frameInfo.m_Bodys[index].m_Area.Points().size());}
+	InitPropList_Body(frameInfo.m_Bodys[index].m_Area.Points().size());
+
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
 	for(int i=0; i<frameInfo.m_Bodys[index].m_Area.Points().size(); i++)
 	{
 		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->SetValue( varFloat(frameInfo.m_Bodys[index].m_Area.Points()[i].x) );
-		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->SetValue( varFloat(frameInfo.m_Bodys[index].m_Area.Points()[i].y) );
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->SetValue( varFloat(-frameInfo.m_Bodys[index].m_Area.Points()[i].y) );
 	}
 	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_Bodys[index].m_ZWidth ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_Bodys[index].m_Kind ) );
