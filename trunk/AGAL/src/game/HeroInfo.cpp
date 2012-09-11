@@ -146,40 +146,6 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 
 	for ( int i = 1;; ++i )
 	{
-		if ( luadata->HasValue( "action_key_map/%d/1", i ) )
-		{
-			int action = luadata->GetLua<int>( "action_key_map/%d/1", i );
-			HitDatas hds;
-
-			for ( int hitCount = 1;; ++hitCount )
-			{
-				if ( luadata->HasValue( "action_key_map/%d/map/%d/1", i, hitCount ) )
-				{
-					HitData hitData;
-					// get hit key action "d>a"
-					hitData.m_KeyQueue	= luadata->GetLua<const char*>( "action_key_map/%d/map/%d/1", i, hitCount );
-					// get action name "many_punch"
-					hitData.m_FrameName	= luadata->GetLua<const char*>( "action_key_map/%d/map/%d/2", i, hitCount );
-					// get frame offset
-					hitData.m_FrameOffset	= luadata->GetLua<int>( "action_key_map/%d/map/%d/3", i, hitCount );
-					hds.push_back( hitData );
-				}
-				else
-				{
-					break;
-				}
-			}
-
-			m_ActionKeyMap[action] = hds;
-		}
-		else
-		{
-			break;
-		}
-	}
-
-	for ( int i = 1;; ++i )
-	{
 		if ( luadata->HasValue( "air_crouch_map/%d/1", i ) )
 		{
 			CrouchData cd;
