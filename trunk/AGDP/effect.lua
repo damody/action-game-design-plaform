@@ -12,7 +12,7 @@ end -- function protect_table
 
 
 -------------------------- test -----------------
-count = 0;
+count = -1;
 function GetEnum()
 	count = count + 1;
 	return count;

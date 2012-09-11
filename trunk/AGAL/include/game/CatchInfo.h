@@ -16,6 +16,8 @@ struct CatchInfo
 	float	m_ZWidth;
 	//傷害
 	int	m_Injury;
+	//強度
+	int	m_Strong;
 	//三種狀況：抓人中、正要抓人
 	int	m_Kind;
 	//人被抓之後，那個被抓的人會有一個被抓的點，而那個點要移到抓的人的 m_CatchPosition 個位置
@@ -37,3 +39,10 @@ struct CatchInfo
 	}
 };
 typedef std::vector<CatchInfo> CatchInfos;
+
+const std::string CatchPositionTable[] = 
+{
+	"Neck",
+	"LEG",
+	"WAIST"
+};

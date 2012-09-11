@@ -54,3 +54,18 @@ struct Attack
 	}
 };
 typedef std::vector<Attack> Attacks;
+
+const std::string effectTable[] =
+{
+	"Fire",
+	"BlackFire",
+	"PurpleFire",
+	"Freeze",
+	"IceSlow",
+	"Punch",
+	"Knife",
+	"Thunder",
+	"Palsy",
+	"Faint",
+	"End"
+};
