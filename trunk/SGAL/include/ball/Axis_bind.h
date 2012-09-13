@@ -1,22 +1,47 @@
 #pragma once
-#include "ball/ball.h"
+//#include "ball/ball.h"
+//#include "ball/Tbox.h"
 
+template<class ParentPtr>
 struct Axis_bind
 {
 	float* x, *y;
-	Ball* ball;
+	ParentPtr m_ParentPtr;
 
-	Axis_bind( Ball* b )
-		: x( &( b->mPosition.x ) ), y( &( b->mPosition.y ) ), ball( b ) {}
-	Axis_bind( float* val )
-		: x( val ), y( val ), ball( 0 )
+	Axis_bind(ParentPtr b)
+		:x(&(b->m_Position.x)), y(&(b->m_Position.y)), m_ParentPtr(b){}
+	Axis_bind(float *val)
+		:x(val), y(val), m_ParentPtr(0)
 	{}
-	bool operator == ( Ball* b ) const
+	bool operator == (ParentPtr b) const
 	{
-		return ball == b;
+		return m_ParentPtr == b;
 	}
-
+	
 };
-bool Compare_axis_x ( const Axis_bind& lhs, const Axis_bind& rhs );
-bool Compare_axis_y ( const Axis_bind& lhs, const Axis_bind& rhs );
-typedef std::vector<Axis_bind> Axis_binds;
+
+template<class Tptr>
+bool Compare_x(const Tptr& lhs, const Tptr& rhs)
+{
+	return *lhs.x < *rhs.x;
+}
+
+template<class _Ty>
+struct axis_y_greater
+	: public std::binary_function<_Ty, _Ty, bool>
+{	// functor for operator>
+	bool operator()(const _Ty& _Left, const _Ty& _Right) const
+	{	// apply operator> to operands
+		return *_Left.y > *_Right.y;
+	}
+};
+
+template<class _Ty>
+struct axis_y_less
+	: public std::binary_function<_Ty, _Ty, bool>
+{	// functor for operator>
+	bool operator()(const _Ty& _Left, const _Ty& _Right) const
+	{	// apply operator> to operands
+		return *_Left.y < *_Right.y;
+	}
+};
