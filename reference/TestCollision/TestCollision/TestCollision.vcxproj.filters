@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="原始程式檔">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="標頭檔">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="資源檔">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{f057bbf9-c629-453b-b2c1-8f90f352e9b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{cef5ead3-9208-42f5-ad39-7c48f8f250f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\math">
+      <UniqueIdentifier>{0bd95afd-96ca-4bbf-9885-2d3bfe72a7d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\ball">
+      <UniqueIdentifier>{db6ef6f7-9267-429f-9f6e-d38e9d31a608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ball">
+      <UniqueIdentifier>{c04857ff-2f2b-4b09-bae4-af5592bd7b2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\math">
+      <UniqueIdentifier>{430a6309-f541-4d64-bbad-7520180af475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\algo">
+      <UniqueIdentifier>{850d34ff-a74e-44c3-bba5-d50769dee9c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\common">
+      <UniqueIdentifier>{01e5cc09-0030-4d97-807e-5759f17532f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\algo">
+      <UniqueIdentifier>{ef02dc0d-5f24-4a6b-b07b-60098b2977a5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ball\Axis_bind.h">
+      <Filter>include\ball</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ball\ball.h">
+      <Filter>include\ball</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ball\ballmanager.h">
+      <Filter>include\ball</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ball\BallptrManager.h">
+      <Filter>include\ball</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ball\behavior.h">
+      <Filter>include\ball</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ball\BehaviorAnimator.h">
+      <Filter>include\ball</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ball\delay.h">
+      <Filter>include\ball</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ball\gravity.h">
+      <Filter>include\ball</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ball\homing.h">
+      <Filter>include\ball</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ball\split.h">
+      <Filter>include\ball</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ball\straight.h">
+      <Filter>include\ball</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ball\Tbox.h">
+      <Filter>include\ball</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\AABB2D.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\asm_math.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\AxisAlignedBox.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\BasicMath.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\Centroid.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\Matrix3.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\Matrix4.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\Plane.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\PlaneBoundedVolume.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\Polygon2D.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\Quaternion.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\Ray.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\Sphere.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\Vector2.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\Vector3.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\Vector4.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Timer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ptrManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algo\nway.h">
+      <Filter>include\algo</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algo\RandomWay.h">
+      <Filter>include\algo</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algo\StraightWay.h">
+      <Filter>include\algo</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algo\SwirlWay.h">
+      <Filter>include\algo</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algo\Trajectory.h">
+      <Filter>include\algo</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algo\TrajectoryAnimator.h">
+      <Filter>include\algo</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\SGA_config.h">
+      <Filter>include\common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\shared_ptr.h">
+      <Filter>include\common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\utility.h">
+      <Filter>include\common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ball\Axis_bind.cpp">
+      <Filter>src\ball</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ball\ball.cpp">
+      <Filter>src\ball</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ball\BallManager.cpp">
+      <Filter>src\ball</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ball\BallptrManager.cpp">
+      <Filter>src\ball</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ball\BehaviorAnimator.cpp">
+      <Filter>src\ball</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ball\delay.cpp">
+      <Filter>src\ball</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ball\gravity.cpp">
+      <Filter>src\ball</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ball\homing.cpp">
+      <Filter>src\ball</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ball\split.cpp">
+      <Filter>src\ball</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ball\straight.cpp">
+      <Filter>src\ball</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ball\Tbox.cpp">
+      <Filter>src\ball</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\AABB2D.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\AxisAlignedBox.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Centroid.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Math.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Matrix3.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Matrix4.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Plane.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Polygon2D.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Quaternion.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Vector2.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Vector3.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Vector4.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ptrmanager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Timer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="main2.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="src\algo\nway.cpp">
+      <Filter>src\algo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\algo\RandomWay.cpp">
+      <Filter>src\algo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\algo\StraightWay.cpp">
+      <Filter>src\algo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\algo\SwirlWay.cpp">
+      <Filter>src\algo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\algo\TrajectoryAnimator.cpp">
+      <Filter>src\algo</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

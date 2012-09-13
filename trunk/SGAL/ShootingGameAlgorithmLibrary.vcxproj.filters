@@ -140,6 +140,9 @@
     <ClCompile Include="src\path\LinearLine.cpp">
       <Filter>src\path</Filter>
     </ClCompile>
+    <ClCompile Include="src\ptrManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ball\Axis_bind.h">
@@ -270,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="include\path\BsplineCurve.h">
       <Filter>inc\path</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ptrManager.h">
+      <Filter>inc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

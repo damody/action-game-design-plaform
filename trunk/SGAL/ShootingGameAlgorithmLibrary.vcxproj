@@ -191,6 +191,7 @@
     <ClCompile Include="src\path\LinearLine.cpp" />
     <ClCompile Include="src\path\MathFunctionCurve.cpp" />
     <ClCompile Include="src\path\PathInterpolater.cpp" />
+    <ClCompile Include="src\ptrManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\auto_link_sgal.hpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="include\path\LinearLine.h" />
     <ClInclude Include="include\path\MathFunctionCurve.h" />
     <ClInclude Include="include\path\PathInterpolater.h" />
+    <ClInclude Include="include\ptrManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
