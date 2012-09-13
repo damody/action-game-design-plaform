@@ -826,13 +826,14 @@ void CD3DPanelView::UpdateBody( int index )
 	m_FrameInfo->m_Bodys[m_BodyID].m_Area.Points()[index].x = m_D3DApp.m_Body[m_BodyID].GetPoints()[index].x;
 	m_FrameInfo->m_Bodys[m_BodyID].m_Area.Points()[index].y = -m_D3DApp.m_Body[m_BodyID].GetPoints()[index].y;
 	//Refresh
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshBodyPoint(index);
 }
 
 void CD3DPanelView::UpdateAddition_BodyPoint( float x, float y )
 {
 	if ( m_FrameInfo == NULL ) { return; }
 
-	m_FrameInfo->m_Bodys[m_BodyID].m_Area.AddPoint( x, y );
+	m_FrameInfo->m_Bodys[m_BodyID].m_Area.AddPoint( x, -y );
 	//Refresh
 	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Body(m_BodyID);
 }
@@ -926,4 +927,12 @@ void CD3DPanelView::OnButtonPointsub()
 	}
 	
 	// TODO: 在此加入您的命令處理常式程式碼
+}
+
+void CD3DPanelView::EditBodyPoint( int id )
+{
+	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	m_D3DApp.m_Body[m_BodyID].Modify(id,frameInfo->m_Bodys[m_BodyID].m_Area.Points()[id].x,-frameInfo->m_Bodys[m_BodyID].m_Area.Points()[id].y);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
 }

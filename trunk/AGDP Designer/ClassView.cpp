@@ -306,7 +306,7 @@ void CClassView::OnContextMenu( CWnd* pWnd, CPoint point )
 		{
 			menu.LoadMenu( IDR_POPUP_ANIMATION_EDIT );
 		}
-		else if ( IsNumber( pWndTree->GetItemText( hTreeItem ) ) && IsAnAnimation( pWndTree, m_wndClassView.GetParentItem( hTreeItem ) ))
+		else if ( IsAnAnimation( pWndTree, m_wndClassView.GetParentItem( hTreeItem ) ))
 		{
 			menu.LoadMenu( IDR_POPUP_FRAME_EDIT );
 		}
@@ -318,9 +318,43 @@ void CClassView::OnContextMenu( CWnd* pWnd, CPoint point )
 		{
 			menu.LoadMenu(IDR_POPUP_ATTACKADD);
 		}
-		else if ( pWndTree->GetItemText( hTreeItem ) == CString("Bodys") )
+		else if ( pWndTree->GetItemText( hTreeItem ) == CString("HitDatas") )
 		{
-
+			menu.LoadMenu(IDR_POPUP_HITDATAADD);
+		}
+		else if ( pWndTree->GetItemText( hTreeItem ) == CString("Catchs") )
+		{
+			menu.LoadMenu(IDR_POPUP_CATCHADD);
+		}
+		else if ( pWndTree->GetItemText( hTreeItem ) == CString("BloodInfos") )
+		{
+			menu.LoadMenu(IDR_POPUP_BLOODINFOADD);
+		}else if ( pWndTree->GetItemText( hTreeItem ) == CString("Creations") )
+		{
+			menu.LoadMenu(IDR_POPUP_CREATIONADD);
+		}
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString("Bodys") )
+		{
+			menu.LoadMenu(IDR_POPUP_BODYDELETE);
+		}
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString("Attacks") )
+		{
+			menu.LoadMenu(IDR_POPUP_ATTACKDELETE);
+		}
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString("HitDatas") )
+		{
+			menu.LoadMenu(IDR_POPUP_HITDATADELETE);
+		}
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString("Catchs") )
+		{
+			menu.LoadMenu(IDR_POPUP_CATCHDELETE);
+		}
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString("BloodInfos") )
+		{
+			menu.LoadMenu(IDR_POPUP_BLOODINFODELETE);
+		}else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString("Creations") )
+		{
+			menu.LoadMenu(IDR_POPUP_CREATIONDELETE);
 		}
 	}
 	else
@@ -403,13 +437,13 @@ void CClassView::OnAnimationAdd()
 		( *g_ActiveFramesMap )[frameName].push_back( defaultFrameInfo( item ) );
 		sprintf( buff, "%d", 0 );
 		CString str( buff );
-		HTREEITEM hClass = m_wndClassView.InsertItem( str, 3, 3, item );
+		HTREEITEM hClass =  m_wndClassView.InsertItem(str, 3, 3, item);
 		m_wndClassView.InsertItem( _T( "Bodys" ), 3, 3, hClass );
 		m_wndClassView.InsertItem( _T( "Attacks" ), 3, 3, hClass );
 		m_wndClassView.InsertItem( _T( "HitDatas" ), 3, 3, hClass );
 		m_wndClassView.InsertItem( _T( "Catchs" ), 3, 3, hClass );
-		m_wndClassView.InsertItem( _T( "BeCatch" ), 3, 3, hClass );
 		m_wndClassView.InsertItem( _T( "BloodInfos" ), 3, 3, hClass );
+		m_wndClassView.InsertItem( _T( "Creations" ), 3, 3, hClass );
 		m_wndClassView.Expand( root, TVE_EXPAND );
 		m_wndClassView.ModifyStyle( 0, TVS_EDITLABELS );
 		m_wndClassView.EditLabel( item );
@@ -489,9 +523,8 @@ void CClassView::OnFrameAdd()
 		m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
 		m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
 		m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("BeCatch"), 3, 3, hClass);
 		m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
-
+		m_wndClassView.InsertItem(_T("Creations"), 3, 3, hClass);
 		m_wndClassView.Expand(item, TVE_EXPAND);
 
 		g_FrameName = frameName;
@@ -1017,6 +1050,39 @@ void CClassView::OnBodyAdd()
 void CClassView::OnBodyDelete()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	int count = _ttoi(m_wndClassView.GetItemText(item));
+	int frameIndex = _ttoi(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item))));
+	char buff[100];
+	ConvStr::WcharToChar(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item)))),buff);
+	std::string frameName(buff);
+	
+	(*g_ActiveFramesMap)[frameName][frameIndex].m_Bodys.erase((*g_ActiveFramesMap)[frameName][frameIndex].m_Bodys.begin()+count);
+
+	if ( item != NULL )
+	{
+		HTREEITEM tmp_item = m_wndClassView.GetNextSiblingItem( item );
+
+		for ( int i = count;; i++ )
+		{
+			if ( tmp_item != NULL )
+			{
+				TCHAR num_str[10];
+				wsprintf( num_str, _T( "%d" ), i );
+				m_wndClassView.SetItemText( tmp_item, num_str );
+				tmp_item = m_wndClassView.GetNextSiblingItem( tmp_item );
+			}
+			else { break; }
+		}
+
+		m_wndClassView.DeleteItem( item );
+
+		//Clear
+		if ( g_FrameName == frameName && g_FrameIndex == count )
+		{
+			( ( CMainFrame* )this->GetParentFrame() )->Clear();
+		}
+	}
 }
 
 

@@ -168,7 +168,7 @@ void CMFCPropItem::SetValue( const COleVariant&  varValue )
 	m_Update = false;
 	m_Record = m_varValue;
 	Redraw();
-
+	
 	if ( bInPlaceEdit )
 	{
 		ASSERT_VALID( m_pWndList );
@@ -180,7 +180,7 @@ void CMFCPropItem::SetValue( const COleVariant&  varValue )
 
 CPropertiesWnd* CPropertiesWnd::instance = NULL;
 
-CPropertiesWnd::CPropertiesWnd(): m_EditProp( 0 )
+CPropertiesWnd::CPropertiesWnd(): m_EditProp( 0 ),m_Index( 0 )
 {
 	instance = this;
 	m_lastSelectedItem = NULL;
@@ -271,7 +271,7 @@ int CPropertiesWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	// 所有命令都將經由此控制項傳送，而不是經由父框架:
 	m_wndToolBar.SetRouteCommandsViaFrame( FALSE );
 	AdjustLayout();
-	//SetTimer(0,)
+	
 	return 0;
 }
 
@@ -1087,7 +1087,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 	{
 		COleVariant v = propRoot->GetSubItem( 8 )->GetSubItem( 0 )->GetValue();
 		v.ChangeType( VT_R4, NULL );
-		int i = v.fltVal;
+		float i = v.fltVal;
 		frameInfo->m_CenterX = i;
 		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
 	}
@@ -1096,7 +1096,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 	{
 		COleVariant v = propRoot->GetSubItem( 8 )->GetSubItem( 1 )->GetValue();
 		v.ChangeType( VT_R4, NULL );
-		int i = v.fltVal;
+		float i = v.fltVal;
 		frameInfo->m_CenterX = i;
 		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
 	}
@@ -1178,7 +1178,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 	{
 		COleVariant v = propRoot->GetSubItem( 10 )->GetSubItem( 0 )->GetValue();
 		v.ChangeType( VT_R4, NULL );
-		int i = v.fltVal;
+		float i = v.fltVal;
 		frameInfo->m_DVX = i;
 	}
 
@@ -1186,7 +1186,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 	{
 		COleVariant v = propRoot->GetSubItem( 10 )->GetSubItem( 1 )->GetValue();
 		v.ChangeType( VT_R4, NULL );
-		int i = v.fltVal;
+		float i = v.fltVal;
 		frameInfo->m_DVY = i;
 	}
 
@@ -1194,7 +1194,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 	{
 		COleVariant v = propRoot->GetSubItem( 10 )->GetSubItem( 2 )->GetValue();
 		v.ChangeType( VT_R4, NULL );
-		int i = v.fltVal;
+		float i = v.fltVal;
 		frameInfo->m_DVZ = i;
 	}
 }
@@ -1203,6 +1203,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 void CPropertiesWnd::RefreshPropList_Body(int index)
 {
 	m_EditProp = 3;
+	m_Index = index;
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) == g_ActiveFramesMap->end() )
 	{
@@ -1234,6 +1235,33 @@ void CPropertiesWnd::RefreshPropList_Body(int index)
 	}
 	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_Bodys[index].m_ZWidth ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_Bodys[index].m_Kind ) );
+
+	
+}
+
+void CPropertiesWnd::UpdateBody()
+{
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+
+	int n = propRoot->GetSubItem( 0 )->GetSubItemsCount();
+	for (int i=0 ; i < n ; i++)
+	{
+		if(( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->IsEdited())
+		{
+			frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0)->GetValue().fltVal;
+			//Refresh
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint(i);
+		}
+
+		if (( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->IsEdited())
+		{
+			frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y = -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1)->GetValue().fltVal;
+			//Refresh
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint(i);
+		}
+		
+	}
 }
 
 void CPropertiesWnd::RefreshPropList_Attack(int index)
@@ -1505,6 +1533,9 @@ void CPropertiesWnd::Update()
 	case 2:
 		UpdatePropList_Frame();
 		break;
+	case 3:
+		UpdateBody();
+		break;
 	}
 }
 
@@ -1522,6 +1553,18 @@ void CPropertiesWnd::RefreshCenter()
 		RefreshPropList_Frame();
 	}
 }
+
+void CPropertiesWnd::RefreshBodyPoint( int i )
+{
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->SetValue( varFloat(frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->SetValue( varFloat(-frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y) );
+}
+
+
+
+
 /*
 void CPropertiesWnd::DeleteProperty(CMFCPropertyGridProperty* pProp)
 {

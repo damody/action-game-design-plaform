@@ -32,6 +32,7 @@ public:
 	void Init();
 	void Refresh();
 	void EditBody( int id );
+	void EditBodyPoint( int id);
 	void EditAttack( int id );
 	void EditCenter();
 	void EditCenter( float x, float y );

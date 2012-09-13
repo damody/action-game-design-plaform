@@ -78,6 +78,7 @@ class CPropertiesWnd : public CDockablePane
 {
 private:
 	int m_EditProp;// 0-None 1-Basic 2-Frame 3-Bodys 4-Attack 5-Hit 6-Catch 7-Blood
+	int m_Index;
 // «Øºc
 public:
 	CPropertiesWnd();
@@ -144,6 +145,7 @@ public:
 	void InitPropList_CatchInfo() {InitPropList_CatchInfo(1);}
 	void InitPropList_CatchInfo(int polygonCount);
 	void InitPropList_BloodInfo();
+
 	void RefreshPropList();
 	void RefreshPropList_Frame();
 	void RefreshPropList_Body() {RefreshPropList_Body(0);}
@@ -156,14 +158,17 @@ public:
 	void RefreshPropList_CatchInfo(int index);
 	void RefreshPropList_BloodInfo() {RefreshPropList_BloodInfo(0);}
 	void RefreshPropList_BloodInfo(int index);
+
 	void SetPropListFont();
 	static void AddNormalActionUcase( CMFCPropertyGridProperty* pProp );
 	static void AddNormalActionDcase( CMFCPropertyGridProperty* pProp );
 	static void AddPointXY( CMFCPropertyGridProperty*& pProp );
 
 	void RefreshCenter();
+	void RefreshBodyPoint(int i);
 public:
 	void Update();
 	void UpdatePropList_Frame();
+	void UpdateBody();
 	//void DeleteProperty(CMFCPropertyGridProperty* pProp);
 };
