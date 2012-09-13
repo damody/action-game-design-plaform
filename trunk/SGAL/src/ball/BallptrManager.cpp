@@ -1,7 +1,8 @@
+/*
 #include "BallptrManager.h"
 #include "math/AABB2D.h"
 
-BallptrManager::BallptrManager( int _mNumThreads /*= 1 */ ) : mNumThreads( _mNumThreads ), mOver( false )
+BallptrManager::BallptrManager( int _mNumThreads / *= 1 * / ) : mNumThreads( _mNumThreads ), mOver( false )
 {
 	memset( mThreadsWork, 0, sizeof( mThreadsWork ) );
 
@@ -263,7 +264,7 @@ BallptrVector BallptrManager::GetCollision( Polygon2D& poly, int collisionMask )
 			}
 	}
 
-	/*
+	/ *
 	size_t bsize = mBallptrVector.size();
 	for (size_t i=0;i < bsize;i++)
 	{
@@ -271,6 +272,7 @@ BallptrVector BallptrManager::GetCollision( Polygon2D& poly, int collisionMask )
 			if (mBallptrVector[i]->mPolygon2D.IsCollision(poly))
 				res.push_back(mBallptrVector[i]);
 	}
-	*/
+	* /
 	return res;
 }
+*/
