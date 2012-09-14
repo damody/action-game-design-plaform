@@ -61,7 +61,7 @@ frame.standing[1]=
 	centerx=39, centery=79, 	--人物支點(position)相對於圖片左上角的位置
 	clear_key_queue=0,			--進入此 frame 時是否清除按鍵佇列，0：完全不清除，1：清除末項，2：清空
 
-	--進入此 frame 必須付出的代價(※未完成讀取)
+	--進入此 frame 必須付出的代價
 	consume = {
 		rule = 0, 				--標示以何種方式進入此 frame 必須付出此代價： -1:next , 0:both , 1:hit
 		HP = 0, MP = 0,			--代價
@@ -81,7 +81,7 @@ frame.standing[1]=
 	--血跡，格式：{大小, x, y}座標以圖片左上角為基準
 	blood={{size=1.0,0,0}, {size=2.0,30,50}, {size=3.3,80,90}},
 
-	--攻擊(※未完成讀取)
+	--攻擊
 	attack={
 		{kind=FOLLOW_EFFECT, 	--攻擊種類
 		effect=EFFECT_FIRE, 	--擊中效果，僅在特殊種類之攻擊有效，否則多填 Effect.End
@@ -106,7 +106,7 @@ frame.standing[1]=
 		}
 	},
 
-	--創造物件(※未完成讀取)
+	--創造物件
 	newobjects={
 		{name="XXX", 			--欲創造物件之名稱
 		amount=1, 				--創造數量
