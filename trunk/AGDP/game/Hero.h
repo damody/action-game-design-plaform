@@ -116,6 +116,7 @@ public:
 protected:
 	void Init();
 	void NextFrame();
+	FrameInfo* FindFrame( std::string rframe, int rframeID);
 	bool ScanKeyQue();	//false無控制動作
 	void ClearKeyQue();
 	void Flicker();		//閃爍

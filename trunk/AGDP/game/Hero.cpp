@@ -168,7 +168,7 @@ void Hero::Update( float dt )
 			m_Vel.y = 0;
 
 			if ( pastInAir || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH ) {
-				//Frame 改到蹲
+				//Frame 改到 CrouchMap 中對應的 Frame
 				CrouchMap::iterator icm = m_HeroInfo->m_CrouchMap.find( m_Action );
 				if(icm != m_HeroInfo->m_CrouchMap.end()){
 					m_Frame = icm->second.m_FrameName;
@@ -178,16 +178,15 @@ void Hero::Update( float dt )
 					m_Frame = "crouch";
 					m_FrameID = 0;
 				}
-				
-				/*
-				if ( m_Action == HeroAction::DASH || m_Action == HeroAction::BEFORE_DASH_ATTACK ||
-				     m_Action == HeroAction::DASH_ATTACKING || m_Action == HeroAction::AFTER_DASH_ATTACK )
-				{
-					m_FrameID = 1;
+				//尋找對應的 frame ，若找不到則擲回錯誤並終止程式
+				FramesMap::iterator ifm = m_HeroInfo->m_FramesMap.find(m_Frame);
+				if(ifm == m_HeroInfo->m_FramesMap.end() || ifm->second.size() <= m_FrameID){
+					printf( "fatal error: can't find crouch frame \"%s\"[%d] !\n", m_Frame.c_str(), m_FrameID );
+					system( "pause" );
+					throw "No such frame";
 				}
-				else { m_FrameID = 0; }//*/
 
-				FrameInfo* f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
+				FrameInfo* f = &ifm->second[m_FrameID];
 				//clear keyQue
 				if ( m_KeyQue.empty() ) {}
 				else if ( f->m_ClearKeyQueue == 1 ) {
@@ -906,7 +905,7 @@ bool Hero::ScanKeyQue()
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::JUMP_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::JUMP_KEYUP ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+						     ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
 						{
 							flag = false;
 						}
@@ -931,7 +930,7 @@ bool Hero::ScanKeyQue()
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DEF_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DEF_KEYUP ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+						     ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
 						{
 							flag = false;
 						}
@@ -940,22 +939,18 @@ bool Hero::ScanKeyQue()
 					break;
 				}
 
-				//*/
 				riKey ++;
 				rHit --;
 			}
 
-			if ( pHit == rHit + 1 && flag )
-			{
+			if ( pHit == rHit + 1 && flag ){
 				nFrame = hit[i].m_FrameName;
 				nFramID = hit[i].m_FrameOffset;
 
-				if ( nKey == 1 && isSKey( *pHit ) )
-				{
+				if ( nKey == 1 && isSKey( *pHit ) ){
 					keyUsed( *pHit );
 				}
-				else
-				{
+				else{
 					m_Vel.z = 0; // fix skill z up down problem
 					m_KeyQue.pop_back();
 					break;
@@ -967,20 +962,17 @@ bool Hero::ScanKeyQue()
 	//清理佇列
 	i = m_KeyQue.begin();
 
-	while ( i != m_KeyQue.end() )
-	{
+	while ( i != m_KeyQue.end() ){
 		/*  i->key > CtrlKey::ATK2 ：特殊按鍵放開事件要處理
 		 *  i->key >=CtrlKey::DEF  ：特殊按鍵放開事件不處理 */
-		if ( i->key >= CtrlKey::ATK2 && g_Time - i->time > KEYLIFE_AFTER_KEYUP )
-		{
+		if ( i->key >= CtrlKey::ATK2 && g_Time - i->time > KEYLIFE_AFTER_KEYUP ){
 			i = m_KeyQue.erase( i );
 		}
 		else { i++; }
 	}
 
 	//下個影格
-	if ( nFrame.empty() )
-	{
+	if ( nFrame.empty() ){
 		return false;
 	}
 
@@ -1123,6 +1115,17 @@ void Hero::UpdateVel( int dx, int dz )
 			m_Vel.z -= m_FrameInfo->m_DVZ;
 		}
 	}
+}
+
+FrameInfo* Hero::FindFrame( std::string rframe, int rframeID){
+	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find( rframe );
+
+	if ( iframe == m_HeroInfo->m_FramesMap.end() || ( int )iframe->second.size() <= rframeID )
+	{
+		printf( "error: can't find frame \"%s\"[%d] !\n", rframe.c_str(), rframeID );
+		return NULL;
+	}
+	return &iframe->second[rframeID];
 }
 
 void Hero::SetPosition( Vector3 pos )
