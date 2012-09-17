@@ -143,18 +143,8 @@ void Hero::Update( float dt )
 	}
 
 	//恢復
-	if ( m_MP < 500 ) {
-		m_MP += 1 + 200 / m_HP;
-
-		if ( m_MP > 500 ) { m_MP = 500; }
-	}
-
-	if ( m_HP < m_MaxRecoverHP ) {
-		m_HP += 1;
-
-		if ( m_HP > m_MaxRecoverHP ) { m_HP = m_MaxRecoverHP; }
-	}
-
+	Recover();
+	
 	//物理
 	Vector3 pastPos = m_Position;
 	//m_Position += m_Vel;
@@ -179,14 +169,23 @@ void Hero::Update( float dt )
 
 			if ( pastInAir || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH ) {
 				//Frame 改到蹲
-				m_Frame = "crouch";
-
+				CrouchMap::iterator icm = m_HeroInfo->m_CrouchMap.find( m_Action );
+				if(icm != m_HeroInfo->m_CrouchMap.end()){
+					m_Frame = icm->second.m_FrameName;
+					m_FrameID = icm->second.m_FrameOffset;
+				}
+				else{
+					m_Frame = "crouch";
+					m_FrameID = 0;
+				}
+				
+				/*
 				if ( m_Action == HeroAction::DASH || m_Action == HeroAction::BEFORE_DASH_ATTACK ||
 				     m_Action == HeroAction::DASH_ATTACKING || m_Action == HeroAction::AFTER_DASH_ATTACK )
 				{
 					m_FrameID = 1;
 				}
-				else { m_FrameID = 0; }
+				else { m_FrameID = 0; }//*/
 
 				FrameInfo* f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
 				//clear keyQue
@@ -950,7 +949,6 @@ bool Hero::ScanKeyQue()
 			{
 				nFrame = hit[i].m_FrameName;
 				nFramID = hit[i].m_FrameOffset;
-				m_Vel.z = 0; // fix skill z up down problem
 
 				if ( nKey == 1 && isSKey( *pHit ) )
 				{
@@ -958,6 +956,7 @@ bool Hero::ScanKeyQue()
 				}
 				else
 				{
+					m_Vel.z = 0; // fix skill z up down problem
 					m_KeyQue.pop_back();
 					break;
 				}
@@ -1319,6 +1318,20 @@ void Hero::PushKey( KeyInfo k )
 		}
 
 		//*/
+	}
+}
+
+void Hero::Recover(){
+	if ( m_MP < 500 ) {
+		m_MP += 1 + 200 / m_HP;
+
+		if ( m_MP > 500 ) { m_MP = 500; }
+	}
+
+	if ( m_HP < m_MaxRecoverHP ) {
+		m_HP += 1;
+
+		if ( m_HP > m_MaxRecoverHP ) { m_HP = m_MaxRecoverHP; }
 	}
 }
 

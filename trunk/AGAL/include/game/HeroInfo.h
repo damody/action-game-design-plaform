@@ -26,8 +26,6 @@ struct HeroInfo
 	FramesMap	m_FramesMap;
 	//crouch inforamtion 落地切換資訊
 	CrouchMap	m_CrouchMap;
-	//action default inforamtion 人物預設動作
-	ActionKeyMap	m_ActionKeyMap;
 	//走路速度
 	float		m_WalkingSpeed;
 	//走路的z(按↑↓時)速度

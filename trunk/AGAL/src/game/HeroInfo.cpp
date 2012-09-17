@@ -130,6 +130,24 @@ void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
 		}
 	}
 
+	for ( int i = 1;; ++i )
+	{
+		if ( luadata->HasValue( "air_crouch_map/%d/1", i ) )
+		{
+			CrouchData cd;
+			int action = luadata->GetLua<int>( "air_crouch_map/%d/1", i );
+			// get action name "many_punch"
+			cd.m_FrameName	= luadata->GetLua<const char*>( "air_crouch_map/%d/2", i );
+			// get frame offset
+			cd.m_FrameOffset = luadata->GetLua<int>( "air_crouch_map/%d/3", i );
+			m_CrouchMap[action] = cd;
+		}
+		else
+		{
+			break;
+		}
+	}
+
 	strings actions;
 	actions = luadata->GetLuaTableKeys( "frame" );
 

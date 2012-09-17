@@ -28,38 +28,38 @@ namespace boost {namespace serialization {class access;}}
 class Hero
 {
 private:
-	int m_TimeTik;//Count down TimeTik from Frame Wait
-	ClipVertex	m_Pic;
+	int				m_TimeTik;		//Count down TimeTik from Frame Wait
+	ClipVertex		m_Pic;
 	HeroInfo_Sptr   m_HeroInfo;
-	HeroAction::e	m_Action;//讽笆篈
-	std::string     m_Frame;//Current Frame
-	int		m_FrameID;//Current Frame ID
+	HeroAction::e	m_Action;		//讽笆篈
+	std::string     m_Frame;		//Current Frame
+	int				m_FrameID;		//Current Frame ID
 
-	int		m_Texture;//Current Texture ID
-	int		m_PicID;
-	int		m_PicW;//W篒ちΩ计
-	int		m_PicH;//H篒ちΩ计
-	int		m_PicX;
-	int		m_PicY;
+	int				m_Texture;		//Current Texture ID
+	int				m_PicID;
+	int				m_PicW;			//W篒ちΩ计
+	int				m_PicH;			//H篒ちΩ计
+	int				m_PicX;
+	int				m_PicY;
 
-	Vector3		m_Position;
-	float		m_CenterX, m_CenterY;
-	Vector3		m_Vel;
-	FrameInfo*	m_FrameInfo;
-	float		m_Angle;
-	bool		m_FaceSide; //true , false オ
-	int		d_run;		//﹚禲˙ノタオ璽
-	std::bitset<4>	d_key;	//耞獶よ龄ノ籔1ボノ0玥0:atk1, 1:atk2, 2:j, 3:d
-	bool		d_Ground;  //耞琌
-	int		m_Team;//0ぃだ
-	int		m_MaxRecoverHP;//程確﹀秖
-	int		m_HP;
-	int		m_MP;
+	Vector3			m_Position;
+	float			m_CenterX, m_CenterY;
+	Vector3			m_Vel;
+	FrameInfo*		m_FrameInfo;
+	float			m_Angle;
+	bool			m_FaceSide;		//true , false オ
+	int				d_run;			//﹚禲˙ノタオ璽
+	std::bitset<4>	d_key;			//耞獶よ龄ノ籔1ボノ0玥0:atk1, 1:atk2, 2:j, 3:d
+	bool			d_Ground;		//耞琌
+	int				m_Team;			//0ぃだ
+	int				m_MaxRecoverHP;	//程確﹀秖
+	int				m_HP;
+	int				m_MP;
 	EffectType::e   m_Effect;
-	float		m_EffectScale;
+	float			m_EffectScale;
 	Record_Sptr     m_Record;
 
-	KeyQueue	m_KeyQue;
+	KeyQueue		m_KeyQue;
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -116,10 +116,10 @@ public:
 protected:
 	void Init();
 	void NextFrame();
-	bool ScanKeyQue();//false礚北笆
+	bool ScanKeyQue();	//false礚北笆
 	void ClearKeyQue();
-	void Flicker();//皗脅
-	void Recover();//﹀瘆ň.....
+	void Flicker();		//皗脅
+	void Recover();		//﹀瘆ň.....
 	void CreateEffect();
 	void UpdateVel( int dx, int dz );
 
