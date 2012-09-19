@@ -1693,7 +1693,7 @@ Polygon2Ds getHeroBodys(const Hero &r){
 		Polygon2D s;
 		for(Vec2s::const_iterator iv = ib->m_Area.const_Points().begin(); iv != ib->m_Area.const_Points().end(); iv++){
 			if(r.m_FaceSide){	//面向右邊
-				s.AddPoint( r.m_Position.x - (r.m_CenterX + iv->x) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y) * SCALE );
+				s.AddPoint( r.m_Position.x - (r.m_CenterX - iv->x) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y) * SCALE );
 			}
 			else{				//面向左邊
 				s.AddPoint( r.m_Position.x + (r.m_CenterX - iv->x) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y) * SCALE );
@@ -1711,7 +1711,7 @@ Polygon2Ds getHeroAtks(const Hero &r){
 		Polygon2D s;
 		for(Vec2s::const_iterator iv = ib->m_Area.const_Points().begin(); iv != ib->m_Area.const_Points().end(); iv++){
 			if(r.m_FaceSide){	//面向右邊
-				s.AddPoint( r.m_Position.x - (r.m_CenterX + iv->x) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y) * SCALE );
+				s.AddPoint( r.m_Position.x - (r.m_CenterX - iv->x) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y) * SCALE );
 			}
 			else{				//面向左邊
 				s.AddPoint( r.m_Position.x + (r.m_CenterX - iv->x) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y) * SCALE );
@@ -1729,7 +1729,7 @@ Polygon2Ds getHeroCatches(const Hero &r){
 		Polygon2D s;
 		for(Vec2s::const_iterator iv = ib->m_Area.const_Points().begin(); iv != ib->m_Area.const_Points().end(); iv++){
 			if(r.m_FaceSide){	//面向右邊
-				s.AddPoint( r.m_Position.x - (r.m_CenterX + iv->x) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y) * SCALE );
+				s.AddPoint( r.m_Position.x - (r.m_CenterX - iv->x) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y) * SCALE );
 			}
 			else{				//面向左邊
 				s.AddPoint( r.m_Position.x + (r.m_CenterX - iv->x) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y) * SCALE );
