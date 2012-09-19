@@ -1628,7 +1628,7 @@ frame.many_punch[0] =
 frame.many_punch[1] =
 {
    pic_id = 2, pic_x = 5, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 2},
-   dvx = 5, dvy = 0,  dvz = 0,  centerx = 33,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1654,7 +1654,7 @@ frame.many_punch[1] =
 frame.many_punch[2] =
 {
    pic_id = 2, pic_x = 6, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 3},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1674,7 +1674,7 @@ frame.many_punch[2] =
 frame.many_punch[3] =
 {
    pic_id = 2, pic_x = 7, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 4},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
+   dvx = 1, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1700,7 +1700,7 @@ frame.many_punch[3] =
 frame.many_punch[4] =
 {
    pic_id = 2, pic_x = 8, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 5},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 24,  centery = 79,  clear_key_queue = 0,
+   dvx = 1, dvy = 0,  dvz = 0,  centerx = 24,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1739,7 +1739,7 @@ frame.many_punch[5] =
 frame.many_punch[6] =
 {
    pic_id = 2, pic_x = 10, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 7},
-   dvx = 5, dvy = 0,  dvz = 0,  centerx = 22,  centery = 79,  clear_key_queue = 0,
+   dvx = 1, dvy = 0,  dvz = 0,  centerx = 22,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1765,7 +1765,7 @@ frame.many_punch[6] =
 frame.many_punch[7] =
 {
    pic_id = 2, pic_x = 10, pic_y = 3, state = Action.GroundSkill, wait = 2, next = {"many_punch", 8},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 18,  centery = 79,  clear_key_queue = 0,
+   dvx = 1, dvy = 0,  dvz = 0,  centerx = 18,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1803,7 +1803,7 @@ frame.many_punch[8] =
 frame.many_punch[9] =
 {
    pic_id = 2, pic_x = 8, pic_y = 3, state = Action.GroundSkill, wait = 2, next = {"many_punch", 10},
-   dvx = 7, dvy = 0,  dvz = 0,  centerx = 26,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 26,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D^A", "singlong", 0}},
    blood = {},
@@ -1822,7 +1822,7 @@ frame.many_punch[9] =
 frame.many_punch[10] =
 {
    pic_id = 2, pic_x = 7, pic_y = 3, state = Action.GroundSkill, wait = 2, next = {"many_punch", 11},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 22,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 22,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1848,7 +1848,7 @@ frame.many_punch[10] =
 frame.many_punch[11] =
 {
    pic_id = 2, pic_x = 6, pic_y = 3, state = Action.AfterSkill, wait = 4, next = {"many_punch", 12},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 27,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 27,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"J", "jump_hit", 0}},
    body = {
@@ -1859,7 +1859,7 @@ frame.many_punch[11] =
 frame.many_punch[12] =
 {
    pic_id = 2, pic_x = 5, pic_y = 3, state = Action.AfterSkill, wait = 6, next = {"default", 0},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
+   dvx = 1, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"J", "jump_hit", 0}},
    body = {
