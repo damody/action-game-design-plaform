@@ -48,20 +48,17 @@ struct TextVertex
 typedef std::vector<TextVertex> TextVerteices;
 
 //Body Vertex format
-struct BodyVertex
+struct PolygonVertex
 {
 	D3DXVECTOR3 position;
-	D3DXVECTOR2 body;
-	float angle;
-	float faceside;
-	D3DXVECTOR2 center;
+	D3DXVECTOR4 color;
 };
-typedef std::vector<BodyVertex> BodyVerteices;
+typedef std::vector<PolygonVertex> PolygonVerteices;
 
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_ClipVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_BGVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_CRVertex[];
-extern D3D11_INPUT_ELEMENT_DESC VertexDesc_BodyVertex[];
+extern D3D11_INPUT_ELEMENT_DESC VertexDesc_PolygonVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_TextVertex[];
 
 #endif // VERTEX_H

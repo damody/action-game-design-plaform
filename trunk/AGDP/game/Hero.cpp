@@ -1373,94 +1373,184 @@ void Hero::CreateEffect()
 	m_EffectScale = g_EffectMG->EffectScale( m_Effect );
 }
 
-BodyVerteices Hero::GetBodyVerteices()
+PolygonVerteices Hero::GetPolygonVerteices()
 {
-	BodyVerteices bvs;
-	BodyVertex bv;
-	bv.position.x = m_Position.x;
-	bv.position.y = m_Position.y;
-	bv.position.z = m_Position.z;
-	bv.center.x = m_CenterX * SCALE;
-	bv.center.y = m_CenterY * SCALE;
-	bv.angle = m_Angle;
-
-	if ( m_FaceSide )
+	PolygonVerteices pvs;
+	PolygonVertex pv;
+	Polygon2Ds bodys = getHeroBodys(*this);
+	pv.color.x = 1.0;
+	pv.color.y = 1.0;
+	pv.color.z = 1.0;
+	pv.color.w = 0.5;
+	for ( Polygon2Ds::iterator it = bodys.begin(); it != bodys.end(); it++ )
 	{
-		bv.faceside = 1;
-	}
-	else
-	{
-		bv.faceside = -1;
-	}
-
-	for ( Bodys::iterator it = m_FrameInfo->m_Bodys.begin(); it != m_FrameInfo->m_Bodys.end(); it++ )
-	{
-		Vec2s points_2D = it->m_Area.Points();
-
-		for ( unsigned int i = 1; i + 1 < points_2D.size(); i++ )
+		Vec2s points = it->Points();
+		pv.position.z = it->GetZPoint() - it->GetZRange()/2;
+		for ( unsigned int i = 1; i + 1 < points.size(); i++ )
 		{
-			bv.body.x = points_2D[0].x * SCALE;
-			bv.body.y = points_2D[0].y * SCALE;
-			bvs.push_back( bv );
-			bv.body.x = points_2D[i].x * SCALE;
-			bv.body.y = points_2D[i].y * SCALE;
-			bvs.push_back( bv );
-			bv.body.x = points_2D[i + 1].x * SCALE;
-			bv.body.y = points_2D[i + 1].y * SCALE;
-			bvs.push_back( bv );
+			pv.position.x = points[0].x;
+			pv.position.y = points[0].y;
+			pvs.push_back( pv );
+			pv.position.x = points[i].x;
+			pv.position.y = points[i].y;
+			pvs.push_back( pv );
+			pv.position.x = points[i + 1].x;
+			pv.position.y = points[i + 1].y;
+			pvs.push_back( pv );
 		}
 	}
 
-	return bvs;
+	Polygon2Ds  atks= getHeroAtks(*this);
+	pv.color.x = 0.0;
+	pv.color.y = 0.0;
+	pv.color.z = 1.0;
+	pv.color.w = 0.5;
+	for ( Polygon2Ds::iterator it = atks.begin(); it != atks.end(); it++ )
+	{
+		Vec2s points = it->Points();
+		pv.position.z = it->GetZPoint() - it->GetZRange()/2;
+		for ( unsigned int i = 1; i + 1 < points.size(); i++ )
+		{
+			pv.position.x = points[0].x;
+			pv.position.y = points[0].y;
+			pvs.push_back( pv );
+			pv.position.x = points[i].x;
+			pv.position.y = points[i].y;
+			pvs.push_back( pv );
+			pv.position.x = points[i + 1].x;
+			pv.position.y = points[i + 1].y;
+			pvs.push_back( pv );
+		}
+	}
+
+	Polygon2Ds  catches= getHeroCatches(*this);
+	pv.color.x = 0.0;
+	pv.color.y = 1.0;
+	pv.color.z = 0.0;
+	pv.color.w = 0.5;
+	for ( Polygon2Ds::iterator it = catches.begin(); it != catches.end(); it++ )
+	{
+		Vec2s points = it->Points();
+		pv.position.z = it->GetZPoint() - it->GetZRange()/2;
+		for ( unsigned int i = 1; i + 1 < points.size(); i++ )
+		{
+			pv.position.x = points[0].x;
+			pv.position.y = points[0].y;
+			pvs.push_back( pv );
+			pv.position.x = points[i].x;
+			pv.position.y = points[i].y;
+			pvs.push_back( pv );
+			pv.position.x = points[i + 1].x;
+			pv.position.y = points[i + 1].y;
+			pvs.push_back( pv );
+		}
+	}
+
+	return pvs;
 }
 
-BodyVerteices Hero::GetBodyLineVerteices()
+PolygonVerteices Hero::GetPolygonLineVerteices()
 {
-	BodyVerteices bvs;
-	BodyVertex bv;
-	bv.position.x = m_Position.x;
-	bv.position.y = m_Position.y;
-	bv.center.x = m_CenterX * SCALE;
-	bv.center.y = m_CenterY * SCALE;
-	bv.angle = m_Angle;
-
-	if ( m_FaceSide )
+	PolygonVerteices pvs;
+	PolygonVertex pv;
+	
+	Polygon2Ds bodys = getHeroBodys(*this);
+	pv.color.x = 1.0;
+	pv.color.y = 1.0;
+	pv.color.z = 1.0;
+	pv.color.w = 0.5;
+	for ( Polygon2Ds::iterator it = bodys.begin(); it != bodys.end(); it++ )
 	{
-		bv.faceside = 1;
-	}
-	else
-	{
-		bv.faceside = -1;
-	}
-
-	for ( Bodys::iterator it = m_FrameInfo->m_Bodys.begin(); it != m_FrameInfo->m_Bodys.end(); it++ )
-	{
-		Vec2s points_2D = it->m_Area.Points();
-
-		for ( unsigned int i = 0; i < points_2D.size(); i++ )
+		Vec2s points = it->Points();
+		
+		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			bv.body.x = points_2D[i].x * SCALE;
-			bv.body.y = points_2D[i].y * SCALE;
-			bv.position.z = m_Position.z;
-			bvs.push_back( bv );
-			bv.position.z = m_Position.z + it->m_ZWidth;
-			bvs.push_back( bv );
+			pv.position.x = points[i].x;
+			pv.position.y = points[i].y;
+			pv.position.z = it->GetZPoint() - it->GetZRange()/2;
+			pvs.push_back( pv );
+			pv.position.z = it->GetZPoint() + it->GetZRange()/2;
+			pvs.push_back( pv );
 		}
 
-		bv.position.z = m_Position.z + it->m_ZWidth;
+		pv.position.z = it->GetZPoint() + it->GetZRange()/2;
 
-		for ( unsigned int i = 0; i < points_2D.size(); i++ )
+		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			bv.body.x = points_2D[i].x * SCALE;
-			bv.body.y = points_2D[i].y * SCALE;
-			bvs.push_back( bv );
-			bv.body.x = points_2D[( i + 1 ) % points_2D.size()].x * SCALE;
-			bv.body.y = points_2D[( i + 1 ) % points_2D.size()].y * SCALE;
-			bvs.push_back( bv );
+			pv.position.x = points[i].x;
+			pv.position.y = points[i].y;
+			pvs.push_back( pv );
+			pv.position.x = points[( i + 1 ) % points.size()].x;
+			pv.position.y = points[( i + 1 ) % points.size()].y;
+			pvs.push_back( pv );
+		}
+	}
+	
+	Polygon2Ds atks = getHeroAtks(*this);
+	pv.color.x = 0.0;
+	pv.color.y = 0.0;
+	pv.color.z = 1.0;
+	pv.color.w = 0.5;
+	for ( Polygon2Ds::iterator it = atks.begin(); it != atks.end(); it++ )
+	{
+		Vec2s points = it->Points();
+
+		for ( unsigned int i = 0; i < points.size(); i++ )
+		{
+			pv.position.x = points[i].x;
+			pv.position.y = points[i].y;
+			pv.position.z = it->GetZPoint() - it->GetZRange()/2;
+			pvs.push_back( pv );
+			pv.position.z = it->GetZPoint() + it->GetZRange()/2;
+			pvs.push_back( pv );
+		}
+
+		pv.position.z = it->GetZPoint() + it->GetZRange()/2;
+
+		for ( unsigned int i = 0; i < points.size(); i++ )
+		{
+			pv.position.x = points[i].x;
+			pv.position.y = points[i].y;
+			pvs.push_back( pv );
+			pv.position.x = points[( i + 1 ) % points.size()].x;
+			pv.position.y = points[( i + 1 ) % points.size()].y;
+			pvs.push_back( pv );
 		}
 	}
 
-	return bvs;
+	Polygon2Ds catches = getHeroCatches(*this);
+	pv.color.x = 0.0;
+	pv.color.y = 1.0;
+	pv.color.z = 0.0;
+	pv.color.w = 0.5;
+	for ( Polygon2Ds::iterator it = catches.begin(); it != catches.end(); it++ )
+	{
+		Vec2s points = it->Points();
+
+		for ( unsigned int i = 0; i < points.size(); i++ )
+		{
+			pv.position.x = points[i].x;
+			pv.position.y = points[i].y;
+			pv.position.z = it->GetZPoint() - it->GetZRange()/2;
+			pvs.push_back( pv );
+			pv.position.z = it->GetZPoint() + it->GetZRange()/2;
+			pvs.push_back( pv );
+		}
+
+		pv.position.z = it->GetZPoint() + it->GetZRange()/2;
+
+		for ( unsigned int i = 0; i < points.size(); i++ )
+		{
+			pv.position.x = points[i].x;
+			pv.position.y = points[i].y;
+			pvs.push_back( pv );
+			pv.position.x = points[( i + 1 ) % points.size()].x;
+			pv.position.y = points[( i + 1 ) % points.size()].y;
+			pvs.push_back( pv );
+		}
+	}
+
+	return pvs;
 }
 
 const Vector3& Hero::Velocity()
@@ -1633,7 +1723,7 @@ Polygon2Ds getHeroAtks(const Hero &r){
 	}
 	return d;
 }
-Polygon2Ds getHeroCatchs(const Hero &r){
+Polygon2Ds getHeroCatches(const Hero &r){
 	Polygon2Ds d;
 	for(CatchInfos::iterator ib = r.m_FrameInfo->m_Catchs.begin(); ib != r.m_FrameInfo->m_Catchs.end(); ib++){
 		Polygon2D s;

@@ -18,8 +18,8 @@ class InitDirect3DApp : public D3DApp
 {
 //Test
 private:
-	BodyVerteices  m_BodyVerteices;
-	BodyVerteices  m_BodyLineVerteices;
+	PolygonVerteices  m_PolygonVerteices;
+	PolygonVerteices  m_PolygonLineVerteices;
 
 	ID3D11Buffer*		m_Buffer_Body;
 	ID3D11Buffer*		m_Buffer_BodyLine;

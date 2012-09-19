@@ -304,19 +304,19 @@ void InitDirect3DApp::DrawScene()
 	if ( b_Body )
 	{
 		offset = 0;
-		stride2 = sizeof( BodyVertex );
+		stride2 = sizeof( PolygonVertex );
 		m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 		m_DeviceContext->IASetInputLayout( m_PLayout_Body );
 		m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_Body, &stride2, &offset );
 		m_PTech_Body->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
-		m_DeviceContext->Draw( m_BodyVerteices.size(), 0 );
+		m_DeviceContext->Draw( m_PolygonVerteices.size(), 0 );
 		offset = 0;
-		stride2 = sizeof( BodyVertex );
+		stride2 = sizeof( PolygonVertex );
 		m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_LINELIST );
 		m_DeviceContext->IASetInputLayout( m_PLayout_Body );
 		m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_BodyLine, &stride2, &offset );
 		m_PTech_Body->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
-		m_DeviceContext->Draw( m_BodyLineVerteices.size(), 0 );
+		m_DeviceContext->Draw( m_PolygonLineVerteices.size(), 0 );
 	}
 
 	//m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,  1.0f, 0);
@@ -457,7 +457,8 @@ void InitDirect3DApp::buildPointFX()
 	D3DX11_PASS_DESC PassDescShadow;
 	m_PTech_Shadow->GetPassByIndex( 0 )->GetDesc( &PassDescShadow );
 	HR( m_d3dDevice->CreateInputLayout( VertexDesc_ClipVertex, 6, PassDescShadow.pIAInputSignature, PassDescShadow.IAInputSignatureSize, &m_PLayout_Shadow ) );
-	//Body
+
+	//Polygon
 	hr = 0;
 	hr = D3DX11CompileFromFile( _T( "shader\\Body.fx" ), NULL, NULL, NULL,
 	                            "fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS | D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
@@ -481,7 +482,7 @@ void InitDirect3DApp::buildPointFX()
 	m_Body_cPos = m_Effect_Body->GetVariableByName( "cPolarCoord" );
 	D3DX11_PASS_DESC PassDescBody;
 	m_PTech_Body->GetPassByIndex( 0 )->GetDesc( &PassDescBody );
-	HR( m_d3dDevice->CreateInputLayout( VertexDesc_BodyVertex, 5, PassDescBody.pIAInputSignature, PassDescBody.IAInputSignatureSize, &m_PLayout_Body ) );
+	HR( m_d3dDevice->CreateInputLayout( VertexDesc_PolygonVertex, 2, PassDescBody.pIAInputSignature, PassDescBody.IAInputSignatureSize, &m_PLayout_Body ) );
 	//
 	hr = 0;
 	hr = D3DX11CompileFromFile( _T( "shader\\TextString.fx" ), NULL, NULL, NULL,
@@ -683,25 +684,25 @@ void InitDirect3DApp::buildPoint()
 		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Chee ) );
 	}
 
-	m_BodyVerteices.clear();
-	m_BodyLineVerteices.clear();
+	m_PolygonVerteices.clear();
+	m_PolygonLineVerteices.clear();
 	count = 0;
 
 	if ( !g_HeroMG.Empty() )
 	{
 		for ( Heroes::iterator it = g_HeroMG.HeroVectorBegin(); it != g_HeroMG.HeroVectorEnd(); it++ )
 		{
-			BodyVerteices bvs = ( *it )->GetBodyVerteices();
-			m_BodyVerteices.assign( bvs.begin(), bvs.end() );
+			PolygonVerteices bvs = ( *it )->GetPolygonVerteices();
+			m_PolygonVerteices.insert(m_PolygonVerteices.end(),bvs.begin(), bvs.end());
 		}
 	}
 
-	if ( m_BodyVerteices.size() > 0 )
+	if ( m_PolygonVerteices.size() > 0 )
 	{
-		m_vbd.ByteWidth = ( UINT )( sizeof( BodyVertex ) * m_BodyVerteices.size() );
-		m_vbd.StructureByteStride = sizeof( BodyVertex );
+		m_vbd.ByteWidth = ( UINT )( sizeof( PolygonVertex ) * m_PolygonVerteices.size() );
+		m_vbd.StructureByteStride = sizeof( PolygonVertex );
 		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &m_BodyVerteices[0];
+		vinitData.pSysMem = &m_PolygonVerteices[0];
 		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Body ) );
 	}
 
@@ -709,17 +710,17 @@ void InitDirect3DApp::buildPoint()
 	{
 		for ( Heroes::iterator it = g_HeroMG.HeroVectorBegin(); it != g_HeroMG.HeroVectorEnd(); it++ )
 		{
-			BodyVerteices bvs = ( *it )->GetBodyLineVerteices();
-			m_BodyLineVerteices.assign( bvs.begin(), bvs.end() );
+			PolygonVerteices bvs = ( *it )->GetPolygonLineVerteices();
+			m_PolygonLineVerteices.insert(m_PolygonLineVerteices.end(), bvs.begin(), bvs.end() );
 		}
 	}
 
-	if ( m_BodyLineVerteices.size() > 0 )
+	if ( m_PolygonLineVerteices.size() > 0 )
 	{
-		m_vbd.ByteWidth = ( UINT )( sizeof( BodyVertex ) * m_BodyLineVerteices.size() );
-		m_vbd.StructureByteStride = sizeof( BodyVertex );
+		m_vbd.ByteWidth = ( UINT )( sizeof( PolygonVertex ) * m_PolygonLineVerteices.size() );
+		m_vbd.StructureByteStride = sizeof( PolygonVertex );
 		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &m_BodyLineVerteices[0];
+		vinitData.pSysMem = &m_PolygonLineVerteices[0];
 		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_BodyLine ) );
 	}
 

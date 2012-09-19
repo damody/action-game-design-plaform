@@ -108,14 +108,14 @@ public:
 	void SetPosition( Vector3 pos );
 	void SetEffect( EffectType::e effect );
 	void PushKey( KeyInfo k );
-	BodyVerteices GetBodyVerteices();
-	BodyVerteices GetBodyLineVerteices();
+	PolygonVerteices GetPolygonVerteices();
+	PolygonVerteices GetPolygonLineVerteices();
 	//創造物件
 	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 	//碰撞判定用
 	friend Polygon2Ds getHeroBodys(const Hero &r);
 	friend Polygon2Ds getHeroAtks(const Hero &r);
-	friend Polygon2Ds getHeroCatchs(const Hero &r);
+	friend Polygon2Ds getHeroCatches(const Hero &r);
 
 protected:
 	void Init();
