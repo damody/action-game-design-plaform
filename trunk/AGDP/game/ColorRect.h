@@ -10,7 +10,7 @@ struct ColorRect
 	Vector3		m_Position;
 	float		m_Width;
 	float		m_Height;
-	bool		m_IsGround;
+	Vector3		m_Rotation;
 
 	friend class boost::serialization::access;
 	template<class Archive>

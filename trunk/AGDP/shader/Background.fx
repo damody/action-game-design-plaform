@@ -18,14 +18,14 @@ struct VS_IN
 {
 	float3	position: POSITION;
 	float2	size    : SIZE;
-	float   angle   : PI;
+	float3	rotation: PI;
 };
 
 struct VS_OUT
 {
-	float4	pos   : SV_POSITION;
-	float2	size  : TEXCOORD0;
-	float   angle : PI;
+	float4	pos   	 : SV_POSITION;
+	float2	size  	 : TEXCOORD0;
+	float3  rotation : PI;
 };
 
 struct GS_OUT
@@ -40,7 +40,7 @@ VS_OUT VS(VS_IN vIn)
 
 	vOut.pos= float4(vIn.position.xyz-cLookAt.xyz,1.0);
 	vOut.size = vIn.size;
-	vOut.angle = vIn.angle;
+	vOut.rotation = vIn.rotation;
 	return vOut;
 }
 
@@ -51,12 +51,16 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	float thita = -cPolarCoord.y *3.14159/180;
 	float alpha = -cPolarCoord.z *3.14159/180;
 	
-	float x = -input[0].angle*3.14159/180;
-	float3x3 mat;
+	float x = input[0].rotation[0]	* 3.14159/180;
+	float y = input[0].rotation[1]  * 3.14159/180;
+	float z = input[0].rotation[2]  * 3.14159/180;
 	
-	mat[0]=float3(	1 	,  0 		,  0    );
-	mat[1]=float3(	0	,  cos(x)  , sin(x) );
-	mat[2]=float3(   0 	, -sin(x)  ,  cos(x));
+	float3x3 mat;
+	mat[0]=float3(	cos(y)*cos(z) 						,  cos(y)*sin(z) 						, -sin(y));
+	mat[1]=float3(	sin(x)*sin(y)*cos(z) -cos(x)*sin(z)	,  sin(x)*sin(y)*sin(z) +cos(x)*cos(z)	,  sin(x)*cos(y));
+	mat[2]=float3(  cos(x)*sin(y)*cos(z) +sin(x)*sin(z) ,  cos(x)*sin(y)*sin(z) -sin(x)*cos(z)  ,  cos(x)*-sin(y));
+
+
 	
 	float3x3 view;
 	view[0]=float3(cos(thita) 	, -sin(thita) * -sin(alpha)  , -sin(thita) * cos(alpha));

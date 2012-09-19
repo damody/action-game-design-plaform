@@ -24,7 +24,7 @@ struct BGVertex
 {
 	D3DXVECTOR3 position;
 	D3DXVECTOR2 size;
-	float angle;
+	D3DXVECTOR3 rotation;
 };
 typedef std::vector<BGVertex> BGVerteices;
 //Color Rect Vertex format
@@ -32,7 +32,7 @@ struct CRVertex
 {
 	D3DXVECTOR3 position;
 	D3DXVECTOR2 size;
-	float angle;
+	D3DXVECTOR3 rotation;
 	D3DXVECTOR4 color;
 };
 typedef std::vector<CRVertex> CRVerteices;

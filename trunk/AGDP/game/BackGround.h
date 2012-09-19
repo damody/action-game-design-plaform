@@ -27,6 +27,7 @@ struct BGLayer
 	int		m_TimeLine;
 	int		m_TimeStart;
 	int		m_TimeEnd;
+	Vector3		m_Rotation;
 	bool		m_IsGround;
 
 	friend class boost::serialization::access;

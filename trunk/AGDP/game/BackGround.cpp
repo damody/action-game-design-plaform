@@ -174,7 +174,9 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 		{
 			BGLayer bgl;
 			bgl.m_PicturePath	= luadata->GetLua<const char*>( "layer/%d/picture_path", i );
-			bgl.m_IsGround		= !!luadata->GetLua<int>( "layer/%d/ground", i );
+			bgl.m_Rotation.x        = ( float )luadata->GetLua<double>( "layer/%d/rx", i );
+			bgl.m_Rotation.y        = ( float )luadata->GetLua<double>( "layer/%d/ry", i );
+			bgl.m_Rotation.z        = ( float )luadata->GetLua<double>( "layer/%d/rz", i );
 			bgl.m_Position.x	= ( float )luadata->GetLua<double>( "layer/%d/x", i );
 			bgl.m_Position.y	= ( float )luadata->GetLua<double>( "layer/%d/y", i );
 			bgl.m_Position.z	= ( float )luadata->GetLua<double>( "layer/%d/z", i );
@@ -203,7 +205,9 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 			cr.m_Color[1]	= ( float )luadata->GetLua<double>( "color_rect/%d/g", i );
 			cr.m_Color[2]	= ( float )luadata->GetLua<double>( "color_rect/%d/b", i );
 			cr.m_Color[3]	= ( float )luadata->GetLua<double>( "color_rect/%d/a", i );
-			cr.m_IsGround	= !!luadata->GetLua<int>( "color_rect/%d/ground", i );
+			cr.m_Rotation.x = ( float )luadata->GetLua<double>( "color_rect/%d/rx", i );
+			cr.m_Rotation.y = ( float )luadata->GetLua<double>( "color_rect/%d/ry", i );
+			cr.m_Rotation.z = ( float )luadata->GetLua<double>( "color_rect/%d/rz", i );
 			cr.m_Position.x	= ( float )luadata->GetLua<double>( "color_rect/%d/x", i );
 			cr.m_Position.y	= ( float )luadata->GetLua<double>( "color_rect/%d/y", i );
 			cr.m_Position.z	= ( float )luadata->GetLua<double>( "color_rect/%d/z", i );
@@ -276,14 +280,16 @@ void BackGround::BuildPoint()
 				{
 					continue;
 				}
-
+				crv.rotation.x = it->m_Rotation.x;
+				crv.rotation.y = it->m_Rotation.y;
+				crv.rotation.z = it->m_Rotation.z;
 				crv.size.x = ( w - cut > 0 ? cut : w );
 				crv.size.y = it->m_Height;
 				crv.color.x = it->m_Color.x;
 				crv.color.y = it->m_Color.y;
 				crv.color.z = it->m_Color.z;
 				crv.color.w = it->m_Color.w;
-				crv.angle = ( it->m_IsGround ? 90.0f : 0.0f );
+				
 				m_CRVerteices.push_back( crv );
 			}
 		}
@@ -333,7 +339,9 @@ void BackGround::BuildPoint()
 
 				bgv.size.x     = it->m_Width  ;
 				bgv.size.y     = it->m_Height ;
-				bgv.angle      = ( it->m_IsGround ? 90.0f : 0.0f );
+				bgv.rotation.x = it->m_Rotation.x;
+				bgv.rotation.y = it->m_Rotation.y;
+				bgv.rotation.z = it->m_Rotation.z;
 				m_BGVerteices.push_back( bgv );
 				++vertexCount;
 				++count;

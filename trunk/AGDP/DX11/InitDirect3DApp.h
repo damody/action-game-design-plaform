@@ -55,12 +55,13 @@ private:
 	void LoadResource();
 	void LoadBlend();
 	void LoadHero();
-	void buildPointFX();
-	void buildPoint();
+
+	void buildPointFX();//Load Shader
+	void buildPoint();//Shader Vertex
 	void OnResize();
 
 	void DrawScene();
-	void UpdateScene( float dt );
+	void UpdateScene( float dt );//Update All
 	void UpdateCamera();
 	int  UpdateInput();
 	void BackgroundDataUpdate();
