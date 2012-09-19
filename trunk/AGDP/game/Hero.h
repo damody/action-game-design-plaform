@@ -96,15 +96,13 @@ public:
 	Hero();
 	Hero( std::string h );
 	void Update( float dt );
-	void UpdateDataToDraw();//Data To m_Pic
-
+	void UpdateDataToDraw();	//Data To m_Pic
 	Texture_Sptr GetTexture();
 	int GetTextureID();
 	ClipVertex GetPic();
 	int Team() const;
 	const Vector3& Position();
 	const Vector3& Velocity();
-
 	void SetRecord( Record_Sptr r );
 	void SetTeam( int team );
 	void SetPosition( Vector3 pos );
@@ -112,7 +110,13 @@ public:
 	void PushKey( KeyInfo k );
 	BodyVerteices GetBodyVerteices();
 	BodyVerteices GetBodyLineVerteices();
+	//創造物件
 	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
+	//碰撞判定用
+	friend Polygon2Ds getHeroBodys(const Hero &r);
+	friend Polygon2Ds getHeroAtks(const Hero &r);
+	friend Polygon2Ds getHeroCatchs(const Hero &r);
+
 protected:
 	void Init();
 	void NextFrame();

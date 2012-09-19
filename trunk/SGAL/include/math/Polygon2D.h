@@ -37,6 +37,7 @@ public:
 	void Offset(const Vec3& v);
 	void SetAngle(float angle);
 	void SetZRange(float scale){m_zRange = scale;}
+	void SetZPoint(float rz){m_zPoint = rz;}
 	float GetAngle(){return m_angle;}
 	float GetZRange(){return m_zRange;}
 	float GetZPoint(){return m_zPoint;}

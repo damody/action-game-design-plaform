@@ -1596,6 +1596,59 @@ bool SortHero( Hero_RawPtr a, Hero_RawPtr b )
 {
 	return a->GetTextureID() < b->GetTextureID();
 }
-
-
-
+//* 碰撞判定用函示
+Polygon2Ds getHeroBodys(const Hero &r){
+	Polygon2Ds d;
+	for(Bodys::iterator ib = r.m_FrameInfo->m_Bodys.begin(); ib != r.m_FrameInfo->m_Bodys.end(); ib++){
+		Polygon2D s;
+		for(Vec2s::const_iterator iv = ib->m_Area.const_Points().begin(); iv != ib->m_Area.const_Points().end(); iv++){
+			if(r.m_FaceSide){	//面向右邊
+				s.AddPoint( r.m_Position.x - r.m_CenterX + iv->x, r.m_Position.y + r.m_CenterY + iv->y );
+			}
+			else{				//面向左邊
+				s.AddPoint( r.m_Position.x + r.m_CenterX - iv->x, r.m_Position.y + r.m_CenterY + iv->y );
+			}
+		}
+		s.SetZPoint(r.m_Position.z);
+		s.SetZRange(ib->m_ZWidth);
+		d.push_back(s);
+	}
+	return d;
+}
+Polygon2Ds getHeroAtks(const Hero &r){
+	Polygon2Ds d;
+	for(Attacks::iterator ib = r.m_FrameInfo->m_Attacks.begin(); ib != r.m_FrameInfo->m_Attacks.end(); ib++){
+		Polygon2D s;
+		for(Vec2s::const_iterator iv = ib->m_Area.const_Points().begin(); iv != ib->m_Area.const_Points().end(); iv++){
+			if(r.m_FaceSide){	//面向右邊
+				s.AddPoint( r.m_Position.x - r.m_CenterX + iv->x, r.m_Position.y + r.m_CenterY + iv->y );
+			}
+			else{				//面向左邊
+				s.AddPoint( r.m_Position.x + r.m_CenterX - iv->x, r.m_Position.y + r.m_CenterY + iv->y );
+			}
+		}
+		s.SetZPoint(r.m_Position.z);
+		s.SetZRange(ib->m_ZWidth);
+		d.push_back(s);
+	}
+	return d;
+}
+Polygon2Ds getHeroCatchs(const Hero &r){
+	Polygon2Ds d;
+	for(CatchInfos::iterator ib = r.m_FrameInfo->m_Catchs.begin(); ib != r.m_FrameInfo->m_Catchs.end(); ib++){
+		Polygon2D s;
+		for(Vec2s::const_iterator iv = ib->m_Area.const_Points().begin(); iv != ib->m_Area.const_Points().end(); iv++){
+			if(r.m_FaceSide){	//面向右邊
+				s.AddPoint( r.m_Position.x - r.m_CenterX + iv->x, r.m_Position.y + r.m_CenterY + iv->y );
+			}
+			else{				//面向左邊
+				s.AddPoint( r.m_Position.x + r.m_CenterX - iv->x, r.m_Position.y + r.m_CenterY + iv->y );
+			}
+		}
+		s.SetZPoint(r.m_Position.z);
+		s.SetZRange(ib->m_ZWidth);
+		d.push_back(s);
+	}
+	return d;
+}
+//*/
