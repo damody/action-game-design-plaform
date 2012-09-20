@@ -1,6 +1,7 @@
 ﻿#include "StdGame.h"
 #include <cstdlib>
 #include <ctime>
+#include <boost/algorithm/string.hpp> 
 #include "InitDirect3DApp.h"
 #include "InputState.h"
 
@@ -34,7 +35,7 @@ InitDirect3DApp::~InitDirect3DApp()
 	}
 }
 
-void InitDirect3DApp::initApp()
+void InitDirect3DApp::initApp(int argc, char* argv[])
 {
 	D3DApp::initApp();
 	InitTexture();
@@ -45,6 +46,7 @@ void InitDirect3DApp::initApp()
 	g_TextGenarator.Initialize();
 	g_TextMG.Initialize();
 	g_EffectMG = new EffectManager( m_hMainWnd );
+	ParseCommandLine(argc, argv);
 	LoadHero();
 	buildPointFX();
 	OnResize();
@@ -856,12 +858,12 @@ void InitDirect3DApp::LoadBlend()
 
 void InitDirect3DApp::LoadHero()
 {
-	//Test
-	LuaCell_Sptr davis = LuaCell_Sptr( new LuaCell );
+	//Test (See ParseCommandLine)
+	/*LuaCell_Sptr davis = LuaCell_Sptr( new LuaCell );
 	davis->InputLuaFile( "davis.lua" );
 	HeroInfo_Sptr temp = HeroInfo_Sptr( new HeroInfo );
 	temp->LoadHeroData( davis );
-	g_HeroInfoMG.AddHeroInfo( temp->m_Name, temp );
+	g_HeroInfoMG.AddHeroInfo( temp->m_Name, temp );*/
 	//test bg
 	LuaCell_Sptr ft = LuaCell_Sptr( new LuaCell );
 	ft->InputLuaFile( "bg.lua" );
@@ -1391,5 +1393,34 @@ void InitDirect3DApp::TestBody()
 	if ( InputStateS::instance().isKeyDown( KEY_B ) )
 	{
 		b_Body = !b_Body;
+	}
+}
+
+void InitDirect3DApp::ParseCommandLine( int argc, char* argv[] )
+{
+	int current = 1;
+	std::string mainStr;
+	while ( current < argc )
+	{
+		mainStr = argv[current];
+		if(!mainStr.compare("-hero"))
+		{
+			if ( ++current >= argc )
+				break;
+
+			std::string heros( argv[current] );
+			std::vector<std::string> v;
+			boost::split( v, heros, boost::is_any_of( "," ) );
+			for( std::size_t i = 0; i < v.size(); i++ )
+			{
+				LuaCell_Sptr hero = LuaCell_Sptr( new LuaCell );
+				hero->InputLuaFile( v[i].c_str() );
+				HeroInfo_Sptr temp = HeroInfo_Sptr( new HeroInfo );
+				temp->LoadHeroData( hero );
+				g_HeroInfoMG.AddHeroInfo( temp->m_Name, temp );
+			}
+
+			current++;
+		}
 	}
 }

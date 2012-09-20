@@ -49,12 +49,13 @@ public:
 	InitDirect3DApp();
 	~InitDirect3DApp();
 	static InitDirect3DApp* dxAppInstance;
-	void initApp();
+	void initApp(int argc, char* argv[]);
 private:
 	void InitTexture();
 	void LoadResource();
 	void LoadBlend();
 	void LoadHero();
+	void ParseCommandLine(int argc, char* argv[]);
 
 	void buildPointFX();//Load Shader
 	void buildPoint();//Shader Vertex
