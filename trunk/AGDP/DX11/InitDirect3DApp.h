@@ -31,7 +31,6 @@ private:
 	ID3DX11EffectScalarVariable* m_Body_Width;
 	ID3DX11EffectScalarVariable* m_Body_Height;
 
-
 	TestRenderEffect* m_TestRenderEffect;
 	void TestRender();
 	void TestViewEffect();

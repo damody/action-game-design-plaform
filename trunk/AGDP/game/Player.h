@@ -44,7 +44,7 @@ public:
 
 	const int	m_PlayerID;
 	TextString	m_UserName;
-	Hero_RawPtr     m_Hero;
+	Hero*		m_Hero;
 	Keyboard	m_Keyboard;
 
 	std::string HeroName();
