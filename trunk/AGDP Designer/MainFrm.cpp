@@ -27,6 +27,7 @@
 #define new DEBUG_NEW
 #endif
 
+CAGDPDesignerView* g_NewView = NULL;
 // CMainFrame
 
 IMPLEMENT_DYNAMIC( CMainFrame, CMDIFrameWndEx )
@@ -57,8 +58,8 @@ BEGIN_MESSAGE_MAP( CMainFrame, CMDIFrameWndEx )
 	ON_UPDATE_COMMAND_UI( ID_CHECK_HeroManager, &CMainFrame::OnUpdateCheckHeromanager )
 	ON_COMMAND( ID_CHECK_Property, &CMainFrame::OnCheckProperty )
 	ON_UPDATE_COMMAND_UI( ID_CHECK_Property, &CMainFrame::OnUpdateCheckProperty )
-	ON_COMMAND( ID_BUTTON_AddNewArea, &CMainFrame::OnButtonAddnewarea )
 	ON_WM_KEYDOWN()
+	ON_COMMAND(ID_BUTTON_RUN, &CMainFrame::OnButtonRun)
 END_MESSAGE_MAP()
 
 // CMainFrame 建構/解構
@@ -520,12 +521,6 @@ void CMainFrame::OnUpdateCheckProperty( CCmdUI* pCmdUI )
 	pCmdUI->SetCheck( m_wndProperties.IsVisible() );
 }
 
-
-void CMainFrame::OnButtonAddnewarea()
-{
-	// TODO: 在此加入您的命令處理常式程式碼
-}
-
 void CMainFrame::OpenPictureView( CString& name, PictureData* pic, int index )
 {
 	HeroViews::iterator it = m_HeroViews.find( g_HeroInfo );
@@ -581,7 +576,6 @@ void CMainFrame::OnFileSave()
 		dlgFile.DoModal();
 		//AfxMessageBox( dlgFile.GetPathName() );
 		std::wstring path = dlgFile.GetPathName();
-		//To Do
 		HeroInfo::WriteLua(g_HeroInfo,path);
 	}
 }
@@ -591,7 +585,12 @@ void CMainFrame::OnFileOpen()
 	m_wndFileView.OnFileOpen();
 }
 
-
-
-
-CAGDPDesignerView* g_NewView = NULL;
+void CMainFrame::OnButtonRun()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	if(g_HeroInfo!=NULL){
+		HeroInfo::WriteLua(g_HeroInfo,std::wstring(_T("temp\\hero.lua")));
+	}else{
+		AfxMessageBox( _T("No Target") );
+	}
+}
