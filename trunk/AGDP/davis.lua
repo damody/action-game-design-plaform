@@ -1986,7 +1986,7 @@ frame.singlong[2] =
 		injury = 60, strength = 50,
 	},
    body = {
-   {points = {{19,-7}, {19,-78}, {55,-78}, {55,-7}}, zwidth = 8}
+   {kind = 0, points = {{19,-7}, {19,-78}, {55,-78}, {55,-7}}, zwidth = 8}
    }
 }
 
@@ -2005,7 +2005,7 @@ frame.singlong[3] =
 		injury = 45, strength = 50,
 	},
    body = {
-   {points = {{22,-6}, {22,-75}, {52,-75}, {52,-6}}, zwidth = 8}
+   {kind = 0, points = {{22,-6}, {22,-75}, {52,-75}, {52,-6}}, zwidth = 8}
    }
 }
 
@@ -2024,7 +2024,7 @@ frame.singlong[4] =
 		injury = 30, strength = 50,
 	},
    body = {
-   {points = {{28,-12}, {28,-78}, {57,-78}, {57,-12}}, zwidth = 8}
+   {kind = 0, points = {{28,-12}, {28,-78}, {57,-78}, {57,-12}}, zwidth = 8}
    }
 }
 
@@ -2037,7 +2037,7 @@ frame.singlong[5] =
    blood = {},
    attack={},
    body = {
-   {points = {{27,-7}, {27,-72}, {55,-72}, {55,-7}}, zwidth = 8}
+   {kind = 0, points = {{27,-7}, {27,-72}, {55,-72}, {55,-7}}, zwidth = 8}
    }
 }
 
@@ -2050,7 +2050,7 @@ frame.singlong[6] =
    blood = {},
    attack={},
    body = {
-   {points = {{23,-11}, {23,-72}, {53,-72}, {53,-11}}, zwidth = 8}
+   {kind = 0, points = {{23,-11}, {23,-72}, {53,-72}, {53,-11}}, zwidth = 8}
    }
 }
 
@@ -2063,7 +2063,7 @@ frame.singlong[7] =
    blood = {},
    attack={},
    body = {
-   {points = {{21,-3}, {21,-71}, {54,-71}, {54,-3}}, zwidth = 8}
+   {kind = 0, points = {{21,-3}, {21,-71}, {54,-71}, {54,-3}}, zwidth = 8}
    }
 }
 
