@@ -59,6 +59,10 @@ private:
 	float			m_EffectScale;
 	Record_Sptr     m_Record;
 
+	int				m_FrontDefence;
+	int				m_BackDefence;
+	int				m_Fall;
+
 	KeyQueue		m_KeyQue;
 
 	friend class boost::serialization::access;
@@ -116,10 +120,18 @@ public:
 	friend Polygon2Ds getHeroBodys(const Hero &r);
 	friend Polygon2Ds getHeroAtks(const Hero &r);
 	friend Polygon2Ds getHeroCatches(const Hero &r);
+	void beCaught(const CatchInfo& rCatch, const Hero& rObj, Vector3 hitPos);
+	//void beCaught(const CatchInfo& rCatch, const Chee& rObj, Vector3 hitPos);
+	//void beCaught(const CatchInfo& rCatch, const Weapon& rObj, Vector3 hitPos);
+	void beAttack(const Attack& rAtk, const Record_Sptr& rHero, Vector3 hitPos, bool rFace);
+	//void beAttack(const Attack&, const Chee&);	//未確認需要與否
+	//void beAttack(const Attack&, const Weapon&);	//未確認需要與否
+	//void beHit(const )
 
 protected:
 	void Init();
 	void NextFrame();
+	void SwitchFrame(std::string rFrame, int rFrameID);
 	FrameInfo* FindFrame( std::string rframe, int rframeID);
 	bool ScanKeyQue();	//false無控制動作
 	void ClearKeyQue();

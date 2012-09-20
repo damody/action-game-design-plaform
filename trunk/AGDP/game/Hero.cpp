@@ -98,7 +98,7 @@ Hero::Hero()
 }
 
 Hero::Hero( std::string h ):
-	hero( h ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 ), d_run( 0 ), m_Effect( EffectType::NONE ), m_EffectScale( 1.0f ), d_key()
+	hero( h ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 ), d_run( 0 ), m_Effect( EffectType::NONE ), m_EffectScale( 1.0f ), d_key(), m_Fall(70), m_FrontDefence(0), m_BackDefence(0)
 {
 	m_HeroInfo = g_HeroInfoMG.GetHeroInfo( hero );
 	m_Record = Record_Sptr( new Record() );
@@ -171,49 +171,11 @@ void Hero::Update( float dt )
 				//Frame 改到 CrouchMap 中對應的 Frame
 				CrouchMap::iterator icm = m_HeroInfo->m_CrouchMap.find( m_Action );
 				if(icm != m_HeroInfo->m_CrouchMap.end()){
-					m_Frame = icm->second.m_FrameName;
-					m_FrameID = icm->second.m_FrameOffset;
+					SwitchFrame( icm->second.m_FrameName, icm->second.m_FrameOffset);
 				}
 				else{
-					m_Frame = "crouch";
-					m_FrameID = 0;
+					SwitchFrame( "crouch", 0);
 				}
-				//尋找對應的 frame ，若找不到則擲回錯誤並終止程式
-				FramesMap::iterator ifm = m_HeroInfo->m_FramesMap.find(m_Frame);
-				if(ifm == m_HeroInfo->m_FramesMap.end() || ifm->second.size() <= m_FrameID){
-					printf( "fatal error: can't find crouch frame \"%s\"[%d] !\n", m_Frame.c_str(), m_FrameID );
-					system( "pause" );
-					throw "No such frame";
-				}
-
-				FrameInfo* f = &ifm->second[m_FrameID];
-				//clear keyQue
-				if ( m_KeyQue.empty() ) {}
-				else if ( f->m_ClearKeyQueue == 1 ) {
-					m_KeyQue.pop_back();
-				}
-				else if ( f->m_ClearKeyQueue == 2 ) {
-					m_KeyQue.clear();
-				}
-				//sound
-				if( !f->m_sound.empty() ) {
-					g_WavPlayer.Play ( g_WavPlayer.CreatSound(f->m_sound) );
-				}
-
-				m_PicID = f->m_PictureID;
-				m_PicX = f->m_PictureX;
-				m_PicY = f->m_PictureY;
-				m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
-				m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
-				m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
-				m_Action = f->m_HeroAction;
-				m_TimeTik = f->m_Wait;
-				m_CenterX = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX;
-				m_CenterY = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY;
-				m_FrameInfo = f;
-				//m_Vel.x = 0;
-				//m_Vel.z = 0;
-				CreateEffect();
 			}
 		}
 		else {
@@ -320,28 +282,20 @@ void Hero::NextFrame()
 	m_FrameID = f->m_NextFrameIndex;
 NextLoop:
 	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find( m_Frame );
-
-	if ( iframe == m_HeroInfo->m_FramesMap.end() || ( int )iframe->second.size() <= m_FrameID )
-	{
+	if ( iframe == m_HeroInfo->m_FramesMap.end() || ( int )iframe->second.size() <= m_FrameID ){
 		printf( "fatal error: can't find next frame \"%s\"[%d] !\n", m_Frame.c_str(), m_FrameID );
 		system( "pause" );
 		throw "No such frame";
 	}
 
 	f = &iframe->second[m_FrameID];
-
-	if ( f->m_Consume.m_JumpRule <= 0 )
-	{
+	if ( f->m_Consume.m_JumpRule <= 0 ){
 		printf( "MaxHP:%d\tHP:%d\tMP:%d\n", m_MaxRecoverHP, m_HP, m_MP );
-
-		//printf("consume: rule=%d, MP=%d, HP=%d, backFrame=%s, backFrameID=%d\n",f->m_Consume.m_JumpRule,f->m_Consume.m_MP,f->m_Consume.m_HP,f->m_Consume.m_NotEnoughFrameName.c_str(),f->m_Consume.m_NotEnoughFrame);
-		if ( m_HP >= f->m_Consume.m_HP && m_MP >= f->m_Consume.m_MP )
-		{
+		if ( m_HP >= f->m_Consume.m_HP && m_MP >= f->m_Consume.m_MP ){
 			m_HP -= f->m_Consume.m_HP;
 			m_MP -= f->m_Consume.m_MP;
 		}
-		else
-		{
+		else{
 			m_Frame = f->m_Consume.m_NotEnoughFrameName;
 			m_FrameID = f->m_Consume.m_NotEnoughFrame;
 			goto NextLoop;
@@ -355,8 +309,7 @@ NextLoop:
 	else if ( f->m_ClearKeyQueue == 2 ) {
 		m_KeyQue.clear();
 	}
-
-	if ( m_Action == HeroAction::CROUCH ) {
+	if ( m_Action == HeroAction::CROUCH && f->m_HeroAction != m_Action ) {
 		m_Vel = Vector3( 0, 0, 0 );
 	}
 	//sound
@@ -374,47 +327,80 @@ NextLoop:
 	m_CenterX = f->m_CenterX;
 	m_CenterY = f->m_CenterY;
 	m_FrameInfo = f;
+	
 	KeyQueue::iterator i = m_KeyQue.begin();
 	int dx = 0, dz = 0;
-
-	while ( i != m_KeyQue.end() )
-	{
-		if ( i->key == CtrlKey::LEFT )
-		{
-			dx = -1;
-		}
-		else if ( i->key == CtrlKey::RIGHT )
-		{
-			dx = +1;
-		}
-		else if ( i->key == CtrlKey::UP )
-		{
-			dz = +1;
-		}
-		else if ( i->key == CtrlKey::DOWN )
-		{
-			dz = -1;
-		}
-
+	while ( i != m_KeyQue.end() ){
+		if ( i->key == CtrlKey::LEFT ){ dx = -1;}
+		else if ( i->key == CtrlKey::RIGHT ){ dx = +1;}
+		else if ( i->key == CtrlKey::UP ){ dz = +1;}
+		else if ( i->key == CtrlKey::DOWN ){ dz = -1;}
 		i++;
 	}
-
 	UpdateVel( dx, dz );
 	//創造物件
 	float df = m_FaceSide ? 1 : -1;
 
-	if ( !f->m_Creations.empty() )
-	{
+	if ( !f->m_Creations.empty() ){
 		Creations::iterator ic = f->m_Creations.begin();
-
-		while ( ic != f->m_Creations.end() )
-		{
+		while ( ic != f->m_Creations.end() ){
 			Vector3 pos( df * ( ic->x - m_CenterX ) * SCALE + m_Position.x, ( ic->y + m_CenterY ) * SCALE + m_Position.y, m_Position.z ); //vel(ic->dvx,ic->dvy,ic->dvz);
 			Creat( pos, *ic, m_FaceSide, m_Record );
 			ic++;
 		}
 	}
+	CreateEffect();
+}
 
+/**
+ * 切換到指定 Frame ，不處理任何消耗，若找不到目標會中止程式
+ * rFrame	:目標 Frame 名稱
+ * rFrameID	:目標 Frame 序號
+ */
+void Hero::SwitchFrame(std::string rFrame, int rFrameID){
+	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find( rFrame );
+	if ( iframe == m_HeroInfo->m_FramesMap.end() || ( int )iframe->second.size() <= rFrameID ){
+		printf( "fatal error: can't find next frame \"%s\"[%d] !\n", rFrame.c_str(), rFrameID );
+		system( "pause" );
+		throw "No such frame";
+	}
+
+	FrameInfo *f = &iframe->second[rFrameID];
+	//clear keyQue
+	if ( m_KeyQue.empty() ) {}
+	else if ( f->m_ClearKeyQueue == 1 ) {
+		m_KeyQue.pop_back();
+	}
+	else if ( f->m_ClearKeyQueue == 2 ) {
+		m_KeyQue.clear();
+	}
+	//sound
+	if( !f->m_sound.empty() ) {
+		g_WavPlayer.Play ( g_WavPlayer.CreatSound(f->m_sound) );
+	}
+	m_Frame = rFrame;
+	m_FrameID = rFrameID;
+	m_PicID = f->m_PictureID;
+	m_PicX = f->m_PictureX;
+	m_PicY = f->m_PictureY;
+	m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
+	m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
+	m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
+	m_Action = f->m_HeroAction;
+	m_TimeTik = f->m_Wait;
+	m_CenterX = f->m_CenterX;
+	m_CenterY = f->m_CenterY;
+	m_FrameInfo = f;
+	//創造物件
+	float df = m_FaceSide ? 1 : -1;
+	if ( !f->m_Creations.empty() ){
+		Creations::iterator ic = f->m_Creations.begin();
+		while ( ic != f->m_Creations.end() ){
+			Vector3 pos( df * ( ic->x - m_CenterX ) * SCALE + m_Position.x, ( ic->y + m_CenterY ) * SCALE + m_Position.y, m_Position.z ); //vel(ic->dvx,ic->dvy,ic->dvz);
+			Creat( pos, *ic, m_FaceSide, m_Record );
+			ic++;
+		}
+	}
 	CreateEffect();
 }
 
@@ -430,98 +416,79 @@ bool Hero::ScanKeyQue()
 		else if ( i->key == CtrlKey::RIGHT ) { dx = +1; }
 		else if ( i->key == CtrlKey::UP ) { dz = +1; }
 		else if ( i->key == CtrlKey::DOWN ) { dz = -1; }
-
 		i++;
 	}
-
 	//決定方向按鍵動作
-	if ( m_Action == HeroAction::STANDING )
-	{
-		if ( dz > 0 )
-		{
+	if ( m_Action == HeroAction::STANDING ){
+		if ( dz > 0 ){
 			nFrame = "walking";
 			m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
 		}
-		else if ( dz < 0 )
-		{
+		else if ( dz < 0 ){
 			nFrame = "walking";
 			m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
 		}
 
-		if ( dx > 0 )
-		{
-			if ( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide )
-			{
+		if ( dx > 0 ){
+			if ( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide ){
 				//跑
 				nFrame = "running";
 				m_Vel.x = m_HeroInfo->m_RunningSpeed;
 			}
-			else
-			{
+			else{
 				//走
 				nFrame = "walking";
 				m_Vel.x = m_HeroInfo->m_WalkingSpeed;
 				m_FaceSide = true;
 			}
 		}
-		else if ( dx < 0 )
-		{
-			if ( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide )
-			{
-				//跑
-				nFrame = "running";
-				m_Vel.x = -m_HeroInfo->m_RunningSpeed;
-			}
-			else
-			{
-				//走
-				nFrame = "walking";
-				m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
-				m_FaceSide = false;
-			}
-		}
-	}
-	else if ( m_Action == HeroAction::WALKING )
-	{
-		if ( dz > 0 )
-		{
-			if ( m_TimeTik == 0 ) { nFrame = "walking"; }
-
-			m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
-		}
-		else if ( dz < 0 )
-		{
-			if ( m_TimeTik == 0 ) { nFrame = "walking"; }
-
-			m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
-		}
-
-		if ( dx > 0 )
-		{
-			if ( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide )
-			{
-				//跑
-				nFrame = "running";
-				m_Vel.x = m_HeroInfo->m_RunningSpeed;
-			}
-			else
-			{
-				//走
-				if ( m_TimeTik == 0 ) { nFrame = "walking"; }
-
-				m_Vel.x = m_HeroInfo->m_WalkingSpeed;
-				m_FaceSide = true;
-			}
-		}
-		else if ( dx < 0 )
-		{
+		else if ( dx < 0 ){
 			if ( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide ){
 				//跑
 				nFrame = "running";
 				m_Vel.x = -m_HeroInfo->m_RunningSpeed;
 			}
-			else
-			{
+			else{
+				//走
+				nFrame = "walking";
+				m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
+				m_FaceSide = false;
+			}
+		}
+	}
+	else if ( m_Action == HeroAction::WALKING )	{
+		if ( dz > 0 ){
+			if ( m_TimeTik == 0 ) { nFrame = "walking"; }
+
+			m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
+		}
+		else if ( dz < 0 ){
+			if ( m_TimeTik == 0 ) { nFrame = "walking"; }
+
+			m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
+		}
+
+		if ( dx > 0 ){
+			if ( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide ){
+				//跑
+				nFrame = "running";
+				m_Vel.x = m_HeroInfo->m_RunningSpeed;
+			}
+			else{
+				//走
+				if ( m_TimeTik == 0 ) { nFrame = "walking"; }
+
+				m_Vel.x = m_HeroInfo->m_WalkingSpeed;
+				m_FaceSide = true;
+			}
+		}
+		else if ( dx < 0 ){
+			if ( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide ){
+				//跑
+				nFrame = "running";
+				m_Vel.x = -m_HeroInfo->m_RunningSpeed;
+			}
+			else{
 				//走
 				if ( m_TimeTik == 0 ) { nFrame = "walking"; }
 
@@ -530,90 +497,70 @@ bool Hero::ScanKeyQue()
 			}
 		}
 
-		if ( !nFrame.empty() )
-		{
+		if ( !nFrame.empty() ){
 			nFramID = ( m_FrameID + 1 ) % ( m_HeroInfo->m_FramesMap[nFrame].size() );
 		}
 	}
-	else if ( m_Action == HeroAction::RUNNING )
-	{
+	else if ( m_Action == HeroAction::RUNNING ){
 		m_Vel.x = ( m_FaceSide ? m_HeroInfo->m_RunningSpeed : -m_HeroInfo->m_RunningSpeed );
 
-		if ( dz > 0 )
-		{
+		if ( dz > 0 ){
 			m_Vel.z = m_HeroInfo->m_RunningSpeedZ;
 		}
-		else if ( dz < 0 )
-		{
+		else if ( dz < 0 ){
 			m_Vel.z = -m_HeroInfo->m_RunningSpeedZ;
 		}
 
-		if ( ( dx > 0 && !m_FaceSide ) || ( dx < 0 && m_FaceSide ) )
-		{
+		if ( ( dx > 0 && !m_FaceSide ) || ( dx < 0 && m_FaceSide ) ){
 			nFrame = "stop_running";
 			nFramID = 0;
 			d_run = 0;
 		}
 	}
-	else if ( m_Action == HeroAction::IN_THE_AIR )
-	{
-		if ( dx > 0 )
-		{
+	else if ( m_Action == HeroAction::IN_THE_AIR ){
+		if ( dx > 0 ){
 			m_FaceSide = true;
 		}
-		else if ( dx < 0 )
-		{
+		else if ( dx < 0 ){
 			m_FaceSide = false;
 		}
 	}
-	else if ( m_Action == HeroAction::DEFEND )
-	{
-		if ( dx > 0 )
-		{
+	else if ( m_Action == HeroAction::DEFEND ){
+		if ( dx > 0 ){
 			m_FaceSide = true;
 		}
-		else if ( dx < 0 )
-		{
+		else if ( dx < 0 ){
 			m_FaceSide = false;
 		}
 	}
-	else if ( m_Action == HeroAction::DASH )
-	{
-		if ( dx < 0 && m_FaceSide )
-		{
+	else if ( m_Action == HeroAction::DASH ){
+		if ( dx < 0 && m_FaceSide )	{
 			m_FaceSide = false;
 
-			if ( m_Frame.compare( "dash_front" ) == 0 )
-			{
+			if ( m_Frame.compare( "dash_front" ) == 0 )	{
 				nFrame = "dash_back";
 				nFramID = m_FrameID;
 			}
-			else if ( m_Frame.compare( "dash_back" ) == 0 )
-			{
+			else if ( m_Frame.compare( "dash_back" ) == 0 )	{
 				nFrame = "dash_front";
 				nFramID = m_FrameID;
 			}
 		}
-		else if ( dx > 0 && !m_FaceSide )
-		{
+		else if ( dx > 0 && !m_FaceSide ){
 			m_FaceSide = true;
 
-			if ( m_Frame.compare( "dash_front" ) == 0 )
-			{
+			if ( m_Frame.compare( "dash_front" ) == 0 ){
 				nFrame = "dash_back";
 				nFramID = m_FrameID;
 			}
-			else if ( m_Frame.compare( "dash_back" ) == 0 )
-			{
+			else if ( m_Frame.compare( "dash_back" ) == 0 ){
 				nFrame = "dash_front";
 				nFramID = m_FrameID;
 			}
 		}
 	}
-	else if ( m_Action == HeroAction::CROUCH )
-	{
-		if ( m_KeyQue.empty() )
-		{
+	else if ( m_Action == HeroAction::CROUCH ){
+		if ( m_KeyQue.empty() )	{
 			/*if(m_TimeTik == 0){
 				m_Vel.x = 0, m_Vel.y = 0, m_Vel.z = 0;
 			}//*/
@@ -623,36 +570,28 @@ bool Hero::ScanKeyQue()
 			m_Vel = Vector3(0,0,0);
 			nFrame = "rolling";
 		}//*/
-		else if ( m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2] && m_Frame.compare( "crouch" ) == 0 )
-		{
+		else if ( m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2] && m_Frame.compare( "crouch" ) == 0 ){
 			d_key[2] = true;
 
-			if ( m_FrameID == 0 )
-			{
+			if ( m_FrameID == 0 ){
 				//dash
-				if ( dx != 0 )
-				{
+				if ( dx != 0 )	{
 					nFrame = "dash_front";
 					m_FaceSide = dx > 0;
 				}
-				else if ( m_Vel.x != 0 )
-				{
-					if ( ( m_Vel.x > 0 ) == m_FaceSide )
-					{
+				else if ( m_Vel.x != 0 ){
+					if ( ( m_Vel.x > 0 ) == m_FaceSide ){
 						nFrame = "dash_front";
 					}
-					else
-					{
+					else{
 						nFrame = "dash_back";
 					}
 				}
-				else
-				{
+				else{
 					nFrame = "jump";
 				}
 			}
-			else
-			{
+			else{
 				nFrame = "jump";
 			}
 		}
@@ -666,12 +605,10 @@ bool Hero::ScanKeyQue()
 	//決定招式按鍵動作
 	int cface = 0;
 
-	if ( !m_KeyQue.empty() )
-	{
+	if ( !m_KeyQue.empty() ){
 		HitDatas hit = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_HitDatas;
 
-		for ( unsigned int i = 0; i < hit.size(); i++ )
-		{
+		for ( unsigned int i = 0; i < hit.size(); i++ ){
 			KeyQueue::reverse_iterator riKey = m_KeyQue.rbegin();
 			const char* pHit = hit[i].m_KeyQueue.c_str(), *rHit = pHit;
 			bool flag = true;
@@ -682,260 +619,175 @@ bool Hero::ScanKeyQue()
 			int nKey = rHit - pHit;
 			rHit--;
 
-			if ( nKey == 1 && isSKey( *rHit ) && isKeyUsed( *rHit ) )
-			{
-				continue;
-			}
+			if ( nKey == 1 && isSKey( *rHit ) && isKeyUsed( *rHit ) ){ continue;}
 
-			while ( riKey != m_KeyQue.rend() && rHit + 1 != pHit && flag )
-			{
+			while ( riKey != m_KeyQue.rend() && rHit + 1 != pHit && flag ){
 				//*old
 				KeyQueue::reverse_iterator ho, ch;
 
-				switch ( *rHit )
-				{
+				switch ( *rHit ){
 				case '^':
-					if ( riKey->key != CtrlKey::UP && riKey->key != CtrlKey::UP_KEYUP )
-					{
+					if ( riKey->key != CtrlKey::UP && riKey->key != CtrlKey::UP_KEYUP )	{
 						flag = false;
 					}
-
 					break;
-
 				case 'v':
-					if ( riKey->key != CtrlKey::DOWN && riKey->key != CtrlKey::DOWN_KEYUP )
-					{
+					if ( riKey->key != CtrlKey::DOWN && riKey->key != CtrlKey::DOWN_KEYUP )	{
 						flag = false;
 					}
-
 					break;
-
 					/*case '<':
 						if(riKey->key != CtrlKey::LEFT && riKey->key != CtrlKey::LEFT_KEYUP){
 							flag = false;
 						}
 						break;//*/
 				case '>':
-					if ( riKey->key == CtrlKey::RIGHT || riKey->key == CtrlKey::RIGHT_KEYUP )
-					{
+					if ( riKey->key == CtrlKey::RIGHT || riKey->key == CtrlKey::RIGHT_KEYUP ){
 						cface = 1;
 					}
-					else if ( riKey->key == CtrlKey::LEFT || riKey->key == CtrlKey::LEFT_KEYUP )
-					{
+					else if ( riKey->key == CtrlKey::LEFT || riKey->key == CtrlKey::LEFT_KEYUP ){
 						cface = -1;
 					}
-					else
-					{
+					else{
 						flag = false;
 					}
-
 					break;
-
 				case 'A':
-					if ( riKey->key != CtrlKey::ATK1 && riKey->key != CtrlKey::ATK1_KEYUP )
-					{
+					if ( riKey->key != CtrlKey::ATK1 && riKey->key != CtrlKey::ATK1_KEYUP )	{
 						flag = false;
 					}
-
 					break;
-
 				case 'B':
-					if ( riKey->key != CtrlKey::ATK2 && riKey->key != CtrlKey::ATK2_KEYUP )
-					{
+					if ( riKey->key != CtrlKey::ATK2 && riKey->key != CtrlKey::ATK2_KEYUP )	{
 						flag = false;
 					}
-
 					break;
-
 				case 'J':
-					if ( riKey->key != CtrlKey::JUMP && riKey->key != CtrlKey::JUMP_KEYUP )
-					{
+					if ( riKey->key != CtrlKey::JUMP && riKey->key != CtrlKey::JUMP_KEYUP )	{
 						flag = false;
 					}
-
 					break;
-
 				case 'D':
-					if ( riKey->key != CtrlKey::DEF && riKey->key != CtrlKey::DEF_KEYUP )
-					{
+					if ( riKey->key != CtrlKey::DEF && riKey->key != CtrlKey::DEF_KEYUP ){
 						flag = false;
 					}
-
 					break;
-
 				case '8':	//UP_KEYUP
-					if ( riKey == m_KeyQue.rbegin() )
-					{
+					if ( riKey == m_KeyQue.rbegin() ){
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::UP_KEYUP; ch++ );
 
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::UP_KEYUP )
-						{
+						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::UP_KEYUP ){
 							flag = false;
 						}
 					}
-					else
-					{
+					else{
 						ho = riKey - 1;
-
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::UP_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::UP_KEYUP ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{
-							flag = false;
-						}
+						     ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+						{	flag = false;	}
 					}
-
 					break;
-
 				case '2':	//DOWN_KEYUP
-					if ( riKey == m_KeyQue.rbegin() )
-					{
+					if ( riKey == m_KeyQue.rbegin() ){
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DOWN_KEYUP; ch++ );
 
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DOWN_KEYUP )
-						{
+						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DOWN_KEYUP ){
 							flag = false;
 						}
 					}
-					else
-					{
+					else{
 						ho = riKey - 1;
-
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DOWN_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DOWN_KEYUP ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{
-							flag = false;
-						}
+						     ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+						{	flag = false;	}
 					}
-
 					break;
-
 				case '6':	//RIGHT_KEYUP
-					if ( riKey == m_KeyQue.rbegin() )
-					{
+					if ( riKey == m_KeyQue.rbegin() ){
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ( ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP ) )
-						{
-							flag = false;
-						}
+						{	flag = false;	}
 					}
 					else
 					{
 						ho = riKey - 1;
-
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ( ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP ) ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{
-							flag = false;
-						}
+						     ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+						{	flag = false;	}
 					}
-
 					break;
-
 				case 'a':
-					if ( riKey == m_KeyQue.rbegin() )
-					{
+					if ( riKey == m_KeyQue.rbegin() ){
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK1_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK1_KEYUP )
-						{
-							flag = false;
-						}
+						{	flag = false;	}
 					}
 					else
 					{
 						ho = riKey - 1;
-
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK1_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK1_KEYUP ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{
-							flag = false;
-						}
+						     ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+						{	flag = false;	}
 					}
-
 					break;
-
 				case 'b':
-					if ( riKey == m_KeyQue.rbegin() )
-					{
+					if ( riKey == m_KeyQue.rbegin() ){
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK2_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK2_KEYUP )
-						{
-							flag = false;
-						}
+						{	flag = false;	}
 					}
 					else
 					{
 						ho = riKey - 1;
-
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK2_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK2_KEYUP ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{
-							flag = false;
-						}
+						     ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+						{	flag = false;	}
 					}
-
 					break;
-
 				case 'j':
-					if ( riKey == m_KeyQue.rbegin() )
-					{
+					if ( riKey == m_KeyQue.rbegin() ){
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::JUMP_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::JUMP_KEYUP )
-						{
-							flag = false;
-						}
+						{	flag = false;	}
 					}
-					else
-					{
+					else{
 						ho = riKey - 1;
-
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::JUMP_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::JUMP_KEYUP ||
 						     ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{
-							flag = false;
-						}
+						{	flag = false;	}
 					}
-
 					break;
-
 				case 'd':
-					if ( riKey == m_KeyQue.rbegin() )
-					{
+					if ( riKey == m_KeyQue.rbegin() ){
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DEF_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DEF_KEYUP )
-						{
-							flag = false;
-						}
+						{	flag = false;	}
 					}
-					else
-					{
+					else{
 						ho = riKey - 1;
-
 						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DEF_KEYUP; ch++ );
 
 						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DEF_KEYUP ||
 						     ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{
-							flag = false;
-						}
+						{	flag = false;	}
 					}
-
 					break;
 				}
 
@@ -992,22 +844,17 @@ KeyLoop:
 		FrameInfo* f = &iframe->second[nFramID];
 
 		//消耗
-		if ( f->m_Consume.m_JumpRule >= 0 )
-		{
+		if ( f->m_Consume.m_JumpRule >= 0 ){
 			printf( "MaxHP:%d\tHP:%d\tMP:%d\n", m_MaxRecoverHP, m_HP, m_MP );
 
 			//printf("consume: rule=%d, MP=%d, HP=%d, backFrame=%s, backFrameID=%d\n",f->m_Consume.m_JumpRule,f->m_Consume.m_MP,f->m_Consume.m_HP,f->m_Consume.m_NotEnoughFrameName.c_str(),f->m_Consume.m_NotEnoughFrame);
-			if ( m_HP >= f->m_Consume.m_HP && m_MP >= f->m_Consume.m_MP )
-			{
+			if ( m_HP >= f->m_Consume.m_HP && m_MP >= f->m_Consume.m_MP ){
 				m_HP -= f->m_Consume.m_HP;
 				m_MP -= f->m_Consume.m_MP;
 			}
-			else
-			{
+			else{
 				if ( f->m_Consume.m_NotEnoughFrameName.compare( "default" ) == 0 )
-				{
-					return false;
-				}
+				{	return false;	}
 
 				nFrame = f->m_Consume.m_NotEnoughFrameName;
 				nFramID = f->m_Consume.m_NotEnoughFrame;
@@ -1019,17 +866,14 @@ KeyLoop:
 		m_FrameID = nFramID;
 		//clear keyQue
 		if ( m_KeyQue.empty() ) {}
-		else if ( f->m_ClearKeyQueue == 1 )
-		{
+		else if ( f->m_ClearKeyQueue == 1 )	{
 			m_KeyQue.pop_back();
 		}
-		else if ( f->m_ClearKeyQueue == 2 )
-		{
+		else if ( f->m_ClearKeyQueue == 2 )	{
 			m_KeyQue.clear();
 		}
 		//蹲的煞車效果
-		if ( m_Action == HeroAction::CROUCH )
-		{
+		if ( m_Action == HeroAction::CROUCH ){
 			m_Vel = Vector3( 0, 0, 0 );
 		}
 		//sound
@@ -1051,18 +895,14 @@ KeyLoop:
 		//創造物件
 		float df = m_FaceSide ? 1 : -1;
 
-		if ( !f->m_Creations.empty() )
-		{
+		if ( !f->m_Creations.empty() ){
 			Creations::iterator ic = f->m_Creations.begin();
-
-			while ( ic != f->m_Creations.end() )
-			{
+			while ( ic != f->m_Creations.end() ){
 				Vector3 pos( df * ( ic->x - m_CenterX ) * SCALE + m_Position.x, ( ic->y + m_CenterY ) * SCALE + m_Position.y, m_Position.z ); //vel(ic->dvx,ic->dvy,ic->dvz);
 				g_ObjectMG.CreateChee( ic->name, pos, ic->v0, ic->amount, m_Team );
 				ic++;
 			}
 		}
-
 		CreateEffect();
 		return true;
 	}
@@ -1072,46 +912,36 @@ void Hero::UpdateVel( int dx, int dz )
 {
 	m_Vel.y += m_FrameInfo->m_DVY;
 
-	if ( m_Action == HeroAction::JUMP || m_Action == HeroAction::FREE_SKILL )
-	{
-		if ( dx != 0 )
-		{
+	if ( m_Action == HeroAction::JUMP || m_Action == HeroAction::FREE_SKILL ){
+		if ( dx != 0 ){
 			m_Vel.x += m_FrameInfo->m_DVX * ( m_FaceSide ? 1 : -1 );
 		}
 
-		if ( dz > 0 )
-		{
+		if ( dz > 0 ){
 			m_Vel.z += m_FrameInfo->m_DVZ;
 		}
-		else if ( dz < 0 )
-		{
+		else if ( dz < 0 ){
 			m_Vel.z -= m_FrameInfo->m_DVZ;
 		}
 	}
-	else if ( m_Action == HeroAction::Z_AXIS_SKILL )
-	{
-		if ( dx != 0 )
-		{
+	else if ( m_Action == HeroAction::Z_AXIS_SKILL ){
+		if ( dx != 0 ){
 			m_Vel.x += m_FrameInfo->m_DVX * ( m_FaceSide ? 1 : -1 );
 		}
 
 		m_Vel.z += m_FrameInfo->m_DVZ;
 	}
-	else if ( m_Action == HeroAction::GROUND_SKILL )
-	{
+	else if ( m_Action == HeroAction::GROUND_SKILL ){
 		m_Vel.x += m_FrameInfo->m_DVX * ( m_FaceSide ? 1 : -1 );
 		m_Vel.z += m_FrameInfo->m_DVZ;
 	}
-	else
-	{
+	else{
 		m_Vel.x += m_FrameInfo->m_DVX * ( m_FaceSide ? 1 : -1 );
 
-		if ( dz > 0 )
-		{
+		if ( dz > 0 ){
 			m_Vel.z += m_FrameInfo->m_DVZ;
 		}
-		else if ( dz < 0 )
-		{
+		else if ( dz < 0 ){
 			m_Vel.z -= m_FrameInfo->m_DVZ;
 		}
 	}
@@ -1336,27 +1166,73 @@ void Hero::Recover(){
 
 		if ( m_HP > m_MaxRecoverHP ) { m_HP = m_MaxRecoverHP; }
 	}
+
+	if( m_Fall < 70) { m_Fall ++; }
+
+	if( m_Action == HeroAction::DEFEND){
+		if(m_FrontDefence < 100){ m_FrontDefence ++; }
+	}
+	else{
+		m_FrontDefence = 0;
+		m_BackDefence = 0;
+	}
 }
 
-void Hero::SetTeam( int team )
-{
-	m_Team = team;
+/**
+ * 被敵人攻擊
+ * rAtk		:擊中之 Attack
+ * rHero	:攻擊者的紀錄資料
+ * hitPos	:擊中點(重疊範圍中心，只重視 X 軸精確度)
+ * FaceSide	:攻擊者的面向(若為氣功則為氣功波的面向)
+ */
+void Hero::beAttack(const Attack& rAtk, const Record_Sptr& rHero, Vector3 hitPos, bool rFace){
+	if(rAtk.m_Kind == 0){				//普通攻擊形式，套用 effect 擊中特效
+		if(rHero->team == m_Team){		//普通形式的攻擊對同隊無效
+			return;
+		}
+		m_Vel.x += rAtk.m_DVX * (rFace ? 1.0f : -1.0f);
+		m_Vel.y += rAtk.m_DVY;
+		m_Vel.z += rAtk.m_DVZ;
+
+		if( (hitPos.x > m_Position.x && m_FaceSide) || (hitPos.x < m_Position.x && !m_FaceSide) ){
+			//擊中點在人前方
+			if(m_FrontDefence > 0){		//前方有剛體保護
+				m_FrontDefence -= rAtk.m_BreakDefend;
+				m_HP -= rAtk.m_Injury / 10;
+				rHero->Attack += rAtk.m_Injury / 10;
+			}
+			else{
+				m_HP -= rAtk.m_Injury;
+				m_Fall -= rAtk.m_Fall;
+				SwitchFrame( "injured", 0);
+				rHero->Attack += rAtk.m_Injury;
+			}
+		}
+		else{
+			//擊中點在人後方
+			if(m_BackDefence > 0){		//後方有剛體保護
+				m_FrontDefence -= rAtk.m_BreakDefend;
+				m_HP -= rAtk.m_Injury / 10;
+				rHero->Attack += rAtk.m_Injury / 10;
+			}
+			else{
+				m_HP -= rAtk.m_Injury;
+				m_Fall -= rAtk.m_Fall;
+				SwitchFrame( "injured", 0);
+				rHero->Attack += rAtk.m_Injury;
+			}
+		}
+	}
+	else{}
 }
 
-const Vector3& Hero::Position()
-{
-	return m_Position;
-}
+void Hero::SetTeam( int team ) { m_Team = team; }
 
-int Hero::Team() const
-{
-	return m_Team;
-}
+const Vector3& Hero::Position() { return m_Position; }
 
-void Hero::SetEffect( EffectType::e effect )
-{
-	m_Effect = effect;
-}
+int Hero::Team() const { return m_Team; }
+
+void Hero::SetEffect( EffectType::e effect ) { m_Effect = effect; }
 
 void Hero::CreateEffect()
 {
@@ -1553,10 +1429,7 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 	return pvs;
 }
 
-const Vector3& Hero::Velocity()
-{
-	return m_Vel;
-}
+const Vector3& Hero::Velocity() { return m_Vel; }
 
 bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner )
 {
@@ -1705,6 +1578,7 @@ Polygon2Ds getHeroBodys(const Hero &r){
 	}
 	return d;
 }
+
 Polygon2Ds getHeroAtks(const Hero &r){
 	Polygon2Ds d;
 	for(Attacks::iterator ib = r.m_FrameInfo->m_Attacks.begin(); ib != r.m_FrameInfo->m_Attacks.end(); ib++){
@@ -1723,6 +1597,7 @@ Polygon2Ds getHeroAtks(const Hero &r){
 	}
 	return d;
 }
+
 Polygon2Ds getHeroCatches(const Hero &r){
 	Polygon2Ds d;
 	for(CatchInfos::iterator ib = r.m_FrameInfo->m_Catchs.begin(); ib != r.m_FrameInfo->m_Catchs.end(); ib++){
