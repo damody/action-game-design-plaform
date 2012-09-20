@@ -13,8 +13,9 @@
 class D3DApp_Frame
 {
 public:
-	Bounds  m_Body;
-	Bounds  m_Attack;
+	Area  m_Body;
+	Area  m_Attack;
+	Area  m_Catch;
 	float	m_CenterX, m_CenterY;
 	TextureManager& GetTextureManager()
 	{ return *m_TextureManager;}
@@ -108,7 +109,6 @@ protected:
 	ID3DX11EffectScalarVariable*	m_Pics_OffsetY;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Pics;
 	ID3DX11EffectShaderResourceVariable*  m_BMap_Pics;
-
 
 	D3D11_BUFFER_DESC		m_vbd;
 	// Derived class should set these in derived constructor to customize starting values.

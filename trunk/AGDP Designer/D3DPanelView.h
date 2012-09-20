@@ -17,6 +17,7 @@ private:
 	bool m_EnableCtrlCenter;
 	int m_BodyID;
 	int m_AttackID;
+	int m_CatchID;
 
 	FrameInfo* m_FrameInfo;
 
@@ -34,6 +35,7 @@ public:
 	void EditBody( int id );
 	void EditBodyPoint( int id);
 	void EditAttack( int id );
+	void EditAttackPoint( int id );
 	void EditCenter();
 	void EditCenter( float x, float y );
 	void SetPic( PictureData*  pic, float x, float y );
