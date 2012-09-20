@@ -18,6 +18,8 @@ public:
 	HeroManager( void );
 	~HeroManager( void );
 
+	&Heroes GetHeroes(){return m_Heroes;}
+
 	void Update( float dt );
 	void UpdateDataToDraw();
 

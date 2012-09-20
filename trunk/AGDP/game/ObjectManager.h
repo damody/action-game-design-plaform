@@ -29,6 +29,9 @@ public:
 	ObjectMG( void );
 	~ObjectMG( void );
 
+	&Chees GetChees(){return m_Chees;}
+	&Weapons GetWeapons(){return m_Weapons;}
+
 	void Update( float dt );
 	void UpdateDataToDraw();
 

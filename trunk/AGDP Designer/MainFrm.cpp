@@ -60,6 +60,7 @@ BEGIN_MESSAGE_MAP( CMainFrame, CMDIFrameWndEx )
 	ON_UPDATE_COMMAND_UI( ID_CHECK_Property, &CMainFrame::OnUpdateCheckProperty )
 	ON_WM_KEYDOWN()
 	ON_COMMAND(ID_BUTTON_RUN, &CMainFrame::OnButtonRun)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 // CMainFrame 建構/解構
@@ -589,8 +590,16 @@ void CMainFrame::OnButtonRun()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
 	if(g_HeroInfo!=NULL){
-		HeroInfo::WriteLua(g_HeroInfo,std::wstring(_T("temp\\hero.lua")));
+		HeroInfo::WriteLua(g_HeroInfo,std::wstring(_T("AGDP\\temp.lua")));
+		//執行AGDP.exe
 	}else{
 		AfxMessageBox( _T("No Target") );
 	}
+}
+
+void CMainFrame::OnClose()
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	remove( "AGDP\\temp.lua" );
+	CMDIFrameWndEx::OnClose();
 }
