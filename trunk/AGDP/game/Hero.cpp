@@ -93,9 +93,7 @@ bool isSKey( char r )
 	}
 }
 
-Hero::Hero()
-{
-}
+Hero::Hero(){}
 
 Hero::Hero( std::string h ):
 	hero( h ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 ), d_run( 0 ), m_Effect( EffectType::NONE ), m_EffectScale( 1.0f ), d_key(), m_Fall(70), m_FrontDefence(0), m_BackDefence(0)
@@ -202,43 +200,11 @@ void Hero::Update( float dt )
 	{
 		//重力加速度
 		if ( m_Action != HeroAction::AIR_SKILL && m_Action != HeroAction::UNIQUE_SKILL )
-		{
-			m_Vel.y -= G_ACCE;
-		}
+		{	m_Vel.y -= G_ACCE;	}
 
 		//掉落
-		if ( m_Action == HeroAction::STANDING )
-		{
-			m_Frame = "in_the_air";
-			m_FrameID = 0;
-			FrameInfo* f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
-			//clear keyQue
-			if ( m_KeyQue.empty() ) {}
-			else if ( f->m_ClearKeyQueue == 1 )
-			{
-				m_KeyQue.pop_back();
-			}
-			else if ( f->m_ClearKeyQueue == 2 )
-			{
-				m_KeyQue.clear();
-			}
-			//sound
-			if( !f->m_sound.empty() ) {
-				g_WavPlayer.Play ( g_WavPlayer.CreatSound(f->m_sound) );
-			}
-
-			m_PicID = f->m_PictureID;
-			m_PicX = f->m_PictureX;
-			m_PicY = f->m_PictureY;
-			m_PicW = m_HeroInfo->m_PictureDatas[m_PicID].m_Column;
-			m_PicH = m_HeroInfo->m_PictureDatas[m_PicID].m_Row;
-			m_Texture = m_HeroInfo->m_PictureDatas[m_PicID].m_TextureID;
-			m_Action = f->m_HeroAction;
-			m_TimeTik = f->m_Wait;
-			m_CenterX = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterX;
-			m_CenterY = m_HeroInfo->m_FramesMap[m_Frame][m_FrameID].m_CenterY;
-			m_FrameInfo = f;
-			CreateEffect();
+		if ( m_Action == HeroAction::STANDING )	{
+			SwitchFrame( "in_the_air", 0 );
 		}
 	}
 }
@@ -260,20 +226,13 @@ void Hero::UpdateDataToDraw()
 	m_Pic.faceside = ( float )( m_FaceSide ? 1 : -1 );
 }
 
-Texture_Sptr Hero::GetTexture()
-{
+Texture_Sptr Hero::GetTexture(){
 	return g_TextureManager.GetTexture( m_Texture );
 }
 
-ClipVertex Hero::GetPic()
-{
-	return m_Pic;
-}
+ClipVertex Hero::GetPic() {	return m_Pic; }
 
-int Hero::GetTextureID()
-{
-	return m_Texture;
-}
+int Hero::GetTextureID() {	return m_Texture; }
 
 void Hero::NextFrame()
 {
@@ -950,23 +909,16 @@ void Hero::UpdateVel( int dx, int dz )
 FrameInfo* Hero::FindFrame( std::string rframe, int rframeID){
 	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find( rframe );
 
-	if ( iframe == m_HeroInfo->m_FramesMap.end() || ( int )iframe->second.size() <= rframeID )
-	{
+	if ( iframe == m_HeroInfo->m_FramesMap.end() || ( int )iframe->second.size() <= rframeID ){
 		printf( "error: can't find frame \"%s\"[%d] !\n", rframe.c_str(), rframeID );
 		return NULL;
 	}
 	return &iframe->second[rframeID];
 }
 
-void Hero::SetPosition( Vector3 pos )
-{
-	m_Position = pos;
-}
+void Hero::SetPosition( Vector3 pos ) {	m_Position = pos; }
 
-void Hero::SetRecord( Record_Sptr r )
-{
-	m_Record = r;
-}
+void Hero::SetRecord( Record_Sptr r ) { m_Record = r; }
 
 void Hero::PushKey( KeyInfo k )
 {
