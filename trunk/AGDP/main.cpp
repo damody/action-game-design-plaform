@@ -4,9 +4,9 @@
 #include <auto_link_agal.hpp>
 #include <auto_link_sgal.hpp>
 
-int main()
+int main(int argc, char* argv[])
 {
 	InitDirect3DApp theApp;
-	theApp.initApp();
+	theApp.initApp(argc, argv);
 	return theApp.run();
 }
