@@ -33,7 +33,7 @@ struct ObjectInfo
 
 public:
 	bool	CheckObjectDataVaild( LuaCell_Sptr luadata );
-	void	LoadObjectData( LuaCell_Sptr luadata );
+	void	LoadData( LuaCell_Sptr luadata );
 	LuaCell_Sptr	m_LuaCell;
 };
 SHARE_PTR( ObjectInfo );

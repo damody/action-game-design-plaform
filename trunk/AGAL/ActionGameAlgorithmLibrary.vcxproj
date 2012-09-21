@@ -108,6 +108,7 @@
     <ClInclude Include="include\game\HeroAction.h" />
     <ClInclude Include="include\game\HeroInfo.h" />
     <ClInclude Include="include\game\HitData.h" />
+    <ClInclude Include="include\game\LuaResuorce.h" />
     <ClInclude Include="include\game\ObjectInfo.h" />
     <ClInclude Include="include\game\ObjectType.h" />
     <ClInclude Include="include\game\PictureData.h" />

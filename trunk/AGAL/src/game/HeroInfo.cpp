@@ -84,7 +84,7 @@ bool HeroInfo::CheckHeroDataVaild( LuaCell_Sptr luadata )
 	return testOK;
 }
 
-void HeroInfo::LoadHeroData( LuaCell_Sptr luadata )
+void HeroInfo::LoadData( LuaCell_Sptr luadata )
 {
 	m_LuaCell	= luadata;
 	m_Name		= luadata->GetLua<const char*>( "name" );

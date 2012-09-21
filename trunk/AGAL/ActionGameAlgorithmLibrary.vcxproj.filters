@@ -102,6 +102,9 @@
     <ClInclude Include="include\game\EffectData.h">
       <Filter>標頭檔\game</Filter>
     </ClInclude>
+    <ClInclude Include="include\game\LuaResuorce.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\FlyingPath.cpp">
