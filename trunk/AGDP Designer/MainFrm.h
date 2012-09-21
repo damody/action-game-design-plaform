@@ -48,7 +48,6 @@ public:
 // 覆寫
 public:
 	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
-	CMFCTabCtrl m_Tab;
 // 程式碼實作
 public:
 	virtual ~CMainFrame();
@@ -70,6 +69,11 @@ public:
 	{
 		m_D3DFrameView.EditAttack( id );
 		m_wndProperties.RefreshPropList_Attack( id );
+	}
+	void EditCatch( int id )
+	{
+		m_D3DFrameView.EditCatch( id );
+		m_wndProperties.RefreshPropList_CatchInfo( id );
 	}
 	void SetStatus( const CString& str )
 	{

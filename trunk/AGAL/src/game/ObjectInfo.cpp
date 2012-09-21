@@ -5,7 +5,7 @@ bool	ObjectInfo::CheckObjectDataVaild( LuaCell_Sptr luadata )
 	return true;
 }
 
-void	ObjectInfo::LoadObjectData( LuaCell_Sptr luadata )
+void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 {
 	m_LuaCell	= luadata;
 	m_Name		= luadata->GetLua<const char*>( "name" );

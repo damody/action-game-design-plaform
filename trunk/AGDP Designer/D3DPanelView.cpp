@@ -16,7 +16,7 @@
 IMPLEMENT_DYNAMIC( CD3DPanelView, CDockablePane )
 
 CD3DPanelView::CD3DPanelView( CWnd* pParent /*=NULL*/ ): m_TrackMouse( true ), m_LMouseHold( false ), m_MMouseHold( false ), m_CtrlPress( false ), m_KeyAPress( false ), m_EnableCtrlCenter( false ), m_ShiftPress( false ),
-	m_RecordX( 0 ), m_RecordY( 0 ), m_BodyID( -1 ), m_AttackID( -1 ), m_FrameInfo( NULL ), m_PointIndex( -1 )
+	m_RecordX( 0 ), m_RecordY( 0 ), m_BodyID( -1 ), m_AttackID( -1 ), m_CatchID( -1 ), m_FrameInfo( NULL ), m_PointIndex( -1 )
 {
 	this->Init();
 }
@@ -295,6 +295,79 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		}
 	}
 
+	if ( !m_D3DApp.m_Catch.empty() && m_CatchID > -1 )
+	{
+		if ( m_CtrlPress && !m_ShiftPress && m_PointIndex > -1 )
+		{
+			switch ( nChar )
+			{
+			case KEY_LEFT:
+				m_D3DApp.m_Catch[m_CatchID].Transale( m_PointIndex, -1, 0 );
+				UpdateCatch( m_PointIndex );
+				break;
+
+			case KEY_UP:
+				m_D3DApp.m_Catch[m_CatchID].Transale( m_PointIndex, 0, -1 );
+				UpdateCatch( m_PointIndex );
+				break;
+
+			case KEY_RIGHT:
+				m_D3DApp.m_Catch[m_CatchID].Transale( m_PointIndex, 1, 0 );
+				UpdateCatch( m_PointIndex );
+				break;
+
+			case KEY_DOWN:
+				m_D3DApp.m_Catch[m_CatchID].Transale( m_PointIndex, 0, 1 );
+				UpdateCatch( m_PointIndex );
+				break;
+
+			case KEY_DELETE:
+				m_D3DApp.m_Catch[m_CatchID].Erase( m_PointIndex );
+				UpdateCatch();
+				m_PointIndex = -1;
+				break;
+			}
+
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+
+		if ( m_ShiftPress && m_CtrlPress )
+		{
+			switch ( nChar )
+			{
+			case KEY_LEFT:
+				m_D3DApp.m_Catch[m_CatchID].Transale( -1, 0 );
+				UpdateCatch();
+				break;
+
+			case KEY_UP:
+				m_D3DApp.m_Catch[m_CatchID].Transale( 0, -1 );
+				UpdateCatch();
+				break;
+
+			case KEY_RIGHT:
+				m_D3DApp.m_Catch[m_CatchID].Transale( 1, 0 );
+				UpdateCatch();
+				break;
+
+			case KEY_DOWN:
+				m_D3DApp.m_Catch[m_CatchID].Transale( 0, 1 );
+				UpdateCatch();
+				break;
+
+			case KEY_DELETE:
+				m_D3DApp.m_Catch[m_CatchID].Clear();
+				UpdateCatch();
+				m_PointIndex = -1;
+				break;
+			}
+
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+	}
+
 	if ( nChar == KEY_CTRL )
 	{
 		m_CtrlPress = true;
@@ -337,6 +410,18 @@ void CD3DPanelView::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
 			{
 				m_D3DApp.m_Attack[m_AttackID].ChangeColor( m_PointIndex, 0.0f, 0.0f, 0.0f );
 				m_PointIndex = -1;
+				m_D3DApp.buildPoint();
+				m_D3DApp.DrawScene();
+			}
+		}
+
+		if ( !m_D3DApp.m_Catch.empty() && m_CatchID > -1 )
+		{
+			if ( m_PointIndex > -1 )
+			{
+				m_D3DApp.m_Catch[m_CatchID].ChangeColor( m_PointIndex, 0.0f, 0.0f, 0.0f );
+				m_PointIndex = -1;
+				m_D3DApp.buildPoint();
 				m_D3DApp.DrawScene();
 			}
 		}
@@ -371,7 +456,7 @@ void CD3DPanelView::OnLButtonDown( UINT nFlags, CPoint point )
 
 	if ( !m_D3DApp.m_Body.empty() && m_BodyID > -1 )
 	{
-	if ( m_KeyAPress && !m_CtrlPress && !m_ShiftPress )
+		if ( m_KeyAPress && !m_CtrlPress && !m_ShiftPress )
 		{
 			m_D3DApp.m_Body[m_BodyID].Add( point.x, point.y );
 			UpdateAddition_BodyPoint( point.x, point.y );
@@ -420,6 +505,35 @@ void CD3DPanelView::OnLButtonDown( UINT nFlags, CPoint point )
 			{
 				m_D3DApp.m_Attack[m_AttackID].Modify( m_PointIndex, point.x, point.y );
 				UpdateAttack( m_PointIndex );
+			}
+
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+	}
+
+	if ( !m_D3DApp.m_Catch.empty() && m_CatchID > -1 )
+	{
+		if ( m_KeyAPress && !m_CtrlPress && !m_ShiftPress )
+		{
+			m_D3DApp.m_Catch[m_CatchID].Add( point.x, point.y );
+			UpdateAddition_CatchPoint( point.x, point.y );
+			m_PointIndex = -1;
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+
+		if ( m_CtrlPress && !m_ShiftPress )
+		{
+			if ( m_PointIndex < 0 )
+			{
+				m_PointIndex = m_D3DApp.m_Catch[m_CatchID].Select_GetIndex( point.x, point.y );
+				m_D3DApp.m_Catch[m_CatchID].ChangeColor( m_PointIndex, 1.0f, 1.0f, 0.0f );
+			}
+			else
+			{
+				m_D3DApp.m_Catch[m_CatchID].Modify( m_PointIndex, point.x, point.y );
+				UpdateCatch( m_PointIndex );
 			}
 
 			m_D3DApp.buildPoint();
@@ -496,6 +610,25 @@ void CD3DPanelView::OnMouseMove( UINT nFlags, CPoint point )
 		{
 			m_D3DApp.m_Attack[m_AttackID].Transale( dx, dy );
 			UpdateAttack();
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+	}
+
+	if ( !m_D3DApp.m_Catch.empty() && m_CatchID > -1 )
+	{
+		if ( m_CtrlPress && !m_ShiftPress && m_LMouseHold && m_PointIndex > -1 )
+		{
+			m_D3DApp.m_Catch[m_CatchID].Modify( m_PointIndex, point.x, point.y );
+			UpdateCatch( m_PointIndex );
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+
+		if ( m_ShiftPress && m_CtrlPress && m_LMouseHold )
+		{
+			m_D3DApp.m_Catch[m_CatchID].Transale( dx, dy );
+			UpdateCatch();
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
@@ -622,6 +755,15 @@ void CD3DPanelView::StopEdit()
 		m_AttackID = -1;
 	}
 
+	if ( m_CatchID > -1 )
+	{
+		m_D3DApp.m_Catch[m_CatchID].SetLineColor( 0, 1, 0 );
+		m_D3DApp.m_Catch[m_CatchID].ChangeColor( 0, 1, 0 );
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+		m_CatchID = -1;
+	}
+
 	m_EnableCtrlCenter = false;
 }
 
@@ -665,6 +807,29 @@ void CD3DPanelView::EditAttack( int id )
 	{
 		char buff[100];
 		sprintf( buff, "Frame: Attacks[%d] does not exist", id );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+	}
+}
+
+void CD3DPanelView::EditCatch( int id )
+{
+	StopEdit();
+
+	if ( id < ( int )m_D3DApp.m_Catch.size() && id > -1 )
+	{
+		m_CatchID = id;
+		m_PointIndex = -1;
+		m_D3DApp.m_Catch[id].SetLineColor( 0, 0, 0 );
+		m_D3DApp.m_Catch[id].ChangeColor( 0, 0, 0 );
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
+	else
+	{
+		char buff[100];
+		sprintf( buff, "Frame: Catch[%d] does not exist", id );
 		CString str( buff );
 		AfxMessageBox( str );
 		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
@@ -746,7 +911,7 @@ void CD3DPanelView::Refresh()
 				}
 
 				pm.SetLineColor( 0, 1, 0 );
-				m_D3DApp.m_Attack.push_back( pm );
+				m_D3DApp.m_Catch.push_back( pm );
 			}
 
 			m_D3DApp.buildPoint();
@@ -798,6 +963,17 @@ void CD3DPanelView::InitEdit()
 		if ( m_PointIndex > -1 )
 		{
 			m_D3DApp.m_Attack[m_AttackID].ChangeColor( m_PointIndex, 0.0f, 0.0f, 0.0f );
+			m_PointIndex = -1;
+			m_D3DApp.buildPoint();
+			m_D3DApp.DrawScene();
+		}
+	}
+
+	if ( !m_D3DApp.m_Catch.empty() && m_CatchID > -1 )
+	{
+		if ( m_PointIndex > -1 )
+		{
+			m_D3DApp.m_Catch[m_CatchID].ChangeColor( m_PointIndex, 0.0f, 0.0f, 0.0f );
 			m_PointIndex = -1;
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
@@ -880,9 +1056,43 @@ void CD3DPanelView::UpdateAddition_AttackPoint( float x, float y )
 {
 	if ( m_FrameInfo == NULL ) { return; }
 
-	m_FrameInfo->m_Attacks[m_BodyID].m_Area.AddPoint( x, y );
+	m_FrameInfo->m_Attacks[m_AttackID].m_Area.AddPoint( x, y );
 	//Refresh
 	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Attack(m_AttackID);
+}
+
+void CD3DPanelView::UpdateCatch()
+{
+	if ( m_FrameInfo == NULL ) { return; }
+
+	m_FrameInfo->m_Catchs[m_CatchID].m_Area.Clear();
+
+	for ( Points::iterator it = m_D3DApp.m_Catch[m_CatchID].GetPoints().begin(); it != m_D3DApp.m_Catch[m_CatchID].GetPoints().end(); ++it )
+	{
+		m_FrameInfo->m_Catchs[m_CatchID].m_Area.AddPoint( it->x, -it->y );
+	}
+
+	//Refresh
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_CatchInfo(m_CatchID);
+}
+
+void CD3DPanelView::UpdateCatch( int index )
+{
+	if ( m_FrameInfo == NULL ) { return; }
+
+	m_FrameInfo->m_Catchs[m_CatchID].m_Area.Points()[index].x = m_D3DApp.m_Catch[m_CatchID].GetPoints()[index].x;
+	m_FrameInfo->m_Catchs[m_CatchID].m_Area.Points()[index].y = -m_D3DApp.m_Catch[m_CatchID].GetPoints()[index].y;
+	//Refresh
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshCatchPoint(index);
+}
+
+void CD3DPanelView::UpdateAddition_CatchPoint( float x, float y )
+{
+	if ( m_FrameInfo == NULL ) { return; }
+
+	m_FrameInfo->m_Catchs[m_CatchID].m_Area.AddPoint( x, y );
+	//Refresh
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_CatchInfo(m_CatchID);
 }
 
 void CD3DPanelView::OnButtonPointadd()
@@ -960,3 +1170,13 @@ void CD3DPanelView::EditAttackPoint( int id )
 	m_D3DApp.buildPoint();
 	m_D3DApp.DrawScene();
 }
+
+void CD3DPanelView::EditCatchPoint( int id )
+{
+	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	m_D3DApp.m_Catch[m_CatchID].Modify(id,frameInfo->m_Catchs[m_CatchID].m_Area.Points()[id].x,-frameInfo->m_Catchs[m_CatchID].m_Area.Points()[id].y);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
+}
+
+

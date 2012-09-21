@@ -200,7 +200,7 @@ void CFileView::OnFileOpen()
 			HTREEITEM hHero = m_wndFileView.InsertItem( dlgFile.GetFileTitle(), 2, 2, hHeroDoc );
 			HeroInfo_RawPtr hero = HeroInfo_RawPtr( new HeroInfo );
 			g_HeroInfo = hero;
-			hero->LoadHeroData( data );
+			hero->LoadData( data );
 
 			if ( ( ( CMainFrame* )this->GetParentFrame() )->NewHeroViews( hero ) )
 			{
