@@ -1,5 +1,6 @@
 //Ä~©Ó½d¨Ò
 #include <auto_link_luajit.hpp>
+#include <auto_link_luabind.hpp>
 #include <luabind/luabind.hpp>
 #include <iostream>
 using std::cout;

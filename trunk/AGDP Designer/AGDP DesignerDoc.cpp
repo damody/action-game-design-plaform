@@ -76,6 +76,12 @@ void CAGDPDesignerDoc::Serialize( CArchive& ar )
 	}
 }
 
+
+void CAGDPDesignerDoc::OnFileSave()
+{
+	return;
+}
+
 #ifdef SHARED_HANDLERS
 
 // ÁY¹Ïªº¤ä´©
@@ -139,10 +145,6 @@ void CAGDPDesignerDoc::Dump( CDumpContext& dc ) const
 	CDocument::Dump( dc );
 }
 
-void CAGDPDesignerDoc::OnFileSave()
-{
-	return;
-}
 
 #endif //_DEBUG
 

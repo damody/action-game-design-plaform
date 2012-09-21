@@ -6,7 +6,7 @@
 #include "game\HeroAction.h"
 #include "common\shared_ptr.h"
 #include "game\ObjectInfo.h"
-#include "Record.h"
+#include "game\Record.h"
 
 class Weapon
 {
@@ -60,7 +60,7 @@ public:
 	Vector3 Position();
 	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 };
-SHARE_PTR( Weapon )
+SHARE_PTR( Weapon );
 typedef std::vector <Weapon_RawPtr> Weapons;
 
 bool SortWeapon( Weapon_RawPtr a, Weapon_RawPtr b );

@@ -1,11 +1,10 @@
-ï»¿/*! @brief è™•ç†raw inputçš„é¡åˆ¥
-å¯ä»¥å¾—åˆ°éµç›¤çš„ down up hold press å››å€‹äº‹ä»¶
-å¯ä»¥å¾—åˆ°mouse ä¸‰å€‹éµçš„ down up hold press
-å¯ä»¥å¾—åˆ°æ»‘é¼ ä½ç½®èˆ‡æ»¾è¼ªæ»¾å‹•é‡
+/*! @brief ³B²zraw inputªºÃş§O
+¥i¥H±o¨ìÁä½Lªº down up hold press ¥|­Ó¨Æ¥ó
+¥i¥H±o¨ìmouse ¤T­ÓÁäªº down up hold press
+¥i¥H±o¨ì·Æ¹«¦ì¸m»Pºu½üºu°Ê¶q
 */
 
-#ifndef INPUTSTATE_H
-#define INPUTSTATE_H
+#pragma once
 
 #include "GetDirectXInput.h"
 #include <queue>
@@ -16,53 +15,53 @@ class InputState
 public:
 	enum
 	{
-	        MOUSE_LEFT,	///< æ»‘é¼ å·¦éµ
-	        MOUSE_RIGHT,	///< æ»‘é¼ å³éµ
-	        MOUSE_MIDDLE	///< æ»‘é¼ ä¸­éµ
+	        MOUSE_LEFT,	///< ·Æ¹«¥ªÁä
+	        MOUSE_RIGHT,	///< ·Æ¹«¥kÁä
+	        MOUSE_MIDDLE	///< ·Æ¹«¤¤Áä
 	};
 	InputState();
 	~InputState();
-	/// æ›´æ–°è¼¸å…¥è¨Šè™Ÿ
+	/// §ó·s¿é¤J°T¸¹
 	void GetInput();
-	/// è¨­å®šè¼¸å…¥ç«¯
+	/// ³]©w¿é¤Jºİ
 	int InputInit( HWND hWnd, HINSTANCE Instance );
-	/// ç¢ºèª ä»£ç¢¼ç‚ºindexçš„éµ æ˜¯å¦ç‚ºæŒ‰ä¸‹éµçš„ç¬é–“
+	/// ½T»{ ¥N½X¬°indexªºÁä ¬O§_¬°«ö¤UÁäªºÀş¶¡
 	bool isKeyDown( int index );
-	/// ç¢ºèª ä»£ç¢¼ç‚ºindexçš„éµ æ˜¯å¦ç‚ºæ”¾é–‹éµçš„ç¬é–“
+	/// ½T»{ ¥N½X¬°indexªºÁä ¬O§_¬°©ñ¶}ÁäªºÀş¶¡
 	bool isKeyUp( int index );
-	/// ç¢ºèª ä»£ç¢¼ç‚ºindexçš„éµ æ˜¯å¦ç‚ºæŒ‰ä½éµä¸æ”¾
+	/// ½T»{ ¥N½X¬°indexªºÁä ¬O§_¬°«ö¦íÁä¤£©ñ
 	bool isKeyHold( int index );
-	/// ç¢ºèª ä»£ç¢¼ç‚ºindexçš„éµ æ˜¯å¦ç‚ºæŒ‰ä¸‹éµ
+	/// ½T»{ ¥N½X¬°indexªºÁä ¬O§_¬°«ö¤UÁä
 	bool isKeyPress( int index );
-	/// ç¢ºèª æ»‘é¼ å·¦éµ æ˜¯å¦ç‚ºæŒ‰ä¸‹éµçš„ç¬é–“
+	/// ½T»{ ·Æ¹«¥ªÁä ¬O§_¬°«ö¤UÁäªºÀş¶¡
 	bool isMouseLDown();
-	/// ç¢ºèª æ»‘é¼ å³éµ æ˜¯å¦ç‚ºæŒ‰ä¸‹éµçš„ç¬é–“
+	/// ½T»{ ·Æ¹«¥kÁä ¬O§_¬°«ö¤UÁäªºÀş¶¡
 	bool isMouseRDown();
-	/// ç¢ºèª æ»‘é¼ ä¸­éµ æ˜¯å¦ç‚ºæŒ‰ä¸‹éµçš„ç¬é–“
+	/// ½T»{ ·Æ¹«¤¤Áä ¬O§_¬°«ö¤UÁäªºÀş¶¡
 	bool isMouseMDown();
-	/// ç¢ºèª æ»‘é¼ å·¦éµ æ˜¯å¦ç‚ºæ”¾é–‹éµçš„ç¬é–“
+	/// ½T»{ ·Æ¹«¥ªÁä ¬O§_¬°©ñ¶}ÁäªºÀş¶¡
 	bool isMouseLUp();
-	/// ç¢ºèª æ»‘é¼ å³éµ æ˜¯å¦ç‚ºæ”¾é–‹éµçš„ç¬é–“
+	/// ½T»{ ·Æ¹«¥kÁä ¬O§_¬°©ñ¶}ÁäªºÀş¶¡
 	bool isMouseRUp();
-	/// ç¢ºèª æ»‘é¼ ä¸­éµ æ˜¯å¦ç‚ºæ”¾é–‹éµçš„ç¬é–“
+	/// ½T»{ ·Æ¹«¤¤Áä ¬O§_¬°©ñ¶}ÁäªºÀş¶¡
 	bool isMouseMUp();
-	/// ç¢ºèª æ»‘é¼ å·¦éµ æ˜¯å¦ç‚ºæŒ‰ä½éµä¸æ”¾
+	/// ½T»{ ·Æ¹«¥ªÁä ¬O§_¬°«ö¦íÁä¤£©ñ
 	bool isMouseLHold();
-	/// ç¢ºèª æ»‘é¼ å³éµ æ˜¯å¦ç‚ºæŒ‰ä½éµä¸æ”¾
+	/// ½T»{ ·Æ¹«¥kÁä ¬O§_¬°«ö¦íÁä¤£©ñ
 	bool isMouseRHold();
-	/// ç¢ºèª æ»‘é¼ ä¸­éµ æ˜¯å¦ç‚ºæŒ‰ä½éµä¸æ”¾
+	/// ½T»{ ·Æ¹«¤¤Áä ¬O§_¬°«ö¦íÁä¤£©ñ
 	bool isMouseMHold();
-	/// ç¢ºèª æ»‘é¼ å·¦éµ æ˜¯å¦ç‚ºæŒ‰ä¸‹éµ
+	/// ½T»{ ·Æ¹«¥ªÁä ¬O§_¬°«ö¤UÁä
 	bool isMouseLPress();
-	/// ç¢ºèª æ»‘é¼ å³éµ æ˜¯å¦ç‚ºæŒ‰ä¸‹éµ
+	/// ½T»{ ·Æ¹«¥kÁä ¬O§_¬°«ö¤UÁä
 	bool isMouseRPress();
-	/// ç¢ºèª æ»‘é¼ ä¸­éµ æ˜¯å¦ç‚ºæŒ‰ä¸‹éµ
+	/// ½T»{ ·Æ¹«¤¤Áä ¬O§_¬°«ö¤UÁä
 	bool isMouseMPress();
-	/// å¾—åˆ°æ»‘é¼ ä½ç½®
+	/// ±o¨ì·Æ¹«¦ì¸m
 	POINT GetMousePos();
-	/// å¾—åˆ°æ»¾è¼ªå‹•é‡
+	/// ±o¨ìºu½ü°Ê¶q
 	int  GetMouseWheel();
-	/// å–å¾—æ‰€æœ‰æŒ‰ä¸‹çš„éµå€¼
+	/// ¨ú±o©Ò¦³«ö¤UªºÁä­È
 	std::queue<int> GetKeyDownQue();
 private:
 	char m_NowKeyState[256], m_LastKeyState[256];
@@ -71,4 +70,3 @@ private:
 	MouseInfo m_LastMouseInfo;
 };
 typedef boost::detail::thread::singleton<InputState> InputStateS; // InputStateS
-#endif //INPUTSTATE_H

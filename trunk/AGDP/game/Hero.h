@@ -11,7 +11,7 @@
 #include "CtrlKey.h"
 #include "game\HeroInfo.h"
 #include "game\HeroAction.h"
-#include "Record.h"
+#include "game\Record.h"
 #include <string>
 #include <cmath>
 #include <cstdlib>
@@ -144,7 +144,7 @@ protected:
 	void keyUsed( char );
 	void newKey( char );
 };
-SHARE_PTR( Hero )
+SHARE_PTR( Hero );
 typedef std::vector <Hero_RawPtr> Heroes;
 
 //bool Creat(Vector3 pos, Creation obj, const Hero *owner);

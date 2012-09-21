@@ -12,5 +12,5 @@ public:
 	virtual ~Behavior() {}
 	virtual int UpdateBall( Ball* b, float elapsedtime ) = 0;
 };
-SHARE_PTR( Behavior )
+SHARE_PTR( Behavior );
 

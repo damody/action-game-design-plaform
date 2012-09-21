@@ -1,5 +1,6 @@
 //call member½d¨Ò
 #include <auto_link_luajit.hpp>
+#include <auto_link_luabind.hpp>
 #include <luabind/luabind.hpp>
 #include <luabind/object.hpp>
 #include <iostream>

@@ -14,7 +14,8 @@ private:
 	Vector3 m_LookAT;
 	union
 	{
-		float m_Pos[3];//極座標 p(半徑,z軸-x軸 角度, y軸-xz平面 角度)
+		//極座標 p(半徑,z軸-x軸 角度, y軸-xz平面 角度)
+		float m_Pos[3];
 		struct
 		{
 			float m_Radius;
@@ -54,7 +55,5 @@ public:
 	float* GetCPos();
 
 };
-SHARE_PTR( Camera )
-
-
+SHARE_PTR( Camera );
 
