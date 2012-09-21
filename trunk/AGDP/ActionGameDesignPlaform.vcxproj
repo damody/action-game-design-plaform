@@ -466,7 +466,6 @@
     <ClInclude Include="game\ObjectType.h" />
     <ClInclude Include="game\FrameInfo.h" />
     <ClInclude Include="game\Hero.h" />
-    <ClInclude Include="game\HeroAction.h" />
     <ClInclude Include="game\HitData.h" />
     <ClInclude Include="game\Player.h" />
     <ClInclude Include="game\RenderTextureClass.h" />
