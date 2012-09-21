@@ -1,5 +1,66 @@
 #pragma once
 #include <string>
+#include <map>
+#include "Lua/LuaCell.h"
+
+class LuaMap : public std::map<std::string, int>
+{
+public:
+	LuaMap(){}
+	LuaMap(LuaCell_Sptr lsptr)
+	{
+		keys.clear();
+		keys = lsptr->GetLuaTableKeys("Action");
+		this->clear();
+		for(int i=0; i<keys.size(); i++)
+		{
+			(*this)[keys[i]] = (int)lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+		}
+	}
+	LuaMap(std::string path)
+	{
+		LuaCell_Sptr lsptr = LuaCell_Sptr( new LuaCell );
+		lsptr->InputLuaFile(path.c_str());
+		keys.clear();
+		keys = lsptr->GetLuaTableKeys("Action");
+		this->clear();
+		for(int i=0; i<keys.size(); i++)
+		{
+			(*this)[keys[i]] = (int)lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+		}
+	}
+	~LuaMap(){}
+
+	strings GetKeys()
+	{
+		return keys;
+	}
+	void LoadHeroAction(LuaCell_Sptr lsptr)
+	{
+		keys.clear();
+		keys = lsptr->GetLuaTableKeys("Action");
+		this->clear();
+		for(int i=0; i<keys.size(); i++)
+		{
+			(*this)[keys[i]] = (int)lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+		}
+	}
+	void LoadHeroAction(std::string path)
+	{
+		LuaCell_Sptr lsptr = LuaCell_Sptr( new LuaCell );
+		lsptr->InputLuaFile(path.c_str());
+		keys.clear();
+		keys = lsptr->GetLuaTableKeys("Action");
+		this->clear();
+		for(int i=0; i<keys.size(); i++)
+		{
+			(*this)[keys[i]] = (int)lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+		}
+	}
+private:
+	strings keys;
+};
+//typedef LuaMap HeroAction;
 
 //必要的基本動作定義
 struct HeroAction
@@ -117,6 +178,7 @@ struct HeroAction
 	        BASIC_ACTION_END
 	};
 };
+
 const std::string HeroActionTable[] =
 {
 	"Standing",

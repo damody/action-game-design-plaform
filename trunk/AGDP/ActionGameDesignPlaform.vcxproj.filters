@@ -274,9 +274,6 @@
     <ClInclude Include="game\Hero.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="game\HeroAction.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
     <ClInclude Include="game\HitData.h">
       <Filter>inc\game</Filter>
     </ClInclude>

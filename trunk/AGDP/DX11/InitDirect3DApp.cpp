@@ -9,6 +9,7 @@
 #include "game/CtrlKey.h"
 #include "game/HeroInfo.h"
 #include "game/ObjectInfo.h"
+#include "game/HeroAction.h"
 
 #include "game/LuaResuorce.h"
 
@@ -859,6 +860,8 @@ void InitDirect3DApp::LoadBlend()
 
 void InitDirect3DApp::LoadHero()
 {
+	//LuaMap _tmphero = LuaMap(std::string("../../../AGDP/action.lua"));
+	//LuaMap _tmphero = LuaMap(std::string("action.lua"));
 	//Test
 	LuaCell_Sptr davis = LuaCell_Sptr( new LuaCell );
 	davis->InputLuaFile( "davis.lua" );
