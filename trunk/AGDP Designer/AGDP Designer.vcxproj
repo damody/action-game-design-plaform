@@ -65,7 +65,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>D3DX11Effectsd.lib;d3d11.lib;d3dx11.lib;d3d9.lib;d3dx9.lib;DxErr.lib;dinput8.lib;d3dcompiler.lib;dxguid.lib;d3dxof.lib;winmm.lib;odbc32.lib;odbccp32.lib;dwrite.lib;D2d1.lib;imm32.lib;Version.lib;comctl32.lib;dsound.lib</AdditionalDependencies>
+      <AdditionalDependencies>D3DX11Effectsd.lib;d3d11.lib;d3dx11.lib;d3d9.lib;d3dx9.lib;DxErr.lib;dinput8.lib;d3dcompiler.lib;dxguid.lib;d3dxof.lib;winmm.lib;odbc32.lib;odbccp32.lib;dwrite.lib;D2d1.lib;imm32.lib;Version.lib;comctl32.lib;dsound.lib;windowscodecs.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\Bin</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>

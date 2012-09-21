@@ -105,7 +105,7 @@ public:
 	HeroInfo();
 	static bool CheckHeroDataVaild( LuaCell_Sptr luadata );
 	static void WriteLua( HeroInfo* hero , std::wstring filePath );
-	void	LoadHeroData( LuaCell_Sptr luadata );
+	void	LoadData( LuaCell_Sptr luadata );
 	LuaCell_Sptr	m_LuaCell;
 };
 SHARE_PTR( HeroInfo );
