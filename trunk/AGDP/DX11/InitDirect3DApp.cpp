@@ -10,6 +10,8 @@
 #include "game/HeroInfo.h"
 #include "game/ObjectInfo.h"
 
+#include "game/LuaResuorce.h"
+
 InitDirect3DApp* InitDirect3DApp::dxAppInstance = NULL;
 
 InitDirect3DApp::InitDirect3DApp()
@@ -861,7 +863,7 @@ void InitDirect3DApp::LoadHero()
 	LuaCell_Sptr davis = LuaCell_Sptr( new LuaCell );
 	davis->InputLuaFile( "davis.lua" );
 	HeroInfo_Sptr temp = HeroInfo_Sptr( new HeroInfo );
-	temp->LoadHeroData( davis );
+	temp->LoadData( davis );
 	g_HeroInfoMG.AddHeroInfo( temp->m_Name, temp );
 	//test bg
 	LuaCell_Sptr ft = LuaCell_Sptr( new LuaCell );
@@ -874,13 +876,13 @@ void InitDirect3DApp::LoadHero()
 	LuaCell_Sptr ball = LuaCell_Sptr( new LuaCell );
 	ball->InputLuaFile( "davis_ball.lua" );
 	ObjectInfo_Sptr temp2 = ObjectInfo_Sptr( new ObjectInfo );
-	temp2->LoadObjectData( ball );
+	temp2->LoadData( ball );
 	g_ObjectInfoMG.AddObjectInfo( temp2->m_Name, temp2 );
 	//test BAT
 	LuaCell_Sptr bat = LuaCell_Sptr( new LuaCell );
 	bat->InputLuaFile( "bat.lua" );
 	ObjectInfo_Sptr temp3 = ObjectInfo_Sptr( new ObjectInfo );
-	temp3->LoadObjectData( bat );
+	temp3->LoadData( bat );
 	g_ObjectInfoMG.AddObjectInfo( temp3->m_Name, temp3 );
 	g_ObjectMG.CreateWeapon( "Bat", Vector3( 600, 0, 600 ) );
 	//test BGM
@@ -1423,7 +1425,7 @@ void InitDirect3DApp::ParseCommandLine( int argc, char* argv[] )
 			LuaCell_Sptr hero = LuaCell_Sptr( new LuaCell );
 			hero->InputLuaFile( heroStr.c_str() );
 			HeroInfo_Sptr temp = HeroInfo_Sptr( new HeroInfo );
-			temp->LoadHeroData( hero );
+			temp->LoadData( hero );
 			g_HeroInfoMG.AddHeroInfo( temp->m_Name, temp );
 
 			g_HeroMG.Destory(m_Player.m_Hero, 10);
