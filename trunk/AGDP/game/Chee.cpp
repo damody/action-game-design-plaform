@@ -100,7 +100,7 @@ void Chee::Update( float dt )
 	{
 		if ( !g_BGManager.CurrentBG()->InSpace( m_Position ) )
 		{
-			g_ObjectMG.Distory( this, 6 );
+			g_ObjectMG.Destory( this, 6 );
 		}
 	}
 

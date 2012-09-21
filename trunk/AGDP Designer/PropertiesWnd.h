@@ -166,9 +166,11 @@ public:
 
 	void RefreshCenter();
 	void RefreshBodyPoint(int i);
+	void RefreshAttackPoint(int i);
 public:
 	void Update();
 	void UpdatePropList_Frame();
 	void UpdateBody();
+	void UpdateAttack();
 	//void DeleteProperty(CMFCPropertyGridProperty* pProp);
 };

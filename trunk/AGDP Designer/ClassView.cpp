@@ -1044,6 +1044,14 @@ void CClassView::OnBodyAdd()
 	CString str(buff);
 	m_wndClassView.InsertItem( str , 3, 3, item );
 	m_wndClassView.Expand(item, TVE_EXPAND);
+
+	if ( g_ActiveFramesMap->find(g_FrameName) != g_ActiveFramesMap->end() )
+	{
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find(g_FrameName)->second.size() )
+		{
+			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
+		}
+	}
 }
 
 
@@ -1083,18 +1091,99 @@ void CClassView::OnBodyDelete()
 			( ( CMainFrame* )this->GetParentFrame() )->Clear();
 		}
 	}
+
+	if ( g_ActiveFramesMap->find(g_FrameName) != g_ActiveFramesMap->end() )
+	{
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find(g_FrameName)->second.size() )
+		{
+			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
+		}
+	}
 }
 
 
 void CClassView::OnAttackDelete()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	int count = _ttoi(m_wndClassView.GetItemText(item));
+	int frameIndex = _ttoi(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item))));
+	char buff[100];
+	ConvStr::WcharToChar(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item)))),buff);
+	std::string frameName(buff);
+
+	(*g_ActiveFramesMap)[frameName][frameIndex].m_Attacks.erase((*g_ActiveFramesMap)[frameName][frameIndex].m_Attacks.begin()+count);
+
+	if ( item != NULL )
+	{
+		HTREEITEM tmp_item = m_wndClassView.GetNextSiblingItem( item );
+
+		for ( int i = count;; i++ )
+		{
+			if ( tmp_item != NULL )
+			{
+				TCHAR num_str[10];
+				wsprintf( num_str, _T( "%d" ), i );
+				m_wndClassView.SetItemText( tmp_item, num_str );
+				tmp_item = m_wndClassView.GetNextSiblingItem( tmp_item );
+			}
+			else { break; }
+		}
+
+		m_wndClassView.DeleteItem( item );
+
+		//Clear
+		if ( g_FrameName == frameName && g_FrameIndex == count )
+		{
+			( ( CMainFrame* )this->GetParentFrame() )->Clear();
+		}
+	}
+
+	if ( g_ActiveFramesMap->find(g_FrameName) != g_ActiveFramesMap->end() )
+	{
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find(g_FrameName)->second.size() )
+		{
+			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
+		}
+	}
 }
 
 
 void CClassView::OnAttackAdd()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	int frameIndex = _ttoi(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(item)));
+	char buff[100];
+	ConvStr::WcharToChar(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item))),buff);
+	std::string frameName(buff);
+	Attack atk;
+	atk.m_Kind = 1;
+	atk.m_ZWidth = 1;
+	atk.m_AttackRest = 0;
+	atk.m_ReAttackRest = 0;
+	atk.m_DVX = 0;
+	atk.m_DVY = 0;
+	atk.m_DVZ = 0;
+	atk.m_Effect = 0;
+	atk.m_Fall = 0;
+	atk.m_Injury = 0;
+	atk.m_BreakDefend = 0;
+	atk.m_Strength = 0;
+	
+	(*g_ActiveFramesMap)[frameName][frameIndex].m_Attacks.push_back(atk);
+	sprintf(buff,"%d",(*g_ActiveFramesMap)[frameName][frameIndex].m_Attacks.size()-1);
+	CString str(buff);
+	m_wndClassView.InsertItem( str , 3, 3, item );
+	m_wndClassView.Expand(item, TVE_EXPAND);
+
+	if ( g_ActiveFramesMap->find(g_FrameName) != g_ActiveFramesMap->end() )
+	{
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find(g_FrameName)->second.size() )
+		{
+			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
+		}
+	}
 }
 
 

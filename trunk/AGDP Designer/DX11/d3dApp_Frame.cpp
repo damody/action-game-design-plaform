@@ -320,18 +320,24 @@ void D3DApp_Frame::buildPoint()
 	ReleaseCOM( m_Buffer_Points );
 	m_PointVertices.clear();
 
-	for ( Bounds::iterator it = m_Body.begin(); it != m_Body.end(); ++it )
+	for ( Area::iterator it = m_Body.begin(); it != m_Body.end(); ++it )
 	{
 		PointVertices pvs = it->BuildPoint( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
 		m_PointVertices.insert( m_PointVertices.end(), pvs.begin(), pvs.end() );
 	}
 
-	for ( Bounds::iterator it = m_Attack.begin(); it != m_Attack.end(); ++it )
+	for ( Area::iterator it = m_Attack.begin(); it != m_Attack.end(); ++it )
 	{
 		PointVertices pvs = it->BuildPoint( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
 		m_PointVertices.insert( m_PointVertices.end(), pvs.begin(), pvs.end() );
 	}
 
+	for ( Area::iterator it = m_Catch.begin(); it != m_Catch.end(); ++it)
+	{
+		PointVertices pvs = it->BuildPoint( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
+		m_PointVertices.insert( m_PointVertices.end(), pvs.begin(), pvs.end() );
+	}
+	
 	if ( !m_PointVertices.empty() )
 	{
 		m_vbd.ByteWidth = ( UINT )( sizeof( PointVertex ) * m_PointVertices.size() );
@@ -345,13 +351,19 @@ void D3DApp_Frame::buildPoint()
 	ReleaseCOM( m_Buffer_Lines );
 	m_LineVertices.clear();
 
-	for ( Bounds::iterator it = m_Body.begin(); it != m_Body.end(); ++it )
+	for ( Area::iterator it = m_Body.begin(); it != m_Body.end(); ++it )
 	{
 		LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
 		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
 	}
 
-	for ( Bounds::iterator it = m_Attack.begin(); it != m_Attack.end(); ++it )
+	for ( Area::iterator it = m_Attack.begin(); it != m_Attack.end(); ++it )
+	{
+		LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
+		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
+	}
+
+	for ( Area::iterator it = m_Catch.begin(); it != m_Catch.end(); ++it)
 	{
 		LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
 		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
@@ -464,6 +476,7 @@ void D3DApp_Frame::Init()
 {
 	m_Body.clear();
 	m_Attack.clear();
+	m_Catch.clear();
 	m_Center.Clear();
 	m_Pic = NULL;
 	m_picX = 1;

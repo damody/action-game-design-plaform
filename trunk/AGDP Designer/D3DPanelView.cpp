@@ -736,6 +736,19 @@ void CD3DPanelView::Refresh()
 				m_D3DApp.m_Attack.push_back( pm );
 			}
 
+			for ( CatchInfos::iterator it_c = m_FrameInfo->m_Catchs.begin(); it_c != m_FrameInfo->m_Catchs.end(); it_c++ )
+			{
+				PointManager pm;
+
+				for ( Vec2s::iterator it_v = it_c->m_Area.Points().begin(); it_v != it_c->m_Area.Points().end(); it_v++ )
+				{
+					pm.Add( it_v->x, -it_v->y, 0, 1, 0 );
+				}
+
+				pm.SetLineColor( 0, 1, 0 );
+				m_D3DApp.m_Attack.push_back( pm );
+			}
+
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();
 		}
@@ -850,6 +863,7 @@ void CD3DPanelView::UpdateAttack()
 	}
 
 	//Refresh
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Attack(m_AttackID);
 }
 
 void CD3DPanelView::UpdateAttack( int index )
@@ -859,6 +873,7 @@ void CD3DPanelView::UpdateAttack( int index )
 	m_FrameInfo->m_Attacks[m_AttackID].m_Area.Points()[index].x = m_D3DApp.m_Attack[m_AttackID].GetPoints()[index].x;
 	m_FrameInfo->m_Attacks[m_AttackID].m_Area.Points()[index].y = -m_D3DApp.m_Attack[m_AttackID].GetPoints()[index].y;
 	//Refresh
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshAttackPoint(index);
 }
 
 void CD3DPanelView::UpdateAddition_AttackPoint( float x, float y )
@@ -867,6 +882,7 @@ void CD3DPanelView::UpdateAddition_AttackPoint( float x, float y )
 
 	m_FrameInfo->m_Attacks[m_BodyID].m_Area.AddPoint( x, y );
 	//Refresh
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Attack(m_AttackID);
 }
 
 void CD3DPanelView::OnButtonPointadd()
@@ -933,6 +949,14 @@ void CD3DPanelView::EditBodyPoint( int id )
 {
 	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
 	m_D3DApp.m_Body[m_BodyID].Modify(id,frameInfo->m_Bodys[m_BodyID].m_Area.Points()[id].x,-frameInfo->m_Bodys[m_BodyID].m_Area.Points()[id].y);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
+}
+
+void CD3DPanelView::EditAttackPoint( int id )
+{
+	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	m_D3DApp.m_Attack[m_AttackID].Modify(id,frameInfo->m_Attacks[m_AttackID].m_Area.Points()[id].x,-frameInfo->m_Attacks[m_AttackID].m_Area.Points()[id].y);
 	m_D3DApp.buildPoint();
 	m_D3DApp.DrawScene();
 }

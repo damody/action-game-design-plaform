@@ -1428,7 +1428,7 @@ void InitDirect3DApp::ParseCommandLine( int argc, char* argv[] )
 			temp->LoadHeroData( hero );
 			g_HeroInfoMG.AddHeroInfo( temp->m_Name, temp );
 
-			g_HeroMG.Distory(m_Player.m_Hero, 1000);
+			g_HeroMG.Destory(m_Player.m_Hero, 10);
 			m_Player.SetHero( temp->m_Name );
 			m_Player.m_Hero = g_HeroMG.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) );
 

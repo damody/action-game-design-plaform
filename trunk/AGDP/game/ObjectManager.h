@@ -8,14 +8,14 @@ class ObjectMG
 public:
 	struct CTrash
 	{
-		Chees::iterator m_Trash;
+		Chee* m_Trash;
 		int m_Time;
 	};
 	typedef std::vector<CTrash> CTrashCan;
 
 	struct WTrash
 	{
-		Weapons::iterator m_Trash;
+		Weapon* m_Trash;
 		int m_Time;
 	};
 	typedef std::vector<WTrash> WTrashCan;
@@ -29,15 +29,18 @@ public:
 	ObjectMG( void );
 	~ObjectMG( void );
 
+	&Chees GetChees(){return m_Chees;}
+	&Weapons GetWeapons(){return m_Weapons;}
+
 	void Update( float dt );
 	void UpdateDataToDraw();
 
 	Chee** CreateChee( const std::string& chee, const Vector3& pos, const Vector3& vel, int num = 1, int team = 0 );
 	Weapon** CreateWeapon( const std::string& weapon, const Vector3& pos, int num = 1, int team = 0 );
-	void Distory( Chee_RawPtr chee, int time = 0 );
-	void Distory( Weapon_RawPtr weapon, int time = 0 );
-	void Distory( Chees::iterator it, int time = 0 );
-	void Distory( Weapons::iterator it, int time = 0 );
+	void Destory( Chee_RawPtr chee, int time = 0 );
+	void Destory( Weapon_RawPtr weapon, int time = 0 );
+	void Destory( Chees::iterator it, int time = 0 );
+	void Destory( Weapons::iterator it, int time = 0 );
 	void Clear();
 	void ClearChee();
 	void ClearWeapon();
@@ -63,5 +66,7 @@ protected:
 	void CleanTrashCan();
 	bool InCTrashCan( Chee_RawPtr chee );
 	bool InWTrashCan( Weapon_RawPtr weapon );
+	Chees::iterator GetCheeIt(Chee* chee);
+	Weapons::iterator GetWeaponIt(Weapon* weapon);
 };
 
