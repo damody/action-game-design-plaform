@@ -1,18 +1,18 @@
 loadpackage = 0;
 
-Hero = {
-"Davis.lua",
+hero = {
+"davis.lua",
 --"Dennis.lua",
 }
 
 
 object = {
-"Davis_ball.lua",
+"davis_ball.lua",
 "bat.lua",
 --"Dennis_ball.lua",
 }
 
 
-background = {
+backGround = {
 "bg.lua",
 }

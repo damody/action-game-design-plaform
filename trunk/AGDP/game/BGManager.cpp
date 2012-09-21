@@ -10,7 +10,7 @@ BGManager::~BGManager( void )
 {
 }
 
-unsigned int BGManager::AddBG( const std::string& name, BackGround_RawPtr bg )
+unsigned int BGManager::AddBG( const std::string& name, BackGround_Sptr bg )
 {
 	m_BGList.push_back( name );
 	m_BGMaps[name] = bg;
@@ -29,7 +29,7 @@ BackGround* BGManager::CurrentBG()
 
 void BGManager::SetCurrentBG( const std::string& name )
 {
-	m_CurrentBG = m_BGMaps[name];
+	m_CurrentBG = m_BGMaps[name].get();
 }
 
 

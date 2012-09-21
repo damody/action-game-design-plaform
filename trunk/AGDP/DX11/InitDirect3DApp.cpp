@@ -860,35 +860,32 @@ void InitDirect3DApp::LoadBlend()
 
 void InitDirect3DApp::LoadHero()
 {
-	//LuaMap _tmphero = LuaMap(std::string("../../../AGDP/action.lua"));
-	//LuaMap _tmphero = LuaMap(std::string("action.lua"));
-	//Test
-	LuaCell_Sptr davis = LuaCell_Sptr( new LuaCell );
-	davis->InputLuaFile( "davis.lua" );
-	HeroInfo_Sptr temp = HeroInfo_Sptr( new HeroInfo );
-	temp->LoadData( davis );
-	g_HeroInfoMG.AddHeroInfo( temp->m_Name, temp );
-	//test bg
-	LuaCell_Sptr ft = LuaCell_Sptr( new LuaCell );
-	ft->InputLuaFile( "bg.lua" );
-	BackGround_RawPtr tempBG = BackGround_RawPtr( new BackGround() );
-	tempBG->LoadData( ft );
-	g_BGManager.AddBG( "Forbidden_Tower", tempBG );
+	//AddHeroInfo
+	std::vector<HeroInfo_Sptr> v_HeroInfo;
+	v_HeroInfo = LuaResource::LoadLua<HeroInfo>("hero");
+	for(int idx = 0;idx<v_HeroInfo.size();idx++)
+	{
+		g_HeroInfoMG.AddHeroInfo( v_HeroInfo[idx]->m_Name, v_HeroInfo[idx] );
+	}
+	//AddBG
+	std::vector<BackGround_Sptr> v_BackGround;
+	v_BackGround = LuaResource::LoadLua<BackGround>("backGround");
+	for(int idx = 0;idx<v_BackGround.size();idx++)
+	{
+		g_BGManager.AddBG( "Forbidden_Tower" , v_BackGround[idx] );
+	}
 	g_BGManager.SetCurrentBG( "Forbidden_Tower" );
-	//test chee
-	LuaCell_Sptr ball = LuaCell_Sptr( new LuaCell );
-	ball->InputLuaFile( "davis_ball.lua" );
-	ObjectInfo_Sptr temp2 = ObjectInfo_Sptr( new ObjectInfo );
-	temp2->LoadData( ball );
-	g_ObjectInfoMG.AddObjectInfo( temp2->m_Name, temp2 );
-	//test BAT
-	LuaCell_Sptr bat = LuaCell_Sptr( new LuaCell );
-	bat->InputLuaFile( "bat.lua" );
-	ObjectInfo_Sptr temp3 = ObjectInfo_Sptr( new ObjectInfo );
-	temp3->LoadData( bat );
-	g_ObjectInfoMG.AddObjectInfo( temp3->m_Name, temp3 );
+	//AddObjectInfo
+	std::vector<ObjectInfo_Sptr> v_ObjectInfo;
+	v_ObjectInfo = LuaResource::LoadLua<ObjectInfo>("object");
+	for(int idx = 0;idx<v_ObjectInfo.size();idx++)
+	{
+		g_ObjectInfoMG.AddObjectInfo( v_ObjectInfo[idx]->m_Name, v_ObjectInfo[idx] );
+	}
 	g_ObjectMG.CreateWeapon( "Bat", Vector3( 600, 0, 600 ) );
-	//test BGM
+
+
+
 	int index = g_WavPlayer.CreatSound( "Media\\music\\stage5.mp3", 1 );
 	g_WavPlayer.SetLooping( index, true );
 	g_BGManager.AddBGM( "Media\\music\\stage5.mp3", index );

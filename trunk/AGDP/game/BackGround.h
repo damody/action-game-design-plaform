@@ -126,4 +126,4 @@ public:
 };
 SHARE_PTR( BackGround );
 
-typedef std::map<std::string, BackGround_RawPtr> BGMaps;
+typedef std::map<std::string, BackGround_Sptr> BGMaps;

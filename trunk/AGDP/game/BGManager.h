@@ -32,7 +32,7 @@ public:
 	BGManager( void );
 	~BGManager( void );
 
-	unsigned int AddBG( const std::string& name, BackGround_RawPtr bg );
+	unsigned int AddBG( const std::string& name, BackGround_Sptr bg );
 	int AddBGM( const std::string& name, int index );
 
 	std::vector<std::string> GetBGList();
