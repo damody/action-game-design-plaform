@@ -14,7 +14,7 @@ public:
 		this->clear();
 		for(int i=0; i<keys.size(); i++)
 		{
-			(*this)[keys[i]] = (int)lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+			(*this)[keys[i]] = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
 		}
 	}
 	LuaMap(std::string path)
@@ -26,7 +26,7 @@ public:
 		this->clear();
 		for(int i=0; i<keys.size(); i++)
 		{
-			(*this)[keys[i]] = (int)lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+			(*this)[keys[i]] = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
 		}
 	}
 	~LuaMap(){}
@@ -42,7 +42,7 @@ public:
 		this->clear();
 		for(int i=0; i<keys.size(); i++)
 		{
-			(*this)[keys[i]] = (int)lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+			(*this)[keys[i]] = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
 		}
 	}
 	void LoadHeroAction(std::string path)
@@ -54,7 +54,7 @@ public:
 		this->clear();
 		for(int i=0; i<keys.size(); i++)
 		{
-			(*this)[keys[i]] = (int)lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+			(*this)[keys[i]] = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
 		}
 	}
 private:
