@@ -26,7 +26,7 @@ private:
 		float	time;
 		bool	work_done;
 	};
-	SHARE_PTR( work_info )
+	SHARE_PTR( work_info );
 	work_info* mThreadsWork[SGA_MAX_THREADS];
 	bool mOver;
 #endif

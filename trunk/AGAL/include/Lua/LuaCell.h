@@ -70,4 +70,4 @@ template void LuaCell::SetLua( int data, const char* pathString, ... );
 template void LuaCell::SetLua( double data, const char* pathString, ... );
 template void LuaCell::SetLua( const char* data, const char* pathString, ... );
 
-SHARE_PTR( LuaCell )
+SHARE_PTR( LuaCell );

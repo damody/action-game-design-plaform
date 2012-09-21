@@ -108,6 +108,6 @@ public:
 	void	LoadHeroData( LuaCell_Sptr luadata );
 	LuaCell_Sptr	m_LuaCell;
 };
-SHARE_PTR( HeroInfo )
+SHARE_PTR( HeroInfo );
 
 typedef std::map<std::string, HeroInfo_Sptr> HeroInfoMap;

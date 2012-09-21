@@ -111,7 +111,6 @@
     <ClInclude Include="include\game\ObjectInfo.h" />
     <ClInclude Include="include\game\ObjectType.h" />
     <ClInclude Include="include\game\PictureData.h" />
-    <ClInclude Include="include\game\Player.h" />
     <ClInclude Include="include\game\Record.h" />
     <ClInclude Include="include\game\WeaponAction.h" />
     <ClInclude Include="include\Lua\CreateLua.h" />

@@ -151,4 +151,4 @@ protected:
 	}
 	virtual void Modifyed() = 0;
 };
-SHARE_PTR( Trajectory )
+SHARE_PTR( Trajectory );

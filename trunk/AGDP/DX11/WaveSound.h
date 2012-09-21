@@ -1,6 +1,4 @@
-ï»¿
-#if !defined(WAVESOUND_H_)
-#define WAVESOUND_H_
+#pragma once
 
 #include <mmsystem.h>
 #include <dsound.h>
@@ -17,76 +15,76 @@
 #pragma comment(lib,"winmm.lib")
 namespace
 {
-/*! @brief å–®ä¸€æ’­æ”¾ç‰©ä»¶
+/*! @brief ³æ¤@¼½©ñª«¥ó
 */
 class dsSound
 {
 private :
-	DWORD			m_Size ;/// éŸ³æª”å¤§å°
-	WAVEFORMATEX		m_Format ;/// éŸ³æ•ˆæª”æ ¼å¼
-	LPDIRECTSOUNDBUFFER8	m_Buffer ;/// æ’­æ”¾ç·©è¡å€
+	DWORD			m_Size ;/// ­µÀÉ¤j¤p
+	WAVEFORMATEX		m_Format ;/// ­µ®ÄÀÉ®æ¦¡
+	LPDIRECTSOUNDBUFFER8	m_Buffer ;/// ¼½©ñ½w½Ä°Ï
 	bool m_isLooping;
 public :
-	/// åˆ¤æ–·ç·©è¡å€è³‡æ–™æ˜¯å¦éºå¤±,æœ‰å°±è‡ªå‹•ä½œå˜—è©¦ä¿®å¾©
+	/// §PÂ_½w½Ä°Ï¸ê®Æ¬O§_¿ò¥¢,¦³´N¦Û°Ê§@¹Á¸Õ­×´_
 	void Restore( LPDIRECTSOUNDBUFFER8 buffer );
-	/// åŠ æ¸›é »ç‡ã€è²é“ã€éŸ³é‡
+	/// ¥[´îÀW²v¡BÁn¹D¡B­µ¶q
 	void MoveParameters( DWORD Frequency, LONG Pan, LONG Volume );
-	///åŠ æ¸›éŸ³é‡
+	///¥[´î­µ¶q
 	virtual void SetVolume( LONG Volume );
-	/// åˆ¤æ–·æ˜¯å¦æ’­æ”¾ä¸­
+	/// §PÂ_¬O§_¼½©ñ¤¤
 	bool isPlaying();
-	/// ä»¥ä¸‹4å€‹åˆ†åˆ¥æ˜¯åœæ­¢ã€æ’­æ”¾ã€é‡æ’­ã€æš«åœçš„å‡½æ•¸
+	/// ¥H¤U4­Ó¤À§O¬O°±¤î¡B¼½©ñ¡B­«¼½¡B¼È°±ªº¨ç¼Æ
 	bool Stop();
 	bool Play();
 	bool RePlay();
 	bool Pause();
-	/// è¼‰å…¥éŸ³æª”ä¸¦å»ºç«‹
+	/// ¸ü¤J­µÀÉ¨Ã«Ø¥ß
 	bool Create( LPCTSTR file, DWORD flags, LPDIRECTSOUND8 ds_DS, bool isLooping = false );
-	/// é‡‹æ”¾å»ºç«‹çš„éŸ³æª”
+	/// ÄÀ©ñ«Ø¥ßªº­µÀÉ
 	void Release();
-	/// è¨­å®šæ˜¯å¦é€²è¡Œå¾ªç’°
+	/// ³]©w¬O§_¶i¦æ´`Àô
 	inline void SetLooping( bool isLooping ) {m_isLooping = isLooping;}
-	/// å–å¾—å»ºç«‹éŸ³æª”çš„ç·©è¡å€, å› ç‚ºm_Bufferæ˜¯private, dsDuplicateä¸èƒ½ç›´æ¥å–å¾—
+	/// ¨ú±o«Ø¥ß­µÀÉªº½w½Ä°Ï, ¦]¬°m_Buffer¬Oprivate, dsDuplicate¤£¯àª½±µ¨ú±o
 	inline LPDIRECTSOUNDBUFFER8 GetBuffer() {return m_Buffer;};
-	/// å–å¾—éŸ³æª”æ˜¯å¦ç‚ºå¾ªç’°
+	/// ¨ú±o­µÀÉ¬O§_¬°´`Àô
 	inline bool GetIsLooping() {return m_isLooping;}
 	dsSound();
 	~dsSound();
 	LONG GetVolume( );
 };
 
-/*! @brief é‡è¤‡æ’­æ”¾ç‰©ä»¶ */
+/*! @brief ­«½Æ¼½©ñª«¥ó */
 class dsDuplicate : public dsSound
 {
 private :
-	int m_Num ;/// ç¸½æ•¸é‡
+	int m_Num ;/// Á`¼Æ¶q
 	LPDIRECTSOUNDBUFFER8* m_Duplicate ;
-	/// åˆ¤æ–·æ­¤indexæ˜¯å¦æœ‰æ•ˆ
+	/// §PÂ_¦¹index¬O§_¦³®Ä
 	bool IsExist( int index );
 public :
-	/// ä»¥ä¸‹4å€‹åˆ†åˆ¥æ˜¯åœæ­¢ã€æ’­æ”¾ã€é‡æ’­ã€æš«åœçš„å‡½æ•¸
+	/// ¥H¤U4­Ó¤À§O¬O°±¤î¡B¼½©ñ¡B­«¼½¡B¼È°±ªº¨ç¼Æ
 	bool Stop();
 	bool Play();
 	bool RePlay( int index );
 	bool Pause( int index );
 	void SetVolume( LONG Volume );
-	/// å»ºç«‹å¤šé‡éŸ³æª”çš„å‡½æ•¸
+	/// «Ø¥ß¦h­«­µÀÉªº¨ç¼Æ
 	bool Duplicate( LPCTSTR file, DWORD flags, int num, LPDIRECTSOUND8 ds_DS, bool isLooping = false );
-	/// åŠ æ¸›é »ç‡ã€è²é“ã€éŸ³é‡
+	/// ¥[´îÀW²v¡BÁn¹D¡B­µ¶q
 	void MoveDuplicateParameters( int index, DWORD Frequency, LONG Pan, LONG Volume );
-	/// å°æ­¤classåšåˆå§‹åŒ–
+	/// ¹ï¦¹class°µªì©l¤Æ
 	void Init();
-	/// é‡‹æ”¾æ­¤å¤šé‡éŸ³æª”
+	/// ÄÀ©ñ¦¹¦h­«­µÀÉ
 	void Release();
-	/// åˆ¤æ–·æ˜¯å¦æ’­æ”¾ä¸­
+	/// §PÂ_¬O§_¼½©ñ¤¤
 	bool isPlaying( int index );
-	/// å–å¾—æ­¤å¤šé‡éŸ³æª”çš„å€‹æ•¸
+	/// ¨ú±o¦¹¦h­«­µÀÉªº­Ó¼Æ
 	inline int GetNum() {return m_Num;};
 	dsDuplicate();
 	~dsDuplicate();
 };
 }
-/*! @brief å¿«é€Ÿçš„éŸ³æ•ˆæ’­æ”¾å™¨
+/*! @brief §Ö³tªº­µ®Ä¼½©ñ¾¹
 */
 class WavSound
 {
@@ -107,35 +105,35 @@ public:
 	WavSound(): ds_DS( NULL ), m_soundloud( -100 ) {}
 	void Initialize( HWND hWnd , DWORD Channels = 2 , DWORD Freq =  22050 , DWORD BitRate = 16 );
 	~WavSound();
-	/// è¼‰å…¥ä¸¦å»ºç«‹ä¸€å€‹å–®ä¸€éŸ³æª”,æª”åç”¨char*
+	/// ¸ü¤J¨Ã«Ø¥ß¤@­Ó³æ¤@­µÀÉ,ÀÉ¦W¥Îchar*
 	bool CreatSound( const char* filename, int index );
-	/// è¼‰å…¥ä¸¦å»ºç«‹ä¸€å€‹æœ‰dupnumå€‹å…§å®¹çš„å¤šé‡éŸ³æª”,æª”åç”¨char*
+	/// ¸ü¤J¨Ã«Ø¥ß¤@­Ó¦³dupnum­Ó¤º®eªº¦h­«­µÀÉ,ÀÉ¦W¥Îchar*
 	bool CreatSound( const char* filename, int index, int dupnum );
-	/// è¼‰å…¥ä¸¦å»ºç«‹ä¸€å€‹å–®ä¸€éŸ³æª”,æª”åç”¨wchar_t*
+	/// ¸ü¤J¨Ã«Ø¥ß¤@­Ó³æ¤@­µÀÉ,ÀÉ¦W¥Îwchar_t*
 	bool CreatSound( const wchar_t* filename, int index );
-	/// è¼‰å…¥ä¸¦å»ºç«‹ä¸€å€‹æœ‰dupnumå€‹å…§å®¹çš„å¤šé‡éŸ³æª”,æª”åç”¨wchar_t*  start from number 1 , don't set zero be start number
+	/// ¸ü¤J¨Ã«Ø¥ß¤@­Ó¦³dupnum­Ó¤º®eªº¦h­«­µÀÉ,ÀÉ¦W¥Îwchar_t*  start from number 1 , don't set zero be start number
 	bool CreatSound( const wchar_t* filename, int index, int dupnum );
-	/// åœæ­¢ç›®å‰æ‰€æœ‰éŸ³æª”
+	/// °±¤î¥Ø«e©Ò¦³­µÀÉ
 	void StopDevice();
-	/// æ’­æ”¾ä½¿ç”¨StopDevice()ä¹‹å‰é‚„åœ¨æ’­æ”¾çš„éŸ³æª”
+	/// ¼½©ñ¨Ï¥ÎStopDevice()¤§«eÁÙ¦b¼½©ñªº­µÀÉ
 	void StartDevice();
-	/// ä»¥ä¸‹4å€‹æ˜¯å–®ä¸€éŸ³æª”ç”¨çš„æ’­æ”¾ã€åœæ­¢ã€é‡æ’­ã€æš«åœ
+	/// ¥H¤U4­Ó¬O³æ¤@­µÀÉ¥Îªº¼½©ñ¡B°±¤î¡B­«¼½¡B¼È°±
 	bool Play( int index );
 	bool Stop( int index );
 	bool RePlay( int index );
 	bool Pause( int index );
-	/// ä»¥ä¸‹4å€‹æ˜¯å¤šé‡éŸ³æª”ç”¨çš„æ’­æ”¾ã€åœæ­¢ã€é‡æ’­ã€æš«åœ
+	/// ¥H¤U4­Ó¬O¦h­«­µÀÉ¥Îªº¼½©ñ¡B°±¤î¡B­«¼½¡B¼È°±
 	bool PlayDup( int index );
 	bool StopDup( int index );
 	bool RePlay( int index, int index2 );
 	bool Pause( int index, int index2 );
-	/// è¨­å®šæŸå€‹å–®ä¸€éŸ³æª”æˆ–å¤šé‡éŸ³æª”æ˜¯å¦å¾ªç’°æ’­æ”¾
+	/// ³]©w¬Y­Ó³æ¤@­µÀÉ©Î¦h­«­µÀÉ¬O§_´`Àô¼½©ñ
 	void SetLooping( int index, bool isLooping );
-	/// å¢æ¸›æŸå€‹å–®ä¸€éŸ³æª”çš„é »ç‡ã€è²é“ã€éŸ³é‡
+	/// ¼W´î¬Y­Ó³æ¤@­µÀÉªºÀW²v¡BÁn¹D¡B­µ¶q
 	void MoveParameters( int index, DWORD Frequency, LONG Pan, LONG Volume );
-	/// å¢æ¸›æŸå€‹å¤šé‡éŸ³æª”çš„é »ç‡ã€è²é“ã€éŸ³é‡
+	/// ¼W´î¬Y­Ó¦h­«­µÀÉªºÀW²v¡BÁn¹D¡B­µ¶q
 	void MoveParameters( int index, int index2, DWORD Frequency, LONG Pan, LONG Volume );
-	/// é‡‹æ”¾æ‰€æœ‰éŸ³æª”
+	/// ÄÀ©ñ©Ò¦³­µÀÉ
 	void Release();
 	void Release( int index );
 	LONG GetVolume( int index );
@@ -187,4 +185,3 @@ public:
 
 	int GetIndex( std::string name );
 };
-#endif

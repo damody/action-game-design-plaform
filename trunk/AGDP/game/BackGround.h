@@ -62,7 +62,7 @@ struct LightPath
 {
 	HsplineCurve m_Direction;
 	HsplineCurve m_LightStrength;
-} typedef LightPath;
+};
 
 class BackGround
 {
