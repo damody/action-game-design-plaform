@@ -36,6 +36,8 @@ public:
 	void EditBodyPoint( int id);
 	void EditAttack( int id );
 	void EditAttackPoint( int id );
+	void EditCatch( int id );
+	void EditCatchPoint( int id );
 	void EditCenter();
 	void EditCenter( float x, float y );
 	void SetPic( PictureData*  pic, float x, float y );
@@ -50,7 +52,9 @@ private:
 	void UpdateAttack();
 	void UpdateAttack( int index );
 	void UpdateAddition_AttackPoint( float x, float y );
-
+	void UpdateCatch();
+	void UpdateCatch( int index );
+	void UpdateAddition_CatchPoint( float x, float y );
 	virtual BOOL CanFloat() const;
 	virtual BOOL CanBeClosed() const;
 	virtual BOOL CanAutoHide() const;

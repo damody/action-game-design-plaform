@@ -673,6 +673,20 @@ void CClassView::OnSelectItem( HTREEITEM item )
 			}
 			else if ( !text.Compare( CString( "Catchs" ) ) )
 			{
+				HTREEITEM FrameIndex = m_wndClassView.GetParentItem( pItem );
+				HTREEITEM Frame	     = m_wndClassView.GetParentItem( FrameIndex );
+				char buff[1000];
+				ConvStr::WcharToChar( m_wndClassView.GetItemText( Frame ).GetBuffer( 0 ), buff );
+				std::string FrameName( buff );
+
+				if ( g_FrameName != FrameName || g_FrameIndex != _ttoi( m_wndClassView.GetItemText( FrameIndex ) ) )
+				{
+					g_FrameName = FrameName;
+					g_FrameIndex = _ttoi( m_wndClassView.GetItemText( FrameIndex ) );
+					( ( CMainFrame* )( this->GetParentFrame() ) )->RefreshFrameEdit();
+				}
+
+				( ( CMainFrame* )( this->GetParentFrame() ) )->EditCatch( _ttoi( m_wndClassView.GetItemText( item ) ) );
 			}
 			else if ( !text.Compare( CString( "BloodInfos" ) ) )
 			{
@@ -909,7 +923,6 @@ void CClassView::RemoveTreeItem( HTREEITEM item )
 	}
 }
 
-
 BOOL CClassView::CanFloat() const
 {
 	return TRUE;
@@ -1054,7 +1067,6 @@ void CClassView::OnBodyAdd()
 	}
 }
 
-
 void CClassView::OnBodyDelete()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
@@ -1101,7 +1113,6 @@ void CClassView::OnBodyDelete()
 	}
 }
 
-
 void CClassView::OnAttackDelete()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
@@ -1147,7 +1158,6 @@ void CClassView::OnAttackDelete()
 		}
 	}
 }
-
 
 void CClassView::OnAttackAdd()
 {
@@ -1202,12 +1212,80 @@ void CClassView::OnHitdataDelete()
 void CClassView::OnCatchAdd()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	int frameIndex = _ttoi(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(item)));
+	char buff[100];
+	ConvStr::WcharToChar(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item))),buff);
+	std::string frameName(buff);
+	CatchInfo c;
+	c.m_Kind = 0;
+	c.m_ZWidth = 1;
+	c.m_Injury = 0;
+	c.m_Strong = 0;
+	c.m_CatchPosition.x = 0;
+	c.m_CatchPosition.y = 0;
+	c.m_CatchWhere = CatchInfo::CatchPosition::NECK;
+
+	(*g_ActiveFramesMap)[frameName][frameIndex].m_Catchs.push_back(c);
+	sprintf(buff,"%d",(*g_ActiveFramesMap)[frameName][frameIndex].m_Catchs.size()-1);
+	CString str(buff);
+	m_wndClassView.InsertItem( str , 3, 3, item );
+	m_wndClassView.Expand(item, TVE_EXPAND);
+
+	if ( g_ActiveFramesMap->find(g_FrameName) != g_ActiveFramesMap->end() )
+	{
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find(g_FrameName)->second.size() )
+		{
+			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
+		}
+	}
 }
 
 
 void CClassView::OnCatchDelete()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	int count = _ttoi(m_wndClassView.GetItemText(item));
+	int frameIndex = _ttoi(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item))));
+	char buff[100];
+	ConvStr::WcharToChar(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item)))),buff);
+	std::string frameName(buff);
+
+	(*g_ActiveFramesMap)[frameName][frameIndex].m_Catchs.erase((*g_ActiveFramesMap)[frameName][frameIndex].m_Catchs.begin()+count);
+
+	if ( item != NULL )
+	{
+		HTREEITEM tmp_item = m_wndClassView.GetNextSiblingItem( item );
+
+		for ( int i = count;; i++ )
+		{
+			if ( tmp_item != NULL )
+			{
+				TCHAR num_str[10];
+				wsprintf( num_str, _T( "%d" ), i );
+				m_wndClassView.SetItemText( tmp_item, num_str );
+				tmp_item = m_wndClassView.GetNextSiblingItem( tmp_item );
+			}
+			else { break; }
+		}
+
+		m_wndClassView.DeleteItem( item );
+
+		//Clear
+		if ( g_FrameName == frameName && g_FrameIndex == count )
+		{
+			( ( CMainFrame* )this->GetParentFrame() )->Clear();
+		}
+	}
+
+	if ( g_ActiveFramesMap->find(g_FrameName) != g_ActiveFramesMap->end() )
+	{
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find(g_FrameName)->second.size() )
+		{
+			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
+		}
+	}
 }
 
 
