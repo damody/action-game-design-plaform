@@ -3,7 +3,7 @@
 #include <map>
 #include "Lua/LuaCell.h"
 
-class LuaMap : public std::map<std::string, int>
+class LuaMap : public std::map<int, std::string>
 {
 public:
 	LuaMap(){}
@@ -14,7 +14,8 @@ public:
 		this->clear();
 		for(int i=0; i<keys.size(); i++)
 		{
-			(*this)[keys[i]] = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+			int _tmpKey = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+			(*this)[_tmpKey] = keys[i];
 		}
 	}
 	LuaMap(std::string path)
@@ -26,15 +27,12 @@ public:
 		this->clear();
 		for(int i=0; i<keys.size(); i++)
 		{
-			(*this)[keys[i]] = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+			int _tmpKey = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+			(*this)[_tmpKey] = keys[i];
 		}
 	}
 	~LuaMap(){}
 
-	strings GetKeys()
-	{
-		return keys;
-	}
 	void LoadHeroAction(LuaCell_Sptr lsptr)
 	{
 		keys.clear();
@@ -42,7 +40,8 @@ public:
 		this->clear();
 		for(int i=0; i<keys.size(); i++)
 		{
-			(*this)[keys[i]] = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+			int _tmpKey = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+			(*this)[_tmpKey] = keys[i];
 		}
 	}
 	void LoadHeroAction(std::string path)
@@ -54,7 +53,8 @@ public:
 		this->clear();
 		for(int i=0; i<keys.size(); i++)
 		{
-			(*this)[keys[i]] = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+			int _tmpKey = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
+			(*this)[_tmpKey] = keys[i];
 		}
 	}
 private:
