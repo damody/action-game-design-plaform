@@ -23,7 +23,6 @@ InitDirect3DApp::InitDirect3DApp()
 	  m_SettingKeyID( -1 ), m_LastGameProcess( 1 ), m_GameProcess( 1 ), m_Last2GameProcess( 1 ),
 	  b_Body( false ), b_Pause( false )
 {
-	g_Time = 0;
 	dxAppInstance = this;
 }
 
@@ -112,7 +111,7 @@ void InitDirect3DApp::UpdateScene( float dt )
 		static float timp_count = 0;
 		timp_count += dt;
 
-		if ( timp_count > 1 / 60.0f )
+		if ( timp_count > g_TimeSpeed )
 		{
 			g_Time++;
 			UpdateCamera();
@@ -133,7 +132,7 @@ void InitDirect3DApp::UpdateScene( float dt )
 				BackgroundDataUpdate();
 			}
 
-			timp_count -= 1 / 60.0f;
+			timp_count -= g_TimeSpeed;
 		}
 	}
 }
@@ -935,10 +934,9 @@ int InitDirect3DApp::UpdateInput()
 	TestCamera();
 	TestChee();
 	TestWavPlayer();
-	//HolyK
+	TestGameSpeed();
 	TestViewEffect();
 	TestFire();
-	//HolyK
 	TestBody();
 
 	if ( InputStateS::instance().isKeyDown( KEY_F1 ) )
@@ -1312,22 +1310,22 @@ void InitDirect3DApp::TestCamera()
 
 	if ( InputStateS::instance().isKeyPress( KEY_K ) )
 	{
-		g_Camera->SurroundX( -0.3f );
+		g_Camera->SurroundX( -0.1f );
 	}
 
 	if ( InputStateS::instance().isKeyPress( KEY_I ) )
 	{
-		g_Camera->SurroundX( 0.3f );
+		g_Camera->SurroundX( 0.1f );
 	}
 
 	if ( InputStateS::instance().isKeyPress( KEY_J ) )
 	{
-		g_Camera->SurroundY( -0.3f );
+		g_Camera->SurroundY( -0.1f );
 	}
 
 	if ( InputStateS::instance().isKeyPress( KEY_L ) )
 	{
-		g_Camera->SurroundY( 0.3f );
+		g_Camera->SurroundY( 0.1f );
 	}
 }
 
@@ -1434,5 +1432,19 @@ void InitDirect3DApp::ParseCommandLine( int argc, char* argv[] )
 
 			current++;
 		}
+	}
+}
+
+void InitDirect3DApp::TestGameSpeed()
+{
+	if ( InputStateS::instance().isKeyDown( KEY_F3 ) && g_TimeSpeed > 1.f/600.f)
+	{
+		g_TimeSpeed -= 1.f/600.f;
+		std::cout << "g_TimeSpeed: " << g_TimeSpeed << std::endl;
+	}
+	if ( InputStateS::instance().isKeyDown( KEY_F4 ) )
+	{
+		g_TimeSpeed += 1.f/600.f;
+		std::cout << "g_TimeSpeed: " << g_TimeSpeed << std::endl;
 	}
 }

@@ -39,6 +39,7 @@ private:
 	void TestChee();
 	void TestFire();
 	void TestBody();
+	void TestGameSpeed();
 
 	bool b_Pause;
 	bool b_Body;
