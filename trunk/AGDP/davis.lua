@@ -63,6 +63,9 @@ frame =
 	back_flip    = {},
 	rolling      = {},
 	defend       = {},
+
+	injured		 = {},
+
 	ball         = {},
 	many_punch   = {},
 	jump_hit     = {},
@@ -1309,6 +1312,156 @@ frame.defend[1] =
    --wpoint_end:
 
 }
+
+frame.injured[0] =
+{
+   pic_id = 1, pic_x = 1, pic_y = 6, state = Action.Injured, wait = 4, next = {"injured", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 35,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{25,-17}, {25,-78}, {54,-78}, {54,-17}}, zwidth = 8}
+   }
+}
+
+frame.injured[1] =
+{
+   pic_id = 1, pic_x = 2, pic_y = 6, state = Action.Injured, wait = 6, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{32,-16}, {32,-79}, {59,-79}, {59,-16}}, zwidth = 8},
+   {kind = 0, points = {{22,-37}, {22,-79}, {48,-79}, {48,-37}}, zwidth = 8}
+   }
+}
+
+frame.injured[2] =
+{
+   pic_id = 1, pic_x = 4, pic_y = 6, state = Action.Injured, wait = 4, next = {"injured", 3},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 36,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{11,-24}, {11,-55}, {50,-55}, {50,-24}}, zwidth = 8},
+   {kind = 0, points = {{25,-53}, {25,-80}, {65,-80}, {65,-53}}, zwidth = 8}
+   }
+}
+
+frame.injured[3] =
+{
+   pic_id = 1, pic_x = 5, pic_y = 6, state = Action.Injured, wait = 6, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 43,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{12,-23}, {12,-60}, {52,-60}, {52,-23}}, zwidth = 8},
+   {kind = 0, points = {{27,-56}, {27,-80}, {63,-80}, {63,-56}}, zwidth = 8}
+   }
+}
+
+frame.injured[4] =
+{
+   pic_id = 1, pic_x = 1, pic_y = 7, state = Action.Injured, wait = 4, next = {"injured", 5},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 43,  centery = 76,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{25,-13}, {25,-78}, {55,-78}, {55,-13}}, zwidth = 8}
+   }
+}
+
+frame.injured[5] =
+{
+   pic_id = 1, pic_x = 2, pic_y = 7, state = Action.Injured, wait = 6, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 44,  centery = 78,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{24,-18}, {24,-81}, {59,-81}, {59,-18}}, zwidth = 8}
+   }
+}
+
+frame.injured[6] =
+{
+   pic_id = 1, pic_x = 1, pic_y = 6, state = Action.Injured, wait = 12, next = {"injured", 7},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{27,-22}, {27,-80}, {69,-80}, {69,-22}}, zwidth = 8}
+   }
+   --beCatch
+}
+
+frame.injured[7] =
+{
+   pic_id = 1, pic_x = 3, pic_y = 6, state = Action.Injured, wait = 12, next = {"injured", 8},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{28,-24}, {28,-81}, {67,-81}, {67,-24}}, zwidth = 8}
+   }
+   --beCatch
+}
+
+frame.injured[8] =
+{
+   pic_id = 1, pic_x = 2, pic_y = 6, state = Action.Injured, wait = 12, next = {"injured", 9},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{28,-23}, {28,-81}, {63,-81}, {63,-23}}, zwidth = 8}
+   }
+   --beCatch
+}
+
+frame.injured[9] =
+{
+   pic_id = 1, pic_x = 3, pic_y = 6, state = Action.Injured, wait = 12, next = {"default", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {
+   {kind = 0, points = {{29,-26}, {29,-79}, {66,-79}, {66,-26}}, zwidth = 8}
+   }
+   --beCatch
+}
+
+frame.lying[0] =
+{
+   pic_id = 0, pic_x = 5, pic_y = 4, state = Action.Lying, wait = 30, next = {"crouch", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 38,  centery = 73,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {}
+}
+
+frame.lying[1] =
+{
+   pic_id = 0, pic_x = 5, pic_y = 5, state = Action.Lying, wait = 30, next = {"crouch", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 75,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {}
+}
+
+
+
 
 
 
