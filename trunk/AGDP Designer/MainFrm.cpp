@@ -592,6 +592,11 @@ void CMainFrame::OnButtonRun()
 	if(g_HeroInfo!=NULL){
 		HeroInfo::WriteLua(g_HeroInfo,std::wstring(_T("AGDP\\temp.lua")));
 		//∞ı¶ÊAGDP.exe
+#ifdef _DEBUG
+		system("..\\Bin\\ActionGameDesignPlaform.exe -hero temp");
+#else
+		system("ActionGameDesignPlaform.exe -hero temp");
+#endif
 	}else{
 		AfxMessageBox( _T("No Target") );
 	}
