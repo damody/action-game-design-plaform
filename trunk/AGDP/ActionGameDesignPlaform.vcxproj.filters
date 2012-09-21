@@ -349,9 +349,6 @@
     <ClInclude Include="game\Creation.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="game\Record.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
     <ClInclude Include="game\ObjectInfoManager.h">
       <Filter>inc\game</Filter>
     </ClInclude>

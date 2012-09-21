@@ -26,4 +26,4 @@ struct Record
 		ar& Status;
 	}
 };
-SHARE_PTR( Record )
+SHARE_PTR( Record );

@@ -12,7 +12,8 @@ ID3D11Device*	g_d3dDevice;
 ID3D11DeviceContext* g_DeviceContext;
 WavPlayer	g_WavPlayer;
 TextGeneratorDX11 g_TextGenarator;
-int		g_Time;
+float		g_TimeSpeed = 1.f/60.f;
+int		g_Time = 0;
 Camera_Sptr	g_Camera;
 
 //test

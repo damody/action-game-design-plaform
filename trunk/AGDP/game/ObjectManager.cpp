@@ -208,65 +208,55 @@ int ObjectMG::AmountWeapons()
 	return m_Weapons.size();
 }
 
-void ObjectMG::Distory( Chee_RawPtr chee, int time/*=0*/ )
+void ObjectMG::Destory( Chee_RawPtr chee, int time/*=0*/ )
 {
 	if ( !InCTrashCan( chee ) )
 	{
-		Chees::iterator it;
+		Chees::iterator it = GetCheeIt(chee);
 
-		for ( it = m_Chees.begin(); it != m_Chees.end(); it++ )
+		if (it != m_Chees.end())
 		{
-			if ( *it == chee )
-			{
-				break;
-			}
+			CTrash th;
+			th.m_Trash = chee;
+			th.m_Time = time;
+			m_CTrashCan.push_back( th );
 		}
-
-		CTrash th;
-		th.m_Trash = it;
-		th.m_Time = time;
-		m_CTrashCan.push_back( th );
 	}
 }
 
-void ObjectMG::Distory( Weapon_RawPtr weapon, int time/*=0*/ )
+void ObjectMG::Destory( Weapon_RawPtr weapon, int time/*=0*/ )
 {
 	if ( !InWTrashCan( weapon ) )
 	{
-		Weapons::iterator it;
+		Weapons::iterator it = GetWeaponIt(weapon);
 
-		for ( it = m_Weapons.begin(); it != m_Weapons.end(); it++ )
+		if (it != m_Weapons.end())
 		{
-			if ( *it == weapon )
-			{
-				break;
-			}
+			WTrash th;
+			th.m_Trash = weapon;
+			th.m_Time = time;
+			m_WTrashCan.push_back( th );
 		}
-
-		WTrash th;
-		th.m_Trash = it;
-		th.m_Time = time;
-		m_WTrashCan.push_back( th );
 	}
 }
 
-void ObjectMG::Distory( Chees::iterator it, int time/*=0*/ )
+void ObjectMG::Destory( Chees::iterator it, int time/*=0*/ )
 {
 	if ( !InCTrashCan( *it ) )
 	{
 		CTrash th;
-		th.m_Trash = it;
+		th.m_Trash = *it;
 		th.m_Time = time;
 		m_CTrashCan.push_back( th );
 	}
 }
 
-void ObjectMG::Distory( Weapons::iterator it, int time/*=0*/ )
+void ObjectMG::Destory( Weapons::iterator it, int time/*=0*/ )
 {
 	if ( !InWTrashCan( *it ) )
 	{
 		WTrash th;
-		th.m_Trash = it;
+		th.m_Trash = *it;
 		th.m_Time = time;
 		m_WTrashCan.push_back( th );
 	}
@@ -278,8 +268,9 @@ void ObjectMG::CleanTrashCan()
 	{
 		if ( it->m_Time <= 0 )
 		{
-			delete( *( it->m_Trash ) );
-			m_Chees.erase( it->m_Trash );
+			
+			m_Chees.erase( GetCheeIt(it->m_Trash) );
+			delete( it->m_Trash  );
 			it = m_CTrashCan.erase( it );
 		}
 		else
@@ -293,8 +284,8 @@ void ObjectMG::CleanTrashCan()
 	{
 		if ( it->m_Time <= 0 )
 		{
-			delete( *( it->m_Trash ) );
-			m_Weapons.erase( it->m_Trash );
+			m_Weapons.erase( GetWeaponIt(it->m_Trash ));
+			delete( it->m_Trash );
 			it = m_WTrashCan.erase( it );
 		}
 		else
@@ -309,7 +300,7 @@ bool ObjectMG::InCTrashCan( Chee_RawPtr chee )
 {
 	for ( CTrashCan::iterator it = m_CTrashCan.begin(); it != m_CTrashCan.end(); it++ )
 	{
-		if ( *( it->m_Trash ) == chee )
+		if ( it->m_Trash == chee )
 		{
 			return true;
 		}
@@ -322,11 +313,41 @@ bool ObjectMG::InWTrashCan( Weapon_RawPtr weapon )
 {
 	for ( WTrashCan::iterator it = m_WTrashCan.begin(); it != m_WTrashCan.end(); it++ )
 	{
-		if ( *( it->m_Trash ) == weapon )
+		if ( it->m_Trash == weapon )
 		{
 			return true;
 		}
 	}
 
 	return false;
+}
+
+Chees::iterator ObjectMG::GetCheeIt( Chee* chee )
+{
+	Chees::iterator it;
+
+	for ( it = m_Chees.begin(); it != m_Chees.end(); it++ )
+	{
+		if ( *it == chee )
+		{
+			break;
+		}
+	}
+
+	return it;
+}
+
+Weapons::iterator ObjectMG::GetWeaponIt( Weapon* weapon )
+{
+	Weapons::iterator it;
+
+	for ( it = m_Weapons.begin(); it != m_Weapons.end(); it++ )
+	{
+		if ( *it == weapon )
+		{
+			break;
+		}
+	}
+
+	return it;
 }

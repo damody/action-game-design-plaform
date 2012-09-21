@@ -462,7 +462,6 @@
     <ClInclude Include="game\HeroInfoManager.h" />
     <ClInclude Include="game\HeroManager.h" />
     <ClInclude Include="game\ObjectInfoManager.h" />
-    <ClInclude Include="game\Record.h" />
     <ClInclude Include="game\ObjectManager.h" />
     <ClInclude Include="game\ObjectType.h" />
     <ClInclude Include="game\FrameInfo.h" />

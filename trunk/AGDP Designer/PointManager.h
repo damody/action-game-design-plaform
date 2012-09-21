@@ -53,5 +53,5 @@ public:
 	};
 
 };
-typedef std::vector<PointManager> Bounds;
+typedef std::vector<PointManager> Area;
 

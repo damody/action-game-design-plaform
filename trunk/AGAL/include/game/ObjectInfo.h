@@ -36,5 +36,5 @@ public:
 	void	LoadObjectData( LuaCell_Sptr luadata );
 	LuaCell_Sptr	m_LuaCell;
 };
-SHARE_PTR( ObjectInfo )
+SHARE_PTR( ObjectInfo );
 typedef std::map<std::string, ObjectInfo_Sptr> ObjectInfoMap;

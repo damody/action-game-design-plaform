@@ -69,13 +69,8 @@ public:
 	void EditAttack( int id )
 	{
 		m_D3DFrameView.EditAttack( id );
-		m_wndProperties.RefreshPropList_Attack();
+		m_wndProperties.RefreshPropList_Attack( id );
 	}
-	void EditAttack()
-	{
-		m_D3DFrameView.EditCenter();
-	}
-
 	void SetStatus( const CString& str )
 	{
 		m_wndStatusBar.SetInformation( str );
@@ -154,7 +149,8 @@ public:
 	afx_msg void OnUpdateCheckHeromanager( CCmdUI* pCmdUI );
 	afx_msg void OnCheckProperty();
 	afx_msg void OnUpdateCheckProperty( CCmdUI* pCmdUI );
-	afx_msg void OnButtonAddnewarea();
+	afx_msg void OnButtonRun();
+	afx_msg void OnClose();
 };
 
 

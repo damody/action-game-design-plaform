@@ -30,7 +30,7 @@ struct Texture
 	}
 
 };
-SHARE_PTR( Texture )
+SHARE_PTR( Texture );
 
 typedef std::vector<Texture_Sptr> Textures;
 typedef std::map<int, Texture_Sptr> TextureMaps;

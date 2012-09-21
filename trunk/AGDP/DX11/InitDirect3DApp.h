@@ -31,7 +31,6 @@ private:
 	ID3DX11EffectScalarVariable* m_Body_Width;
 	ID3DX11EffectScalarVariable* m_Body_Height;
 
-
 	TestRenderEffect* m_TestRenderEffect;
 	void TestRender();
 	void TestViewEffect();
@@ -40,6 +39,7 @@ private:
 	void TestChee();
 	void TestFire();
 	void TestBody();
+	void TestGameSpeed();
 
 	bool b_Pause;
 	bool b_Body;

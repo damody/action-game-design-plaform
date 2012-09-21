@@ -16,7 +16,7 @@ struct TextLetter
 
 	TextLetter(): m_ScaleW( 1.0 ), m_ScaleH( 1.0 ), m_OffsetX_Fore( 0.0 ), m_OffsetX_Back( 0.0 ), m_OffsetY( 0.0 ) {}
 };
-SHARE_PTR( TextLetter )
+SHARE_PTR( TextLetter );
 
 typedef std::vector<TextLetter_Sptr>   TextLetters;
 typedef std::map<wchar_t, TextLetter_Sptr> TextLetterMap;

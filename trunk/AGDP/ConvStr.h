@@ -1,5 +1,4 @@
-﻿#ifndef _ConvertStr_H_
-#define _ConvertStr_H_
+#pragma once
 #include <vector>
 #include <cstring>
 #include <string>
@@ -25,4 +24,3 @@ public:
 	static void CharToWchar( wchar_t* unicode, const char* ansi );
 };
 
-#endif // _ConvertStr_H_

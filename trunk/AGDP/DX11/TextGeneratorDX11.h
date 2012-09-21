@@ -5,7 +5,7 @@
 #include <DxErr.h>
 #include <auto_link_freetype.hpp>
 #include <ft2build.h>
-#include FT_FREETYPE_H
+#include <freetype/freetype.h>
 #include "DX11/TextureManager.h"
 #include "TextLetter.h"
 

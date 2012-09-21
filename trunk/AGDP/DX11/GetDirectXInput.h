@@ -1,6 +1,4 @@
-ï»¿
-#ifndef GetDirectXInput_Im3dd5ea1em122a5716625mm7e5f_H
-#define GetDirectXInput_Im3dd5ea1em122a5716625mm7e5f_H
+#pragma once
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
@@ -10,11 +8,11 @@
 
 struct MouseInfo
 {
-	// æ»‘é¼ ç›¸å°ç§»å‹•çš„ä½ç½®
+	// ·Æ¹«¬Û¹ï²¾°Êªº¦ì¸m
 	int x, y;
-	// æ»‘é¼ æ»¾è¼ªçš„æ»¾å‹•ç‹€æ…‹
+	// ·Æ¹«ºu½üªººu°Êª¬ºA
 	int z;
-	// æ»‘é¼ æŒ‰éˆ•çš„ç‹€æ…‹
+	// ·Æ¹««ö¶sªºª¬ºA
 	unsigned char button[3];
 };
 
@@ -44,7 +42,7 @@ public:
 	int InputRestore( void );
 	//char keyboard_state[256];
 	//GDI8->ReadKeyboard(keyboard_state);
-	//é€™æ¨£å°±å¯ä»¥å¾—åˆ°æ‰€æœ‰éµç›¤çš„keyäº†
+	//³o¼Ë´N¥i¥H±o¨ì©Ò¦³Áä½Lªºkey¤F
 	int ReadKeyboard( char buffer[256] );
 	int ReadMouse( MouseInfo* mouse );
 	int ReadJoystick( JoystickInfo* joystick );
@@ -245,6 +243,3 @@ typedef boost::detail::thread::singleton<GetDirectXInput> DirectXIS;
 #define KEY_RIGHTARROW      KEY_RIGHT           /* RightArrow on arrow keypad */
 #define KEY_DOWNARROW       KEY_DOWN            /* DownArrow on arrow keypad */
 #define KEY_PGDN            KEY_NEXT            /* PgDn on arrow keypad */
-
-#endif // GetDirectXInput_Im3dd5ea1em122a5716625mm7e5f_H
-
