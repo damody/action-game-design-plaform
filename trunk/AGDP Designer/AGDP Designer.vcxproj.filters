@@ -22,6 +22,9 @@
     <Filter Include="shader">
       <UniqueIdentifier>{e870cc9e-d94c-462f-aa4d-5c50cb229233}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Edit">
+      <UniqueIdentifier>{6fb136a5-f3ba-4282-b726-1e6e8991f139}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -243,6 +246,15 @@
     <ClInclude Include="PointDeleteDialog.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="Edit\CommandBase.h">
+      <Filter>Edit</Filter>
+    </ClInclude>
+    <ClInclude Include="Edit\CommandManager.h">
+      <Filter>Edit</Filter>
+    </ClInclude>
+    <ClInclude Include="Edit\CommandManagerBase.h">
+      <Filter>Edit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -331,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="PointDeleteDialog.cpp">
       <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="Edit\CommandManager.cpp">
+      <Filter>Edit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

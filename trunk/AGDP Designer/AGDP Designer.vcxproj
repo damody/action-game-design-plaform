@@ -170,6 +170,9 @@
     <ClInclude Include="DX11\TextureManager.h" />
     <ClInclude Include="DX11\Timer.h" />
     <ClInclude Include="DX11\Vertex.h" />
+    <ClInclude Include="Edit\CommandBase.h" />
+    <ClInclude Include="Edit\CommandManager.h" />
+    <ClInclude Include="Edit\CommandManagerBase.h" />
     <ClInclude Include="FileNewDialog.h" />
     <ClInclude Include="FileTree.h" />
     <ClInclude Include="FileView.h" />
@@ -229,6 +232,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="DX11\Vertex.cpp" />
+    <ClCompile Include="Edit\CommandManager.cpp" />
     <ClCompile Include="FileNewDialog.cpp" />
     <ClCompile Include="FileTree.cpp" />
     <ClCompile Include="FileView.cpp">
