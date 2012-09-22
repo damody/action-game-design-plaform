@@ -41,7 +41,6 @@ void InitDirect3DApp::initApp( int argc, char* argv[] )
 {
 	D3DApp::initApp();
 	InitTexture();
-	LoadResource();
 	LoadBlend();
 	g_Camera = Camera_Sptr( new Camera( ( float )m_ClientWidth, 0, 1000, 800, 0, 45 ) );
 	g_WavPlayer.Initialize( getMainWnd() );
@@ -777,31 +776,6 @@ void InitDirect3DApp::buildPoint()
 	}
 }
 
-void InitDirect3DApp::LoadResource()
-{
-	m_Lua.InputLuaFile( "resource.lua" );
-	// load wav file
-	WavSoundS::instance().Initialize( m_hMainWnd );
-	WavSoundS::instance().SetVolume( -2000 );
-
-	for ( int i = 1;; ++i )
-	{
-		if ( m_Lua.HasValue( "wav/%d/1", i ) )
-		{
-			int idx = m_Lua.GetLua<int>( "wav/%d/1", i );
-			const char* file = m_Lua.GetLua<const char*>( "wav/%d/2", i );
-			int mutiplay = m_Lua.GetLua<int>( "wav/%d/3", i );
-			assert( file != 0 );
-			bool res = WavSoundS::instance().CreatSound( file, idx, mutiplay );
-			assert( res );
-		}
-		else
-		{
-			break;
-		}
-	}
-}
-
 void InitDirect3DApp::LoadBlend()
 {
 	D3D11_DEPTH_STENCIL_DESC depth_stencil_desc;
@@ -868,22 +842,18 @@ void InitDirect3DApp::LoadData()
 	{
 		g_HeroInfoManager.AddHeroInfo( heroInfos[idx]->m_Name, heroInfos[idx] );
 	}
-
 	//AddBG
 	std::vector<BackGround_Sptr> backGrounds;
 	backGrounds = LuaResource::LoadLua<BackGround>( "backGround" );
 
 	for ( int idx = 0; idx < backGrounds.size(); idx++ )
 	{
-		g_BackGroundManager.AddBackGround( "Forbidden_Tower" , backGrounds[idx] );
-		std::cout << backGrounds[idx]->m_Name << std::endl;
+		g_BackGroundManager.AddBackGround( backGrounds[idx]->m_Name , backGrounds[idx] );
 	}
-
-	g_BackGroundManager.SetCurrentBackGround( "Forbidden_Tower" );
+	g_BackGroundManager.SetCurrentBackGround( backGrounds.back()->m_Name );//set last element be current background
 	//AddObjectInfo
 	std::vector<ObjectInfo_Sptr> objectInfos;
 	objectInfos = LuaResource::LoadLua<ObjectInfo>( "object" );
-
 	for ( int idx = 0; idx < objectInfos.size(); idx++ )
 	{
 		g_ObjectInfoManager.AddObjectInfo( objectInfos[idx]->m_Name, objectInfos[idx] );

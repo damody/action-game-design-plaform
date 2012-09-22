@@ -52,7 +52,6 @@ public:
 	void initApp( int argc, char* argv[] );
 private:
 	void InitTexture();
-	void LoadResource();
 	void LoadBlend();
 	void LoadData();
 	void InitPlayer();
