@@ -48,7 +48,8 @@ void InitDirect3DApp::initApp(int argc, char* argv[])
 	g_TextGenarator.Initialize();
 	g_TextMG.Initialize();
 	g_EffectMG = new EffectManager( m_hMainWnd );
-	LoadHero();
+	LoadData();
+	InitPlayer();
 	ParseCommandLine(argc, argv);
 	buildPointFX();
 	OnResize();
@@ -858,7 +859,7 @@ void InitDirect3DApp::LoadBlend()
 	}
 }
 
-void InitDirect3DApp::LoadHero()
+void InitDirect3DApp::LoadData()
 {
 	//AddHeroInfo
 	std::vector<HeroInfo_Sptr> v_HeroInfo;
@@ -884,48 +885,11 @@ void InitDirect3DApp::LoadHero()
 	}
 	g_ObjectMG.CreateWeapon( "Bat", Vector3( 600, 0, 600 ) );
 
-
-
 	int index = g_WavPlayer.CreatSound( "Media\\music\\stage5.mp3", 1 );
 	g_WavPlayer.SetLooping( index, true );
 	g_BGManager.AddBGM( "Media\\music\\stage5.mp3", index );
 	g_BGManager.SetCurrentBGM( "Media\\music\\stage5.mp3" );
 	g_WavPlayer.Play( g_BGManager.CurrentBGM() );
-	//player init
-	//int key = {KEY_UP,KEY_DOWN,KEY_RIGHT,KEY_LEFT,KEY_Q,KEY_W,KEY_E,KEY_R};
-	CtrlKeys key;
-	key.push_back( CtrlKey::UP );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_UP, key );
-	key.clear();
-	key.push_back( CtrlKey::DOWN );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_DOWN, key );
-	key.clear();
-	key.push_back( CtrlKey::RIGHT );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_RIGHT, key );
-	key.clear();
-	key.push_back( CtrlKey::LEFT );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_LEFT, key );
-	key.clear();
-	key.push_back( CtrlKey::DEF );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_Q, key );
-	key.clear();
-	key.push_back( CtrlKey::JUMP );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_W, key );
-	key.clear();
-	key.push_back( CtrlKey::ATK1 );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_E, key );
-	key.clear();
-	key.push_back( CtrlKey::ATK2 );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_R, key );
-	key.clear();
-	key.push_back( CtrlKey::DEF );
-	key.push_back( CtrlKey::UP );
-	key.push_back( CtrlKey::ATK1 );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_T, key );
-	m_Player.SetHero( "Davis" );
-	m_Player.SetTeam( 0 );
-	m_Player.m_Hero = g_HeroMG.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) );
-	m_Player.SetUserName( L"<こんにちは測試人-Testing...>" );
 }
 
 int InitDirect3DApp::UpdateInput()
@@ -1449,4 +1413,42 @@ void InitDirect3DApp::TestGameSpeed()
 		g_TimeSpeed += 1.f/600.f;
 		std::cout << "g_TimeSpeed: " << g_TimeSpeed << std::endl;
 	}
+}
+
+void InitDirect3DApp::InitPlayer()
+{
+	//player init
+	CtrlKeys key;
+	key.push_back( CtrlKey::UP );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_UP, key );
+	key.clear();
+	key.push_back( CtrlKey::DOWN );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_DOWN, key );
+	key.clear();
+	key.push_back( CtrlKey::RIGHT );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_RIGHT, key );
+	key.clear();
+	key.push_back( CtrlKey::LEFT );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_LEFT, key );
+	key.clear();
+	key.push_back( CtrlKey::DEF );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_Q, key );
+	key.clear();
+	key.push_back( CtrlKey::JUMP );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_W, key );
+	key.clear();
+	key.push_back( CtrlKey::ATK1 );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_E, key );
+	key.clear();
+	key.push_back( CtrlKey::ATK2 );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_R, key );
+	key.clear();
+	key.push_back( CtrlKey::DEF );
+	key.push_back( CtrlKey::UP );
+	key.push_back( CtrlKey::ATK1 );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_T, key );
+	m_Player.SetHero( "Davis" );
+	m_Player.SetTeam( 0 );
+	m_Player.m_Hero = g_HeroMG.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) );
+	m_Player.SetUserName( L"<こんにちは測試人-Testing...>" );
 }
