@@ -886,11 +886,6 @@ void InitDirect3DApp::LoadData()
 	}
 	g_ObjectMG.CreateWeapon( "Bat", Vector3( 600, 0, 600 ) );
 
-	int index = g_WavPlayer.CreatSound( "Media\\music\\stage5.mp3", 1 );
-	g_WavPlayer.SetLooping( index, true );
-	g_BGManager.AddBGM( "Media\\music\\stage5.mp3", index );
-	g_BGManager.SetCurrentBGM( "Media\\music\\stage5.mp3" );
-	g_WavPlayer.Play( g_BGManager.CurrentBGM() );
 }
 
 int InitDirect3DApp::UpdateInput()

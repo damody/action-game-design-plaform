@@ -173,6 +173,9 @@
     <ClCompile Include="game\EffectShaderClass.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="DX11\BGMPlayer.cpp">
+      <Filter>src\DX11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -354,6 +357,9 @@
     </ClInclude>
     <ClInclude Include="game\EffectShaderClass.h">
       <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11\BGMPlayer.h">
+      <Filter>inc\DX11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
