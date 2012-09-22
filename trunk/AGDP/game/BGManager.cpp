@@ -1,5 +1,6 @@
 #include "StdGame.h"
 #include "BGManager.h"
+#include "ConvStr.h"
 
 BGManager::BGManager( void ): m_CurrentBG( NULL ), m_CurrentBGM( 0 )
 {
@@ -32,26 +33,37 @@ void BGManager::SetCurrentBG( const std::string& name )
 	m_CurrentBG = m_BGMaps[name].get();
 }
 
-
-
-int BGManager::AddBGM( const std::string& name, int index )
+void BGManager::SetBGMPathList( const std::vector<std::string>& list )
 {
-	m_BGMList.push_back( name );
-	m_BGMMap[name] = index;
-	return m_BGMList.size() - 1;
+	m_BGMPathList.assign(list.begin(),list.end());
 }
 
-std::vector<std::string> BGManager::GetBGMList()
+void BGManager::BGMPlay( int index )
 {
-	return m_BGMList;
+	if (index>=(int)m_BGMPathList.size() || index<0){return;}
+	m_BGMPlayer.OpenBGM(ConvStr::GetWstr(m_BGMPathList[index]));
+	m_BGMPlayer.PlayBGM();
 }
 
-void BGManager::SetCurrentBGM( const std::string& name )
+void BGManager::BGMPause()
 {
-	m_CurrentBGM = m_BGMMap[name];
+	m_BGMPlayer.PauseBGM();
 }
 
-int BGManager::CurrentBGM()
+void BGManager::BGMStop()
 {
-	return m_CurrentBGM;
+	m_BGMPlayer.StopBGM();
 }
+
+void BGManager::SetBGMVoleum( int voleum )
+{
+	wchar_t buff[10];
+	wsprintf(buff,L"%d",voleum);
+	m_BGMPlayer.SetVolume(std::wstring(buff));
+}
+
+
+
+
+
+

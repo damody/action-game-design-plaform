@@ -4,18 +4,19 @@
 #include <map>
 #include <vector>
 #include <game/BackGround.h>
+#include "DX11/BGMPlayer.h"
 
 namespace boost {namespace serialization {class access;}}
 class BGManager
 {
 private:
-
 	std::vector<std::string> m_BGList;
 	BGMaps			 m_BGMaps;
 	//Background Music list & map
 
-	std::vector<std::string> m_BGMList;
-	std::map<std::string, int> m_BGMMap;
+	BGMPlayer m_BGMPlayer;
+	std::vector<std::string> m_BGMPathList;
+
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -33,14 +34,17 @@ public:
 	~BGManager( void );
 
 	unsigned int AddBG( const std::string& name, BackGround_Sptr bg );
-	int AddBGM( const std::string& name, int index );
 
 	std::vector<std::string> GetBGList();
-	std::vector<std::string> GetBGMList();
 
-	void SetCurrentBGM( const std::string& name );
 	void SetCurrentBG( const std::string& name );
-	int CurrentBGM();
 	BackGround* CurrentBG();
+
+	void SetBGMPathList(const std::vector<std::string>& list);
+	void BGMPlay(int index);
+	void BGMPause();
+	void BGMStop();
+	void SetBGMVoleum(int voleum);
+
 };
 
