@@ -54,7 +54,8 @@ private:
 	void InitTexture();
 	void LoadResource();
 	void LoadBlend();
-	void LoadHero();
+	void LoadData();
+	void InitPlayer();
 	void ParseCommandLine(int argc, char* argv[]);
 
 	void buildPointFX();//Load Shader
