@@ -66,7 +66,7 @@ void InitGL()
 	std::cout << "Key +: Create Tbox Rate Up" << std::endl;
 	std::cout << "Key -: Create Tbox Rate Down" << std::endl;
 }
-int cc = 0;
+int g_cc = 0;
 void Update()
 {
 	g_fps++;
@@ -83,9 +83,11 @@ void Update()
 		g_LastTime += g_Timer.getDeltaTime();
 	if( g_LastTime2 > 3.0)
 	{
-		std::cout <<"AddCount:"<<g_size*5<<"\tUpdateCount:" <<g_fps<< "\tboxCount:"<<g_Tboxs.size() <<"\tCollisionCount:"<<cc << std::endl;
+		std::cout <<"AddCount:"<<g_size*5<<"\tUpdateCount:" <<g_fps<< "\tboxCount:"<<g_Tboxs.size() <<"\tCollisionCount:"<<g_cc << std::endl;
 		g_LastTime2 = 0;
 		g_fps = 0;
+		g_cc = 0;
+
 	}else
 		g_LastTime2 += g_Timer.getDeltaTime();
 	//std::cout << g_Timer.getGameTime() << std::endl;
@@ -108,7 +110,7 @@ void Update()
 	}
 	TboxPtrManager.PrepareForCollision();
 	Tboxs t_Tboxs = TboxPtrManager.GetCollision(g_Tbox, GetPolygonFromTbox());
-	cc = t_Tboxs.size();
+	g_cc += t_Tboxs.size();
 	for(std::vector<Tbox*>::iterator it = t_Tboxs.begin();
 		it != t_Tboxs.end(); ++it)
 	{
