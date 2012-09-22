@@ -850,7 +850,7 @@ void InitDirect3DApp::LoadData()
 	{
 		g_BackGroundManager.AddBackGround( backGrounds[idx]->m_Name , backGrounds[idx] );
 	}
-	g_BackGroundManager.SetCurrentBackGround( backGrounds.back()->m_Name );//set last element be current background
+	
 	//AddObjectInfo
 	std::vector<ObjectInfo_Sptr> objectInfos;
 	objectInfos = LuaResource::LoadLua<ObjectInfo>( "object" );
@@ -858,8 +858,25 @@ void InitDirect3DApp::LoadData()
 	{
 		g_ObjectInfoManager.AddObjectInfo( objectInfos[idx]->m_Name, objectInfos[idx] );
 	}
+	
+	//Add Background Music
+	std::vector<std::string> BGMpath = LuaResource::LoadMusic("mp3");
+	g_BackGroundManager.Set_BGM_PathList(BGMpath);
+	
+	//Add Sound
+	std::vector<std::string> WAVpath = LuaResource::LoadMusic("wav");
+	while (!WAVpath.empty())
+	{
+		g_WavPlayer.CreatSound(WAVpath.back());
+		WAVpath.pop_back();
+	}
+	
 
-	g_ObjectManager.CreateWeapon( "Bat", Vector3( 600, 0, 600 ) );
+	//*test
+		g_BackGroundManager.SetCurrentBackGround( backGrounds.back()->m_Name );//set last element be current background
+		g_BackGroundManager.Set_BGM_Play(0);
+		g_ObjectManager.CreateWeapon( "Bat", Vector3( 600, 0, 600 ) );
+	//*/
 }
 
 int InitDirect3DApp::UpdateInput()

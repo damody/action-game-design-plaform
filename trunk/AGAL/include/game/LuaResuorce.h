@@ -66,7 +66,7 @@ std::vector<std::string> LoadMusic( std::string musicType )
 	std::vector<std::string> data;
 
 	// if musicType isn't mp3 or wav, return empty data
-	if( musicType != "mp3" || musicType != "wav" )
+	if( musicType != "mp3" && musicType != "wav" )
 	{
 		return data;
 	}
