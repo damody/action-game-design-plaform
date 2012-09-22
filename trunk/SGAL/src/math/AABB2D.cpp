@@ -77,6 +77,7 @@ bool Collision( const AABB2D& lhs, const AABB2D& rhs )
 			return true;
 		}
 	}
+	return false;
 }
 
 bool AABB2D::IsCollision( const AABB2D& rhs )

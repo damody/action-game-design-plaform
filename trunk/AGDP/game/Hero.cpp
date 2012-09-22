@@ -325,7 +325,7 @@ NextLoop:
 
 	UpdateVel( dx, dz );
 	//創造物件
-	float df = m_FaceSide ? 1 : -1;
+	float df = m_FaceSide ? 1.f : -1.f;
 
 	if ( !f->m_Creations.empty() )
 	{
@@ -391,7 +391,7 @@ void Hero::SwitchFrame( std::string rFrame, int rFrameID )
 	m_CenterY = f->m_CenterY;
 	m_FrameInfo = f;
 	//創造物件
-	float df = m_FaceSide ? 1 : -1;
+	float df = m_FaceSide ? 1.f : -1.f;
 
 	if ( !f->m_Creations.empty() )
 	{
@@ -1023,7 +1023,7 @@ KeyLoop:
 		m_FrameInfo = f;
 		UpdateVel( dx, dz );
 		//創造物件
-		float df = m_FaceSide ? 1 : -1;
+		float df = m_FaceSide ? 1.f : -1.f;
 
 		if ( !f->m_Creations.empty() )
 		{

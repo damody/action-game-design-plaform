@@ -1,8 +1,6 @@
 #pragma warning(disable:4819)
 #pragma once
 
-#ifndef _POLYGON2D_H_
-#define _POLYGON2D_H_
 #include "Vector2.h"
 #include "Vector3.h"
 #include "BasicMath.h"
@@ -20,21 +18,21 @@ typedef boost::geometry::model::polygon<point2> polygon;
 class Polygon2D
 {
 public:
-	Polygon2D(): m_angle( 0 ), m_zPoint( 0 ), m_zRange( 0.01 ) {}
+	Polygon2D(): m_Angle( 0 ), m_zPoint( 0 ), m_zRange( 0.01f ) {}
 	~Polygon2D();
 	Vec2s& Points()
 	{
-		m_needBuildAABB = true;
-		m_needBuildPolygon = true;
-		return m_points;
+		m_NeedBuildAABB = true;
+		m_NeedBuildPolygon = true;
+		return m_Points;
 	}
 	const Vec2s& const_Points() const
 	{
-		return m_points;
+		return m_Points;
 	}
 	AABB2D& AABB()
 	{
-		return m_aabb;
+		return m_AABB;
 	}
 	void AddPoint( float x, float y );
 	void AddPoint( const Vec2& p );
@@ -45,7 +43,7 @@ public:
 	void SetAngle( float angle );
 	void SetZRange( float scale ) {m_zRange = scale;}
 	void SetZPoint( float rz ) {m_zPoint = rz;}
-	float GetAngle() {return m_angle;}
+	float GetAngle() {return m_Angle;}
 	float GetZRange() {return m_zRange;}
 	float GetZPoint() {return m_zPoint;}
 	void Rotation( float angle, const Vec2& middle = Vec2::ZERO );
@@ -75,15 +73,14 @@ private:
 	// Calculate the projection of a polygon on an axis and returns it as a [min, max] interval
 	void ProjectPolygon( const Vec2& axis, const Polygon2D& polygon, float* min, float* max );
 private:
-	float	m_angle;
-	Vec2s	m_points, m_edges;
-	bool	m_needBuildAABB;
-	bool	m_needBuildPolygon;
-	polygon m_polygon;
+	float	m_Angle;
+	Vec2s	m_Points, m_Edges;
+	bool	m_NeedBuildAABB;
+	bool	m_NeedBuildPolygon;
+	polygon m_Polygon;
 	float   m_zRange; // ª½®|
 	float   m_zPoint;
-	AABB2D  m_aabb;
+	AABB2D  m_AABB;
 };
-typedef std::vector<Polygon2D> Polygons;
 typedef std::vector<Polygon2D> Polygon2Ds;
-#endif // _POLYGON2D_H_
+
