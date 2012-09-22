@@ -874,6 +874,7 @@ void InitDirect3DApp::LoadData()
 	for(int idx = 0;idx<v_BackGround.size();idx++)
 	{
 		g_BGManager.AddBG( "Forbidden_Tower" , v_BackGround[idx] );
+		std::cout<<v_BackGround[idx]->m_Name<<std::endl
 	}
 	g_BGManager.SetCurrentBG( "Forbidden_Tower" );
 	//AddObjectInfo
