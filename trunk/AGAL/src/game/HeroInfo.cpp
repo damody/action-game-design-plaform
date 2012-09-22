@@ -400,9 +400,9 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 	fprintf(file, "require\t\"action\"\n");
 	fprintf(file, "\n");
 	//-------------------------------------
-	fprintf(file, "name\t=\t\"%s\"\n",RevisePath(hero->m_Name).c_str());
-	fprintf(file, "head\t=\t\"%s\"\n",RevisePath(hero->m_Headpic).c_str());
-	fprintf(file, "small\t=\t\"%s\"\n",RevisePath(hero->m_Smallpic).c_str());
+	fprintf(file, "name\t= \"%s\"\n",RevisePath(hero->m_Name).c_str());
+	fprintf(file, "head\t= \"%s\"\n",RevisePath(hero->m_Headpic).c_str());
+	fprintf(file, "small\t= \"%s\"\n",RevisePath(hero->m_Smallpic).c_str());
 	fprintf(file, "\n");
 	//-------------------------------------
 	fprintf(file, "file = {\n");
@@ -415,40 +415,40 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 		int row = hero->m_PictureDatas[i].m_Row;
 		int col = hero->m_PictureDatas[i].m_Column;
 
-		fprintf(file, "{path\t=\t\"%s\",\t",RevisePath(path).c_str());
-		fprintf(file, "autoclip\t=\t%d,\t",autoclip);
-		fprintf(file, "w\t=\t%d,\t",w);
-		fprintf(file, "h\t=\t%d,\t",h);
-		fprintf(file, "row\t=\t%d,\t",row);
-		fprintf(file, "col\t=\t%d,\t},\n",col);
+		fprintf(file, "{path = \"%s\", ",RevisePath(path).c_str());
+		fprintf(file, "autoclip = %d, ",autoclip);
+		fprintf(file, "w = %d, ",w);
+		fprintf(file, "h = %d, ",h);
+		fprintf(file, "row = %d, ",row);
+		fprintf(file, "col = %d },\n",col);
 	}
 	fprintf(file, "}\n");
 	fprintf(file, "\n");
 	//-------------------------------------
-	fprintf(file,"walking_speed\t=\t%f\n",hero->m_WalkingSpeed);
-	fprintf(file,"walking_speedz\t=\t%f\n",hero->m_WalkingSpeedZ);
-	fprintf(file,"running_speed\t=\t%f\n",hero->m_RunningSpeed);
-	fprintf(file,"running_speedz\t=\t%f\n",hero->m_RunningSpeedZ);
-	fprintf(file,"heavy_walking_speed\t=\t%f\n",hero->m_HeavyWalkingSpeed);
-	fprintf(file,"heavy_walking_speedz\t=\t%f\n",hero->m_HeavyWalkingSpeedZ);
-	fprintf(file,"heavy_running_speed\t=\t%f\n",hero->m_HeavyRunningSpeed);
-	fprintf(file,"heavy_running_speedz\t=\t%f\n",hero->m_HeavyRunningSpeedZ);
-	fprintf(file,"jump_height\t=\t%f\n",hero->m_JumpHeight);
-	fprintf(file,"jump_distance\t=\t%f\n",hero->m_JumpDistance);
-	fprintf(file,"jump_distancez\t=\t%f\n",hero->m_JumpDistanceZ);
-	fprintf(file,"dash_height\t=\t%f\n",hero->m_DashHeight);
-	fprintf(file,"dash_distance\t=\t%f\n",hero->m_DashDistance);
-	fprintf(file,"dash_distancez\t=\t%f\n",hero->m_DashDistanceZ);
-	fprintf(file,"rowing_height\t=\t%f\n",hero->m_RowingHeight);
-	fprintf(file,"rowing_distance\t=\t%f\n",hero->m_RowingDistance);
+	fprintf(file,"walking_speed        = %f\n",hero->m_WalkingSpeed);
+	fprintf(file,"walking_speedz       = %f\n",hero->m_WalkingSpeedZ);
+	fprintf(file,"running_speed        = %f\n",hero->m_RunningSpeed);
+	fprintf(file,"running_speedz       = %f\n",hero->m_RunningSpeedZ);
+	fprintf(file,"heavy_walking_speed  = %f\n",hero->m_HeavyWalkingSpeed);
+	fprintf(file,"heavy_walking_speedz = %f\n",hero->m_HeavyWalkingSpeedZ);
+	fprintf(file,"heavy_running_speed  = %f\n",hero->m_HeavyRunningSpeed);
+	fprintf(file,"heavy_running_speedz = %f\n",hero->m_HeavyRunningSpeedZ);
+	fprintf(file,"jump_height          = %f\n",hero->m_JumpHeight);
+	fprintf(file,"jump_distance        = %f\n",hero->m_JumpDistance);
+	fprintf(file,"jump_distancez       = %f\n",hero->m_JumpDistanceZ);
+	fprintf(file,"dash_height          = %f\n",hero->m_DashHeight);
+	fprintf(file,"dash_distance        = %f\n",hero->m_DashDistance);
+	fprintf(file,"dash_distancez       = %f\n",hero->m_DashDistanceZ);
+	fprintf(file,"rowing_height        = %f\n",hero->m_RowingHeight);
+	fprintf(file,"rowing_distance      = %f\n",hero->m_RowingDistance);
 	fprintf(file, "\n");
 	//-------------------------------------
-	fprintf(file, "frame\t=\t\n");
+	fprintf(file, "frame = \n");
 	fprintf(file, "{\n");
 	for( FramesMap::iterator iter = hero->m_FramesMap.begin(); iter != hero->m_FramesMap.end() ; ++iter )
 	{
 		frameTable.push_back( iter->first );
-		fprintf(file, "\t%s\t\t=\t\t{},\n",iter->first.c_str());
+		fprintf(file, "\t%s = {},\n",iter->first.c_str());
 	}
 	fprintf(file, "}\n");
 	fprintf(file, "\n");
@@ -459,191 +459,194 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 		for(int frameCount = 0;frameCount<hero->m_FramesMap[tableName].size();frameCount++)
 		{
 			FrameInfo* frameInfo = &hero->m_FramesMap[tableName][frameCount];
-			fprintf(file, "frame.%s[%d]\t=\n",frameTable[tableCount].c_str(),frameCount);
+			fprintf(file, "frame.%s[%d] =\n",frameTable[tableCount].c_str(),frameCount);
 			fprintf(file, "{\n\t");
 			//----pic_id----
-			fprintf(file, "pic_id\t=\t%d,\t",frameInfo->m_PictureID);
+			fprintf(file, "pic_id = %d, ",frameInfo->m_PictureID);
 			//----pic_x----
-			fprintf(file, "pic_x\t=\t%d,\t",frameInfo->m_PictureX);
+			fprintf(file, "pic_x = %d, ",frameInfo->m_PictureX);
 			//----pic_y----
-			fprintf(file, "pic_y\t=\t%d,\t",frameInfo->m_PictureY);
+			fprintf(file, "pic_y = %d, ",frameInfo->m_PictureY);
 			//----state----
-			fprintf(file, "state\t=\tAction.%s,\t",HeroActionTable[frameInfo->m_HeroAction].c_str());
+			fprintf(file, "state = Action.%s, ",HeroActionTable[frameInfo->m_HeroAction].c_str());
 			//----wait----
-			fprintf(file, "wait\t=\t%d,\t",frameInfo->m_Wait);
+			fprintf(file, "wait = %d, ",frameInfo->m_Wait);
 			//----next----
-			fprintf(file, "next\t=\t{\"%s\",\t%d},\t",frameInfo->m_NextFrameName.c_str(),frameInfo->m_NextFrameIndex);
+			fprintf(file, "next = { \"%s\", %d}, ",frameInfo->m_NextFrameName.c_str(),frameInfo->m_NextFrameIndex);
 
-			fprintf(file, "\n");
+			fprintf(file, "\n\t");
 			//----dvx----
-			fprintf(file, "dvx\t=\t%f,\t",frameInfo->m_DVX);
+			fprintf(file, "dvx = %g, ",frameInfo->m_DVX);
 			//----dvy----
-			fprintf(file, "dvy\t=\t%f,\t",frameInfo->m_DVY);
+			fprintf(file, "dvy = %g, ",frameInfo->m_DVY);
 			//----dvz----
-			fprintf(file, "dvz\t=\t%f,\t",frameInfo->m_DVZ);
+			fprintf(file, "dvz = %g, ",frameInfo->m_DVZ);
 			//----centerx----
-			fprintf(file, "centerx\t=\t%f,\t",frameInfo->m_CenterX);
+			fprintf(file, "centerx = %g, ",frameInfo->m_CenterX);
 			//----centery----
-			fprintf(file, "centery\t=\t%f,\t",frameInfo->m_CenterY);
+			fprintf(file, "centery = %g, ",frameInfo->m_CenterY);
 			//----clear_key_queue----
-			fprintf(file, "clear_key_queue\t=\t%d,\t",frameInfo->m_ClearKeyQueue);
+			fprintf(file, "clear_key_queue = %d, ",frameInfo->m_ClearKeyQueue);
 
 
 			fprintf(file, "\n");
 			//----Bodys----
 			if( !frameInfo->m_Bodys.empty() )
 			{
-				fprintf(file, "body\t=\t{\t");
+				fprintf(file, "\tbody = {\n");
 				for(Bodys::iterator bodyIter = frameInfo->m_Bodys.begin();bodyIter!=frameInfo->m_Bodys.end();++bodyIter)
 				{
 					const Vec2s vec2sTemp = bodyIter->m_Area.const_Points();
-					fprintf(file, "{");
+					fprintf(file, "\t\t{");
 
-					fprintf(file, "kind\t=\t%d,\t",bodyIter->m_Kind);
-					fprintf(file, "points\t=\t{");
+					fprintf(file, "kind = %d, ",bodyIter->m_Kind);
+					fprintf(file, "points = { ");
 					for(int i=0;i<vec2sTemp.size();i++)
 					{
-						fprintf(file, "{%f,%f},\t",vec2sTemp[i].x,vec2sTemp[i].y);
+						fprintf(file, "{%g,%g}, ",vec2sTemp[i].x,vec2sTemp[i].y);
 					}
-					fprintf(file, "},\t");
-					fprintf(file, "zwidth\t=\t%f,\t",bodyIter->m_ZWidth);
+					fprintf(file, "}, ");
+					fprintf(file, "zwidth = %g",bodyIter->m_ZWidth);
 
-					fprintf(file, "},");
+					fprintf(file, "},\n");
 				}
-				fprintf(file, "},\n");
+				fprintf(file, "\t},\n");
 			}
 			//----Attacks----
 			if( !frameInfo->m_Attacks.empty() )
 			{
-				fprintf(file, "attack\t=\t{\n");
+				fprintf(file, "\tattack = {\n");
 				for(Attacks::iterator attackIter = frameInfo->m_Attacks.begin();attackIter!=frameInfo->m_Attacks.end();++attackIter)
 				{
 					const Vec2s vec2sTemp = attackIter->m_Area.const_Points();
-					fprintf(file, "{");
+					fprintf(file, "\t\t{\n\t\t");
 
-					fprintf(file, "kind\t=\t%d,",attackIter->m_Kind);
-					fprintf(file, "effect\t=\tEffect.%s,",effectTable[attackIter->m_Effect].c_str());
-					fprintf(file, "\n");
-					fprintf(file, "points\t=\t{");
+					fprintf(file, "kind = %d, ",attackIter->m_Kind);
+					fprintf(file, "effect = Effect.%s,",effectTable[attackIter->m_Effect].c_str());
+					fprintf(file, "\n\t\t");
+					fprintf(file, "points = { ");
 					for(int i=0;i<vec2sTemp.size();i++)
 					{
-						fprintf(file, "{%f,%f},\t",vec2sTemp[i].x,vec2sTemp[i].y);
+						fprintf(file, "{%g,%g}, ",vec2sTemp[i].x,vec2sTemp[i].y);
 					}
-					fprintf(file, "},\t");
-
-					fprintf(file, "zwidth\t=\t%f,\t",attackIter->m_ZWidth);
-					fprintf(file, "\n");
-					fprintf(file, "dvx\t=\t%f,\t",attackIter->m_DVX);
-					fprintf(file, "dvy\t=\t%f,\t",attackIter->m_DVY);
-					fprintf(file, "dvz\t=\t%f,\t",attackIter->m_DVZ);
-					fprintf(file, "fall\t=\t%d,\t",attackIter->m_Fall);
-					fprintf(file, "breakDefend\t=\t%d,\t",attackIter->m_BreakDefend);
-					fprintf(file, "\n");
-					fprintf(file, "injury\t=\t%d,\t",attackIter->m_Injury);
-					fprintf(file, "strength\t=\t%d,\t",attackIter->m_Strength);
-
 					fprintf(file, "},");
+
+					fprintf(file, "zwidth = %g,",attackIter->m_ZWidth);
+					fprintf(file, "\n\t\t");
+					fprintf(file, "dvx = %g, ",attackIter->m_DVX);
+					fprintf(file, "dvy = %g, ",attackIter->m_DVY);
+					fprintf(file, "dvz = %g, ",attackIter->m_DVZ);
+					fprintf(file, "fall = %d, ",attackIter->m_Fall);
+					fprintf(file, "breakDefend = %d, ",attackIter->m_BreakDefend);
+					fprintf(file, "\n\t\t");
+					fprintf(file, "arest = %d, ",attackIter->m_AttackRest);
+					fprintf(file, "reAttackRest = %d, ",attackIter->m_ReAttackRest);
+					fprintf(file, "injury = %d, ",attackIter->m_Injury);
+					fprintf(file, "strength = %d, ",attackIter->m_Strength);
+
+					fprintf(file, "\n\t\t},\n");
 				}
-				fprintf(file, "},\n");
+				fprintf(file, "\t},\n");
 			}
 			//----HitDatas----
 			if( !frameInfo->m_HitDatas.empty() )
 			{
-				fprintf(file, "hit\t=\t{\t");
+				fprintf(file, "\thit = { ");
 				for(HitDatas::iterator hitIter = frameInfo->m_HitDatas.begin();hitIter!=frameInfo->m_HitDatas.end();++hitIter)
 				{
 					fprintf(file, "{");
 
-					fprintf(file, "\"%s\",\t",hitIter->m_KeyQueue.c_str());
-					fprintf(file, "\"%s\",\t",hitIter->m_FrameName.c_str());
-					fprintf(file, "%d",hitIter->m_FrameOffset);
+					fprintf(file, "\"%s\", ",hitIter->m_KeyQueue.c_str());
+					fprintf(file, "\"%s\", ",hitIter->m_FrameName.c_str());
+					fprintf(file, "%d ",hitIter->m_FrameOffset);
 
-					fprintf(file, "},");
+					fprintf(file, "}, ");
 				}
 				fprintf(file, "},\n");
 			}
 			//----CatchInfos----
 			if( !frameInfo->m_Catchs.empty() )
 			{
-				fprintf(file, "catch\t=\t{\n");
+				fprintf(file, "\tcatch = {\n");
 				for(CatchInfos::iterator catchIter = frameInfo->m_Catchs.begin();catchIter!=frameInfo->m_Catchs.end();++catchIter)
 				{
 					const Vec2s vec2sTemp = catchIter->m_Area.const_Points();
-					fprintf(file, "{");
+					fprintf(file, "\t\t{\n\t\t");
 
-					fprintf(file, "kind\t=\t%d,\t",catchIter->m_Kind);
-					fprintf(file, "strong\t=\t%d,\t",catchIter->m_Strong);
-					fprintf(file, "catchx\t=\t%f,\t",catchIter->m_CatchPosition.x);
-					fprintf(file, "catchy\t=\t%f,\t",catchIter->m_CatchPosition.y);
-					fprintf(file, "where\t=\tBody.%s,\t",CatchPositionTable[catchIter->m_CatchWhere].c_str());
-					fprintf(file, "points\t=\t{");
+					fprintf(file, "kind = %d, ",catchIter->m_Kind);
+					fprintf(file, "strong = %d, ",catchIter->m_Strong);
+					fprintf(file, "catchx = %g, ",catchIter->m_CatchPosition.x);
+					fprintf(file, "catchy = %g, ",catchIter->m_CatchPosition.y);
+					fprintf(file, "where = Body.%s, ",CatchPositionTable[catchIter->m_CatchWhere].c_str());
+					fprintf(file, "\n\t\t");
+					fprintf(file, "points = { ");
 					for(int i=0;i<vec2sTemp.size();i++)
 					{
-						fprintf(file, "{%f,%f},\t",vec2sTemp[i].x,vec2sTemp[i].y);
+						fprintf(file, "{%g,%g}, ",vec2sTemp[i].x,vec2sTemp[i].y);
 					}
-					fprintf(file, "},\t");
+					fprintf(file, "}, ");
+					fprintf(file, "zwidth = %g", catchIter->m_ZWidth );
 					fprintf(file, "\n");
 
-					fprintf(file, "},");
+					fprintf(file, "\t\t},\n");
 				}
-				fprintf(file, "},\n");
+				fprintf(file, "\t},\n");
 			}
 			//----BeCatchs----
 			/*To do*/
 			//----BloodInfos----
 			if( !frameInfo->m_BloodInfos.empty() )
 			{
-				fprintf(file, "blood\t=\t{\t");
+				fprintf(file, "\tblood = {\n");
 				for(BloodInfos::iterator bloodIter = frameInfo->m_BloodInfos.begin();bloodIter!=frameInfo->m_BloodInfos.end();++bloodIter)
 				{
-					fprintf(file, "{");
+					fprintf(file, "\t\t{ ");
 
-					fprintf(file, "scale\t=\t%f,\t",bloodIter->m_Scale);
-					fprintf(file, "x\t=\t%f,\t",bloodIter->m_Position.x);
-					fprintf(file, "y\t=\t%f,\t",bloodIter->m_Position.y);
-					fprintf(file, "value\t=\t%f,\t",bloodIter->m_EnableValue);
+					fprintf(file, "scale = %g, ",bloodIter->m_Scale);
+					fprintf(file, "x = %g, ",bloodIter->m_Position.x);
+					fprintf(file, "y = %g, ",bloodIter->m_Position.y);
+					fprintf(file, "value = %g, ",bloodIter->m_EnableValue);
 
-					fprintf(file, "},");
+					fprintf(file, "},\n");
 				}
-				fprintf(file, "},\n");
+				fprintf(file, "\t},\n");
 			}
 			//----Creations----
 			if( !frameInfo->m_Creations.empty() )
 			{
-				fprintf(file, "newobjects\t=\t{\t");
+				fprintf(file, "\tnewobjects = {");
 				for(Creations::iterator objIter = frameInfo->m_Creations.begin();objIter!=frameInfo->m_Creations.end();++objIter)
 				{
-					fprintf(file, "{");
+					fprintf(file, "\t\t{\n\t\t");
 
-					fprintf(file, "name\t=\t\"%s\",\t",objIter->name.c_str());
-					fprintf(file, "amount\t=\t%d,\t",objIter->amount);
-					fprintf(file, "x\t=\t%f,\t",objIter->x);
-					fprintf(file, "y\t=\t%f,\t",objIter->y);
-					fprintf(file, "\n");
-					fprintf(file, "facing\t=\t%d,\t",objIter->facing);
-					fprintf(file, "frame\t=\t\"%s\",\t",objIter->frame.c_str());
-					fprintf(file, "frameID\t=\t%d,\t",objIter->frameID);
-					fprintf(file, "\n");
-					fprintf(file, "hp\t=\t%d,\t",objIter->HP);
+					fprintf(file, "name = \"%s\", ",objIter->name.c_str());
+					fprintf(file, "amount = %d, ",objIter->amount);
+					fprintf(file, "x = %g, ",objIter->x);
+					fprintf(file, "y = %g, ",objIter->y);
+					fprintf(file, "facing = %d, ",objIter->facing);
+					fprintf(file, "\n\t\t");
+					fprintf(file, "frame = \"%s\", ",objIter->frame.c_str());
+					fprintf(file, "frameID = %d, ",objIter->frameID);
+					fprintf(file, "hp = %d, ",objIter->HP);
 					/*AI«O¯d*///fprintf(file, "ai\t=\t%d,\t",objIter->AI);
-					fprintf(file, "dvx\t=\t%f,\t",objIter->v0.x);
-					fprintf(file, "dvy\t=\t%f,\t",objIter->v0.y);
-					fprintf(file, "dvz\t=\t%f,\t",objIter->v0.z);
+					fprintf(file, "dvx = %g, ",objIter->v0.x);
+					fprintf(file, "dvy = %g, ",objIter->v0.y);
+					fprintf(file, "dvz = %g, ",objIter->v0.z);
 
-					fprintf(file, "},");
+					fprintf(file, "\n\t\t},\n");
 				}
-				fprintf(file, "},\n");
+				fprintf(file, "\t},\n");
 			}
 			//----sound----
 			if( !frameInfo->m_sound.empty() )
 			{
-				fprintf(file, "sound\t=\t\"%s\",\t",frameInfo->m_sound);
+				fprintf(file, "\tsound = \"%s\",\n", frameInfo->m_sound);
 			}
 			
 			
 
 
-			fprintf(file, "\n}\n");
+			fprintf(file, "}\n");
 			fprintf(file, "\n");
 		}
 		

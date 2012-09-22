@@ -68,7 +68,7 @@ void Tbox::RandomReset()
 		//this->m_Polygon2D.AddPoint(Vector2(2*m_Scale.x*Random()-m_Scale.x, 2*m_Scale.y*Random()-m_Scale.y));
 	}
 	this->m_Polygon2D.Offset(m_Position);
-	this->m_Polygon2D.CheckBuildEdges();
+	this->m_Polygon2D.CheckBuildAABB();
 }
 
 

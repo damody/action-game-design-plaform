@@ -77,9 +77,9 @@ frame.default[0] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=34, value=150}},
-   body = {
-	{kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
-   }
+   body	= {	
+   {kind =	0, points =	{{25,-60}, {24,-77}, {54,-76}, {48,-59}, {54,-57}, {50,-37}, {45,-33}, {49,-19}, {33,-16}, {25,-20}, {28,-32}, {20,-39}, {18,-57}},	zwidth = 8, },
+   },
 
    --wpoint:
    --   kind: 1  x: 23  y: 55  weaponact: 23  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
@@ -95,7 +95,7 @@ frame.standing[0] =
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=34, value=150}},
    body = {
-	{kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+	{kind =	0, points =	{{25,-60}, {24,-77}, {54,-76}, {48,-59}, {54,-57}, {50,-37}, {45,-33}, {49,-19}, {33,-16}, {25,-20}, {28,-32}, {20,-39}, {18,-57}},	zwidth = 8, },
    }
 
    --wpoint:
@@ -112,7 +112,8 @@ frame.standing[1] =
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
-   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   {kind =	0, points =	{{25,-60}, {24,-77}, {54,-76}, {48,-59}, {54,-57}, {50,-37}, {45,-33}, {49,-19}, {33,-16}, {25,-20}, {28,-32}, {20,-39}, {18,-57}},	zwidth = 8, },
+   --{kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
    }
 
    --wpoint:
@@ -129,7 +130,8 @@ frame.standing[2] =
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
-   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   {kind =	0, points =	{{25,-60}, {24,-77}, {54,-76}, {48,-59}, {54,-57}, {50,-37}, {45,-33}, {49,-19}, {33,-16}, {25,-20}, {28,-32}, {20,-39}, {18,-57}},	zwidth = 8, },
+   --{kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
    }
 
    --wpoint:
@@ -146,7 +148,8 @@ frame.standing[3] =
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
-   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   {kind =	0, points =	{{25,-60}, {24,-77}, {54,-76}, {48,-59}, {54,-57}, {50,-37}, {45,-33}, {49,-19}, {33,-16}, {25,-20}, {28,-32}, {20,-39}, {18,-57}},	zwidth = 8, },
+   --{kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
    }
 
    --wpoint:
@@ -163,7 +166,8 @@ frame.walking[0] =
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
-   {kind = 0, points = {{28,-15}, {28,-80}, {55,-80}, {55,-15}}, zwidth = 8}
+   {kind = 0, points = {{48,-58}, {55,-56}, {51,-39}, {46,-35}, {49,-22}, {43,-14}, {28,-15}, {26,-30}, {20,-36}, {17,-53},	{24,-56}, {29,-50},	{32,-75}, {44,-75}}, zwidth	= 8.000000,	}
+   --{kind = 0, points = {{28,-15}, {28,-80}, {55,-80}, {55,-15}}, zwidth = 8}
    },
    catch = {
    {kind = 0, strong=0, catchx=0, catchy=0, where=Body.Neck, points = {{40,-16}, {40,-81}, {65,-81}, {65,-16}}}
@@ -437,7 +441,7 @@ frame.dash_front[0] =
    pic_id = 0, pic_x = 4, pic_y = 7, state = Action.Dash, wait = 1, next = {"dash_front", 1},
    dvx = 18, dvy = 25,  dvz = 5,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"B", "dash_kick", 0}},
+   hit = {{"B", "dash_kick", 0},{">", "dash_back", 1}},
    blood = {{scale = 1.0, x=43, y=30, value=150}},
    body = {
    {kind = 0, points = {{43,-5}, {43,-38}, {66,-38}, {66,-5}}, zwidth = 8},
@@ -493,7 +497,7 @@ frame.dash_back[0] =
    pic_id = 0, pic_x = 5, pic_y = 7, state = Action.Dash, wait = 1, next = {"dash_back", 1},
    dvx = -18, dvy = 25,  dvz = 5,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {},
+   hit = {{">", "dash_front", 1}},
    blood = {{scale = 1.0, x=33, y=30, value=150}},
    body = {
    {kind = 0, points = {{20,-5 }, {20,-43}, {47,-43}, {47,-5 }}, zwidth = 8},

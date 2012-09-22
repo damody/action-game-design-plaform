@@ -28,16 +28,8 @@ dash_distancez  = 5.000000
 rowing_height   = 6.000000
 rowing_distance = 5.000000
 
---人物預設動作
-action_key_map = {
---格式： 套用的 Action, map = { {按鍵, Frame, FrameID}, ... }
-{Action.Standing, map={{'D', "defend", 0}, {'J', "jump", 0}, {'A', "punch", 0}}},
-{Action.Walking,  map={{'D', "defend", 0}, {'J', "jump", 0}, {'A', "punch", 0}}},
-{Action.Running,  map={{'D', "rolling", 0}, {'J', "dash", 0}, {'A', "run_punch", 0}}}
-}
-
 --落地切換設定
-air_crouch_map = {
+air_crouch_map={
 {Action.InTheAir, "crouch", 0},
 {Action.Dash, "crouch", 1},
 {Action.BeforeDashAttack, "crouch", 1},
@@ -85,9 +77,9 @@ frame.default[0] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=34, value=150}},
-   body = {
-	{kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
-   }
+   body	= {	
+   {kind =	0, points =	{{25,-60}, {24,-77}, {54,-76}, {48,-59}, {54,-57}, {50,-37}, {45,-33}, {49,-19}, {33,-16}, {25,-20}, {28,-32}, {20,-39}, {18,-57}},	zwidth = 8, },
+   },
 
    --wpoint:
    --   kind: 1  x: 23  y: 55  weaponact: 23  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
@@ -103,7 +95,7 @@ frame.standing[0] =
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=34, value=150}},
    body = {
-	{kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+	{kind =	0, points =	{{25,-60}, {24,-77}, {54,-76}, {48,-59}, {54,-57}, {50,-37}, {45,-33}, {49,-19}, {33,-16}, {25,-20}, {28,-32}, {20,-39}, {18,-57}},	zwidth = 8, },
    }
 
    --wpoint:
@@ -120,7 +112,8 @@ frame.standing[1] =
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
-   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   {kind =	0, points =	{{25,-60}, {24,-77}, {54,-76}, {48,-59}, {54,-57}, {50,-37}, {45,-33}, {49,-19}, {33,-16}, {25,-20}, {28,-32}, {20,-39}, {18,-57}},	zwidth = 8, },
+   --{kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
    }
 
    --wpoint:
@@ -137,7 +130,8 @@ frame.standing[2] =
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
-   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   {kind =	0, points =	{{25,-60}, {24,-77}, {54,-76}, {48,-59}, {54,-57}, {50,-37}, {45,-33}, {49,-19}, {33,-16}, {25,-20}, {28,-32}, {20,-39}, {18,-57}},	zwidth = 8, },
+   --{kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
    }
 
    --wpoint:
@@ -154,7 +148,8 @@ frame.standing[3] =
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
-   {kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
+   {kind =	0, points =	{{25,-60}, {24,-77}, {54,-76}, {48,-59}, {54,-57}, {50,-37}, {45,-33}, {49,-19}, {33,-16}, {25,-20}, {28,-32}, {20,-39}, {18,-57}},	zwidth = 8, },
+   --{kind = 0, points = {{21,-18}, {21,-80}, {64,-80}, {64,-18}}, zwidth = 8}
    }
 
    --wpoint:
@@ -171,7 +166,8 @@ frame.walking[0] =
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=33, value=150}},
    body = {
-   {kind = 0, points = {{28,-15}, {28,-80}, {55,-80}, {55,-15}}, zwidth = 8}
+   {kind = 0, points = {{48,-58}, {55,-56}, {51,-39}, {46,-35}, {49,-22}, {43,-14}, {28,-15}, {26,-30}, {20,-36}, {17,-53},	{24,-56}, {29,-50},	{32,-75}, {44,-75}}, zwidth	= 8.000000,	}
+   --{kind = 0, points = {{28,-15}, {28,-80}, {55,-80}, {55,-15}}, zwidth = 8}
    },
    catch = {
    {kind = 0, strong=0, catchx=0, catchy=0, where=Body.Neck, points = {{40,-16}, {40,-81}, {65,-81}, {65,-16}}}
@@ -445,7 +441,7 @@ frame.dash_front[0] =
    pic_id = 0, pic_x = 4, pic_y = 7, state = Action.Dash, wait = 1, next = {"dash_front", 1},
    dvx = 18, dvy = 25,  dvz = 5,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"B", "dash_kick", 0}},
+   hit = {{"B", "dash_kick", 0},{">", "dash_back", 1}},
    blood = {{scale = 1.0, x=43, y=30, value=150}},
    body = {
    {kind = 0, points = {{43,-5}, {43,-38}, {66,-38}, {66,-5}}, zwidth = 8},
@@ -499,9 +495,9 @@ frame.dash_front[2] =
 frame.dash_back[0] =
 {
    pic_id = 0, pic_x = 5, pic_y = 7, state = Action.Dash, wait = 1, next = {"dash_back", 1},
-   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   dvx = -18, dvy = 25,  dvz = 5,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {},
+   hit = {{">", "dash_front", 1}},
    blood = {{scale = 1.0, x=33, y=30, value=150}},
    body = {
    {kind = 0, points = {{20,-5 }, {20,-43}, {47,-43}, {47,-5 }}, zwidth = 8},
@@ -1636,7 +1632,7 @@ frame.many_punch[0] =
 frame.many_punch[1] =
 {
    pic_id = 2, pic_x = 5, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 2},
-   dvx = 5, dvy = 0,  dvz = 0,  centerx = 33,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 33,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1662,7 +1658,7 @@ frame.many_punch[1] =
 frame.many_punch[2] =
 {
    pic_id = 2, pic_x = 6, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 3},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 38,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1682,7 +1678,7 @@ frame.many_punch[2] =
 frame.many_punch[3] =
 {
    pic_id = 2, pic_x = 7, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 4},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
+   dvx = 1, dvy = 0,  dvz = 0,  centerx = 32,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1708,7 +1704,7 @@ frame.many_punch[3] =
 frame.many_punch[4] =
 {
    pic_id = 2, pic_x = 8, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 5},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 24,  centery = 79,  clear_key_queue = 0,
+   dvx = 1, dvy = 0,  dvz = 0,  centerx = 24,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1747,7 +1743,7 @@ frame.many_punch[5] =
 frame.many_punch[6] =
 {
    pic_id = 2, pic_x = 10, pic_y = 2, state = Action.GroundSkill, wait = 2, next = {"many_punch", 7},
-   dvx = 5, dvy = 0,  dvz = 0,  centerx = 22,  centery = 79,  clear_key_queue = 0,
+   dvx = 1, dvy = 0,  dvz = 0,  centerx = 22,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1773,7 +1769,7 @@ frame.many_punch[6] =
 frame.many_punch[7] =
 {
    pic_id = 2, pic_x = 10, pic_y = 3, state = Action.GroundSkill, wait = 2, next = {"many_punch", 8},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 18,  centery = 79,  clear_key_queue = 0,
+   dvx = 1, dvy = 0,  dvz = 0,  centerx = 18,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1811,7 +1807,7 @@ frame.many_punch[8] =
 frame.many_punch[9] =
 {
    pic_id = 2, pic_x = 8, pic_y = 3, state = Action.GroundSkill, wait = 2, next = {"many_punch", 10},
-   dvx = 7, dvy = 0,  dvz = 0,  centerx = 26,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 26,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"D^A", "singlong", 0}},
    blood = {},
@@ -1830,7 +1826,7 @@ frame.many_punch[9] =
 frame.many_punch[10] =
 {
    pic_id = 2, pic_x = 7, pic_y = 3, state = Action.GroundSkill, wait = 2, next = {"many_punch", 11},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 22,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 22,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
@@ -1856,7 +1852,7 @@ frame.many_punch[10] =
 frame.many_punch[11] =
 {
    pic_id = 2, pic_x = 6, pic_y = 3, state = Action.AfterSkill, wait = 4, next = {"many_punch", 12},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 27,  centery = 79,  clear_key_queue = 0,
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 27,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"J", "jump_hit", 0}},
    body = {
@@ -1867,7 +1863,7 @@ frame.many_punch[11] =
 frame.many_punch[12] =
 {
    pic_id = 2, pic_x = 5, pic_y = 3, state = Action.AfterSkill, wait = 6, next = {"default", 0},
-   dvx = 3, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
+   dvx = 1, dvy = 0,  dvz = 0,  centerx = 34,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"J", "jump_hit", 0}},
    body = {
@@ -1994,7 +1990,7 @@ frame.singlong[2] =
 		injury = 60, strength = 50,
 	},
    body = {
-   {points = {{19,-7}, {19,-78}, {55,-78}, {55,-7}}, zwidth = 8}
+   {kind = 0, points = {{19,-7}, {19,-78}, {55,-78}, {55,-7}}, zwidth = 8}
    }
 }
 
@@ -2013,7 +2009,7 @@ frame.singlong[3] =
 		injury = 45, strength = 50,
 	},
    body = {
-   {points = {{22,-6}, {22,-75}, {52,-75}, {52,-6}}, zwidth = 8}
+   {kind = 0, points = {{22,-6}, {22,-75}, {52,-75}, {52,-6}}, zwidth = 8}
    }
 }
 
@@ -2032,7 +2028,7 @@ frame.singlong[4] =
 		injury = 30, strength = 50,
 	},
    body = {
-   {points = {{28,-12}, {28,-78}, {57,-78}, {57,-12}}, zwidth = 8}
+   {kind = 0, points = {{28,-12}, {28,-78}, {57,-78}, {57,-12}}, zwidth = 8}
    }
 }
 
@@ -2045,7 +2041,7 @@ frame.singlong[5] =
    blood = {},
    attack={},
    body = {
-   {points = {{27,-7}, {27,-72}, {55,-72}, {55,-7}}, zwidth = 8}
+   {kind = 0, points = {{27,-7}, {27,-72}, {55,-72}, {55,-7}}, zwidth = 8}
    }
 }
 
@@ -2058,7 +2054,7 @@ frame.singlong[6] =
    blood = {},
    attack={},
    body = {
-   {points = {{23,-11}, {23,-72}, {53,-72}, {53,-11}}, zwidth = 8}
+   {kind = 0, points = {{23,-11}, {23,-72}, {53,-72}, {53,-11}}, zwidth = 8}
    }
 }
 
@@ -2071,7 +2067,7 @@ frame.singlong[7] =
    blood = {},
    attack={},
    body = {
-   {points = {{21,-3}, {21,-71}, {54,-71}, {54,-3}}, zwidth = 8}
+   {kind = 0, points = {{21,-3}, {21,-71}, {54,-71}, {54,-3}}, zwidth = 8}
    }
 }
 

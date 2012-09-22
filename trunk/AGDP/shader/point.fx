@@ -39,45 +39,48 @@ VS_OUT VS(VS_IN vIn)
 void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 {
 	
+	float w = 2 / sceneW;
+	float h = -2 / sceneH;
+
 	float4x4 proj;
-	proj[0]=float4(2/sceneW,0,0,0);
-	proj[1]=float4(0,2/sceneH,0,0);
+	proj[0]=float4(w,0,0,0);
+	proj[1]=float4(0,h,0,0);
 	proj[2]=float4(0,0,1,0);
-	proj[3]=float4(-1,-1,0,1);
+	proj[3]=float4(-1,1,0,1);
 	
 	GS_OUT out5;
 	//0
-	out5.posH=float4(input[0].pos.xy-float2(input[0].size.x/2,-input[0].size.y/2),input[0].pos.z,1.0);
+	out5.posH=float4(input[0].pos.xy-float2(input[0].size.x/2,-input[0].size.y/2),0.0,1.0);
 	out5.posH=mul(out5.posH,proj);
 	out5.color = input[0].color;
 	triStream.Append( out5 );
 	
 	//1
-	out5.posH=float4(input[0].pos.xy-float2(input[0].size.x/2,input[0].size.y/2),input[0].pos.z,1.0);
+	out5.posH=float4(input[0].pos.xy-float2(input[0].size.x/2,input[0].size.y/2),0.0,1.0);
 	out5.posH=mul(out5.posH,proj);
 	out5.color = input[0].color;
 	triStream.Append( out5 );
 
 	//2
-	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x/2,-input[0].size.y/2),input[0].pos.z,1.0);
+	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x/2,-input[0].size.y/2),0.0,1.0);
 	out5.posH=mul(out5.posH,proj);
 	out5.color = input[0].color;
 	triStream.Append( out5 );
 
 	//3
-	out5.posH=float4(input[0].pos.xy-float2(input[0].size.x/2,input[0].size.y/2),input[0].pos.z,1.0);
+	out5.posH=float4(input[0].pos.xy-float2(input[0].size.x/2,input[0].size.y/2),0.0,1.0);
 	out5.posH=mul(out5.posH,proj);
 	out5.color = input[0].color;
 	triStream.Append( out5 );
 
 	//4
-	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x/2,-input[0].size.y/2),input[0].pos.z,1.0);
+	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x/2,-input[0].size.y/2),0.0,1.0);
 	out5.posH=mul(out5.posH,proj);
 	out5.color = input[0].color;
 	triStream.Append( out5 );
 	
 	//5
-	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x/2,input[0].size.y/2),input[0].pos.z,1.0);
+	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x/2,input[0].size.y/2),0.0,1.0);
 	out5.posH=mul(out5.posH,proj);
 	out5.color = input[0].color;
 	triStream.Append( out5 );

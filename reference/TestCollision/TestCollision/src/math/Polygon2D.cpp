@@ -14,20 +14,25 @@
 
 using namespace boost::geometry;
 
-void Polygon2D::BuildEdges()
+void Polygon2D::BuildAABB()
+{
+	m_aabb.ReBuild(m_points);
+}
+
+void Polygon2D::BuildPolygon()
 {
 	m_polygon.clear();
 	for(int i = 0; i < m_points.size(); i++)
 	{
 		m_polygon.outer().push_back(point2(m_points[i].x, m_points[i].y));
 	}
-	
-	correct(m_polygon);
+	m_polygon.outer().push_back(point2(m_points[0].x, m_points[0].y));
+	//correct(m_polygon);
 }
 
 bool Polygon2D::IsCollision( const Polygon2D& rhs )
 {
-	CheckBuildEdges();
+	CheckBuildPolygon();
 	
 	if(m_points.size() < 3)
 	{
@@ -73,29 +78,43 @@ void Polygon2D::ProjectPolygon( const Vec2& axis, const Polygon2D& polygon, floa
 	}
 }
 
-void Polygon2D::CheckBuildEdges()
+void Polygon2D::CheckBuildAABB()
 {
-	if (m_needBuildEdges)
+	if (m_needBuildAABB)
 	{
-		BuildEdges();
-		m_needBuildEdges = false;
+		BuildAABB();
+		m_needBuildAABB = false;
+	}
+}
+
+
+void Polygon2D::CheckBuildPolygon()
+{
+	if(m_needBuildPolygon)
+	{
+		BuildPolygon();
+		m_needBuildPolygon = false;
 	}
 }
 
 void Polygon2D::AddPoint( float x, float y )
 {
-	m_needBuildEdges = true;
+	m_needBuildAABB = true;
+	m_needBuildPolygon = true;
 	m_points.push_back(Vec2(x, y));
 }
 
 void Polygon2D::AddPoint( const Vec2& p )
 {
-	m_needBuildEdges = true;
+	m_needBuildAABB = true;
+	m_needBuildPolygon = true;
 	m_points.push_back(p);
 }
 
 void Polygon2D::Offset( float x, float y )
 {
+	m_needBuildAABB = true;
+	m_needBuildPolygon = true;
 	for (Vec2s::iterator it = m_points.begin();
 		it != m_points.end();++it)
 	{
@@ -106,6 +125,8 @@ void Polygon2D::Offset( float x, float y )
 
 void Polygon2D::Offset( const Vec2& v )
 {
+	m_needBuildAABB = true;
+	m_needBuildPolygon = true;
 	for (Vec2s::iterator it = m_points.begin();
 		it != m_points.end();++it)
 	{
@@ -116,6 +137,8 @@ void Polygon2D::Offset( const Vec2& v )
 
 void Polygon2D::Offset( float x, float y, float z )
 {
+	m_needBuildAABB = true;
+	m_needBuildPolygon = true;
 	for (Vec2s::iterator it = m_points.begin();
 		it != m_points.end();++it)
 	{
@@ -128,6 +151,8 @@ void Polygon2D::Offset( float x, float y, float z )
 
 void Polygon2D::Offset( const Vec3& v )
 {
+	m_needBuildAABB = true;
+	m_needBuildPolygon = true;
 	for (Vec2s::iterator it = m_points.begin();
 		it != m_points.end();++it)
 	{
@@ -139,6 +164,8 @@ void Polygon2D::Offset( const Vec3& v )
 
 void Polygon2D::SetAngle( float angle )
 {
+	m_needBuildAABB = true;
+	m_needBuildPolygon = true;
 	for (Vec2s::iterator it = m_points.begin();
 		it != m_points.end();++it)
 	{
@@ -149,6 +176,8 @@ void Polygon2D::SetAngle( float angle )
 
 void Polygon2D::Rotation( float angle, const Vec2& middle /*= Vec2::ZERO*/ )
 {
+	m_needBuildAABB = true;
+	m_needBuildPolygon = true;
 	m_angle = angle;
 	for (Vec2s::iterator it = m_points.begin();
 		it != m_points.end();++it)
@@ -162,6 +191,12 @@ void Polygon2D::Clear()
 	m_points.clear();
 	m_edges.clear();
 	m_polygon.clear();
+
+}
+
+Polygon2D::~Polygon2D()
+{
+
 }
 
 
