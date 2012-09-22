@@ -17,6 +17,7 @@ Tboxs g_Tboxs;
 int g_fps;
 int g_size=1;
 bool g_enable = true;
+bool g_DrawTbox = true;
 ptrManager<Tbox*, GetPolygonFromTbox> TboxPtrManager;
 // Angle For The Triangle
 float	g_triangle_rotation;
@@ -60,11 +61,12 @@ void InitGL()
 	glDepthFunc(GL_LEQUAL);
 
 	std::cout << "Key R: Reset Polygon" << std::endl;
-	std::cout << "Key Space: Create Tbox stop/start" << std::endl;
+	std::cout << "Key Q: Stop/Start Draw" << std::endl;
+	std::cout << "Key Space: Create Tbox Stop/Start" << std::endl;
 	std::cout << "Key +: Create Tbox Rate Up" << std::endl;
 	std::cout << "Key -: Create Tbox Rate Down" << std::endl;
 }
-
+int cc = 0;
 void Update()
 {
 	g_fps++;
@@ -81,7 +83,7 @@ void Update()
 		g_LastTime += g_Timer.getDeltaTime();
 	if( g_LastTime2 > 3.0)
 	{
-		std::cout <<"AddCount:"<<g_size*5<<"\tUpdateCount:" <<g_fps<< "\tboxCount:"<<g_Tboxs.size() << std::endl;
+		std::cout <<"AddCount:"<<g_size*5<<"\tUpdateCount:" <<g_fps<< "\tboxCount:"<<g_Tboxs.size() <<"\tCollisionCount:"<<cc << std::endl;
 		g_LastTime2 = 0;
 		g_fps = 0;
 	}else
@@ -95,6 +97,7 @@ void Update()
 	if (g_bKeys[VK_ADD])	g_size++;
 	if (g_bKeys[VK_SUBTRACT])	g_size--;
 	if (g_bKeys['R'])	g_Tbox->RandomReset();
+	if (g_bKeys['Q'])	g_DrawTbox = !g_DrawTbox;
 
 	g_Tbox->Update(g_Timer.getDeltaTime());
 	g_Tbox->m_Color = Vector3(0.0, 0.0, 1.0);
@@ -103,7 +106,9 @@ void Update()
 	{
 		(*it)->Update(g_Timer.getDeltaTime());
 	}
-	Tboxs t_Tboxs = TboxPtrManager.GetCollision(g_Tbox, GetPolygonsFromTbox());
+	TboxPtrManager.PrepareForCollision();
+	Tboxs t_Tboxs = TboxPtrManager.GetCollision(g_Tbox, GetPolygonFromTbox());
+	cc = t_Tboxs.size();
 	for(std::vector<Tbox*>::iterator it = t_Tboxs.begin();
 		it != t_Tboxs.end(); ++it)
 	{
@@ -120,22 +125,42 @@ void DrawTbox(Tbox* tb)
 	glPushMatrix();
 	//glTranslatef(tb->m_Position.x, tb->m_Position.y, 0.0f);
 	//glRotatef(tb->m_Direction.angleBetween(Vector3()).valueDegrees(), 0.0f, 1.0f, 0.0f);
+	
 	glBegin(GL_POLYGON);
 	glColor3f(tb->m_Color.x, tb->m_Color.y, tb->m_Color.z);
 	std::for_each(tb->m_Polygon2D.Points().begin(), tb->m_Polygon2D.Points().end(), myfunc);
 	glEnd();
+	
 	glPopMatrix();
 }
-
+void DrawAABB(Tbox* tb)
+{
+	glBegin(GL_POLYGON);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(tb->m_Polygon2D.AABB().m_Max.x, tb->m_Polygon2D.AABB().m_Max.y, 0.0f);
+	glVertex3f(tb->m_Polygon2D.AABB().m_Min.x, tb->m_Polygon2D.AABB().m_Max.y, 0.0f);
+	glVertex3f(tb->m_Polygon2D.AABB().m_Min.x, tb->m_Polygon2D.AABB().m_Min.y, 0.0f);
+	glVertex3f(tb->m_Polygon2D.AABB().m_Max.x, tb->m_Polygon2D.AABB().m_Min.y, 0.0f);
+	glEnd();
+}
 void DrawGLScene()   // Create The Display Function
 {
-	// Clear Screen And Depth Buffer
+	if(g_DrawTbox){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	// Clear Screen And Depth Buffer
+	DrawAABB(g_Tbox);
+	for(std::vector<Tbox*>::iterator it = g_Tboxs.begin();
+		it != g_Tboxs.end(); ++it)
+	{
+		DrawAABB(*it);
+	}
 	DrawTbox(g_Tbox);
 	for(std::vector<Tbox*>::iterator it = g_Tboxs.begin();
 		it != g_Tboxs.end(); ++it)
 	{
 		DrawTbox(*it);
+	}
 	}
 	// Increase The Rotation Variable For The Triangle ( NEW )
 	g_triangle_rotation+=g_rotation_speed;

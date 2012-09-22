@@ -10,6 +10,8 @@ struct Axis_bind
 
 	Axis_bind(ParentPtr b)
 		:x(&(b->m_Position.x)), y(&(b->m_Position.y)), m_ParentPtr(b){}
+	Axis_bind(ParentPtr b, Vector2* vec2)
+		:x(&(vec2->x)), y(&(vec2->y)), m_ParentPtr(b){}
 	Axis_bind(float *val)
 		:x(val), y(val), m_ParentPtr(0)
 	{}
