@@ -33,11 +33,10 @@ bool Effect::Initialize( HWND hwnd )
 		MessageBox( hwnd, L"Could not initialize the texture RenderTextureClass object.", L"Error", MB_OK );
 		return false;
 	}
-	
+
 	//Set this effect texture info
 	m_Texture = Texture_Sptr( new Texture( m_RenderTexture->GetShaderResourceView() ) );
 	m_TextureID = g_TextureManager.AddTexture( "EffectTexture", m_Texture );
-	
 	//
 	m_vEffect.resize( effectShaders.size() );
 	return true;
@@ -104,6 +103,7 @@ bool Effect::Check( EffectType::e type, EffectData* ed )
 			}
 		}
 	}
+
 	return false;
 }
 
@@ -145,15 +145,16 @@ EffectManager::EffectManager( HWND hwnd ): m_Page( 0 ), m_Size( 4 )
 	//初始化 Effect
 	//test
 	m_Effect = new Effect*[m_Size];
-
 	//Init shader //push Fire ,Poison ,Freeze ...
-	effectShaders.resize(1);//目前只有火焰1種 所以size=1
-	for(int i=0;i<effectShaders.size();i++)
+	effectShaders.resize( 1 ); //目前只有火焰1種 所以size=1
+
+	for ( int i = 0; i < effectShaders.size(); i++ )
 	{
 		bool result;
 		effectShaders[0] = new EffectShaderClass();
-		result = effectShaders[0]->Initialize( L"FireShader.lua",g_d3dDevice, g_DeviceContext,hwnd );
-		if( !result )
+		result = effectShaders[0]->Initialize( L"FireShader.lua", g_d3dDevice, g_DeviceContext, hwnd );
+
+		if ( !result )
 		{
 			MessageBox( hwnd, L"Could not init EffectShader.", L"FireShader.Lua", MB_OK );
 		}
@@ -164,8 +165,6 @@ EffectManager::EffectManager( HWND hwnd ): m_Page( 0 ), m_Size( 4 )
 		m_Effect[i] = new Effect();
 		m_Effect[i]->Initialize( hwnd );
 	}
-
-	
 }
 
 int EffectManager::CreateEffect( EffectType::e type, int textureID, Vector4* picpos )

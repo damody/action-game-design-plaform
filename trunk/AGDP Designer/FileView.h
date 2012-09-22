@@ -52,7 +52,7 @@ public:
 	virtual ~CFileView();
 	void OnSelectItem( HTREEITEM item );
 	afx_msg void OnFileOpen();
-	void AddFile(HeroInfo *hero);
+	void AddFile( HeroInfo* hero );
 private:
 	HTREEITEM hHeroDoc;
 	HTREEITEM hHero_Select;

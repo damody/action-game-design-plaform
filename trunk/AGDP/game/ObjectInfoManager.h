@@ -2,13 +2,13 @@
 #include <string>
 #include "game/ObjectInfo.h"
 
-class ObjectInfoMG
+class ObjectInfoManager
 {
 private:
 	ObjectInfoMap m_ObjectInfoMap;
 public:
-	ObjectInfoMG( void );
-	~ObjectInfoMG( void );
+	ObjectInfoManager( void );
+	~ObjectInfoManager( void );
 
 	void AddObjectInfo( std::string name, ObjectInfo_Sptr info );
 	ObjectInfo_Sptr GetObjectInfo( std::string name );

@@ -265,9 +265,6 @@
     <ClInclude Include="memory\VMemPool.h">
       <Filter>inc\memory</Filter>
     </ClInclude>
-    <ClInclude Include="game\Consume.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
     <ClInclude Include="game\CtrlKey.h">
       <Filter>inc\game</Filter>
     </ClInclude>
@@ -275,9 +272,6 @@
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\Hero.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\HitData.h">
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\Player.h">
@@ -293,9 +287,6 @@
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\ColorRect.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\ObjectType.h">
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -322,12 +313,6 @@
     <ClInclude Include="game\TestRenderEffect.h">
       <Filter>inc\game</Filter>
     </ClInclude>
-    <ClInclude Include="game\CheeAction.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\WeaponAction.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
     <ClInclude Include="game\TextString.h">
       <Filter>inc\game</Filter>
     </ClInclude>
@@ -340,14 +325,8 @@
     <ClInclude Include="DX11\TextManager.h">
       <Filter>inc\DX11</Filter>
     </ClInclude>
-    <ClInclude Include="game\StdGame.h">
-      <Filter>inc\game</Filter>
-    </ClInclude>
     <ClInclude Include="StdGame.h">
       <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="game\Creation.h">
-      <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\ObjectInfoManager.h">
       <Filter>inc\game</Filter>

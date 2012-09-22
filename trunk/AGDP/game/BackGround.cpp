@@ -280,6 +280,7 @@ void BackGround::BuildPoint()
 				{
 					continue;
 				}
+
 				crv.rotation.x = it->m_Rotation.x;
 				crv.rotation.y = it->m_Rotation.y;
 				crv.rotation.z = it->m_Rotation.z;
@@ -289,7 +290,6 @@ void BackGround::BuildPoint()
 				crv.color.y = it->m_Color.y;
 				crv.color.z = it->m_Color.z;
 				crv.color.w = it->m_Color.w;
-				
 				m_CRVerteices.push_back( crv );
 			}
 		}

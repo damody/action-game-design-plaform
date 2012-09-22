@@ -6,55 +6,59 @@
 class LuaMap : public std::map<int, std::string>
 {
 public:
-	LuaMap(){}
-	LuaMap(LuaCell_Sptr lsptr)
+	LuaMap() {}
+	LuaMap( LuaCell_Sptr lsptr )
 	{
 		keys.clear();
-		keys = lsptr->GetLuaTableKeys("Action");
+		keys = lsptr->GetLuaTableKeys( "Action" );
 		this->clear();
-		for(int i=0; i<keys.size(); i++)
-		{
-			int _tmpKey = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
-			(*this)[_tmpKey] = keys[i];
-		}
-	}
-	LuaMap(std::string path)
-	{
-		LuaCell_Sptr lsptr = LuaCell_Sptr( new LuaCell );
-		lsptr->InputLuaFile(path.c_str());
-		keys.clear();
-		keys = lsptr->GetLuaTableKeys("Action");
-		this->clear();
-		for(int i=0; i<keys.size(); i++)
-		{
-			int _tmpKey = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
-			(*this)[_tmpKey] = keys[i];
-		}
-	}
-	~LuaMap(){}
 
-	void LoadHeroAction(LuaCell_Sptr lsptr)
-	{
-		keys.clear();
-		keys = lsptr->GetLuaTableKeys("Action");
-		this->clear();
-		for(int i=0; i<keys.size(); i++)
+		for ( int i = 0; i < ( int )keys.size(); i++ )
 		{
-			int _tmpKey = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
-			(*this)[_tmpKey] = keys[i];
+			int _tmpKey = lsptr->GetLua<int>( "Action/%s", keys[i].c_str() );
+			( *this )[_tmpKey] = keys[i];
 		}
 	}
-	void LoadHeroAction(std::string path)
+	LuaMap( std::string path )
 	{
 		LuaCell_Sptr lsptr = LuaCell_Sptr( new LuaCell );
-		lsptr->InputLuaFile(path.c_str());
+		lsptr->InputLuaFile( path.c_str() );
 		keys.clear();
-		keys = lsptr->GetLuaTableKeys("Action");
+		keys = lsptr->GetLuaTableKeys( "Action" );
 		this->clear();
-		for(int i=0; i<keys.size(); i++)
+
+		for ( int i = 0; i < ( int )keys.size(); i++ )
 		{
-			int _tmpKey = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
-			(*this)[_tmpKey] = keys[i];
+			int _tmpKey = lsptr->GetLua<int>( "Action/%s", keys[i].c_str() );
+			( *this )[_tmpKey] = keys[i];
+		}
+	}
+	~LuaMap() {}
+
+	void LoadHeroAction( LuaCell_Sptr lsptr )
+	{
+		keys.clear();
+		keys = lsptr->GetLuaTableKeys( "Action" );
+		this->clear();
+
+		for ( int i = 0; i < ( int )keys.size(); i++ )
+		{
+			int _tmpKey = lsptr->GetLua<int>( "Action/%s", keys[i].c_str() );
+			( *this )[_tmpKey] = keys[i];
+		}
+	}
+	void LoadHeroAction( std::string path )
+	{
+		LuaCell_Sptr lsptr = LuaCell_Sptr( new LuaCell );
+		lsptr->InputLuaFile( path.c_str() );
+		keys.clear();
+		keys = lsptr->GetLuaTableKeys( "Action" );
+		this->clear();
+
+		for ( int i = 0; i < ( int )keys.size(); i++ )
+		{
+			int _tmpKey = lsptr->GetLua<int>( "Action/%s", keys[i].c_str() );
+			( *this )[_tmpKey] = keys[i];
 		}
 	}
 private:

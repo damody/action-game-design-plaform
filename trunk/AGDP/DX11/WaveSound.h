@@ -148,20 +148,20 @@ typedef boost::detail::thread::singleton<WavSound> WavSoundS;
 class WavPlayer
 {
 private:
-	bool isStart;
-	LPDIRECTSOUND8 ds_DS;
-	int m_soundloud;
+	bool m_Start;
+	LPDIRECTSOUND8 m_DS;
+	int m_SoundVolume;
 
 	std::vector<std::string> m_List;
 	std::vector<dsDuplicate*> m_DupSounds;
 	std::vector<dsDuplicate*> m_mDupSound;
 
 public:
-	WavPlayer(): ds_DS( NULL ), m_soundloud( -100 ) {}
+	WavPlayer(): m_DS( NULL ), m_SoundVolume( -100 ) {}
 	void Initialize( HWND hWnd , DWORD Channels = 2 , DWORD Freq =  22050 , DWORD BitRate = 16 );
 	~WavPlayer();
 
-	int CreatSound( const std::string& filename, int dupnum = 20);
+	int CreatSound( const std::string& filename, int dupnum = 20 );
 
 	void StopDevice();
 	void PauseDevice();

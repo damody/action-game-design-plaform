@@ -7,15 +7,15 @@
 #include "DX11/BGMPlayer.h"
 
 namespace boost {namespace serialization {class access;}}
-class BGManager
+class BackGroundManager
 {
 private:
-	std::vector<std::string> m_BGList;
-	BGMaps			 m_BGMaps;
+	std::vector<std::string> m_BackGroundList;
+	BackGroundMaps			 m_BackGroundMaps;
 	//Background Music list & map
 
-	BGMPlayer m_BGMPlayer;
-	std::vector<std::string> m_BGMPathList;
+	BGMPlayer m_BGM_Player;
+	std::vector<std::string> m_BGM_PathList;
 
 
 	friend class boost::serialization::access;
@@ -23,28 +23,28 @@ private:
 	void serialize( Archive& ar, const unsigned int version )
 	{
 		ar& m_BGList;
-		ar& m_BGMaps
+		ar& m_BackGroundMaps
 	}
 
 
-	BackGround* m_CurrentBG;
-	int	    m_CurrentBGM;
+	BackGround* m_Current_BackGround;
+	int	    m_Current_BGM;
 public:
-	BGManager( void );
-	~BGManager( void );
+	BackGroundManager( void );
+	~BackGroundManager( void );
 
-	unsigned int AddBG( const std::string& name, BackGround_Sptr bg );
+	unsigned int AddBackGround( const std::string& name, BackGround_Sptr bg );
 
-	std::vector<std::string> GetBGList();
+	std::vector<std::string> GetBackGroundList();
 
-	void SetCurrentBG( const std::string& name );
-	BackGround* CurrentBG();
+	void SetCurrentBackGround( const std::string& name );
+	BackGround* GetCurrentBackGround();
 
-	void SetBGMPathList(const std::vector<std::string>& list);
-	void BGMPlay(int index);
-	void BGMPause();
-	void BGMStop();
-	void SetBGMVoleum(int voleum);
+	void Set_BGM_PathList( const std::vector<std::string>& list );
+	void Set_BGM_Play( int index );
+	void Set_BGM_Pause();
+	void Set_BGM_Stop();
+	void Set_BGM_Voleum( int voleum );
 
 };
 

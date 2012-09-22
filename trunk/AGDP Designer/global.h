@@ -16,6 +16,6 @@ extern float g_Frame_Scale;
 extern float g_Frame_OffsetX;
 extern float g_Frame_OffsetY;
 
-extern TextureManager* g_TextureMG_Frame;
+extern TextureManager* g_TextureManagerFrame;
 
 int LoadTexture( std::string path );

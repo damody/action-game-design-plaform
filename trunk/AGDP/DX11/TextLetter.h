@@ -9,8 +9,8 @@
 
 struct TextLetter
 {
-	wchar_t letter;
-	Texture_Sptr texture;
+	wchar_t m_Letter;
+	Texture_Sptr m_Texture;
 	float m_ScaleW, m_ScaleH;
 	float m_OffsetX_Fore, m_OffsetX_Back, m_OffsetY;
 

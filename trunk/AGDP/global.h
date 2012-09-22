@@ -14,13 +14,13 @@
 #include "DX11/Camera.h"
 
 extern TextureManager	g_TextureManager;
-extern HeroInfoMG	g_HeroInfoMG;
-extern HeroManager	g_HeroMG;
-extern ObjectInfoMG	g_ObjectInfoMG;
-extern ObjectMG		g_ObjectMG;
-extern BGManager	g_BGManager;
-extern EffectManager*	g_EffectMG;
-extern TextManager	g_TextMG;
+extern HeroInfoManager	g_HeroInfoManager;
+extern HeroManager	g_HeroManager;
+extern ObjectInfoManager	g_ObjectInfoManager;
+extern ObjectManager		g_ObjectManager;
+extern BackGroundManager	g_BackGroundManager;
+extern EffectManager*	g_EffectManager;
+extern TextManager	g_TextManager;
 
 extern ID3D11Device*	g_d3dDevice;
 extern ID3D11DeviceContext*	g_DeviceContext;

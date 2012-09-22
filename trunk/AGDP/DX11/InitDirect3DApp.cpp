@@ -1,7 +1,7 @@
 ﻿#include "StdGame.h"
 #include <cstdlib>
 #include <ctime>
-#include <boost/algorithm/string.hpp> 
+#include <boost/algorithm/string.hpp>
 #include "InitDirect3DApp.h"
 #include "InputState.h"
 
@@ -37,20 +37,20 @@ InitDirect3DApp::~InitDirect3DApp()
 	}
 }
 
-void InitDirect3DApp::initApp(int argc, char* argv[])
+void InitDirect3DApp::initApp( int argc, char* argv[] )
 {
 	D3DApp::initApp();
 	InitTexture();
 	LoadResource();
 	LoadBlend();
-	g_Camera = Camera_Sptr( new Camera( ( float )mClientWidth, 0, 1000, 800, 0, 45 ) );
+	g_Camera = Camera_Sptr( new Camera( ( float )m_ClientWidth, 0, 1000, 800, 0, 45 ) );
 	g_WavPlayer.Initialize( getMainWnd() );
 	g_TextGenarator.Initialize();
-	g_TextMG.Initialize();
-	g_EffectMG = new EffectManager( m_hMainWnd );
+	g_TextManager.Initialize();
+	g_EffectManager = new EffectManager( m_hMainWnd );
 	LoadData();
 	InitPlayer();
-	ParseCommandLine(argc, argv);
+	ParseCommandLine( argc, argv );
 	buildPointFX();
 	OnResize();
 	// Set blend
@@ -70,7 +70,7 @@ void InitDirect3DApp::initApp(int argc, char* argv[])
 //HolyK
 void InitDirect3DApp::TestRender()
 {
-	m_TestRenderEffect->Render( 1, g_EffectMG->m_Effect[0]->GetTexture() );
+	m_TestRenderEffect->Render( 1, g_EffectManager->m_Effect[0]->GetTexture() );
 }
 void InitDirect3DApp::TestViewEffect()
 {
@@ -91,7 +91,7 @@ void InitDirect3DApp::UpdateScene( float dt )
 	//HolyK
 	if ( g_TestViewEffect )
 	{
-		if ( g_EffectMG != NULL ) { g_EffectMG->Update( m_RenderTargetView ); }
+		if ( g_EffectManager != NULL ) { g_EffectManager->Update( m_RenderTargetView ); }
 
 		PrintInfo();
 		D3DApp::DrawScene(); // clear window
@@ -120,19 +120,19 @@ void InitDirect3DApp::UpdateScene( float dt )
 			g_Time++;
 			UpdateCamera();
 
-			if ( g_EffectMG != NULL ) { g_EffectMG->Update( m_RenderTargetView ); }
+			if ( g_EffectManager != NULL ) { g_EffectManager->Update( m_RenderTargetView ); }
 
 			buildPoint();
 			//Hero Update
-			g_HeroMG.Update( dt );
+			g_HeroManager.Update( dt );
 			//Chee Update
-			g_ObjectMG.Update( dt );
+			g_ObjectManager.Update( dt );
 			m_Player.Update();
 
 			//Background Update
-			if ( g_BGManager.CurrentBG() != NULL )
+			if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
 			{
-				g_BGManager.CurrentBG()->Update( dt );
+				g_BackGroundManager.GetCurrentBackGround()->Update( dt );
 				BackgroundDataUpdate();
 			}
 
@@ -147,51 +147,51 @@ void InitDirect3DApp::OnResize()
 
 	if ( g_Camera.get() )
 	{
-		g_Camera->onResize( ( float )mClientWidth, ( float )mClientHeight );
+		g_Camera->onResize( ( float )m_ClientWidth, ( float )m_ClientHeight );
 	}
 
-	if ( g_EffectMG != NULL ) { g_EffectMG->OnResize( mClientWidth, mClientHeight ); }
+	if ( g_EffectManager != NULL ) { g_EffectManager->OnResize( m_ClientWidth, m_ClientHeight ); }
 
 	if ( m_Entity_Width != NULL && m_Entity_Height != NULL )
 	{
-		m_Entity_Width->SetFloat( ( float )mClientWidth );
-		m_Entity_Height->SetFloat( ( float )mClientHeight );
+		m_Entity_Width->SetFloat( ( float )m_ClientWidth );
+		m_Entity_Height->SetFloat( ( float )m_ClientHeight );
 	}
 
 	if ( m_Chee_Width != NULL && m_Chee_Height != NULL )
 	{
-		m_Chee_Width->SetFloat( ( float )mClientWidth );
-		m_Chee_Height->SetFloat( ( float )mClientHeight );
+		m_Chee_Width->SetFloat( ( float )m_ClientWidth );
+		m_Chee_Height->SetFloat( ( float )m_ClientHeight );
 	}
 
 	if ( m_Background_Width != NULL && m_Background_Height != NULL )
 	{
-		m_Background_Width->SetFloat( ( float )mClientWidth );
-		m_Background_Height->SetFloat( ( float )mClientHeight );
+		m_Background_Width->SetFloat( ( float )m_ClientWidth );
+		m_Background_Height->SetFloat( ( float )m_ClientHeight );
 	}
 
 	if ( m_ColorRect_Width != NULL && m_ColorRect_Height != NULL )
 	{
-		m_ColorRect_Width->SetFloat( ( float )mClientWidth );
-		m_ColorRect_Height->SetFloat( ( float )mClientHeight );
+		m_ColorRect_Width->SetFloat( ( float )m_ClientWidth );
+		m_ColorRect_Height->SetFloat( ( float )m_ClientHeight );
 	}
 
 	if ( m_Shadow_Width != NULL && m_Shadow_Height != NULL )
 	{
-		m_Shadow_Width->SetFloat( ( float )mClientWidth );
-		m_Shadow_Height->SetFloat( ( float )mClientHeight );
+		m_Shadow_Width->SetFloat( ( float )m_ClientWidth );
+		m_Shadow_Height->SetFloat( ( float )m_ClientHeight );
 	}
 
 	if ( m_Body_Width != NULL && m_Body_Height != NULL )
 	{
-		m_Body_Width->SetFloat( ( float )mClientWidth );
-		m_Body_Height->SetFloat( ( float )mClientHeight );
+		m_Body_Width->SetFloat( ( float )m_ClientWidth );
+		m_Body_Height->SetFloat( ( float )m_ClientHeight );
 	}
 
 	if ( m_Text_Width != NULL && m_Text_Height != NULL )
 	{
-		m_Text_Width->SetFloat( ( float )mClientWidth );
-		m_Text_Height->SetFloat( ( float )mClientHeight );
+		m_Text_Width->SetFloat( ( float )m_ClientWidth );
+		m_Text_Height->SetFloat( ( float )m_ClientHeight );
 	}
 }
 
@@ -200,8 +200,8 @@ void InitDirect3DApp::DrawScene()
 	// clear color
 	m_DeviceContext->ClearRenderTargetView( m_RenderTargetView, m_ClearColor );
 	m_DeviceContext->ClearDepthStencilView( m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,  1.0f, 0 );
-	m_DeviceContext->ClearRenderTargetView( RTVView1, m_ClearColor );
-	m_DeviceContext->ClearRenderTargetView( RTVView2, m_ClearColor );
+	m_DeviceContext->ClearRenderTargetView( m_RTVView1, m_ClearColor );
+	m_DeviceContext->ClearRenderTargetView( m_RTVView2, m_ClearColor );
 	m_DeviceContext->OMSetRenderTargets( 1, &m_RenderTargetView, m_DepthStencilView );
 	m_DeviceContext->OMSetDepthStencilState( m_pDepthStencil_ZWriteOFF, 0 );
 	//Draw Color Rect
@@ -214,7 +214,7 @@ void InitDirect3DApp::DrawScene()
 	m_DeviceContext->Draw( ( UINT )m_CRVerteices.size(), 0 );
 
 	//Draw Background
-	if ( g_BGManager.CurrentBG() != NULL )
+	if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
 	{
 		UINT offset = 0;
 		UINT stride2 = sizeof( BGVertex );
@@ -222,7 +222,7 @@ void InitDirect3DApp::DrawScene()
 		m_DeviceContext->IASetInputLayout( m_PLayout_Background );
 		m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_Background, &stride2, &offset );
 
-		for ( DrawVertexGroups::iterator it = g_BGManager.CurrentBG()->m_DrawVertexGroups.begin(); it != g_BGManager.CurrentBG()->m_DrawVertexGroups.end(); ++it )
+		for ( DrawVertexGroups::iterator it = g_BackGroundManager.GetCurrentBackGround()->m_DrawVertexGroups.begin(); it != g_BackGroundManager.GetCurrentBackGround()->m_DrawVertexGroups.end(); ++it )
 		{
 			if ( it->texture.get() )
 			{
@@ -462,7 +462,6 @@ void InitDirect3DApp::buildPointFX()
 	D3DX11_PASS_DESC PassDescShadow;
 	m_PTech_Shadow->GetPassByIndex( 0 )->GetDesc( &PassDescShadow );
 	HR( m_d3dDevice->CreateInputLayout( VertexDesc_ClipVertex, 6, PassDescShadow.pIAInputSignature, PassDescShadow.IAInputSignatureSize, &m_PLayout_Shadow ) );
-
 	//Polygon
 	hr = 0;
 	hr = D3DX11CompileFromFile( _T( "shader\\Body.fx" ), NULL, NULL, NULL,
@@ -532,17 +531,17 @@ void InitDirect3DApp::buildPoint()
 	ReleaseCOM( m_Buffer_BodyLine );
 	ReleaseCOM( m_Buffer_Text );
 
-	if ( g_BGManager.CurrentBG() != NULL )
+	if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
 	{
-		g_BGManager.CurrentBG()->BuildPoint();
+		g_BackGroundManager.GetCurrentBackGround()->BuildPoint();
 	}
 
 	//set color rect
 	m_CRVerteices.clear();
 
-	if ( g_BGManager.CurrentBG() != NULL )
+	if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
 	{
-		m_CRVerteices.assign( g_BGManager.CurrentBG()->m_CRVerteices.begin(), g_BGManager.CurrentBG()->m_CRVerteices.end() );
+		m_CRVerteices.assign( g_BackGroundManager.GetCurrentBackGround()->m_CRVerteices.begin(), g_BackGroundManager.GetCurrentBackGround()->m_CRVerteices.end() );
 	}
 
 	if ( !m_CRVerteices.empty() )
@@ -555,25 +554,25 @@ void InitDirect3DApp::buildPoint()
 	}
 
 	// set background
-	if ( g_BGManager.CurrentBG() != NULL )
+	if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
 	{
-		m_vbd.ByteWidth = ( UINT )( sizeof( BGVertex ) * g_BGManager.CurrentBG()->m_BGVerteices.size() );
+		m_vbd.ByteWidth = ( UINT )( sizeof( BGVertex ) * g_BackGroundManager.GetCurrentBackGround()->m_BGVerteices.size() );
 		m_vbd.StructureByteStride = sizeof( BGVertex );
 		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &g_BGManager.CurrentBG()->m_BGVerteices[0];
+		vinitData.pSysMem = &g_BackGroundManager.GetCurrentBackGround()->m_BGVerteices[0];
 		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Background ) );
 	}
 
 	// set heroes and weapons
 	m_EntityVertex.clear();
 	m_DrawVertexGroups.clear();
-	g_HeroMG.UpdateDataToDraw();
-	g_ObjectMG.UpdateDataToDraw();
+	g_HeroManager.UpdateDataToDraw();
+	g_ObjectManager.UpdateDataToDraw();
 	int vertexCount = 0, count = 0;
 
-	if ( !g_HeroMG.Empty() )
+	if ( !g_HeroManager.Empty() )
 	{
-		for ( Heroes::iterator it = g_HeroMG.HeroVectorBegin(); it != g_HeroMG.HeroVectorEnd(); )
+		for ( Heroes::iterator it = g_HeroManager.HeroVectorBegin(); it != g_HeroManager.HeroVectorEnd(); )
 		{
 			DrawVertexGroup dvg = {};
 			dvg.texture = ( *it )->GetTexture();
@@ -594,7 +593,7 @@ void InitDirect3DApp::buildPoint()
 				++vertexCount;
 				++count;
 			}
-			while ( it != g_HeroMG.HeroVectorEnd() && dvg.texture == ( *it )->GetTexture() );
+			while ( it != g_HeroManager.HeroVectorEnd() && dvg.texture == ( *it )->GetTexture() );
 
 			dvg.VertexCount = vertexCount;
 			//save dvg
@@ -602,9 +601,9 @@ void InitDirect3DApp::buildPoint()
 		}
 	}
 
-	if ( !g_ObjectMG.WeaponEmpty() )
+	if ( !g_ObjectManager.WeaponEmpty() )
 	{
-		for ( Weapons::iterator it = g_ObjectMG.WeaponVectorBegin(); it != g_ObjectMG.WeaponVectorEnd(); )
+		for ( Weapons::iterator it = g_ObjectManager.WeaponVectorBegin(); it != g_ObjectManager.WeaponVectorEnd(); )
 		{
 			DrawVertexGroup dvg = {};
 			dvg.texture = ( *it )->GetTexture();
@@ -625,7 +624,7 @@ void InitDirect3DApp::buildPoint()
 				++vertexCount;
 				++count;
 			}
-			while ( it != g_ObjectMG.WeaponVectorEnd() && dvg.texture == ( *it )->GetTexture() );
+			while ( it != g_ObjectManager.WeaponVectorEnd() && dvg.texture == ( *it )->GetTexture() );
 
 			dvg.VertexCount = vertexCount;
 
@@ -649,9 +648,9 @@ void InitDirect3DApp::buildPoint()
 	vertexCount = 0;
 	count = 0;
 
-	if ( !g_ObjectMG.CheeEmpty() )
+	if ( !g_ObjectManager.CheeEmpty() )
 	{
-		for ( Chees::iterator it = g_ObjectMG.CheeVectorBegin(); it != g_ObjectMG.CheeVectorEnd(); )
+		for ( Chees::iterator it = g_ObjectManager.CheeVectorBegin(); it != g_ObjectManager.CheeVectorEnd(); )
 		{
 			DrawVertexGroup dvg = {};
 			dvg.texture = ( *it )->GetTexture();
@@ -672,7 +671,7 @@ void InitDirect3DApp::buildPoint()
 				++vertexCount;
 				++count;
 			}
-			while ( it != g_ObjectMG.CheeVectorEnd() && dvg.texture == ( *it )->GetTexture() );
+			while ( it != g_ObjectManager.CheeVectorEnd() && dvg.texture == ( *it )->GetTexture() );
 
 			dvg.VertexCount = vertexCount;
 			//save dvg
@@ -693,12 +692,12 @@ void InitDirect3DApp::buildPoint()
 	m_PolygonLineVerteices.clear();
 	count = 0;
 
-	if ( !g_HeroMG.Empty() )
+	if ( !g_HeroManager.Empty() )
 	{
-		for ( Heroes::iterator it = g_HeroMG.HeroVectorBegin(); it != g_HeroMG.HeroVectorEnd(); it++ )
+		for ( Heroes::iterator it = g_HeroManager.HeroVectorBegin(); it != g_HeroManager.HeroVectorEnd(); it++ )
 		{
 			PolygonVerteices bvs = ( *it )->GetPolygonVerteices();
-			m_PolygonVerteices.insert(m_PolygonVerteices.end(),bvs.begin(), bvs.end());
+			m_PolygonVerteices.insert( m_PolygonVerteices.end(), bvs.begin(), bvs.end() );
 		}
 	}
 
@@ -711,12 +710,12 @@ void InitDirect3DApp::buildPoint()
 		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Body ) );
 	}
 
-	if ( !g_HeroMG.Empty() )
+	if ( !g_HeroManager.Empty() )
 	{
-		for ( Heroes::iterator it = g_HeroMG.HeroVectorBegin(); it != g_HeroMG.HeroVectorEnd(); it++ )
+		for ( Heroes::iterator it = g_HeroManager.HeroVectorBegin(); it != g_HeroManager.HeroVectorEnd(); it++ )
 		{
 			PolygonVerteices bvs = ( *it )->GetPolygonLineVerteices();
-			m_PolygonLineVerteices.insert(m_PolygonLineVerteices.end(), bvs.begin(), bvs.end() );
+			m_PolygonLineVerteices.insert( m_PolygonLineVerteices.end(), bvs.begin(), bvs.end() );
 		}
 	}
 
@@ -750,7 +749,7 @@ void InitDirect3DApp::buildPoint()
 		for ( TextLetters::iterator it = m_TextLetters.begin(); it != m_TextLetters.end(); )
 		{
 			DrawVertexGroup dvg = {};
-			dvg.texture = ( *it )->texture;
+			dvg.texture = ( *it )->m_Texture;
 			vertexCount = 0;
 			dvg.StartVertexLocation = count;
 
@@ -760,7 +759,7 @@ void InitDirect3DApp::buildPoint()
 				++vertexCount;
 				++count;
 			}
-			while ( it != m_TextLetters.end() && dvg.texture == ( *it )->texture );
+			while ( it != m_TextLetters.end() && dvg.texture == ( *it )->m_Texture );
 
 			dvg.VertexCount = vertexCount;
 			//save dvg
@@ -862,30 +861,35 @@ void InitDirect3DApp::LoadBlend()
 void InitDirect3DApp::LoadData()
 {
 	//AddHeroInfo
-	std::vector<HeroInfo_Sptr> v_HeroInfo;
-	v_HeroInfo = LuaResource::LoadLua<HeroInfo>("hero");
-	for(int idx = 0;idx<v_HeroInfo.size();idx++)
-	{
-		g_HeroInfoMG.AddHeroInfo( v_HeroInfo[idx]->m_Name, v_HeroInfo[idx] );
-	}
-	//AddBG
-	std::vector<BackGround_Sptr> v_BackGround;
-	v_BackGround = LuaResource::LoadLua<BackGround>("backGround");
-	for(int idx = 0;idx<v_BackGround.size();idx++)
-	{
-		g_BGManager.AddBG( "Forbidden_Tower" , v_BackGround[idx] );
-		std::cout<<v_BackGround[idx]->m_Name<<std::endl
-	}
-	g_BGManager.SetCurrentBG( "Forbidden_Tower" );
-	//AddObjectInfo
-	std::vector<ObjectInfo_Sptr> v_ObjectInfo;
-	v_ObjectInfo = LuaResource::LoadLua<ObjectInfo>("object");
-	for(int idx = 0;idx<v_ObjectInfo.size();idx++)
-	{
-		g_ObjectInfoMG.AddObjectInfo( v_ObjectInfo[idx]->m_Name, v_ObjectInfo[idx] );
-	}
-	g_ObjectMG.CreateWeapon( "Bat", Vector3( 600, 0, 600 ) );
+	std::vector<HeroInfo_Sptr> heroInfos;
+	heroInfos = LuaResource::LoadLua<HeroInfo>( "hero" );
 
+	for ( int idx = 0; idx < heroInfos.size(); idx++ )
+	{
+		g_HeroInfoManager.AddHeroInfo( heroInfos[idx]->m_Name, heroInfos[idx] );
+	}
+
+	//AddBG
+	std::vector<BackGround_Sptr> backGrounds;
+	backGrounds = LuaResource::LoadLua<BackGround>( "backGround" );
+
+	for ( int idx = 0; idx < backGrounds.size(); idx++ )
+	{
+		g_BackGroundManager.AddBackGround( "Forbidden_Tower" , backGrounds[idx] );
+		std::cout << backGrounds[idx]->m_Name << std::endl;
+	}
+
+	g_BackGroundManager.SetCurrentBackGround( "Forbidden_Tower" );
+	//AddObjectInfo
+	std::vector<ObjectInfo_Sptr> objectInfos;
+	objectInfos = LuaResource::LoadLua<ObjectInfo>( "object" );
+
+	for ( int idx = 0; idx < objectInfos.size(); idx++ )
+	{
+		g_ObjectInfoManager.AddObjectInfo( objectInfos[idx]->m_Name, objectInfos[idx] );
+	}
+
+	g_ObjectManager.CreateWeapon( "Bat", Vector3( 600, 0, 600 ) );
 }
 
 int InitDirect3DApp::UpdateInput()
@@ -916,19 +920,19 @@ int InitDirect3DApp::UpdateInput()
 			g_Time++;
 			UpdateCamera();
 
-			if ( g_EffectMG != NULL ) { g_EffectMG->Update( m_RenderTargetView ); }
+			if ( g_EffectManager != NULL ) { g_EffectManager->Update( m_RenderTargetView ); }
 
 			buildPoint();
 			//Hero Update
-			g_HeroMG.Update( 0 );
+			g_HeroManager.Update( 0 );
 			//Chee Update
-			g_ObjectMG.Update( 0 );
+			g_ObjectManager.Update( 0 );
 			m_Player.Update();
 
 			//Background Update
-			if ( g_BGManager.CurrentBG() != NULL )
+			if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
 			{
-				g_BGManager.CurrentBG()->Update( 0 );
+				g_BackGroundManager.GetCurrentBackGround()->Update( 0 );
 				BackgroundDataUpdate();
 			}
 		}
@@ -978,7 +982,7 @@ void InitDirect3DApp::PrintInfo()
 	{
 		float fps = ( float )frameCnt; // fps = frameCnt / 1
 		float mspf = 1000.0f / fps;
-		std::wcout << L"FPS: " << fps << L" Balls: " << g_ObjectMG.AmountChee()
+		std::wcout << L"FPS: " << fps << L" Balls: " << g_ObjectManager.AmountChee()
 		           << "\t" << L"\n";
 		std::wcout << m_FrameStats;
 		// Reset for next average.
@@ -993,8 +997,8 @@ void InitDirect3DApp::InitTexture()
 	ID3D11Texture2D* tex1, *tex2, *tesres;
 	// Create the depth/stencil buffer and view.
 	D3D11_TEXTURE2D_DESC depthStencilDesc0;
-	depthStencilDesc0.Width     = mClientWidth;
-	depthStencilDesc0.Height    = mClientHeight;
+	depthStencilDesc0.Width     = m_ClientWidth;
+	depthStencilDesc0.Height    = m_ClientHeight;
 	depthStencilDesc0.MipLevels = 1;
 	depthStencilDesc0.ArraySize = 1;
 	depthStencilDesc0.Format    = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -1005,18 +1009,18 @@ void InitDirect3DApp::InitTexture()
 	depthStencilDesc0.CPUAccessFlags = 0;
 	depthStencilDesc0.MiscFlags      = 0;
 	HR( m_d3dDevice->CreateTexture2D( &depthStencilDesc0, 0, &tex1 ) );
-	HR( m_d3dDevice->CreateShaderResourceView( tex1, 0, &SRVView1 ) );
-	HR( m_d3dDevice->CreateRenderTargetView( tex1, 0, &RTVView1 ) );
+	HR( m_d3dDevice->CreateShaderResourceView( tex1, 0, &m_SRVView1 ) );
+	HR( m_d3dDevice->CreateRenderTargetView( tex1, 0, &m_RTVView1 ) );
 	HR( m_d3dDevice->CreateTexture2D( &depthStencilDesc0, 0, &tex2 ) );
-	HR( m_d3dDevice->CreateShaderResourceView( tex2, 0, &SRVView2 ) );
-	HR( m_d3dDevice->CreateRenderTargetView( tex2, 0, &RTVView2 ) );
+	HR( m_d3dDevice->CreateShaderResourceView( tex2, 0, &m_SRVView2 ) );
+	HR( m_d3dDevice->CreateRenderTargetView( tex2, 0, &m_RTVView2 ) );
 	HR( m_d3dDevice->CreateTexture2D( &depthStencilDesc0, 0, &tesres ) );
-	HR( m_d3dDevice->CreateShaderResourceView( tesres, 0, &SRVViewRes ) );
-	HR( m_d3dDevice->CreateRenderTargetView( tesres, 0, &RTVViewRes ) );
+	HR( m_d3dDevice->CreateShaderResourceView( tesres, 0, &m_SRVViewRes ) );
+	HR( m_d3dDevice->CreateRenderTargetView( tesres, 0, &m_RTVViewRes ) );
 	ID3D11Texture2D* tex12;
 	D3D11_TEXTURE2D_DESC depthStencilDesc1;
-	depthStencilDesc1.Width     = mClientWidth;
-	depthStencilDesc1.Height    = mClientHeight;
+	depthStencilDesc1.Width     = m_ClientWidth;
+	depthStencilDesc1.Height    = m_ClientHeight;
 	depthStencilDesc1.MipLevels = 1;
 	depthStencilDesc1.ArraySize = 1;
 	depthStencilDesc1.Format    = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -1199,14 +1203,14 @@ void InitDirect3DApp::ReflashTowerState()
 
 void InitDirect3DApp::UpdateCamera()
 {
-	if ( m_Player.m_Hero->Position().x < mClientWidth )
+	if ( m_Player.m_Hero->Position().x < m_ClientWidth )
 	{
-		float m = mClientWidth - g_Camera->LookAt().x;
+		float m = m_ClientWidth - g_Camera->LookAt().x;
 		g_Camera->MoveX( m * 0.05f );
 	}
-	else if ( m_Player.m_Hero->Position().x > g_BGManager.CurrentBG()->Width() - mClientWidth )
+	else if ( m_Player.m_Hero->Position().x > g_BackGroundManager.GetCurrentBackGround()->Width() - m_ClientWidth )
 	{
-		float m = g_BGManager.CurrentBG()->Width() - mClientWidth - g_Camera->LookAt().x;
+		float m = g_BackGroundManager.GetCurrentBackGround()->Width() - m_ClientWidth - g_Camera->LookAt().x;
 		g_Camera->MoveX( m * 0.05f );
 	}
 	else
@@ -1233,7 +1237,7 @@ void InitDirect3DApp::UpdateCamera()
 
 void InitDirect3DApp::BackgroundDataUpdate()
 {
-	ParallelLight pl = g_BGManager.CurrentBG()->GetParallelLight();
+	ParallelLight pl = g_BackGroundManager.GetCurrentBackGround()->GetParallelLight();
 	m_Shadow_lightDir->SetRawValue( &pl.m_Direction[0], 0, sizeof( float ) * 3 );
 	m_Shadow_lightStr->SetFloat( pl.m_LightStrength * 0.1f );
 }
@@ -1295,12 +1299,12 @@ void InitDirect3DApp::TestChee()
 {
 	if ( InputStateS::instance().isKeyDown( KEY_1 ) )
 	{
-		g_ObjectMG.CreateChee( "davis_ball", Vector3( 100, 80, 1000 ), Vector3( 0, 0, 0 ) );
+		g_ObjectManager.CreateChee( "davis_ball", Vector3( 100, 80, 1000 ), Vector3( 0, 0, 0 ) );
 	}
 
 	if ( InputStateS::instance().isKeyDown( KEY_2 ) )
 	{
-		g_ObjectMG.CreateChee( "davis_ball", Vector3( 1000, 80, 1000 ), Vector3( -10, 0, 0 ) );
+		g_ObjectManager.CreateChee( "davis_ball", Vector3( 1000, 80, 1000 ), Vector3( -10, 0, 0 ) );
 	}
 }
 
@@ -1360,13 +1364,17 @@ void InitDirect3DApp::ParseCommandLine( int argc, char* argv[] )
 {
 	int current = 1;
 	std::string mainStr;
+
 	while ( current < argc )
 	{
 		mainStr = argv[current];
-		if(!mainStr.compare("-hero"))
+
+		if ( !mainStr.compare( "-hero" ) )
 		{
 			if ( ++current >= argc )
+			{
 				break;
+			}
 
 			/*std::string heros( argv[current] );
 			std::vector<std::string> v;
@@ -1377,21 +1385,18 @@ void InitDirect3DApp::ParseCommandLine( int argc, char* argv[] )
 				hero->InputLuaFile( v[i].c_str() );
 				HeroInfo_Sptr temp = HeroInfo_Sptr( new HeroInfo );
 				temp->LoadHeroData( hero );
-				g_HeroInfoMG.AddHeroInfo( temp->m_Name, temp );
+				g_HeroInfoManager.AddHeroInfo( temp->m_Name, temp );
 			}*/
-
-			std::string heroStr(argv[current]);
-			heroStr.append(".lua");
+			std::string heroStr( argv[current] );
+			heroStr.append( ".lua" );
 			LuaCell_Sptr hero = LuaCell_Sptr( new LuaCell );
 			hero->InputLuaFile( heroStr.c_str() );
 			HeroInfo_Sptr temp = HeroInfo_Sptr( new HeroInfo );
 			temp->LoadData( hero );
-			g_HeroInfoMG.AddHeroInfo( temp->m_Name, temp );
-
-			g_HeroMG.Destory(m_Player.m_Hero, 10);
+			g_HeroInfoManager.AddHeroInfo( temp->m_Name, temp );
+			g_HeroManager.Destory( m_Player.m_Hero, 10 );
 			m_Player.SetHero( temp->m_Name );
-			m_Player.m_Hero = g_HeroMG.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) );
-
+			m_Player.m_Hero = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) );
 			current++;
 		}
 	}
@@ -1399,14 +1404,15 @@ void InitDirect3DApp::ParseCommandLine( int argc, char* argv[] )
 
 void InitDirect3DApp::TestGameSpeed()
 {
-	if ( InputStateS::instance().isKeyDown( KEY_F3 ) && g_TimeSpeed > 1.f/600.f)
+	if ( InputStateS::instance().isKeyDown( KEY_F3 ) && g_TimeSpeed > 1.f / 600.f )
 	{
-		g_TimeSpeed -= 1.f/600.f;
+		g_TimeSpeed -= 1.f / 600.f;
 		std::cout << "g_TimeSpeed: " << g_TimeSpeed << std::endl;
 	}
+
 	if ( InputStateS::instance().isKeyDown( KEY_F4 ) )
 	{
-		g_TimeSpeed += 1.f/600.f;
+		g_TimeSpeed += 1.f / 600.f;
 		std::cout << "g_TimeSpeed: " << g_TimeSpeed << std::endl;
 	}
 }
@@ -1445,6 +1451,6 @@ void InitDirect3DApp::InitPlayer()
 	m_Player.m_Keyboard.SetCtrlKey( KEY_T, key );
 	m_Player.SetHero( "Davis" );
 	m_Player.SetTeam( 0 );
-	m_Player.m_Hero = g_HeroMG.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) );
+	m_Player.m_Hero = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) );
 	m_Player.SetUserName( L"<こんにちは測試人-Testing...>" );
 }

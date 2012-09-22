@@ -213,7 +213,7 @@ void CFileView::OnFileOpen()
 					sprintf( buff, "%s", pic.substr( found + 1, pic.length() ).c_str() );
 					CString str( buff );
 					m_wndFileView.InsertItem( str, 2, 2, hHero );
-					hero->m_PictureDatas[i].m_TextureID = g_TextureMG_Frame->AddTexture(hero->m_PictureDatas[i].m_Path);
+					hero->m_PictureDatas[i].m_TextureID = g_TextureManagerFrame->AddTexture( hero->m_PictureDatas[i].m_Path );
 					( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( str, &hero->m_PictureDatas[i], i );
 				}
 
@@ -345,7 +345,7 @@ void CFileView::OnPicturedataAdd()
 		ConvStr::WcharToChar( dlgFile.GetPathName().GetBuffer( 0 ), buff );
 		std::string path( buff );
 		pic.m_Path = path;
-		pic.m_TextureID = g_TextureMG_Frame->AddTexture(path);
+		pic.m_TextureID = g_TextureManagerFrame->AddTexture( path );
 		pic.m_Width  = 128;
 		pic.m_Height = 128;
 		pic.m_Row = 1;
@@ -353,14 +353,13 @@ void CFileView::OnPicturedataAdd()
 		m_wndFileView.InsertItem( dlgFile.GetFileName(), 2, 2, hHero_Select );
 		it_Hero->second->m_PictureDatas.push_back( pic );
 		( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( dlgFile.GetFileName(), &it_Hero->second->m_PictureDatas.back(), it_Hero->second->m_PictureDatas.size() - 1 );
-		
 	}
 }
 
-void CFileView::AddFile(HeroInfo *hero)
+void CFileView::AddFile( HeroInfo* hero )
 {
 	g_HeroInfo = hero;
-	HTREEITEM hHero = m_wndFileView.InsertItem( CString(hero->m_Name.c_str()), 2, 2, hHeroDoc );
+	HTREEITEM hHero = m_wndFileView.InsertItem( CString( hero->m_Name.c_str() ), 2, 2, hHeroDoc );
 
 	if ( ( ( CMainFrame* )this->GetParentFrame() )->NewHeroViews( hero ) )
 	{
@@ -373,7 +372,7 @@ void CFileView::AddFile(HeroInfo *hero)
 			sprintf( buff, "%s", pic.substr( found + 1, pic.length() ).c_str() );
 			CString str( buff );
 			m_wndFileView.InsertItem( str, 2, 2, hHero );
-			hero->m_PictureDatas[i].m_TextureID = g_TextureMG_Frame->AddTexture(hero->m_PictureDatas[i].m_Path);
+			hero->m_PictureDatas[i].m_TextureID = g_TextureManagerFrame->AddTexture( hero->m_PictureDatas[i].m_Path );
 			( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( str, &hero->m_PictureDatas[i], i );
 		}
 

@@ -184,20 +184,20 @@ BEGIN_MESSAGE_MAP( CClassView, CDockablePane )
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
 	ON_WM_LBUTTONUP()
-	ON_COMMAND_RANGE(ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnSort)
-	ON_UPDATE_COMMAND_UI_RANGE(ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnUpdateSort)
-	ON_COMMAND(ID_BODY_ADD, &CClassView::OnBodyAdd)
-	ON_COMMAND(ID_BODY_DELETE, &CClassView::OnBodyDelete)
-	ON_COMMAND(ID_ATTACK_DELETE, &CClassView::OnAttackDelete)
-	ON_COMMAND(ID_ATTACK_ADD, &CClassView::OnAttackAdd)
-	ON_COMMAND(ID_HITDATA_ADD, &CClassView::OnHitdataAdd)
-	ON_COMMAND(ID_HITDATA_DELETE, &CClassView::OnHitdataDelete)
-	ON_COMMAND(ID_CATCH_ADD, &CClassView::OnCatchAdd)
-	ON_COMMAND(ID_CATCH_DELETE, &CClassView::OnCatchDelete)
-	ON_COMMAND(ID_BLOODINFO_ADD, &CClassView::OnBloodinfoAdd)
-	ON_COMMAND(ID_BLOODINFO_DELETE, &CClassView::OnBloodinfoDelete)
-	ON_COMMAND(ID_CREATION_ADD, &CClassView::OnCreationAdd)
-	ON_COMMAND(ID_CREATION_DELETE, &CClassView::OnCreationDelete)
+	ON_COMMAND_RANGE( ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnSort )
+	ON_UPDATE_COMMAND_UI_RANGE( ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnUpdateSort )
+	ON_COMMAND( ID_BODY_ADD, &CClassView::OnBodyAdd )
+	ON_COMMAND( ID_BODY_DELETE, &CClassView::OnBodyDelete )
+	ON_COMMAND( ID_ATTACK_DELETE, &CClassView::OnAttackDelete )
+	ON_COMMAND( ID_ATTACK_ADD, &CClassView::OnAttackAdd )
+	ON_COMMAND( ID_HITDATA_ADD, &CClassView::OnHitdataAdd )
+	ON_COMMAND( ID_HITDATA_DELETE, &CClassView::OnHitdataDelete )
+	ON_COMMAND( ID_CATCH_ADD, &CClassView::OnCatchAdd )
+	ON_COMMAND( ID_CATCH_DELETE, &CClassView::OnCatchDelete )
+	ON_COMMAND( ID_BLOODINFO_ADD, &CClassView::OnBloodinfoAdd )
+	ON_COMMAND( ID_BLOODINFO_DELETE, &CClassView::OnBloodinfoDelete )
+	ON_COMMAND( ID_CREATION_ADD, &CClassView::OnCreationAdd )
+	ON_COMMAND( ID_CREATION_DELETE, &CClassView::OnCreationDelete )
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -306,55 +306,57 @@ void CClassView::OnContextMenu( CWnd* pWnd, CPoint point )
 		{
 			menu.LoadMenu( IDR_POPUP_ANIMATION_EDIT );
 		}
-		else if ( IsAnAnimation( pWndTree, m_wndClassView.GetParentItem( hTreeItem ) ))
+		else if ( IsAnAnimation( pWndTree, m_wndClassView.GetParentItem( hTreeItem ) ) )
 		{
 			menu.LoadMenu( IDR_POPUP_FRAME_EDIT );
 		}
-		else if ( pWndTree->GetItemText( hTreeItem ) == CString("Bodys") )
+		else if ( pWndTree->GetItemText( hTreeItem ) == CString( "Bodys" ) )
 		{
-			menu.LoadMenu(IDR_POPUP_BODYADD);
+			menu.LoadMenu( IDR_POPUP_BODYADD );
 		}
-		else if ( pWndTree->GetItemText( hTreeItem ) == CString("Attacks") )
+		else if ( pWndTree->GetItemText( hTreeItem ) == CString( "Attacks" ) )
 		{
-			menu.LoadMenu(IDR_POPUP_ATTACKADD);
+			menu.LoadMenu( IDR_POPUP_ATTACKADD );
 		}
-		else if ( pWndTree->GetItemText( hTreeItem ) == CString("HitDatas") )
+		else if ( pWndTree->GetItemText( hTreeItem ) == CString( "HitDatas" ) )
 		{
-			menu.LoadMenu(IDR_POPUP_HITDATAADD);
+			menu.LoadMenu( IDR_POPUP_HITDATAADD );
 		}
-		else if ( pWndTree->GetItemText( hTreeItem ) == CString("Catchs") )
+		else if ( pWndTree->GetItemText( hTreeItem ) == CString( "Catchs" ) )
 		{
-			menu.LoadMenu(IDR_POPUP_CATCHADD);
+			menu.LoadMenu( IDR_POPUP_CATCHADD );
 		}
-		else if ( pWndTree->GetItemText( hTreeItem ) == CString("BloodInfos") )
+		else if ( pWndTree->GetItemText( hTreeItem ) == CString( "BloodInfos" ) )
 		{
-			menu.LoadMenu(IDR_POPUP_BLOODINFOADD);
-		}else if ( pWndTree->GetItemText( hTreeItem ) == CString("Creations") )
-		{
-			menu.LoadMenu(IDR_POPUP_CREATIONADD);
+			menu.LoadMenu( IDR_POPUP_BLOODINFOADD );
 		}
-		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString("Bodys") )
+		else if ( pWndTree->GetItemText( hTreeItem ) == CString( "Creations" ) )
 		{
-			menu.LoadMenu(IDR_POPUP_BODYDELETE);
+			menu.LoadMenu( IDR_POPUP_CREATIONADD );
 		}
-		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString("Attacks") )
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString( "Bodys" ) )
 		{
-			menu.LoadMenu(IDR_POPUP_ATTACKDELETE);
+			menu.LoadMenu( IDR_POPUP_BODYDELETE );
 		}
-		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString("HitDatas") )
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString( "Attacks" ) )
 		{
-			menu.LoadMenu(IDR_POPUP_HITDATADELETE);
+			menu.LoadMenu( IDR_POPUP_ATTACKDELETE );
 		}
-		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString("Catchs") )
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString( "HitDatas" ) )
 		{
-			menu.LoadMenu(IDR_POPUP_CATCHDELETE);
+			menu.LoadMenu( IDR_POPUP_HITDATADELETE );
 		}
-		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString("BloodInfos") )
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString( "Catchs" ) )
 		{
-			menu.LoadMenu(IDR_POPUP_BLOODINFODELETE);
-		}else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString("Creations") )
+			menu.LoadMenu( IDR_POPUP_CATCHDELETE );
+		}
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString( "BloodInfos" ) )
 		{
-			menu.LoadMenu(IDR_POPUP_CREATIONDELETE);
+			menu.LoadMenu( IDR_POPUP_BLOODINFODELETE );
+		}
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString( "Creations" ) )
+		{
+			menu.LoadMenu( IDR_POPUP_CREATIONDELETE );
 		}
 	}
 	else
@@ -426,9 +428,9 @@ void CClassView::OnAnimationAdd()
 {
 	HTREEITEM root = m_wndClassView.GetRootItem();
 	char buff[100];
-	sprintf(buff, "Default%d", num);
-	CString str(buff);
-	std::string frameName(buff);
+	sprintf( buff, "Default%d", num );
+	CString str( buff );
+	std::string frameName( buff );
 
 	if ( g_ActiveFramesMap != NULL )
 	{
@@ -437,7 +439,7 @@ void CClassView::OnAnimationAdd()
 		( *g_ActiveFramesMap )[frameName].push_back( defaultFrameInfo( item ) );
 		sprintf( buff, "%d", 0 );
 		CString str( buff );
-		HTREEITEM hClass =  m_wndClassView.InsertItem(str, 3, 3, item);
+		HTREEITEM hClass =  m_wndClassView.InsertItem( str, 3, 3, item );
 		m_wndClassView.InsertItem( _T( "Bodys" ), 3, 3, hClass );
 		m_wndClassView.InsertItem( _T( "Attacks" ), 3, 3, hClass );
 		m_wndClassView.InsertItem( _T( "HitDatas" ), 3, 3, hClass );
@@ -515,18 +517,16 @@ void CClassView::OnFrameAdd()
 		fi.m_FrameIndex = index;
 		( *g_ActiveFramesMap )[frameName].push_back( fi );
 		char buff[100];
-		sprintf(buff, "%d", index);
-		CString str(buff);
-
-		HTREEITEM hClass =  m_wndClassView.InsertItem(str, 3, 3, item);
-		m_wndClassView.InsertItem(_T("Bodys"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Attacks"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("HitDatas"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Catchs"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("BloodInfos"), 3, 3, hClass);
-		m_wndClassView.InsertItem(_T("Creations"), 3, 3, hClass);
-		m_wndClassView.Expand(item, TVE_EXPAND);
-
+		sprintf( buff, "%d", index );
+		CString str( buff );
+		HTREEITEM hClass =  m_wndClassView.InsertItem( str, 3, 3, item );
+		m_wndClassView.InsertItem( _T( "Bodys" ), 3, 3, hClass );
+		m_wndClassView.InsertItem( _T( "Attacks" ), 3, 3, hClass );
+		m_wndClassView.InsertItem( _T( "HitDatas" ), 3, 3, hClass );
+		m_wndClassView.InsertItem( _T( "Catchs" ), 3, 3, hClass );
+		m_wndClassView.InsertItem( _T( "BloodInfos" ), 3, 3, hClass );
+		m_wndClassView.InsertItem( _T( "Creations" ), 3, 3, hClass );
+		m_wndClassView.Expand( item, TVE_EXPAND );
 		g_FrameName = frameName;
 		g_FrameIndex = index;
 		( ( CMainFrame* )this->GetParentFrame() )->RefreshFrameEdit();
@@ -621,6 +621,7 @@ void CClassView::OnSelectItem( HTREEITEM item )
 {
 	CPropertiesWnd* _propWnd = CPropertiesWnd::GetInstance();
 	HTREEITEM pItem = m_wndClassView.GetParentItem( item );
+
 	if ( m_wndClassView.GetRootItem() == item )
 	{
 		m_wndClassView.SelectItem( item );
@@ -1045,22 +1046,22 @@ void CClassView::OnBodyAdd()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
-	int frameIndex = _ttoi(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(item)));
+	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( item ) ) );
 	char buff[100];
-	ConvStr::WcharToChar(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item))),buff);
-	std::string frameName(buff);
+	ConvStr::WcharToChar( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ), buff );
+	std::string frameName( buff );
 	Body body;
 	body.m_Kind = 1;
 	body.m_ZWidth = 1;
-	(*g_ActiveFramesMap)[frameName][frameIndex].m_Bodys.push_back(body);
-	sprintf(buff,"%d",(*g_ActiveFramesMap)[frameName][frameIndex].m_Bodys.size()-1);
-	CString str(buff);
+	( *g_ActiveFramesMap )[frameName][frameIndex].m_Bodys.push_back( body );
+	sprintf( buff, "%d", ( *g_ActiveFramesMap )[frameName][frameIndex].m_Bodys.size() - 1 );
+	CString str( buff );
 	m_wndClassView.InsertItem( str , 3, 3, item );
-	m_wndClassView.Expand(item, TVE_EXPAND);
+	m_wndClassView.Expand( item, TVE_EXPAND );
 
-	if ( g_ActiveFramesMap->find(g_FrameName) != g_ActiveFramesMap->end() )
+	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find(g_FrameName)->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -1071,13 +1072,12 @@ void CClassView::OnBodyDelete()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
-	int count = _ttoi(m_wndClassView.GetItemText(item));
-	int frameIndex = _ttoi(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item))));
+	int count = _ttoi( m_wndClassView.GetItemText( item ) );
+	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) );
 	char buff[100];
-	ConvStr::WcharToChar(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item)))),buff);
-	std::string frameName(buff);
-	
-	(*g_ActiveFramesMap)[frameName][frameIndex].m_Bodys.erase((*g_ActiveFramesMap)[frameName][frameIndex].m_Bodys.begin()+count);
+	ConvStr::WcharToChar( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) ), buff );
+	std::string frameName( buff );
+	( *g_ActiveFramesMap )[frameName][frameIndex].m_Bodys.erase( ( *g_ActiveFramesMap )[frameName][frameIndex].m_Bodys.begin() + count );
 
 	if ( item != NULL )
 	{
@@ -1104,9 +1104,9 @@ void CClassView::OnBodyDelete()
 		}
 	}
 
-	if ( g_ActiveFramesMap->find(g_FrameName) != g_ActiveFramesMap->end() )
+	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find(g_FrameName)->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -1117,13 +1117,12 @@ void CClassView::OnAttackDelete()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
-	int count = _ttoi(m_wndClassView.GetItemText(item));
-	int frameIndex = _ttoi(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item))));
+	int count = _ttoi( m_wndClassView.GetItemText( item ) );
+	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) );
 	char buff[100];
-	ConvStr::WcharToChar(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item)))),buff);
-	std::string frameName(buff);
-
-	(*g_ActiveFramesMap)[frameName][frameIndex].m_Attacks.erase((*g_ActiveFramesMap)[frameName][frameIndex].m_Attacks.begin()+count);
+	ConvStr::WcharToChar( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) ), buff );
+	std::string frameName( buff );
+	( *g_ActiveFramesMap )[frameName][frameIndex].m_Attacks.erase( ( *g_ActiveFramesMap )[frameName][frameIndex].m_Attacks.begin() + count );
 
 	if ( item != NULL )
 	{
@@ -1150,9 +1149,9 @@ void CClassView::OnAttackDelete()
 		}
 	}
 
-	if ( g_ActiveFramesMap->find(g_FrameName) != g_ActiveFramesMap->end() )
+	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find(g_FrameName)->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -1163,10 +1162,10 @@ void CClassView::OnAttackAdd()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
-	int frameIndex = _ttoi(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(item)));
+	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( item ) ) );
 	char buff[100];
-	ConvStr::WcharToChar(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item))),buff);
-	std::string frameName(buff);
+	ConvStr::WcharToChar( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ), buff );
+	std::string frameName( buff );
 	Attack atk;
 	atk.m_Kind = 1;
 	atk.m_ZWidth = 1;
@@ -1180,16 +1179,15 @@ void CClassView::OnAttackAdd()
 	atk.m_Injury = 0;
 	atk.m_BreakDefend = 0;
 	atk.m_Strength = 0;
-	
-	(*g_ActiveFramesMap)[frameName][frameIndex].m_Attacks.push_back(atk);
-	sprintf(buff,"%d",(*g_ActiveFramesMap)[frameName][frameIndex].m_Attacks.size()-1);
-	CString str(buff);
+	( *g_ActiveFramesMap )[frameName][frameIndex].m_Attacks.push_back( atk );
+	sprintf( buff, "%d", ( *g_ActiveFramesMap )[frameName][frameIndex].m_Attacks.size() - 1 );
+	CString str( buff );
 	m_wndClassView.InsertItem( str , 3, 3, item );
-	m_wndClassView.Expand(item, TVE_EXPAND);
+	m_wndClassView.Expand( item, TVE_EXPAND );
 
-	if ( g_ActiveFramesMap->find(g_FrameName) != g_ActiveFramesMap->end() )
+	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find(g_FrameName)->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -1213,10 +1211,10 @@ void CClassView::OnCatchAdd()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
-	int frameIndex = _ttoi(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(item)));
+	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( item ) ) );
 	char buff[100];
-	ConvStr::WcharToChar(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item))),buff);
-	std::string frameName(buff);
+	ConvStr::WcharToChar( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ), buff );
+	std::string frameName( buff );
 	CatchInfo c;
 	c.m_Kind = 0;
 	c.m_ZWidth = 1;
@@ -1225,16 +1223,15 @@ void CClassView::OnCatchAdd()
 	c.m_CatchPosition.x = 0;
 	c.m_CatchPosition.y = 0;
 	c.m_CatchWhere = CatchInfo::CatchPosition::NECK;
-
-	(*g_ActiveFramesMap)[frameName][frameIndex].m_Catchs.push_back(c);
-	sprintf(buff,"%d",(*g_ActiveFramesMap)[frameName][frameIndex].m_Catchs.size()-1);
-	CString str(buff);
+	( *g_ActiveFramesMap )[frameName][frameIndex].m_Catchs.push_back( c );
+	sprintf( buff, "%d", ( *g_ActiveFramesMap )[frameName][frameIndex].m_Catchs.size() - 1 );
+	CString str( buff );
 	m_wndClassView.InsertItem( str , 3, 3, item );
-	m_wndClassView.Expand(item, TVE_EXPAND);
+	m_wndClassView.Expand( item, TVE_EXPAND );
 
-	if ( g_ActiveFramesMap->find(g_FrameName) != g_ActiveFramesMap->end() )
+	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find(g_FrameName)->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -1246,13 +1243,12 @@ void CClassView::OnCatchDelete()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
-	int count = _ttoi(m_wndClassView.GetItemText(item));
-	int frameIndex = _ttoi(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item))));
+	int count = _ttoi( m_wndClassView.GetItemText( item ) );
+	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) );
 	char buff[100];
-	ConvStr::WcharToChar(m_wndClassView.GetItemText(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(m_wndClassView.GetParentItem(item)))),buff);
-	std::string frameName(buff);
-
-	(*g_ActiveFramesMap)[frameName][frameIndex].m_Catchs.erase((*g_ActiveFramesMap)[frameName][frameIndex].m_Catchs.begin()+count);
+	ConvStr::WcharToChar( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) ), buff );
+	std::string frameName( buff );
+	( *g_ActiveFramesMap )[frameName][frameIndex].m_Catchs.erase( ( *g_ActiveFramesMap )[frameName][frameIndex].m_Catchs.begin() + count );
 
 	if ( item != NULL )
 	{
@@ -1279,9 +1275,9 @@ void CClassView::OnCatchDelete()
 		}
 	}
 
-	if ( g_ActiveFramesMap->find(g_FrameName) != g_ActiveFramesMap->end() )
+	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find(g_FrameName)->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}

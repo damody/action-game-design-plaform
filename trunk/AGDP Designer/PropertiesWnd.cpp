@@ -168,7 +168,7 @@ void CMFCPropItem::SetValue( const COleVariant&  varValue )
 	m_Update = false;
 	m_Record = m_varValue;
 	Redraw();
-	
+
 	if ( bInPlaceEdit )
 	{
 		ASSERT_VALID( m_pWndList );
@@ -180,7 +180,7 @@ void CMFCPropItem::SetValue( const COleVariant&  varValue )
 
 CPropertiesWnd* CPropertiesWnd::instance = NULL;
 
-CPropertiesWnd::CPropertiesWnd(): m_EditProp( 0 ),m_Index( 0 )
+CPropertiesWnd::CPropertiesWnd(): m_EditProp( 0 ), m_Index( 0 )
 {
 	instance = this;
 	m_lastSelectedItem = NULL;
@@ -271,7 +271,6 @@ int CPropertiesWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	// 所有命令都將經由此控制項傳送，而不是經由父框架:
 	m_wndToolBar.SetRouteCommandsViaFrame( FALSE );
 	AdjustLayout();
-	
 	return 0;
 }
 
@@ -482,7 +481,7 @@ void CPropertiesWnd::InitPropList_Frame()
 	m_wndPropList.ExpandAll();
 }
 
-void CPropertiesWnd::InitPropList_Body(int polygonCount)
+void CPropertiesWnd::InitPropList_Body( int polygonCount )
 {
 	m_EditProp = 3;
 	m_wndPropList.RemoveAll();
@@ -493,32 +492,31 @@ void CPropertiesWnd::InitPropList_Body(int polygonCount)
 	m_wndPropList.MarkModifiedProperties();
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
 	CMFCPropertyGridProperty* pProp;
-
-	pProp = new CMFCPropertyGridProperty(_T("m_Area"));
+	pProp = new CMFCPropertyGridProperty( _T( "m_Area" ) );
 	CMFCPropertyGridProperty* pPropPointGroup;
 	CMFCPropertyGridProperty* pPropPoint;
-	for(int i=0; i<polygonCount; i++)
-	{
-		CString s_count; s_count.Format(_T("%d"), i);
-		pPropPointGroup = new CMFCPropItem(&m_wndPropList, s_count, 0, TRUE);
-		pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(), _T("X位置"));
-		pPropPointGroup->AddSubItem(pPropPoint);
-		pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(), _T("Y位置"));
-		pPropPointGroup->AddSubItem(pPropPoint);
-		pProp->AddSubItem(pPropPointGroup);
-	}
-	pPropMain->AddSubItem(pProp);
 
-	pProp = new CMFCPropItem(&m_wndPropList,_T("Z Width"), varFloat(), _T("攻擊在Z軸上的厚度"));
-	pPropMain->AddSubItem(pProp);
-	pProp = new CMFCPropItem(&m_wndPropList,_T("Kind"), varInt(), _T("攻擊種類"));
-	pPropMain->AddSubItem(pProp);
-	
-	m_wndPropList.AddProperty(pPropMain);
+	for ( int i = 0; i < polygonCount; i++ )
+	{
+		CString s_count; s_count.Format( _T( "%d" ), i );
+		pPropPointGroup = new CMFCPropItem( &m_wndPropList, s_count, 0, TRUE );
+		pPropPoint = new CMFCPropItem( &m_wndPropList, _T( "X" ), varFloat(), _T( "X位置" ) );
+		pPropPointGroup->AddSubItem( pPropPoint );
+		pPropPoint = new CMFCPropItem( &m_wndPropList, _T( "Y" ), varFloat(), _T( "Y位置" ) );
+		pPropPointGroup->AddSubItem( pPropPoint );
+		pProp->AddSubItem( pPropPointGroup );
+	}
+
+	pPropMain->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Z Width" ), varFloat(), _T( "攻擊在Z軸上的厚度" ) );
+	pPropMain->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Kind" ), varInt(), _T( "攻擊種類" ) );
+	pPropMain->AddSubItem( pProp );
+	m_wndPropList.AddProperty( pPropMain );
 	m_wndPropList.ExpandAll();
 }
 
-void CPropertiesWnd::InitPropList_Attack(int polygonCount)
+void CPropertiesWnd::InitPropList_Attack( int polygonCount )
 {
 	m_EditProp = 4;
 	m_wndPropList.RemoveAll();
@@ -529,22 +527,22 @@ void CPropertiesWnd::InitPropList_Attack(int polygonCount)
 	m_wndPropList.MarkModifiedProperties();
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
 	CMFCPropertyGridProperty* pProp;
-
-	pProp = new CMFCPropertyGridProperty(_T("m_Area"));
+	pProp = new CMFCPropertyGridProperty( _T( "m_Area" ) );
 	CMFCPropertyGridProperty* pPropPointGroup;
 	CMFCPropertyGridProperty* pPropPoint;
-	for(int i=0; i<polygonCount; i++)
-	{
-		CString s_count; s_count.Format(_T("%d"), i);
-		pPropPointGroup = new CMFCPropItem(&m_wndPropList, s_count, 0, TRUE);
-		pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(), _T("X位置"));
-		pPropPointGroup->AddSubItem(pPropPoint);
-		pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(), _T("Y位置"));
-		pPropPointGroup->AddSubItem(pPropPoint);
-		pProp->AddSubItem(pPropPointGroup);
-	}
-	pPropMain->AddSubItem(pProp);
 
+	for ( int i = 0; i < polygonCount; i++ )
+	{
+		CString s_count; s_count.Format( _T( "%d" ), i );
+		pPropPointGroup = new CMFCPropItem( &m_wndPropList, s_count, 0, TRUE );
+		pPropPoint = new CMFCPropItem( &m_wndPropList, _T( "X" ), varFloat(), _T( "X位置" ) );
+		pPropPointGroup->AddSubItem( pPropPoint );
+		pPropPoint = new CMFCPropItem( &m_wndPropList, _T( "Y" ), varFloat(), _T( "Y位置" ) );
+		pPropPointGroup->AddSubItem( pPropPoint );
+		pProp->AddSubItem( pPropPointGroup );
+	}
+
+	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Kind" ), varInt(), _T( "攻擊種類" ) );
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Effect" ), varInt(), _T( "攻擊效果" ) );
@@ -571,9 +569,6 @@ void CPropertiesWnd::InitPropList_Attack(int polygonCount)
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "DVZ" ), varFloat(), _T( "受攻擊者Z方向的移動向量" ) );
 	pDirectionVector->AddSubItem( pProp );
 	pPropMain->AddSubItem( pDirectionVector );
-
-	
-	
 	m_wndPropList.AddProperty( pPropMain );
 	m_wndPropList.ExpandAll();
 }
@@ -599,10 +594,9 @@ void CPropertiesWnd::InitPropList_HitData()
 	m_wndPropList.ExpandAll();
 }
 
-void CPropertiesWnd::InitPropList_CatchInfo(int polygonCount)
+void CPropertiesWnd::InitPropList_CatchInfo( int polygonCount )
 {
 	m_EditProp = 6;
-
 	m_wndPropList.RemoveAll();
 	SetPropListFont();
 	m_wndPropList.EnableHeaderCtrl( FALSE );
@@ -611,22 +605,22 @@ void CPropertiesWnd::InitPropList_CatchInfo(int polygonCount)
 	m_wndPropList.MarkModifiedProperties();
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
 	CMFCPropertyGridProperty* pProp;
-
-	pProp = new CMFCPropertyGridProperty(_T("m_Area"));
+	pProp = new CMFCPropertyGridProperty( _T( "m_Area" ) );
 	CMFCPropertyGridProperty* pPropPointGroup;
 	CMFCPropertyGridProperty* pPropPoint;
-	for(int i=0; i<polygonCount; i++)
-	{
-		CString s_count; s_count.Format(_T("%d"), i);
-		pPropPointGroup = new CMFCPropItem(&m_wndPropList, s_count, 0, TRUE);
-		pPropPoint = new CMFCPropItem(&m_wndPropList, _T("X"), varFloat(), _T("X位置"));
-		pPropPointGroup->AddSubItem(pPropPoint);
-		pPropPoint = new CMFCPropItem(&m_wndPropList, _T("Y"), varFloat(), _T("Y位置"));
-		pPropPointGroup->AddSubItem(pPropPoint);
-		pProp->AddSubItem(pPropPointGroup);
-	}
-	pPropMain->AddSubItem(pProp);
 
+	for ( int i = 0; i < polygonCount; i++ )
+	{
+		CString s_count; s_count.Format( _T( "%d" ), i );
+		pPropPointGroup = new CMFCPropItem( &m_wndPropList, s_count, 0, TRUE );
+		pPropPoint = new CMFCPropItem( &m_wndPropList, _T( "X" ), varFloat(), _T( "X位置" ) );
+		pPropPointGroup->AddSubItem( pPropPoint );
+		pPropPoint = new CMFCPropItem( &m_wndPropList, _T( "Y" ), varFloat(), _T( "Y位置" ) );
+		pPropPointGroup->AddSubItem( pPropPoint );
+		pProp->AddSubItem( pPropPointGroup );
+	}
+
+	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_ZWidth" ), varFloat(), _T( "m_ZWidth" ) );
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_Injury" ), varInt(), _T( "m_Injury" ) );
@@ -1202,7 +1196,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 }
 
 
-void CPropertiesWnd::RefreshPropList_Body(int index)
+void CPropertiesWnd::RefreshPropList_Body( int index )
 {
 	m_EditProp = 3;
 	m_Index = index;
@@ -1227,57 +1221,54 @@ void CPropertiesWnd::RefreshPropList_Body(int index)
 	}
 
 	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-	InitPropList_Body(frameInfo.m_Bodys[index].m_Area.Points().size());
-
+	InitPropList_Body( frameInfo.m_Bodys[index].m_Area.Points().size() );
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
-	for(int i=0; i<frameInfo.m_Bodys[index].m_Area.Points().size(); i++)
+
+	for ( int i = 0; i < frameInfo.m_Bodys[index].m_Area.Points().size(); i++ )
 	{
-		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->SetValue( varFloat(frameInfo.m_Bodys[index].m_Area.Points()[i].x) );
-		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->SetValue( varFloat(-frameInfo.m_Bodys[index].m_Area.Points()[i].y) );
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_Bodys[index].m_Area.Points()[i].x ) );
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->SetValue( varFloat( -frameInfo.m_Bodys[index].m_Area.Points()[i].y ) );
 	}
+
 	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_Bodys[index].m_ZWidth ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_Bodys[index].m_Kind ) );
-
-	
 }
 
 void CPropertiesWnd::UpdateBody()
 {
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
 	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-
 	int n = propRoot->GetSubItem( 0 )->GetSubItemsCount();
-	for (int i=0 ; i < n ; i++)
+
+	for ( int i = 0 ; i < n ; i++ )
 	{
-		if(( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->IsEdited())
+		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->IsEdited() )
 		{
-			frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0)->GetValue().fltVal;
+			frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue().fltVal;
 			//Refresh
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint(i);
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint( i );
 		}
 
-		if (( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->IsEdited())
+		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->IsEdited() )
 		{
-			frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y = -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1)->GetValue().fltVal;
+			frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y = -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal;
 			//Refresh
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint(i);
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint( i );
 		}
-		
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 1 ))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->IsEdited() )
 	{
 		frameInfo->m_Bodys[m_Index].m_ZWidth = propRoot->GetSubItem( 1 )->GetValue().fltVal;
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 2 ))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->IsEdited() )
 	{
 		frameInfo->m_Bodys[m_Index].m_Kind = propRoot->GetSubItem( 2 )->GetValue().intVal;
 	}
-	
 }
 
-void CPropertiesWnd::RefreshPropList_Attack(int index)
+void CPropertiesWnd::RefreshPropList_Attack( int index )
 {
 	m_EditProp = 4;
 	m_Index = index;
@@ -1302,120 +1293,111 @@ void CPropertiesWnd::RefreshPropList_Attack(int index)
 	}
 
 	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-
-	InitPropList_Attack(frameInfo.m_Attacks[index].m_Area.Points().size());
+	InitPropList_Attack( frameInfo.m_Attacks[index].m_Area.Points().size() );
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
-	for(int i=0; i<frameInfo.m_Attacks[index].m_Area.Points().size(); i++)
+
+	for ( int i = 0; i < frameInfo.m_Attacks[index].m_Area.Points().size(); i++ )
 	{
-		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->SetValue( varFloat(frameInfo.m_Attacks[index].m_Area.Points()[i].x) );
-		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->SetValue( varFloat(-frameInfo.m_Attacks[index].m_Area.Points()[i].y) );
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_Attacks[index].m_Area.Points()[i].x ) );
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->SetValue( varFloat( -frameInfo.m_Attacks[index].m_Area.Points()[i].y ) );
 	}
 
 	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Kind ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Effect ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varFloat( frameInfo.m_Attacks[index].m_ZWidth ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Strength ) );
-	
 	( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Injury ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 6 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Fall ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_BreakDefend ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 8 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_AttackRest ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 6 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_ReAttackRest ) );
-
 	( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem ( 0 ) )->SetValue( varFloat( frameInfo.m_Attacks[index].m_DVX ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem ( 1 ) )->SetValue( varFloat( frameInfo.m_Attacks[index].m_DVY ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem ( 2 ) )->SetValue( varFloat( frameInfo.m_Attacks[index].m_DVZ ) );
-
 }
 
 void CPropertiesWnd::UpdateAttack()
 {
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
 	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-
 	int n = propRoot->GetSubItem( 0 )->GetSubItemsCount();
-	for (int i=0 ; i < n ; i++)
+
+	for ( int i = 0 ; i < n ; i++ )
 	{
-		if(( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->IsEdited())
+		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->IsEdited() )
 		{
-			frameInfo->m_Attacks[m_Index].m_Area.Points()[i].x = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0)->GetValue().fltVal;
+			frameInfo->m_Attacks[m_Index].m_Area.Points()[i].x = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue().fltVal;
 			//Refresh
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint(i);
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint( i );
 		}
 
-		if (( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->IsEdited())
+		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->IsEdited() )
 		{
-			frameInfo->m_Attacks[m_Index].m_Area.Points()[i].y = -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1)->GetValue().fltVal;
+			frameInfo->m_Attacks[m_Index].m_Area.Points()[i].y = -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal;
 			//Refresh
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint(i);
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint( i );
 		}
-
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 1 ))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->IsEdited() )
 	{
 		frameInfo->m_Attacks[m_Index].m_Kind = propRoot->GetSubItem( 1 )->GetValue().intVal;
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 2 ))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->IsEdited() )
 	{
 		frameInfo->m_Attacks[m_Index].m_Effect = propRoot->GetSubItem( 2 )->GetValue().intVal;
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 3 ))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->IsEdited() )
 	{
 		frameInfo->m_Attacks[m_Index].m_ZWidth = propRoot->GetSubItem( 3 )->GetValue().fltVal;
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 4 ))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->IsEdited() )
 	{
 		frameInfo->m_Attacks[m_Index].m_Strength = propRoot->GetSubItem( 4 )->GetValue().intVal;
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 5 ))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->IsEdited() )
 	{
 		frameInfo->m_Attacks[m_Index].m_Injury = propRoot->GetSubItem( 5 )->GetValue().intVal;
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 6 ))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 6 ) )->IsEdited() )
 	{
 		frameInfo->m_Attacks[m_Index].m_Fall = propRoot->GetSubItem( 6 )->GetValue().intVal;
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 7 ))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 7 ) )->IsEdited() )
 	{
 		frameInfo->m_Attacks[m_Index].m_BreakDefend = propRoot->GetSubItem( 7 )->GetValue().intVal;
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 8 ))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 8 ) )->IsEdited() )
 	{
 		frameInfo->m_Attacks[m_Index].m_AttackRest = propRoot->GetSubItem( 8 )->GetValue().intVal;
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 9 ))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 9 ) )->IsEdited() )
 	{
 		frameInfo->m_Attacks[m_Index].m_ReAttackRest = propRoot->GetSubItem( 9 )->GetValue().intVal;
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem(0))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 0 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_DVX = propRoot->GetSubItem( 10 )->GetSubItem(0)->GetValue().fltVal;
+		frameInfo->m_Attacks[m_Index].m_DVX = propRoot->GetSubItem( 10 )->GetSubItem( 0 )->GetValue().fltVal;
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem(1))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 1 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_DVY = propRoot->GetSubItem( 10 )->GetSubItem(1)->GetValue().fltVal;
+		frameInfo->m_Attacks[m_Index].m_DVY = propRoot->GetSubItem( 10 )->GetSubItem( 1 )->GetValue().fltVal;
 	}
 
-	if (( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem(2))->IsEdited())
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 2 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_DVZ = propRoot->GetSubItem( 10 )->GetSubItem(2)->GetValue().fltVal;
+		frameInfo->m_Attacks[m_Index].m_DVZ = propRoot->GetSubItem( 10 )->GetSubItem( 2 )->GetValue().fltVal;
 	}
-	
-
-
-	
-	
 }
 
 void CPropertiesWnd::RefreshPropList_HitData( int index )
@@ -1446,9 +1428,7 @@ void CPropertiesWnd::RefreshPropList_HitData( int index )
 	}
 
 	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-	
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
-
 	CString _tmpstr; _tmpstr = frameInfo.m_HitDatas[index].m_KeyQueue.c_str();
 	( ( CMFCPropItem* )propRoot->GetSubItem( 0 ) )->SetValue( _tmpstr );
 	_tmpstr = frameInfo.m_HitDatas[index].m_FrameName.c_str();
@@ -1456,7 +1436,7 @@ void CPropertiesWnd::RefreshPropList_HitData( int index )
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_HitDatas[index].m_FrameOffset ) );
 }
 
-void CPropertiesWnd::RefreshPropList_CatchInfo(int index)
+void CPropertiesWnd::RefreshPropList_CatchInfo( int index )
 {
 	m_EditProp = 6;
 	m_Index = index;
@@ -1481,49 +1461,51 @@ void CPropertiesWnd::RefreshPropList_CatchInfo(int index)
 	}
 
 	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-	InitPropList_CatchInfo(frameInfo.m_Catchs[index].m_Area.Points().size());
+	InitPropList_CatchInfo( frameInfo.m_Catchs[index].m_Area.Points().size() );
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
-	for(int i=0; i<frameInfo.m_Catchs[index].m_Area.Points().size(); i++)
+
+	for ( int i = 0; i < frameInfo.m_Catchs[index].m_Area.Points().size(); i++ )
 	{
-		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->SetValue( varFloat(frameInfo.m_Catchs[index].m_Area.Points()[i].x) );
-		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->SetValue( varFloat(-frameInfo.m_Catchs[index].m_Area.Points()[i].y) );
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_Catchs[index].m_Area.Points()[i].x ) );
+		( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->SetValue( varFloat( -frameInfo.m_Catchs[index].m_Area.Points()[i].y ) );
 	}
+
 	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_Catchs[index].m_ZWidth ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_Catchs[index].m_Injury ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varInt( frameInfo.m_Catchs[index].m_Kind ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 4 )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_Catchs[index].m_CatchPosition.x ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 4 )->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_Catchs[index].m_CatchPosition.y ) );
-	if(frameInfo.m_Catchs[index].m_CatchWhere == CatchInfo::CatchPosition::NECK) ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( _T( "NECK" ) );
-	else if(frameInfo.m_Catchs[index].m_CatchWhere == CatchInfo::CatchPosition::LEG) ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( _T( "LEG" ) );
-	else ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( _T( "WAIST" ) );
+
+	if ( frameInfo.m_Catchs[index].m_CatchWhere == CatchInfo::CatchPosition::NECK ) { ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( _T( "NECK" ) ); }
+	else if ( frameInfo.m_Catchs[index].m_CatchWhere == CatchInfo::CatchPosition::LEG ) { ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( _T( "LEG" ) ); }
+	else { ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( _T( "WAIST" ) ); }
 }
 
 void CPropertiesWnd::UpdateCatch()
 {
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
 	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-
 	int n = propRoot->GetSubItem( 0 )->GetSubItemsCount();
-	for (int i=0 ; i < n ; i++)
+
+	for ( int i = 0 ; i < n ; i++ )
 	{
-		if(( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->IsEdited())
+		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->IsEdited() )
 		{
-			frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0)->GetValue().fltVal;
+			frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue().fltVal;
 			//Refresh
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint(i);
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );
 		}
 
-		if (( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->IsEdited())
+		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->IsEdited() )
 		{
-			frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y = -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1)->GetValue().fltVal;
+			frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y = -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal;
 			//Refresh
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint(i);
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );
 		}
-
 	}
 }
 
-void CPropertiesWnd::RefreshPropList_BloodInfo(int index)
+void CPropertiesWnd::RefreshPropList_BloodInfo( int index )
 {
 	if ( m_EditProp != 7 )
 	{
@@ -1552,7 +1534,6 @@ void CPropertiesWnd::RefreshPropList_BloodInfo(int index)
 
 	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
-
 	( ( CMFCPropItem* )propRoot->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_BloodInfos[index].m_Scale ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 1 )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo.m_BloodInfos[index].m_Position.x ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 1 )->GetSubItem( 1 ) )->SetValue( varFloat( frameInfo.m_BloodInfos[index].m_Position.y ) );
@@ -1655,11 +1636,14 @@ void CPropertiesWnd::Update()
 	case 2:
 		UpdatePropList_Frame();
 		break;
+
 	case 3:
 		UpdateBody();
 		break;
+
 	case 4:
 		UpdateAttack();
+
 	case 6:
 		UpdateCatch();
 	}
@@ -1684,24 +1668,24 @@ void CPropertiesWnd::RefreshBodyPoint( int i )
 {
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
 	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->SetValue( varFloat(frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->SetValue( varFloat(-frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->SetValue( varFloat( -frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y ) );
 }
 
 void CPropertiesWnd::RefreshAttackPoint( int i )
 {
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
 	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->SetValue( varFloat(frameInfo->m_Attacks[m_Index].m_Area.Points()[i].x) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->SetValue( varFloat(-frameInfo->m_Attacks[m_Index].m_Area.Points()[i].y) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo->m_Attacks[m_Index].m_Area.Points()[i].x ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->SetValue( varFloat( -frameInfo->m_Attacks[m_Index].m_Area.Points()[i].y ) );
 }
 
 void CPropertiesWnd::RefreshCatchPoint( int i )
 {
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
 	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(0) )->SetValue( varFloat(frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem(1) )->SetValue( varFloat(-frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->SetValue( varFloat( -frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y ) );
 }
 
 

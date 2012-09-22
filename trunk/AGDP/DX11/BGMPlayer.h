@@ -8,11 +8,11 @@
 
 enum BGMState
 {
-	NotReady = 0,
-	Ready,
-	Playing,
-	Stopping,
-	Pausing
+        NotReady = 0,
+        Ready,
+        Playing,
+        Stopping,
+        Pausing
 };
 
 class BGMPlayer
@@ -23,15 +23,15 @@ private:
 	wchar_t  buf[128];
 	std::wstring t_command;
 protected:
-	inline void mciSend(std::wstring command){mciSendString(command.c_str(), buf, sizeof(buf), NULL);};
+	inline void mciSend( std::wstring command ) {mciSendString( command.c_str(), buf, sizeof( buf ), NULL );};
 
 public:
-	void OpenBGM(std::wstring path);
-	
+	void OpenBGM( std::wstring path );
+
 	void PlayBGM();
 	void StopBGM();
 	void PauseBGM();
-	void SetVolume(std::wstring volume);
+	void SetVolume( std::wstring volume );
 
 	void CloseBGM();
 };

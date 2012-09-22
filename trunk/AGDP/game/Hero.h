@@ -20,7 +20,7 @@
 #define KEYLIFE_AFTER_KEYUP 120
 #define WAIT_FOR_KEY_RUN 30
 #define FRICTION 0.5f
-#define G_ACCE g_BGManager.CurrentBG()->Gravity()
+#define G_ACCE g_BackGroundManager.GetCurrentBackGround()->Gravity()
 #define SCALE 3.0f
 
 namespace boost {namespace serialization {class access;}}
@@ -117,18 +117,18 @@ public:
 	//創造物件
 	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 	//碰撞判定用
-	friend Polygon2Ds getHeroBodys(const Hero &r);
-	friend Polygon2Ds getHeroAtks(const Hero &r);
-	friend Polygon2Ds getHeroCatches(const Hero &r);
-	void beCaught(const CatchInfo& rCatch, Vector3 hitPos, bool rFace);
-	void beAttack(const Attack& rAtk, const Record_Sptr& rHero, Vector3 hitPos, bool rFace);
+	friend Polygon2Ds getHeroBodys( const Hero& r );
+	friend Polygon2Ds getHeroAtks( const Hero& r );
+	friend Polygon2Ds getHeroCatches( const Hero& r );
+	void beCaught( const CatchInfo& rCatch, Vector3 hitPos, bool rFace );
+	void beAttack( const Attack& rAtk, const Record_Sptr& rHero, Vector3 hitPos, bool rFace );
 	//void beHit(const )
 
 protected:
 	void Init();
 	void NextFrame();
-	void SwitchFrame(std::string rFrame, int rFrameID);
-	FrameInfo* FindFrame( std::string rframe, int rframeID);
+	void SwitchFrame( std::string rFrame, int rFrameID );
+	FrameInfo* FindFrame( std::string rframe, int rframeID );
 	bool ScanKeyQue();	//false無控制動作
 	void ClearKeyQue();
 	void Flicker();		//閃爍

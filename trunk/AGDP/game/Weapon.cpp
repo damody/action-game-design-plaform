@@ -7,9 +7,9 @@ Weapon::Weapon( void )
 }
 
 Weapon::Weapon( std::string w ):
-	weapon( w ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 )
+	m_WeaponName( w ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 )
 {
-	m_ObjectInfo = g_ObjectInfoMG.GetObjectInfo( weapon );
+	m_ObjectInfo = g_ObjectInfoManager.GetObjectInfo( m_WeaponName );
 
 	if ( m_ObjectInfo.get() )
 	{

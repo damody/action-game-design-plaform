@@ -5,11 +5,11 @@
 #include "common\shared_ptr.h"
 #include "game\HeroInfo.h"
 namespace boost {namespace serialization {class access;}}
-class HeroInfoMG
+class HeroInfoManager
 {
 public:
-	HeroInfoMG( void ) {}
-	~HeroInfoMG( void ) {}
+	HeroInfoManager( void ) {}
+	~HeroInfoManager( void ) {}
 	void AddHeroInfo( std::string name, HeroInfo_Sptr info );
 	HeroInfo_Sptr GetHeroInfo( std::string name );
 	const std::vector<std::string> GetList();

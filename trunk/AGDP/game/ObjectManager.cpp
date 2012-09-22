@@ -2,18 +2,18 @@
 #include "ObjectManager.h"
 
 
-ObjectMG::ObjectMG( void )
+ObjectManager::ObjectManager( void )
 {
 	m_CTrashCan.clear();
 	m_WTrashCan.clear();
 }
 
 
-ObjectMG::~ObjectMG( void )
+ObjectManager::~ObjectManager( void )
 {
 }
 
-void ObjectMG::Update( float dt )
+void ObjectManager::Update( float dt )
 {
 	CleanTrashCan();
 
@@ -28,7 +28,7 @@ void ObjectMG::Update( float dt )
 	}
 }
 
-void ObjectMG::UpdateDataToDraw()
+void ObjectManager::UpdateDataToDraw()
 {
 	for ( Chees::iterator it = m_Chees.begin(); it != m_Chees.end(); it++ )
 	{
@@ -43,7 +43,7 @@ void ObjectMG::UpdateDataToDraw()
 	}
 }
 
-Chee** ObjectMG::CreateChee( const std::string& chee, const Vector3& pos, const Vector3& vel, int num/*=1*/, int team/*=0*/ )
+Chee** ObjectManager::CreateChee( const std::string& chee, const Vector3& pos, const Vector3& vel, int num/*=1*/, int team/*=0*/ )
 {
 	Chee_RawPtr* c = new Chee_RawPtr [num];
 
@@ -59,7 +59,7 @@ Chee** ObjectMG::CreateChee( const std::string& chee, const Vector3& pos, const 
 	return c;
 }
 
-Weapon** ObjectMG::CreateWeapon( const std::string& weapon, const Vector3& pos, int num/*=1*/, int team/*=0*/ )
+Weapon** ObjectManager::CreateWeapon( const std::string& weapon, const Vector3& pos, int num/*=1*/, int team/*=0*/ )
 {
 	Weapon_RawPtr* w = new Weapon_RawPtr [num];
 
@@ -74,53 +74,53 @@ Weapon** ObjectMG::CreateWeapon( const std::string& weapon, const Vector3& pos, 
 	return w;
 }
 
-void ObjectMG::Clear()
+void ObjectManager::Clear()
 {
 	m_Chees.clear();
 	m_Weapons.clear();
 }
 
-void ObjectMG::ClearChee()
+void ObjectManager::ClearChee()
 {
 	m_Chees.clear();
 }
 
-void ObjectMG::ClearWeapon()
+void ObjectManager::ClearWeapon()
 {
 	m_Weapons.clear();
 }
 
-bool ObjectMG::CheeEmpty()
+bool ObjectManager::CheeEmpty()
 {
 	return m_Chees.empty();
 }
 
-bool ObjectMG::WeaponEmpty()
+bool ObjectManager::WeaponEmpty()
 {
 	return m_Weapons.empty();
 }
 
-Chees::iterator ObjectMG::CheeVectorBegin()
+Chees::iterator ObjectManager::CheeVectorBegin()
 {
 	return m_Chees.begin();
 }
 
-Chees::iterator ObjectMG::CheeVectorEnd()
+Chees::iterator ObjectManager::CheeVectorEnd()
 {
 	return m_Chees.end();
 }
 
-Weapons::iterator ObjectMG::WeaponVectorBegin()
+Weapons::iterator ObjectManager::WeaponVectorBegin()
 {
 	return m_Weapons.begin();
 }
 
-Weapons::iterator ObjectMG::WeaponVectorEnd()
+Weapons::iterator ObjectManager::WeaponVectorEnd()
 {
 	return m_Weapons.end();
 }
 
-Chee* ObjectMG::GetClosestChee( const Vector3& pos )
+Chee* ObjectManager::GetClosestChee( const Vector3& pos )
 {
 	float d = 99999;
 	Chee* c = NULL;
@@ -137,7 +137,7 @@ Chee* ObjectMG::GetClosestChee( const Vector3& pos )
 	return c;
 }
 
-Chee* ObjectMG::GetClosestCheeFromFriend( const Vector3& pos, int team )
+Chee* ObjectManager::GetClosestCheeFromFriend( const Vector3& pos, int team )
 {
 	float d = 99999;
 	Chee* c = NULL;
@@ -159,7 +159,7 @@ Chee* ObjectMG::GetClosestCheeFromFriend( const Vector3& pos, int team )
 	return c;
 }
 
-Chee* ObjectMG::GetClosestCheeFromEnemy( const Vector3& pos, int team )
+Chee* ObjectManager::GetClosestCheeFromEnemy( const Vector3& pos, int team )
 {
 	float d = 99999;
 	Chee* c = NULL;
@@ -182,39 +182,39 @@ Chee* ObjectMG::GetClosestCheeFromEnemy( const Vector3& pos, int team )
 }
 
 /*
-Weapon* ObjectMG::GetClosestWeaponOnFloor(const Vector3& pos )
+Weapon* ObjectManager::GetClosestWeaponOnFloor(const Vector3& pos )
 {
 
 }
 
-Weapon* ObjectMG::GetClosestThrownWeaponFromFriend(const Vector3& pos,int team )
+Weapon* ObjectManager::GetClosestThrownWeaponFromFriend(const Vector3& pos,int team )
 {
 
 }
 
-Weapon* ObjectMG::GetClosestThrownWeaponFromEnemy(const Vector3& pos,int team )
+Weapon* ObjectManager::GetClosestThrownWeaponFromEnemy(const Vector3& pos,int team )
 {
 
 }
 */
 
-int ObjectMG::AmountChee()
+int ObjectManager::AmountChee()
 {
 	return m_Chees.size();
 }
 
-int ObjectMG::AmountWeapons()
+int ObjectManager::AmountWeapons()
 {
 	return m_Weapons.size();
 }
 
-void ObjectMG::Destory( Chee_RawPtr chee, int time/*=0*/ )
+void ObjectManager::Destory( Chee_RawPtr chee, int time/*=0*/ )
 {
 	if ( !InCTrashCan( chee ) )
 	{
-		Chees::iterator it = GetCheeIt(chee);
+		Chees::iterator it = GetCheeIt( chee );
 
-		if (it != m_Chees.end())
+		if ( it != m_Chees.end() )
 		{
 			CTrash th;
 			th.m_Trash = chee;
@@ -224,13 +224,13 @@ void ObjectMG::Destory( Chee_RawPtr chee, int time/*=0*/ )
 	}
 }
 
-void ObjectMG::Destory( Weapon_RawPtr weapon, int time/*=0*/ )
+void ObjectManager::Destory( Weapon_RawPtr weapon, int time/*=0*/ )
 {
 	if ( !InWTrashCan( weapon ) )
 	{
-		Weapons::iterator it = GetWeaponIt(weapon);
+		Weapons::iterator it = GetWeaponIt( weapon );
 
-		if (it != m_Weapons.end())
+		if ( it != m_Weapons.end() )
 		{
 			WTrash th;
 			th.m_Trash = weapon;
@@ -240,7 +240,7 @@ void ObjectMG::Destory( Weapon_RawPtr weapon, int time/*=0*/ )
 	}
 }
 
-void ObjectMG::Destory( Chees::iterator it, int time/*=0*/ )
+void ObjectManager::Destory( Chees::iterator it, int time/*=0*/ )
 {
 	if ( !InCTrashCan( *it ) )
 	{
@@ -251,7 +251,7 @@ void ObjectMG::Destory( Chees::iterator it, int time/*=0*/ )
 	}
 }
 
-void ObjectMG::Destory( Weapons::iterator it, int time/*=0*/ )
+void ObjectManager::Destory( Weapons::iterator it, int time/*=0*/ )
 {
 	if ( !InWTrashCan( *it ) )
 	{
@@ -262,14 +262,13 @@ void ObjectMG::Destory( Weapons::iterator it, int time/*=0*/ )
 	}
 }
 
-void ObjectMG::CleanTrashCan()
+void ObjectManager::CleanTrashCan()
 {
 	for ( CTrashCan::iterator it = m_CTrashCan.begin(); it != m_CTrashCan.end(); )
 	{
 		if ( it->m_Time <= 0 )
 		{
-			
-			m_Chees.erase( GetCheeIt(it->m_Trash) );
+			m_Chees.erase( GetCheeIt( it->m_Trash ) );
 			delete( it->m_Trash  );
 			it = m_CTrashCan.erase( it );
 		}
@@ -284,7 +283,7 @@ void ObjectMG::CleanTrashCan()
 	{
 		if ( it->m_Time <= 0 )
 		{
-			m_Weapons.erase( GetWeaponIt(it->m_Trash ));
+			m_Weapons.erase( GetWeaponIt( it->m_Trash ) );
 			delete( it->m_Trash );
 			it = m_WTrashCan.erase( it );
 		}
@@ -296,7 +295,7 @@ void ObjectMG::CleanTrashCan()
 	}
 }
 
-bool ObjectMG::InCTrashCan( Chee_RawPtr chee )
+bool ObjectManager::InCTrashCan( Chee_RawPtr chee )
 {
 	for ( CTrashCan::iterator it = m_CTrashCan.begin(); it != m_CTrashCan.end(); it++ )
 	{
@@ -309,7 +308,7 @@ bool ObjectMG::InCTrashCan( Chee_RawPtr chee )
 	return false;
 }
 
-bool ObjectMG::InWTrashCan( Weapon_RawPtr weapon )
+bool ObjectManager::InWTrashCan( Weapon_RawPtr weapon )
 {
 	for ( WTrashCan::iterator it = m_WTrashCan.begin(); it != m_WTrashCan.end(); it++ )
 	{
@@ -322,7 +321,7 @@ bool ObjectMG::InWTrashCan( Weapon_RawPtr weapon )
 	return false;
 }
 
-Chees::iterator ObjectMG::GetCheeIt( Chee* chee )
+Chees::iterator ObjectManager::GetCheeIt( Chee* chee )
 {
 	Chees::iterator it;
 
@@ -337,7 +336,7 @@ Chees::iterator ObjectMG::GetCheeIt( Chee* chee )
 	return it;
 }
 
-Weapons::iterator ObjectMG::GetWeaponIt( Weapon* weapon )
+Weapons::iterator ObjectManager::GetWeaponIt( Weapon* weapon )
 {
 	Weapons::iterator it;
 

@@ -18,7 +18,7 @@ public:
 	HeroManager( void );
 	~HeroManager( void );
 
-	Heroes& GetHeroes(){return m_Heroes;}
+	Heroes& GetHeroes() {return m_Heroes;}
 
 	void Update( float dt );
 	void UpdateDataToDraw();
@@ -42,6 +42,6 @@ public:
 protected:
 	void CleanTrash();
 	bool InTrashCan( Hero_RawPtr hero );
-	Heroes::iterator GetHeroIt(Hero* hero);
+	Heroes::iterator GetHeroIt( Hero* hero );
 };
 

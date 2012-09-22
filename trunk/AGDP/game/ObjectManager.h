@@ -3,7 +3,7 @@
 #include "game\Chee.h"
 #include "game\Weapon.h"
 
-class ObjectMG
+class ObjectManager
 {
 public:
 	struct CTrash
@@ -26,11 +26,11 @@ private:
 	CTrashCan m_CTrashCan;
 	WTrashCan m_WTrashCan;
 public:
-	ObjectMG( void );
-	~ObjectMG( void );
+	ObjectManager( void );
+	~ObjectManager( void );
 
-	Chees& GetChees(){return m_Chees;}
-	Weapons& GetWeapons(){return m_Weapons;}
+	Chees& GetChees() {return m_Chees;}
+	Weapons& GetWeapons() {return m_Weapons;}
 
 	void Update( float dt );
 	void UpdateDataToDraw();
@@ -66,7 +66,7 @@ protected:
 	void CleanTrashCan();
 	bool InCTrashCan( Chee_RawPtr chee );
 	bool InWTrashCan( Weapon_RawPtr weapon );
-	Chees::iterator GetCheeIt(Chee* chee);
-	Weapons::iterator GetWeaponIt(Weapon* weapon);
+	Chees::iterator GetCheeIt( Chee* chee );
+	Weapons::iterator GetWeaponIt( Weapon* weapon );
 };
 
