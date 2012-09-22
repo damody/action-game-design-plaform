@@ -441,7 +441,7 @@ frame.dash_front[0] =
    pic_id = 0, pic_x = 4, pic_y = 7, state = Action.Dash, wait = 1, next = {"dash_front", 1},
    dvx = 18, dvy = 25,  dvz = 5,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {{"B", "dash_kick", 0}},
+   hit = {{"B", "dash_kick", 0},{">", "dash_back", 1}},
    blood = {{scale = 1.0, x=43, y=30, value=150}},
    body = {
    {kind = 0, points = {{43,-5}, {43,-38}, {66,-38}, {66,-5}}, zwidth = 8},
@@ -497,7 +497,7 @@ frame.dash_back[0] =
    pic_id = 0, pic_x = 5, pic_y = 7, state = Action.Dash, wait = 1, next = {"dash_back", 1},
    dvx = -18, dvy = 25,  dvz = 5,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
-   hit = {},
+   hit = {{">", "dash_front", 1}},
    blood = {{scale = 1.0, x=33, y=30, value=150}},
    body = {
    {kind = 0, points = {{20,-5 }, {20,-43}, {47,-43}, {47,-5 }}, zwidth = 8},
