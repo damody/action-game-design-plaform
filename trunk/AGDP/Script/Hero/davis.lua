@@ -1,5 +1,5 @@
-require	"effect"
-require "action"
+require	"Script/effect"
+require "Script/action"
 
 name= "Davis"
 head= "sprite\\sys\\davis_f.bmp"
@@ -77,7 +77,7 @@ frame.default[0] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {{"A", "punch", 0}, {"B", "kick", 0}, {"J", "jump", 0}, {"D", "defend", 0}, {"D>A", "ball", 0}, {"D^A", "singlong", 0}, {"DvA", "many_punch", 0}, {"D^J", "jump_hit", 0}},
    blood = {{scale = 1.0, x=39, y=34, value=150}},
-   body	= {	
+   body	= {
    {kind =	0, points =	{{25,-60}, {24,-77}, {54,-76}, {48,-59}, {54,-57}, {50,-37}, {45,-33}, {49,-19}, {33,-16}, {25,-20}, {28,-32}, {20,-39}, {18,-57}},	zwidth = 8, },
    },
 

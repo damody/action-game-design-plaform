@@ -1,18 +1,18 @@
 loadpackage = 0;
 
 hero = {
-"Script\\davis.lua",
+"Script\\Hero\\davis.lua",
 }
 
 
 object = {
-"Script\\davis_ball.lua",
-"Script\\bat.lua",
+"Script\\Object\\davis_ball.lua",
+"Script\\Object\\bat.lua",
 }
 
 
 backGround = {
-"Script\\bg.lua",
+"Script\\Background\\background.lua",
 }
 
 wav =
