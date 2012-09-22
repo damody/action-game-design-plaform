@@ -1,18 +1,16 @@
 loadpackage = 0;
 
 hero = {
-"davis.lua",
---"Dennis.lua",
+"Script\\davis.lua",
 }
 
 
 object = {
-"davis_ball.lua",
-"bat.lua",
---"Dennis_ball.lua",
+"Script\\davis_ball.lua",
+"Script\\bat.lua",
 }
 
 
 backGround = {
-"bg.lua",
+"Script\\bg.lua",
 }

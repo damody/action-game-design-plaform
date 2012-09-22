@@ -491,7 +491,7 @@ frame.dash_front[2] =
 frame.dash_back[0] =
 {
    pic_id = 0, pic_x = 5, pic_y = 7, state = Action.Dash, wait = 1, next = {"dash_back", 1},
-   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   dvx = -18, dvy = 25,  dvz = 5,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {{scale = 1.0, x=33, y=30, value=150}},
