@@ -24,7 +24,7 @@ void HeroManager::Update( float dt )
 			it_hero != t_heros.end(); ++it_hero)
 		{
 			std::cout << "be hit" << std::endl;
-			// do something...
+			// do something....
 		}
 	}
 }
