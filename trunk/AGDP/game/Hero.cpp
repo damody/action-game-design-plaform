@@ -162,12 +162,12 @@ void Hero::Update( float dt )
 	if ( !inAir )  	//地上
 	{
 		//落地判定
-		if ( m_Action != HeroAction::UNIQUE_SKILL )
+		if ( m_Action != 51) //HeroAction::UNIQUE_SKILL 
 		{
 			//m_Position.y = 0;
 			m_Vel.y = 0;
 
-			if ( pastInAir || m_Action == HeroAction::IN_THE_AIR || m_Action == HeroAction::DASH )
+			if ( pastInAir )
 			{
 				//Frame 改到 CrouchMap 中對應的 Frame
 				CrouchMap::iterator icm = m_HeroInfo->m_CrouchMap.find( m_Action );
@@ -182,10 +182,7 @@ void Hero::Update( float dt )
 				}
 			}
 		}
-		else
-		{
-			m_Position = pastPos + m_Vel;
-		}
+		else{ m_Position = pastPos + m_Vel; }
 
 		//X方向摩擦力計算
 		float sign = m_Vel.x / abs( m_Vel.x );
@@ -206,11 +203,12 @@ void Hero::Update( float dt )
 	else 					//空中
 	{
 		//重力加速度
-		if ( m_Action != HeroAction::AIR_SKILL && m_Action != HeroAction::UNIQUE_SKILL )
+		//if ( m_Action != HeroAction::AIR_SKILL && m_Action != HeroAction::UNIQUE_SKILL )
+		if ( m_Action != 46 && m_Action != 51 )
 		{	m_Vel.y -= G_ACCE;	}
 
 		//掉落
-		if ( m_Action == HeroAction::STANDING )
+		if ( m_Action == 0 ) //HeroAction::STANDING )
 		{
 			SwitchFrame( "in_the_air", 0 );
 		}
@@ -279,18 +277,15 @@ NextLoop:
 
 	//clear keyQue
 	if ( m_KeyQue.empty() ) {}
-	else if ( f->m_ClearKeyQueue == 1 )
-	{
+	else if ( f->m_ClearKeyQueue == 1 ){	
 		m_KeyQue.pop_back();
 	}
-	else if ( f->m_ClearKeyQueue == 2 )
-	{
+	else if ( f->m_ClearKeyQueue == 2 ){
 		m_KeyQue.clear();
 	}
 
-	if ( m_Action == HeroAction::CROUCH && f->m_HeroAction != m_Action )
-	{
-		m_Vel = Vector3( 0, 0, 0 );
+	if ( m_Action == 40 && f->m_HeroAction != m_Action ){	
+		m_Vel = Vector3( 0, 0, 0 );	
 	}
 
 	//sound
@@ -426,7 +421,7 @@ bool Hero::ScanKeyQue()
 	}
 
 	//決定方向按鍵動作
-	if ( m_Action == HeroAction::STANDING )
+	if ( m_Action == 0 ) //HeroAction::STANDING )
 	{
 		if ( dz > 0 )
 		{
@@ -472,7 +467,7 @@ bool Hero::ScanKeyQue()
 			}
 		}
 	}
-	else if ( m_Action == HeroAction::WALKING )
+	else if ( m_Action == 1 ) //HeroAction::WALKING )
 	{
 		if ( dz > 0 )
 		{
@@ -527,7 +522,7 @@ bool Hero::ScanKeyQue()
 			nFramID = ( m_FrameID + 1 ) % ( m_HeroInfo->m_FramesMap[nFrame].size() );
 		}
 	}
-	else if ( m_Action == HeroAction::RUNNING )
+	else if ( m_Action == 2 ) //HeroAction::RUNNING )
 	{
 		m_Vel.x = ( m_FaceSide ? m_HeroInfo->m_RunningSpeed : -m_HeroInfo->m_RunningSpeed );
 
@@ -547,7 +542,7 @@ bool Hero::ScanKeyQue()
 			d_run = 0;
 		}
 	}
-	else if ( m_Action == HeroAction::IN_THE_AIR )
+	else if ( m_Action == 43 ) //HeroAction::IN_THE_AIR )
 	{
 		if ( dx > 0 )
 		{
@@ -558,7 +553,7 @@ bool Hero::ScanKeyQue()
 			m_FaceSide = false;
 		}
 	}
-	else if ( m_Action == HeroAction::DEFEND )
+	else if ( m_Action == 32 ) //HeroAction::DEFEND )
 	{
 		if ( dx > 0 )
 		{
@@ -569,7 +564,7 @@ bool Hero::ScanKeyQue()
 			m_FaceSide = false;
 		}
 	}
-	else if ( m_Action == HeroAction::DASH )
+	else if ( m_Action == 39 ) //HeroAction::DASH )
 	{
 		if ( dx < 0 && m_FaceSide )
 		{
@@ -602,19 +597,11 @@ bool Hero::ScanKeyQue()
 			}
 		}
 	}
-	else if ( m_Action == HeroAction::CROUCH )
+	else if ( m_Action == 40 ) //HeroAction::CROUCH )
 	{
-		if ( m_KeyQue.empty() )
-		{
-			/*if(m_TimeTik == 0){
-				m_Vel.x = 0, m_Vel.y = 0, m_Vel.z = 0;
-			}//*/
+		if ( m_KeyQue.empty() ){
 			return false;
 		}
-		/*else if(m_KeyQue.back().key == CtrlKey::DEF && m_Frame.compare("crouch") == 0 && m_FrameID == 0){
-			m_Vel = Vector3(0,0,0);
-			nFrame = "rolling";
-		}//*/
 		else if ( m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2] && m_Frame.compare( "crouch" ) == 0 )
 		{
 			d_key[2] = true;
@@ -648,11 +635,6 @@ bool Hero::ScanKeyQue()
 				nFrame = "jump";
 			}
 		}
-
-		//蹲完速度歸零
-		/*if(m_TimeTik == 0){
-			m_Vel.x = 0, m_Vel.y = 0, m_Vel.z = 0;
-		}//*/
 	}
 
 	//決定招式按鍵動作
@@ -999,7 +981,7 @@ KeyLoop:
 		}
 
 		//蹲的煞車效果
-		if ( m_Action == HeroAction::CROUCH )
+		if ( m_Action == 40 ) //HeroAction::CROUCH )
 		{
 			m_Vel = Vector3( 0, 0, 0 );
 		}
@@ -1046,10 +1028,9 @@ void Hero::UpdateVel( int dx, int dz )
 {
 	m_Vel.y += m_FrameInfo->m_DVY;
 
-	if ( m_Action == HeroAction::JUMP || m_Action == HeroAction::FREE_SKILL )
-	{
-		if ( dx != 0 )
-		{
+	//if ( m_Action == HeroAction::JUMP || m_Action == HeroAction::FREE_SKILL ){
+	if ( m_Action == 38 || m_Action == 50 ){
+		if ( dx != 0 ){
 			m_Vel.x += m_FrameInfo->m_DVX * ( m_FaceSide ? 1 : -1 );
 		}
 
@@ -1062,7 +1043,7 @@ void Hero::UpdateVel( int dx, int dz )
 			m_Vel.z -= m_FrameInfo->m_DVZ;
 		}
 	}
-	else if ( m_Action == HeroAction::Z_AXIS_SKILL )
+	else if ( m_Action == 48 )	//HeroAction::Z_AXIS_SKILL )
 	{
 		if ( dx != 0 )
 		{
@@ -1071,12 +1052,12 @@ void Hero::UpdateVel( int dx, int dz )
 
 		m_Vel.z += m_FrameInfo->m_DVZ;
 	}
-	else if ( m_Action == HeroAction::GROUND_SKILL )
+	else if ( m_Action == 49 )	//HeroAction::GROUND_SKILL )
 	{
 		m_Vel.x += m_FrameInfo->m_DVX * ( m_FaceSide ? 1 : -1 );
 		m_Vel.z += m_FrameInfo->m_DVZ;
 	}
-	else
+	else						//X_AXIS_SKILL = Normal
 	{
 		m_Vel.x += m_FrameInfo->m_DVX * ( m_FaceSide ? 1 : -1 );
 
@@ -1312,7 +1293,7 @@ void Hero::Recover()
 
 	if ( m_Fall < 70 ) { m_Fall ++; }
 
-	if ( m_Action == HeroAction::DEFEND )
+	if ( m_Action == 32 ) //HeroAction::DEFEND )
 	{
 		if ( m_FrontDefence < 100 ) { m_FrontDefence ++; }
 	}

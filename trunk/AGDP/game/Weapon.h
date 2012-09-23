@@ -11,29 +11,29 @@
 class Weapon
 {
 private:
-	int m_TimeTik;		//Count down TimeTik from Frame Wait
-	ClipVertex	m_Pic;
+	int				m_TimeTik;		//Count down TimeTik from Frame Wait
+	ClipVertex		m_Pic;
 	ObjectInfo_Sptr m_ObjectInfo;
-	HeroAction::e	m_Action;//讽笆篈
+	int				m_Action;//讽笆篈
 	std::string     m_Frame;//Current Frame
-	int		m_FrameID;//Current Frame ID
+	int				m_FrameID;//Current Frame ID
 
-	int		m_Texture;//Current Texture ID
+	int				m_Texture;//Current Texture ID
 	int             m_PicID;
-	int		m_PicW;//W篒ちΩ计
-	int		m_PicH;//H篒ちΩ计
-	int		m_PicX;
-	int		m_PicY;
+	int				m_PicW;//W篒ちΩ计
+	int				m_PicH;//H篒ちΩ计
+	int				m_PicX;
+	int				m_PicY;
 
-	Vector3		m_Position;
-	float		m_CenterX, m_CenterY;
-	Vector3		m_Vel;
-	Bodys		m_Bodys;
-	float		m_Angle;
-	bool		m_FaceSide;//true , false オ
+	Vector3			m_Position;
+	float			m_CenterX, m_CenterY;
+	Vector3			m_Vel;
+	Bodys			m_Bodys;
+	float			m_Angle;
+	bool			m_FaceSide;//true , false オ
 
-	int		m_Team;//0ぃだ
-	int		m_HP;
+	int				m_Team;//0ぃだ
+	int				m_HP;
 
 protected:
 	void Init();

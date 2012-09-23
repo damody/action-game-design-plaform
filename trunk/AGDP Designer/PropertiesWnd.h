@@ -77,7 +77,7 @@ public:
 class CPropertiesWnd : public CDockablePane
 {
 private:
-	int m_EditProp;// 0-None 1-Basic 2-Frame 3-Bodys 4-Attack 5-Hit 6-Catch 7-Blood
+	int m_EditProp;// 0-None 1-Basic 2-Frame 3-Bodys 4-Attack 5-Hit 6-Catch 7-Blood 8-PictureData
 	int m_Index;
 // «Øºc
 public:
@@ -136,15 +136,18 @@ public:
 		SetPropListFont();
 	}
 	void InitPropList();
+
+	
 	void InitPropList_Frame();
-	void InitPropList_Body() {InitPropList_Body( 1 );}
+	void InitPropList_Body() {InitPropList_Body( 0 );}
 	void InitPropList_Body( int polygonCount );
-	void InitPropList_Attack() {InitPropList_Attack( 1 );}
+	void InitPropList_Attack() {InitPropList_Attack( 0 );}
 	void InitPropList_Attack( int polygonCount );
 	void InitPropList_HitData();
-	void InitPropList_CatchInfo() {InitPropList_CatchInfo( 1 );}
+	void InitPropList_CatchInfo() {InitPropList_CatchInfo( 0 );}
 	void InitPropList_CatchInfo( int polygonCount );
 	void InitPropList_BloodInfo();
+	void InitPropList_PictureData();
 
 	void RefreshPropList();
 	void RefreshPropList_Frame();
@@ -158,6 +161,7 @@ public:
 	void RefreshPropList_CatchInfo( int index );
 	void RefreshPropList_BloodInfo() {RefreshPropList_BloodInfo( 0 );}
 	void RefreshPropList_BloodInfo( int index );
+	void RefreshPropList_PictureData( int index );
 
 	void SetPropListFont();
 	static void AddNormalActionUcase( CMFCPropertyGridProperty* pProp );

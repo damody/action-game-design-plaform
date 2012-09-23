@@ -31,7 +31,7 @@ private:
 	int				m_TimeTik;		//Count down TimeTik from Frame Wait
 	ClipVertex		m_Pic;
 	HeroInfo_Sptr   m_HeroInfo;
-	HeroAction::e	m_Action;		//當下動作狀態
+	int				m_Action;		//當下動作狀態
 	std::string     m_Frame;		//Current Frame
 	int				m_FrameID;		//Current Frame ID
 

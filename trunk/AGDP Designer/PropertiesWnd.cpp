@@ -668,6 +668,61 @@ void CPropertiesWnd::InitPropList_BloodInfo()
 	m_wndPropList.ExpandAll();
 }
 
+
+void CPropertiesWnd::InitPropList_PictureData()
+{
+	m_EditProp = 7;
+	m_wndPropList.RemoveAll();
+	SetPropListFont();
+	m_wndPropList.EnableHeaderCtrl( FALSE );
+	m_wndPropList.EnableDescriptionArea();
+	m_wndPropList.SetVSDotNetLook();
+	m_wndPropList.MarkModifiedProperties();
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
+	CMFCPropertyGridProperty* pProp;
+	pProp = new CMFCPropertyGridProperty( _T( "Picture ID" ), _T("0"), _T( "圖片編號" ) );
+	pPropMain->AddSubItem( pProp );
+	pProp = new CMFCPropertyGridProperty( _T( "Picture Path" ), _T(" "), _T( "圖片路徑" ) );
+	pProp->AllowEdit( FALSE );
+	pPropMain->AddSubItem( pProp );
+	
+	CMFCPropertyGridProperty* pRowColumn = new CMFCPropertyGridProperty( _T( "分割行列" ), 0, TRUE );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "行" ), varInt() , _T( " " ));
+	pRowColumn->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "列" ), varInt() , _T( " " ));
+	pRowColumn->AddSubItem( pProp );
+	pPropMain->AddSubItem( pRowColumn );
+
+	CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty( _T( "Size" ), 0, TRUE );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "寬" ), varInt(), _T( "圖片貼出的寬度" ) );
+	pSize->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "高" ), varInt(), _T( "圖片貼出的高度" ) );
+	pSize->AddSubItem( pProp );
+	pPropMain->AddSubItem( pSize );
+}
+
+
+void CPropertiesWnd::RefreshPropList_PictureData( int index )
+{
+	if ( m_EditProp != 8 )
+	{
+		InitPropList_PictureData();
+		m_EditProp = 8;
+	}
+
+	if (g_HeroInfo == NULL)
+	{
+		AfxMessageBox(_T("No Target"));
+	}else if (index >= g_HeroInfo->m_PictureDatas.size() || index <0)
+	{
+		AfxMessageBox(_T("No Picture Data"));
+	}
+	
+	
+
+	
+}
+
 void CPropertiesWnd::AddNormalActionUcase( CMFCPropertyGridProperty* pProp )
 {
 	pProp->AddOption( _T( "STANDING" ) );
@@ -712,7 +767,6 @@ void CPropertiesWnd::AddNormalActionUcase( CMFCPropertyGridProperty* pProp )
 	pProp->AddOption( _T( "UNIQUE_SKILL" ) );
 }
 
-
 void CPropertiesWnd::AddNormalActionDcase( CMFCPropertyGridProperty* pProp )
 {
 	if ( g_ActiveFramesMap != NULL )
@@ -725,49 +779,6 @@ void CPropertiesWnd::AddNormalActionDcase( CMFCPropertyGridProperty* pProp )
 			pProp->AddOption( str );
 		}
 	}
-
-	/*
-		pProp->AddOption(_T("standing"));
-		pProp->AddOption(_T("walking"));
-		pProp->AddOption(_T("running"));
-		pProp->AddOption(_T("stop_running"));
-		pProp->AddOption(_T("heavy_weapon_walk"));
-		pProp->AddOption(_T("heavy_weapon_run"));
-		pProp->AddOption(_T("light_weapon_stand_attack"));
-		pProp->AddOption(_T("light_weapon_jump_attack"));
-		pProp->AddOption(_T("light_weapon_run_attack"));
-		pProp->AddOption(_T("light_weapon_dash_attack"));
-		pProp->AddOption(_T("light_weapon_throw"));
-		pProp->AddOption(_T("heavy_weapon_throw"));
-		pProp->AddOption(_T("light_weapon_jump_throw"));
-		pProp->AddOption(_T("heavy_weapon_jump_throw"));
-		pProp->AddOption(_T("drink"));
-		pProp->AddOption(_T("light_punch"));
-		pProp->AddOption(_T("light_kick"));
-		pProp->AddOption(_T("heavy_punch"));
-		pProp->AddOption(_T("heavy_kick"));
-		pProp->AddOption(_T("super_punch"));
-		pProp->AddOption(_T("super_kick"));
-		pProp->AddOption(_T("jump_punch"));
-		pProp->AddOption(_T("jump_kick"));
-		pProp->AddOption(_T("run_punch"));
-		pProp->AddOption(_T("run_kick"));
-		pProp->AddOption(_T("forward_fly_rowing"));
-		pProp->AddOption(_T("backward_fly_rowing"));
-		pProp->AddOption(_T("forward_rowing"));
-		pProp->AddOption(_T("backward_rowing"));
-		pProp->AddOption(_T("defend"));
-		pProp->AddOption(_T("defend_punch"));
-		pProp->AddOption(_T("defend_kick"));
-		pProp->AddOption(_T("catching"));
-		pProp->AddOption(_T("caught"));
-		pProp->AddOption(_T("falling"));
-		pProp->AddOption(_T("jump"));
-		pProp->AddOption(_T("crouch"));
-		pProp->AddOption(_T("injured"));
-		pProp->AddOption(_T("forward_lying"));
-		pProp->AddOption(_T("backward_lying"));
-		pProp->AddOption(_T("unique_skill"));*/
 }
 
 void CPropertiesWnd::AddPointXY( CMFCPropertyGridProperty*& pPolygon2D )
@@ -1194,7 +1205,6 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		frameInfo->m_DVZ = i;
 	}
 }
-
 
 void CPropertiesWnd::RefreshPropList_Body( int index )
 {
@@ -1687,5 +1697,8 @@ void CPropertiesWnd::RefreshCatchPoint( int i )
 	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->SetValue( varFloat( -frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y ) );
 }
+
+
+
 
 

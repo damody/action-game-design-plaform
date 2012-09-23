@@ -12,30 +12,30 @@
 class Chee
 {
 private:
-	int m_TimeTik;		//Count down TimeTik from Frame Wait
-	int m_TimeCount;	//發出後累計時間
-	ClipVertex	m_Pic;
+	int				m_TimeTik;		//Count down TimeTik from Frame Wait
+	int				m_TimeCount;	//發出後累計時間
+	ClipVertex		m_Pic;
 	ObjectInfo_Sptr m_ObjectInfo;
-	HeroAction::e	m_Action;//當下動作狀態
+	int 			m_Action;//當下動作狀態
 	std::string     m_Frame;//Current Frame
-	int		m_FrameID;//Current Frame ID
+	int				m_FrameID;//Current Frame ID
 
-	int		m_Texture;//Current Texture ID
+	int				m_Texture;//Current Texture ID
 	int             m_PicID;
-	int		m_PicW;//W截切次數
-	int		m_PicH;//H截切次數
-	int		m_PicX;
-	int		m_PicY;
+	int				m_PicW;//W截切次數
+	int				m_PicH;//H截切次數
+	int				m_PicX;
+	int				m_PicY;
 
-	Vector3		m_Position;
-	float		m_CenterX, m_CenterY;
-	Vector3		m_Vel;
-	Bodys		m_Bodys;
-	float		m_Angle;
-	bool		m_FaceSide;//true 右, false 左
+	Vector3			m_Position;
+	float			m_CenterX, m_CenterY;
+	Vector3			m_Vel;
+	Bodys			m_Bodys;
+	float			m_Angle;
+	bool			m_FaceSide;//true 右, false 左
 
-	int		m_Team;//0為不分
-	int		m_HP;
+	int				m_Team;//0為不分
+	int				m_HP;
 
 	Record_Sptr     m_Record;
 
