@@ -33,7 +33,7 @@ public:
 	void Init();
 	void Refresh();
 	void EditBody( int id );
-	void EditBodyPoint( int id);
+	void EditBodyPoint( int id );
 	void EditAttack( int id );
 	void EditAttackPoint( int id );
 	void EditCatch( int id );

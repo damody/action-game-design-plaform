@@ -9,7 +9,7 @@ Chee::Chee( void )
 Chee::Chee( std::string c ):
 	chee( c ), m_Position( Vector3( 0, 0, 0 ) ), m_Vel( Vector3( 0, 0, 0 ) ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 )
 {
-	m_ObjectInfo = g_ObjectInfoMG.GetObjectInfo( chee );
+	m_ObjectInfo = g_ObjectInfoManager.GetObjectInfo( chee );
 
 	if ( m_ObjectInfo.get() )
 	{
@@ -96,11 +96,11 @@ void Chee::Update( float dt )
 		m_FaceSide = true;
 	}//*/
 
-	if ( g_BGManager.CurrentBG() != NULL )
+	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
 	{
-		if ( !g_BGManager.CurrentBG()->InSpace( m_Position ) )
+		if ( !g_BackgroundManager.GetCurrentBackground()->InSpace( m_Position ) )
 		{
-			g_ObjectMG.Destory( this, 6 );
+			g_ObjectManager.Destory( this, 6 );
 		}
 	}
 

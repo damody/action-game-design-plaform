@@ -50,7 +50,7 @@ protected:
 	std::wstring m_MainWndCaption;
 	D3D_DRIVER_TYPE m_d3dDriverType;
 	D3DXCOLOR m_ClearColor;
-	int mClientWidth;
-	int mClientHeight;
+	int m_ClientWidth;
+	int m_ClientHeight;
 };
 

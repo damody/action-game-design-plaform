@@ -59,7 +59,7 @@ BEGIN_MESSAGE_MAP( CMainFrame, CMDIFrameWndEx )
 	ON_COMMAND( ID_CHECK_Property, &CMainFrame::OnCheckProperty )
 	ON_UPDATE_COMMAND_UI( ID_CHECK_Property, &CMainFrame::OnUpdateCheckProperty )
 	ON_WM_KEYDOWN()
-	ON_COMMAND(ID_BUTTON_RUN, &CMainFrame::OnButtonRun)
+	ON_COMMAND( ID_BUTTON_RUN, &CMainFrame::OnButtonRun )
 	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
@@ -92,7 +92,6 @@ int CMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	mdiTabParams.m_bAutoColor = TRUE;    // 設定為 FALSE 可停用 MDI 索引標籤的自動著色
 	mdiTabParams.m_bDocumentMenu = TRUE; // 啟用索引標籤區域右側的文件功能表
 	EnableMDITabbedGroups( TRUE, mdiTabParams );
-
 	m_wndRibbonBar.Create( this );
 	m_wndRibbonBar.LoadFromResource( IDR_RIBBON );
 
@@ -434,9 +433,9 @@ void CMainFrame::OnButtonAreaScale()
 BOOL CMainFrame::OnCmdMsg( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo )
 {
 	// TODO: 在此加入特定的程式碼和 (或) 呼叫基底類別
-	if (nID==ID_FILE_SAVE && nCode > 0 )
+	if ( nID == ID_FILE_SAVE && nCode > 0 )
 	{
-		AfxMessageBox(_T("save"));
+		AfxMessageBox( _T( "save" ) );
 	}
 
 	if ( m_D3DFrameView.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) )
@@ -535,16 +534,18 @@ void CMainFrame::OpenPictureView( CString& name, PictureData* pic, int index )
 void CMainFrame::OnFileNew()
 {
 	CFileNewDialog fileNew;
-	if(fileNew.DoModal()==IDOK){
-		if (fileNew.m_Type==0)
+
+	if ( fileNew.DoModal() == IDOK )
+	{
+		if ( fileNew.m_Type == 0 )
 		{
-			HeroInfo_RawPtr hero = HeroInfo_RawPtr(new HeroInfo);
+			HeroInfo_RawPtr hero = HeroInfo_RawPtr( new HeroInfo );
 			char buff[1000];
 			ConvStr::WcharToChar( fileNew.m_Name.GetBuffer( 0 ), buff );
 			hero->m_Name = std::string( buff );
-			m_wndFileView.AddFile(hero);
+			m_wndFileView.AddFile( hero );
 		}
-	}	
+	}
 }
 
 void CMainFrame::SwitchPictureView( int index )
@@ -571,13 +572,14 @@ bool CMainFrame::NewHeroViews( HeroInfo* hero )
 
 void CMainFrame::OnFileSave()
 {
-	if(g_HeroInfo!=NULL){
-		CString defaultName(g_HeroInfo->m_Name.c_str());
-		CFileDialog dlgFile( FALSE, _T("lua"),defaultName , OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T( "Lua File (*.lua)|*.lua||" ), NULL, 0 );
+	if ( g_HeroInfo != NULL )
+	{
+		CString defaultName( g_HeroInfo->m_Name.c_str() );
+		CFileDialog dlgFile( FALSE, _T( "lua" ), defaultName , OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T( "Lua File (*.lua)|*.lua||" ), NULL, 0 );
 		dlgFile.DoModal();
 		//AfxMessageBox( dlgFile.GetPathName() );
 		std::wstring path = dlgFile.GetPathName();
-		HeroInfo::WriteLua(g_HeroInfo,path);
+		HeroInfo::WriteLua( g_HeroInfo, path );
 	}
 }
 
@@ -589,16 +591,19 @@ void CMainFrame::OnFileOpen()
 void CMainFrame::OnButtonRun()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
-	if(g_HeroInfo!=NULL){
-		HeroInfo::WriteLua(g_HeroInfo,std::wstring(_T("AGDP\\temp.lua")));
+	if ( g_HeroInfo != NULL )
+	{
+		HeroInfo::WriteLua( g_HeroInfo, std::wstring( _T( "AGDP\\temp.lua" ) ) );
 		//執行AGDP.exe
 #ifdef _DEBUG
-		system("..\\Bin\\ActionGameDesignPlaform.exe -hero temp");
+		system( "..\\Bin\\ActionGameDesignPlaform.exe -hero temp" );
 #else
-		system("ActionGameDesignPlaform.exe -hero temp");
+		system( "ActionGameDesignPlaform.exe -hero temp" );
 #endif
-	}else{
-		AfxMessageBox( _T("No Target") );
+	}
+	else
+	{
+		AfxMessageBox( _T( "No Target" ) );
 	}
 }
 

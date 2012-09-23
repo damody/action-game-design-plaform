@@ -6,59 +6,57 @@
 class LuaMap : public std::map<int, std::string>
 {
 public:
-	LuaMap(){}
-	LuaMap(LuaCell_Sptr lsptr)
+	LuaMap() {}
+	LuaMap( LuaCell_Sptr lsptr, std::string tableName )
 	{
-		keys.clear();
-		keys = lsptr->GetLuaTableKeys("Action");
+		strings keys = lsptr->GetLuaTableKeys( tableName.c_str() );
 		this->clear();
-		for(int i=0; i<keys.size(); i++)
-		{
-			int _tmpKey = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
-			(*this)[_tmpKey] = keys[i];
-		}
-	}
-	LuaMap(std::string path)
-	{
-		LuaCell_Sptr lsptr = LuaCell_Sptr( new LuaCell );
-		lsptr->InputLuaFile(path.c_str());
-		keys.clear();
-		keys = lsptr->GetLuaTableKeys("Action");
-		this->clear();
-		for(int i=0; i<keys.size(); i++)
-		{
-			int _tmpKey = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
-			(*this)[_tmpKey] = keys[i];
-		}
-	}
-	~LuaMap(){}
 
-	void LoadHeroAction(LuaCell_Sptr lsptr)
-	{
-		keys.clear();
-		keys = lsptr->GetLuaTableKeys("Action");
-		this->clear();
-		for(int i=0; i<keys.size(); i++)
+		for ( int i = 0; i < ( int )keys.size(); i++ )
 		{
-			int _tmpKey = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
-			(*this)[_tmpKey] = keys[i];
+			int _tmpKey = lsptr->GetLua<int>( "%s/%s", tableName.c_str(), keys[i].c_str() );
+			( *this )[_tmpKey] = keys[i];
 		}
 	}
-	void LoadHeroAction(std::string path)
+	LuaMap( std::string path, std::string tableName )
 	{
 		LuaCell_Sptr lsptr = LuaCell_Sptr( new LuaCell );
-		lsptr->InputLuaFile(path.c_str());
-		keys.clear();
-		keys = lsptr->GetLuaTableKeys("Action");
+		lsptr->InputLuaFile( path.c_str() );
+		strings keys = lsptr->GetLuaTableKeys( tableName.c_str() );
 		this->clear();
-		for(int i=0; i<keys.size(); i++)
+
+		for ( int i = 0; i < ( int )keys.size(); i++ )
 		{
-			int _tmpKey = lsptr->GetLua<int>("Action/%s", keys[i].c_str());
-			(*this)[_tmpKey] = keys[i];
+			int _tmpKey = lsptr->GetLua<int>( "%s/%s", tableName.c_str(), keys[i].c_str() );
+			( *this )[_tmpKey] = keys[i];
 		}
 	}
-private:
-	strings keys;
+	~LuaMap() {}
+
+	void LoadData( LuaCell_Sptr lsptr, std::string tableName )
+	{
+		strings keys = lsptr->GetLuaTableKeys( tableName.c_str() );
+		this->clear();
+
+		for ( int i = 0; i < ( int )keys.size(); i++ )
+		{
+			int _tmpKey = lsptr->GetLua<int>( "%s/%s", tableName.c_str(), keys[i].c_str() );
+			( *this )[_tmpKey] = keys[i];
+		}
+	}
+	void LoadData( std::string path, std::string tableName )
+	{
+		LuaCell_Sptr lsptr = LuaCell_Sptr( new LuaCell );
+		lsptr->InputLuaFile( path.c_str() );
+		strings keys = lsptr->GetLuaTableKeys( tableName.c_str() );
+		this->clear();
+
+		for ( int i = 0; i < ( int )keys.size(); i++ )
+		{
+			int _tmpKey = lsptr->GetLua<int>( "%s/%s", tableName.c_str(), keys[i].c_str() );
+			( *this )[_tmpKey] = keys[i];
+		}
+	}
 };
 //typedef LuaMap HeroAction;
 

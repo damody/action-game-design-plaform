@@ -1,57 +1,70 @@
 #include "StdGame.h"
 #include "BGManager.h"
+#include "ConvStr.h"
 
-BGManager::BGManager( void ): m_CurrentBG( NULL ), m_CurrentBGM( 0 )
+BackgroundManager::BackgroundManager( void ): m_Current_Background( NULL ), m_Current_BGM( 0 )
 {
 }
 
 
-BGManager::~BGManager( void )
+BackgroundManager::~BackgroundManager( void )
 {
 }
 
-unsigned int BGManager::AddBG( const std::string& name, BackGround_Sptr bg )
+unsigned int BackgroundManager::AddBackground( const std::string& name, Background_Sptr bg )
 {
-	m_BGList.push_back( name );
-	m_BGMaps[name] = bg;
-	return m_BGList.size() - 1;
+	m_BackgroundList.push_back( name );
+	m_BackgroundMaps[name] = bg;
+	return m_BackgroundList.size() - 1;
 }
 
-std::vector<std::string> BGManager::GetBGList()
+std::vector<std::string> BackgroundManager::GetBackgroundList()
 {
-	return m_BGList;
+	return m_BackgroundList;
 }
 
-BackGround* BGManager::CurrentBG()
+Background* BackgroundManager::GetCurrentBackground()
 {
-	return m_CurrentBG;
+	return m_Current_Background;
 }
 
-void BGManager::SetCurrentBG( const std::string& name )
+void BackgroundManager::SetCurrentBackground( const std::string& name )
 {
-	m_CurrentBG = m_BGMaps[name].get();
+	m_Current_Background = m_BackgroundMaps[name].get();
+}
+
+void BackgroundManager::Set_BGM_PathList( const std::vector<std::string>& list )
+{
+	m_BGM_PathList.assign( list.begin(), list.end() );
+}
+
+void BackgroundManager::Set_BGM_Play( int index )
+{
+	if ( index >= ( int )m_BGM_PathList.size() || index < 0 ) {return;}
+
+	m_BGM_Player.OpenBGM( ConvStr::GetWstr( m_BGM_PathList[index] ) );
+	m_BGM_Player.PlayBGM();
+}
+
+void BackgroundManager::Set_BGM_Pause()
+{
+	m_BGM_Player.PauseBGM();
+}
+
+void BackgroundManager::Set_BGM_Stop()
+{
+	m_BGM_Player.StopBGM();
+}
+
+void BackgroundManager::Set_BGM_Voleum( int voleum )
+{
+	wchar_t buff[10];
+	wsprintf( buff, L"%d", voleum );
+	m_BGM_Player.SetVolume( std::wstring( buff ) );
 }
 
 
 
-int BGManager::AddBGM( const std::string& name, int index )
-{
-	m_BGMList.push_back( name );
-	m_BGMMap[name] = index;
-	return m_BGMList.size() - 1;
-}
 
-std::vector<std::string> BGManager::GetBGMList()
-{
-	return m_BGMList;
-}
 
-void BGManager::SetCurrentBGM( const std::string& name )
-{
-	m_CurrentBGM = m_BGMMap[name];
-}
 
-int BGManager::CurrentBGM()
-{
-	return m_CurrentBGM;
-}

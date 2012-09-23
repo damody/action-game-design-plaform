@@ -1,5 +1,5 @@
-require "object"
-require "action"
+require "Script/object"
+require "Script/action"
 
 name = "davis_ball"
 

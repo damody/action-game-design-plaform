@@ -40,7 +40,7 @@ struct CatchInfo
 };
 typedef std::vector<CatchInfo> CatchInfos;
 
-const std::string CatchPositionTable[] = 
+const std::string CatchPositionTable[] =
 {
 	"Neck",
 	"LEG",

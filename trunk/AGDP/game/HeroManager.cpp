@@ -163,9 +163,9 @@ void HeroManager::Destory( Hero_RawPtr hero, int time/*=0*/ )
 {
 	if ( !InTrashCan( hero ) )
 	{
-		Heroes::iterator it = GetHeroIt(hero);
+		Heroes::iterator it = GetHeroIt( hero );
 
-		if (it != m_Heroes.end())
+		if ( it != m_Heroes.end() )
 		{
 			Trash th;
 			th.m_Trash = hero;
@@ -181,8 +181,8 @@ void HeroManager::CleanTrash()
 	{
 		if ( it->m_Time <= 0 )
 		{
-			m_Heroes.erase(GetHeroIt(it->m_Trash));
-			delete(it->m_Trash);
+			m_Heroes.erase( GetHeroIt( it->m_Trash ) );
+			delete( it->m_Trash );
 			it = m_TrashCan.erase( it );
 		}
 		else

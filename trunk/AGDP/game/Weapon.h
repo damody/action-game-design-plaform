@@ -39,7 +39,7 @@ protected:
 	void Init();
 	void NextFrame();
 public:
-	const std::string weapon;
+	const std::string m_WeaponName;
 
 	Weapon( void );
 	Weapon( std::string w );

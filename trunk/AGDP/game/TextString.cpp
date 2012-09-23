@@ -2,17 +2,19 @@
 #include "game/TextString.h"
 #include "global.h"
 
-TextString::TextString(): OFFSET( 0.1f ),
+const float TextString::m_OFFSET = 0.1f;
+
+TextString::TextString():
 	m_Size( 50 ), m_OnGround( false ), m_Composition( Composition::LEFT ),
 	m_Position( Vector3( 0, 0, 0 ) ), m_ForeColor( Vector3( 0, 0, 0 ) )
 {
 }
 
-TextString::TextString( const std::wstring& str ): OFFSET( 0.1f ),
+TextString::TextString( const std::wstring& str ):
 	m_Str( str ), m_Size( 50 ), m_OnGround( false ), m_Composition( Composition::LEFT ),
 	m_Position( Vector3( 0, 0, 0 ) ), m_ForeColor( Vector3( 0, 0, 0 ) )
 {
-	m_TextLetters = g_TextMG.GetLetters( m_Str );
+	m_TextLetters = g_TextManager.GetLetters( m_Str );
 	lenght();
 }
 
@@ -40,14 +42,14 @@ void TextString::operator=( const std::wstring& str )
 {
 	this->clear();
 	m_Str.append( str );
-	m_TextLetters = g_TextMG.GetLetters( m_Str );
+	m_TextLetters = g_TextManager.GetLetters( m_Str );
 	lenght();
 }
 
 void TextString::operator+=( const std::wstring& str )
 {
 	m_Str.assign( str.begin(), str.end() );
-	TextLetters temp = g_TextMG.GetLetters( str );
+	TextLetters temp = g_TextManager.GetLetters( str );
 	m_TextLetters.assign( temp.begin(), temp.end() );
 	lenght();
 }
@@ -66,7 +68,7 @@ void TextString::lenght()
 		m_Lenght += m_Size * ( *it )->m_OffsetX_Fore;
 		m_Lenght += m_Size * ( *it )->m_ScaleW;
 		m_Lenght += m_Size * ( *it )->m_OffsetX_Back;
-		m_Lenght += m_Size * OFFSET;
+		m_Lenght += m_Size * m_OFFSET;
 	}
 }
 
@@ -104,7 +106,7 @@ void TextString::buildPoint()
 		p += m_Size * ( *it )->m_OffsetX_Fore;
 		tv.position.x = m_Position.x + p - c;
 		p += m_Size * ( *it )->m_ScaleW;
-		p += m_Size * ( *it )->m_OffsetX_Back + m_Size * OFFSET;
+		p += m_Size * ( *it )->m_OffsetX_Back + m_Size * m_OFFSET;
 		tv.position.y = m_Position.y;
 		tv.position.z = m_Position.z;
 		tv.size.x = m_Size * ( *it )->m_ScaleW;
@@ -138,15 +140,13 @@ void TextString::SetOnGround( bool g )
 	m_OnGround = g;
 }
 
-
-
 void SortLetters( TextVerteices& tvs, TextLetters& letters )
 {
 	for ( unsigned int i = 0 ; i < letters.size() ; i++ )
 	{
 		for ( unsigned int j = i + 1 ; j < letters.size() ; j++ )
 		{
-			if ( letters[i]->letter > letters[j]->letter )
+			if ( letters[i]->m_Letter > letters[j]->m_Letter )
 			{
 				TextLetter_Sptr temp;
 				TextVertex	temp_tv;

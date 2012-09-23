@@ -11,7 +11,7 @@
 #include "game/Weapon.h"
 #include "game/Chee.h"
 #include "game/Player.h"
-#include "game/BackGround.h"
+#include "game/Background.h"
 #include "game/TestRenderEffect.h"
 
 class InitDirect3DApp : public D3DApp
@@ -49,14 +49,13 @@ public:
 	InitDirect3DApp();
 	~InitDirect3DApp();
 	static InitDirect3DApp* dxAppInstance;
-	void initApp(int argc, char* argv[]);
+	void initApp( int argc, char* argv[] );
 private:
 	void InitTexture();
-	void LoadResource();
 	void LoadBlend();
 	void LoadData();
 	void InitPlayer();
-	void ParseCommandLine(int argc, char* argv[]);
+	void ParseCommandLine( int argc, char* argv[] );
 
 	void buildPointFX();//Load Shader
 	void buildPoint();//Shader Vertex
@@ -79,13 +78,13 @@ private:
 	void GoBackUI();
 	void ReflashTowerState();
 private:
-	ID3D11ShaderResourceView* SRVView1;
-	ID3D11RenderTargetView* RTVView1;
+	ID3D11ShaderResourceView* m_SRVView1;
+	ID3D11RenderTargetView* m_RTVView1;
 
-	ID3D11ShaderResourceView* SRVView2;
-	ID3D11RenderTargetView* RTVView2;
-	ID3D11ShaderResourceView* SRVViewRes;
-	ID3D11RenderTargetView* RTVViewRes;
+	ID3D11ShaderResourceView* m_SRVView2;
+	ID3D11RenderTargetView* m_RTVView2;
+	ID3D11ShaderResourceView* m_SRVViewRes;
+	ID3D11RenderTargetView* m_RTVViewRes;
 
 	ID3D11BlendState*	m_pBlendState_ADD;
 	ID3D11BlendState*	m_pBlendState_BLEND;

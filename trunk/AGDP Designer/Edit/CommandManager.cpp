@@ -2,9 +2,9 @@
 
 bool CommandManager::CallCommand( CommandBase* command )
 {
-	if( command )
+	if ( command )
 	{
-		if( command->Execute() )
+		if ( command->Execute() )
 		{
 			PushUndoCommand( command );
 			ClearRedoCommands();
@@ -29,9 +29,9 @@ void CommandManager::Redo()
 {
 	CommandBase* command = PopRedoCommand();
 
-	if( command )
+	if ( command )
 	{
-		if( command->Execute() )
+		if ( command->Execute() )
 		{
 			PushUndoCommand( command );
 		}
@@ -46,9 +46,9 @@ void CommandManager::Undo()
 {
 	CommandBase* command = PopUndoCommand();
 
-	if( command )
+	if ( command )
 	{
-		if( command->Unexecute() )
+		if ( command->Unexecute() )
 		{
 			PushRedoCommand( command );
 		}
@@ -71,41 +71,49 @@ bool CommandManager::CanUndo()
 
 void CommandManager::PushRedoCommand( CommandBase* command )
 {
-	if( command )
+	if ( command )
+	{
 		m_RedoCommands.push( command );
+	}
 }
 
 void CommandManager::PushUndoCommand( CommandBase* command )
 {
-	if( command )
+	if ( command )
+	{
 		m_UndoCommands.push( command );
+	}
 }
 
 CommandBase* CommandManager::PopRedoCommand()
 {
 	CommandBase* command = NULL;
-	if( !m_RedoCommands.empty() )
+
+	if ( !m_RedoCommands.empty() )
 	{
 		command = m_RedoCommands.top();
 		m_RedoCommands.pop();
 	}
+
 	return command;
 }
 
 CommandBase* CommandManager::PopUndoCommand()
 {
 	CommandBase* command = NULL;
-	if( !m_UndoCommands.empty() )
+
+	if ( !m_UndoCommands.empty() )
 	{
 		command = m_UndoCommands.top();
 		m_UndoCommands.pop();
 	}
+
 	return command;
 }
 
 void CommandManager::ClearRedoCommands()
 {
-	while( !m_RedoCommands.empty() )
+	while ( !m_RedoCommands.empty() )
 	{
 		delete m_RedoCommands.top();
 		m_RedoCommands.pop();
@@ -114,7 +122,7 @@ void CommandManager::ClearRedoCommands()
 
 void CommandManager::ClearUndoCommands()
 {
-	while( !m_UndoCommands.empty() )
+	while ( !m_UndoCommands.empty() )
 	{
 		delete m_UndoCommands.top();
 		m_UndoCommands.pop();

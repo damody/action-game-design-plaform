@@ -118,7 +118,7 @@ void D3DApp_Frame::initDirect3D()
 	            &m_FeatureLevelsSupported,
 	            &m_DeviceContext ) );
 	m_TextureManager = new TextureManager( m_d3dDevice );
-	g_TextureMG_Frame = m_TextureManager;
+	g_TextureManagerFrame = m_TextureManager;
 	OnResize( mClientWidth, mClientHeight );
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -332,12 +332,12 @@ void D3DApp_Frame::buildPoint()
 		m_PointVertices.insert( m_PointVertices.end(), pvs.begin(), pvs.end() );
 	}
 
-	for ( Area::iterator it = m_Catch.begin(); it != m_Catch.end(); ++it)
+	for ( Area::iterator it = m_Catch.begin(); it != m_Catch.end(); ++it )
 	{
 		PointVertices pvs = it->BuildPoint( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
 		m_PointVertices.insert( m_PointVertices.end(), pvs.begin(), pvs.end() );
 	}
-	
+
 	if ( !m_PointVertices.empty() )
 	{
 		m_vbd.ByteWidth = ( UINT )( sizeof( PointVertex ) * m_PointVertices.size() );
@@ -363,7 +363,7 @@ void D3DApp_Frame::buildPoint()
 		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
 	}
 
-	for ( Area::iterator it = m_Catch.begin(); it != m_Catch.end(); ++it)
+	for ( Area::iterator it = m_Catch.begin(); it != m_Catch.end(); ++it )
 	{
 		LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
 		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );

@@ -137,27 +137,27 @@ public:
 	}
 	void InitPropList();
 	void InitPropList_Frame();
-	void InitPropList_Body() {InitPropList_Body(1);}
-	void InitPropList_Body(int polygonCount);
-	void InitPropList_Attack() {InitPropList_Attack(1);}
-	void InitPropList_Attack(int polygonCount);
+	void InitPropList_Body() {InitPropList_Body( 1 );}
+	void InitPropList_Body( int polygonCount );
+	void InitPropList_Attack() {InitPropList_Attack( 1 );}
+	void InitPropList_Attack( int polygonCount );
 	void InitPropList_HitData();
-	void InitPropList_CatchInfo() {InitPropList_CatchInfo(1);}
-	void InitPropList_CatchInfo(int polygonCount);
+	void InitPropList_CatchInfo() {InitPropList_CatchInfo( 1 );}
+	void InitPropList_CatchInfo( int polygonCount );
 	void InitPropList_BloodInfo();
 
 	void RefreshPropList();
 	void RefreshPropList_Frame();
-	void RefreshPropList_Body() {RefreshPropList_Body(0);}
-	void RefreshPropList_Body(int index);
-	void RefreshPropList_Attack() {RefreshPropList_Attack(0);}
-	void RefreshPropList_Attack(int index);
-	void RefreshPropList_HitData() {RefreshPropList_HitData(0);}
-	void RefreshPropList_HitData(int index);
-	void RefreshPropList_CatchInfo() {RefreshPropList_CatchInfo(0);}
-	void RefreshPropList_CatchInfo(int index);
-	void RefreshPropList_BloodInfo() {RefreshPropList_BloodInfo(0);}
-	void RefreshPropList_BloodInfo(int index);
+	void RefreshPropList_Body() {RefreshPropList_Body( 0 );}
+	void RefreshPropList_Body( int index );
+	void RefreshPropList_Attack() {RefreshPropList_Attack( 0 );}
+	void RefreshPropList_Attack( int index );
+	void RefreshPropList_HitData() {RefreshPropList_HitData( 0 );}
+	void RefreshPropList_HitData( int index );
+	void RefreshPropList_CatchInfo() {RefreshPropList_CatchInfo( 0 );}
+	void RefreshPropList_CatchInfo( int index );
+	void RefreshPropList_BloodInfo() {RefreshPropList_BloodInfo( 0 );}
+	void RefreshPropList_BloodInfo( int index );
 
 	void SetPropListFont();
 	static void AddNormalActionUcase( CMFCPropertyGridProperty* pProp );
@@ -165,9 +165,9 @@ public:
 	static void AddPointXY( CMFCPropertyGridProperty*& pProp );
 
 	void RefreshCenter();
-	void RefreshBodyPoint(int i);
-	void RefreshAttackPoint(int i);
-	void RefreshCatchPoint(int i);
+	void RefreshBodyPoint( int i );
+	void RefreshAttackPoint( int i );
+	void RefreshCatchPoint( int i );
 public:
 	void Update();
 	void UpdatePropList_Frame();

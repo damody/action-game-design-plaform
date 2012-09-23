@@ -1,8 +1,8 @@
 #include "StdGame.h"
-#include "BackGround.h"
+#include "Background.h"
 #include "global.h"
 
-bool BackGround::CheckDataVaild( LuaCell_Sptr luadata )
+bool Background::CheckDataVaild( LuaCell_Sptr luadata )
 {
 	bool testOK = true;
 	testOK &= luadata->HasValue( "name" );
@@ -118,7 +118,7 @@ bool BackGround::CheckDataVaild( LuaCell_Sptr luadata )
 	return testOK;
 }
 
-void BackGround::LoadData( LuaCell_Sptr luadata )
+void Background::LoadData( LuaCell_Sptr luadata )
 {
 	m_LuaCell	= luadata;
 	m_Name		= luadata->GetLua<const char*>( "name" );
@@ -247,13 +247,13 @@ void BackGround::LoadData( LuaCell_Sptr luadata )
 	}
 }
 
-void BackGround::Update( float dt )
+void Background::Update( float dt )
 {
 	m_CurrentLight.m_Direction = m_LightPath.m_Direction.GetValue( ( float )( g_Time % m_TimeLine ) );
 	m_CurrentLight.m_LightStrength = m_LightPath.m_LightStrength.GetValue( ( float )( g_Time % m_TimeLine ) ).x;
 }
 
-void BackGround::BuildPoint()
+void Background::BuildPoint()
 {
 	m_CRVerteices.clear();
 	float cut = g_Camera->Offsidelength() * 0.19;
@@ -280,6 +280,7 @@ void BackGround::BuildPoint()
 				{
 					continue;
 				}
+
 				crv.rotation.x = it->m_Rotation.x;
 				crv.rotation.y = it->m_Rotation.y;
 				crv.rotation.z = it->m_Rotation.z;
@@ -289,7 +290,6 @@ void BackGround::BuildPoint()
 				crv.color.y = it->m_Color.y;
 				crv.color.z = it->m_Color.z;
 				crv.color.w = it->m_Color.w;
-				
 				m_CRVerteices.push_back( crv );
 			}
 		}
@@ -362,7 +362,7 @@ void BackGround::BuildPoint()
 
 
 
-Vector3 BackGround::AlignmentSpace( const Vector3& pIn )
+Vector3 Background::AlignmentSpace( const Vector3& pIn )
 {
 	Vector3 pOut  = pIn;
 	float   error = 999999.9f;
@@ -424,7 +424,7 @@ Vector3 BackGround::AlignmentSpace( const Vector3& pIn )
 	return pOut;
 }
 
-bool BackGround::InSpace( const Vector3& pIn )
+bool Background::InSpace( const Vector3& pIn )
 {
 	for ( AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ; it++ )
 	{
@@ -456,7 +456,7 @@ bool BackGround::InSpace( const Vector3& pIn )
 	return false;
 }
 
-bool BackGround::InBan( const Vector3& pIn )
+bool Background::InBan( const Vector3& pIn )
 {
 	for ( AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ; it++ )
 	{
@@ -476,7 +476,7 @@ bool BackGround::InBan( const Vector3& pIn )
 	return false;
 }
 
-Vector3 BackGround::AlignmentBan( const Vector3& pIn , const Vector3& p0 )
+Vector3 Background::AlignmentBan( const Vector3& pIn , const Vector3& p0 )
 {
 	if ( InBan( pIn ) )
 	{
@@ -499,22 +499,22 @@ Vector3 BackGround::AlignmentBan( const Vector3& pIn , const Vector3& p0 )
 	return pIn;
 }
 
-float BackGround::Width()
+float Background::Width()
 {
 	return m_Width;
 }
 
-float BackGround::Gravity()
+float Background::Gravity()
 {
 	return m_Gravity;
 }
 
-ParallelLight BackGround::GetParallelLight()
+ParallelLight Background::GetParallelLight()
 {
 	return m_CurrentLight;
 }
 
-AxisAlignedBoxs::iterator BackGround::InWhichBan( const Vector3& pIn )
+AxisAlignedBoxs::iterator Background::InWhichBan( const Vector3& pIn )
 {
 	for ( AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ; it++ )
 	{
@@ -538,7 +538,7 @@ AxisAlignedBoxs::iterator BackGround::InWhichBan( const Vector3& pIn )
 	return m_BanBounding.end();
 }
 
-AxisAlignedBoxs::iterator BackGround::InWhichSpace( const Vector3& pIn )
+AxisAlignedBoxs::iterator Background::InWhichSpace( const Vector3& pIn )
 {
 	for ( AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ; it++ )
 	{
@@ -554,7 +554,7 @@ AxisAlignedBoxs::iterator BackGround::InWhichSpace( const Vector3& pIn )
 	return m_SpaceBounding.end();
 }
 
-int BackGround::AboveSpaceBottom( const Vector3& pIn )
+int Background::AboveSpaceBottom( const Vector3& pIn )
 {
 	for ( AxisAlignedBoxs::iterator it = m_SpaceBounding.begin(); it != m_SpaceBounding.end() ; it++ )
 	{
@@ -581,7 +581,7 @@ int BackGround::AboveSpaceBottom( const Vector3& pIn )
 	return 2;
 }
 
-int BackGround::AboveBanTop( const Vector3& pIn )
+int Background::AboveBanTop( const Vector3& pIn )
 {
 	for ( AxisAlignedBoxs::iterator it = m_BanBounding.begin(); it != m_BanBounding.end() ; it++ )
 	{
@@ -608,7 +608,7 @@ int BackGround::AboveBanTop( const Vector3& pIn )
 	return 2;
 }
 
-int BackGround::AboveGround( const Vector3& pIn )
+int Background::AboveGround( const Vector3& pIn )
 {
 	int b = AboveBanTop( pIn ), p = AboveSpaceBottom( pIn );
 
@@ -627,7 +627,7 @@ int BackGround::AboveGround( const Vector3& pIn )
 	else { return 2; }
 }
 
-bool BackGround::isOnGround( const Vector3& pIn , const Vector3& dp, Vector3* pOut )
+bool Background::isOnGround( const Vector3& pIn , const Vector3& dp, Vector3* pOut )
 {
 	Vector3 fp = pIn;
 	int n = 3;			//取樣數，必須大於或等於二

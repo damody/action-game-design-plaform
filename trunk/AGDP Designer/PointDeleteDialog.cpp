@@ -9,26 +9,25 @@
 
 // CPointDeleteDialog 對話方塊
 
-IMPLEMENT_DYNAMIC(CPointDeleteDialog, CDialogEx)
+IMPLEMENT_DYNAMIC( CPointDeleteDialog, CDialogEx )
 
-CPointDeleteDialog::CPointDeleteDialog( int max,CWnd* pParent /*= NULL*/ )
-: CDialogEx(CPointDeleteDialog::IDD, pParent),m_MaxID(max),m_CurID(0)
+CPointDeleteDialog::CPointDeleteDialog( int max, CWnd* pParent /*= NULL*/ )
+	: CDialogEx( CPointDeleteDialog::IDD, pParent ), m_MaxID( max ), m_CurID( 0 )
 {
-
 }
 
 CPointDeleteDialog::~CPointDeleteDialog()
 {
 }
 
-void CPointDeleteDialog::DoDataExchange(CDataExchange* pDX)
+void CPointDeleteDialog::DoDataExchange( CDataExchange* pDX )
 {
-	CDialogEx::DoDataExchange(pDX);
+	CDialogEx::DoDataExchange( pDX );
 }
 
 
-BEGIN_MESSAGE_MAP(CPointDeleteDialog, CDialogEx)
-	ON_CBN_SELCHANGE(IDC_POINTID, &CPointDeleteDialog::OnCbnSelchangePointid)
+BEGIN_MESSAGE_MAP( CPointDeleteDialog, CDialogEx )
+	ON_CBN_SELCHANGE( IDC_POINTID, &CPointDeleteDialog::OnCbnSelchangePointid )
 END_MESSAGE_MAP()
 
 
@@ -38,19 +37,21 @@ END_MESSAGE_MAP()
 void CPointDeleteDialog::OnCbnSelchangePointid()
 {
 	// TODO: 在此加入控制項告知處理常式程式碼
-	m_CurID = ((CComboBox*)GetDlgItem(IDC_POINTID))->GetCurSel();
+	m_CurID = ( ( CComboBox* )GetDlgItem( IDC_POINTID ) )->GetCurSel();
 }
 
 BOOL CPointDeleteDialog::OnInitDialog()
 {
 	BOOL reasult = CDialog::OnInitDialog();
-	CComboBox* cb = (CComboBox*)GetDlgItem(IDC_POINTID);
-	for (int i=0 ; i<m_MaxID ; i++)
+	CComboBox* cb = ( CComboBox* )GetDlgItem( IDC_POINTID );
+
+	for ( int i = 0 ; i < m_MaxID ; i++ )
 	{
 		char buff[1000];
-		sprintf(buff,"%d",i);
-		cb->AddString(CString(buff));
+		sprintf( buff, "%d", i );
+		cb->AddString( CString( buff ) );
 	}
-	cb->SetCurSel(0);
+
+	cb->SetCurSel( 0 );
 	return reasult;
 }

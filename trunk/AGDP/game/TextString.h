@@ -21,7 +21,7 @@ struct Composition
 class TextString
 {
 private:
-	const float OFFSET;
+	static const float m_OFFSET;
 	std::wstring	m_Str;
 
 	float		m_Lenght;

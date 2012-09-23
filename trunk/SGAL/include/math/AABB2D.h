@@ -13,18 +13,21 @@ public:
 			AddPoint( poly.const_Points()[i] );
 		}
 	}*/
-	void AddPoint(const Vector2& p);
-	AABB2D(){}
-	AABB2D(const Vector2& orgin)
-		:m_Min(orgin), m_Max(orgin)
+	void AddPoint( const Vector2& p );
+	AABB2D() {}
+	AABB2D( const Vector2& orgin )
+		: m_Min( orgin ), m_Max( orgin )
 	{}
-	void ReBuild(const Vec2s& vec2s)
+	void ReBuild( const Vec2s& vec2s )
 	{
 		m_Min = m_Max = vec2s.front();
-		for (size_t i = 1; i < vec2s.size(); i++) 
-			AddPoint(vec2s[i]);
+
+		for ( size_t i = 1; i < vec2s.size(); i++ )
+		{
+			AddPoint( vec2s[i] );
+		}
 	}
-	void Larger(float val);
+	void Larger( float val );
 	void SetBounding( float left, float right, float top, float down );
 	bool IsContain( const AABB2D& rhs );
 	bool IsCollision( const AABB2D& rhs );

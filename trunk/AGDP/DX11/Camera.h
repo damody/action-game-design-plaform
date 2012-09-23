@@ -11,7 +11,7 @@
 class Camera
 {
 private:
-	Vector3 m_LookAT;
+	Vector3 m_LookAt;
 	union
 	{
 		//極座標 p(半徑,z軸-x軸 角度, y軸-xz平面 角度)

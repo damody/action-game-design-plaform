@@ -64,7 +64,7 @@ struct LightPath
 	HsplineCurve m_LightStrength;
 };
 
-class BackGround
+class Background
 {
 private:
 	LuaCell_Sptr	m_LuaCell;
@@ -91,8 +91,8 @@ private:
 //	int _isOnGround(Vector3 &pos);
 
 public:
-	BackGround() {}
-	~BackGround() {}
+	Background() {}
+	~Background() {}
 
 	std::string	 m_Name;
 	BGVerteices	 m_BGVerteices;
@@ -124,6 +124,6 @@ public:
 	int		AboveGround( const Vector3& pIn );
 	bool 	isOnGround( const Vector3& pIn , const Vector3& dp, Vector3* pOut );
 };
-SHARE_PTR( BackGround );
+SHARE_PTR( Background );
 
-typedef std::map<std::string, BackGround_Sptr> BGMaps;
+typedef std::map<std::string, Background_Sptr> BackgroundMaps;

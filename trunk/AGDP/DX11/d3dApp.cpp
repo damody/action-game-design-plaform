@@ -49,8 +49,8 @@ D3DApp::D3DApp()
 	m_d3dDriverType  = D3D_DRIVER_TYPE_HARDWARE;
 	//md3dDriverType  = D3D_DRIVER_TYPE_REFERENCE;
 	m_ClearColor     = D3DXCOLOR( 0.3f, 0.2f, 0.1f, 1.0f );
-	mClientWidth    = 1440;
-	mClientHeight   = 900;
+	m_ClientWidth    = 1440;
+	m_ClientHeight   = 900;
 }
 
 D3DApp::~D3DApp()
@@ -90,7 +90,7 @@ void D3DApp::initDirect3D()
 	m_DXUT_UI = new DXUTUI;
 	m_DXUT_UI->InitDXUT();
 	m_DXUT_UI->SetWindow( m_hMainWnd );
-	m_DXUT_UI->CreateDevice( mClientWidth, mClientHeight );
+	m_DXUT_UI->CreateDevice( m_ClientWidth, m_ClientHeight );
 	m_d3dDevice = m_DXUT_UI->GetDevice();
 	g_d3dDevice = m_DXUT_UI->GetDevice();
 	m_DeviceContext = m_DXUT_UI->GetDeviceContext();
@@ -107,7 +107,7 @@ void D3DApp::OnResize()
 	ReleaseCOM( m_RenderTargetView );
 	ReleaseCOM( m_DepthStencilView );
 	ReleaseCOM( m_DepthStencilBuffer );
-	DXUTResizeDXGIBuffers( mClientWidth, mClientHeight, 0 );
+	DXUTResizeDXGIBuffers( m_ClientWidth, m_ClientHeight, 0 );
 	// Resize the swap chain and recreate the render target view.
 	//HR(mSwapChain->ResizeBuffers(2, mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, 0));
 	ID3D11Texture2D* backBuffer;
@@ -116,8 +116,8 @@ void D3DApp::OnResize()
 	ReleaseCOM( backBuffer );
 	// Create the depth/stencil buffer and view.
 	D3D11_TEXTURE2D_DESC depthStencilDesc;
-	depthStencilDesc.Width     = mClientWidth;
-	depthStencilDesc.Height    = mClientHeight;
+	depthStencilDesc.Width     = m_ClientWidth;
+	depthStencilDesc.Height    = m_ClientHeight;
 	depthStencilDesc.MipLevels = 1;
 	depthStencilDesc.ArraySize = 1;
 	depthStencilDesc.Format    = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -135,8 +135,8 @@ void D3DApp::OnResize()
 	D3D11_VIEWPORT vp;
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
-	vp.Width    = ( float )mClientWidth;
-	vp.Height   = ( float )mClientHeight;
+	vp.Width    = ( float )m_ClientWidth;
+	vp.Height   = ( float )m_ClientHeight;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	m_DeviceContext->RSSetViewports( 1, &vp );
@@ -176,8 +176,8 @@ LRESULT D3DApp::msgProc( UINT msg, WPARAM wParam, LPARAM lParam )
 		// WM_SIZE is sent when the user resizes the window.
 	case WM_SIZE:
 		// Save the new client area dimensions.
-		mClientWidth  = LOWORD( lParam );
-		mClientHeight = HIWORD( lParam );
+		m_ClientWidth  = LOWORD( lParam );
+		m_ClientHeight = HIWORD( lParam );
 
 		if ( m_d3dDevice )
 		{
@@ -324,7 +324,7 @@ void D3DApp::initMainWindow()
 	}
 
 	// Compute window rectangle dimensions based on requested client area dimensions.
-	RECT R = { 0, 0, mClientWidth, mClientHeight };
+	RECT R = { 0, 0, m_ClientWidth, m_ClientHeight };
 	AdjustWindowRect( &R, WS_OVERLAPPEDWINDOW, false );
 	int width  = R.right - R.left;
 	int height = R.bottom - R.top;
