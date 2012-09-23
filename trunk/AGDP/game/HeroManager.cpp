@@ -14,10 +14,18 @@ HeroManager::~HeroManager( void )
 void HeroManager::Update( float dt )
 {
 	CleanTrash();
-
+	BodysCollision.PrepareForCollision();
 	for ( Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end(); it++ )
 	{
 		( *it )->Update( dt );
+
+		Heroes t_heros = BodysCollision.GetCollision(*it, GetPolygonsFromAttack());
+		for(Heroes::iterator it_hero = t_heros.begin();
+			it_hero != t_heros.end(); ++it_hero)
+		{
+			std::cout << "be hit" << std::endl;
+			// do something...
+		}
 	}
 }
 

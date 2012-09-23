@@ -57,8 +57,8 @@ public:
 				it_poly != GetPolygons()( *it )->end(); ++it_poly)
 			{
 				it_poly->CheckBuildAABB();
-				mXbinds.push_back( MyAxis_bind( it, &( it_poly->AABB().m_Max ) ) );
-				mXbinds.push_back( MyAxis_bind( it, &( it_poly->AABB().m_Min ) ) );
+				mXbinds.push_back( MyAxis_bind( *it, &( it_poly->AABB().m_Max ) ) );
+				mXbinds.push_back( MyAxis_bind( *it, &( it_poly->AABB().m_Min ) ) );
 			}
 		}
 
@@ -73,13 +73,18 @@ public:
 		{
 			return res;
 		}
-		bool isCollision = false;
+		
 		//Polygon2D poly = *getpoly( obj );
 		Polygon2Ds* polys = getpolys( obj );
+		if( polys->size() == 0)
+		{
+			return res;
+		}
 		//poly.CheckBuildAABB();
 		//poly.CheckBuildPolygon();
 		//AABB2D aabb = poly.AABB();
-		AABB2D aabb = polys->at(0);
+		bool isCollision = false;
+		AABB2D aabb = polys->at(0).AABB();
 		for(Polygon2Ds::iterator it_poly = polys->begin()+1;
 			it_poly != polys->end(); ++it_poly)
 		{
@@ -171,6 +176,15 @@ public:
 		if ( res.size() > 1 )
 		{
 			DoubleCheck( res );
+		}
+
+		for( ParentPtrs::iterator it = res.begin();
+			it != res.end(); ++it)
+		{
+			if(*it == obj)
+			{
+				it = res.erase(it)-1;
+			}
 		}
 
 		return res;
