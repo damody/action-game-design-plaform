@@ -35,7 +35,7 @@ heavy_walking_speedz=1.850000
 heavy_running_speed=6.200000
 heavy_running_speedz=1.000000
 
---落地切換設定
+--落地切換設定，只要這裡沒設定的，落地時都切換到 crouch[0]
 air_crouch_map={
 --格式： { Action, Frame, FrameID }
 {Action.InTheAir, "crouch", 0},
@@ -48,7 +48,21 @@ air_crouch_map={
 
 frame =
 {
-	standing = {}
+	--必要 Frame
+	default  = {},		--預設，人物初始 Frame ，通常也作為所有招式結束後跳轉對象，必須要是 Action.Standing 
+	standing = {},		--地上站立
+	walking  = {},		--地上行走
+	in_the_air = {},	--必須有 in_the_air[0]，在空中的預設 Frame ，只要在空中處於 Action.Standing 就會切換到 in_the_air[0]
+	injured = {},		--被擊中
+	lying = {},			--倒地
+	falling = {},		--被擊飛
+	crouch = {},		--必須有 crouch[0] 給落地切換，預設支援LF2式的衝跳切換
+	--通常都會有的 Frame
+	running      = {},	--與stop_running一組。預設按法為>>，不靠 hit 切換
+	stop_running = {},	--與running一組，見上方說明
+	jump         = {},	--跳躍
+	dash_front   = {},	--與 dash_back 一組，預設在此 Frame 按下反向方向建會跳到 dash_back
+	dash_back    = {},	--與 dash_front 一組，見上方說明
 }
 
 frame.standing[1]=
