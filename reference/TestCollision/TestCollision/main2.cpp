@@ -114,7 +114,17 @@ void Update()
 	for(std::vector<Tbox*>::iterator it = t_Tboxs.begin();
 		it != t_Tboxs.end(); ++it)
 	{
-		(*it)->OnCollisionEnter();
+		for(Tboxs::iterator tit = g_Tboxs.begin();
+			tit!= g_Tboxs.end(); ++tit)
+		{
+			if(*tit == *it) 
+			{
+				g_Tboxs.erase(tit);
+				break;
+			}
+		}
+		//(*it)->OnCollisionEnter();
+		TboxPtrManager.ErasePtr(*it);
 	}
 	memset(g_bKeys, 0, sizeof(g_bKeys));
 }
