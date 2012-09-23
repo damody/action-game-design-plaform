@@ -150,13 +150,13 @@ void Hero::Update( float dt )
 	bool inAir = false;
 
 	//場地限制
-	if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
+	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
 	{
-		pastInAir = g_BackGroundManager.GetCurrentBackGround()->AboveGround( pastPos ) == 1;
-		inAir = !g_BackGroundManager.GetCurrentBackGround()->isOnGround( pastPos, m_Vel, &m_Position );
-		//SetPosition(g_BGManager.GetCurrentBackGround()->AlignmentSpace(m_Position));
-		//SetPosition(g_BGManager.GetCurrentBackGround()->AlignmentBan(m_Position,pastPos));
-		//inAir	= g_BGManager.GetCurrentBackGround()->AboveGround(m_Position) == 1;
+		pastInAir = g_BackgroundManager.GetCurrentBackground()->AboveGround( pastPos ) == 1;
+		inAir = !g_BackgroundManager.GetCurrentBackground()->isOnGround( pastPos, m_Vel, &m_Position );
+		//SetPosition(g_BGManager.GetCurrentBackground()->AlignmentSpace(m_Position));
+		//SetPosition(g_BGManager.GetCurrentBackground()->AlignmentBan(m_Position,pastPos));
+		//inAir	= g_BGManager.GetCurrentBackground()->AboveGround(m_Position) == 1;
 	}
 
 	if ( !inAir )  	//地上

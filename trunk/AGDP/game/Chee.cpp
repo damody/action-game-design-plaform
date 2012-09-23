@@ -96,9 +96,9 @@ void Chee::Update( float dt )
 		m_FaceSide = true;
 	}//*/
 
-	if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
+	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
 	{
-		if ( !g_BackGroundManager.GetCurrentBackGround()->InSpace( m_Position ) )
+		if ( !g_BackgroundManager.GetCurrentBackground()->InSpace( m_Position ) )
 		{
 			g_ObjectManager.Destory( this, 6 );
 		}

@@ -11,7 +11,7 @@
 #include "game/Weapon.h"
 #include "game/Chee.h"
 #include "game/Player.h"
-#include "game/BackGround.h"
+#include "game/Background.h"
 #include "game/TestRenderEffect.h"
 
 class InitDirect3DApp : public D3DApp

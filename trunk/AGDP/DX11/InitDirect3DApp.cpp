@@ -129,9 +129,9 @@ void InitDirect3DApp::UpdateScene( float dt )
 			m_Player.Update();
 
 			//Background Update
-			if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
+			if ( g_BackgroundManager.GetCurrentBackground() != NULL )
 			{
-				g_BackGroundManager.GetCurrentBackGround()->Update( dt );
+				g_BackgroundManager.GetCurrentBackground()->Update( dt );
 				BackgroundDataUpdate();
 			}
 
@@ -213,7 +213,7 @@ void InitDirect3DApp::DrawScene()
 	m_DeviceContext->Draw( ( UINT )m_CRVerteices.size(), 0 );
 
 	//Draw Background
-	if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
+	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
 	{
 		UINT offset = 0;
 		UINT stride2 = sizeof( BGVertex );
@@ -221,7 +221,7 @@ void InitDirect3DApp::DrawScene()
 		m_DeviceContext->IASetInputLayout( m_PLayout_Background );
 		m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_Background, &stride2, &offset );
 
-		for ( DrawVertexGroups::iterator it = g_BackGroundManager.GetCurrentBackGround()->m_DrawVertexGroups.begin(); it != g_BackGroundManager.GetCurrentBackGround()->m_DrawVertexGroups.end(); ++it )
+		for ( DrawVertexGroups::iterator it = g_BackgroundManager.GetCurrentBackground()->m_DrawVertexGroups.begin(); it != g_BackgroundManager.GetCurrentBackground()->m_DrawVertexGroups.end(); ++it )
 		{
 			if ( it->texture.get() )
 			{
@@ -530,17 +530,17 @@ void InitDirect3DApp::buildPoint()
 	ReleaseCOM( m_Buffer_BodyLine );
 	ReleaseCOM( m_Buffer_Text );
 
-	if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
+	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
 	{
-		g_BackGroundManager.GetCurrentBackGround()->BuildPoint();
+		g_BackgroundManager.GetCurrentBackground()->BuildPoint();
 	}
 
 	//set color rect
 	m_CRVerteices.clear();
 
-	if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
+	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
 	{
-		m_CRVerteices.assign( g_BackGroundManager.GetCurrentBackGround()->m_CRVerteices.begin(), g_BackGroundManager.GetCurrentBackGround()->m_CRVerteices.end() );
+		m_CRVerteices.assign( g_BackgroundManager.GetCurrentBackground()->m_CRVerteices.begin(), g_BackgroundManager.GetCurrentBackground()->m_CRVerteices.end() );
 	}
 
 	if ( !m_CRVerteices.empty() )
@@ -553,12 +553,12 @@ void InitDirect3DApp::buildPoint()
 	}
 
 	// set background
-	if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
+	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
 	{
-		m_vbd.ByteWidth = ( UINT )( sizeof( BGVertex ) * g_BackGroundManager.GetCurrentBackGround()->m_BGVerteices.size() );
+		m_vbd.ByteWidth = ( UINT )( sizeof( BGVertex ) * g_BackgroundManager.GetCurrentBackground()->m_BGVerteices.size() );
 		m_vbd.StructureByteStride = sizeof( BGVertex );
 		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &g_BackGroundManager.GetCurrentBackGround()->m_BGVerteices[0];
+		vinitData.pSysMem = &g_BackgroundManager.GetCurrentBackground()->m_BGVerteices[0];
 		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Background ) );
 	}
 
@@ -843,12 +843,12 @@ void InitDirect3DApp::LoadData()
 		g_HeroInfoManager.AddHeroInfo( heroInfos[idx]->m_Name, heroInfos[idx] );
 	}
 	//AddBG
-	std::vector<BackGround_Sptr> backGrounds;
-	backGrounds = LuaResource::LoadLua<BackGround>( "backGround" );
+	std::vector<Background_Sptr> backGrounds;
+	backGrounds = LuaResource::LoadLua<Background>( "backGround" );
 
 	for ( int idx = 0; idx < backGrounds.size(); idx++ )
 	{
-		g_BackGroundManager.AddBackGround( backGrounds[idx]->m_Name , backGrounds[idx] );
+		g_BackgroundManager.AddBackground( backGrounds[idx]->m_Name , backGrounds[idx] );
 	}
 	
 	//AddObjectInfo
@@ -861,7 +861,7 @@ void InitDirect3DApp::LoadData()
 	
 	//Add Background Music
 	std::vector<std::string> BGMpath = LuaResource::LoadMusic("mp3");
-	g_BackGroundManager.Set_BGM_PathList(BGMpath);
+	g_BackgroundManager.Set_BGM_PathList(BGMpath);
 	
 	//Add Sound
 	std::vector<std::string> WAVpath = LuaResource::LoadMusic("wav");
@@ -873,8 +873,8 @@ void InitDirect3DApp::LoadData()
 	
 
 	//*test
-		g_BackGroundManager.SetCurrentBackGround( backGrounds.back()->m_Name );//set last element be current background
-		g_BackGroundManager.Set_BGM_Play(0);
+		g_BackgroundManager.SetCurrentBackground( backGrounds.back()->m_Name );//set last element be current background
+		g_BackgroundManager.Set_BGM_Play(0);
 		g_ObjectManager.CreateWeapon( "Bat", Vector3( 600, 0, 600 ) );
 	//*/
 }
@@ -917,9 +917,9 @@ int InitDirect3DApp::UpdateInput()
 			m_Player.Update();
 
 			//Background Update
-			if ( g_BackGroundManager.GetCurrentBackGround() != NULL )
+			if ( g_BackgroundManager.GetCurrentBackground() != NULL )
 			{
-				g_BackGroundManager.GetCurrentBackGround()->Update( 0 );
+				g_BackgroundManager.GetCurrentBackground()->Update( 0 );
 				BackgroundDataUpdate();
 			}
 		}
@@ -1195,9 +1195,9 @@ void InitDirect3DApp::UpdateCamera()
 		float m = m_ClientWidth - g_Camera->LookAt().x;
 		g_Camera->MoveX( m * 0.05f );
 	}
-	else if ( m_Player.m_Hero->Position().x > g_BackGroundManager.GetCurrentBackGround()->Width() - m_ClientWidth )
+	else if ( m_Player.m_Hero->Position().x > g_BackgroundManager.GetCurrentBackground()->Width() - m_ClientWidth )
 	{
-		float m = g_BackGroundManager.GetCurrentBackGround()->Width() - m_ClientWidth - g_Camera->LookAt().x;
+		float m = g_BackgroundManager.GetCurrentBackground()->Width() - m_ClientWidth - g_Camera->LookAt().x;
 		g_Camera->MoveX( m * 0.05f );
 	}
 	else
@@ -1224,7 +1224,7 @@ void InitDirect3DApp::UpdateCamera()
 
 void InitDirect3DApp::BackgroundDataUpdate()
 {
-	ParallelLight pl = g_BackGroundManager.GetCurrentBackGround()->GetParallelLight();
+	ParallelLight pl = g_BackgroundManager.GetCurrentBackground()->GetParallelLight();
 	m_Shadow_lightDir->SetRawValue( &pl.m_Direction[0], 0, sizeof( float ) * 3 );
 	m_Shadow_lightStr->SetFloat( pl.m_LightStrength * 0.1f );
 }

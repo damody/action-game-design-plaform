@@ -18,7 +18,7 @@ extern HeroInfoManager	g_HeroInfoManager;
 extern HeroManager	g_HeroManager;
 extern ObjectInfoManager	g_ObjectInfoManager;
 extern ObjectManager		g_ObjectManager;
-extern BackGroundManager	g_BackGroundManager;
+extern BackgroundManager	g_BackgroundManager;
 extern EffectManager*	g_EffectManager;
 extern TextManager	g_TextManager;
 

@@ -2,43 +2,43 @@
 #include "BGManager.h"
 #include "ConvStr.h"
 
-BackGroundManager::BackGroundManager( void ): m_Current_BackGround( NULL ), m_Current_BGM( 0 )
+BackgroundManager::BackgroundManager( void ): m_Current_Background( NULL ), m_Current_BGM( 0 )
 {
 }
 
 
-BackGroundManager::~BackGroundManager( void )
+BackgroundManager::~BackgroundManager( void )
 {
 }
 
-unsigned int BackGroundManager::AddBackGround( const std::string& name, BackGround_Sptr bg )
+unsigned int BackgroundManager::AddBackground( const std::string& name, Background_Sptr bg )
 {
-	m_BackGroundList.push_back( name );
-	m_BackGroundMaps[name] = bg;
-	return m_BackGroundList.size() - 1;
+	m_BackgroundList.push_back( name );
+	m_BackgroundMaps[name] = bg;
+	return m_BackgroundList.size() - 1;
 }
 
-std::vector<std::string> BackGroundManager::GetBackGroundList()
+std::vector<std::string> BackgroundManager::GetBackgroundList()
 {
-	return m_BackGroundList;
+	return m_BackgroundList;
 }
 
-BackGround* BackGroundManager::GetCurrentBackGround()
+Background* BackgroundManager::GetCurrentBackground()
 {
-	return m_Current_BackGround;
+	return m_Current_Background;
 }
 
-void BackGroundManager::SetCurrentBackGround( const std::string& name )
+void BackgroundManager::SetCurrentBackground( const std::string& name )
 {
-	m_Current_BackGround = m_BackGroundMaps[name].get();
+	m_Current_Background = m_BackgroundMaps[name].get();
 }
 
-void BackGroundManager::Set_BGM_PathList( const std::vector<std::string>& list )
+void BackgroundManager::Set_BGM_PathList( const std::vector<std::string>& list )
 {
 	m_BGM_PathList.assign( list.begin(), list.end() );
 }
 
-void BackGroundManager::Set_BGM_Play( int index )
+void BackgroundManager::Set_BGM_Play( int index )
 {
 	if ( index >= ( int )m_BGM_PathList.size() || index < 0 ) {return;}
 
@@ -46,17 +46,17 @@ void BackGroundManager::Set_BGM_Play( int index )
 	m_BGM_Player.PlayBGM();
 }
 
-void BackGroundManager::Set_BGM_Pause()
+void BackgroundManager::Set_BGM_Pause()
 {
 	m_BGM_Player.PauseBGM();
 }
 
-void BackGroundManager::Set_BGM_Stop()
+void BackgroundManager::Set_BGM_Stop()
 {
 	m_BGM_Player.StopBGM();
 }
 
-void BackGroundManager::Set_BGM_Voleum( int voleum )
+void BackgroundManager::Set_BGM_Voleum( int voleum )
 {
 	wchar_t buff[10];
 	wsprintf( buff, L"%d", voleum );

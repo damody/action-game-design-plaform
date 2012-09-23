@@ -5,7 +5,7 @@ HeroInfoManager	g_HeroInfoManager;
 HeroManager	g_HeroManager;
 ObjectInfoManager	g_ObjectInfoManager;
 ObjectManager	g_ObjectManager;
-BackGroundManager	g_BackGroundManager;
+BackgroundManager	g_BackgroundManager;
 EffectManager*  g_EffectManager;
 TextManager     g_TextManager;
 ID3D11Device*	g_d3dDevice;
