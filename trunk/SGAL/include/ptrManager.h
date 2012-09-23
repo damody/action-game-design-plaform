@@ -53,8 +53,9 @@ public:
 		for ( ParentPtrs::iterator it = m_ParentPtrs.begin();
 			it != m_ParentPtrs.end(); ++it )
 		{
-			for(Polygon2Ds::iterator it_poly = GetPolygons()( *it )->begin();
-				it_poly != GetPolygons()( *it )->end(); ++it_poly)
+			Polygon2Ds poly = (Polygon2Ds)GetPolygons()( *it );
+			for(Polygon2Ds::iterator it_poly = poly.begin();
+				it_poly != poly.end(); ++it_poly)
 			{
 				it_poly->CheckBuildAABB();
 				mXbinds.push_back( MyAxis_bind( *it, &( it_poly->AABB().m_Max ) ) );
@@ -75,8 +76,8 @@ public:
 		}
 		
 		//Polygon2D poly = *getpoly( obj );
-		Polygon2Ds* polys = getpolys( obj );
-		if( polys->size() == 0)
+		Polygon2Ds polys = getpolys( obj );
+		if( polys.size() == 0)
 		{
 			return res;
 		}
@@ -84,9 +85,9 @@ public:
 		//poly.CheckBuildPolygon();
 		//AABB2D aabb = poly.AABB();
 		bool isCollision = false;
-		AABB2D aabb = polys->at(0).AABB();
-		for(Polygon2Ds::iterator it_poly = polys->begin()+1;
-			it_poly != polys->end(); ++it_poly)
+		AABB2D aabb = polys.at(0).AABB();
+		for(Polygon2Ds::iterator it_poly = polys.begin()+1;
+			it_poly != polys.end(); ++it_poly)
 		{
 			for(Vec2s::const_iterator it_vec2 = it_poly->const_Points().begin();
 				it_vec2 != it_poly->const_Points().end(); ++it_vec2)
@@ -114,11 +115,12 @@ public:
 				                it != tmp; it++ )
 				{
 					isCollision = false;
-					for(Polygon2Ds::iterator it_poly = GetPolygons()(it->m_ParentPtr)->begin();
-						it_poly != GetPolygons()(it->m_ParentPtr)->end(); ++it_poly)
+					Polygon2Ds _polys = (Polygon2Ds)GetPolygons()(it->m_ParentPtr);
+					for(Polygon2Ds::iterator it_poly = _polys.begin();
+						it_poly != _polys.end(); ++it_poly)
 					{
-						for(Polygon2Ds::iterator it_target = polys->begin();
-							it_target != polys->end(); ++it_target)
+						for(Polygon2Ds::iterator it_target = polys.begin();
+							it_target != polys.end(); ++it_target)
 						{
 							if( it_poly->zIsCollision( *it_target ) )
 							{

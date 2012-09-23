@@ -1575,6 +1575,16 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 const Vector3& Hero::Velocity() { return m_Vel; }
 
+Bodys Hero::getBodys( ){
+	return m_FrameInfo->m_Bodys;
+}
+Attacks Hero::getAtks( ){
+	return m_FrameInfo->m_Attacks;
+}
+CatchInfos Hero::getCatches( ){
+	return m_FrameInfo->m_Catchs;
+}
+
 bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner )
 {
 	if ( obj.amount <= 0 )

@@ -1439,5 +1439,6 @@ void InitDirect3DApp::InitPlayer()
 	m_Player.SetHero( "Davis" );
 	m_Player.SetTeam( 0 );
 	m_Player.m_Hero = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) );
+	g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) ,1 );
 	m_Player.SetUserName( L"<こんにちは測試人-Testing...>" );
 }

@@ -107,6 +107,9 @@ public:
 	int Team() const;
 	const Vector3& Position();
 	const Vector3& Velocity();
+	Bodys getBodys( );
+	Attacks getAtks( );
+	CatchInfos getCatches( );
 	void SetRecord( Record_Sptr r );
 	void SetTeam( int team );
 	void SetPosition( Vector3 pos );
@@ -148,10 +151,10 @@ bool SortHero( Hero_RawPtr a, Hero_RawPtr b );
 
 struct GetPolygonsFromBody
 {
-	Polygon2Ds* operator()(Hero* hero){return &(getHeroBodys(*hero));}
+	Polygon2Ds operator()(Hero* hero){return (getHeroBodys(*hero));}
 };
 
 struct GetPolygonsFromAttack
 {
-	Polygon2Ds* operator()(Hero* hero){return &(getHeroAtks(*hero));}
+	Polygon2Ds operator()(Hero* hero){return (getHeroAtks(*hero));}
 };
