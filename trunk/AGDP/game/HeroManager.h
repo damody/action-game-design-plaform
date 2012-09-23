@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
 #include "game/Hero.h"
+#include "ptrManager.h"
+
+
 
 class HeroManager
 {
@@ -14,6 +17,8 @@ public:
 private:
 	Heroes m_Heroes;
 	TrashCan m_TrashCan;
+	ptrManager<Hero*, GetPolygonsFromBody> BodysCollision;
+	ptrManager<Hero*, GetPolygonsFromAttack> AttacksCollision;
 public:
 	HeroManager( void );
 	~HeroManager( void );

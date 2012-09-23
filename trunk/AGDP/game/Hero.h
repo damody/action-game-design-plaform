@@ -145,3 +145,13 @@ typedef std::vector <Hero_RawPtr> Heroes;
 
 //bool Creat(Vector3 pos, Creation obj, const Hero *owner);
 bool SortHero( Hero_RawPtr a, Hero_RawPtr b );
+
+struct GetPolygonsFromBody
+{
+	Polygon2Ds* operator()(Hero* hero){return &(getHeroBodys(*hero));}
+};
+
+struct GetPolygonsFromAttack
+{
+	Polygon2Ds* operator()(Hero* hero){return &(getHeroAtks(*hero));}
+};

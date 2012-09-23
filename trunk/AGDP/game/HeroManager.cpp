@@ -37,6 +37,8 @@ Hero* HeroManager::Create( const std::string& hero, const Vector3& pos, int team
 	h->SetPosition( pos );
 	h->SetTeam( team );
 	m_Heroes.push_back( h );
+	BodysCollision.AddPtr(m_Heroes.back());
+	AttacksCollision.AddPtr(m_Heroes.back());
 	return m_Heroes.back();
 }
 

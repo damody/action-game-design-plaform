@@ -3,10 +3,11 @@
 #pragma once
 #include "math/Polygon2D.h"
 #include "math/AABB2D.h"
-#include "Axis_bind.h"
+#include "ball/Axis_bind.h"
+
 //#include "Tbox.h"
 
-template <class ParentPtr, class GetPolygon>
+template <class ParentPtr, class GetPolygons>
 class ptrManager
 {
 public:
@@ -30,7 +31,7 @@ private:
 				{
 					pps.erase( pps.begin() + j );
 					i--;
-					break;
+					//break;
 				}
 			}
 		}
@@ -43,16 +44,28 @@ public:
 	const ParentPtrs& m() {return m_ParentPtrs;}
 	void PrepareForCollision() // every loop before you want to GetCollision
 	{
-		for ( ParentPtrs::iterator it = m_ParentPtrs.begin();
+		/*for ( ParentPtrs::iterator it = m_ParentPtrs.begin();
 		                it != m_ParentPtrs.end(); ++it )
 		{
 			GetPolygon()( *it )->CheckBuildAABB();
+		}*/
+		mXbinds.clear();
+		for ( ParentPtrs::iterator it = m_ParentPtrs.begin();
+			it != m_ParentPtrs.end(); ++it )
+		{
+			for(Polygon2Ds::iterator it_poly = GetPolygons()( *it )->begin();
+				it_poly != GetPolygons()( *it )->end(); ++it_poly)
+			{
+				it_poly->CheckBuildAABB();
+				mXbinds.push_back( MyAxis_bind( it, &( it_poly->AABB().m_Max ) ) );
+				mXbinds.push_back( MyAxis_bind( it, &( it_poly->AABB().m_Min ) ) );
+			}
 		}
 
 		std::sort( mXbinds.begin(), mXbinds.end(), Compare_x<MyAxis_bind> );
 	}
-	template<class ParentPtr2, class GetPolygon2>
-	ParentPtrs GetCollision( ParentPtr2 obj, GetPolygon2 getpoly )
+	template<class ParentPtr2, class GetPolygons2>
+	ParentPtrs GetCollision( ParentPtr2 obj, GetPolygons2 getpolys )
 	{
 		ParentPtrs res;
 
@@ -60,11 +73,22 @@ public:
 		{
 			return res;
 		}
-
-		Polygon2D poly = *getpoly( obj );
-		poly.CheckBuildAABB();
-		poly.CheckBuildPolygon();
-		AABB2D aabb = poly.AABB();
+		bool isCollision = false;
+		//Polygon2D poly = *getpoly( obj );
+		Polygon2Ds* polys = getpolys( obj );
+		//poly.CheckBuildAABB();
+		//poly.CheckBuildPolygon();
+		//AABB2D aabb = poly.AABB();
+		AABB2D aabb = polys->at(0);
+		for(Polygon2Ds::iterator it_poly = polys->begin()+1;
+			it_poly != polys->end(); ++it_poly)
+		{
+			for(Vec2s::const_iterator it_vec2 = it_poly->const_Points().begin();
+				it_vec2 != it_poly->const_Points().end(); ++it_vec2)
+			{
+				aabb.AddPoint(*it_vec2);
+			}
+		}
 		MyAxis_binds::iterator x_index_max, x_index_min, tmp;
 		x_index_max = std::upper_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( &aabb.m_Max.x ), Compare_x<MyAxis_bind> );
 		x_index_min = std::lower_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( &aabb.m_Min.x ), Compare_x<MyAxis_bind> );
@@ -73,10 +97,10 @@ public:
 		{
 			mYbinds.clear();
 			std::copy( x_index_min, x_index_max, std::back_inserter( mYbinds ) );
-			// ----------larger------------|--smaller---   mYbinds
-			tmp = std::partition( mYbinds.begin(), mYbinds.end(),                             //                          Min.y
+			//                                                                                                   ----------larger------------|--smaller---   mYbinds
+			tmp = std::partition( mYbinds.begin(), mYbinds.end(),                             //                                          Min.y
 			                      std::bind2nd( axis_y_greater<MyAxis_bind>(), MyAxis_bind( &aabb.m_Min.y ) ) );
-			tmp = std::partition( mYbinds.begin(), tmp,      // range                         // ----middle----|---larger----|--smaller---   mYbinds
+			tmp = std::partition( mYbinds.begin(), tmp,      // range                         //                 ----middle----|---larger----|--smaller---   mYbinds
 			                      std::bind2nd( axis_y_less<MyAxis_bind>(), MyAxis_bind( &aabb.m_Max.y ) ) ); //            Max.y         Min.y
 
 			if ( tmp - mYbinds.begin() > 0 )
@@ -84,13 +108,36 @@ public:
 				for ( MyAxis_binds::iterator it = mYbinds.begin();
 				                it != tmp; it++ )
 				{
-					if ( getpoly( it->m_ParentPtr )->zIsCollision( poly ) )
+					isCollision = false;
+					for(Polygon2Ds::iterator it_poly = GetPolygons()(it->m_ParentPtr)->begin();
+						it_poly != GetPolygons()(it->m_ParentPtr)->end(); ++it_poly)
 					{
-						if ( getpoly( it->m_ParentPtr )->IsCollision( poly ) )
+						for(Polygon2Ds::iterator it_target = polys->begin();
+							it_target != polys->end(); ++it_target)
+						{
+							if( it_poly->zIsCollision( *it_target ) )
+							{
+								it_poly->CheckBuildPolygon();
+								if( it_poly->IsCollision( *it_target ) )
+								{
+									isCollision = true;
+									break;
+								}
+							}
+						}
+						if(isCollision)
+						{
+							res.push_back(it->m_ParentPtr);
+							break;
+						}
+					}
+					/*if ( getpolys( it->m_ParentPtr )->zIsCollision( poly ) )
+					{
+						if ( getpolys( it->m_ParentPtr )->IsCollision( poly ) )
 						{
 							res.push_back( it->m_ParentPtr );
 						}
-					}
+					}*/
 
 					/*for(Polygons::iterator it_poly = polys.begin();
 						it_poly != polys.end(); ++it_poly)
@@ -121,7 +168,7 @@ public:
 			}
 		}
 		*/
-		if ( !res.empty() )
+		if ( res.size() > 1 )
 		{
 			DoubleCheck( res );
 		}
@@ -130,25 +177,25 @@ public:
 	}
 	void AddPtr( ParentPtr p )
 	{
-		assert( !GetPolygon()( p )->Points().empty() );
+/*		assert( !GetPolygon()( p )->Points().empty() );*/
 		m_ParentPtrs.push_back( p );
-		mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Max ) ) );
-		mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Min ) ) );
+// 		mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Max ) ) );
+// 		mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Min ) ) );
 	}
 	void AddPtrs( const ParentPtrs& ps )
 	{
 		for ( ParentPtrs::const_iterator it = ps.begin();
 		                it != ps.end(); ++it )
 		{
-			assert( !GetPolygon()( *it )->Points().empty() );
+// 			assert( !GetPolygon()( *it )->Points().empty() );
 			m_ParentPtrs.push_back( *it );
-			mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Max ) ) );
-			mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Min ) ) );
+// 			mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Max ) ) );
+// 			mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Min ) ) );
 		}
 	}
 	void ErasePtr( ParentPtr p )
 	{
-		bool doubleCheck = false;
+/*		bool doubleCheck = false;*/
 
 		for ( ParentPtrs::iterator it = m_ParentPtrs.begin();
 		                it != m_ParentPtrs.end(); ++it )
@@ -160,22 +207,22 @@ public:
 			}
 		}
 
-		for ( MyAxis_binds::iterator it = mXbinds.begin();
-		                it != mXbinds.end(); ++it )
-		{
-			if ( it->m_ParentPtr == p )
-			{
-				if ( doubleCheck )
-				{
-					mXbinds.erase( it );
-					break;
-				}
-				else
-				{
-					it = mXbinds.erase( it ) - 1;
-				}
-			}
-		}
+// 		for ( MyAxis_binds::iterator it = mXbinds.begin();
+// 		                it != mXbinds.end(); ++it )
+// 		{
+// 			if ( it->m_ParentPtr == p )
+// 			{
+// 				if ( doubleCheck )
+// 				{
+// 					mXbinds.erase( it );
+// 					break;
+// 				}
+// 				else
+// 				{
+// 					it = mXbinds.erase( it ) - 1;
+// 				}
+// 			}
+// 		}
 	}
 };
 
