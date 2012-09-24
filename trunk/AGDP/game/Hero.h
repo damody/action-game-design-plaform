@@ -107,9 +107,11 @@ public:
 	int Team() const;
 	const Vector3& Position();
 	const Vector3& Velocity();
+	bool getFace();
 	Bodys getBodys( );
 	Attacks getAtks( );
 	CatchInfos getCatches( );
+	Record_Sptr getRecord();
 	void SetRecord( Record_Sptr r );
 	void SetTeam( int team );
 	void SetPosition( Vector3 pos );
@@ -124,7 +126,7 @@ public:
 	friend Polygon2Ds getHeroAtks( const Hero& r );
 	friend Polygon2Ds getHeroCatches( const Hero& r );
 	void beCaught( const CatchInfo& rCatch, Vector3 hitPos, bool rFace );
-	void beAttack( const Attack& rAtk, const Record_Sptr& rHero, Vector3 hitPos, bool rFace );
+	void beAttack( const Attack& rAtk, const Record_Sptr rHero, Vector3 hitPos, bool rFace );
 	//void beHit(const )
 
 protected:

@@ -1311,7 +1311,7 @@ void Hero::Recover()
  * hitPos	:擊中點(重疊範圍中心，只重視 X 軸精確度)
  * FaceSide	:攻擊者的面向(若為氣功則為氣功波的面向)
  */
-void Hero::beAttack( const Attack& rAtk, const Record_Sptr& rHero, Vector3 hitPos, bool rFace )
+void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, Vector3 hitPos, bool rFace )
 {
 	if ( rAtk.m_Kind == 0 ) 				//普通攻擊形式，套用 effect 擊中特效
 	{
@@ -1583,6 +1583,12 @@ Attacks Hero::getAtks( ){
 }
 CatchInfos Hero::getCatches( ){
 	return m_FrameInfo->m_Catchs;
+}
+Record_Sptr Hero::getRecord(){
+	return m_Record;
+}
+bool Hero::getFace(){
+	return m_FaceSide;
 }
 
 bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner )

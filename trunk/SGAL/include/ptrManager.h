@@ -1,6 +1,7 @@
 
 #pragma warning(disable:4819)
 #pragma once
+#include <cmath>
 #include "math/Polygon2D.h"
 #include "math/AABB2D.h"
 #include "ball/Axis_bind.h"
@@ -15,6 +16,15 @@ public:
 	//typedef bool (*CompareBall)(const ParentPtr lhs, const ParentPtr rhs);
 	typedef Axis_bind<ParentPtr> MyAxis_bind;
 	typedef std::vector<MyAxis_bind> MyAxis_binds;
+	/*GetCollision 專用回傳結構
+	 * hitter	:傳入者的第幾個該屬性
+	 * victims	:此屬性擊中了哪些人
+	 */
+	struct collision{
+		int hitter;
+		ParentPtrs victims;
+	};
+	typedef std::vector<collision> Collisions;
 
 private:
 	ParentPtrs m_ParentPtrs;
@@ -66,9 +76,9 @@ public:
 		std::sort( mXbinds.begin(), mXbinds.end(), Compare_x<MyAxis_bind> );
 	}
 	template<class ParentPtr2, class GetPolygons2>
-	ParentPtrs GetCollision( ParentPtr2 obj, GetPolygons2 getpolys )
+	Collisions GetCollision( ParentPtr2 obj, GetPolygons2 getpolys )
 	{
-		ParentPtrs res;
+		Collisions res;
 
 		if ( m_ParentPtrs.empty() )
 		{
@@ -76,8 +86,8 @@ public:
 		}
 		
 		//Polygon2D poly = *getpoly( obj );
-		Polygon2Ds polys = getpolys( obj );
-		if( polys.size() == 0)
+		Polygon2Ds polys1 = getpolys( obj );
+		if( polys1.size() == 0)
 		{
 			return res;
 		}
@@ -85,107 +95,28 @@ public:
 		//poly.CheckBuildPolygon();
 		//AABB2D aabb = poly.AABB();
 		bool isCollision = false;
-		AABB2D aabb = polys.at(0).AABB();
-		for(Polygon2Ds::iterator it_poly = polys.begin();
-			it_poly != polys.end(); ++it_poly)
-		{
-			for(Vec2s::const_iterator it_vec2 = it_poly->const_Points().begin();
-				it_vec2 != it_poly->const_Points().end(); ++it_vec2)
-			{
-				aabb.AddPoint(*it_vec2);
-			}
-		}
-		MyAxis_binds::iterator x_index_max, x_index_min, tmp;
-		x_index_max = std::upper_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( aabb.m_Max.x ), Compare_x<MyAxis_bind> );
-		x_index_min = std::lower_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( aabb.m_Min.x ), Compare_x<MyAxis_bind> );
-
-		if ( x_index_max - x_index_min > 0 )
-		{
-			mYbinds.clear();
-			std::copy( x_index_min, x_index_max, std::back_inserter( mYbinds ) );
-			//                                                                                                   ----------larger------------|--smaller---   mYbinds
-			tmp = std::partition( mYbinds.begin(), mYbinds.end(),                             //                                          Min.y
-			                      std::bind2nd( axis_y_greater<MyAxis_bind>(), MyAxis_bind( aabb.m_Min.y ) ) );
-			tmp = std::partition( mYbinds.begin(), tmp,      // range                         //                 ----middle----|---larger----|--smaller---   mYbinds
-			                      std::bind2nd( axis_y_less<MyAxis_bind>(), MyAxis_bind( aabb.m_Max.y ) ) ); //            Max.y         Min.y
-
-			if ( tmp - mYbinds.begin() > 0 )
-			{
-				for ( MyAxis_binds::iterator it = mYbinds.begin();
-				                it != tmp; it++ )
-				{
-					isCollision = false;
-					Polygon2Ds _polys = (Polygon2Ds)GetPolygons()(it->m_ParentPtr);
-					for(Polygon2Ds::iterator it_poly = _polys.begin();
-						it_poly != _polys.end(); ++it_poly)
-					{
-						for(Polygon2Ds::iterator it_target = polys.begin();
-							it_target != polys.end(); ++it_target)
-						{
-							if( it_poly->zIsCollision( *it_target ) )
-							{
-								it_poly->CheckBuildPolygon();
-								if( it_poly->IsCollision( *it_target ) )
-								{
-									isCollision = true;
-									break;
-								}
-							}
-						}
-						if(isCollision)
-						{
-							res.push_back(it->m_ParentPtr);
-							break;
-						}
+		
+		for( ParentPtrs::iterator it = m_ParentPtrs.begin(); it != m_ParentPtrs.end(); ++it ){
+			Polygon2Ds polys2 = (Polygon2Ds)GetPolygons()( *it );
+			for(int ipolys1 = 0; ipolys1 < polys1.size(); ipolys1 ++ ){
+				collision tc = {};
+				tc.hitter = ipolys1;
+				for(Polygon2Ds::iterator ipolys2 = polys2.begin(); ipolys2 != polys2.end(); ipolys2 ++ ){
+					//Z軸
+					if(abs(ipolys2->GetZPoint() - polys1[ipolys1].GetZPoint()) > ipolys2->GetZRange() + polys1[ipolys1].GetZRange()){
+						break;
 					}
-					/*if ( getpolys( it->m_ParentPtr )->zIsCollision( poly ) )
-					{
-						if ( getpolys( it->m_ParentPtr )->IsCollision( poly ) )
-						{
-							res.push_back( it->m_ParentPtr );
-						}
-					}*/
-
-					/*for(Polygons::iterator it_poly = polys.begin();
-						it_poly != polys.end(); ++it_poly)
-					{
-						if(it->m_ParentPtr->m_Polygon2D.zIsCollision(*it_poly) &&
-							it->m_ParentPtr->m_Polygon2D.IsCollision(*it_poly))
-						{
-							res.push_back(it->m_ParentPtr);
-							break;
-						}
-					}*/
+					//XY 平面
+					ipolys2->CheckBuildPolygon();
+					polys1[ipolys1].CheckBuildPolygon();
+					if( ipolys2->IsCollision(polys1[ipolys1])){
+						tc.victims.push_back(*it);
+						break;
+					}
 				}
-			}
-		}
-
-		/*
-		for(ParentPtrs::iterator it = m_ParentPtrs.begin();
-			it != m_ParentPtrs.end(); ++it)
-		{
-			for(Polygons::iterator it_target = polys.begin();
-				it_target != polys.end(); ++it_target)
-			{
-				if( GetPolygon()(*it)->IsCollision(*it_target) )
-				{
-					res.push_back(*it);
-					break;
+				if(tc.victims.size() != 0){
+					res.push_back(tc);
 				}
-			}
-		}
-		*/
-		if ( res.size() > 1 )
-		{
-			DoubleCheck( res );
-		}
-
-		for( ParentPtrs::iterator it = res.begin();
-			it != res.end(); ++it)
-		{
-			if(*it == obj)
-			{
-				it = res.erase(it)-1;
 			}
 		}
 
