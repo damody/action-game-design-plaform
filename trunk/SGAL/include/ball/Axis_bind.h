@@ -6,14 +6,14 @@
 template<class ParentPtr>
 struct Axis_bind
 {
-	float* x, *y;
+	float x, y;
 	ParentPtr m_ParentPtr;
 
 	Axis_bind( ParentPtr b )
-		: x( &( b->m_Position.x ) ), y( &( b->m_Position.y ) ), m_ParentPtr( b ) {}
+		: x( ( b->m_Position.x ) ), y( ( b->m_Position.y ) ), m_ParentPtr( b ) {}
 	Axis_bind( ParentPtr b, Vector2* vec2 )
-		: x( &( vec2->x ) ), y( &( vec2->y ) ), m_ParentPtr( b ) {}
-	Axis_bind( float* val )
+		: x( ( vec2->x ) ), y( ( vec2->y ) ), m_ParentPtr( b ) {}
+	Axis_bind( float val )
 		: x( val ), y( val ), m_ParentPtr( 0 )
 	{}
 	bool operator == ( ParentPtr b ) const
@@ -26,7 +26,7 @@ struct Axis_bind
 template<class Tptr>
 bool Compare_x( const Tptr& lhs, const Tptr& rhs )
 {
-	return *lhs.x < *rhs.x;
+	return lhs.x < rhs.x;
 }
 
 template<class _Ty>
@@ -37,7 +37,7 @@ struct axis_y_greater
 	bool operator()( const _Ty& _Left, const _Ty& _Right ) const
 	{
 		// apply operator> to operands
-		return *_Left.y > *_Right.y;
+		return _Left.y > _Right.y;
 	}
 };
 
@@ -49,6 +49,6 @@ struct axis_y_less
 	bool operator()( const _Ty& _Left, const _Ty& _Right ) const
 	{
 		// apply operator> to operands
-		return *_Left.y < *_Right.y;
+		return _Left.y < _Right.y;
 	}
 };

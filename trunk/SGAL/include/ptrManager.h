@@ -86,7 +86,7 @@ public:
 		//AABB2D aabb = poly.AABB();
 		bool isCollision = false;
 		AABB2D aabb = polys.at(0).AABB();
-		for(Polygon2Ds::iterator it_poly = polys.begin()+1;
+		for(Polygon2Ds::iterator it_poly = polys.begin();
 			it_poly != polys.end(); ++it_poly)
 		{
 			for(Vec2s::const_iterator it_vec2 = it_poly->const_Points().begin();
@@ -96,8 +96,8 @@ public:
 			}
 		}
 		MyAxis_binds::iterator x_index_max, x_index_min, tmp;
-		x_index_max = std::upper_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( &aabb.m_Max.x ), Compare_x<MyAxis_bind> );
-		x_index_min = std::lower_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( &aabb.m_Min.x ), Compare_x<MyAxis_bind> );
+		x_index_max = std::upper_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( aabb.m_Max.x ), Compare_x<MyAxis_bind> );
+		x_index_min = std::lower_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( aabb.m_Min.x ), Compare_x<MyAxis_bind> );
 
 		if ( x_index_max - x_index_min > 0 )
 		{
@@ -105,9 +105,9 @@ public:
 			std::copy( x_index_min, x_index_max, std::back_inserter( mYbinds ) );
 			//                                                                                                   ----------larger------------|--smaller---   mYbinds
 			tmp = std::partition( mYbinds.begin(), mYbinds.end(),                             //                                          Min.y
-			                      std::bind2nd( axis_y_greater<MyAxis_bind>(), MyAxis_bind( &aabb.m_Min.y ) ) );
+			                      std::bind2nd( axis_y_greater<MyAxis_bind>(), MyAxis_bind( aabb.m_Min.y ) ) );
 			tmp = std::partition( mYbinds.begin(), tmp,      // range                         //                 ----middle----|---larger----|--smaller---   mYbinds
-			                      std::bind2nd( axis_y_less<MyAxis_bind>(), MyAxis_bind( &aabb.m_Max.y ) ) ); //            Max.y         Min.y
+			                      std::bind2nd( axis_y_less<MyAxis_bind>(), MyAxis_bind( aabb.m_Max.y ) ) ); //            Max.y         Min.y
 
 			if ( tmp - mYbinds.begin() > 0 )
 			{
