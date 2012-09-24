@@ -57,6 +57,15 @@ public:
 			( *this )[_tmpKey] = keys[i];
 		}
 	}
+
+	int FindKey( std::string strValue )
+	{
+		for( std::map<int, std::string>::iterator i = this->begin(); i != this->end() ; i++ )
+		{
+			if( ! strcmp( i->second.c_str(), strValue.c_str() ) ) return i->first;
+		}
+		return -1;
+	}
 };
 //typedef LuaMap HeroAction;
 
