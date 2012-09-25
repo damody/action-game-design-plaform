@@ -34,7 +34,9 @@ air_crouch_map={
 {Action.Dash, "crouch", 1},
 {Action.BeforeDashAttack, "crouch", 1},
 {Action.DashAttacking, "crouch", 1},
-{Action.AfterDashAttack, "crouch", 1}
+{Action.AfterDashAttack, "crouch", 1},
+{Action.FallingFront, "lying", 1},
+{Action.FallingBack, "lying", 0}
 }
 
 frame =
@@ -64,6 +66,8 @@ frame =
 	rolling      = {},
 	defend       = {},
 
+	falling_front= {},
+	falling_back = {},
 	injured		 = {},
 	lying		 = {},
 
@@ -1316,6 +1320,129 @@ frame.defend[1] =
    --wpoint:
    --   kind: 1  x: 23  y: 53  weaponact: 23  attacking: 0  cover: 0  dvx: 0  dvy: 0  dvz: 0
    --wpoint_end:
+
+}
+
+frame.falling_front[0] =
+{
+   pic_id = 0, pic_x = 1, pic_y = 5, state = Action.FallingFront, wait = 1, next = {"falling_front", 0},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{
+		kind = 4--[[¶^]], effect = Effect.Punch,
+		points = {{22,-12}, {22,-62}, {58,-62}, {58,-12}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50
+		}
+	},
+   body = {
+   {kind = 0, points = {{31,-24}, {31,-47}, {56,-47}, {56,-24}}, zwidth = 8}
+   }
+}
+
+frame.falling_front[1] =
+{
+   pic_id = 0, pic_x = 2, pic_y = 5, state = Action.FallingFront, wait = 1, next = {"falling_front", 1},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{
+		kind = 4--[[¶^]], effect = Effect.Punch,
+		points = {{33,-6}, {33,-52}, {59,-52}, {59,-6}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50
+		},
+		{
+		kind = 4--[[¶^]], effect = Effect.Punch,
+		points = {{26,-43}, {26,-72}, {47,-72}, {47,-43}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50
+		},
+	},
+   body = {
+   {kind = 0, points = {{28,-27}, {28,-53}, {52,-53}, {52,-27}}, zwidth = 8}
+   }
+}
+
+frame.falling_front[2] =
+{
+   pic_id = 0, pic_x = 3, pic_y = 5, state = Action.FallingFront, wait = 1, next = {"falling_front", 2},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{
+		kind = 4--[[¶^]], effect = Effect.Punch,
+		points = {{14,-29}, {14,-52}, {72,-52}, {72,-29}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50
+		}
+	},
+   body = {
+   {kind = 0, points = {{30,-31}, {30,-52}, {54,-52}, {54,-31}}, zwidth = 8}
+   }
+}
+
+frame.falling_front[3] =
+{
+   pic_id = 0, pic_x = 4, pic_y = 5, state = Action.FallingFront, wait = 1, next = {"falling_front", 3},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   attack={
+		{
+		kind = 4--[[¶^]], effect = Effect.Punch,
+		points = {{24,-27}, {24,-55}, {50,-55}, {50,-27}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50
+		},
+		{
+		kind = 4--[[¶^]], effect = Effect.Punch,
+		points = {{37,-45}, {37,-73}, {68,-73}, {68,-45}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50
+		},
+	},
+   body = {
+   {kind = 0, points = {{30,-39}, {30,-60}, {53,-60}, {53,-39}}, zwidth = 8}
+   }
+}
+
+frame.falling_front[4] =
+{
+   pic_id = 0, pic_x = 5, pic_y = 5, state = Action.FallingFront, wait = 1, next = {"falling_front", 4},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 71,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {}
+}
+
+frame.falling_front[5] =
+{
+   pic_id = 0, pic_x = 6, pic_y = 5, state = Action.FallingFront, wait = 1, next = {"falling_front", 5},
+   dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
+   consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
+   hit = {},
+   blood = {},
+   body = {}
+}
+
+frame.falling_back[0] =
+{
 
 }
 

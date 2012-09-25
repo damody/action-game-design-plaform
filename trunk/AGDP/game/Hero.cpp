@@ -135,14 +135,19 @@ void Hero::Init()
 
 void Hero::Update( float dt )
 {
-	if ( !ScanKeyQue() )  //無控制動作時，跑Wait Time
+	bool d_next;
+	if( m_HP > 0) {
+		Recover();
+		d_next = !ScanKeyQue();
+	}
+	else { d_next = true;}
+
+	if ( d_next )  //無控制動作時，跑Wait Time
 	{
 		if ( m_TimeTik <= 0 ) { NextFrame(); }
 		else { m_TimeTik--; }
 	}
 
-	//恢復
-	Recover();
 	//物理
 	Vector3 pastPos = m_Position;
 	//m_Position += m_Vel;
@@ -172,12 +177,10 @@ void Hero::Update( float dt )
 				//Frame 改到 CrouchMap 中對應的 Frame
 				CrouchMap::iterator icm = m_HeroInfo->m_CrouchMap.find( m_Action );
 
-				if ( icm != m_HeroInfo->m_CrouchMap.end() )
-				{
+				if ( icm != m_HeroInfo->m_CrouchMap.end() ){
 					SwitchFrame( icm->second.m_FrameName, icm->second.m_FrameOffset );
 				}
-				else
-				{
+				else{
 					SwitchFrame( "crouch", 0 );
 				}
 			}
@@ -1316,16 +1319,15 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, Vector3 hitPos
 	if ( rAtk.m_Kind == 0 ) 				//普通攻擊形式，套用 effect 擊中特效
 	{
 		if ( rHero->team == m_Team ) 		//普通形式的攻擊對同隊無效
-		{
-			return;
-		}
+		{	return;	}
 
 		m_Vel.x += rAtk.m_DVX * ( rFace ? 1.0f : -1.0f );
 		m_Vel.y += rAtk.m_DVY;
 		m_Vel.z += rAtk.m_DVZ;
 
-		if ( ( hitPos.x > m_Position.x && m_FaceSide ) || ( hitPos.x < m_Position.x && !m_FaceSide ) )
-		{
+		std::string nFrame;
+		int nFrameID = 0;
+		if ( ( hitPos.x > m_Position.x && m_FaceSide ) || ( hitPos.x < m_Position.x && !m_FaceSide ) ){
 			//擊中點在人前方
 			if ( m_FrontDefence > 0 ) 		//前方有剛體保護
 			{
@@ -1333,16 +1335,20 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, Vector3 hitPos
 				m_HP -= rAtk.m_Injury / 10;
 				rHero->Attack += rAtk.m_Injury / 10;
 			}
-			else
-			{
+			else{
 				m_HP -= rAtk.m_Injury;
 				m_Fall -= rAtk.m_Fall;
-				SwitchFrame( "injured", 0 );
+				nFrame = "injured";
+				nFrameID = 0;
 				rHero->Attack += rAtk.m_Injury;
 			}
+			//倒下
+			if(m_HP <= 0 || m_Fall <= 0){
+				nFrame = "falling_back";
+				nFrameID = 0;
+			}
 		}
-		else
-		{
+		else{
 			//擊中點在人後方
 			if ( m_BackDefence > 0 ) 		//後方有剛體保護
 			{
@@ -1350,13 +1356,22 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, Vector3 hitPos
 				m_HP -= rAtk.m_Injury / 10;
 				rHero->Attack += rAtk.m_Injury / 10;
 			}
-			else
-			{
+			else{
 				m_HP -= rAtk.m_Injury;
 				m_Fall -= rAtk.m_Fall;
-				SwitchFrame( "injured", 0 );
+				nFrame = "injured";
+				nFrameID = 0;
 				rHero->Attack += rAtk.m_Injury;
 			}
+			//倒下
+			if(m_HP <= 0 || m_Fall <= 0){
+				nFrame = "falling_front";
+				nFrameID = 0;
+			}
+		}
+		//切換 Frame
+		if( !nFrame.empty()){
+			SwitchFrame(nFrame, nFrameID);
 		}
 	}
 	else {}
@@ -1589,6 +1604,10 @@ Record_Sptr Hero::getRecord(){
 }
 bool Hero::getFace(){
 	return m_FaceSide;
+}
+
+bool Hero::isAlive(){
+	return m_HP > 0;
 }
 
 bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner )

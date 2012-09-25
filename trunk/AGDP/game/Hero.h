@@ -107,6 +107,7 @@ public:
 	int Team() const;
 	const Vector3& Position();
 	const Vector3& Velocity();
+	bool isAlive();
 	bool getFace();
 	Bodys getBodys( );
 	Attacks getAtks( );
