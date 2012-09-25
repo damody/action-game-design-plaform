@@ -85,7 +85,7 @@ public:
 		FILE* _file = fopen( path.c_str(), "w" );
 
 		fprintf( _file, "function protect_table (tbl)\n\treturn setmetatable ({},\n\t{\n\t__index = tbl,\n\t__newindex = funtion (t, n, v)\n\tend=n=t})\nend\n" );
-		fprintf( _file, "function GetEnum()\n\tcount = count + 1;\n\treturn count;\nend\n" );
+		fprintf( _file, "count = -1;\nfunction GetEnum()\n\tcount = count + 1;\n\treturn count;\nend\n" );
 
 		const char* _formatString = formatString.c_str();
 		int argc = 0;
@@ -95,7 +95,7 @@ public:
 		}
 
 		va_list _formatVa;
-		va_start( _formatVa, argc );
+		va_start( _formatVa, formatString );
 		std::vector<char> _charStack;
 		std::vector<std::string> _tableStack;
 		for( int i = 0; i < formatString.size(); i++ )
@@ -126,7 +126,7 @@ public:
 			else if( _formatString[i] == '%' && i+1 < formatString.length() && _formatString[i+1] == 'm')
 			{
 				fprintf( _file, "count = -1;\n");
-				LuaMap _tableMap = va_arg( _formatVa, LuaMap );
+				LuaMap _tableMap = *va_arg( _formatVa, LuaMap* );
 				
 				std::string _preName( "" );
 				for( int i = 0; i < _tableStack.size(); i++ )
