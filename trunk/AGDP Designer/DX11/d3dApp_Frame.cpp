@@ -369,7 +369,7 @@ void D3DApp_Frame::buildPoint()
 		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
 	}
 
-	LineVertices lvs = m_Center.BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY, false );
+	LineVertices lvs = m_Cross.BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY, false );
 	m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
 
 	if ( !m_LineVertices.empty() )
@@ -465,9 +465,9 @@ void D3DApp_Frame::SetPic( PictureData* pic, float x, float y )
 	m_picY = y;
 }
 
-void D3DApp_Frame::SetCenter( float x, float y )
+void D3DApp_Frame::SetCross( float x, float y )
 {
-	m_Center.Transale( x - m_CenterX, y - m_CenterY );
+	m_Cross.Transale( x - m_CenterX, y - m_CenterY );
 	m_CenterX = x;
 	m_CenterY = y;
 }
@@ -477,15 +477,15 @@ void D3DApp_Frame::Init()
 	m_Body.clear();
 	m_Attack.clear();
 	m_Catch.clear();
-	m_Center.Clear();
+	m_Cross.Clear();
 	m_Pic = NULL;
 	m_picX = 1;
 	m_picY = 1;
 	m_CenterX = 0;
 	m_CenterY = 0;
-	m_Center.Add( m_CenterX + 3, m_CenterY + 3 );
-	m_Center.Add( m_CenterX - 3, m_CenterY - 3 );
-	m_Center.Add( m_CenterX , m_CenterY );
-	m_Center.Add( m_CenterX - 3, m_CenterY + 3 );
-	m_Center.Add( m_CenterX + 3, m_CenterY - 3 );
+	m_Cross.Add( m_CenterX + 3, m_CenterY + 3 );
+	m_Cross.Add( m_CenterX - 3, m_CenterY - 3 );
+	m_Cross.Add( m_CenterX , m_CenterY );
+	m_Cross.Add( m_CenterX - 3, m_CenterY + 3 );
+	m_Cross.Add( m_CenterX + 3, m_CenterY - 3 );
 }

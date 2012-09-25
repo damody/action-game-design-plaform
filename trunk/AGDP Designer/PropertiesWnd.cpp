@@ -604,7 +604,7 @@ void CPropertiesWnd::InitPropList_CatchInfo( int polygonCount )
 	m_wndPropList.MarkModifiedProperties();
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
 	CMFCPropertyGridProperty* pProp;
-	pProp = new CMFCPropertyGridProperty( _T( "m_Area" ) );
+	pProp = new CMFCPropertyGridProperty( _T( "Area" ) );
 	CMFCPropertyGridProperty* pPropPointGroup;
 	CMFCPropertyGridProperty* pPropPoint;
 
@@ -667,6 +667,48 @@ void CPropertiesWnd::InitPropList_BloodInfo()
 	m_wndPropList.ExpandAll();
 }
 
+
+void CPropertiesWnd::InitPropList_Creation()
+{
+	m_EditProp = 7;
+	m_wndPropList.RemoveAll();
+	SetPropListFont();
+	m_wndPropList.EnableHeaderCtrl( FALSE );
+	m_wndPropList.EnableDescriptionArea();
+	m_wndPropList.SetVSDotNetLook();
+	m_wndPropList.MarkModifiedProperties();
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
+	CMFCPropertyGridProperty* pProp;
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Name" ), varFloat(), _T( "創造物名稱" ) );
+	pPropMain->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame" ), varFloat(), _T( "創造物初始動作" ) );
+	pPropMain->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame Index" ), varFloat(), _T( "創造物初始動作影格" ) );
+	pPropMain->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Amount" ), varFloat(), _T( "創造物數量" ) );
+	pPropMain->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Hp" ), varFloat(), _T( "創造物血量" ) );
+	pPropMain->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "AI" ), varFloat(), _T( "創造物AI" ) );
+	pPropMain->AddSubItem( pProp );
+	CMFCPropertyGridProperty* pPosition = new CMFCPropertyGridProperty( _T( "Position" ), 0, TRUE );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "X" ), varFloat(), _T( "X" ) );
+	pPosition->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Y" ), varFloat(), _T( "Y" ) );
+	pPosition->AddSubItem( pProp );
+	pPropMain->AddSubItem( pPosition );
+	CMFCPropertyGridProperty* pVelocity = new CMFCPropertyGridProperty( _T( "Velocity" ), 0, TRUE );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "X" ), varFloat(), _T( "X" ) );
+	pVelocity->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Y" ), varFloat(), _T( "Y" ) );
+	pVelocity->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Z" ), varFloat(), _T( "Y" ) );
+	pPosition->AddSubItem( pProp );
+	pPropMain->AddSubItem( pVelocity );
+
+	m_wndPropList.AddProperty( pPropMain );
+	m_wndPropList.ExpandAll();
+}
 
 void CPropertiesWnd::InitPropList_PictureData()
 {

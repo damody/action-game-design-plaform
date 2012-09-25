@@ -20,118 +20,6 @@
 
 CClassView* CClassView::instance = NULL;
 
-const CString CClassView::anims[MAX_ANIMATIONS] =
-{
-	CString( "standing" ),
-	CString( "walking" ),
-	CString( "running" ),
-	CString( "stop_running" ),
-	CString( "heavy_weapon_walk" ),
-	CString( "heavy_weapon_run" ),
-	CString( "light_weapon_stand_attack" ),
-	CString( "light_weapon_jump_attack" ),
-	CString( "light_weapon_run_attack" ),
-	CString( "light_weapon_dash_attack" ),
-	CString( "light_weapon_throw" ),
-	CString( "heavy_weapon_throw" ),
-	CString( "light_weapon_jump_throw" ),
-	CString( "heavy_weapon_jump_throw" ),
-	CString( "drink" ),
-	CString( "before_attack" ),
-	CString( "attacking" ),
-	CString( "after_attack" ),
-	CString( "before_super_attack" ),
-	CString( "super_attacking" ),
-	CString( "after_super_attack" ),
-	CString( "before_jump_attack" ),
-	CString( "jump_attacking" ),
-	CString( "after_jump_attack" ),
-	CString( "before_run_attack" ),
-	CString( "run_attacking" ),
-	CString( "after_run_attack" ),
-	CString( "before_dash_attack" ),
-	CString( "dash_attacking" ),
-	CString( "after_dash_attack" ),
-	CString( "flip" ),
-	CString( "rolling" ),
-	CString( "defend" ),
-	CString( "defend_punch" ),
-	CString( "defend_kick" ),
-	CString( "catching" ),
-	CString( "caught" ),
-	CString( "falling" ),
-	CString( "jump" ),
-	CString( "dash" ),
-	CString( "crouch" ),
-	CString( "injured" ),
-	CString( "forward_lying" ),
-	CString( "backward_lying" ),
-	CString( "in_the_air" ),
-	CString( "before_skill" ),
-	CString( "after_skill" ),
-	CString( "air_skill" ),
-	CString( "x_axis_skill" ),
-	CString( "z_axis_skill" ),
-	CString( "ground_skill" ),
-	CString( "unique_skill" ),
-};
-
-const CString CClassView::actionMap[MAX_ACTIONS] =
-{
-	CString( "STANDING" ),
-	CString( "WALKING" ),
-	CString( "RUNNING" ),
-	CString( "STOP_RUNNING" ),
-	CString( "HEAVY_WEAPON_WALK" ),
-	CString( "HEAVY_WEAPON_RUN" ),
-	CString( "LIGHT_WEAPON_STAND_ATTACK" ),
-	CString( "LIGHT_WEAPON_JUMP_ATTACK" ),
-	CString( "LIGHT_WEAPON_RUN_ATTACK" ),
-	CString( "LIGHT_WEAPON_DASH_ATTACK" ),
-	CString( "LIGHT_WEAPON_THROW" ),
-	CString( "HEAVY_WEAPON_THROW" ),
-	CString( "LIGHT_WEAPON_JUMP_THROW" ),
-	CString( "HEAVY_WEAPON_JUMP_THROW" ),
-	CString( "DRINK" ),
-	CString( "BEFORE_ATTACK" ),
-	CString( "ATTACKING" ),
-	CString( "AFTER_ATTACK" ),
-	CString( "BEFORE_SUPER_ATTACK" ),
-	CString( "SUPER_ATTACKING" ),
-	CString( "AFTER_SUPER_ATTACK" ),
-	CString( "BEFORE_JUMP_ATTACK" ),
-	CString( "JUMP_ATTACKING" ),
-	CString( "AFTER_JUMP_ATTACK" ),
-	CString( "BEFORE_RUN_ATTACK" ),
-	CString( "RUN_ATTACKING" ),
-	CString( "AFTER_RUN_ATTACK" ),
-	CString( "BEFORE_DASH_ATTACK" ),
-	CString( "DASH_ATTACKING" ),
-	CString( "AFTER_DASH_ATTACK" ),
-	CString( "FLIP" ),
-	CString( "ROLLING" ),
-	CString( "DEFEND" ),
-	CString( "DEFEND_PUNCH" ),
-	CString( "DEFEND_KICK" ),
-	CString( "CATCHING" ),
-	CString( "CAUGHT" ),
-	CString( "FALLING" ),
-	CString( "JUMP" ),
-	CString( "DASH" ),
-	CString( "CROUCH" ),
-	CString( "INJURED" ),
-	CString( "FORWARD_LYING" ),
-	CString( "BACKWARD_LYING" ),
-	CString( "IN_THE_AIR" ),
-	CString( "BEFORE_SKILL" ),
-	CString( "AFTER_SKILL" ),
-	CString( "AIR_SKILL" ),
-	CString( "X_AXIS_SKILL" ),
-	CString( "Z_AXIS_SKILL" ),
-	CString( "GROUND_SKILL" ),
-	CString( "UNIQUE_SKILL" ),
-};
-
 class CClassViewMenuButton : public CMFCToolBarMenuButton
 {
 	friend class CClassView;
@@ -694,6 +582,20 @@ void CClassView::OnSelectItem( HTREEITEM item )
 			}
 			else if ( !text.Compare( CString( "Creations" ) ) )
 			{
+				HTREEITEM FrameIndex = m_wndClassView.GetParentItem( pItem );
+				HTREEITEM Frame	     = m_wndClassView.GetParentItem( FrameIndex );
+				char buff[1000];
+				ConvStr::WcharToChar( m_wndClassView.GetItemText( Frame ).GetBuffer( 0 ), buff );
+				std::string FrameName( buff );
+
+				if ( g_FrameName != FrameName || g_FrameIndex != _ttoi( m_wndClassView.GetItemText( FrameIndex ) ) )
+				{
+					g_FrameName = FrameName;
+					g_FrameIndex = _ttoi( m_wndClassView.GetItemText( FrameIndex ) );
+					( ( CMainFrame* )( this->GetParentFrame() ) )->RefreshFrameEdit();
+				}
+
+				( ( CMainFrame* )( this->GetParentFrame() ) )->EditCreation( _ttoi( m_wndClassView.GetItemText( item ) ) );
 			}
 			else
 			{

@@ -126,22 +126,22 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		switch ( nChar )
 		{
 		case KEY_LEFT:
-			m_D3DApp.SetCenter( m_D3DApp.m_CenterX - 1, m_D3DApp.m_CenterY );
+			m_D3DApp.SetCross( m_D3DApp.m_CenterX - 1, m_D3DApp.m_CenterY );
 			UpdateCenter( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY );
 			break;
 
 		case KEY_UP:
-			m_D3DApp.SetCenter( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY - 1 );
+			m_D3DApp.SetCross( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY - 1 );
 			UpdateCenter( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY );
 			break;
 
 		case KEY_RIGHT:
-			m_D3DApp.SetCenter( m_D3DApp.m_CenterX + 1, m_D3DApp.m_CenterY );
+			m_D3DApp.SetCross( m_D3DApp.m_CenterX + 1, m_D3DApp.m_CenterY );
 			UpdateCenter( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY );
 			break;
 
 		case KEY_DOWN:
-			m_D3DApp.SetCenter( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY + 1 );
+			m_D3DApp.SetCross( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY + 1 );
 			UpdateCenter( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY );
 			break;
 		}
@@ -449,7 +449,7 @@ void CD3DPanelView::OnLButtonDown( UINT nFlags, CPoint point )
 
 	if ( m_EnableCtrlCenter && m_CtrlPress )
 	{
-		m_D3DApp.SetCenter( point.x, point.y );
+		m_D3DApp.SetCross( point.x, point.y );
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
@@ -636,7 +636,7 @@ void CD3DPanelView::OnMouseMove( UINT nFlags, CPoint point )
 
 	if ( m_EnableCtrlCenter && m_CtrlPress && m_LMouseHold )
 	{
-		m_D3DApp.SetCenter( point.x, point.y );
+		m_D3DApp.SetCross( point.x, point.y );
 		UpdateCenter( point.x, point.y );
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
@@ -844,7 +844,7 @@ void CD3DPanelView::EditCenter()
 
 void CD3DPanelView::EditCenter( float x, float y )
 {
-	m_D3DApp.SetCenter( x, y );
+	m_D3DApp.SetCross( x, y );
 	m_D3DApp.buildPoint();
 	m_D3DApp.DrawScene();
 }
@@ -877,7 +877,7 @@ void CD3DPanelView::Refresh()
 				m_D3DApp.SetPic( &g_HeroInfo->m_PictureDatas[m_FrameInfo->m_PictureID], m_FrameInfo->m_PictureX, m_FrameInfo->m_PictureY );
 			}
 
-			m_D3DApp.SetCenter( m_FrameInfo->m_CenterX, m_FrameInfo->m_CenterY );
+			m_D3DApp.SetCross( m_FrameInfo->m_CenterX, m_FrameInfo->m_CenterY );
 
 			for ( Bodys::iterator it_body = m_FrameInfo->m_Bodys.begin(); it_body != m_FrameInfo->m_Bodys.end(); it_body++ )
 			{

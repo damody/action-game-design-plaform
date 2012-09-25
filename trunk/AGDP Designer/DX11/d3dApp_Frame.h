@@ -25,8 +25,8 @@ private:
 	float         m_picX, m_picY;
 	Texture*      m_Templete;
 
-	PointManager  m_Center;
-
+	PointManager  m_Cross;
+	bool	      m_ShowCross;
 public:
 	D3DApp_Frame();
 	~D3DApp_Frame();
@@ -43,7 +43,7 @@ public:
 	void buildPoint();
 
 	void SetPic( PictureData*  pic, float x, float y );
-	void SetCenter( float x, float y );
+	void SetCross( float x, float y );
 
 	ID3D11Device* GetDevice()
 	{

@@ -77,7 +77,7 @@ public:
 class CPropertiesWnd : public CDockablePane
 {
 private:
-	int m_EditProp;// 0-None 1-Basic 2-Frame 3-Bodys 4-Attack 5-Hit 6-Catch 7-Blood 8-PictureData
+	int m_EditProp;// 0-None 1-Basic 2-Frame 3-Bodys 4-Attack 5-Hit 6-Catch 7-Creation 8-PictureData
 	int m_Index;
 // «Øºc
 public:
@@ -134,9 +134,8 @@ public:
 		m_wndPropList.RemoveAll();
 		SetPropListFont();
 	}
-	void InitPropList();
 
-	
+	void InitPropList();
 	void InitPropList_Frame();
 	void InitPropList_Body() {InitPropList_Body( 0 );}
 	void InitPropList_Body( int polygonCount );
@@ -146,6 +145,7 @@ public:
 	void InitPropList_CatchInfo() {InitPropList_CatchInfo( 0 );}
 	void InitPropList_CatchInfo( int polygonCount );
 	void InitPropList_BloodInfo();
+	void InitPropList_Creation();
 	void InitPropList_PictureData();
 
 	void RefreshPropList();
@@ -160,6 +160,7 @@ public:
 	void RefreshPropList_CatchInfo( int index );
 	void RefreshPropList_BloodInfo() {RefreshPropList_BloodInfo( 0 );}
 	void RefreshPropList_BloodInfo( int index );
+	void RefreshPropList_Creation( int index );
 	void RefreshPropList_PictureData( int index );
 
 	void SetPropListFont();

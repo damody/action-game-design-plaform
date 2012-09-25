@@ -75,6 +75,10 @@ public:
 		m_D3DFrameView.EditCatch( id );
 		m_wndProperties.RefreshPropList_CatchInfo( id );
 	}
+	void EditCreation( int id )
+	{
+		
+	}
 	void SetStatus( const CString& str )
 	{
 		m_wndStatusBar.SetInformation( str );

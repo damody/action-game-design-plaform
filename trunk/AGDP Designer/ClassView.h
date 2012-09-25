@@ -54,8 +54,6 @@ public:
 	virtual BOOL CanAutoHide() const;
 protected:
 	static CClassView* instance;
-	static const CString anims[MAX_ANIMATIONS];
-	static const CString actionMap[MAX_ACTIONS];
 	CClassToolBar m_wndToolBar;
 	CViewTree m_wndClassView;
 	CImageList m_ClassViewImages;
