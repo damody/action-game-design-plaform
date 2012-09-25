@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <boost/algorithm/string.hpp>
+#include <auto_link_luabind.hpp>
+#include <luabind/luabind.hpp>
 #include "InitDirect3DApp.h"
 #include "InputState.h"
 
@@ -1334,7 +1336,30 @@ void InitDirect3DApp::TestFire()
 
 	if ( InputStateS::instance().isKeyDown( KEY_F ) )
 	{
-		m_Player.m_Hero->SetEffect( EffectType::FIRE );
+		lua_State *L = luaL_newstate();
+		luaL_openlibs(L);
+		luabind::open(L);
+
+		luabind::disable_super_deprecation();
+		luabind::module(L)
+			[
+				luabind::class_<Hero>("Hero")
+				.def("SetEffect", &Hero::SetEffect)
+			];
+		if (luaL_dofile(L, "Script/Shader/ShaderActive.lua")) {
+			std::cout << "We hit a little snug: " << lua_tostring(L, -1) << std::endl;// Print out the error message
+		}
+		//call function
+		try {
+			luabind::call_function<int>(L, "test",m_Player.m_Hero,EffectType::FIRE);
+		}catch(luabind::error& e){
+			std::cout << "Catch Exception: " << e.what() << std::endl;
+		}
+
+
+		lua_close(L);
+
+		//m_Player.m_Hero->SetEffect( EffectType::FIRE );
 		//m_Player.m_Hero->SetEffect(EffectType::POISON);
 	}
 }

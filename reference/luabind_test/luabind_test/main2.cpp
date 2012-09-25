@@ -1,5 +1,4 @@
 //call member範例
-#include <auto_link_luajit.hpp>
 #include <auto_link_luabind.hpp>
 #include <luabind/luabind.hpp>
 #include <luabind/object.hpp>
@@ -9,6 +8,10 @@ using std::endl;
 class TestClass
 {
 public:
+	TestClass(int a)
+	{
+		this->a = a;
+	}
 	TestClass(luabind::object b, int a)
 	{
 		this->a = a;
@@ -51,6 +54,8 @@ int Cpassthrough(luabind::object b)
 
 	luabind::call_member<int>(b, "member_func");
 
+	
+
 	return false;
 }
 int main()
@@ -61,24 +66,27 @@ int main()
 	
 	luabind::disable_super_deprecation();
 	luabind::module(L)
-	[
-		luabind::class_<TestClass>("Test")
-		.def(luabind::constructor<luabind::object, int>())
-		.def("get", &TestClass::get)
-		.def("set", &TestClass::set)
-		.def("getSelf", &TestClass::getSelf),
-		luabind::def("Cpassthrough", &Cpassthrough)
-	];
+		[
+			luabind::class_<TestClass>("Test")
+			.def(luabind::constructor<luabind::object, int>())
+			.def("get", &TestClass::get)
+			.def("set", &TestClass::set)
+			.def("getSelf", &TestClass::getSelf),
+			luabind::def("Cpassthrough", &Cpassthrough)
+		];
 
-	if (luaL_dofile(L, "test.lua")) {
-		cout << "We hit a little snug: " << lua_tostring(L, -1) << endl;// Print out the error message
-	}
+ 	if (luaL_dofile(L, "test.lua")) {
+ 		cout << "We hit a little snug: " << lua_tostring(L, -1) << endl;// Print out the error message
+ 	}
 	
 
 	
 	//call function
 	try {
-		luabind::call_function<int>(L, "main");
+		//luabind::call_function<int>(L, "main");
+		TestClass *C = new TestClass(543);
+		luabind::call_function<int>(L, "tt",C);
+		std::cout << "C = " << C->get() <<std::endl;
 // 		std::cout << "Result: " 
 // 		<<luabind::call_function<int>(L, "f", 2)//多個參數就是(L, "f", 2,a,b,...)
 // 		<<std::endl;

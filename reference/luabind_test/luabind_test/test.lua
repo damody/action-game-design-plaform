@@ -32,7 +32,8 @@ end
 function main()
 	a = test_derived(10)
 
--- this should print 10
+
+	a:set(999);
 	print(a:get())
 
 -- I want to retain the added methods and this variable
@@ -41,4 +42,10 @@ function main()
 
 	Cpassthrough(a)
 	return 0
+end
+
+
+
+function tt(o)
+	o:set(453);
 end
