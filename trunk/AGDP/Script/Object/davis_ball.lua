@@ -4,7 +4,7 @@ require "Script/action"
 name = "davis_ball"
 
 file = {
-  {path = "media\\davis_ball.png", autoclip=1, w= 81,  h= 46,  row= 4,  col= 3},
+  {path = "media\\sprite\\davis_ball.png", autoclip=1, w= 81,  h= 46,  row= 4,  col= 3},
 }
 
 hp = 1

@@ -124,7 +124,6 @@ protected:
 	afx_msg void OnUpdateProperties2( CCmdUI* pCmdUI );
 	afx_msg void OnSetFocus( CWnd* pOldWnd );
 	afx_msg void OnSettingChange( UINT uFlags, LPCTSTR lpszSection );
-	afx_msg LRESULT OnPropertyChanged( __in WPARAM wparam, __in LPARAM lparam );
 
 	DECLARE_MESSAGE_MAP()
 
@@ -178,5 +177,6 @@ public:
 	void UpdateBody();
 	void UpdateAttack();
 	void UpdateCatch();
+	void UpdatePictureData();
 	//void DeleteProperty(CMFCPropertyGridProperty* pProp);
 };

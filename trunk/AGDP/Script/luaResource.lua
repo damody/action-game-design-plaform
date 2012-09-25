@@ -12,7 +12,7 @@ object = {
 
 
 backGround = {
-"Script\\Background\\background.lua",
+"Script\\Background\\Forbidden_Tower.lua",
 }
 
 wav =

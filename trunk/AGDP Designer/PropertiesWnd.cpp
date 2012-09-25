@@ -201,7 +201,6 @@ BEGIN_MESSAGE_MAP( CPropertiesWnd, CDockablePane )
 	ON_UPDATE_COMMAND_UI( ID_PROPERTIES1, OnUpdateProperties1 )
 	ON_COMMAND( ID_PROPERTIES2, OnProperties2 )
 	ON_UPDATE_COMMAND_UI( ID_PROPERTIES2, OnUpdateProperties2 )
-	ON_REGISTERED_MESSAGE( AFX_WM_PROPERTY_CHANGED, OnPropertyChanged )
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
 	ON_WM_MOUSEMOVE()
@@ -671,7 +670,7 @@ void CPropertiesWnd::InitPropList_BloodInfo()
 
 void CPropertiesWnd::InitPropList_PictureData()
 {
-	m_EditProp = 7;
+	m_EditProp = 8;
 	m_wndPropList.RemoveAll();
 	SetPropListFont();
 	m_wndPropList.EnableHeaderCtrl( FALSE );
@@ -680,7 +679,8 @@ void CPropertiesWnd::InitPropList_PictureData()
 	m_wndPropList.MarkModifiedProperties();
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
 	CMFCPropertyGridProperty* pProp;
-	pProp = new CMFCPropertyGridProperty( _T( "Picture ID" ), _T("0"), _T( "圖片編號" ) );
+	pProp = new CMFCPropertyGridProperty( _T( "Picture ID" ), varInt(), _T( "圖片編號" ) );
+	pProp->AllowEdit( FALSE );
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropertyGridProperty( _T( "Picture Path" ), _T(" "), _T( "圖片路徑" ) );
 	pProp->AllowEdit( FALSE );
@@ -699,28 +699,9 @@ void CPropertiesWnd::InitPropList_PictureData()
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "高" ), varInt(), _T( "圖片貼出的高度" ) );
 	pSize->AddSubItem( pProp );
 	pPropMain->AddSubItem( pSize );
-}
 
-
-void CPropertiesWnd::RefreshPropList_PictureData( int index )
-{
-	if ( m_EditProp != 8 )
-	{
-		InitPropList_PictureData();
-		m_EditProp = 8;
-	}
-
-	if (g_HeroInfo == NULL)
-	{
-		AfxMessageBox(_T("No Target"));
-	}else if (index >= g_HeroInfo->m_PictureDatas.size() || index <0)
-	{
-		AfxMessageBox(_T("No Picture Data"));
-	}
-	
-	
-
-	
+	m_wndPropList.AddProperty( pPropMain );
+	m_wndPropList.ExpandAll();
 }
 
 void CPropertiesWnd::AddNormalActionUcase( CMFCPropertyGridProperty* pProp )
@@ -862,11 +843,6 @@ CMFCPropertyGridProperty* CPropertiesWnd::GetDefaultPropList()
 	pDirectionVector->AddSubItem( pProp );
 	pGroup1->AddSubItem( pDirectionVector );
 	return pGroup1;
-}
-
-LRESULT CPropertiesWnd::OnPropertyChanged( __in WPARAM wparam, __in LPARAM lparam )
-{
-	return CClassView::GetInstance()->OnPropertyChanged( wparam, lparam, m_lastSelectedItem );
 }
 
 BOOL CPropertiesWnd::CanFloat() const
@@ -1550,6 +1526,61 @@ void CPropertiesWnd::RefreshPropList_BloodInfo( int index )
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varFloat( frameInfo.m_BloodInfos[index].m_EnableValue ) );
 }
 
+void CPropertiesWnd::RefreshPropList_PictureData( int index )
+{
+	if ( m_EditProp != 8 )
+	{
+		InitPropList_PictureData();
+		m_EditProp = 8;
+		m_Index = index;
+	}
+
+	if (g_HeroInfo == NULL)
+	{
+		AfxMessageBox(_T("No Target"));
+	}else if (index >= g_HeroInfo->m_PictureDatas.size() || index <0)
+	{
+		AfxMessageBox(_T("No Picture Data"));
+	}
+
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+
+	propRoot->GetSubItem( 0 ) ->SetValue( varInt( index ) );
+	propRoot->GetSubItem( 1 ) ->SetValue( CString(g_HeroInfo->m_PictureDatas[index].m_Path.c_str()) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 2 )->GetSubItem(0) )->SetValue( varInt( g_HeroInfo->m_PictureDatas[index].m_Row ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 2 )->GetSubItem(1) )->SetValue( varInt( g_HeroInfo->m_PictureDatas[index].m_Column ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 3 )->GetSubItem(0) )->SetValue( varInt( g_HeroInfo->m_PictureDatas[index].m_Width ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 3 )->GetSubItem(1) )->SetValue( varInt( g_HeroInfo->m_PictureDatas[index].m_Height ) );
+
+}
+
+void CPropertiesWnd::UpdatePictureData()
+{
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 )->GetSubItem( 0 ) )->IsEdited() )
+	{
+		g_HeroInfo->m_PictureDatas[m_Index].m_Row = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
+		//Refresh
+		( ( CMainFrame* )( this->GetParentFrame() ) )->UpdatePicture( m_Index );
+	}
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 )->GetSubItem( 1 ) )->IsEdited() )
+	{
+		g_HeroInfo->m_PictureDatas[m_Index].m_Column = propRoot->GetSubItem( 2 )->GetSubItem( 1 )->GetValue().intVal;
+		//Refresh
+		( ( CMainFrame* )( this->GetParentFrame() ) )->UpdatePicture( m_Index );
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 3 )->GetSubItem( 0 ) )->IsEdited() )
+	{
+		g_HeroInfo->m_PictureDatas[m_Index].m_Width = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
+	}
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 3 )->GetSubItem( 1 ) )->IsEdited() )
+	{
+		g_HeroInfo->m_PictureDatas[m_Index].m_Height = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
+	}
+}
+
 const CString CPropertiesWnd::actionMap[MAX_ACTIONS] =
 {
 	CString( "STANDING" ),
@@ -1656,6 +1687,8 @@ void CPropertiesWnd::Update()
 
 	case 6:
 		UpdateCatch();
+	case 8:
+		UpdatePictureData();
 	}
 }
 

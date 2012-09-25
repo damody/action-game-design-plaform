@@ -89,8 +89,6 @@ protected:
 	afx_msg void OnSort( UINT id );
 	afx_msg void OnUpdateSort( CCmdUI* pCmdUI );
 public:
-	afx_msg LRESULT OnPropertyChanged( __in WPARAM wparam, __in LPARAM lparam, HTREEITEM item );
-
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnBodyAdd();
 	afx_msg void OnBodyDelete();

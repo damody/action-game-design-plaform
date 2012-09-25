@@ -178,5 +178,6 @@ void CAGDPDesignerView::SwitchPicture( int index )
 
 void CAGDPDesignerView::Refresh( PictureData* pic )
 {
-	( ( CD3DpictureView* )GetActiveView() )->Refresh( pic );
+	m_ViewMap[pic]->Refresh( pic );
 }
+

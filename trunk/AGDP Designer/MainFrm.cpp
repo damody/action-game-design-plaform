@@ -555,6 +555,18 @@ void CMainFrame::SwitchPictureView( int index )
 	if ( it != m_HeroViews.end() )
 	{
 		it->second->SwitchPicture( index );
+		m_wndProperties.RefreshPropList_PictureData(index);
+	}
+}
+
+void CMainFrame::UpdatePicture( int index )
+{
+	HeroViews::iterator it = m_HeroViews.find( g_HeroInfo );
+
+	if ( it != m_HeroViews.end() )
+	{
+		it->second->Refresh(&g_HeroInfo->m_PictureDatas[index]);
+		it->second->SwitchPicture( index );
 	}
 }
 

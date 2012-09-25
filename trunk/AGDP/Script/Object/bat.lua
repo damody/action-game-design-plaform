@@ -4,7 +4,7 @@ require "Script/action"
 name = "Bat"
 
 file = {
-  {path = "media\\bat.png",  w= 48,  h= 48,  row= 10,  col= 4},
+  {path = "media\\sprite\\bat.png",  w= 48,  h= 48,  row= 10,  col= 4},
 }
 
 hp = 200

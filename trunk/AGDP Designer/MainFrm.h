@@ -100,7 +100,7 @@ public:
 	bool NewHeroViews( HeroInfo* hero );
 	void OpenPictureView( CString& name, PictureData* pic, int index );
 	void SwitchPictureView( int index );
-
+	void UpdatePicture(int index);
 public:  // 控制列內嵌的成員
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;
