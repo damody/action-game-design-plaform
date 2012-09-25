@@ -837,8 +837,6 @@ void InitDirect3DApp::LoadBlend()
 void InitDirect3DApp::LoadData()
 {
 	//AddHeroInfo
-	LuaMap _test( "Script/action.lua", "Action" );
-	LuaMap::WriteLua( "Script/test.lua", "AAction(%m)", &_test );
 	std::vector<HeroInfo_Sptr> heroInfos;
 	heroInfos = LuaResource::LoadLua<HeroInfo>( "hero" );
 
