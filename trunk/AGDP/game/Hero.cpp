@@ -1590,23 +1590,23 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 const Vector3& Hero::Velocity() { return m_Vel; }
 
-Bodys Hero::getBodys( ){
+Bodys Hero::GetBodys( ){
 	return m_FrameInfo->m_Bodys;
 }
-Attacks Hero::getAtks( ){
+Attacks Hero::GetAttacks( ){
 	return m_FrameInfo->m_Attacks;
 }
-CatchInfos Hero::getCatches( ){
+CatchInfos Hero::GetCatches( ){
 	return m_FrameInfo->m_Catchs;
 }
-Record_Sptr Hero::getRecord(){
+Record_Sptr Hero::GetRecord(){
 	return m_Record;
 }
-bool Hero::getFace(){
+bool Hero::GetFace(){
 	return m_FaceSide;
 }
 
-bool Hero::isAlive(){
+bool Hero::IsAlive(){
 	return m_HP > 0;
 }
 

@@ -10,7 +10,7 @@ file = {
 	{
 		path="sprite\sys\firen_0.bmp",	--圖檔路徑
 		autoclip=1, 					--圖檔切割方式，1:同大小方塊自動裁切
-		w=79, h=79, 					--裁切方塊的寬高，w:寬, h:高
+		w=79, h=79, 					--顯示的寬高，w:寬, h:高
 		row=10, col=7					--方塊的行數及列數，row:直行數, col:橫列數
 	},
 	{path="sprite\sys\firen_1.bmp", autoclip=1, w=79, h=79, row=10, col=7},

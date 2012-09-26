@@ -319,6 +319,27 @@ void CPropertiesWnd::OnUpdateProperties2( CCmdUI* /*pCmdUI*/ )
 	// TODO: 在此加入您的命令更新 UI 處理常式程式碼
 }
 
+BOOL CPropertiesWnd::CanFloat() const
+{
+	return FALSE;
+}
+
+BOOL CPropertiesWnd::CanBeClosed() const
+{
+	return FALSE;
+}
+
+BOOL CPropertiesWnd::CanAutoHide() const
+{
+	return FALSE;
+}
+
+void CPropertiesWnd::SetVSDotNetLook( BOOL bSet )
+{
+	m_wndPropList.SetVSDotNetLook( bSet );
+	m_wndPropList.SetGroupNameFullWidth( bSet );
+}
+
 void CPropertiesWnd::InitPropList()
 {
 	SetPropListFont();
@@ -684,13 +705,13 @@ void CPropertiesWnd::InitPropList_Creation()
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame" ), varFloat(), _T( "創造物初始動作" ) );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame Index" ), varFloat(), _T( "創造物初始動作影格" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame Index" ), varInt(), _T( "創造物初始動作影格" ) );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "Amount" ), varFloat(), _T( "創造物數量" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Amount" ), varInt(), _T( "創造物數量" ) );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "Hp" ), varFloat(), _T( "創造物血量" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Hp" ), varInt(), _T( "創造物血量" ) );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "AI" ), varFloat(), _T( "創造物AI" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "AI" ), varInt(), _T( "創造物AI" ) );
 	pPropMain->AddSubItem( pProp );
 	CMFCPropertyGridProperty* pPosition = new CMFCPropertyGridProperty( _T( "Position" ), 0, TRUE );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "X" ), varFloat(), _T( "X" ) );
@@ -703,13 +724,57 @@ void CPropertiesWnd::InitPropList_Creation()
 	pVelocity->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Y" ), varFloat(), _T( "Y" ) );
 	pVelocity->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "Z" ), varFloat(), _T( "Y" ) );
-	pPosition->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Z" ), varFloat(), _T( "Z" ) );
+	pVelocity->AddSubItem( pProp );
 	pPropMain->AddSubItem( pVelocity );
 
 	m_wndPropList.AddProperty( pPropMain );
 	m_wndPropList.ExpandAll();
 }
+
+
+void CPropertiesWnd::RefreshPropList_Creation( int index )
+{
+	if ( m_EditProp != 7 )
+	{
+		InitPropList_Creation();
+		m_EditProp = 7;
+	}
+	m_Index = index;
+	if ( g_ActiveFramesMap->find( g_FrameName ) == g_ActiveFramesMap->end() )
+	{
+		char buff[100];
+		sprintf( buff, "Properties: Frame[%s] does not exist", g_FrameName.c_str() );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		return;
+	}
+	else if ( g_FrameIndex < -1 || g_FrameIndex > ( *g_ActiveFramesMap )[g_FrameName].size() - 1 )
+	{
+		char buff[100];
+		sprintf( buff, "Properties: Frame[%s][%d] does not exist", g_FrameName.c_str(), g_FrameIndex );
+		CString str( buff );
+		AfxMessageBox( str );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		return;
+	}
+	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 0 ) )->SetValue( CString( frameInfo.m_Creations[index].name.c_str() ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( CString( frameInfo.m_Creations[index].frame.c_str()) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt(frameInfo.m_Creations[index].frameID) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varInt(frameInfo.m_Creations[index].amount) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue(varInt(frameInfo.m_Creations[index].HP) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 0 ) )->SetValue( varFloat(frameInfo.m_Creations[index].x) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 1 ) )->SetValue( varFloat(frameInfo.m_Creations[index].y) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 0 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.x) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.y) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.z) );
+
+}
+
+
 
 void CPropertiesWnd::InitPropList_PictureData()
 {
@@ -888,30 +953,11 @@ CMFCPropertyGridProperty* CPropertiesWnd::GetDefaultPropList()
 	return pGroup1;
 }
 
-BOOL CPropertiesWnd::CanFloat() const
-{
-	return FALSE;
-}
-
-BOOL CPropertiesWnd::CanBeClosed() const
-{
-	return FALSE;
-}
-
-BOOL CPropertiesWnd::CanAutoHide() const
-{
-	return FALSE;
-}
-
-void CPropertiesWnd::SetVSDotNetLook( BOOL bSet )
-{
-	m_wndPropList.SetVSDotNetLook( bSet );
-	m_wndPropList.SetGroupNameFullWidth( bSet );
-}
 
 void CPropertiesWnd::RefreshPropList()
 {
 	InitPropList();
+	
 }
 
 void CPropertiesWnd::RefreshPropList_Frame()
@@ -1115,7 +1161,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		v.ChangeType( VT_R4, NULL );
 		float i = v.fltVal;
 		frameInfo->m_CenterX = i;
-		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCross( frameInfo->m_CenterX, frameInfo->m_CenterY );
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 8 )->GetSubItem( 1 ) )->IsEdited() )
@@ -1123,8 +1169,8 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		COleVariant v = propRoot->GetSubItem( 8 )->GetSubItem( 1 )->GetValue();
 		v.ChangeType( VT_R4, NULL );
 		float i = v.fltVal;
-		frameInfo->m_CenterX = i;
-		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
+		frameInfo->m_CenterY = i;
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCross( frameInfo->m_CenterX, frameInfo->m_CenterY );
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 0 ) )->IsEdited() )
