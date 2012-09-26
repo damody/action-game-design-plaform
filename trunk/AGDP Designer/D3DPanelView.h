@@ -38,7 +38,8 @@ public:
 	void EditAttackPoint( int id );
 	void EditCatch( int id );
 	void EditCatchPoint( int id );
-	void EditCross( float x, float y );
+	void EditableCenter();
+	void EditCenter( float x, float y );
 	void SetPic( PictureData*  pic, float x, float y );
 private:
 	void InitEdit();

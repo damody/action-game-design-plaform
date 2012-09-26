@@ -126,23 +126,23 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		switch ( nChar )
 		{
 		case KEY_LEFT:
-			m_D3DApp.SetCross( m_D3DApp.m_CrossX - 1, m_D3DApp.m_CrossY );
-			UpdateCenter( m_D3DApp.m_CrossX, m_D3DApp.m_CrossY );
+			m_D3DApp.m_Center.Translate(-1,0);
+			UpdateCenter( m_D3DApp.m_Center.x, m_D3DApp.m_Center.y );
 			break;
 
 		case KEY_UP:
-			m_D3DApp.SetCross( m_D3DApp.m_CrossX, m_D3DApp.m_CrossY - 1 );
-			UpdateCenter( m_D3DApp.m_CrossX, m_D3DApp.m_CrossY );
+			m_D3DApp.m_Center.Translate(0,-1);
+			UpdateCenter( m_D3DApp.m_Center.x, m_D3DApp.m_Center.y );
 			break;
 
 		case KEY_RIGHT:
-			m_D3DApp.SetCross( m_D3DApp.m_CrossX + 1, m_D3DApp.m_CrossY );
-			UpdateCenter( m_D3DApp.m_CrossX, m_D3DApp.m_CrossY );
+			m_D3DApp.m_Center.Translate(1,0);
+			UpdateCenter( m_D3DApp.m_Center.x, m_D3DApp.m_Center.y );
 			break;
 
 		case KEY_DOWN:
-			m_D3DApp.SetCross( m_D3DApp.m_CrossX, m_D3DApp.m_CrossY + 1 );
-			UpdateCenter( m_D3DApp.m_CrossX, m_D3DApp.m_CrossY );
+			m_D3DApp.m_Center.Translate(0,1);
+			UpdateCenter( m_D3DApp.m_Center.x, m_D3DApp.m_Center.y );
 			break;
 		}
 
@@ -449,7 +449,7 @@ void CD3DPanelView::OnLButtonDown( UINT nFlags, CPoint point )
 
 	if ( m_EnableCtrlCenter && m_CtrlPress )
 	{
-		m_D3DApp.SetCross( point.x, point.y );
+		m_D3DApp.m_Center.SetPosition( point.x, point.y );
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
@@ -636,7 +636,7 @@ void CD3DPanelView::OnMouseMove( UINT nFlags, CPoint point )
 
 	if ( m_EnableCtrlCenter && m_CtrlPress && m_LMouseHold )
 	{
-		m_D3DApp.SetCross( point.x, point.y );
+		m_D3DApp.m_Center.SetPosition( point.x, point.y );
 		UpdateCenter( point.x, point.y );
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
@@ -764,6 +764,8 @@ void CD3DPanelView::StopEdit()
 		m_CatchID = -1;
 	}
 
+	m_D3DApp.m_Center.SetColor(0,0,1);
+
 	m_D3DApp.SwitchShowCrossOff();
 	m_EnableCtrlCenter = false;
 }
@@ -837,12 +839,10 @@ void CD3DPanelView::EditCatch( int id )
 	}
 }
 
-void CD3DPanelView::EditCross( float x, float y )
+void CD3DPanelView::EditCenter( float x, float y )
 {
-	StopEdit();
-	m_D3DApp.SwitchShowCrossOn();
-	m_EnableCtrlCenter = true;
-	m_D3DApp.SetCross( x, y );
+	
+	m_D3DApp.m_Center.SetPosition( x, y );
 	m_D3DApp.buildPoint();
 	m_D3DApp.DrawScene();
 }
@@ -858,6 +858,7 @@ void CD3DPanelView::Init()
 void CD3DPanelView::Refresh()
 {
 	Init();
+	m_D3DApp.SwitchShowCrossOn();
 	FramesMap::iterator it_FrameInfos = g_ActiveFramesMap->find( g_FrameName );
 
 	if ( it_FrameInfos != g_ActiveFramesMap->end() )
@@ -875,7 +876,7 @@ void CD3DPanelView::Refresh()
 				m_D3DApp.SetPic( &g_HeroInfo->m_PictureDatas[m_FrameInfo->m_PictureID], m_FrameInfo->m_PictureX, m_FrameInfo->m_PictureY );
 			}
 
-			m_D3DApp.SetCross( m_FrameInfo->m_CenterX, m_FrameInfo->m_CenterY );
+			m_D3DApp.m_Center.SetPosition( m_FrameInfo->m_CenterX, m_FrameInfo->m_CenterY );
 
 			for ( Bodys::iterator it_body = m_FrameInfo->m_Bodys.begin(); it_body != m_FrameInfo->m_Bodys.end(); it_body++ )
 			{
@@ -1180,4 +1181,12 @@ void CD3DPanelView::OnButtonPointSub()
 			m_D3DApp.DrawScene();
 		}
 	}
+}
+
+void CD3DPanelView::EditableCenter()
+{
+	StopEdit();
+	//m_D3DApp.m_Center.SetColor(0,0,0);
+	m_EnableCtrlCenter = true;
+
 }

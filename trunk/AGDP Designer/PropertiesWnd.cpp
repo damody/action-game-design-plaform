@@ -1161,7 +1161,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		v.ChangeType( VT_R4, NULL );
 		float i = v.fltVal;
 		frameInfo->m_CenterX = i;
-		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCross( frameInfo->m_CenterX, frameInfo->m_CenterY );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 8 )->GetSubItem( 1 ) )->IsEdited() )
@@ -1170,7 +1170,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		v.ChangeType( VT_R4, NULL );
 		float i = v.fltVal;
 		frameInfo->m_CenterY = i;
-		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCross( frameInfo->m_CenterX, frameInfo->m_CenterY );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 0 ) )->IsEdited() )
