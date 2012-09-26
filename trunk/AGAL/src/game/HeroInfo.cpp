@@ -239,6 +239,7 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 					atk.m_DVY	= ( float )luadata->GetLua<double>( "frame/%s/%d/attack/%d/dvy", frameName, frameCount, atkCount );
 					atk.m_DVZ	= ( float )luadata->GetLua<double>( "frame/%s/%d/attack/%d/dvz", frameName, frameCount, atkCount );
 					atk.m_Fall	= luadata->GetLua<int>( "frame/%s/%d/attack/%d/fall", frameName, frameCount, atkCount );
+					atk.m_BreakDefend	= luadata->GetLua<int>( "frame/%s/%d/attack/%d/breakDefend", frameName, frameCount, atkCount );
 					atk.m_AttackRest	= luadata->GetLua<int>( "frame/%s/%d/attack/%d/arest", frameName, frameCount, atkCount );
 					atk.m_ReAttackRest	= luadata->GetLua<int>( "frame/%s/%d/attack/%d/reAttackRest", frameName, frameCount, atkCount );
 					atk.m_Injury	= luadata->GetLua<int>( "frame/%s/%d/attack/%d/injury", frameName, frameCount, atkCount );
@@ -398,8 +399,8 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 	}
 
 	//-------------------------------------
-	fprintf( file, "require\t\"effect\"\n" );
-	fprintf( file, "require\t\"action\"\n" );
+	fprintf( file, "require\t\"Script/effect\"\n" );
+	fprintf( file, "require\t\"Script/action\"\n" );
 	fprintf( file, "\n" );
 	//-------------------------------------
 	fprintf( file, "name\t= \"%s\"\n", RevisePath( hero->m_Name ).c_str() );
@@ -445,6 +446,14 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 	fprintf( file, "rowing_height        = %f\n", hero->m_RowingHeight );
 	fprintf( file, "rowing_distance      = %f\n", hero->m_RowingDistance );
 	fprintf( file, "\n" );
+	//-------------------------------------
+	LuaMap am("Script/Action.lua", "Action");
+	fprintf(file,"air_crouch_map = {\n");
+	//*
+	for(CrouchMap::iterator icm = hero->m_CrouchMap.begin(); icm != hero->m_CrouchMap.end(); icm ++){
+		fprintf(file, "{Action.%s, \"%s\", %d},\n", am[icm->first].c_str(), icm->second.m_FrameName.c_str(), icm->second.m_FrameOffset);
+	}//*/
+	fprintf(file, "}\n\n");
 	//-------------------------------------
 	fprintf( file, "frame = \n" );
 	fprintf( file, "{\n" );
@@ -539,7 +548,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 						fprintf( file, "{%g,%g}, ", vec2sTemp[i].x, vec2sTemp[i].y );
 					}
 
-					fprintf( file, "}," );
+					fprintf( file, "}, " );
 					fprintf( file, "zwidth = %g,", attackIter->m_ZWidth );
 					fprintf( file, "\n\t\t" );
 					fprintf( file, "dvx = %g, ", attackIter->m_DVX );
@@ -629,7 +638,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 			//----Creations----
 			if ( !frameInfo->m_Creations.empty() )
 			{
-				fprintf( file, "\tnewobjects = {" );
+				fprintf( file, "\tnewobjects = {\n" );
 
 				for ( Creations::iterator objIter = frameInfo->m_Creations.begin(); objIter != frameInfo->m_Creations.end(); ++objIter )
 				{
@@ -656,7 +665,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 			//----sound----
 			if ( !frameInfo->m_sound.empty() )
 			{
-				fprintf( file, "\tsound = \"%s\",\n", frameInfo->m_sound );
+				fprintf( file, "\tsound = \"%s\",\n", RevisePath(frameInfo->m_sound).c_str() );
 			}
 
 			fprintf( file, "}\n" );
