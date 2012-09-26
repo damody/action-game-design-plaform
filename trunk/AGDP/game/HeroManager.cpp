@@ -20,13 +20,13 @@ void HeroManager::Update( float dt )
 		( *it )->Update( dt );
 
 		ptrManager<Hero*, GetPolygonsFromBody>::Collisions t_colis = BodysCollision.GetCollision(*it, GetPolygonsFromAttack());
-		Attacks atks = (*it)->getAtks();
+		Attacks atks = (*it)->GetAttacks();
 		for(ptrManager<Hero*, GetPolygonsFromBody>::Collisions::iterator it_coli = t_colis.begin();
 			it_coli != t_colis.end(); ++it_coli)
 		{
 			std::cout << "be hit" << std::endl;
 			for( Heroes::iterator iHero = it_coli->victims.begin(); iHero != it_coli->victims.end(); iHero ++ ){
-				(*iHero)->beAttack(atks[it_coli->hitter], (*it)->getRecord(), (*it)->Position(), (*it)->getFace());
+				(*iHero)->beAttack(atks[it_coli->hitter], (*it)->GetRecord(), (*it)->Position(), (*it)->GetFace());
 			}
 		}
 	}
