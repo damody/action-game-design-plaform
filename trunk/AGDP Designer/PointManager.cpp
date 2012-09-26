@@ -254,3 +254,40 @@ int PointManager::Size()
 {
 	return m_Point.size();
 }
+
+Cross::Cross( void ):m_CenterX(0),m_CenterY(0)
+{
+	m_Cross.Add( m_CenterX + 3, m_CenterY + 3 );
+	m_Cross.Add( m_CenterX - 3, m_CenterY - 3 );
+	m_Cross.Add( m_CenterX , m_CenterY );
+	m_Cross.Add( m_CenterX - 3, m_CenterY + 3 );
+	m_Cross.Add( m_CenterX + 3, m_CenterY - 3 );
+}
+
+Cross::~Cross( void )
+{
+
+}
+
+void Cross::SetColor( float r,float g,float b)
+{
+	m_Cross.SetLineColor(r,g,b);
+}
+
+LineVertices Cross::BuildPoint(float scale, float offsetX, float offsetY)
+{
+	return m_Cross.BuildLine( scale, offsetX, offsetY, false );
+}
+
+void Cross::SetPosition( float x,float y )
+{
+	m_Cross.Transale(x-m_CenterX,y-m_CenterY);
+}
+
+void Cross::Translate( float x,float y )
+{
+	m_Cross.Transale(x,y);
+}
+
+
+

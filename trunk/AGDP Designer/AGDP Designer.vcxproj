@@ -50,7 +50,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SDKs)zlib-1.2.7\include;$(SDKs)lzo-2.06\include;$(SDKs)lzma-9.20\include;$(SDKs)cryptopp561\include;$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;$(SDKs)freetype-2.4.9\include;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SDKs)zlib-1.2.7\lib;$(SDKs)lzo-2.06\lib;$(SDKs)lzma-9.20\lib;$(SDKs)cryptopp561\lib;$(SDKs)freetype-2.4.9\lib\vc10;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Release;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SDKs)lzo-2.06;$(SDKs)zlib-1.2.7\lib;$(SDKs)lzma\C\lib;$(SDKs)lzo-2.06\lib;$(SDKs)lzma-9.20\lib;$(SDKs)cryptopp561\lib;$(SDKs)freetype-2.4.9\lib\vc10;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Release;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\Bin</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -171,6 +171,7 @@
     <ClInclude Include="DX11\Timer.h" />
     <ClInclude Include="DX11\Vertex.h" />
     <ClInclude Include="Edit\CommandBase.h" />
+    <ClInclude Include="Edit\CommandLambda.h" />
     <ClInclude Include="Edit\CommandManager.h" />
     <ClInclude Include="Edit\CommandManagerBase.h" />
     <ClInclude Include="FileNewDialog.h" />
@@ -232,6 +233,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="DX11\Vertex.cpp" />
+    <ClCompile Include="Edit\CommandLambda.cpp" />
     <ClCompile Include="Edit\CommandManager.cpp" />
     <ClCompile Include="FileNewDialog.cpp" />
     <ClCompile Include="FileTree.cpp" />

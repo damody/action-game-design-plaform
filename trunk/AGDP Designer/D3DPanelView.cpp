@@ -43,8 +43,8 @@ BEGIN_MESSAGE_MAP( CD3DPanelView, CDockablePane )
 	ON_WM_MBUTTONDOWN()
 	ON_WM_MBUTTONUP()
 	ON_WM_MOUSELEAVE()
-	ON_COMMAND( ID_BUTTON_POINTADD, &CD3DPanelView::OnButtonPointadd )
-	ON_COMMAND( ID_BUTTON_POINTSUB, &CD3DPanelView::OnButtonPointsub )
+	ON_COMMAND( IDC_BUTTON_POINTADD, &CD3DPanelView::OnButtonPointAdd )
+	ON_COMMAND( IDC_BUTTON_POINTSUB, &CD3DPanelView::OnButtonPointSub )
 END_MESSAGE_MAP()
 
 
@@ -125,25 +125,25 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 	{
 		switch ( nChar )
 		{
-		case KEY_LEFT:
-			m_D3DApp.SetCross( m_D3DApp.m_CenterX - 1, m_D3DApp.m_CenterY );
-			UpdateCenter( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY );
-			break;
+			case KEY_LEFT:
+				m_D3DApp.SetCross( m_D3DApp.m_CrossX - 1, m_D3DApp.m_CrossY );
+				UpdateCenter( m_D3DApp.m_CrossX, m_D3DApp.m_CrossY );
+				break;
 
-		case KEY_UP:
-			m_D3DApp.SetCross( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY - 1 );
-			UpdateCenter( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY );
-			break;
+			case KEY_UP:
+				m_D3DApp.SetCross( m_D3DApp.m_CrossX, m_D3DApp.m_CrossY - 1 );
+				UpdateCenter( m_D3DApp.m_CrossX, m_D3DApp.m_CrossY );
+				break;
 
-		case KEY_RIGHT:
-			m_D3DApp.SetCross( m_D3DApp.m_CenterX + 1, m_D3DApp.m_CenterY );
-			UpdateCenter( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY );
-			break;
+			case KEY_RIGHT:
+				m_D3DApp.SetCross( m_D3DApp.m_CrossX + 1, m_D3DApp.m_CrossY );
+				UpdateCenter( m_D3DApp.m_CrossX, m_D3DApp.m_CrossY );
+				break;
 
-		case KEY_DOWN:
-			m_D3DApp.SetCross( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY + 1 );
-			UpdateCenter( m_D3DApp.m_CenterX, m_D3DApp.m_CenterY );
-			break;
+			case KEY_DOWN:
+				m_D3DApp.SetCross( m_D3DApp.m_CrossX, m_D3DApp.m_CrossY + 1 );
+				UpdateCenter( m_D3DApp.m_CrossX, m_D3DApp.m_CrossY );
+				break;
 		}
 
 		m_D3DApp.buildPoint();
@@ -156,31 +156,31 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		{
 			switch ( nChar )
 			{
-			case KEY_LEFT:
-				m_D3DApp.m_Body[m_BodyID].Transale( m_PointIndex, -1, 0 );
-				UpdateAttack( m_PointIndex );
-				break;
+				case KEY_LEFT:
+					m_D3DApp.m_Body[m_BodyID].Transale( m_PointIndex, -1, 0 );
+					UpdateAttack( m_PointIndex );
+					break;
 
-			case KEY_UP:
-				m_D3DApp.m_Body[m_BodyID].Transale( m_PointIndex, 0, -1 );
-				UpdateAttack( m_PointIndex );
-				break;
+				case KEY_UP:
+					m_D3DApp.m_Body[m_BodyID].Transale( m_PointIndex, 0, -1 );
+					UpdateAttack( m_PointIndex );
+					break;
 
-			case KEY_RIGHT:
-				m_D3DApp.m_Body[m_BodyID].Transale( m_PointIndex, 1, 0 );
-				UpdateAttack( m_PointIndex );
-				break;
+				case KEY_RIGHT:
+					m_D3DApp.m_Body[m_BodyID].Transale( m_PointIndex, 1, 0 );
+					UpdateAttack( m_PointIndex );
+					break;
 
-			case KEY_DOWN:
-				m_D3DApp.m_Body[m_BodyID].Transale( m_PointIndex, 0, 1 );
-				UpdateAttack( m_PointIndex );
-				break;
+				case KEY_DOWN:
+					m_D3DApp.m_Body[m_BodyID].Transale( m_PointIndex, 0, 1 );
+					UpdateAttack( m_PointIndex );
+					break;
 
-			case KEY_DELETE:
-				m_D3DApp.m_Body[m_BodyID].Erase( m_PointIndex );
-				UpdateBody();
-				m_PointIndex = -1;
-				break;
+				case KEY_DELETE:
+					m_D3DApp.m_Body[m_BodyID].Erase( m_PointIndex );
+					UpdateBody();
+					m_PointIndex = -1;
+					break;
 			}
 
 			m_D3DApp.buildPoint();
@@ -191,30 +191,30 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		{
 			switch ( nChar )
 			{
-			case KEY_LEFT:
-				m_D3DApp.m_Body[m_BodyID].Transale( -1, 0 );
-				UpdateBody();
-				break;
+				case KEY_LEFT:
+					m_D3DApp.m_Body[m_BodyID].Transale( -1, 0 );
+					UpdateBody();
+					break;
 
-			case KEY_UP:
-				m_D3DApp.m_Body[m_BodyID].Transale( 0, -1 );
-				UpdateBody();
-				break;
+				case KEY_UP:
+					m_D3DApp.m_Body[m_BodyID].Transale( 0, -1 );
+					UpdateBody();
+					break;
 
-			case KEY_RIGHT:
-				m_D3DApp.m_Body[m_BodyID].Transale( 1, 0 );
-				UpdateBody();
-				break;
+				case KEY_RIGHT:
+					m_D3DApp.m_Body[m_BodyID].Transale( 1, 0 );
+					UpdateBody();
+					break;
 
-			case KEY_DOWN:
-				m_D3DApp.m_Body[m_BodyID].Transale( 0, 1 );
-				UpdateBody();
-				break;
+				case KEY_DOWN:
+					m_D3DApp.m_Body[m_BodyID].Transale( 0, 1 );
+					UpdateBody();
+					break;
 
-			case KEY_DELETE:
-				m_D3DApp.m_Body[m_BodyID].Clear();
-				m_PointIndex = -1;
-				break;
+				case KEY_DELETE:
+					m_D3DApp.m_Body[m_BodyID].Clear();
+					m_PointIndex = -1;
+					break;
 			}
 
 			m_D3DApp.buildPoint();
@@ -228,31 +228,31 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		{
 			switch ( nChar )
 			{
-			case KEY_LEFT:
-				m_D3DApp.m_Attack[m_AttackID].Transale( m_PointIndex, -1, 0 );
-				UpdateAttack( m_PointIndex );
-				break;
+				case KEY_LEFT:
+					m_D3DApp.m_Attack[m_AttackID].Transale( m_PointIndex, -1, 0 );
+					UpdateAttack( m_PointIndex );
+					break;
 
-			case KEY_UP:
-				m_D3DApp.m_Attack[m_AttackID].Transale( m_PointIndex, 0, -1 );
-				UpdateAttack( m_PointIndex );
-				break;
+				case KEY_UP:
+					m_D3DApp.m_Attack[m_AttackID].Transale( m_PointIndex, 0, -1 );
+					UpdateAttack( m_PointIndex );
+					break;
 
-			case KEY_RIGHT:
-				m_D3DApp.m_Attack[m_AttackID].Transale( m_PointIndex, 1, 0 );
-				UpdateAttack( m_PointIndex );
-				break;
+				case KEY_RIGHT:
+					m_D3DApp.m_Attack[m_AttackID].Transale( m_PointIndex, 1, 0 );
+					UpdateAttack( m_PointIndex );
+					break;
 
-			case KEY_DOWN:
-				m_D3DApp.m_Attack[m_AttackID].Transale( m_PointIndex, 0, 1 );
-				UpdateAttack( m_PointIndex );
-				break;
+				case KEY_DOWN:
+					m_D3DApp.m_Attack[m_AttackID].Transale( m_PointIndex, 0, 1 );
+					UpdateAttack( m_PointIndex );
+					break;
 
-			case KEY_DELETE:
-				m_D3DApp.m_Attack[m_AttackID].Erase( m_PointIndex );
-				UpdateAttack();
-				m_PointIndex = -1;
-				break;
+				case KEY_DELETE:
+					m_D3DApp.m_Attack[m_AttackID].Erase( m_PointIndex );
+					UpdateAttack();
+					m_PointIndex = -1;
+					break;
 			}
 
 			m_D3DApp.buildPoint();
@@ -263,31 +263,31 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		{
 			switch ( nChar )
 			{
-			case KEY_LEFT:
-				m_D3DApp.m_Attack[m_AttackID].Transale( -1, 0 );
-				UpdateAttack();
-				break;
+				case KEY_LEFT:
+					m_D3DApp.m_Attack[m_AttackID].Transale( -1, 0 );
+					UpdateAttack();
+					break;
 
-			case KEY_UP:
-				m_D3DApp.m_Attack[m_AttackID].Transale( 0, -1 );
-				UpdateAttack();
-				break;
+				case KEY_UP:
+					m_D3DApp.m_Attack[m_AttackID].Transale( 0, -1 );
+					UpdateAttack();
+					break;
 
-			case KEY_RIGHT:
-				m_D3DApp.m_Attack[m_AttackID].Transale( 1, 0 );
-				UpdateAttack();
-				break;
+				case KEY_RIGHT:
+					m_D3DApp.m_Attack[m_AttackID].Transale( 1, 0 );
+					UpdateAttack();
+					break;
 
-			case KEY_DOWN:
-				m_D3DApp.m_Attack[m_AttackID].Transale( 0, 1 );
-				UpdateAttack();
-				break;
+				case KEY_DOWN:
+					m_D3DApp.m_Attack[m_AttackID].Transale( 0, 1 );
+					UpdateAttack();
+					break;
 
-			case KEY_DELETE:
-				m_D3DApp.m_Attack[m_AttackID].Clear();
-				UpdateAttack();
-				m_PointIndex = -1;
-				break;
+				case KEY_DELETE:
+					m_D3DApp.m_Attack[m_AttackID].Clear();
+					UpdateAttack();
+					m_PointIndex = -1;
+					break;
 			}
 
 			m_D3DApp.buildPoint();
@@ -301,31 +301,31 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		{
 			switch ( nChar )
 			{
-			case KEY_LEFT:
-				m_D3DApp.m_Catch[m_CatchID].Transale( m_PointIndex, -1, 0 );
-				UpdateCatch( m_PointIndex );
-				break;
+				case KEY_LEFT:
+					m_D3DApp.m_Catch[m_CatchID].Transale( m_PointIndex, -1, 0 );
+					UpdateCatch( m_PointIndex );
+					break;
 
-			case KEY_UP:
-				m_D3DApp.m_Catch[m_CatchID].Transale( m_PointIndex, 0, -1 );
-				UpdateCatch( m_PointIndex );
-				break;
+				case KEY_UP:
+					m_D3DApp.m_Catch[m_CatchID].Transale( m_PointIndex, 0, -1 );
+					UpdateCatch( m_PointIndex );
+					break;
 
-			case KEY_RIGHT:
-				m_D3DApp.m_Catch[m_CatchID].Transale( m_PointIndex, 1, 0 );
-				UpdateCatch( m_PointIndex );
-				break;
+				case KEY_RIGHT:
+					m_D3DApp.m_Catch[m_CatchID].Transale( m_PointIndex, 1, 0 );
+					UpdateCatch( m_PointIndex );
+					break;
 
-			case KEY_DOWN:
-				m_D3DApp.m_Catch[m_CatchID].Transale( m_PointIndex, 0, 1 );
-				UpdateCatch( m_PointIndex );
-				break;
+				case KEY_DOWN:
+					m_D3DApp.m_Catch[m_CatchID].Transale( m_PointIndex, 0, 1 );
+					UpdateCatch( m_PointIndex );
+					break;
 
-			case KEY_DELETE:
-				m_D3DApp.m_Catch[m_CatchID].Erase( m_PointIndex );
-				UpdateCatch();
-				m_PointIndex = -1;
-				break;
+				case KEY_DELETE:
+					m_D3DApp.m_Catch[m_CatchID].Erase( m_PointIndex );
+					UpdateCatch();
+					m_PointIndex = -1;
+					break;
 			}
 
 			m_D3DApp.buildPoint();
@@ -336,31 +336,31 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		{
 			switch ( nChar )
 			{
-			case KEY_LEFT:
-				m_D3DApp.m_Catch[m_CatchID].Transale( -1, 0 );
-				UpdateCatch();
-				break;
+				case KEY_LEFT:
+					m_D3DApp.m_Catch[m_CatchID].Transale( -1, 0 );
+					UpdateCatch();
+					break;
 
-			case KEY_UP:
-				m_D3DApp.m_Catch[m_CatchID].Transale( 0, -1 );
-				UpdateCatch();
-				break;
+				case KEY_UP:
+					m_D3DApp.m_Catch[m_CatchID].Transale( 0, -1 );
+					UpdateCatch();
+					break;
 
-			case KEY_RIGHT:
-				m_D3DApp.m_Catch[m_CatchID].Transale( 1, 0 );
-				UpdateCatch();
-				break;
+				case KEY_RIGHT:
+					m_D3DApp.m_Catch[m_CatchID].Transale( 1, 0 );
+					UpdateCatch();
+					break;
 
-			case KEY_DOWN:
-				m_D3DApp.m_Catch[m_CatchID].Transale( 0, 1 );
-				UpdateCatch();
-				break;
+				case KEY_DOWN:
+					m_D3DApp.m_Catch[m_CatchID].Transale( 0, 1 );
+					UpdateCatch();
+					break;
 
-			case KEY_DELETE:
-				m_D3DApp.m_Catch[m_CatchID].Clear();
-				UpdateCatch();
-				m_PointIndex = -1;
-				break;
+				case KEY_DELETE:
+					m_D3DApp.m_Catch[m_CatchID].Clear();
+					UpdateCatch();
+					m_PointIndex = -1;
+					break;
 			}
 
 			m_D3DApp.buildPoint();
@@ -764,6 +764,7 @@ void CD3DPanelView::StopEdit()
 		m_CatchID = -1;
 	}
 
+	m_D3DApp.SwitchShowCrossOff();
 	m_EnableCtrlCenter = false;
 }
 
@@ -836,14 +837,11 @@ void CD3DPanelView::EditCatch( int id )
 	}
 }
 
-void CD3DPanelView::EditCenter()
+void CD3DPanelView::EditCross( float x, float y )
 {
 	StopEdit();
+	m_D3DApp.SwitchShowCrossOn();
 	m_EnableCtrlCenter = true;
-}
-
-void CD3DPanelView::EditCenter( float x, float y )
-{
 	m_D3DApp.SetCross( x, y );
 	m_D3DApp.buildPoint();
 	m_D3DApp.DrawScene();
@@ -1099,7 +1097,34 @@ void CD3DPanelView::UpdateAddition_CatchPoint( float x, float y )
 	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_CatchInfo( m_CatchID );
 }
 
-void CD3DPanelView::OnButtonPointadd()
+void CD3DPanelView::EditBodyPoint( int id )
+{
+	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	m_D3DApp.m_Body[m_BodyID].Modify( id, frameInfo->m_Bodys[m_BodyID].m_Area.Points()[id].x(), -frameInfo->m_Bodys[m_BodyID].m_Area.Points()[id].y() );
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
+}
+
+void CD3DPanelView::EditAttackPoint( int id )
+{
+	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	m_D3DApp.m_Attack[m_AttackID].Modify( id, frameInfo->m_Attacks[m_AttackID].m_Area.Points()[id].x(), -frameInfo->m_Attacks[m_AttackID].m_Area.Points()[id].y() );
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
+}
+
+void CD3DPanelView::EditCatchPoint( int id )
+{
+	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	m_D3DApp.m_Catch[m_CatchID].Modify( id, frameInfo->m_Catchs[m_CatchID].m_Area.Points()[id].x(), -frameInfo->m_Catchs[m_CatchID].m_Area.Points()[id].y() );
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
+}
+
+
+
+
+void CD3DPanelView::OnButtonPointAdd()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
 	if ( m_BodyID == -1 && m_AttackID == -1 ) { return; }
@@ -1127,8 +1152,9 @@ void CD3DPanelView::OnButtonPointadd()
 }
 
 
-void CD3DPanelView::OnButtonPointsub()
+void CD3DPanelView::OnButtonPointSub()
 {
+	// TODO: 在此加入您的命令處理常式程式碼
 	if ( m_BodyID != -1 )
 	{
 		CPointDeleteDialog PointDelete( m_D3DApp.m_Body[m_BodyID].Size() );
@@ -1154,32 +1180,4 @@ void CD3DPanelView::OnButtonPointsub()
 			m_D3DApp.DrawScene();
 		}
 	}
-
-	// TODO: 在此加入您的命令處理常式程式碼
 }
-
-void CD3DPanelView::EditBodyPoint( int id )
-{
-	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-	m_D3DApp.m_Body[m_BodyID].Modify( id, frameInfo->m_Bodys[m_BodyID].m_Area.Points()[id].x(), -frameInfo->m_Bodys[m_BodyID].m_Area.Points()[id].y() );
-	m_D3DApp.buildPoint();
-	m_D3DApp.DrawScene();
-}
-
-void CD3DPanelView::EditAttackPoint( int id )
-{
-	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-	m_D3DApp.m_Attack[m_AttackID].Modify( id, frameInfo->m_Attacks[m_AttackID].m_Area.Points()[id].x(), -frameInfo->m_Attacks[m_AttackID].m_Area.Points()[id].y() );
-	m_D3DApp.buildPoint();
-	m_D3DApp.DrawScene();
-}
-
-void CD3DPanelView::EditCatchPoint( int id )
-{
-	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-	m_D3DApp.m_Catch[m_CatchID].Modify( id, frameInfo->m_Catchs[m_CatchID].m_Area.Points()[id].x(), -frameInfo->m_Catchs[m_CatchID].m_Area.Points()[id].y() );
-	m_D3DApp.buildPoint();
-	m_D3DApp.DrawScene();
-}
-
-
