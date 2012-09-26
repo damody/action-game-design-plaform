@@ -278,3 +278,16 @@ LineVertices Cross::BuildPoint(float scale, float offsetX, float offsetY)
 {
 	return m_Cross.BuildLine( scale, offsetX, offsetY, false );
 }
+
+void Cross::SetPosition( float x,float y )
+{
+	m_Cross.Transale(x-m_CenterX,y-m_CenterY);
+}
+
+void Cross::Translate( float x,float y )
+{
+	m_Cross.Transale(x,y);
+}
+
+
+
