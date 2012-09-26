@@ -60,18 +60,18 @@ public:
 			GetPolygon()( *it )->CheckBuildAABB();
 		}*/
 		mXbinds.clear();
-		for ( ParentPtrs::iterator it = m_ParentPtrs.begin();
-			it != m_ParentPtrs.end(); ++it )
-		{
-			Polygon2Ds poly = (Polygon2Ds)GetPolygons()( *it );
-			for(Polygon2Ds::iterator it_poly = poly.begin();
-				it_poly != poly.end(); ++it_poly)
-			{
-				it_poly->CheckBuildAABB();
-				mXbinds.push_back( MyAxis_bind( *it, &( it_poly->AABB().m_Max ) ) );
-				mXbinds.push_back( MyAxis_bind( *it, &( it_poly->AABB().m_Min ) ) );
-			}
-		}
+// 		for ( ParentPtrs::iterator it = m_ParentPtrs.begin();
+// 			it != m_ParentPtrs.end(); ++it )
+// 		{
+// 			Polygon2Ds poly = (Polygon2Ds)GetPolygons()( *it );
+// 			for(Polygon2Ds::iterator it_poly = poly.begin();
+// 				it_poly != poly.end(); ++it_poly)
+// 			{
+// 				it_poly->CheckBuildAABB();
+// 				mXbinds.push_back( MyAxis_bind( *it, &( it_poly->AABB().m_Max ) ) );
+// 				mXbinds.push_back( MyAxis_bind( *it, &( it_poly->AABB().m_Min ) ) );
+// 			}
+// 		}
 
 		std::sort( mXbinds.begin(), mXbinds.end(), Compare_x<MyAxis_bind> );
 	}

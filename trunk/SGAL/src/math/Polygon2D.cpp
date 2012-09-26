@@ -16,47 +16,34 @@ using namespace boost::geometry;
 
 void Polygon2D::BuildAABB()
 {
-	m_AABB.ReBuild( m_Points );
 }
 
 void Polygon2D::BuildPolygon()
 {
-	m_Polygon.clear();
-
-	for ( int i = 0; i < m_Points.size(); i++ )
-	{
-		m_Polygon.outer().push_back( point2( m_Points[i].x, m_Points[i].y ) );
-	}
-
-	m_Polygon.outer().push_back( point2( m_Points[0].x, m_Points[0].y ) );
-	//correct(m_polygon);
 }
 
 bool Polygon2D::IsCollision( const Polygon2D& rhs )
 {
-	CheckBuildPolygon();
-
-	if ( m_Points.size() < 3 )
-	{
-		for ( int i = 0; i < m_Points.size(); i++ )
-		{
-			point2 pt( m_Points[0].x, m_Points[0].y );
-
-			if ( within( pt, rhs.m_Polygon ) ) { return true; }
-		}
-	}
-	else
-	{
-		return intersects<polygon, polygon>( m_Polygon, rhs.m_Polygon );
-	}
-
+// 	if ( m_Polygon.outer().size() < 3 )
+// 	{
+// 		for ( int i = 0; i < m_Points.size(); i++ )
+// 		{
+// 			point2 pt( m_Points[0].x, m_Points[0].y );
+//
+// 			if ( within( pt, rhs.m_Polygon ) ) { return true; }
+// 		}
+// 	}
+// 	else
+// 	{
+// 		return intersects<polygon, polygon>( m_Polygon, rhs.m_Polygon );
+// 	}
 	return false;
 }
 
 
-bool Polygon2D::zIsCollision( const Polygon2D& rhs )
+bool Polygon2D::CollisionZ( const Polygon2D& rhs )
 {
-	if ( abs( m_zPoint - rhs.m_zPoint ) <= ( m_zRange + rhs.m_zRange ) / 2 )
+	if ( abs( m_zPoint - rhs.m_zPoint ) <= ( m_zRange + rhs.m_zRange ) * 0.5 )
 	{
 		return true;
 	}
@@ -70,149 +57,92 @@ bool Polygon2D::zIsCollision( const Polygon2D& rhs )
 void Polygon2D::ProjectPolygon( const Vec2& axis, const Polygon2D& polygon, float* min, float* max )
 {
 	// To project a point on an axis use the dot product
-	float d = axis.dotProduct( polygon.m_Points[0] );
-	*min = d;
-	*max = d;
-
-	for ( size_t i = 0; i < polygon.m_Points.size(); i++ )
-	{
-		d = polygon.m_Points[i].dotProduct( axis );
-
-		if ( d < *min )
-		{
-			*min = d;
-		}
-		else
-		{
-			if ( d > *max )
-			{
-				*max = d;
-			}
-		}
-	}
-}
-
-void Polygon2D::CheckBuildAABB()
-{
-	if ( m_NeedBuildAABB )
-	{
-		BuildAABB();
-		m_NeedBuildAABB = false;
-	}
-}
-
-
-void Polygon2D::CheckBuildPolygon()
-{
-	if ( m_NeedBuildPolygon )
-	{
-		BuildPolygon();
-		m_NeedBuildPolygon = false;
-	}
+// 	float d = axis.dotProduct( polygon.m_Points[0] );
+// 	*min = d;
+// 	*max = d;
+//
+// 	for ( size_t i = 0; i < polygon.m_Points.size(); i++ )
+// 	{
+// 		d = polygon.m_Points[i].dotProduct( axis );
+//
+// 		if ( d < *min )
+// 		{
+// 			*min = d;
+// 		}
+// 		else
+// 		{
+// 			if ( d > *max )
+// 			{
+// 				*max = d;
+// 			}
+// 		}
+// 	}
 }
 
 void Polygon2D::AddPoint( float x, float y )
 {
-	m_NeedBuildAABB = true;
-	m_NeedBuildPolygon = true;
-	m_Points.push_back( Vec2( x, y ) );
+	m_Polygon.outer().push_back( point2( x, y ) );
 }
 
 void Polygon2D::AddPoint( const Vec2& p )
 {
-	m_NeedBuildAABB = true;
-	m_NeedBuildPolygon = true;
-	m_Points.push_back( p );
+	m_Polygon.outer().push_back( point2( p.x, p.y ) );
 }
 
 void Polygon2D::Offset( float x, float y )
 {
-	m_NeedBuildAABB = true;
-	m_NeedBuildPolygon = true;
-
-	for ( Vec2s::iterator it = m_Points.begin();
-	                it != m_Points.end(); ++it )
+	for ( auto it = m_Polygon.outer().begin();
+	                it != m_Polygon.outer().end(); ++it )
 	{
-		it->x += x;
-		it->y += y;
+		it->x( it->x() + x );
+		it->y( it->y() + y );
 	}
 }
 
 void Polygon2D::Offset( const Vec2& v )
 {
-	m_NeedBuildAABB = true;
-	m_NeedBuildPolygon = true;
-
-	for ( Vec2s::iterator it = m_Points.begin();
-	                it != m_Points.end(); ++it )
-	{
-		*it += v;
-	}
 }
 
 
 void Polygon2D::Offset( float x, float y, float z )
 {
-	m_NeedBuildAABB = true;
-	m_NeedBuildPolygon = true;
-
-	for ( Vec2s::iterator it = m_Points.begin();
-	                it != m_Points.end(); ++it )
+	for ( auto it = m_Polygon.outer().begin();
+	                it != m_Polygon.outer().end(); ++it )
 	{
-		it->x += x;
-		it->y += y;
+		it->x( it->x() + x );
+		it->y( it->y() + y );
 	}
-
 	m_zPoint += z;
 }
 
 
 void Polygon2D::Offset( const Vec3& v )
 {
-	m_NeedBuildAABB = true;
-	m_NeedBuildPolygon = true;
-
-	for ( Vec2s::iterator it = m_Points.begin();
-	                it != m_Points.end(); ++it )
-	{
-		it->x += v.x;
-		it->y += v.y;
-	}
-
 	m_zPoint += v.z;
 }
 
 void Polygon2D::SetAngle( float angle )
 {
-	m_NeedBuildAABB = true;
-	m_NeedBuildPolygon = true;
-
-	for ( Vec2s::iterator it = m_Points.begin();
-	                it != m_Points.end(); ++it )
-	{
-		*it = Quaternion::GetRotation( *it, angle - m_Angle, Vec2::ZERO );
-	}
-
+// 	for ( Vec2s::iterator it = m_Points.begin();
+// 	                it != m_Points.end(); ++it )
+// 	{
+// 		*it = Quaternion::GetRotation( *it, angle - m_Angle, Vec2::ZERO );
+// 	}
 	m_Angle = angle;
 }
 
 void Polygon2D::Rotation( float angle, const Vec2& middle /*= Vec2::ZERO*/ )
 {
-	m_NeedBuildAABB = true;
-	m_NeedBuildPolygon = true;
 	m_Angle = angle;
-
-	for ( Vec2s::iterator it = m_Points.begin();
-	                it != m_Points.end(); ++it )
-	{
-		*it = Quaternion::GetRotation( *it, angle, middle );
-	}
+// 	for ( Vec2s::iterator it = m_Points.begin();
+// 	                it != m_Points.end(); ++it )
+// 	{
+// 		*it = Quaternion::GetRotation( *it, angle, middle );
+// 	}
 }
 
 void Polygon2D::Clear()
 {
-	m_Points.clear();
-	m_Edges.clear();
 	m_Polygon.clear();
 }
 

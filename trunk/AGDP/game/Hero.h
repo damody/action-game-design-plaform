@@ -109,9 +109,9 @@ public:
 	const Vector3& Velocity();
 	bool IsAlive();
 	bool GetFace();
-	Bodys GetBodys( );
-	Attacks GetAttacks( );
-	CatchInfos GetCatches( );
+	Bodys&		GetBodys( );
+	Attacks&	GetAttacks( );
+	CatchInfos&	GetCatches( );
 	Record_Sptr GetRecord();
 	void SetRecord( Record_Sptr r );
 	void SetTeam( int team );
@@ -123,9 +123,9 @@ public:
 	//創造物件
 	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 	//碰撞判定用
-	friend Polygon2Ds getHeroBodys( const Hero& r );
-	friend Polygon2Ds getHeroAtks( const Hero& r );
-	friend Polygon2Ds getHeroCatches( const Hero& r );
+	friend Polygon2Ds GetHeroBodys( const Hero& r );
+	friend Polygon2Ds GetHeroAttacks( const Hero& r );
+	friend Polygon2Ds GetHeroCatches( const Hero& r );
 	void beCaught( const CatchInfo& rCatch, Vector3 hitPos, bool rFace );
 	void beAttack( const Attack& rAtk, const Record_Sptr rHero, Vector3 hitPos, bool rFace );
 	//void beHit(const )
@@ -154,10 +154,10 @@ bool SortHero( Hero_RawPtr a, Hero_RawPtr b );
 
 struct GetPolygonsFromBody
 {
-	Polygon2Ds operator()(Hero* hero){return (getHeroBodys(*hero));}
+	Polygon2Ds operator()(Hero* hero){return (GetHeroBodys(*hero));}
 };
 
 struct GetPolygonsFromAttack
 {
-	Polygon2Ds operator()(Hero* hero){return (getHeroAtks(*hero));}
+	Polygon2Ds operator()(Hero* hero){return (GetHeroAttacks(*hero));}
 };

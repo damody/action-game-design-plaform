@@ -1404,7 +1404,7 @@ PolygonVerteices Hero::GetPolygonVerteices()
 {
 	PolygonVerteices pvs;
 	PolygonVertex pv;
-	Polygon2Ds bodys = getHeroBodys( *this );
+	Polygon2Ds bodys = GetHeroBodys( *this );
 	pv.color.x = 1.0;
 	pv.color.y = 1.0;
 	pv.color.z = 1.0;
@@ -1412,24 +1412,24 @@ PolygonVerteices Hero::GetPolygonVerteices()
 
 	for ( Polygon2Ds::iterator it = bodys.begin(); it != bodys.end(); it++ )
 	{
-		Vec2s points = it->Points();
+		auto points = it->Points();
 		pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
 
 		for ( unsigned int i = 1; i + 1 < points.size(); i++ )
 		{
-			pv.position.x = points[0].x;
-			pv.position.y = points[0].y;
+			pv.position.x = points[0].x();
+			pv.position.y = points[0].y();
 			pvs.push_back( pv );
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pvs.push_back( pv );
-			pv.position.x = points[i + 1].x;
-			pv.position.y = points[i + 1].y;
+			pv.position.x = points[i + 1].x();
+			pv.position.y = points[i + 1].y();
 			pvs.push_back( pv );
 		}
 	}
 
-	Polygon2Ds  atks = getHeroAtks( *this );
+	Polygon2Ds  atks = GetHeroAttacks( *this );
 	pv.color.x = 0.0;
 	pv.color.y = 0.0;
 	pv.color.z = 1.0;
@@ -1437,24 +1437,24 @@ PolygonVerteices Hero::GetPolygonVerteices()
 
 	for ( Polygon2Ds::iterator it = atks.begin(); it != atks.end(); it++ )
 	{
-		Vec2s points = it->Points();
+		auto points = it->Points();
 		pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
 
 		for ( unsigned int i = 1; i + 1 < points.size(); i++ )
 		{
-			pv.position.x = points[0].x;
-			pv.position.y = points[0].y;
+			pv.position.x = points[0].x();
+			pv.position.y = points[0].y();
 			pvs.push_back( pv );
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pvs.push_back( pv );
-			pv.position.x = points[i + 1].x;
-			pv.position.y = points[i + 1].y;
+			pv.position.x = points[i + 1].x();
+			pv.position.y = points[i + 1].y();
 			pvs.push_back( pv );
 		}
 	}
 
-	Polygon2Ds  catches = getHeroCatches( *this );
+	Polygon2Ds  catches = GetHeroCatches( *this );
 	pv.color.x = 0.0;
 	pv.color.y = 1.0;
 	pv.color.z = 0.0;
@@ -1462,19 +1462,19 @@ PolygonVerteices Hero::GetPolygonVerteices()
 
 	for ( Polygon2Ds::iterator it = catches.begin(); it != catches.end(); it++ )
 	{
-		Vec2s points = it->Points();
+		auto points = it->Points();
 		pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
 
 		for ( unsigned int i = 1; i + 1 < points.size(); i++ )
 		{
-			pv.position.x = points[0].x;
-			pv.position.y = points[0].y;
+			pv.position.x = points[0].x();
+			pv.position.y = points[0].y();
 			pvs.push_back( pv );
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pvs.push_back( pv );
-			pv.position.x = points[i + 1].x;
-			pv.position.y = points[i + 1].y;
+			pv.position.x = points[i + 1].x();
+			pv.position.y = points[i + 1].y();
 			pvs.push_back( pv );
 		}
 	}
@@ -1486,7 +1486,7 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 {
 	PolygonVerteices pvs;
 	PolygonVertex pv;
-	Polygon2Ds bodys = getHeroBodys( *this );
+	Polygon2Ds bodys = GetHeroBodys( *this );
 	pv.color.x = 1.0;
 	pv.color.y = 1.0;
 	pv.color.z = 1.0;
@@ -1494,12 +1494,12 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 	for ( Polygon2Ds::iterator it = bodys.begin(); it != bodys.end(); it++ )
 	{
-		Vec2s points = it->Points();
+		auto points = it->Points();
 
 		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
 			pvs.push_back( pv );
 			pv.position.z = it->GetZPoint() + it->GetZRange() / 2;
@@ -1510,16 +1510,16 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pvs.push_back( pv );
-			pv.position.x = points[( i + 1 ) % points.size()].x;
-			pv.position.y = points[( i + 1 ) % points.size()].y;
+			pv.position.x = points[( i + 1 ) % points.size()].x();
+			pv.position.y = points[( i + 1 ) % points.size()].y();
 			pvs.push_back( pv );
 		}
 	}
 
-	Polygon2Ds atks = getHeroAtks( *this );
+	Polygon2Ds atks = GetHeroAttacks( *this );
 	pv.color.x = 0.0;
 	pv.color.y = 0.0;
 	pv.color.z = 1.0;
@@ -1527,12 +1527,12 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 	for ( Polygon2Ds::iterator it = atks.begin(); it != atks.end(); it++ )
 	{
-		Vec2s points = it->Points();
+		auto points = it->Points();
 
 		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
 			pvs.push_back( pv );
 			pv.position.z = it->GetZPoint() + it->GetZRange() / 2;
@@ -1543,16 +1543,16 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pvs.push_back( pv );
-			pv.position.x = points[( i + 1 ) % points.size()].x;
-			pv.position.y = points[( i + 1 ) % points.size()].y;
+			pv.position.x = points[( i + 1 ) % points.size()].x();
+			pv.position.y = points[( i + 1 ) % points.size()].y();
 			pvs.push_back( pv );
 		}
 	}
 
-	Polygon2Ds catches = getHeroCatches( *this );
+	Polygon2Ds catches = GetHeroCatches( *this );
 	pv.color.x = 0.0;
 	pv.color.y = 1.0;
 	pv.color.z = 0.0;
@@ -1560,12 +1560,12 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 	for ( Polygon2Ds::iterator it = catches.begin(); it != catches.end(); it++ )
 	{
-		Vec2s points = it->Points();
+		auto points = it->Points();
 
 		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
 			pvs.push_back( pv );
 			pv.position.z = it->GetZPoint() + it->GetZRange() / 2;
@@ -1576,11 +1576,11 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pvs.push_back( pv );
-			pv.position.x = points[( i + 1 ) % points.size()].x;
-			pv.position.y = points[( i + 1 ) % points.size()].y;
+			pv.position.x = points[( i + 1 ) % points.size()].x();
+			pv.position.y = points[( i + 1 ) % points.size()].y();
 			pvs.push_back( pv );
 		}
 	}
@@ -1590,13 +1590,13 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 const Vector3& Hero::Velocity() { return m_Vel; }
 
-Bodys Hero::GetBodys( ){
+Bodys& Hero::GetBodys( ){
 	return m_FrameInfo->m_Bodys;
 }
-Attacks Hero::GetAttacks( ){
+Attacks& Hero::GetAttacks( ){
 	return m_FrameInfo->m_Attacks;
 }
-CatchInfos Hero::GetCatches( ){
+CatchInfos& Hero::GetCatches( ){
 	return m_FrameInfo->m_Catchs;
 }
 Record_Sptr Hero::GetRecord(){
@@ -1739,26 +1739,27 @@ bool SortHero( Hero_RawPtr a, Hero_RawPtr b )
 	return a->GetTextureID() < b->GetTextureID();
 }
 //* 碰撞判定用函示
-Polygon2Ds getHeroBodys( const Hero& r )
+Polygon2Ds GetHeroBodys( const Hero& r )
 {
 	Polygon2Ds d;
 
 	for ( Bodys::iterator ib = r.m_FrameInfo->m_Bodys.begin(); ib != r.m_FrameInfo->m_Bodys.end(); ib++ )
 	{
 		Polygon2D s;
-
-		for ( Vec2s::const_iterator iv = ib->m_Area.const_Points().begin(); iv != ib->m_Area.const_Points().end(); iv++ )
+		if (!ib->m_Area.Points().empty())
 		{
-			if ( r.m_FaceSide ) 	//面向右邊
+			for ( auto iv = ib->m_Area.Points().begin(); iv != ib->m_Area.Points().end(); iv++ )
 			{
-				s.AddPoint( r.m_Position.x - ( r.m_CenterX - iv->x ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y ) * SCALE );
-			}
-			else 				//面向左邊
-			{
-				s.AddPoint( r.m_Position.x + ( r.m_CenterX - iv->x ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y ) * SCALE );
+				if ( r.m_FaceSide ) 	//面向右邊
+				{
+					s.AddPoint( r.m_Position.x - ( r.m_CenterX - iv->x() ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y() ) * SCALE );
+				}
+				else 				//面向左邊
+				{
+					s.AddPoint( r.m_Position.x + ( r.m_CenterX - iv->x() ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y() ) * SCALE );
+				}
 			}
 		}
-
 		s.SetZPoint( r.m_Position.z );
 		s.SetZRange( ib->m_ZWidth );
 		d.push_back( s );
@@ -1767,7 +1768,7 @@ Polygon2Ds getHeroBodys( const Hero& r )
 	return d;
 }
 
-Polygon2Ds getHeroAtks( const Hero& r )
+Polygon2Ds GetHeroAttacks( const Hero& r )
 {
 	Polygon2Ds d;
 
@@ -1775,15 +1776,15 @@ Polygon2Ds getHeroAtks( const Hero& r )
 	{
 		Polygon2D s;
 
-		for ( Vec2s::const_iterator iv = ib->m_Area.const_Points().begin(); iv != ib->m_Area.const_Points().end(); iv++ )
+		for ( auto iv = ib->m_Area.Points().begin(); iv != ib->m_Area.Points().end(); iv++ )
 		{
 			if ( r.m_FaceSide ) 	//面向右邊
 			{
-				s.AddPoint( r.m_Position.x - ( r.m_CenterX - iv->x ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y ) * SCALE );
+				s.AddPoint( r.m_Position.x - ( r.m_CenterX - iv->x() ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y() ) * SCALE );
 			}
 			else 				//面向左邊
 			{
-				s.AddPoint( r.m_Position.x + ( r.m_CenterX - iv->x ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y ) * SCALE );
+				s.AddPoint( r.m_Position.x + ( r.m_CenterX - iv->x() ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y() ) * SCALE );
 			}
 		}
 
@@ -1795,7 +1796,7 @@ Polygon2Ds getHeroAtks( const Hero& r )
 	return d;
 }
 
-Polygon2Ds getHeroCatches( const Hero& r )
+Polygon2Ds GetHeroCatches( const Hero& r )
 {
 	Polygon2Ds d;
 
@@ -1803,15 +1804,15 @@ Polygon2Ds getHeroCatches( const Hero& r )
 	{
 		Polygon2D s;
 
-		for ( Vec2s::const_iterator iv = ib->m_Area.const_Points().begin(); iv != ib->m_Area.const_Points().end(); iv++ )
+		for ( auto iv = ib->m_Area.Points().begin(); iv != ib->m_Area.Points().end(); iv++ )
 		{
 			if ( r.m_FaceSide ) 	//面向右邊
 			{
-				s.AddPoint( r.m_Position.x - ( r.m_CenterX - iv->x ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y ) * SCALE );
+				s.AddPoint( r.m_Position.x - ( r.m_CenterX - iv->x() ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y() ) * SCALE );
 			}
 			else 				//面向左邊
 			{
-				s.AddPoint( r.m_Position.x + ( r.m_CenterX - iv->x ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y ) * SCALE );
+				s.AddPoint( r.m_Position.x + ( r.m_CenterX - iv->x() ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y() ) * SCALE );
 			}
 		}
 
