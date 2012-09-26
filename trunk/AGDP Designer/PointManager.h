@@ -55,3 +55,16 @@ public:
 };
 typedef std::vector<PointManager> Area;
 
+class Cross
+{
+public:
+	float	m_CenterX, m_CenterY;
+private:
+	PointManager  m_Cross;
+public:
+	Cross( void );
+	~Cross( void );
+
+	void SetColor(float r,float g,float b);
+	LineVertices BuildPoint(float scale, float offsetX, float offsetY);
+};

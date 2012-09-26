@@ -25,7 +25,7 @@ private:
 	float         m_picX, m_picY;
 	Texture*      m_Templete;
 
-	PointManager  m_Cross;
+	PointManager  m_Center;
 	bool	      m_ShowCross;
 public:
 	D3DApp_Frame();
