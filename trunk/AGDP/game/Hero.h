@@ -107,12 +107,12 @@ public:
 	int Team() const;
 	const Vector3& Position();
 	const Vector3& Velocity();
-	bool isAlive();
-	bool getFace();
-	Bodys getBodys( );
-	Attacks getAtks( );
-	CatchInfos getCatches( );
-	Record_Sptr getRecord();
+	bool IsAlive();
+	bool GetFace();
+	Bodys GetBodys( );
+	Attacks GetAttacks( );
+	CatchInfos GetCatches( );
+	Record_Sptr GetRecord();
 	void SetRecord( Record_Sptr r );
 	void SetTeam( int team );
 	void SetPosition( Vector3 pos );
