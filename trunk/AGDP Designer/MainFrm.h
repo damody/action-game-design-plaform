@@ -77,7 +77,7 @@ public:
 	}
 	void EditCreation( int id )
 	{
-		
+		m_wndProperties.RefreshPropList_Creation(id);
 	}
 	void SetStatus( const CString& str )
 	{

@@ -38,8 +38,7 @@ public:
 	void EditAttackPoint( int id );
 	void EditCatch( int id );
 	void EditCatchPoint( int id );
-	void EditCenter();
-	void EditCenter( float x, float y );
+	void EditCross( float x, float y );
 	void SetPic( PictureData*  pic, float x, float y );
 private:
 	void InitEdit();
@@ -86,8 +85,8 @@ public:
 	afx_msg void OnMButtonDown( UINT nFlags, CPoint point );
 	afx_msg void OnMButtonUp( UINT nFlags, CPoint point );
 	afx_msg void OnMouseLeave();
-	afx_msg void OnButtonPointadd();
-	afx_msg void OnButtonPointsub();
+	afx_msg void OnButtonPointAdd();
+	afx_msg void OnButtonPointSub();
 };
 
 

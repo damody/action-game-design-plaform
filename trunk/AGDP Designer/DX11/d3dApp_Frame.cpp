@@ -36,6 +36,7 @@ D3DApp_Frame::D3DApp_Frame()
 	m_Minimized  = false;
 	m_Maximized  = false;
 	m_Resizing   = false;
+	m_ShowCross = false;
 	m_FrameStats = L"";
 	//mFont               = 0;
 	m_MainWndCaption = L"D3D11 Application";
@@ -369,8 +370,11 @@ void D3DApp_Frame::buildPoint()
 		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
 	}
 
-	LineVertices lvs = m_Cross.BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY, false );
-	m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
+	if (m_ShowCross)
+	{
+		LineVertices lvs = m_Cross.BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY, false );
+		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
+	}
 
 	if ( !m_LineVertices.empty() )
 	{
@@ -467,9 +471,9 @@ void D3DApp_Frame::SetPic( PictureData* pic, float x, float y )
 
 void D3DApp_Frame::SetCross( float x, float y )
 {
-	m_Cross.Transale( x - m_CenterX, y - m_CenterY );
-	m_CenterX = x;
-	m_CenterY = y;
+	m_Cross.Transale( x - m_CrossX, y - m_CrossY );
+	m_CrossX = x;
+	m_CrossY = y;
 }
 
 void D3DApp_Frame::Init()
@@ -481,11 +485,22 @@ void D3DApp_Frame::Init()
 	m_Pic = NULL;
 	m_picX = 1;
 	m_picY = 1;
-	m_CenterX = 0;
-	m_CenterY = 0;
-	m_Cross.Add( m_CenterX + 3, m_CenterY + 3 );
-	m_Cross.Add( m_CenterX - 3, m_CenterY - 3 );
-	m_Cross.Add( m_CenterX , m_CenterY );
-	m_Cross.Add( m_CenterX - 3, m_CenterY + 3 );
-	m_Cross.Add( m_CenterX + 3, m_CenterY - 3 );
+	m_CrossX = 0;
+	m_CrossY = 0;
+	m_ShowCross = false;
+	m_Cross.Add( m_CrossX + 3, m_CrossY + 3 );
+	m_Cross.Add( m_CrossX - 3, m_CrossY - 3 );
+	m_Cross.Add( m_CrossX , m_CrossY );
+	m_Cross.Add( m_CrossX - 3, m_CrossY + 3 );
+	m_Cross.Add( m_CrossX + 3, m_CrossY - 3 );
+}
+
+void D3DApp_Frame::SwitchShowCrossOff()
+{
+	m_ShowCross = false;
+}
+
+void D3DApp_Frame::SwitchShowCrossOn()
+{
+	m_ShowCross = true;
 }

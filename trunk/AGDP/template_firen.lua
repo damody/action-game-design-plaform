@@ -10,7 +10,7 @@ file = {
 	{
 		path="sprite\sys\firen_0.bmp",	--圖檔路徑
 		autoclip=1, 					--圖檔切割方式，1:同大小方塊自動裁切
-		w=79, h=79, 					--裁切方塊的寬高，w:寬, h:高
+		w=79, h=79, 					--顯示的寬高，w:寬, h:高
 		row=10, col=7					--方塊的行數及列數，row:直行數, col:橫列數
 	},
 	{path="sprite\sys\firen_1.bmp", autoclip=1, w=79, h=79, row=10, col=7},
@@ -49,7 +49,7 @@ air_crouch_map={
 frame =
 {
 	--必要 Frame
-	default  = {},		--預設，人物初始 Frame ，通常也作為所有招式結束後跳轉對象，必須要是 Action.Standing 
+	default  = {},		--預設，人物初始 Frame ，通常也作為所有招式結束後跳轉對象，必須要是 Action.Standing
 	standing = {},		--地上站立
 	walking  = {},		--地上行走
 	in_the_air = {},	--必須有 in_the_air[0]，在空中的預設 Frame ，只要在空中處於 Action.Standing 就會切換到 in_the_air[0]
