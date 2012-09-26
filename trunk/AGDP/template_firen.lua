@@ -55,7 +55,8 @@ frame =
 	in_the_air = {},	--必須有 in_the_air[0]，在空中的預設 Frame ，只要在空中處於 Action.Standing 就會切換到 in_the_air[0]
 	injured = {},		--被擊中
 	lying = {},			--倒地
-	falling = {},		--被擊飛
+	falling_front = {},	--從後方被擊飛
+	falling_back = {},	--從前方被擊飛
 	crouch = {},		--必須有 crouch[0] 給落地切換，預設支援LF2式的衝跳切換
 	--通常都會有的 Frame
 	running      = {},	--與stop_running一組。預設按法為>>，不靠 hit 切換

@@ -48,7 +48,11 @@ std::vector< boost::shared_ptr<T> > LoadLua( std::string objectType )
 		// get lua path
 		luaPath = luaResource->GetLua<const char*>( "%s/%d", objectType.c_str(), idx );
 		// set lua file
-		luaTemp->InputLuaFile( luaPath.c_str() );
+		if( !luaTemp->InputLuaFile( luaPath.c_str() ) )
+		{
+			std::vector< boost::shared_ptr<T> > t;
+			return t;
+		}
 		// load lua's content
 		dataTemp->LoadData( luaTemp );
 		//--------

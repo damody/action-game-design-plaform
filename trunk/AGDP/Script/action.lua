@@ -71,6 +71,8 @@ Action.ZAxisSkill 	= GetEnum()
 Action.GroundSkill 	= GetEnum()
 Action.FreeSkill 	= GetEnum()
 Action.UniqueSkill	= GetEnum()
+Action.FallingFront = GetEnum()
+Action.FallingBack = GetEnum()
 Action.BasicActionEnd	= GetEnum()
 
 count = -1;

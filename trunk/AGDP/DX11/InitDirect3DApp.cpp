@@ -876,7 +876,7 @@ void InitDirect3DApp::LoadData()
 
 	//*test
 		g_BackgroundManager.SetCurrentBackground( backGrounds.back()->m_Name );//set last element be current background
-		g_BackgroundManager.Set_BGM_Play(0);
+		//g_BackgroundManager.Set_BGM_Play(0);
 		g_ObjectManager.CreateWeapon( "Bat", Vector3( 600, 0, 600 ) );
 	//*/
 }
