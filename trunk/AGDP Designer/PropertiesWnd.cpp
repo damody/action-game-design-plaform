@@ -17,6 +17,7 @@
 #include "AGDP Designer.h"
 #include "global.h"
 #include "ConvStr.h"
+#include <functional>
 
 #ifdef _DEBUG
 #undef THIS_FILE
