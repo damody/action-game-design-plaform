@@ -1,7 +1,5 @@
 #pragma once
 #include "math/Vector2.h"
-//#include "ball/ball.h"
-//#include "ball/Tbox.h"
 
 template<class ParentPtr>
 struct Axis_bind

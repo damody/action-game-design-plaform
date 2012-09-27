@@ -36,8 +36,8 @@ public:
 	float GetZRange() {return m_zRange;}
 	float GetZPoint() {return m_zPoint;}
 	void Rotation( float angle, const Vec2& middle = Vec2::ZERO );
-	bool IsCollision( const Polygon2D& rhs );
-	bool CollisionZ( const Polygon2D& rhs );
+	bool IsCollision( const Polygon2D& rhs ) const;
+	bool CollisionZ( const Polygon2D& rhs ) const;
 	void Clear();
 private:
 	// Calculate the distance between [minA, maxA] and [minB, maxB]

@@ -6,7 +6,6 @@
 #include "math/AABB2D.h"
 #include "ball/Axis_bind.h"
 
-//#include "Tbox.h"
 
 template <class ParentPtr, class GetPolygons>
 class ptrManager
@@ -20,7 +19,8 @@ public:
 	 * hitter	:傳入者的第幾個該屬性
 	 * victims	:此屬性擊中了哪些人
 	 */
-	struct collision{
+	struct collision
+	{
 		int hitter;
 		ParentPtrs victims;
 	};
@@ -66,32 +66,44 @@ public:
 		{
 			return res;
 		}
-		
+
 		Polygon2Ds polys1 = getpolys( obj );
-		if( polys1.size() == 0)
+
+		if ( polys1.size() == 0 )
 		{
 			return res;
 		}
+
 		bool isCollision = false;
-		
-		for( ParentPtrs::iterator it = m_ParentPtrs.begin(); it != m_ParentPtrs.end(); ++it ){
-			Polygon2Ds polys2 = (Polygon2Ds)GetPolygons()( *it );
-			for(int ipolys1 = 0; ipolys1 < polys1.size(); ipolys1 ++ ){
+
+		for ( ParentPtrs::iterator it = m_ParentPtrs.begin(); it != m_ParentPtrs.end(); ++it )
+		{
+			Polygon2Ds polys2 = ( Polygon2Ds )GetPolygons()( *it );
+
+			for ( int ipolys1 = 0; ipolys1 < polys1.size(); ipolys1 ++ )
+			{
 				collision tc = {};
 				tc.hitter = ipolys1;
-				for(Polygon2Ds::iterator ipolys2 = polys2.begin(); ipolys2 != polys2.end(); ipolys2 ++ ){
+
+				for ( Polygon2Ds::iterator ipolys2 = polys2.begin(); ipolys2 != polys2.end(); ipolys2 ++ )
+				{
 					//Z軸
-					if(abs(ipolys2->GetZPoint() - polys1[ipolys1].GetZPoint()) > ipolys2->GetZRange() + polys1[ipolys1].GetZRange()){
+					if ( abs( ipolys2->GetZPoint() - polys1[ipolys1].GetZPoint() ) > ipolys2->GetZRange() + polys1[ipolys1].GetZRange() )
+					{
 						break;
 					}
+
 					//XY 平面
-					if( ipolys2->IsCollision(polys1[ipolys1])){
-						tc.victims.push_back(*it);
+					if ( ipolys2->IsCollision( polys1[ipolys1] ) )
+					{
+						tc.victims.push_back( *it );
 						break;
 					}
 				}
-				if(tc.victims.size() != 0){
-					res.push_back(tc);
+
+				if ( tc.victims.size() != 0 )
+				{
+					res.push_back( tc );
 				}
 			}
 		}
@@ -100,7 +112,7 @@ public:
 	}
 	void AddPtr( ParentPtr p )
 	{
-/*		assert( !GetPolygon()( p )->Points().empty() );*/
+		/*		assert( !GetPolygon()( p )->Points().empty() );*/
 		m_ParentPtrs.push_back( p );
 // 		mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Max ) ) );
 // 		mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Min ) ) );
@@ -118,8 +130,7 @@ public:
 	}
 	void ErasePtr( ParentPtr p )
 	{
-/*		bool doubleCheck = false;*/
-
+		/*		bool doubleCheck = false;*/
 		for ( ParentPtrs::iterator it = m_ParentPtrs.begin();
 		                it != m_ParentPtrs.end(); ++it )
 		{

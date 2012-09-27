@@ -4,11 +4,11 @@
 using namespace boost::geometry;
 
 
-bool Polygon2D::IsCollision( const Polygon2D& rhs )
+bool Polygon2D::IsCollision( const Polygon2D& rhs ) const
 {
 	if ( m_Polygon.outer().size() < 3 )
 	{
-		for ( auto it = Points().begin(); it != Points().end(); ++it )
+		for ( auto it = m_Polygon.outer().begin(); it != m_Polygon.outer().end(); ++it )
 		{
 			if ( within( *it, rhs.m_Polygon ) ) { return true; }
 		}
@@ -21,7 +21,7 @@ bool Polygon2D::IsCollision( const Polygon2D& rhs )
 }
 
 
-bool Polygon2D::CollisionZ( const Polygon2D& rhs )
+bool Polygon2D::CollisionZ( const Polygon2D& rhs ) const
 {
 	if ( abs( m_zPoint - rhs.m_zPoint ) <= ( m_zRange + rhs.m_zRange ) * 0.5 )
 	{
