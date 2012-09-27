@@ -15,6 +15,8 @@
 typedef boost::geometry::model::d2::point_xy<float> point2;
 typedef boost::geometry::model::polygon<point2> polygon;
 
+Vec2 Point2toVec2(const point2& p);
+point2 Point2toVec2(const Vec2& p);
 class Polygon2D
 {
 public:
@@ -58,7 +60,7 @@ private:
 		}
 	}
 	// Calculate the projection of a polygon on an axis and returns it as a [min, max] interval
-	void ProjectPolygon( const Vec2& axis, const Polygon2D& polygon, float* min, float* max );
+	void ProjectPolygon( const Vec2& axis, Polygon2D& polygon, float* min, float* max );
 private:
 	float	m_Angle;
 	polygon m_Polygon;

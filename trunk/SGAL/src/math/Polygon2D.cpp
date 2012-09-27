@@ -24,19 +24,17 @@ void Polygon2D::BuildPolygon()
 
 bool Polygon2D::IsCollision( const Polygon2D& rhs )
 {
-// 	if ( m_Polygon.outer().size() < 3 )
-// 	{
-// 		for ( int i = 0; i < m_Points.size(); i++ )
-// 		{
-// 			point2 pt( m_Points[0].x, m_Points[0].y );
-//
-// 			if ( within( pt, rhs.m_Polygon ) ) { return true; }
-// 		}
-// 	}
-// 	else
-// 	{
-// 		return intersects<polygon, polygon>( m_Polygon, rhs.m_Polygon );
-// 	}
+	if ( m_Polygon.outer().size() < 3 )
+	{
+		for ( auto it = Points().begin(); it != Points().end(); ++it )
+		{
+			if ( within( *it, rhs.m_Polygon ) ) { return true; }
+		}
+	}
+	else
+	{
+		return intersects<polygon, polygon>( m_Polygon, rhs.m_Polygon );
+	}
 	return false;
 }
 
@@ -54,29 +52,29 @@ bool Polygon2D::CollisionZ( const Polygon2D& rhs )
 }
 
 
-void Polygon2D::ProjectPolygon( const Vec2& axis, const Polygon2D& polygon, float* min, float* max )
+void Polygon2D::ProjectPolygon( const Vec2& axis, Polygon2D& polygon, float* min, float* max )
 {
 	// To project a point on an axis use the dot product
-// 	float d = axis.dotProduct( polygon.m_Points[0] );
-// 	*min = d;
-// 	*max = d;
-//
-// 	for ( size_t i = 0; i < polygon.m_Points.size(); i++ )
-// 	{
-// 		d = polygon.m_Points[i].dotProduct( axis );
-//
-// 		if ( d < *min )
-// 		{
-// 			*min = d;
-// 		}
-// 		else
-// 		{
-// 			if ( d > *max )
-// 			{
-// 				*max = d;
-// 			}
-// 		}
-// 	}
+	float d = axis.dotProduct( Point2toVec2( polygon.Points()[0] ) );
+	*min = d;
+	*max = d;
+
+	for ( size_t i = 0; i < polygon.Points().size(); i++ )
+	{
+		d = Point2toVec2( polygon.Points()[i] ).dotProduct( axis );
+
+		if ( d < *min )
+		{
+			*min = d;
+		}
+		else
+		{
+			if ( d > *max )
+			{
+				*max = d;
+			}
+		}
+	}
 }
 
 void Polygon2D::AddPoint( float x, float y )
@@ -112,6 +110,7 @@ void Polygon2D::Offset( float x, float y, float z )
 		it->x( it->x() + x );
 		it->y( it->y() + y );
 	}
+
 	m_zPoint += z;
 }
 
@@ -123,22 +122,20 @@ void Polygon2D::Offset( const Vec3& v )
 
 void Polygon2D::SetAngle( float angle )
 {
-// 	for ( Vec2s::iterator it = m_Points.begin();
-// 	                it != m_Points.end(); ++it )
-// 	{
-// 		*it = Quaternion::GetRotation( *it, angle - m_Angle, Vec2::ZERO );
-// 	}
+	for ( auto it = Points().begin(); it != Points().end(); ++it )
+	{
+		*it = Point2toVec2(Quaternion::GetRotation( Point2toVec2(*it), angle - m_Angle, Vec2::ZERO ));
+	}
 	m_Angle = angle;
 }
 
 void Polygon2D::Rotation( float angle, const Vec2& middle /*= Vec2::ZERO*/ )
 {
 	m_Angle = angle;
-// 	for ( Vec2s::iterator it = m_Points.begin();
-// 	                it != m_Points.end(); ++it )
-// 	{
-// 		*it = Quaternion::GetRotation( *it, angle, middle );
-// 	}
+	for ( auto it = Points().begin(); it != Points().end(); ++it )
+	{
+		*it = Point2toVec2(Quaternion::GetRotation( Point2toVec2(*it), angle, middle ));
+	}
 }
 
 void Polygon2D::Clear()
@@ -151,3 +148,13 @@ Polygon2D::~Polygon2D()
 }
 
 
+
+Vec2 Point2toVec2( const point2& p )
+{
+	return Vec2( p.x(), p.y() );
+}
+
+point2 Point2toVec2( const Vec2& p )
+{
+	return point2(p.x, p.y);
+}
