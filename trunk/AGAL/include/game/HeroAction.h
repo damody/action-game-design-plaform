@@ -89,7 +89,7 @@ public:
 
 		const char* _formatString = formatString.c_str();
 		int argc = 0;
-		for( int i = 0; i<formatString.size() ; i++ ) 
+		for( int i = 0; i<(int)formatString.size() ; i++ ) 
 		{
 			if( _formatString[i] == '%' ) argc++;
 		}
@@ -98,7 +98,7 @@ public:
 		va_start( _formatVa, formatString );
 		std::vector<char> _charStack;
 		std::vector<std::string> _tableStack;
-		for( int i = 0; i < formatString.size(); i++ )
+		for( int i = 0; i < (int)formatString.size(); i++ )
 		{
 			if( _formatString[i] == '(' )
 			{
@@ -213,5 +213,7 @@ const std::string HeroActionTable[] =
 	"ZAxisSkill",
 	"GroundSkill",
 	"UniqueSkill",
+	"FallingFront",
+	"FallingBack",
 	"BasicActionEnd"
 };

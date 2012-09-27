@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "math\Polygon2D.h"
 
 namespace boost {namespace serialization {class access;}}
 //每一個攻擊判定所含的資訊

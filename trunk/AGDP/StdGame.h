@@ -28,7 +28,6 @@
 #include <math/AABB2D.h>
 #include <math/AxisAlignedBox.h>
 #include <math/BasicMath.h>
-#include <math/Centroid.h>
 #include <math/Matrix3.h>
 #include <math/Matrix4.h>
 #include <math/Polygon2D.h>

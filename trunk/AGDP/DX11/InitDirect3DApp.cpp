@@ -845,12 +845,12 @@ void InitDirect3DApp::LoadData()
 		g_HeroInfoManager.AddHeroInfo( heroInfos[idx]->m_Name, heroInfos[idx] );
 	}
 	//AddBG
-	std::vector<Background_Sptr> backGrounds;
-	backGrounds = LuaResource::LoadLua<Background>( "backGround" );
+	std::vector<Background_Sptr> Backgrounds;
+	Backgrounds = LuaResource::LoadLua<Background>( "background" );
 
-	for ( int idx = 0; idx < backGrounds.size(); idx++ )
+	for ( int idx = 0; idx < Backgrounds.size(); idx++ )
 	{
-		g_BackgroundManager.AddBackground( backGrounds[idx]->m_Name , backGrounds[idx] );
+		g_BackgroundManager.AddBackground( Backgrounds[idx]->m_Name , Backgrounds[idx] );
 	}
 	
 	//AddObjectInfo
@@ -875,7 +875,7 @@ void InitDirect3DApp::LoadData()
 	
 
 	//*test
-		g_BackgroundManager.SetCurrentBackground( backGrounds.back()->m_Name );//set last element be current background
+		g_BackgroundManager.SetCurrentBackground( Backgrounds.back()->m_Name );//set last element be current background
 		//g_BackgroundManager.Set_BGM_Play(0);
 		g_ObjectManager.CreateWeapon( "Bat", Vector3( 600, 0, 600 ) );
 	//*/

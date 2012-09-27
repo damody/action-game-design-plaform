@@ -624,7 +624,7 @@ frame.punch[1] =
    attack={
 		{kind = 0--[[使用effect]], effect = Effect.Punch,
 		points = {{21,-31}, {21,-49}, {64,-49}, {64,-31}}, zwidth = 8,
-		dvx = 2, dvy = 0, dvz = 0, fall = 0, breakDefend = 16,
+		dvx = 2, dvy = 0, dvz = 0, fall = 20, breakDefend = 16,
 		arest = 8, reAttackRest = 20,
 		injury = 20, strength = 50}
 	},
@@ -709,7 +709,7 @@ frame.kick[1] =
    attack={
 		{kind = 0--[[使用effect]], effect = Effect.Punch,
 		points = {{23,-38}, {23,-53}, {64,-53}, {64,-38}}, zwidth = 8,
-		dvx = 2, dvy = 0, dvz = 0, fall = 0, breakDefend = 16,
+		dvx = 2, dvy = 0, dvz = 0, fall = 20, breakDefend = 16,
 		arest = 8, reAttackRest = 20,
 		injury = 20, strength = 50}
 	},
@@ -1443,7 +1443,104 @@ frame.falling_front[5] =
 
 frame.falling_back[0] =
 {
+	pic_id = 0, pic_x = 1, pic_y = 4, state = Action.FallingBack, wait = 1, next = { "falling_back", 0}, 
+	dvx = 0, dvy = 0, dvz = 0, centerx = 37, centery = 79, clear_key_queue = 0, 
+	attack={
+		{
+		kind = 4--[[跌]], effect = Effect.Punch,
+		points = {{21,-14}, {21,-58}, {50,-58}, {50,-14}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50
+		},
+	},
+	body = {
+		--{kind = 1, points = { {33,-63}, {54,-51}, {56,-25}, {35,-15}, {16,-34}, }, zwidth = 8},
+		{kind = 1, points = { {25,-25}, {25,-45}, {46,-45}, {46,-25}, }, zwidth = 8},
+	},
+}
 
+frame.falling_back[1] =
+{
+	pic_id = 0, pic_x = 2, pic_y = 4, state = Action.FallingBack, wait = 1, next = { "falling_back", 1}, 
+	dvx = 0, dvy = 0, dvz = 0, centerx = 37, centery = 85, clear_key_queue = 0, 
+	attack={
+		{
+		kind = 4, effect = Effect.Punch,
+		points = {{8,-15}, {8,-47}, {38,-47}, {38,-15}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50
+		},
+		{
+		kind = 4, effect = Effect.Punch,
+		points = {{27,-35}, {27,-56}, {55,-56}, {55,-35}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50
+		},
+	},
+	body = {
+		--{kind = 1, points = { {33,-63}, {54,-51}, {56,-25}, {35,-15}, {16,-34}, }, zwidth = 8},
+		{kind = 1, points = { {22,-20}, {22,-43}, {46,-43}, {46,-20}, }, zwidth = 8},
+	},
+}
+
+frame.falling_back[2] =
+{
+	pic_id = 0, pic_x = 3, pic_y = 4, state = Action.FallingBack, wait = 1, next = { "falling_back", 2}, 
+	dvx = 0, dvy = 0, dvz = 0, centerx = 39, centery = 79, clear_key_queue = 0, 
+	attack={
+		{
+		kind = 4, effect = Effect.Punch,
+		points = {{13,-18}, {13,-44}, {59,-44}, {59,-18}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50
+		},
+	},
+	body = {
+		--{kind = 1, points = { {33,-63}, {54,-51}, {56,-25}, {35,-15}, {16,-34}, }, zwidth = 8},
+		{kind = 1, points = { {27,-22}, {27,-40}, {47,-40}, {47,-22}, }, zwidth = 8},
+	},
+}
+
+frame.falling_back[3] =
+{
+	pic_id = 0, pic_x = 4, pic_y = 4, state = Action.FallingBack, wait = 1, next = { "falling_back", 3}, 
+	dvx = 0, dvy = 0, dvz = 0, centerx = 39, centery = 79, clear_key_queue = 0, 
+	attack={
+		{
+		kind = 4, effect = Effect.Punch,
+		points = {{32,-18}, {32,-45}, {65,-45}, {65,-18}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50
+		},
+		{
+		kind = 4, effect = Effect.Punch,
+		points = {{10,-38}, {10,-59}, {48,-59}, {48,-38}}, zwidth = 8,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50
+		},
+	},
+	body = {
+		--{kind = 1, points = { {33,-63}, {54,-51}, {56,-25}, {35,-15}, {16,-34}, }, zwidth = 8},
+		{kind = 1, points = { {22,-30}, {22,-51}, {49,-51}, {49,-30}, }, zwidth = 8},
+	},
+}
+
+frame.falling_back[4] =
+{
+	pic_id = 0, pic_x = 5, pic_y = 4, state = Action.FallingBack, wait = 1, next = { "falling_back", 4}, 
+	dvx = 0, dvy = 0, dvz = 0, centerx = 39, centery = 66, clear_key_queue = 0, 
+}
+
+frame.falling_back[5] =
+{
+	pic_id = 0, pic_x = 6, pic_y = 4, state = Action.FallingBack, wait = 1, next = { "falling_back", 5}, 
+	dvx = 0, dvy = 0, dvz = 0, centerx = 39, centery = 79, clear_key_queue = 0, 
 }
 
 frame.injured[0] =

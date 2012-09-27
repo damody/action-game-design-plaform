@@ -4,7 +4,6 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "BasicMath.h"
-#include "AABB2D.h"
 #include <vector>
 
 #include <boost/geometry.hpp>
@@ -15,25 +14,15 @@
 typedef boost::geometry::model::d2::point_xy<float> point2;
 typedef boost::geometry::model::polygon<point2> polygon;
 
+Vec2 Point2toVec2(const point2& p);
+point2 Point2toVec2(const Vec2& p);
 class Polygon2D
 {
 public:
 	Polygon2D(): m_Angle( 0 ), m_zPoint( 0 ), m_zRange( 0.01f ) {}
 	~Polygon2D();
-	Vec2s& Points()
-	{
-		m_NeedBuildAABB = true;
-		m_NeedBuildPolygon = true;
-		return m_Points;
-	}
-	const Vec2s& const_Points() const
-	{
-		return m_Points;
-	}
-	AABB2D& AABB()
-	{
-		return m_AABB;
-	}
+	polygon::ring_type& Points(){ return m_Polygon.outer();}
+	const polygon::ring_type& CPoints() const { return m_Polygon.outer();}
 	void AddPoint( float x, float y );
 	void AddPoint( const Vec2& p );
 	void Offset( float x, float y );
@@ -47,16 +36,10 @@ public:
 	float GetZRange() {return m_zRange;}
 	float GetZPoint() {return m_zPoint;}
 	void Rotation( float angle, const Vec2& middle = Vec2::ZERO );
-	bool IsCollision( const Polygon2D& rhs );
-	bool zIsCollision( const Polygon2D& rhs );
-	void CheckBuildAABB();
-	void CheckBuildPolygon();
-	void CheckBuildEdges() {} // do nothing
+	bool IsCollision( const Polygon2D& rhs ) const;
+	bool CollisionZ( const Polygon2D& rhs ) const;
 	void Clear();
 private:
-	void BuildAABB();
-	void BuildPolygon();
-	void BuildEdges() {} // do nothing
 	// Calculate the distance between [minA, maxA] and [minB, maxB]
 	// The distance will be negative if the intervals overlap
 	inline float IntervalDistance( float minA, float maxA, float minB, float maxB )
@@ -71,16 +54,12 @@ private:
 		}
 	}
 	// Calculate the projection of a polygon on an axis and returns it as a [min, max] interval
-	void ProjectPolygon( const Vec2& axis, const Polygon2D& polygon, float* min, float* max );
+	void ProjectPolygon( const Vec2& axis, Polygon2D& polygon, float* min, float* max );
 private:
 	float	m_Angle;
-	Vec2s	m_Points, m_Edges;
-	bool	m_NeedBuildAABB;
-	bool	m_NeedBuildPolygon;
 	polygon m_Polygon;
 	float   m_zRange; // ª½®|
 	float   m_zPoint;
-	AABB2D  m_AABB;
 };
 typedef std::vector<Polygon2D> Polygon2Ds;
 

@@ -511,14 +511,14 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 
 				for ( Bodys::iterator bodyIter = frameInfo->m_Bodys.begin(); bodyIter != frameInfo->m_Bodys.end(); ++bodyIter )
 				{
-					const Vec2s vec2sTemp = bodyIter->m_Area.const_Points();
+					const auto vec2sTemp = bodyIter->m_Area.Points();
 					fprintf( file, "\t\t{" );
 					fprintf( file, "kind = %d, ", bodyIter->m_Kind );
 					fprintf( file, "points = { " );
 
 					for ( int i = 0; i < ( int )vec2sTemp.size(); i++ )
 					{
-						fprintf( file, "{%g,%g}, ", vec2sTemp[i].x, vec2sTemp[i].y );
+						fprintf( file, "{%g,%g}, ", vec2sTemp[i].x(), vec2sTemp[i].y() );
 					}
 
 					fprintf( file, "}, " );
@@ -536,7 +536,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 
 				for ( Attacks::iterator attackIter = frameInfo->m_Attacks.begin(); attackIter != frameInfo->m_Attacks.end(); ++attackIter )
 				{
-					const Vec2s vec2sTemp = attackIter->m_Area.const_Points();
+					const auto vec2sTemp = attackIter->m_Area.Points();
 					fprintf( file, "\t\t{\n\t\t" );
 					fprintf( file, "kind = %d, ", attackIter->m_Kind );
 					fprintf( file, "effect = Effect.%s,", effectTable[attackIter->m_Effect].c_str() );
@@ -545,7 +545,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 
 					for ( int i = 0; i < ( int )vec2sTemp.size(); i++ )
 					{
-						fprintf( file, "{%g,%g}, ", vec2sTemp[i].x, vec2sTemp[i].y );
+						fprintf( file, "{%g,%g}, ", vec2sTemp[i].x(), vec2sTemp[i].y() );
 					}
 
 					fprintf( file, "}, " );
@@ -591,7 +591,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 
 				for ( CatchInfos::iterator catchIter = frameInfo->m_Catchs.begin(); catchIter != frameInfo->m_Catchs.end(); ++catchIter )
 				{
-					const Vec2s vec2sTemp = catchIter->m_Area.const_Points();
+					const auto vec2sTemp = catchIter->m_Area.Points();
 					fprintf( file, "\t\t{\n\t\t" );
 					fprintf( file, "kind = %d, ", catchIter->m_Kind );
 					fprintf( file, "strong = %d, ", catchIter->m_Strong );
@@ -603,7 +603,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 
 					for ( int i = 0; i < ( int )vec2sTemp.size(); i++ )
 					{
-						fprintf( file, "{%g,%g}, ", vec2sTemp[i].x, vec2sTemp[i].y );
+						fprintf( file, "{%g,%g}, ", vec2sTemp[i].x(), vec2sTemp[i].y() );
 					}
 
 					fprintf( file, "}, " );

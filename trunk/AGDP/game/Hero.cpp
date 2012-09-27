@@ -25,15 +25,15 @@ bool isKeyUp( char r )
 {
 	switch ( r )
 	{
-	case '^': case 'v': case '<': case '>': case 'A': case 'B': case 'J': case 'D':
-		return false;
+		case '^': case 'v': case '<': case '>': case 'A': case 'B': case 'J': case 'D':
+			return false;
 
-	case '8': case '2': case '4': case '6': case 'a': case 'b': case 'j': case 'd':
-		return true;
+		case '8': case '2': case '4': case '6': case 'a': case 'b': case 'j': case 'd':
+			return true;
 
-	default:
-		throw "wrong hit key";
-		return false;
+		default:
+			throw "wrong hit key";
+			return false;
 	}
 }
 
@@ -41,39 +41,39 @@ inline char keyTrans( CtrlKey::v r )
 {
 	switch ( r )
 	{
-	case CtrlKey::ATK1: return 'A';
+		case CtrlKey::ATK1: return 'A';
 
-	case CtrlKey::ATK2: return 'B';
+		case CtrlKey::ATK2: return 'B';
 
-	case CtrlKey::DEF: return 'D';
+		case CtrlKey::DEF: return 'D';
 
-	case CtrlKey::JUMP: return 'J';
+		case CtrlKey::JUMP: return 'J';
 
-	case CtrlKey::ATK1_KEYUP: return 'a';
+		case CtrlKey::ATK1_KEYUP: return 'a';
 
-	case CtrlKey::ATK2_KEYUP: return 'b';
+		case CtrlKey::ATK2_KEYUP: return 'b';
 
-	case CtrlKey::DEF_KEYUP: return 'd';
+		case CtrlKey::DEF_KEYUP: return 'd';
 
-	case CtrlKey::JUMP_KEYUP: return 'j';
+		case CtrlKey::JUMP_KEYUP: return 'j';
 
-	case CtrlKey::UP: return '^';
+		case CtrlKey::UP: return '^';
 
-	case CtrlKey::DOWN: return 'v';
+		case CtrlKey::DOWN: return 'v';
 
-	case CtrlKey::LEFT: return '<';
+		case CtrlKey::LEFT: return '<';
 
-	case CtrlKey::RIGHT: return '>';
+		case CtrlKey::RIGHT: return '>';
 
-	case CtrlKey::UP_KEYUP: return '8';
+		case CtrlKey::UP_KEYUP: return '8';
 
-	case CtrlKey::DOWN_KEYUP: return '2';
+		case CtrlKey::DOWN_KEYUP: return '2';
 
-	case CtrlKey::LEFT_KEYUP: return '4';
+		case CtrlKey::LEFT_KEYUP: return '4';
 
-	case CtrlKey::RIGHT_KEYUP: return '6';
+		case CtrlKey::RIGHT_KEYUP: return '6';
 
-	default: throw "error: wrong key";
+		default: throw "error: wrong key";
 	}
 }
 
@@ -81,15 +81,15 @@ bool isSKey( char r )
 {
 	switch ( r )
 	{
-	case 'A': return true;
+		case 'A': return true;
 
-	case 'B': return true;
+		case 'B': return true;
 
-	case 'J': return true;
+		case 'J': return true;
 
-	case 'D': return true;
+		case 'D': return true;
 
-	default: return false;
+		default: return false;
 	}
 }
 
@@ -136,11 +136,15 @@ void Hero::Init()
 void Hero::Update( float dt )
 {
 	bool d_next;
-	if( m_HP > 0) {
+
+	if ( m_HP > 0 )
+	{
 		Recover();
 		d_next = !ScanKeyQue();
 	}
-	else { d_next = true;}
+	else { 
+		 d_next = m_Action != 42;
+	}
 
 	if ( d_next )  //無控制動作時，跑Wait Time
 	{
@@ -167,7 +171,7 @@ void Hero::Update( float dt )
 	if ( !inAir )  	//地上
 	{
 		//落地判定
-		if ( m_Action != 51) //HeroAction::UNIQUE_SKILL 
+		if ( m_Action != 51 ) //HeroAction::UNIQUE_SKILL
 		{
 			//m_Position.y = 0;
 			m_Vel.y = 0;
@@ -177,15 +181,17 @@ void Hero::Update( float dt )
 				//Frame 改到 CrouchMap 中對應的 Frame
 				CrouchMap::iterator icm = m_HeroInfo->m_CrouchMap.find( m_Action );
 
-				if ( icm != m_HeroInfo->m_CrouchMap.end() ){
+				if ( icm != m_HeroInfo->m_CrouchMap.end() )
+				{
 					SwitchFrame( icm->second.m_FrameName, icm->second.m_FrameOffset );
 				}
-				else{
+				else
+				{
 					SwitchFrame( "crouch", 0 );
 				}
 			}
 		}
-		else{ m_Position = pastPos + m_Vel; }
+		else { m_Position = pastPos + m_Vel; }
 
 		//X方向摩擦力計算
 		float sign = m_Vel.x / abs( m_Vel.x );
@@ -215,6 +221,38 @@ void Hero::Update( float dt )
 		{
 			SwitchFrame( "in_the_air", 0 );
 		}
+	}
+
+	const Bodys& bodys = GetBodys();
+
+	if ( !bodys.empty() )
+	{
+		m_BodyAABB.ReBuild( bodys.front().m_Area );
+
+		for ( auto it = ++bodys.begin(); it != bodys.end(); it++ )
+		{
+			m_BodyAABB.AddPolygon2D( it->m_Area );
+		}
+	}
+	else
+	{
+		m_BodyAABB.SetBounding(-1e20);
+	}
+
+	const Attacks& attacks = GetAttacks();
+
+	if ( !attacks.empty() )
+	{
+		m_AttackAABB.ReBuild( attacks.front().m_Area );
+
+		for ( auto it = ++attacks.begin(); it != attacks.end(); it++ )
+		{
+			m_AttackAABB.AddPolygon2D( it->m_Area );
+		}
+	}
+	else
+	{
+		m_AttackAABB.SetBounding(1e20);
 	}
 }
 
@@ -261,7 +299,7 @@ NextLoop:
 
 	f = &iframe->second[m_FrameID];
 
-	if ( f->m_Consume.m_JumpRule <= 0 )
+	if ( f->m_Consume.m_JumpRule <= 0 && f->m_Consume.m_HP != 0 && f->m_Consume.m_MP != 0)
 	{
 		printf( "MaxHP:%d\tHP:%d\tMP:%d\n", m_MaxRecoverHP, m_HP, m_MP );
 
@@ -280,15 +318,18 @@ NextLoop:
 
 	//clear keyQue
 	if ( m_KeyQue.empty() ) {}
-	else if ( f->m_ClearKeyQueue == 1 ){	
+	else if ( f->m_ClearKeyQueue == 1 )
+	{
 		m_KeyQue.pop_back();
 	}
-	else if ( f->m_ClearKeyQueue == 2 ){
+	else if ( f->m_ClearKeyQueue == 2 )
+	{
 		m_KeyQue.clear();
 	}
 
-	if ( m_Action == 40 && f->m_HeroAction != m_Action ){	
-		m_Vel = Vector3( 0, 0, 0 );	
+	if ( m_Action == 40 && f->m_HeroAction != m_Action )
+	{
+		m_Vel = Vector3( 0, 0, 0 );
 	}
 
 	//sound
@@ -602,7 +643,8 @@ bool Hero::ScanKeyQue()
 	}
 	else if ( m_Action == 40 ) //HeroAction::CROUCH )
 	{
-		if ( m_KeyQue.empty() ){
+		if ( m_KeyQue.empty() )
+		{
 			return false;
 		}
 		else if ( m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2] && m_Frame.compare( "crouch" ) == 0 )
@@ -668,225 +710,225 @@ bool Hero::ScanKeyQue()
 
 				switch ( *rHit )
 				{
-				case '^':
-					if ( riKey->key != CtrlKey::UP && riKey->key != CtrlKey::UP_KEYUP )
-					{
-						flag = false;
-					}
-
-					break;
-
-				case 'v':
-					if ( riKey->key != CtrlKey::DOWN && riKey->key != CtrlKey::DOWN_KEYUP )
-					{
-						flag = false;
-					}
-
-					break;
-
-					/*case '<':
-						if(riKey->key != CtrlKey::LEFT && riKey->key != CtrlKey::LEFT_KEYUP){
-							flag = false;
-						}
-						break;//*/
-				case '>':
-					if ( riKey->key == CtrlKey::RIGHT || riKey->key == CtrlKey::RIGHT_KEYUP )
-					{
-						cface = 1;
-					}
-					else if ( riKey->key == CtrlKey::LEFT || riKey->key == CtrlKey::LEFT_KEYUP )
-					{
-						cface = -1;
-					}
-					else
-					{
-						flag = false;
-					}
-
-					break;
-
-				case 'A':
-					if ( riKey->key != CtrlKey::ATK1 && riKey->key != CtrlKey::ATK1_KEYUP )
-					{
-						flag = false;
-					}
-
-					break;
-
-				case 'B':
-					if ( riKey->key != CtrlKey::ATK2 && riKey->key != CtrlKey::ATK2_KEYUP )
-					{
-						flag = false;
-					}
-
-					break;
-
-				case 'J':
-					if ( riKey->key != CtrlKey::JUMP && riKey->key != CtrlKey::JUMP_KEYUP )
-					{
-						flag = false;
-					}
-
-					break;
-
-				case 'D':
-					if ( riKey->key != CtrlKey::DEF && riKey->key != CtrlKey::DEF_KEYUP )
-					{
-						flag = false;
-					}
-
-					break;
-
-				case '8':	//UP_KEYUP
-					if ( riKey == m_KeyQue.rbegin() )
-					{
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::UP_KEYUP; ch++ );
-
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::UP_KEYUP )
+					case '^':
+						if ( riKey->key != CtrlKey::UP && riKey->key != CtrlKey::UP_KEYUP )
 						{
 							flag = false;
 						}
-					}
-					else
-					{
-						ho = riKey - 1;
 
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::UP_KEYUP; ch++ );
+						break;
 
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::UP_KEYUP ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{	flag = false;	}
-					}
-
-					break;
-
-				case '2':	//DOWN_KEYUP
-					if ( riKey == m_KeyQue.rbegin() )
-					{
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DOWN_KEYUP; ch++ );
-
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DOWN_KEYUP )
+					case 'v':
+						if ( riKey->key != CtrlKey::DOWN && riKey->key != CtrlKey::DOWN_KEYUP )
 						{
 							flag = false;
 						}
-					}
-					else
-					{
-						ho = riKey - 1;
 
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DOWN_KEYUP; ch++ );
+						break;
 
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DOWN_KEYUP ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{	flag = false;	}
-					}
+						/*case '<':
+							if(riKey->key != CtrlKey::LEFT && riKey->key != CtrlKey::LEFT_KEYUP){
+								flag = false;
+							}
+							break;//*/
+					case '>':
+						if ( riKey->key == CtrlKey::RIGHT || riKey->key == CtrlKey::RIGHT_KEYUP )
+						{
+							cface = 1;
+						}
+						else if ( riKey->key == CtrlKey::LEFT || riKey->key == CtrlKey::LEFT_KEYUP )
+						{
+							cface = -1;
+						}
+						else
+						{
+							flag = false;
+						}
 
-					break;
+						break;
 
-				case '6':	//RIGHT_KEYUP
-					if ( riKey == m_KeyQue.rbegin() )
-					{
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP; ch++ );
+					case 'A':
+						if ( riKey->key != CtrlKey::ATK1 && riKey->key != CtrlKey::ATK1_KEYUP )
+						{
+							flag = false;
+						}
 
-						if ( ch == m_KeyQue.rend() || ( ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP ) )
-						{	flag = false;	}
-					}
-					else
-					{
-						ho = riKey - 1;
+						break;
 
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP; ch++ );
+					case 'B':
+						if ( riKey->key != CtrlKey::ATK2 && riKey->key != CtrlKey::ATK2_KEYUP )
+						{
+							flag = false;
+						}
 
-						if ( ch == m_KeyQue.rend() || ( ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP ) ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{	flag = false;	}
-					}
+						break;
 
-					break;
+					case 'J':
+						if ( riKey->key != CtrlKey::JUMP && riKey->key != CtrlKey::JUMP_KEYUP )
+						{
+							flag = false;
+						}
 
-				case 'a':
-					if ( riKey == m_KeyQue.rbegin() )
-					{
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK1_KEYUP; ch++ );
+						break;
 
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK1_KEYUP )
-						{	flag = false;	}
-					}
-					else
-					{
-						ho = riKey - 1;
+					case 'D':
+						if ( riKey->key != CtrlKey::DEF && riKey->key != CtrlKey::DEF_KEYUP )
+						{
+							flag = false;
+						}
 
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK1_KEYUP; ch++ );
+						break;
 
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK1_KEYUP ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{	flag = false;	}
-					}
+					case '8':	//UP_KEYUP
+						if ( riKey == m_KeyQue.rbegin() )
+						{
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::UP_KEYUP; ch++ );
 
-					break;
+							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::UP_KEYUP )
+							{
+								flag = false;
+							}
+						}
+						else
+						{
+							ho = riKey - 1;
 
-				case 'b':
-					if ( riKey == m_KeyQue.rbegin() )
-					{
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK2_KEYUP; ch++ );
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::UP_KEYUP; ch++ );
 
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK2_KEYUP )
-						{	flag = false;	}
-					}
-					else
-					{
-						ho = riKey - 1;
+							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::UP_KEYUP ||
+							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							{	flag = false;	}
+						}
 
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK2_KEYUP; ch++ );
+						break;
 
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK2_KEYUP ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{	flag = false;	}
-					}
+					case '2':	//DOWN_KEYUP
+						if ( riKey == m_KeyQue.rbegin() )
+						{
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DOWN_KEYUP; ch++ );
 
-					break;
+							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DOWN_KEYUP )
+							{
+								flag = false;
+							}
+						}
+						else
+						{
+							ho = riKey - 1;
 
-				case 'j':
-					if ( riKey == m_KeyQue.rbegin() )
-					{
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::JUMP_KEYUP; ch++ );
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DOWN_KEYUP; ch++ );
 
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::JUMP_KEYUP )
-						{	flag = false;	}
-					}
-					else
-					{
-						ho = riKey - 1;
+							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DOWN_KEYUP ||
+							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							{	flag = false;	}
+						}
 
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::JUMP_KEYUP; ch++ );
+						break;
 
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::JUMP_KEYUP ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{	flag = false;	}
-					}
+					case '6':	//RIGHT_KEYUP
+						if ( riKey == m_KeyQue.rbegin() )
+						{
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP; ch++ );
 
-					break;
+							if ( ch == m_KeyQue.rend() || ( ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP ) )
+							{	flag = false;	}
+						}
+						else
+						{
+							ho = riKey - 1;
 
-				case 'd':
-					if ( riKey == m_KeyQue.rbegin() )
-					{
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DEF_KEYUP; ch++ );
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP; ch++ );
 
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DEF_KEYUP )
-						{	flag = false;	}
-					}
-					else
-					{
-						ho = riKey - 1;
+							if ( ch == m_KeyQue.rend() || ( ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP ) ||
+							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							{	flag = false;	}
+						}
 
-						for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DEF_KEYUP; ch++ );
+						break;
 
-						if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DEF_KEYUP ||
-						                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-						{	flag = false;	}
-					}
+					case 'a':
+						if ( riKey == m_KeyQue.rbegin() )
+						{
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK1_KEYUP; ch++ );
 
-					break;
+							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK1_KEYUP )
+							{	flag = false;	}
+						}
+						else
+						{
+							ho = riKey - 1;
+
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK1_KEYUP; ch++ );
+
+							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK1_KEYUP ||
+							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							{	flag = false;	}
+						}
+
+						break;
+
+					case 'b':
+						if ( riKey == m_KeyQue.rbegin() )
+						{
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK2_KEYUP; ch++ );
+
+							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK2_KEYUP )
+							{	flag = false;	}
+						}
+						else
+						{
+							ho = riKey - 1;
+
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK2_KEYUP; ch++ );
+
+							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK2_KEYUP ||
+							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							{	flag = false;	}
+						}
+
+						break;
+
+					case 'j':
+						if ( riKey == m_KeyQue.rbegin() )
+						{
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::JUMP_KEYUP; ch++ );
+
+							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::JUMP_KEYUP )
+							{	flag = false;	}
+						}
+						else
+						{
+							ho = riKey - 1;
+
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::JUMP_KEYUP; ch++ );
+
+							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::JUMP_KEYUP ||
+							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							{	flag = false;	}
+						}
+
+						break;
+
+					case 'd':
+						if ( riKey == m_KeyQue.rbegin() )
+						{
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DEF_KEYUP; ch++ );
+
+							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DEF_KEYUP )
+							{	flag = false;	}
+						}
+						else
+						{
+							ho = riKey - 1;
+
+							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DEF_KEYUP; ch++ );
+
+							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DEF_KEYUP ||
+							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							{	flag = false;	}
+						}
+
+						break;
 				}
 
 				riKey ++;
@@ -1032,8 +1074,10 @@ void Hero::UpdateVel( int dx, int dz )
 	m_Vel.y += m_FrameInfo->m_DVY;
 
 	//if ( m_Action == HeroAction::JUMP || m_Action == HeroAction::FREE_SKILL ){
-	if ( m_Action == 38 || m_Action == 50 ){
-		if ( dx != 0 ){
+	if ( m_Action == 38 || m_Action == 50 )
+	{
+		if ( dx != 0 )
+		{
 			m_Vel.x += m_FrameInfo->m_DVX * ( m_FaceSide ? 1 : -1 );
 		}
 
@@ -1088,11 +1132,12 @@ FrameInfo* Hero::FindFrame( std::string rframe, int rframeID )
 	return &iframe->second[rframeID];
 }
 
-void Hero::SetPosition( Vector3 pos ) {	m_Position = pos; }
+void Hero::SetPosition( const Vector3& pos )
+{	m_Position = pos; }
 
 void Hero::SetRecord( Record_Sptr r ) { m_Record = r; }
 
-void Hero::PushKey( KeyInfo k )
+void Hero::PushKey( KeyInfo& k )
 {
 	KeyQueue::iterator i;
 
@@ -1314,7 +1359,7 @@ void Hero::Recover()
  * hitPos	:擊中點(重疊範圍中心，只重視 X 軸精確度)
  * FaceSide	:攻擊者的面向(若為氣功則為氣功波的面向)
  */
-void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, Vector3 hitPos, bool rFace )
+void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3& hitPos, bool rFace )
 {
 	if ( rAtk.m_Kind == 0 ) 				//普通攻擊形式，套用 effect 擊中特效
 	{
@@ -1324,54 +1369,70 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, Vector3 hitPos
 		m_Vel.x += rAtk.m_DVX * ( rFace ? 1.0f : -1.0f );
 		m_Vel.y += rAtk.m_DVY;
 		m_Vel.z += rAtk.m_DVZ;
-
 		std::string nFrame;
 		int nFrameID = 0;
-		if ( ( hitPos.x > m_Position.x && m_FaceSide ) || ( hitPos.x < m_Position.x && !m_FaceSide ) ){
+
+		if ( ( hitPos.x > m_Position.x && m_FaceSide ) || ( hitPos.x < m_Position.x && !m_FaceSide ) )
+		{
 			//擊中點在人前方
 			if ( m_FrontDefence > 0 ) 		//前方有剛體保護
 			{
 				m_FrontDefence -= rAtk.m_BreakDefend;
 				m_HP -= rAtk.m_Injury / 10;
+				m_MaxRecoverHP -= rAtk.m_Injury / 30;
 				rHero->Attack += rAtk.m_Injury / 10;
 			}
-			else{
+			else
+			{
 				m_HP -= rAtk.m_Injury;
+				m_MaxRecoverHP -= rAtk.m_Injury / 3;
 				m_Fall -= rAtk.m_Fall;
 				nFrame = "injured";
 				nFrameID = 0;
 				rHero->Attack += rAtk.m_Injury;
 			}
+
 			//倒下
-			if(m_HP <= 0 || m_Fall <= 0){
+			if ( m_HP <= 0 || m_Fall <= 0 )
+			{
 				nFrame = "falling_back";
 				nFrameID = 0;
+				m_Vel.y += 2;
 			}
 		}
-		else{
+		else
+		{
 			//擊中點在人後方
 			if ( m_BackDefence > 0 ) 		//後方有剛體保護
 			{
 				m_FrontDefence -= rAtk.m_BreakDefend;
 				m_HP -= rAtk.m_Injury / 10;
+				m_MaxRecoverHP -= rAtk.m_Injury / 30;
 				rHero->Attack += rAtk.m_Injury / 10;
 			}
-			else{
+			else
+			{
 				m_HP -= rAtk.m_Injury;
+				m_MaxRecoverHP -= rAtk.m_Injury / 3;
 				m_Fall -= rAtk.m_Fall;
 				nFrame = "injured";
 				nFrameID = 0;
 				rHero->Attack += rAtk.m_Injury;
 			}
+
 			//倒下
-			if(m_HP <= 0 || m_Fall <= 0){
+			if ( m_HP <= 0 || m_Fall <= 0 )
+			{
 				nFrame = "falling_front";
 				nFrameID = 0;
+				m_Vel.y += 2;
 			}
 		}
+		printf("beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
 		//切換 Frame
-		if( !nFrame.empty()){
-			SwitchFrame(nFrame, nFrameID);
+		if ( !nFrame.empty() )
+		{
+			SwitchFrame( nFrame, nFrameID );
 		}
 	}
 	else {}
@@ -1404,7 +1465,7 @@ PolygonVerteices Hero::GetPolygonVerteices()
 {
 	PolygonVerteices pvs;
 	PolygonVertex pv;
-	Polygon2Ds bodys = getHeroBodys( *this );
+	Polygon2Ds bodys = GetHeroBodys( *this );
 	pv.color.x = 1.0;
 	pv.color.y = 1.0;
 	pv.color.z = 1.0;
@@ -1412,24 +1473,24 @@ PolygonVerteices Hero::GetPolygonVerteices()
 
 	for ( Polygon2Ds::iterator it = bodys.begin(); it != bodys.end(); it++ )
 	{
-		Vec2s points = it->Points();
+		auto points = it->Points();
 		pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
 
 		for ( unsigned int i = 1; i + 1 < points.size(); i++ )
 		{
-			pv.position.x = points[0].x;
-			pv.position.y = points[0].y;
+			pv.position.x = points[0].x();
+			pv.position.y = points[0].y();
 			pvs.push_back( pv );
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pvs.push_back( pv );
-			pv.position.x = points[i + 1].x;
-			pv.position.y = points[i + 1].y;
+			pv.position.x = points[i + 1].x();
+			pv.position.y = points[i + 1].y();
 			pvs.push_back( pv );
 		}
 	}
 
-	Polygon2Ds  atks = getHeroAtks( *this );
+	Polygon2Ds  atks = GetHeroAttacks( *this );
 	pv.color.x = 0.0;
 	pv.color.y = 0.0;
 	pv.color.z = 1.0;
@@ -1437,24 +1498,24 @@ PolygonVerteices Hero::GetPolygonVerteices()
 
 	for ( Polygon2Ds::iterator it = atks.begin(); it != atks.end(); it++ )
 	{
-		Vec2s points = it->Points();
+		auto points = it->Points();
 		pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
 
 		for ( unsigned int i = 1; i + 1 < points.size(); i++ )
 		{
-			pv.position.x = points[0].x;
-			pv.position.y = points[0].y;
+			pv.position.x = points[0].x();
+			pv.position.y = points[0].y();
 			pvs.push_back( pv );
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pvs.push_back( pv );
-			pv.position.x = points[i + 1].x;
-			pv.position.y = points[i + 1].y;
+			pv.position.x = points[i + 1].x();
+			pv.position.y = points[i + 1].y();
 			pvs.push_back( pv );
 		}
 	}
 
-	Polygon2Ds  catches = getHeroCatches( *this );
+	Polygon2Ds  catches = GetHeroCatches( *this );
 	pv.color.x = 0.0;
 	pv.color.y = 1.0;
 	pv.color.z = 0.0;
@@ -1462,19 +1523,19 @@ PolygonVerteices Hero::GetPolygonVerteices()
 
 	for ( Polygon2Ds::iterator it = catches.begin(); it != catches.end(); it++ )
 	{
-		Vec2s points = it->Points();
+		auto points = it->Points();
 		pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
 
 		for ( unsigned int i = 1; i + 1 < points.size(); i++ )
 		{
-			pv.position.x = points[0].x;
-			pv.position.y = points[0].y;
+			pv.position.x = points[0].x();
+			pv.position.y = points[0].y();
 			pvs.push_back( pv );
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pvs.push_back( pv );
-			pv.position.x = points[i + 1].x;
-			pv.position.y = points[i + 1].y;
+			pv.position.x = points[i + 1].x();
+			pv.position.y = points[i + 1].y();
 			pvs.push_back( pv );
 		}
 	}
@@ -1486,7 +1547,7 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 {
 	PolygonVerteices pvs;
 	PolygonVertex pv;
-	Polygon2Ds bodys = getHeroBodys( *this );
+	Polygon2Ds bodys = GetHeroBodys( *this );
 	pv.color.x = 1.0;
 	pv.color.y = 1.0;
 	pv.color.z = 1.0;
@@ -1494,12 +1555,12 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 	for ( Polygon2Ds::iterator it = bodys.begin(); it != bodys.end(); it++ )
 	{
-		Vec2s points = it->Points();
+		auto points = it->Points();
 
 		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
 			pvs.push_back( pv );
 			pv.position.z = it->GetZPoint() + it->GetZRange() / 2;
@@ -1510,16 +1571,16 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pvs.push_back( pv );
-			pv.position.x = points[( i + 1 ) % points.size()].x;
-			pv.position.y = points[( i + 1 ) % points.size()].y;
+			pv.position.x = points[( i + 1 ) % points.size()].x();
+			pv.position.y = points[( i + 1 ) % points.size()].y();
 			pvs.push_back( pv );
 		}
 	}
 
-	Polygon2Ds atks = getHeroAtks( *this );
+	Polygon2Ds atks = GetHeroAttacks( *this );
 	pv.color.x = 0.0;
 	pv.color.y = 0.0;
 	pv.color.z = 1.0;
@@ -1527,12 +1588,12 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 	for ( Polygon2Ds::iterator it = atks.begin(); it != atks.end(); it++ )
 	{
-		Vec2s points = it->Points();
+		auto points = it->Points();
 
 		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
 			pvs.push_back( pv );
 			pv.position.z = it->GetZPoint() + it->GetZRange() / 2;
@@ -1543,16 +1604,16 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pvs.push_back( pv );
-			pv.position.x = points[( i + 1 ) % points.size()].x;
-			pv.position.y = points[( i + 1 ) % points.size()].y;
+			pv.position.x = points[( i + 1 ) % points.size()].x();
+			pv.position.y = points[( i + 1 ) % points.size()].y();
 			pvs.push_back( pv );
 		}
 	}
 
-	Polygon2Ds catches = getHeroCatches( *this );
+	Polygon2Ds catches = GetHeroCatches( *this );
 	pv.color.x = 0.0;
 	pv.color.y = 1.0;
 	pv.color.z = 0.0;
@@ -1560,12 +1621,12 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 	for ( Polygon2Ds::iterator it = catches.begin(); it != catches.end(); it++ )
 	{
-		Vec2s points = it->Points();
+		auto points = it->Points();
 
 		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
 			pvs.push_back( pv );
 			pv.position.z = it->GetZPoint() + it->GetZRange() / 2;
@@ -1576,11 +1637,11 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 		for ( unsigned int i = 0; i < points.size(); i++ )
 		{
-			pv.position.x = points[i].x;
-			pv.position.y = points[i].y;
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
 			pvs.push_back( pv );
-			pv.position.x = points[( i + 1 ) % points.size()].x;
-			pv.position.y = points[( i + 1 ) % points.size()].y;
+			pv.position.x = points[( i + 1 ) % points.size()].x();
+			pv.position.y = points[( i + 1 ) % points.size()].y();
 			pvs.push_back( pv );
 		}
 	}
@@ -1590,23 +1651,29 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 
 const Vector3& Hero::Velocity() { return m_Vel; }
 
-Bodys Hero::GetBodys( ){
+Bodys& Hero::GetBodys( )
+{
 	return m_FrameInfo->m_Bodys;
 }
-Attacks Hero::GetAttacks( ){
+Attacks& Hero::GetAttacks( )
+{
 	return m_FrameInfo->m_Attacks;
 }
-CatchInfos Hero::GetCatches( ){
+CatchInfos& Hero::GetCatches( )
+{
 	return m_FrameInfo->m_Catchs;
 }
-Record_Sptr Hero::GetRecord(){
+Record_Sptr Hero::GetRecord()
+{
 	return m_Record;
 }
-bool Hero::GetFace(){
+bool Hero::GetFace()
+{
 	return m_FaceSide;
 }
 
-bool Hero::IsAlive(){
+bool Hero::IsAlive()
+{
 	return m_HP > 0;
 }
 
@@ -1644,38 +1711,38 @@ bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Spt
 
 		switch ( g_ObjectInfoManager.GetObjectInfo( u )->m_Type )
 		{
-		case ObjectType::CHEE:
-			s = g_ObjectManager.CreateChee( u, pos, obj.v0, obj.amount, owner == Record_Sptr() ? 0 : owner->team );
+			case ObjectType::CHEE:
+				s = g_ObjectManager.CreateChee( u, pos, obj.v0, obj.amount, owner == Record_Sptr() ? 0 : owner->team );
 
-			for ( int i = 0; i < obj.amount; i++ )
-			{
-				s[i]->m_FaceSide = f;
-				s[i]->m_Frame = obj.frame;
-				s[i]->m_FrameID = obj.frameID;
-				s[i]->m_HP = obj.HP;
-				s[i]->m_Record = owner;
-			}
+				for ( int i = 0; i < obj.amount; i++ )
+				{
+					s[i]->m_FaceSide = f;
+					s[i]->m_Frame = obj.frame;
+					s[i]->m_FrameID = obj.frameID;
+					s[i]->m_HP = obj.HP;
+					s[i]->m_Record = owner;
+				}
 
-			return true;
+				return true;
 
-		case ObjectType::STATIC:
-			//todo: 蓋方塊
-			return false;
+			case ObjectType::STATIC:
+				//todo: 蓋方塊
+				return false;
 
-		default:
-			w = g_ObjectManager.CreateWeapon( u, pos, obj.amount, owner == Record_Sptr() ? 0 : owner->team );
+			default:
+				w = g_ObjectManager.CreateWeapon( u, pos, obj.amount, owner == Record_Sptr() ? 0 : owner->team );
 
-			for ( int i = 0; i < obj.amount; i++ )
-			{
-				w[i]->m_FaceSide = f;
-				w[i]->SetVelocity( obj.v0 );
-				w[i]->m_Frame = obj.frame;
-				w[i]->m_FrameID = obj.frameID;
-				w[i]->m_HP = obj.HP;
-			}
+				for ( int i = 0; i < obj.amount; i++ )
+				{
+					w[i]->m_FaceSide = f;
+					w[i]->SetVelocity( obj.v0 );
+					w[i]->m_Frame = obj.frame;
+					w[i]->m_FrameID = obj.frameID;
+					w[i]->m_HP = obj.HP;
+				}
 
-			return true;
-			//(*s)->owner = owner;
+				return true;
+				//(*s)->owner = owner;
 		}
 	}
 	else
@@ -1689,41 +1756,41 @@ bool Hero::isKeyUsed( char r )
 {
 	switch ( r )
 	{
-	case 'A': return d_key[0];
+		case 'A': return d_key[0];
 
-	case 'B': return d_key[1];
+		case 'B': return d_key[1];
 
-	case 'J': return d_key[2];
+		case 'J': return d_key[2];
 
-	case 'D': return d_key[3];
+		case 'D': return d_key[3];
 
-	default: return false;
+		default: return false;
 	}
 }
 void Hero::keyUsed( char r )
 {
 	switch ( r )
 	{
-	case 'A': d_key[0] = true;
+		case 'A': d_key[0] = true;
 
-	case 'B': d_key[1] = true;
+		case 'B': d_key[1] = true;
 
-	case 'J': d_key[2] = true;
+		case 'J': d_key[2] = true;
 
-	case 'D': d_key[3] = true;
+		case 'D': d_key[3] = true;
 	}
 }
 void Hero::newKey( char r )
 {
 	switch ( r )
 	{
-	case 'A': d_key[0] = false;
+		case 'A': d_key[0] = false;
 
-	case 'B': d_key[1] = false;
+		case 'B': d_key[1] = false;
 
-	case 'J': d_key[2] = false;
+		case 'J': d_key[2] = false;
 
-	case 'D': d_key[3] = false;
+		case 'D': d_key[3] = false;
 	}
 }
 
@@ -1739,7 +1806,7 @@ bool SortHero( Hero_RawPtr a, Hero_RawPtr b )
 	return a->GetTextureID() < b->GetTextureID();
 }
 //* 碰撞判定用函示
-Polygon2Ds getHeroBodys( const Hero& r )
+Polygon2Ds GetHeroBodys( const Hero& r )
 {
 	Polygon2Ds d;
 
@@ -1747,15 +1814,18 @@ Polygon2Ds getHeroBodys( const Hero& r )
 	{
 		Polygon2D s;
 
-		for ( Vec2s::const_iterator iv = ib->m_Area.const_Points().begin(); iv != ib->m_Area.const_Points().end(); iv++ )
+		if ( !ib->m_Area.Points().empty() )
 		{
-			if ( r.m_FaceSide ) 	//面向右邊
+			for ( auto iv = ib->m_Area.Points().begin(); iv != ib->m_Area.Points().end(); iv++ )
 			{
-				s.AddPoint( r.m_Position.x - ( r.m_CenterX - iv->x ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y ) * SCALE );
-			}
-			else 				//面向左邊
-			{
-				s.AddPoint( r.m_Position.x + ( r.m_CenterX - iv->x ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y ) * SCALE );
+				if ( r.m_FaceSide ) 	//面向右邊
+				{
+					s.AddPoint( r.m_Position.x - ( r.m_CenterX - iv->x() ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y() ) * SCALE );
+				}
+				else 				//面向左邊
+				{
+					s.AddPoint( r.m_Position.x + ( r.m_CenterX - iv->x() ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y() ) * SCALE );
+				}
 			}
 		}
 
@@ -1767,7 +1837,7 @@ Polygon2Ds getHeroBodys( const Hero& r )
 	return d;
 }
 
-Polygon2Ds getHeroAtks( const Hero& r )
+Polygon2Ds GetHeroAttacks( const Hero& r )
 {
 	Polygon2Ds d;
 
@@ -1775,15 +1845,15 @@ Polygon2Ds getHeroAtks( const Hero& r )
 	{
 		Polygon2D s;
 
-		for ( Vec2s::const_iterator iv = ib->m_Area.const_Points().begin(); iv != ib->m_Area.const_Points().end(); iv++ )
+		for ( auto iv = ib->m_Area.Points().begin(); iv != ib->m_Area.Points().end(); iv++ )
 		{
 			if ( r.m_FaceSide ) 	//面向右邊
 			{
-				s.AddPoint( r.m_Position.x - ( r.m_CenterX - iv->x ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y ) * SCALE );
+				s.AddPoint( r.m_Position.x - ( r.m_CenterX - iv->x() ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y() ) * SCALE );
 			}
 			else 				//面向左邊
 			{
-				s.AddPoint( r.m_Position.x + ( r.m_CenterX - iv->x ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y ) * SCALE );
+				s.AddPoint( r.m_Position.x + ( r.m_CenterX - iv->x() ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y() ) * SCALE );
 			}
 		}
 
@@ -1795,7 +1865,7 @@ Polygon2Ds getHeroAtks( const Hero& r )
 	return d;
 }
 
-Polygon2Ds getHeroCatches( const Hero& r )
+Polygon2Ds GetHeroCatches( const Hero& r )
 {
 	Polygon2Ds d;
 
@@ -1803,15 +1873,15 @@ Polygon2Ds getHeroCatches( const Hero& r )
 	{
 		Polygon2D s;
 
-		for ( Vec2s::const_iterator iv = ib->m_Area.const_Points().begin(); iv != ib->m_Area.const_Points().end(); iv++ )
+		for ( auto iv = ib->m_Area.Points().begin(); iv != ib->m_Area.Points().end(); iv++ )
 		{
 			if ( r.m_FaceSide ) 	//面向右邊
 			{
-				s.AddPoint( r.m_Position.x - ( r.m_CenterX - iv->x ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y ) * SCALE );
+				s.AddPoint( r.m_Position.x - ( r.m_CenterX - iv->x() ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y() ) * SCALE );
 			}
 			else 				//面向左邊
 			{
-				s.AddPoint( r.m_Position.x + ( r.m_CenterX - iv->x ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y ) * SCALE );
+				s.AddPoint( r.m_Position.x + ( r.m_CenterX - iv->x() ) * SCALE, r.m_Position.y + ( r.m_CenterY + iv->y() ) * SCALE );
 			}
 		}
 

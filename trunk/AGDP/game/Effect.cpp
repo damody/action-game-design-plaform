@@ -43,7 +43,7 @@ bool Effect::Initialize( HWND hwnd )
 }
 void Effect::Updata( float dt )
 {
-	for ( int i = 0; i < m_vEffect.size(); i++ )
+	for ( unsigned int i = 0; i < m_vEffect.size(); i++ )
 	{
 		if ( !m_vEffect[i].empty() )
 		{
@@ -76,7 +76,7 @@ bool Effect::CreateEffect( EffectType::e type, EffectData* ed )
 
 void Effect::Clear()
 {
-	for ( int i = 0; i < m_vEffect.size(); i++ )
+	for ( unsigned int i = 0; i < m_vEffect.size(); i++ )
 	{
 		m_vEffect[i].clear();
 	}
@@ -92,7 +92,7 @@ bool Effect::Overflow()
 
 bool Effect::Check( EffectType::e type, EffectData* ed )
 {
-	for ( int i = 0; i < m_vEffect.size(); i++ )
+	for ( unsigned int i = 0; i < m_vEffect.size(); i++ )
 	{
 		for ( EffectDatas::iterator it = m_vEffect[i].begin(); it != m_vEffect[i].end(); it++ )
 		{
@@ -124,7 +124,7 @@ void Effect::Render()
 void Effect::RenderShader()
 {
 	//Render
-	for ( int i = 0; i < effectShaders.size(); i++ )
+	for ( unsigned int i = 0; i < effectShaders.size(); i++ )
 	{
 		effectShaders[i]->Render();
 	}
@@ -148,7 +148,7 @@ EffectManager::EffectManager( HWND hwnd ): m_Page( 0 ), m_Size( 4 )
 	//Init shader //push Fire ,Poison ,Freeze ...
 	effectShaders.resize( 1 ); //目前只有火焰1種 所以size=1
 
-	for ( int i = 0; i < effectShaders.size(); i++ )
+	for ( unsigned int i = 0; i < effectShaders.size(); i++ )
 	{
 		bool result;
 		effectShaders[0] = new EffectShaderClass();

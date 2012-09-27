@@ -28,42 +28,46 @@ namespace boost {namespace serialization {class access;}}
 class Hero
 {
 private:
-	int				m_TimeTik;		//Count down TimeTik from Frame Wait
-	ClipVertex		m_Pic;
+	int		m_TimeTik;		//Count down TimeTik from Frame Wait
+	ClipVertex	m_Pic;
 	HeroInfo_Sptr   m_HeroInfo;
-	int				m_Action;		//當下動作狀態
+	int		m_Action;		//當下動作狀態
 	std::string     m_Frame;		//Current Frame
-	int				m_FrameID;		//Current Frame ID
+	int		m_FrameID;		//Current Frame ID
 
-	int				m_Texture;		//Current Texture ID
-	int				m_PicID;
-	int				m_PicW;			//W截切次數
-	int				m_PicH;			//H截切次數
-	int				m_PicX;
-	int				m_PicY;
+	int		m_Texture;		//Current Texture ID
+	int		m_PicID;
+	int		m_PicW;			//W截切次數
+	int		m_PicH;			//H截切次數
+	int		m_PicX;
+	int		m_PicY;
 
-	Vector3			m_Position;
-	float			m_CenterX, m_CenterY;
-	Vector3			m_Vel;
-	FrameInfo*		m_FrameInfo;
-	float			m_Angle;
-	bool			m_FaceSide;		//true 右, false 左
-	int				d_run;			//判定跑步用，右正左負
+	Vector3		m_Position;
+	Vector3		m_Vel;
+	float		m_CenterX;
+	float		m_CenterY;
+	FrameInfo*	m_FrameInfo;
+	float		m_Angle;
+	bool		m_FaceSide;		//true 右, false 左
+	int		d_run;			//判定跑步用，右正左負
 	std::bitset<4>	d_key;			//判斷非方向按鍵作用與否，1表示已作用，0則否，0:atk1, 1:atk2, 2:j, 3:d
-	bool			d_Ground;		//判斷是否在地面上
-	int				m_Team;			//0為不分
-	int				m_MaxRecoverHP;	//最大恢復血量
-	int				m_HP;
-	int				m_MP;
+	bool		d_Ground;		//判斷是否在地面上
+	int		m_Team;			//0為不分
+	int		m_MaxRecoverHP;		//最大恢復血量
+	int		m_HP;
+	int		m_MP;
 	EffectType::e   m_Effect;
-	float			m_EffectScale;
+	float		m_EffectScale;
 	Record_Sptr     m_Record;
+	AABB2D		m_BodyAABB;
+	AABB2D		m_AttackAABB;
+	AABB2D		m_CatchAABB;
 
-	int				m_FrontDefence;
-	int				m_BackDefence;
-	int				m_Fall;
+	int		m_FrontDefence;
+	int		m_BackDefence;
+	int		m_Fall;
 
-	KeyQueue		m_KeyQue;
+	KeyQueue	m_KeyQue;
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -99,35 +103,35 @@ public:
 
 	Hero();
 	Hero( std::string h );
-	void Update( float dt );
-	void UpdateDataToDraw();	//Data To m_Pic
-	Texture_Sptr GetTexture();
-	int GetTextureID();
-	ClipVertex GetPic();
-	int Team() const;
-	const Vector3& Position();
-	const Vector3& Velocity();
-	bool IsAlive();
-	bool GetFace();
-	Bodys GetBodys( );
-	Attacks GetAttacks( );
-	CatchInfos GetCatches( );
-	Record_Sptr GetRecord();
-	void SetRecord( Record_Sptr r );
-	void SetTeam( int team );
-	void SetPosition( Vector3 pos );
-	void SetEffect( EffectType::e effect );
-	void PushKey( KeyInfo k );
+	void	Update( float dt );
+	void	UpdateDataToDraw();	//Data To m_Pic
+	int	GetTextureID();
+	int	Team() const;
+	ClipVertex	GetPic();
+	Texture_Sptr	GetTexture();
+	const Vector3&	Position();
+	const Vector3&	Velocity();
+	bool		IsAlive();
+	bool		GetFace();
+	Bodys&		GetBodys( );
+	Attacks&	GetAttacks( );
+	CatchInfos&	GetCatches( );
+	Record_Sptr	GetRecord();
+	void		SetRecord( Record_Sptr r );
+	void		SetTeam( int team );
+	void		SetPosition( const Vector3& pos );
+	void		SetEffect( EffectType::e effect );
+	void		PushKey( KeyInfo& k );
 	PolygonVerteices GetPolygonVerteices();
 	PolygonVerteices GetPolygonLineVerteices();
 	//創造物件
 	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 	//碰撞判定用
-	friend Polygon2Ds getHeroBodys( const Hero& r );
-	friend Polygon2Ds getHeroAtks( const Hero& r );
-	friend Polygon2Ds getHeroCatches( const Hero& r );
-	void beCaught( const CatchInfo& rCatch, Vector3 hitPos, bool rFace );
-	void beAttack( const Attack& rAtk, const Record_Sptr rHero, Vector3 hitPos, bool rFace );
+	friend Polygon2Ds GetHeroBodys( const Hero& r );
+	friend Polygon2Ds GetHeroAttacks( const Hero& r );
+	friend Polygon2Ds GetHeroCatches( const Hero& r );
+	void beCaught( const CatchInfo& rCatch, const Vector3& hitPos, bool rFace );
+	void beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3& hitPos, bool rFace );
 	//void beHit(const )
 
 protected:
@@ -154,10 +158,10 @@ bool SortHero( Hero_RawPtr a, Hero_RawPtr b );
 
 struct GetPolygonsFromBody
 {
-	Polygon2Ds operator()(Hero* hero){return (getHeroBodys(*hero));}
+	Polygon2Ds operator()(Hero* hero){return (GetHeroBodys(*hero));}
 };
 
 struct GetPolygonsFromAttack
 {
-	Polygon2Ds operator()(Hero* hero){return (getHeroAtks(*hero));}
+	Polygon2Ds operator()(Hero* hero){return (GetHeroAttacks(*hero));}
 };
