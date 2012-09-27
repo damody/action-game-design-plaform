@@ -54,25 +54,7 @@ public:
 	const ParentPtrs& m() {return m_ParentPtrs;}
 	void PrepareForCollision() // every loop before you want to GetCollision
 	{
-		/*for ( ParentPtrs::iterator it = m_ParentPtrs.begin();
-		                it != m_ParentPtrs.end(); ++it )
-		{
-			GetPolygon()( *it )->CheckBuildAABB();
-		}*/
 		mXbinds.clear();
-// 		for ( ParentPtrs::iterator it = m_ParentPtrs.begin();
-// 			it != m_ParentPtrs.end(); ++it )
-// 		{
-// 			Polygon2Ds poly = (Polygon2Ds)GetPolygons()( *it );
-// 			for(Polygon2Ds::iterator it_poly = poly.begin();
-// 				it_poly != poly.end(); ++it_poly)
-// 			{
-// 				it_poly->CheckBuildAABB();
-// 				mXbinds.push_back( MyAxis_bind( *it, &( it_poly->AABB().m_Max ) ) );
-// 				mXbinds.push_back( MyAxis_bind( *it, &( it_poly->AABB().m_Min ) ) );
-// 			}
-// 		}
-
 		std::sort( mXbinds.begin(), mXbinds.end(), Compare_x<MyAxis_bind> );
 	}
 	template<class ParentPtr2, class GetPolygons2>
@@ -85,15 +67,11 @@ public:
 			return res;
 		}
 		
-		//Polygon2D poly = *getpoly( obj );
 		Polygon2Ds polys1 = getpolys( obj );
 		if( polys1.size() == 0)
 		{
 			return res;
 		}
-		//poly.CheckBuildAABB();
-		//poly.CheckBuildPolygon();
-		//AABB2D aabb = poly.AABB();
 		bool isCollision = false;
 		
 		for( ParentPtrs::iterator it = m_ParentPtrs.begin(); it != m_ParentPtrs.end(); ++it ){
@@ -107,8 +85,6 @@ public:
 						break;
 					}
 					//XY енн▒
-					ipolys2->CheckBuildPolygon();
-					polys1[ipolys1].CheckBuildPolygon();
 					if( ipolys2->IsCollision(polys1[ipolys1])){
 						tc.victims.push_back(*it);
 						break;
