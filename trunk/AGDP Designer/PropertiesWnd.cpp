@@ -1217,14 +1217,14 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		float OldCenterX = frameInfo->m_CenterX;
 		command->AddRedoFunction([=](){
 			frameInfo->m_CenterX = i;
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCross( frameInfo->m_CenterX, frameInfo->m_CenterY );
+			( ( CMainFrame* )( this->GetOldJumpRuleParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_CenterX = OldCenterX;
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCross( frameInfo->m_CenterX, frameInfo->m_CenterY );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
 		});
 		/*frameInfo->m_CenterX = i;
-		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCross( frameInfo->m_CenterX, frameInfo->m_CenterY );*/
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );*/
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 8 )->GetSubItem( 1 ) )->IsEdited() )
@@ -1235,14 +1235,14 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		float OldCenterY = frameInfo->m_CenterY;
 		command->AddRedoFunction([=](){
 			frameInfo->m_CenterY = i;
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCross( frameInfo->m_CenterX, frameInfo->m_CenterY );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_CenterY = OldCenterY;
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCross( frameInfo->m_CenterX, frameInfo->m_CenterY );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
 		});
 		/*frameInfo->m_CenterY = i;
-		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCross( frameInfo->m_CenterX, frameInfo->m_CenterY );*/
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );*/
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 0 ) )->IsEdited() )
