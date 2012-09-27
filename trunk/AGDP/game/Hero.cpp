@@ -142,7 +142,9 @@ void Hero::Update( float dt )
 		Recover();
 		d_next = !ScanKeyQue();
 	}
-	else { d_next = true;}
+	else { 
+		 d_next = m_Action != 42;
+	}
 
 	if ( d_next )  //無控制動作時，跑Wait Time
 	{
@@ -297,7 +299,7 @@ NextLoop:
 
 	f = &iframe->second[m_FrameID];
 
-	if ( f->m_Consume.m_JumpRule <= 0 )
+	if ( f->m_Consume.m_JumpRule <= 0 && f->m_Consume.m_HP != 0 && f->m_Consume.m_MP != 0)
 	{
 		printf( "MaxHP:%d\tHP:%d\tMP:%d\n", m_MaxRecoverHP, m_HP, m_MP );
 
@@ -1377,11 +1379,13 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3&
 			{
 				m_FrontDefence -= rAtk.m_BreakDefend;
 				m_HP -= rAtk.m_Injury / 10;
+				m_MaxRecoverHP -= rAtk.m_Injury / 30;
 				rHero->Attack += rAtk.m_Injury / 10;
 			}
 			else
 			{
 				m_HP -= rAtk.m_Injury;
+				m_MaxRecoverHP -= rAtk.m_Injury / 3;
 				m_Fall -= rAtk.m_Fall;
 				nFrame = "injured";
 				nFrameID = 0;
@@ -1393,6 +1397,7 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3&
 			{
 				nFrame = "falling_back";
 				nFrameID = 0;
+				m_Vel.y += 2;
 			}
 		}
 		else
@@ -1402,11 +1407,13 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3&
 			{
 				m_FrontDefence -= rAtk.m_BreakDefend;
 				m_HP -= rAtk.m_Injury / 10;
+				m_MaxRecoverHP -= rAtk.m_Injury / 30;
 				rHero->Attack += rAtk.m_Injury / 10;
 			}
 			else
 			{
 				m_HP -= rAtk.m_Injury;
+				m_MaxRecoverHP -= rAtk.m_Injury / 3;
 				m_Fall -= rAtk.m_Fall;
 				nFrame = "injured";
 				nFrameID = 0;
@@ -1418,9 +1425,10 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3&
 			{
 				nFrame = "falling_front";
 				nFrameID = 0;
+				m_Vel.y += 2;
 			}
 		}
-
+		printf("beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
 		//切換 Frame
 		if ( !nFrame.empty() )
 		{

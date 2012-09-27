@@ -213,5 +213,7 @@ const std::string HeroActionTable[] =
 	"ZAxisSkill",
 	"GroundSkill",
 	"UniqueSkill",
+	"FallingFront",
+	"FallingBack",
 	"BasicActionEnd"
 };
