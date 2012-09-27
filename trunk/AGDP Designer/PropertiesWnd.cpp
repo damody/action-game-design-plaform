@@ -1217,7 +1217,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		float OldCenterX = frameInfo->m_CenterX;
 		command->AddRedoFunction([=](){
 			frameInfo->m_CenterX = i;
-			( ( CMainFrame* )( this->GetOldJumpRuleParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_CenterX = OldCenterX;
