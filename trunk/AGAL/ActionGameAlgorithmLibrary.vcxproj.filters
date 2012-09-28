@@ -125,5 +125,8 @@
     <ClCompile Include="src\Lua\LuaCell.cpp">
       <Filter>原始程式檔\Lua</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\HeroAction.cpp">
+      <Filter>原始程式檔\game</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
