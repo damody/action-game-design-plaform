@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\FlyingPath.cpp" />
+    <ClCompile Include="src\game\HeroAction.cpp" />
     <ClCompile Include="src\game\HeroInfo.cpp" />
     <ClCompile Include="src\game\ObjectInfo.cpp" />
     <ClCompile Include="src\Lua\CreateLua.cpp" />
