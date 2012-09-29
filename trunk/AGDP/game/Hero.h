@@ -113,6 +113,9 @@ public:
 	const Vector3&	Velocity();
 	bool		IsAlive();
 	bool		GetFace();
+	AABB2D&		GetBodyAABB();
+	AABB2D&		GetAttackAABB();
+	AABB2D&		GetCatchAABB();
 	Bodys&		GetBodys( );
 	Attacks&	GetAttacks( );
 	CatchInfos&	GetCatches( );
@@ -155,6 +158,21 @@ typedef std::vector <Hero_RawPtr> Heroes;
 
 //bool Creat(Vector3 pos, Creation obj, const Hero *owner);
 bool SortHero( Hero_RawPtr a, Hero_RawPtr b );
+
+struct GetBodyAABB2D
+{
+	AABB2D& operator()(Hero* hero){return (hero->GetBodyAABB());}
+};
+
+struct GetAttackAABB2D
+{
+	AABB2D& operator()(Hero* hero){return (hero->GetAttackAABB());}
+};
+
+struct GetCatchAABB2D
+{
+	AABB2D& operator()(Hero* hero){return (hero->GetCatchAABB());}
+};
 
 struct GetPolygonsFromBody
 {

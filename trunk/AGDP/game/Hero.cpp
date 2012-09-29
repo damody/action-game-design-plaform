@@ -233,6 +233,10 @@ void Hero::Update( float dt )
 		{
 			m_BodyAABB.AddPolygon2D( it->m_Area );
 		}
+		m_BodyAABB.Move(-m_CenterX, m_CenterY);
+		if (!m_FaceSide) m_BodyAABB.ChangeFace();
+		m_BodyAABB.Scale(SCALE);
+		m_BodyAABB.Move(m_Position.x, m_Position.y);
 	}
 	else
 	{
@@ -249,6 +253,10 @@ void Hero::Update( float dt )
 		{
 			m_AttackAABB.AddPolygon2D( it->m_Area );
 		}
+		m_AttackAABB.Move(-m_CenterX, m_CenterY);
+		if (!m_FaceSide) m_AttackAABB.ChangeFace();
+		m_AttackAABB.Scale(SCALE);
+		m_AttackAABB.Move(m_Position.x, m_Position.y);
 	}
 	else
 	{
@@ -1794,12 +1802,20 @@ void Hero::newKey( char r )
 	}
 }
 
+AABB2D& Hero::GetBodyAABB()
+{
+	return m_BodyAABB;
+}
 
+AABB2D& Hero::GetAttackAABB()
+{
+	return m_AttackAABB;
+}
 
-
-
-
-
+AABB2D& Hero::GetCatchAABB()
+{
+	return m_CatchAABB;
+}
 
 bool SortHero( Hero_RawPtr a, Hero_RawPtr b )
 {
