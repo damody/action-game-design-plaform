@@ -288,7 +288,7 @@ void Cross::SetPosition( float inX,float inY )
 
 void Cross::Translate( float inX,float inY )
 {
-	m_Cross.Transale(x,y);
+	m_Cross.Transale(inX,inY);
 	x+=inX;
 	y+=inY;
 }

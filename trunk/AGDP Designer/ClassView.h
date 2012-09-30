@@ -45,7 +45,6 @@ public:
 	void RemoveTreeItem( HTREEITEM item );
 
 	static CClassView* GetInstance();
-	//static CMFCPropertyGridProperty* GetDefaultPropList();
 	static BOOL IsAnAnimation( CTreeCtrl* treeCtrl, HTREEITEM item );
 	static BOOL IsNumber( CString str );
 

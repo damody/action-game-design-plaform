@@ -17,6 +17,7 @@ public:
 	Area  m_Attack;
 	Area  m_Catch;
 	Cross m_Center;
+	Crosses m_Creation;
 
 	TextureManager& GetTextureManager()
 	{ return *m_TextureManager;}
