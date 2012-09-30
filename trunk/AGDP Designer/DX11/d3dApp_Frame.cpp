@@ -369,7 +369,13 @@ void D3DApp_Frame::buildPoint()
 		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
 	}
 
-	//if (m_ShowCross)
+	for(Crosses::iterator it = m_Creation.begin(); it != m_Creation.end(); ++it)
+	{
+		LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
+		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
+	}
+
+	if (m_ShowCross)
 	{
 		LineVertices lvs = m_Center.BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY);
 		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
@@ -474,6 +480,7 @@ void D3DApp_Frame::Init()
 	m_Attack.clear();
 	m_Catch.clear();
 	m_Center.Clear();
+	m_Creation.clear();
 	m_Pic = NULL;
 	m_picX = 1;
 	m_picY = 1;
@@ -481,7 +488,7 @@ void D3DApp_Frame::Init()
 	m_Center = Cross();
 	m_Center.SetColor(0,0,1);
 	m_Center.SetPosition(0,0);
-
+	SwitchShowCrossOff();
 }
 
 void D3DApp_Frame::SwitchShowCrossOff()

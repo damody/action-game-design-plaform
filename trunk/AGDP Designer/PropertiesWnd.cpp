@@ -767,7 +767,7 @@ void CPropertiesWnd::RefreshPropList_Creation( int index )
 	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varInt(frameInfo.m_Creations[index].amount) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue(varInt(frameInfo.m_Creations[index].HP) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 0 ) )->SetValue( varFloat(frameInfo.m_Creations[index].x) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 1 ) )->SetValue( varFloat(frameInfo.m_Creations[index].y) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 1 ) )->SetValue( varFloat(-frameInfo.m_Creations[index].y) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 0 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.x) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.y) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.z) );

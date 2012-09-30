@@ -158,22 +158,22 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 			{
 				case KEY_LEFT:
 					m_D3DApp.m_Body[m_BodyID].Transale( m_PointIndex, -1, 0 );
-					UpdateAttack( m_PointIndex );
+					UpdateBody( m_PointIndex );
 					break;
 
 				case KEY_UP:
 					m_D3DApp.m_Body[m_BodyID].Transale( m_PointIndex, 0, -1 );
-					UpdateAttack( m_PointIndex );
+					UpdateBody( m_PointIndex );
 					break;
 
 				case KEY_RIGHT:
 					m_D3DApp.m_Body[m_BodyID].Transale( m_PointIndex, 1, 0 );
-					UpdateAttack( m_PointIndex );
+					UpdateBody( m_PointIndex );
 					break;
 
 				case KEY_DOWN:
 					m_D3DApp.m_Body[m_BodyID].Transale( m_PointIndex, 0, 1 );
-					UpdateAttack( m_PointIndex );
+					UpdateBody( m_PointIndex );
 					break;
 
 				case KEY_DELETE:
@@ -764,10 +764,13 @@ void CD3DPanelView::StopEdit()
 		m_CatchID = -1;
 	}
 
-	m_D3DApp.m_Center.SetColor(0,0,1);
-
-	m_D3DApp.SwitchShowCrossOff();
-	m_EnableCtrlCenter = false;
+	if (m_EnableCtrlCenter)
+	{
+		m_D3DApp.m_Center.SetColor(0,0,1);
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+		m_EnableCtrlCenter = false;
+	}
 }
 
 void CD3DPanelView::EditBody( int id )
@@ -858,7 +861,6 @@ void CD3DPanelView::Init()
 void CD3DPanelView::Refresh()
 {
 	Init();
-	m_D3DApp.SwitchShowCrossOn();
 	FramesMap::iterator it_FrameInfos = g_ActiveFramesMap->find( g_FrameName );
 
 	if ( it_FrameInfos != g_ActiveFramesMap->end() )
@@ -875,7 +877,7 @@ void CD3DPanelView::Refresh()
 			{
 				m_D3DApp.SetPic( &g_HeroInfo->m_PictureDatas[m_FrameInfo->m_PictureID], m_FrameInfo->m_PictureX, m_FrameInfo->m_PictureY );
 			}
-
+			m_D3DApp.SwitchShowCrossOn();
 			m_D3DApp.m_Center.SetPosition( m_FrameInfo->m_CenterX, m_FrameInfo->m_CenterY );
 
 			for ( Bodys::iterator it_body = m_FrameInfo->m_Bodys.begin(); it_body != m_FrameInfo->m_Bodys.end(); it_body++ )
@@ -915,6 +917,14 @@ void CD3DPanelView::Refresh()
 
 				pm.SetLineColor( 0, 1, 0 );
 				m_D3DApp.m_Catch.push_back( pm );
+			}
+
+			for (Creations::iterator it_cr = m_FrameInfo->m_Creations.begin(); it_cr != m_FrameInfo->m_Creations.end(); it_cr++ )
+			{
+				Cross cross;
+				cross.SetPosition(it_cr->x,-it_cr->y);
+				cross.SetColor(1,0,0);
+				m_D3DApp.m_Creation.push_back(cross);
 			}
 
 			m_D3DApp.buildPoint();
@@ -1186,7 +1196,9 @@ void CD3DPanelView::OnButtonPointSub()
 void CD3DPanelView::EditableCenter()
 {
 	StopEdit();
-	//m_D3DApp.m_Center.SetColor(0,0,0);
+	m_D3DApp.m_Center.SetColor(0,0,0);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
 	m_EnableCtrlCenter = true;
 
 }

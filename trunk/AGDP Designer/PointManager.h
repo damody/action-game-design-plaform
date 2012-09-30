@@ -74,3 +74,4 @@ public:
 	void Translate(float x,float y);
 	void Clear(){m_Cross.Clear();}
 };
+typedef std::vector<Cross> Crosses;
