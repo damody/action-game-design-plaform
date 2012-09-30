@@ -61,27 +61,27 @@ bool AABB2D::IsContain( const AABB2D& rhs )
 
 bool Collision( const AABB2D& lhs, const AABB2D& rhs )
 {
-	if ( lhs.m_Min.x < rhs.m_Min.x && lhs.m_Max.x > rhs.m_Min.x )
+	if ( lhs.m_Min.x <= rhs.m_Min.x && lhs.m_Max.x >= rhs.m_Min.x )
 	{
-		if ( lhs.m_Min.y < rhs.m_Min.y && lhs.m_Max.y > rhs.m_Min.y )
+		if ( lhs.m_Min.y <= rhs.m_Min.y && lhs.m_Max.y >= rhs.m_Min.y )
 		{
 			return true;
 		}
 
-		if ( lhs.m_Min.y < rhs.m_Max.y && lhs.m_Max.y > rhs.m_Max.y )
+		if ( lhs.m_Min.y <= rhs.m_Max.y && lhs.m_Max.y >= rhs.m_Max.y )
 		{
 			return true;
 		}
 	}
 
-	if ( lhs.m_Min.x < rhs.m_Max.x && lhs.m_Max.x > rhs.m_Max.x )
+	if ( lhs.m_Min.x <= rhs.m_Max.x && lhs.m_Max.x >= rhs.m_Max.x )
 	{
-		if ( lhs.m_Min.y < rhs.m_Min.y && lhs.m_Max.y > rhs.m_Min.y )
+		if ( lhs.m_Min.y <= rhs.m_Min.y && lhs.m_Max.y >= rhs.m_Min.y )
 		{
 			return true;
 		}
 
-		if ( lhs.m_Min.y < rhs.m_Max.y && lhs.m_Max.y > rhs.m_Max.y )
+		if ( lhs.m_Min.y <= rhs.m_Max.y && lhs.m_Max.y >= rhs.m_Max.y )
 		{
 			return true;
 		}
@@ -110,7 +110,8 @@ void AABB2D::ReBuild( const Polygon2D& poly )
 
 void AABB2D::ReBuild( const Polygon2Ds& polys )
 {
-	AddPolygon2D(*polys.begin());
+	AddPolygon2D( *polys.begin() );
+
 	for ( auto it = ++polys.begin(); it != polys.end(); ++it )
 	{
 		AddPolygon2D( *it );
@@ -119,7 +120,7 @@ void AABB2D::ReBuild( const Polygon2Ds& polys )
 
 AABB2D::AABB2D( const Polygon2D& poly )
 {
-	ReBuild(poly);
+	ReBuild( poly );
 }
 
 void AABB2D::AddPolygon2D( const Polygon2D& poly )
@@ -149,4 +150,25 @@ void AABB2D::AddPoint( const point2& p )
 	{
 		m_Min.y = p.y();
 	}
+}
+
+void AABB2D::Move( float x, float y )
+{
+	m_Min.x += x;
+	m_Max.x += x;
+	m_Min.y += y;
+	m_Max.y += y;
+}
+
+void AABB2D::ChangeFace()
+{
+	Vec2 vmin = m_Min, vmax = m_Max;
+	m_Min.x = -vmax.x;
+	m_Max.x = -vmin.x;
+}
+
+void AABB2D::Scale( float v )
+{
+	m_Min *= v;
+	m_Max *= v;
 }

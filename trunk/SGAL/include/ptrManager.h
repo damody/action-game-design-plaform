@@ -1,13 +1,10 @@
-
-#pragma warning(disable:4819)
 #pragma once
+#pragma warning(disable:4819)
 #include <cmath>
-#include "math/Polygon2D.h"
-#include "math/AABB2D.h"
+#include <algorithm>
 #include "ball/Axis_bind.h"
 
-
-template <class ParentPtr, class GetPolygons>
+template <class ParentPtr, class GetAABB>
 class ptrManager
 {
 public:
@@ -54,11 +51,10 @@ public:
 	const ParentPtrs& m() {return m_ParentPtrs;}
 	void PrepareForCollision() // every loop before you want to GetCollision
 	{
-		mXbinds.clear();
 		std::sort( mXbinds.begin(), mXbinds.end(), Compare_x<MyAxis_bind> );
 	}
-	template<class ParentPtr2, class GetPolygons2>
-	Collisions GetCollision( ParentPtr2 obj, GetPolygons2 getpolys )
+	template<class ParentPtr2, class GetAABB2>
+	Collisions GetCollision( ParentPtr2 obj )
 	{
 		Collisions res;
 
@@ -67,43 +63,45 @@ public:
 			return res;
 		}
 
-		Polygon2Ds polys1 = getpolys( obj );
+		AABB2D& aabb = GetAABB2()( obj );
 
-		if ( polys1.size() == 0 )
+		if ( aabb.m_Min.x > 1e19 ) { return res; }
+
+		MyAxis_binds::iterator x_index_max, x_index_min, tmp;
+		x_index_max = std::upper_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( aabb.m_Max ), Compare_x<MyAxis_bind> );
+		x_index_min = std::lower_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( aabb.m_Min ), Compare_x<MyAxis_bind> );
+		//std::cout << "attack min x:" << aabb.m_Min.x << ", max x:" << aabb.m_Max.x << std::endl;
+
+		if ( x_index_max - x_index_min > 0 )
 		{
-			return res;
-		}
+			mYbinds.clear();
+			std::copy( x_index_min, x_index_max, std::back_inserter( mYbinds ) );
+			tmp = std::partition( mYbinds.begin(), mYbinds.end(),        // range
+			                      std::bind2nd( axis_y_greater<MyAxis_bind>(), MyAxis_bind( aabb.m_Min ) ) ); // criterion
+			tmp = std::partition( mYbinds.begin(), tmp,      // range
+			                      std::bind2nd( axis_y_less<MyAxis_bind>(), MyAxis_bind( aabb.m_Max ) ) );
 
-		bool isCollision = false;
-
-		for ( ParentPtrs::iterator it = m_ParentPtrs.begin(); it != m_ParentPtrs.end(); ++it )
-		{
-			Polygon2Ds polys2 = ( Polygon2Ds )GetPolygons()( *it );
-
-			for ( int ipolys1 = 0; ipolys1 < polys1.size(); ipolys1 ++ )
+			if ( tmp - mYbinds.begin() > 0 )
 			{
-				collision tc = {};
-				tc.hitter = ipolys1;
-
-				for ( Polygon2Ds::iterator ipolys2 = polys2.begin(); ipolys2 != polys2.end(); ipolys2 ++ )
+				for ( MyAxis_binds::iterator it = mYbinds.begin(); it != tmp; it++ )
 				{
-					//Z¶b
-					if ( abs( ipolys2->GetZPoint() - polys1[ipolys1].GetZPoint() ) > ipolys2->GetZRange() + polys1[ipolys1].GetZRange() )
-					{
-						break;
-					}
-
-					//XY ¥­­±
-					if ( ipolys2->IsCollision( polys1[ipolys1] ) )
-					{
-						tc.victims.push_back( *it );
-						break;
-					}
+					collision co;
+					co.victims.push_back( it->m_ParentPtr );
+					co.hitter = 0;
+					res.push_back( co );
 				}
+			}
+			else
+			{
+				AABB2D& ab = GetAABB()( tmp->m_ParentPtr );
+				std::cout << "body min x:" << ab.m_Min.x << ", max x:" << ab.m_Max.x << std::endl;
 
-				if ( tc.victims.size() != 0 )
+				if ( GetAABB()( tmp->m_ParentPtr ).IsCollision( aabb ) )
 				{
-					res.push_back( tc );
+					collision co;
+					co.victims.push_back( tmp->m_ParentPtr );
+					co.hitter = 0;
+					res.push_back( co );
 				}
 			}
 		}
@@ -112,20 +110,16 @@ public:
 	}
 	void AddPtr( ParentPtr p )
 	{
-		/*		assert( !GetPolygon()( p )->Points().empty() );*/
 		m_ParentPtrs.push_back( p );
-// 		mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Max ) ) );
-// 		mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Min ) ) );
+		mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), GetAABB()( p ).m_Max  ) );
+		mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), GetAABB()( p ).m_Min  ) );
 	}
 	void AddPtrs( const ParentPtrs& ps )
 	{
 		for ( ParentPtrs::const_iterator it = ps.begin();
 		                it != ps.end(); ++it )
 		{
-// 			assert( !GetPolygon()( *it )->Points().empty() );
-			m_ParentPtrs.push_back( *it );
-// 			mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Max ) ) );
-// 			mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), &( GetPolygon()( m_ParentPtrs.back() )->AABB().m_Min ) ) );
+			AddPtr( *it );
 		}
 	}
 	void ErasePtr( ParentPtr p )
@@ -141,32 +135,14 @@ public:
 			}
 		}
 
-// 		for ( MyAxis_binds::iterator it = mXbinds.begin();
-// 		                it != mXbinds.end(); ++it )
-// 		{
-// 			if ( it->m_ParentPtr == p )
-// 			{
-// 				if ( doubleCheck )
-// 				{
-// 					mXbinds.erase( it );
-// 					break;
-// 				}
-// 				else
-// 				{
-// 					it = mXbinds.erase( it ) - 1;
-// 				}
-// 			}
-// 		}
+		for ( MyAxis_binds::iterator it = mXbinds.begin();
+		                it != mXbinds.end(); ++it )
+		{
+			if ( it->m_ParentPtr == p )
+			{
+				it = --mXbinds.erase( it );
+			}
+		}
 	}
 };
-
-/*
-struct GetPolygonFromTbox
-{
-	Polygon2D* operator()(Tbox* tbox){return &(tbox->m_Polygon2D);}
-};
-*/
-
-
-
 

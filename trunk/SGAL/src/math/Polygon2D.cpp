@@ -129,8 +129,6 @@ Polygon2D::~Polygon2D()
 {
 }
 
-
-
 Vec2 Point2toVec2( const point2& p )
 {
 	return Vec2( p.x(), p.y() );

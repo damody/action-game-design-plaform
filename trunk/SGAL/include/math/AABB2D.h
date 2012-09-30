@@ -20,6 +20,9 @@ public:
 	void SetBounding( float value );
 	bool IsContain( const AABB2D& rhs );
 	bool IsCollision( const AABB2D& rhs );
+	void Move(float x, float y);
+	void Scale(float v);
+	void ChangeFace();
 	Vector2 m_Min, m_Max;
 };
 bool Collision( const AABB2D& lhs, const AABB2D& rhs );
