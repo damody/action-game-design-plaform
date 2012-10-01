@@ -24,6 +24,12 @@
 
 namespace boost {namespace serialization {class access;}}
 
+struct Condition
+{
+	int m_effectIndex;
+	float m_time;
+};
+
 class Hero
 {
 private:
@@ -126,6 +132,9 @@ public:
 	void		PushKey( KeyInfo& k );
 	PolygonVerteices GetPolygonVerteices();
 	PolygonVerteices GetPolygonLineVerteices();
+	//狀態
+	void AddCondition(int effectIndex);
+	void ConditionUpdate();
 	//創造物件
 	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 	//碰撞判定用
