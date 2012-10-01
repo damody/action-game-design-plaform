@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <map>
-#include "HeroAction.h"
+#include "LuaMap.h"
 #include "Consume.h"
 #include "math\Polygon2D.h"
 #include "Attack.h"

@@ -38,3 +38,4 @@ public:
 };
 SHARE_PTR( ObjectInfo );
 typedef std::map<std::string, ObjectInfo_Sptr> ObjectInfoMap;
+typedef std::map<std::string, ObjectInfo_RawPtr> ObjectInfoRMap;

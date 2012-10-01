@@ -689,7 +689,6 @@ void CPropertiesWnd::InitPropList_BloodInfo()
 	m_wndPropList.ExpandAll();
 }
 
-
 void CPropertiesWnd::InitPropList_Creation()
 {
 	m_EditProp = 7;
@@ -732,7 +731,6 @@ void CPropertiesWnd::InitPropList_Creation()
 	m_wndPropList.ExpandAll();
 }
 
-
 void CPropertiesWnd::RefreshPropList_Creation( int index )
 {
 	if ( m_EditProp != 7 )
@@ -774,8 +772,6 @@ void CPropertiesWnd::RefreshPropList_Creation( int index )
 
 }
 
-
-
 void CPropertiesWnd::InitPropList_PictureData()
 {
 	m_EditProp = 8;
@@ -812,48 +808,35 @@ void CPropertiesWnd::InitPropList_PictureData()
 	m_wndPropList.ExpandAll();
 }
 
+void CPropertiesWnd::InitPropList_Actions()
+{
+	m_wndPropList.RemoveAll();
+	SetPropListFont();
+	m_wndPropList.EnableHeaderCtrl( FALSE );
+	m_wndPropList.EnableDescriptionArea();
+	m_wndPropList.SetVSDotNetLook();
+	m_wndPropList.MarkModifiedProperties();
+
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "動作" ) );
+	CMFCPropertyGridProperty* pProp;
+
+	for (LuaMap::iterator it = g_Actions.begin(); it != g_Actions.end(); it++)
+	{
+		pProp = new CMFCPropertyGridProperty( CString(it->second.c_str()), varInt(it->first), _T( "動作及編碼" ) );
+		pProp->AllowEdit( FALSE );
+		pPropMain->AddSubItem( pProp );
+	}
+
+	m_wndPropList.AddProperty( pPropMain );
+	m_wndPropList.ExpandAll();
+}
+
 void CPropertiesWnd::AddNormalActionUcase( CMFCPropertyGridProperty* pProp )
 {
-	pProp->AddOption( _T( "STANDING" ) );
-	pProp->AddOption( _T( "WALKING" ) );
-	pProp->AddOption( _T( "RUNNING" ) );
-	pProp->AddOption( _T( "STOP_RUNNING" ) );
-	pProp->AddOption( _T( "HEAVY_WEAPON_WALK" ) );
-	pProp->AddOption( _T( "HEAVY_WEAPON_RUN" ) );
-	pProp->AddOption( _T( "LIGHT_WEAPON_STAND_ATTACK" ) );
-	pProp->AddOption( _T( "LIGHT_WEAPON_JUMP_ATTACK" ) );
-	pProp->AddOption( _T( "LIGHT_WEAPON_RUN_ATTACK" ) );
-	pProp->AddOption( _T( "LIGHT_WEAPON_DASH_ATTACK" ) );
-	pProp->AddOption( _T( "LIGHT_WEAPON_THROW" ) );
-	pProp->AddOption( _T( "HEAVY_WEAPON_THROW" ) );
-	pProp->AddOption( _T( "LIGHT_WEAPON_JUMP_THROW" ) );
-	pProp->AddOption( _T( "HEAVY_WEAPON_JUMP_THROW" ) );
-	pProp->AddOption( _T( "DRINK" ) );
-	pProp->AddOption( _T( "LIGHT_PUNCH" ) );
-	pProp->AddOption( _T( "LIGHT_KICK" ) );
-	pProp->AddOption( _T( "HEAVY_PUNCH" ) );
-	pProp->AddOption( _T( "HEAVY_KICK" ) );
-	pProp->AddOption( _T( "SUPER_PUNCH" ) );
-	pProp->AddOption( _T( "SUPER_KICK" ) );
-	pProp->AddOption( _T( "JUMP_PUNCH" ) );
-	pProp->AddOption( _T( "JUMP_KICK" ) );
-	pProp->AddOption( _T( "RUN_PUNCH" ) );
-	pProp->AddOption( _T( "RUN_KICK" ) );
-	pProp->AddOption( _T( "FORWARD_FLY_ROWING" ) );
-	pProp->AddOption( _T( "BACKWARD_FLY_ROWING" ) );
-	pProp->AddOption( _T( "FORWARD_ROWING" ) );
-	pProp->AddOption( _T( "BACKWARD_ROWING" ) );
-	pProp->AddOption( _T( "DEFEND" ) );
-	pProp->AddOption( _T( "DEFEND_PUNCH" ) );
-	pProp->AddOption( _T( "DEFEND_KICK" ) );
-	pProp->AddOption( _T( "CATCHING" ) );
-	pProp->AddOption( _T( "CAUGHT" ) );
-	pProp->AddOption( _T( "FALLING" ) );
-	pProp->AddOption( _T( "JUMP" ) );
-	pProp->AddOption( _T( "CROUCH" ) );
-	pProp->AddOption( _T( "INJURED" ) );
-	pProp->AddOption( _T( "LYING" ) );
-	pProp->AddOption( _T( "UNIQUE_SKILL" ) );
+	for (LuaMap::iterator it = g_Actions.begin(); it != g_Actions.end(); it++)
+	{
+		pProp->AddOption( CString( it->second.c_str() ) );
+	}
 }
 
 void CPropertiesWnd::AddNormalActionDcase( CMFCPropertyGridProperty* pProp )
@@ -953,7 +936,6 @@ CMFCPropertyGridProperty* CPropertiesWnd::GetDefaultPropList()
 	return pGroup1;
 }
 
-
 void CPropertiesWnd::RefreshPropList()
 {
 	InitPropList();
@@ -993,7 +975,7 @@ void CPropertiesWnd::RefreshPropList_Frame()
 	propRoot->GetSubItem( 1 )->SetValue( varInt( g_FrameIndex ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( CString( frameInfo.m_NextFrameName.c_str() ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varInt( frameInfo.m_NextFrameIndex ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue( CString( actionMap[frameInfo.m_HeroAction] ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue( CString( g_Actions[frameInfo.m_HeroAction].c_str() ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( varInt( frameInfo.m_Wait ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 6 ) )->SetValue( varBool( frameInfo.m_ClearKeyQueue ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 0 ) )->SetValue( varInt( frameInfo.m_PictureID ) );
@@ -1068,9 +1050,22 @@ void CPropertiesWnd::UpdatePropList_Frame()
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->IsEdited() )
 	{
 		char buff[100];
-		sprintf( buff, "Undo" );
-		CString str( buff );
-		AfxMessageBox( str );
+		COleVariant v = propRoot->GetSubItem( 4 )->GetValue();
+		v.ChangeType( VT_BSTR, NULL );
+		ConvStr::WcharToChar( CString( v ).GetBuffer( 0 ), buff );
+		std::string action( buff );
+		int key = g_Actions.FindKey(action);
+		if (key != -1)
+		{
+			int OldHeroAction = frameInfo->m_HeroAction;
+			command->AddRedoFunction([=](){frameInfo->m_HeroAction = key;});
+			command->AddUndoFunction([=](){frameInfo->m_HeroAction = OldHeroAction;});
+		}else{
+			AfxMessageBox(_T("Action does NOT exist"));
+		}
+		
+
+
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->IsEdited() )
@@ -1986,62 +1981,6 @@ void CPropertiesWnd::UpdatePictureData()
 
 	m_CommandManager.CallCommand(command);
 }
-
-const CString CPropertiesWnd::actionMap[MAX_ACTIONS] =
-{
-	CString( "STANDING" ),
-	CString( "WALKING" ),
-	CString( "RUNNING" ),
-	CString( "STOP_RUNNING" ),
-	CString( "HEAVY_WEAPON_WALK" ),
-	CString( "HEAVY_WEAPON_RUN" ),
-	CString( "LIGHT_WEAPON_STAND_ATTACK" ),
-	CString( "LIGHT_WEAPON_JUMP_ATTACK" ),
-	CString( "LIGHT_WEAPON_RUN_ATTACK" ),
-	CString( "LIGHT_WEAPON_DASH_ATTACK" ),
-	CString( "LIGHT_WEAPON_THROW" ),
-	CString( "HEAVY_WEAPON_THROW" ),
-	CString( "LIGHT_WEAPON_JUMP_THROW" ),
-	CString( "HEAVY_WEAPON_JUMP_THROW" ),
-	CString( "DRINK" ),
-	CString( "BEFORE_ATTACK" ),
-	CString( "ATTACKING" ),
-	CString( "AFTER_ATTACK" ),
-	CString( "BEFORE_SUPER_ATTACK" ),
-	CString( "SUPER_ATTACKING" ),
-	CString( "AFTER_SUPER_ATTACK" ),
-	CString( "BEFORE_JUMP_ATTACK" ),
-	CString( "JUMP_ATTACKING" ),
-	CString( "AFTER_JUMP_ATTACK" ),
-	CString( "BEFORE_RUN_ATTACK" ),
-	CString( "RUN_ATTACKING" ),
-	CString( "AFTER_RUN_ATTACK" ),
-	CString( "BEFORE_DASH_ATTACK" ),
-	CString( "DASH_ATTACKING" ),
-	CString( "AFTER_DASH_ATTACK" ),
-	CString( "FLIP" ),
-	CString( "ROLLING" ),
-	CString( "DEFEND" ),
-	CString( "DEFEND_PUNCH" ),
-	CString( "DEFEND_KICK" ),
-	CString( "CATCHING" ),
-	CString( "CAUGHT" ),
-	CString( "FALLING" ),
-	CString( "JUMP" ),
-	CString( "DASH" ),
-	CString( "CROUCH" ),
-	CString( "INJURED" ),
-	CString( "FORWARD_LYING" ),
-	CString( "BACKWARD_LYING" ),
-	CString( "IN_THE_AIR" ),
-	CString( "BEFORE_SKILL" ),
-	CString( "AFTER_SKILL" ),
-	CString( "AIR_SKILL" ),
-	CString( "X_AXIS_SKILL" ),
-	CString( "Z_AXIS_SKILL" ),
-	CString( "GROUND_SKILL" ),
-	CString( "UNIQUE_SKILL" ),
-};
 
 VARIANT CPropertiesWnd::varFloat( float _value )
 {

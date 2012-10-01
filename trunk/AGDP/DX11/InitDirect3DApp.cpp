@@ -11,9 +11,9 @@
 #include "game/CtrlKey.h"
 #include "game/HeroInfo.h"
 #include "game/ObjectInfo.h"
-#include "game/HeroAction.h"
+#include "game/LuaMap.h"
 
-#include "game/LuaResuorce.h"
+#include "game/LuaResource.h"
 
 InitDirect3DApp* InitDirect3DApp::dxAppInstance = NULL;
 

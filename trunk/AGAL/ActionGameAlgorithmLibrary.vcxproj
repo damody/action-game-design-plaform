@@ -105,10 +105,10 @@
     <ClInclude Include="include\game\EffectData.h" />
     <ClInclude Include="include\game\FlyingPath.h" />
     <ClInclude Include="include\game\FrameInfo.h" />
-    <ClInclude Include="include\game\HeroAction.h" />
+    <ClInclude Include="include\game\LuaMap.h" />
     <ClInclude Include="include\game\HeroInfo.h" />
     <ClInclude Include="include\game\HitData.h" />
-    <ClInclude Include="include\game\LuaResuorce.h" />
+    <ClInclude Include="include\game\LuaResource.h" />
     <ClInclude Include="include\game\ObjectInfo.h" />
     <ClInclude Include="include\game\ObjectType.h" />
     <ClInclude Include="include\game\PictureData.h" />
@@ -120,7 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\FlyingPath.cpp" />
-    <ClCompile Include="src\game\HeroAction.cpp" />
+    <ClCompile Include="src\game\LuaMap.cpp" />
     <ClCompile Include="src\game\HeroInfo.cpp" />
     <ClCompile Include="src\game\ObjectInfo.cpp" />
     <ClCompile Include="src\Lua\CreateLua.cpp" />

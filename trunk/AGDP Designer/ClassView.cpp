@@ -14,7 +14,6 @@
 #include "Resource.h"
 #include "AGDP Designer.h"
 #include <comutil.h>
-#include <game/HeroAction.h>
 #include "ConvStr.h"
 #include "ClassView.h"
 

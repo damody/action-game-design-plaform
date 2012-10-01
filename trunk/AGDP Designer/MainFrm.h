@@ -24,7 +24,6 @@
 
 #include <map>
 typedef std::map<HeroInfo*, CAGDPDesignerView*> HeroViews;
-
 extern CAGDPDesignerView* g_NewView;
 
 class COutlookBar : public CMFCOutlookBar
@@ -101,10 +100,12 @@ public:
 		m_D3DFrameView.Clear();
 	}
 	void OnFileNew();
+
 	bool NewHeroViews( HeroInfo* hero );
-	void OpenPictureView( CString& name, PictureData* pic, int index );
 	void SwitchPictureView( int index );
 	void UpdatePicture(int index);
+	void OpenPictureView( CString& name, PictureData* pic, int index, HeroInfo* info);	
+	
 public:  // 控制列內嵌的成員
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;
@@ -160,5 +161,3 @@ public:
 	afx_msg void OnButtonRun();
 	afx_msg void OnClose();
 };
-
-

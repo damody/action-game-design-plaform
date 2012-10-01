@@ -104,7 +104,6 @@ protected:
 	CComboBox m_wndObjectCombo;
 	CPropertiesToolBar m_wndToolBar;
 	CMFCPropertyGridCtrl m_wndPropList;
-	static const CString actionMap[MAX_ACTIONS];
 public:
 	static VARIANT varFloat( float _value = 0 );
 	static VARIANT varInt( int _value = 0 );
@@ -150,6 +149,7 @@ public:
 	void InitPropList_BloodInfo();
 	void InitPropList_Creation();
 	void InitPropList_PictureData();
+	void InitPropList_Actions();
 
 	void RefreshPropList();
 	void RefreshPropList_Frame();

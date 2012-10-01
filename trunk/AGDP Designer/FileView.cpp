@@ -17,8 +17,10 @@
 #include "ConvStr.h"
 
 #include "game/HeroInfo.h"
-#include "Lua/LuaCell.h"
 #include <auto_link_agal.hpp>
+#include <Lua/LuaCell.h>
+#include <game/LuaResource.h>
+#include <game\LuaMap.h>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -83,6 +85,7 @@ int CFileView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	m_wndToolBar.SetRouteCommandsViaFrame( FALSE );
 	// 填入一些靜態樹狀檢視資料 (假程式碼，不需要什麼特別的內容)
 	FillFileView();
+	LoadData();
 	AdjustLayout();
 	return 0;
 }
@@ -95,12 +98,15 @@ void CFileView::OnSize( UINT nType, int cx, int cy )
 
 void CFileView::FillFileView()
 {
+	HTREEITEM hResourceDoc  = m_wndFileView.InsertItem( _T( "Resource 資料" ), 0, 0 );
+	hAction = m_wndFileView.InsertItem( _T("Action"), 2, 2, hResourceDoc );
+	hResourceHeroDoc   = m_wndFileView.InsertItem(_T("Hero"), 0, 0, hResourceDoc );
+	hResourceObjectDoc = m_wndFileView.InsertItem(_T("Object"), 0, 0, hResourceDoc );
+	m_wndFileView.SetItemState( hResourceDoc, TVIS_BOLD, TVIS_BOLD );
 	hHeroDoc = m_wndFileView.InsertItem( _T( "Hero 資料" ), 0, 0 );
 	m_wndFileView.SetItemState( hHeroDoc, TVIS_BOLD, TVIS_BOLD );
 	hObjectDoc = m_wndFileView.InsertItem( _T( "Object 資料" ), 0, 0 );
 	m_wndFileView.SetItemState( hObjectDoc, TVIS_BOLD, TVIS_BOLD );
-	hBackgroundDoc = m_wndFileView.InsertItem( _T( "Background 資料" ), 0, 0 );
-	m_wndFileView.SetItemState( hBackgroundDoc, TVIS_BOLD, TVIS_BOLD );
 }
 
 void CFileView::OnContextMenu( CWnd* pWnd, CPoint point )
@@ -202,8 +208,9 @@ void CFileView::OnFileOpen()
 			g_HeroInfo = hero;
 			hero->LoadData( data );
 
-			if ( ( ( CMainFrame* )this->GetParentFrame() )->NewHeroViews( hero ) )
+			if (g_HeroInfoMap.find(hero->m_Name) == g_HeroInfoMap.end())
 			{
+				( ( CMainFrame* )this->GetParentFrame() )->NewHeroViews( hero );
 				for ( unsigned int i = 0; i < hero->m_PictureDatas.size(); i++ )
 				{
 					std::string pic = hero->m_PictureDatas[i].m_Path;
@@ -214,26 +221,24 @@ void CFileView::OnFileOpen()
 					CString str( buff );
 					m_wndFileView.InsertItem( str, 2, 2, hHero );
 					hero->m_PictureDatas[i].m_TextureID = g_TextureManagerFrame->AddTexture( hero->m_PictureDatas[i].m_Path );
-					( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( str, &hero->m_PictureDatas[i], i );
+					( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( str, &hero->m_PictureDatas[i], i,hero );
 				}
 
 				m_HeroInfoMap[hHero] = hero;
+				g_HeroInfoMap[hero->m_Name] = HeroInfo_Sptr(hero);
 				m_wndFileView.Expand( hHeroDoc, TVE_EXPAND );
 				g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
 				g_FrameName = "";
 				g_FrameIndex = -1;
 				( ( CMainFrame* )this->GetParentFrame() )->m_wndClassView.Refresh();
 				( ( CMainFrame* )this->GetParentFrame() )->Clear();
+			}else{
+				AfxMessageBox( _T("Hero HAS been Loaded" ) );
 			}
-
-//			}
 		}
 		else
 		{
-			char buff[100];
-			sprintf( buff, "Lua Loading Failed" );
-			CString str( buff );
-			AfxMessageBox( str );
+			AfxMessageBox( _T("Lua Loading Failed" ) );
 		}
 	}
 }
@@ -278,7 +283,6 @@ void CFileView::OnChangeVisualStyle()
 	m_wndFileView.SetImageList( &m_FileViewImages, TVSIL_NORMAL );
 }
 
-
 BOOL CFileView::CanFloat() const
 {
 	return TRUE;
@@ -300,9 +304,12 @@ void CFileView::OnSelectItem( HTREEITEM item )
 
 	if ( item == hObjectDoc ) { return; }
 
-	if ( item == hBackgroundDoc ) { return; }
+	if ( item == hAction){
+		( ( CMainFrame* )this->GetParentFrame() )->m_wndProperties.InitPropList_Actions(); 
+		return;
+	}
 
-	HeroInfohMap::iterator it = m_HeroInfoMap.find( item );
+	HeroInfoHMap::iterator it = m_HeroInfoMap.find( item );
 
 	if ( it != m_HeroInfoMap.end() )
 	{
@@ -310,6 +317,21 @@ void CFileView::OnSelectItem( HTREEITEM item )
 		g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
 		g_FrameName = "";
 		g_FrameIndex = -1;
+		if (( ( CMainFrame* )this->GetParentFrame() )->NewHeroViews( it->second ))
+		{
+			for ( unsigned int i = 0; i < it->second->m_PictureDatas.size(); i++ )
+			{
+				std::string pic = it->second->m_PictureDatas[i].m_Path;
+				size_t found;
+				found = pic.rfind( '\\' );
+				char buff[100];
+				sprintf( buff, "%s", pic.substr( found + 1, pic.length() ).c_str() );
+				CString str( buff );
+				m_wndFileView.InsertItem( str, 2, 2, item );
+				it->second ->m_PictureDatas[i].m_TextureID = g_TextureManagerFrame->AddTexture( it->second ->m_PictureDatas[i].m_Path );
+				( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( str, &it->second->m_PictureDatas[i], i, it->second );
+			}
+		}
 		( ( CMainFrame* )this->GetParentFrame() )->m_wndClassView.Refresh();
 		( ( CMainFrame* )this->GetParentFrame() )->Clear();
 	}
@@ -336,7 +358,7 @@ void CFileView::OnPicturedataAdd()
 
 	if ( dlgFile.DoModal() == IDOK )
 	{
-		HeroInfohMap::iterator it_Hero = m_HeroInfoMap.find( hHero_Select );
+		HeroInfoHMap::iterator it_Hero = m_HeroInfoMap.find( hHero_Select );
 
 		if ( it_Hero == m_HeroInfoMap.end() ) { return; }
 
@@ -352,7 +374,7 @@ void CFileView::OnPicturedataAdd()
 		pic.m_Column = 1;
 		m_wndFileView.InsertItem( dlgFile.GetFileName(), 2, 2, hHero_Select );
 		it_Hero->second->m_PictureDatas.push_back( pic );
-		( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( dlgFile.GetFileName(), &it_Hero->second->m_PictureDatas.back(), it_Hero->second->m_PictureDatas.size() - 1 );
+		( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( dlgFile.GetFileName(), &it_Hero->second->m_PictureDatas.back(), it_Hero->second->m_PictureDatas.size() - 1,it_Hero->second );
 	}
 }
 
@@ -373,7 +395,7 @@ void CFileView::AddFile( HeroInfo* hero )
 			CString str( buff );
 			m_wndFileView.InsertItem( str, 2, 2, hHero );
 			hero->m_PictureDatas[i].m_TextureID = g_TextureManagerFrame->AddTexture( hero->m_PictureDatas[i].m_Path );
-			( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( str, &hero->m_PictureDatas[i], i );
+			( ( CMainFrame* )this->GetParentFrame() )->OpenPictureView( str, &hero->m_PictureDatas[i], i ,hero);
 		}
 
 		m_HeroInfoMap[hHero] = hero;
@@ -383,6 +405,28 @@ void CFileView::AddFile( HeroInfo* hero )
 		g_FrameIndex = -1;
 		( ( CMainFrame* )this->GetParentFrame() )->m_wndClassView.Refresh();
 		( ( CMainFrame* )this->GetParentFrame() )->Clear();
+	}
+}
+
+void CFileView::LoadData()
+{
+	g_Actions.LoadData("Script\\Action.lua","Action");
+
+	std::vector<HeroInfo_Sptr> heroInfos;
+	heroInfos = LuaResource::LoadLua<HeroInfo>( "hero" );
+	for (unsigned int idx = 0; idx < heroInfos.size(); idx++ )
+	{
+		g_HeroInfoMap[heroInfos[idx]->m_Name] = heroInfos[idx];
+		HTREEITEM heroH = m_wndFileView.InsertItem(CString(heroInfos[idx]->m_Name.c_str()),2,2,hResourceHeroDoc);
+		m_HeroInfoMap[heroH] = heroInfos[idx].get();
+	}
+
+	std::vector<ObjectInfo_Sptr> objectInfos;
+	objectInfos = LuaResource::LoadLua<ObjectInfo>( "object" );
+	for (unsigned int idx = 0; idx < objectInfos.size(); idx++ )
+	{
+		g_ObjectInfoMap[objectInfos[idx]->m_Name]=objectInfos[idx];
+		m_wndFileView.InsertItem(CString(objectInfos[idx]->m_Name.c_str()),2,2,hResourceObjectDoc);
 	}
 }
 

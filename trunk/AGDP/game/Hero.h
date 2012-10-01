@@ -10,7 +10,6 @@
 #include "game\EffectData.h"
 #include "CtrlKey.h"
 #include "game\HeroInfo.h"
-#include "game\HeroAction.h"
 #include "game\Record.h"
 #include <string>
 #include <cmath>
