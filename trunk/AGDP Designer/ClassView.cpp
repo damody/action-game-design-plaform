@@ -14,7 +14,6 @@
 #include "Resource.h"
 #include "AGDP Designer.h"
 #include <comutil.h>
-#include <game/HeroAction.h>
 #include "ConvStr.h"
 #include "ClassView.h"
 
@@ -609,6 +608,7 @@ void CClassView::OnSelectItem( HTREEITEM item )
 					g_FrameIndex = _ttoi( m_wndClassView.GetItemText( item ) );
 					_propWnd->InitPropList_Frame();
 					( ( CMainFrame* )( this->GetParentFrame() ) )->RefreshFrameEdit();
+					( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditableCenter();
 				}
 			}
 

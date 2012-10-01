@@ -176,6 +176,9 @@
     <ClCompile Include="DX11\BGMPlayer.cpp">
       <Filter>src\DX11</Filter>
     </ClCompile>
+    <ClCompile Include="game\CollisionFunction.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -339,6 +342,9 @@
     </ClInclude>
     <ClInclude Include="DX11\BGMPlayer.h">
       <Filter>inc\DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="game\CollisionFunction.h">
+      <Filter>inc\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -10,7 +10,6 @@
 #include "game\EffectData.h"
 #include "CtrlKey.h"
 #include "game\HeroInfo.h"
-#include "game\HeroAction.h"
 #include "game\Record.h"
 #include <string>
 #include <cmath>
@@ -28,42 +27,46 @@ namespace boost {namespace serialization {class access;}}
 class Hero
 {
 private:
-	int				m_TimeTik;		//Count down TimeTik from Frame Wait
-	ClipVertex		m_Pic;
+	int		m_TimeTik;		//Count down TimeTik from Frame Wait
+	ClipVertex	m_Pic;
 	HeroInfo_Sptr   m_HeroInfo;
-	int				m_Action;		//讽笆篈
+	int		m_Action;		//讽笆篈
 	std::string     m_Frame;		//Current Frame
-	int				m_FrameID;		//Current Frame ID
+	int		m_FrameID;		//Current Frame ID
 
-	int				m_Texture;		//Current Texture ID
-	int				m_PicID;
-	int				m_PicW;			//W篒ちΩ计
-	int				m_PicH;			//H篒ちΩ计
-	int				m_PicX;
-	int				m_PicY;
+	int		m_Texture;		//Current Texture ID
+	int		m_PicID;
+	int		m_PicW;			//W篒ちΩ计
+	int		m_PicH;			//H篒ちΩ计
+	int		m_PicX;
+	int		m_PicY;
 
-	Vector3			m_Position;
-	float			m_CenterX, m_CenterY;
-	Vector3			m_Vel;
-	FrameInfo*		m_FrameInfo;
-	float			m_Angle;
-	bool			m_FaceSide;		//true , false オ
-	int				d_run;			//﹚禲˙ノタオ璽
+	Vector3		m_Position;
+	Vector3		m_Vel;
+	float		m_CenterX;
+	float		m_CenterY;
+	FrameInfo*	m_FrameInfo;
+	float		m_Angle;
+	bool		m_FaceSide;		//true , false オ
+	int		d_run;			//﹚禲˙ノタオ璽
 	std::bitset<4>	d_key;			//耞獶よ龄ノ籔1ボノ0玥0:atk1, 1:atk2, 2:j, 3:d
-	bool			d_Ground;		//耞琌
-	int				m_Team;			//0ぃだ
-	int				m_MaxRecoverHP;	//程確﹀秖
-	int				m_HP;
-	int				m_MP;
+	bool		d_Ground;		//耞琌
+	int		m_Team;			//0ぃだ
+	int		m_MaxRecoverHP;		//程確﹀秖
+	int		m_HP;
+	int		m_MP;
 	EffectType::e   m_Effect;
-	float			m_EffectScale;
+	float		m_EffectScale;
 	Record_Sptr     m_Record;
+	AABB2D		m_BodyAABB;
+	AABB2D		m_AttackAABB;
+	AABB2D		m_CatchAABB;
 
-	int				m_FrontDefence;
-	int				m_BackDefence;
-	int				m_Fall;
+	int		m_FrontDefence;
+	int		m_BackDefence;
+	int		m_Fall;
 
-	KeyQueue		m_KeyQue;
+	KeyQueue	m_KeyQue;
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -99,25 +102,28 @@ public:
 
 	Hero();
 	Hero( std::string h );
-	void Update( float dt );
-	void UpdateDataToDraw();	//Data To m_Pic
-	Texture_Sptr GetTexture();
-	int GetTextureID();
-	ClipVertex GetPic();
-	int Team() const;
-	const Vector3& Position();
-	const Vector3& Velocity();
-	bool IsAlive();
-	bool GetFace();
+	void	Update( float dt );
+	void	UpdateDataToDraw();	//Data To m_Pic
+	int	GetTextureID();
+	int	Team() const;
+	ClipVertex	GetPic();
+	Texture_Sptr	GetTexture();
+	const Vector3&	Position();
+	const Vector3&	Velocity();
+	bool		IsAlive();
+	bool		GetFace();
+	AABB2D&		GetBodyAABB();
+	AABB2D&		GetAttackAABB();
+	AABB2D&		GetCatchAABB();
 	Bodys&		GetBodys( );
 	Attacks&	GetAttacks( );
 	CatchInfos&	GetCatches( );
-	Record_Sptr GetRecord();
-	void SetRecord( Record_Sptr r );
-	void SetTeam( int team );
-	void SetPosition( Vector3 pos );
-	void SetEffect( EffectType::e effect );
-	void PushKey( KeyInfo k );
+	Record_Sptr	GetRecord();
+	void		SetRecord( Record_Sptr r );
+	void		SetTeam( int team );
+	void		SetPosition( const Vector3& pos );
+	void		SetEffect( EffectType::e effect );
+	void		PushKey( KeyInfo& k );
 	PolygonVerteices GetPolygonVerteices();
 	PolygonVerteices GetPolygonLineVerteices();
 	//承硑ン
@@ -126,8 +132,8 @@ public:
 	friend Polygon2Ds GetHeroBodys( const Hero& r );
 	friend Polygon2Ds GetHeroAttacks( const Hero& r );
 	friend Polygon2Ds GetHeroCatches( const Hero& r );
-	void beCaught( const CatchInfo& rCatch, Vector3 hitPos, bool rFace );
-	void beAttack( const Attack& rAtk, const Record_Sptr rHero, Vector3 hitPos, bool rFace );
+	void beCaught( const CatchInfo& rCatch, const Vector3& hitPos, bool rFace );
+	void beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3& hitPos, bool rFace );
 	//void beHit(const )
 
 protected:
@@ -151,6 +157,21 @@ typedef std::vector <Hero_RawPtr> Heroes;
 
 //bool Creat(Vector3 pos, Creation obj, const Hero *owner);
 bool SortHero( Hero_RawPtr a, Hero_RawPtr b );
+
+struct GetBodyAABB2D
+{
+	AABB2D& operator()(Hero* hero){return (hero->GetBodyAABB());}
+};
+
+struct GetAttackAABB2D
+{
+	AABB2D& operator()(Hero* hero){return (hero->GetAttackAABB());}
+};
+
+struct GetCatchAABB2D
+{
+	AABB2D& operator()(Hero* hero){return (hero->GetCatchAABB());}
+};
 
 struct GetPolygonsFromBody
 {

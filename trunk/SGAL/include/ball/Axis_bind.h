@@ -1,24 +1,21 @@
 #pragma once
 #include "math/Vector2.h"
-//#include "ball/ball.h"
-//#include "ball/Tbox.h"
 
 template<class ParentPtr>
 struct Axis_bind
 {
-	float x, y;
+	float *m_x, *m_y;
 	ParentPtr m_ParentPtr;
 
-	Axis_bind( ParentPtr b )
-		: x( ( b->m_Position.x ) ), y( ( b->m_Position.y ) ), m_ParentPtr( b ) {}
-	Axis_bind( ParentPtr b, Vector2* vec2 )
-		: x( ( vec2->x ) ), y( ( vec2->y ) ), m_ParentPtr( b ) {}
-	Axis_bind( float val )
-		: x( val ), y( val ), m_ParentPtr( 0 )
-	{}
-	bool operator == ( ParentPtr b ) const
+	Axis_bind( ParentPtr p, float* _x, float* _y)
+		: m_x( _x ), m_y( _y ), m_ParentPtr( p ) {}
+	Axis_bind( ParentPtr p, Vector2& _v)
+		: m_x( &_v.x ), m_y( &_v.y ), m_ParentPtr( p ) {}
+	Axis_bind( Vector2& _v)
+		: m_x( &_v.x ), m_y( &_v.y ), m_ParentPtr( 0 ) {}
+	bool operator == ( ParentPtr p ) const
 	{
-		return m_ParentPtr == b;
+		return m_ParentPtr == p;
 	}
 
 };
@@ -26,7 +23,13 @@ struct Axis_bind
 template<class Tptr>
 bool Compare_x( const Tptr& lhs, const Tptr& rhs )
 {
-	return lhs.x < rhs.x;
+	return *lhs.m_x < *rhs.m_x;
+}
+
+template<class Tptr>
+bool Compare_y( const Tptr& lhs, const Tptr& rhs )
+{
+	return *lhs.m_y < *rhs.m_y;
 }
 
 template<class _Ty>
@@ -37,7 +40,7 @@ struct axis_y_greater
 	bool operator()( const _Ty& _Left, const _Ty& _Right ) const
 	{
 		// apply operator> to operands
-		return _Left.y > _Right.y;
+		return *_Left.m_y > *_Right.m_y;
 	}
 };
 
@@ -49,6 +52,6 @@ struct axis_y_less
 	bool operator()( const _Ty& _Left, const _Ty& _Right ) const
 	{
 		// apply operator> to operands
-		return _Left.y < _Right.y;
+		return *_Left.m_y <= *_Right.m_y;
 	}
 };

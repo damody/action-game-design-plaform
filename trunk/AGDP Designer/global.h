@@ -3,7 +3,9 @@
 #include <d3d11.h>
 #include "DX11/TextureManager.h"
 #include <game/HeroInfo.h>
+#include <game/ObjectInfo.h>
 #include <game/Frameinfo.h>
+#include <game/LuaMap.h>
 #include <string>
 
 extern HeroInfo* g_HeroInfo;
@@ -18,4 +20,7 @@ extern float g_Frame_OffsetY;
 
 extern TextureManager* g_TextureManagerFrame;
 
-int LoadTexture( std::string path );
+extern HeroInfoMap g_HeroInfoMap;
+extern ObjectInfoMap g_ObjectInfoMap;
+
+extern LuaMap g_Actions;

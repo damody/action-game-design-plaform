@@ -111,3 +111,4 @@ public:
 SHARE_PTR( HeroInfo );
 
 typedef std::map<std::string, HeroInfo_Sptr> HeroInfoMap;
+typedef std::map<std::string, HeroInfo_RawPtr> HeroInfoRMap;

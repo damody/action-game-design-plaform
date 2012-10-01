@@ -14,7 +14,8 @@
 #include "FileTree.h"
 #include "game/HeroInfo.h"
 
-typedef std::map<HTREEITEM, HeroInfo_RawPtr> HeroInfohMap;
+typedef std::map<HTREEITEM, HeroInfo_RawPtr> HeroInfoHMap;
+
 
 class CFileViewToolBar : public CMFCToolBar
 {
@@ -51,15 +52,17 @@ protected:
 public:
 	virtual ~CFileView();
 	void OnSelectItem( HTREEITEM item );
-	afx_msg void OnFileOpen();
 	void AddFile( HeroInfo* hero );
+	void LoadData();
+	afx_msg void OnFileOpen();
 private:
 	HTREEITEM hHeroDoc;
 	HTREEITEM hHero_Select;
 	HTREEITEM hObjectDoc;
-	HTREEITEM hBackgroundDoc;
-
-	HeroInfohMap m_HeroInfoMap;
+	HTREEITEM hResourceHeroDoc;
+	HTREEITEM hResourceObjectDoc;
+	HTREEITEM hAction;
+	HeroInfoHMap m_HeroInfoMap;
 
 
 protected:

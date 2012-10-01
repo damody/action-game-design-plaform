@@ -369,11 +369,18 @@ void D3DApp_Frame::buildPoint()
 		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
 	}
 
-	
-	LineVertices lvs = m_Center.BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY, false );
-	m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
-	
+	for(Crosses::iterator it = m_Creation.begin(); it != m_Creation.end(); ++it)
+	{
+		LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
+		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
+	}
 
+	if (m_ShowCross)
+	{
+		LineVertices lvs = m_Center.BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY);
+		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
+	}
+	
 	if ( !m_LineVertices.empty() )
 	{
 		m_vbd.ByteWidth = ( UINT )( sizeof( LineVertex ) * m_LineVertices.size() );
@@ -467,30 +474,21 @@ void D3DApp_Frame::SetPic( PictureData* pic, float x, float y )
 	m_picY = y;
 }
 
-void D3DApp_Frame::SetCross( float x, float y )
-{
-	m_Center.Transale( x - m_CrossX, y - m_CrossY );
-	m_CrossX = x;
-	m_CrossY = y;
-}
-
 void D3DApp_Frame::Init()
 {
 	m_Body.clear();
 	m_Attack.clear();
 	m_Catch.clear();
 	m_Center.Clear();
+	m_Creation.clear();
 	m_Pic = NULL;
 	m_picX = 1;
 	m_picY = 1;
-	m_CrossX = 0;
-	m_CrossY = 0;
 	m_ShowCross = false;
-	m_Center.Add( m_CrossX + 3, m_CrossY + 3 );
-	m_Center.Add( m_CrossX - 3, m_CrossY - 3 );
-	m_Center.Add( m_CrossX , m_CrossY );
-	m_Center.Add( m_CrossX - 3, m_CrossY + 3 );
-	m_Center.Add( m_CrossX + 3, m_CrossY - 3 );
+	m_Center = Cross();
+	m_Center.SetColor(0,0,1);
+	m_Center.SetPosition(0,0);
+	SwitchShowCrossOff();
 }
 
 void D3DApp_Frame::SwitchShowCrossOff()

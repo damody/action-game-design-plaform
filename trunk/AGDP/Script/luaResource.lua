@@ -11,7 +11,7 @@ object = {
 }
 
 
-backGround = {
+background = {
 "Script\\Background\\Forbidden_Tower.lua",
 }
 
@@ -26,3 +26,5 @@ mp3 =
 {
 "Media\\music\\stage5.mp3"
 }
+
+keymap = "Script\\KeyMap.lua"

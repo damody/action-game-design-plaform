@@ -16,7 +16,9 @@ public:
 	Area  m_Body;
 	Area  m_Attack;
 	Area  m_Catch;
-	float	m_CrossX, m_CrossY;
+	Cross m_Center;
+	Crosses m_Creation;
+
 	TextureManager& GetTextureManager()
 	{ return *m_TextureManager;}
 private:
@@ -25,7 +27,7 @@ private:
 	float         m_picX, m_picY;
 	Texture*      m_Templete;
 
-	PointManager  m_Center;
+	
 	bool	      m_ShowCross;
 public:
 	D3DApp_Frame();
@@ -43,7 +45,6 @@ public:
 	void buildPoint();
 
 	void SetPic( PictureData*  pic, float x, float y );
-	void SetCross( float x, float y );
 	void SwitchShowCrossOn();
 	void SwitchShowCrossOff();
 	ID3D11Device* GetDevice()

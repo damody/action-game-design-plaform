@@ -23,7 +23,7 @@ bool CommandLambda::Unexecute()
 {
 	try
 	{
-		for(std::size_t i=0;i<m_UndoFunctions.size();i++)
+		for(std::size_t i=m_UndoFunctions.size()-1;i>=0;i--)
 		{
 			m_UndoFunctions[i]();
 		}

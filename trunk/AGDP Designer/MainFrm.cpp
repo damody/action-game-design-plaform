@@ -521,16 +521,6 @@ void CMainFrame::OnUpdateCheckProperty( CCmdUI* pCmdUI )
 	pCmdUI->SetCheck( m_wndProperties.IsVisible() );
 }
 
-void CMainFrame::OpenPictureView( CString& name, PictureData* pic, int index )
-{
-	HeroViews::iterator it = m_HeroViews.find( g_HeroInfo );
-
-	if ( it != m_HeroViews.end() )
-	{
-		it->second->AddPicturedata( name, pic, index );
-	}
-}
-
 void CMainFrame::OnFileNew()
 {
 	CFileNewDialog fileNew;
@@ -578,7 +568,6 @@ bool CMainFrame::NewHeroViews( HeroInfo* hero )
 		m_HeroViews[hero] = g_NewView;
 		return true;
 	}
-
 	return false;
 }
 
@@ -605,7 +594,7 @@ void CMainFrame::OnButtonRun()
 	// TODO: 在此加入您的命令處理常式程式碼
 	if ( g_HeroInfo != NULL )
 	{
-		HeroInfo::WriteLua( g_HeroInfo, std::wstring( _T( "AGDP\\temp.lua" ) ) );
+		HeroInfo::WriteLua( g_HeroInfo, std::wstring( _T( "AGDP\\Script\\temp.lua" ) ) );
 		//執行AGDP.exe
 #ifdef _DEBUG
 		system( "..\\Bin\\ActionGameDesignPlaform.exe -hero temp" );
@@ -624,4 +613,13 @@ void CMainFrame::OnClose()
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
 	remove( "AGDP\\temp.lua" );
 	CMDIFrameWndEx::OnClose();
+}
+
+void CMainFrame::OpenPictureView( CString& name, PictureData* pic, int index, HeroInfo* info )
+{
+	HeroViews::iterator it = m_HeroViews.find( info );
+	if ( it != m_HeroViews.end() )
+	{
+		it->second->AddPicturedata( name, pic, index );
+	}
 }

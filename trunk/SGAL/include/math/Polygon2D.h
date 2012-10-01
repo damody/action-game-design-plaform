@@ -4,7 +4,6 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "BasicMath.h"
-#include "AABB2D.h"
 #include <vector>
 
 #include <boost/geometry.hpp>
@@ -23,6 +22,7 @@ public:
 	Polygon2D(): m_Angle( 0 ), m_zPoint( 0 ), m_zRange( 0.01f ) {}
 	~Polygon2D();
 	polygon::ring_type& Points(){ return m_Polygon.outer();}
+	const polygon::ring_type& CPoints() const { return m_Polygon.outer();}
 	void AddPoint( float x, float y );
 	void AddPoint( const Vec2& p );
 	void Offset( float x, float y );
@@ -36,16 +36,10 @@ public:
 	float GetZRange() {return m_zRange;}
 	float GetZPoint() {return m_zPoint;}
 	void Rotation( float angle, const Vec2& middle = Vec2::ZERO );
-	bool IsCollision( const Polygon2D& rhs );
-	bool CollisionZ( const Polygon2D& rhs );
-	void CheckBuildAABB();
-	void CheckBuildPolygon(){}
-	void CheckBuildEdges() {} // do nothing
+	bool IsCollision( const Polygon2D& rhs ) const;
+	bool CollisionZ( const Polygon2D& rhs ) const;
 	void Clear();
 private:
-	void BuildAABB();
-	void BuildPolygon();
-	void BuildEdges() {} // do nothing
 	// Calculate the distance between [minA, maxA] and [minB, maxB]
 	// The distance will be negative if the intervals overlap
 	inline float IntervalDistance( float minA, float maxA, float minB, float maxB )

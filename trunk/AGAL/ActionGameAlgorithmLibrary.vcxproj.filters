@@ -54,9 +54,6 @@
     <ClInclude Include="include\game\FrameInfo.h">
       <Filter>標頭檔\game</Filter>
     </ClInclude>
-    <ClInclude Include="include\game\HeroAction.h">
-      <Filter>標頭檔\game</Filter>
-    </ClInclude>
     <ClInclude Include="include\game\HeroInfo.h">
       <Filter>標頭檔\game</Filter>
     </ClInclude>
@@ -102,7 +99,10 @@
     <ClInclude Include="include\game\EffectData.h">
       <Filter>標頭檔\game</Filter>
     </ClInclude>
-    <ClInclude Include="include\game\LuaResuorce.h">
+    <ClInclude Include="include\game\LuaMap.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\LuaResource.h">
       <Filter>標頭檔\game</Filter>
     </ClInclude>
   </ItemGroup>
@@ -124,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="src\Lua\LuaCell.cpp">
       <Filter>原始程式檔\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\LuaMap.cpp">
+      <Filter>原始程式檔\game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,6 +1,9 @@
 #include "StdGame.h"
 #include "HeroManager.h"
 #include "global.h"
+#include "ptrManager.h"
+ptrManager<Hero*, GetBodyAABB2D> BodysCollision;
+ptrManager<Hero*, GetAttackAABB2D> AttacksCollision;
 
 HeroManager::HeroManager( void )
 {
@@ -18,11 +21,10 @@ void HeroManager::Update( float dt )
 	for ( Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end(); it++ )
 	{
 		( *it )->Update( dt );
-
-		ptrManager<Hero*, GetPolygonsFromBody>::Collisions t_colis = BodysCollision.GetCollision(*it, GetPolygonsFromAttack());
+		
+		auto t_colis = BodysCollision.GetCollision<Hero*, GetAttackAABB2D>(*it);
 		Attacks atks = (*it)->GetAttacks();
-		for(ptrManager<Hero*, GetPolygonsFromBody>::Collisions::iterator it_coli = t_colis.begin();
-			it_coli != t_colis.end(); ++it_coli)
+		for(auto it_coli = t_colis.begin();it_coli != t_colis.end(); ++it_coli)
 		{
 			std::cout << "be hit" << std::endl;
 			for( Heroes::iterator iHero = it_coli->victims.begin(); iHero != it_coli->victims.end(); iHero ++ ){

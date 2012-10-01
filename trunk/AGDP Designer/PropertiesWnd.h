@@ -11,6 +11,8 @@
 
 #pragma once
 #include "Resource.h"
+#include "Edit/CommandManager.h"
+#include "Edit/CommandLambda.h"
 
 #define MAX_ACTIONS 52
 
@@ -79,6 +81,7 @@ class CPropertiesWnd : public CDockablePane
 private:
 	int m_EditProp;// 0-None 1-Basic 2-Frame 3-Bodys 4-Attack 5-Hit 6-Catch 7-Creation 8-PictureData
 	int m_Index;
+	CommandManager m_CommandManager;
 // «Øºc
 public:
 	CPropertiesWnd();
@@ -101,7 +104,6 @@ protected:
 	CComboBox m_wndObjectCombo;
 	CPropertiesToolBar m_wndToolBar;
 	CMFCPropertyGridCtrl m_wndPropList;
-	static const CString actionMap[MAX_ACTIONS];
 public:
 	static VARIANT varFloat( float _value = 0 );
 	static VARIANT varInt( int _value = 0 );
@@ -147,6 +149,7 @@ public:
 	void InitPropList_BloodInfo();
 	void InitPropList_Creation();
 	void InitPropList_PictureData();
+	void InitPropList_Actions();
 
 	void RefreshPropList();
 	void RefreshPropList_Frame();

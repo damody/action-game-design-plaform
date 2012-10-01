@@ -689,7 +689,6 @@ void CPropertiesWnd::InitPropList_BloodInfo()
 	m_wndPropList.ExpandAll();
 }
 
-
 void CPropertiesWnd::InitPropList_Creation()
 {
 	m_EditProp = 7;
@@ -732,7 +731,6 @@ void CPropertiesWnd::InitPropList_Creation()
 	m_wndPropList.ExpandAll();
 }
 
-
 void CPropertiesWnd::RefreshPropList_Creation( int index )
 {
 	if ( m_EditProp != 7 )
@@ -767,14 +765,12 @@ void CPropertiesWnd::RefreshPropList_Creation( int index )
 	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varInt(frameInfo.m_Creations[index].amount) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue(varInt(frameInfo.m_Creations[index].HP) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 0 ) )->SetValue( varFloat(frameInfo.m_Creations[index].x) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 1 ) )->SetValue( varFloat(frameInfo.m_Creations[index].y) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 1 ) )->SetValue( varFloat(-frameInfo.m_Creations[index].y) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 0 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.x) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.y) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.z) );
 
 }
-
-
 
 void CPropertiesWnd::InitPropList_PictureData()
 {
@@ -812,48 +808,35 @@ void CPropertiesWnd::InitPropList_PictureData()
 	m_wndPropList.ExpandAll();
 }
 
+void CPropertiesWnd::InitPropList_Actions()
+{
+	m_wndPropList.RemoveAll();
+	SetPropListFont();
+	m_wndPropList.EnableHeaderCtrl( FALSE );
+	m_wndPropList.EnableDescriptionArea();
+	m_wndPropList.SetVSDotNetLook();
+	m_wndPropList.MarkModifiedProperties();
+
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "動作" ) );
+	CMFCPropertyGridProperty* pProp;
+
+	for (LuaMap::iterator it = g_Actions.begin(); it != g_Actions.end(); it++)
+	{
+		pProp = new CMFCPropertyGridProperty( CString(it->second.c_str()), varInt(it->first), _T( "動作及編碼" ) );
+		pProp->AllowEdit( FALSE );
+		pPropMain->AddSubItem( pProp );
+	}
+
+	m_wndPropList.AddProperty( pPropMain );
+	m_wndPropList.ExpandAll();
+}
+
 void CPropertiesWnd::AddNormalActionUcase( CMFCPropertyGridProperty* pProp )
 {
-	pProp->AddOption( _T( "STANDING" ) );
-	pProp->AddOption( _T( "WALKING" ) );
-	pProp->AddOption( _T( "RUNNING" ) );
-	pProp->AddOption( _T( "STOP_RUNNING" ) );
-	pProp->AddOption( _T( "HEAVY_WEAPON_WALK" ) );
-	pProp->AddOption( _T( "HEAVY_WEAPON_RUN" ) );
-	pProp->AddOption( _T( "LIGHT_WEAPON_STAND_ATTACK" ) );
-	pProp->AddOption( _T( "LIGHT_WEAPON_JUMP_ATTACK" ) );
-	pProp->AddOption( _T( "LIGHT_WEAPON_RUN_ATTACK" ) );
-	pProp->AddOption( _T( "LIGHT_WEAPON_DASH_ATTACK" ) );
-	pProp->AddOption( _T( "LIGHT_WEAPON_THROW" ) );
-	pProp->AddOption( _T( "HEAVY_WEAPON_THROW" ) );
-	pProp->AddOption( _T( "LIGHT_WEAPON_JUMP_THROW" ) );
-	pProp->AddOption( _T( "HEAVY_WEAPON_JUMP_THROW" ) );
-	pProp->AddOption( _T( "DRINK" ) );
-	pProp->AddOption( _T( "LIGHT_PUNCH" ) );
-	pProp->AddOption( _T( "LIGHT_KICK" ) );
-	pProp->AddOption( _T( "HEAVY_PUNCH" ) );
-	pProp->AddOption( _T( "HEAVY_KICK" ) );
-	pProp->AddOption( _T( "SUPER_PUNCH" ) );
-	pProp->AddOption( _T( "SUPER_KICK" ) );
-	pProp->AddOption( _T( "JUMP_PUNCH" ) );
-	pProp->AddOption( _T( "JUMP_KICK" ) );
-	pProp->AddOption( _T( "RUN_PUNCH" ) );
-	pProp->AddOption( _T( "RUN_KICK" ) );
-	pProp->AddOption( _T( "FORWARD_FLY_ROWING" ) );
-	pProp->AddOption( _T( "BACKWARD_FLY_ROWING" ) );
-	pProp->AddOption( _T( "FORWARD_ROWING" ) );
-	pProp->AddOption( _T( "BACKWARD_ROWING" ) );
-	pProp->AddOption( _T( "DEFEND" ) );
-	pProp->AddOption( _T( "DEFEND_PUNCH" ) );
-	pProp->AddOption( _T( "DEFEND_KICK" ) );
-	pProp->AddOption( _T( "CATCHING" ) );
-	pProp->AddOption( _T( "CAUGHT" ) );
-	pProp->AddOption( _T( "FALLING" ) );
-	pProp->AddOption( _T( "JUMP" ) );
-	pProp->AddOption( _T( "CROUCH" ) );
-	pProp->AddOption( _T( "INJURED" ) );
-	pProp->AddOption( _T( "LYING" ) );
-	pProp->AddOption( _T( "UNIQUE_SKILL" ) );
+	for (LuaMap::iterator it = g_Actions.begin(); it != g_Actions.end(); it++)
+	{
+		pProp->AddOption( CString( it->second.c_str() ) );
+	}
 }
 
 void CPropertiesWnd::AddNormalActionDcase( CMFCPropertyGridProperty* pProp )
@@ -953,7 +936,6 @@ CMFCPropertyGridProperty* CPropertiesWnd::GetDefaultPropList()
 	return pGroup1;
 }
 
-
 void CPropertiesWnd::RefreshPropList()
 {
 	InitPropList();
@@ -993,7 +975,7 @@ void CPropertiesWnd::RefreshPropList_Frame()
 	propRoot->GetSubItem( 1 )->SetValue( varInt( g_FrameIndex ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( CString( frameInfo.m_NextFrameName.c_str() ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varInt( frameInfo.m_NextFrameIndex ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue( CString( actionMap[frameInfo.m_HeroAction] ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue( CString( g_Actions[frameInfo.m_HeroAction].c_str() ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( varInt( frameInfo.m_Wait ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 6 ) )->SetValue( varBool( frameInfo.m_ClearKeyQueue ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 0 ) )->SetValue( varInt( frameInfo.m_PictureID ) );
@@ -1015,6 +997,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 {
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
 	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	CommandLambda* command = new CommandLambda();
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->IsEdited() )
 	{
@@ -1026,7 +1009,10 @@ void CPropertiesWnd::UpdatePropList_Frame()
 
 		if ( g_ActiveFramesMap->find( FrameName ) != g_ActiveFramesMap->end() )
 		{
-			frameInfo->m_NextFrameName = FrameName;
+			std::string OldFrameName = frameInfo->m_NextFrameName;
+			command->AddRedoFunction([=](){frameInfo->m_NextFrameName = FrameName;});
+			command->AddUndoFunction([=](){frameInfo->m_NextFrameName = OldFrameName;});
+			//frameInfo->m_NextFrameName = FrameName;
 		}
 		else
 		{
@@ -1046,7 +1032,10 @@ void CPropertiesWnd::UpdatePropList_Frame()
 
 		if ( i < ( *g_ActiveFramesMap )[frameInfo->m_NextFrameName].size() && i > -1 )
 		{
-			frameInfo->m_NextFrameIndex = i;
+			int OldFrameIndex = frameInfo->m_NextFrameIndex;
+			command->AddRedoFunction([=](){frameInfo->m_NextFrameIndex = i;});
+			command->AddUndoFunction([=](){frameInfo->m_NextFrameIndex = OldFrameIndex;});
+			//frameInfo->m_NextFrameIndex = i;
 		}
 		else
 		{
@@ -1061,9 +1050,22 @@ void CPropertiesWnd::UpdatePropList_Frame()
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->IsEdited() )
 	{
 		char buff[100];
-		sprintf( buff, "Undo" );
-		CString str( buff );
-		AfxMessageBox( str );
+		COleVariant v = propRoot->GetSubItem( 4 )->GetValue();
+		v.ChangeType( VT_BSTR, NULL );
+		ConvStr::WcharToChar( CString( v ).GetBuffer( 0 ), buff );
+		std::string action( buff );
+		int key = g_Actions.FindKey(action);
+		if (key != -1)
+		{
+			int OldHeroAction = frameInfo->m_HeroAction;
+			command->AddRedoFunction([=](){frameInfo->m_HeroAction = key;});
+			command->AddUndoFunction([=](){frameInfo->m_HeroAction = OldHeroAction;});
+		}else{
+			AfxMessageBox(_T("Action does NOT exist"));
+		}
+		
+
+
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->IsEdited() )
@@ -1071,20 +1073,30 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		COleVariant v = propRoot->GetSubItem( 5 )->GetValue();
 		v.ChangeType( VT_INT, NULL );
 		int i = v.intVal;
-		frameInfo->m_Wait = i;
+
+		int OldWait = frameInfo->m_Wait;
+		command->AddRedoFunction([=](){frameInfo->m_Wait = i;});
+		command->AddUndoFunction([=](){frameInfo->m_Wait = OldWait;});
+
+		//frameInfo->m_Wait = i;
 	}
 
 	if ( propRoot->GetSubItem( 6 )->OnEndEdit() )
 	{
 		COleVariant v = propRoot->GetSubItem( 6 )->GetValue();
 
+		bool OldClearKeyQueue = frameInfo->m_ClearKeyQueue;
 		if ( v.boolVal )
 		{
-			frameInfo->m_ClearKeyQueue = true;
+			command->AddRedoFunction([=](){frameInfo->m_ClearKeyQueue = true;});
+			command->AddUndoFunction([=](){frameInfo->m_ClearKeyQueue = OldClearKeyQueue;});
+			//frameInfo->m_ClearKeyQueue = true;
 		}
 		else
 		{
-			frameInfo->m_ClearKeyQueue = false;
+			command->AddRedoFunction([=](){frameInfo->m_ClearKeyQueue = false;});
+			command->AddUndoFunction([=](){frameInfo->m_ClearKeyQueue = OldClearKeyQueue;});
+			//frameInfo->m_ClearKeyQueue = false;
 		}
 	}
 
@@ -1096,12 +1108,31 @@ void CPropertiesWnd::UpdatePropList_Frame()
 
 		if ( i < g_HeroInfo->m_PictureDatas.size() && i > -1 )
 		{
-			frameInfo->m_PictureID = i;
+			int OldPictureID = frameInfo->m_PictureID;
+			int OldPictureX = frameInfo->m_PictureX;
+			int OldPictureY = frameInfo->m_PictureY;
+			command->AddRedoFunction([=](){
+					frameInfo->m_PictureID = i;
+					frameInfo->m_PictureX  = 1;
+					frameInfo->m_PictureY  = 1;
+					( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varInt( 1 ) );
+					( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varInt( 1 ) );
+					( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();
+			});
+			command->AddUndoFunction([=](){
+				frameInfo->m_PictureID = OldPictureID;
+				frameInfo->m_PictureX  = OldPictureX;
+				frameInfo->m_PictureY  = OldPictureY;
+				( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varInt( OldPictureX ) );
+				( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varInt( OldPictureY ) );
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();
+			});
+			/*frameInfo->m_PictureID = i;
 			frameInfo->m_PictureX  = 1;
 			frameInfo->m_PictureY  = 1;
 			( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varInt( 1 ) );
 			( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varInt( 1 ) );
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();*/
 		}
 		else
 		{
@@ -1121,8 +1152,17 @@ void CPropertiesWnd::UpdatePropList_Frame()
 
 		if ( i <= g_HeroInfo->m_PictureDatas[frameInfo->m_PictureID].m_Row && i > 0 )
 		{
-			frameInfo->m_PictureX  = i;
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();
+			int OldPictureX = frameInfo->m_PictureX;
+			command->AddRedoFunction([=](){
+				frameInfo->m_PictureX  = i;
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();
+			});
+			command->AddUndoFunction([=](){
+				frameInfo->m_PictureX  = OldPictureX;
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();
+			});
+			/*frameInfo->m_PictureX  = i;
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();*/
 		}
 		else
 		{
@@ -1142,8 +1182,17 @@ void CPropertiesWnd::UpdatePropList_Frame()
 
 		if ( i <= g_HeroInfo->m_PictureDatas[frameInfo->m_PictureID].m_Column && i > 0 )
 		{
-			frameInfo->m_PictureY  = i;
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();
+			int OldPictureY = frameInfo->m_PictureY;
+			command->AddRedoFunction([=](){
+				frameInfo->m_PictureY  = i;
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();
+			});
+			command->AddUndoFunction([=](){
+				frameInfo->m_PictureY  = OldPictureY;
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();
+			});
+			/*frameInfo->m_PictureY  = i;
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();*/
 		}
 		else
 		{
@@ -1160,8 +1209,17 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		COleVariant v = propRoot->GetSubItem( 8 )->GetSubItem( 0 )->GetValue();
 		v.ChangeType( VT_R4, NULL );
 		float i = v.fltVal;
-		frameInfo->m_CenterX = i;
-		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCross( frameInfo->m_CenterX, frameInfo->m_CenterY );
+		float OldCenterX = frameInfo->m_CenterX;
+		command->AddRedoFunction([=](){
+			frameInfo->m_CenterX = i;
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_CenterX = OldCenterX;
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
+		});
+		/*frameInfo->m_CenterX = i;
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );*/
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 8 )->GetSubItem( 1 ) )->IsEdited() )
@@ -1169,8 +1227,17 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		COleVariant v = propRoot->GetSubItem( 8 )->GetSubItem( 1 )->GetValue();
 		v.ChangeType( VT_R4, NULL );
 		float i = v.fltVal;
-		frameInfo->m_CenterY = i;
-		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCross( frameInfo->m_CenterX, frameInfo->m_CenterY );
+		float OldCenterY = frameInfo->m_CenterY;
+		command->AddRedoFunction([=](){
+			frameInfo->m_CenterY = i;
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_CenterY = OldCenterY;
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );
+		});
+		/*frameInfo->m_CenterY = i;
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCenter( frameInfo->m_CenterX, frameInfo->m_CenterY );*/
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 0 ) )->IsEdited() )
@@ -1178,13 +1245,18 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		COleVariant v = propRoot->GetSubItem( 9 )->GetSubItem( 0 )->GetValue();
 		v.ChangeType( VT_BOOL, NULL );
 
+		bool OldJumpRule = frameInfo->m_Consume.m_JumpRule;
 		if ( v.boolVal )
 		{
-			frameInfo->m_Consume.m_JumpRule = true;
+			command->AddRedoFunction([=](){frameInfo->m_ClearKeyQueue = true;});
+			command->AddUndoFunction([=](){frameInfo->m_ClearKeyQueue = OldJumpRule;});
+			//frameInfo->m_Consume.m_JumpRule = true;
 		}
 		else
 		{
-			frameInfo->m_Consume.m_JumpRule = false;
+			command->AddRedoFunction([=](){frameInfo->m_Consume.m_JumpRule = false;});
+			command->AddUndoFunction([=](){frameInfo->m_Consume.m_JumpRule = OldJumpRule;});
+			//frameInfo->m_Consume.m_JumpRule = false;
 		}
 	}
 
@@ -1193,7 +1265,10 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		COleVariant v = propRoot->GetSubItem( 9 )->GetSubItem( 1 )->GetValue();
 		v.ChangeType( VT_INT, NULL );
 		int i = v.intVal;
-		frameInfo->m_Consume.m_HP = i;
+		int OldHP = frameInfo->m_Consume.m_HP;
+		command->AddRedoFunction([=](){frameInfo->m_Consume.m_HP = i;});
+		command->AddUndoFunction([=](){frameInfo->m_Consume.m_HP = OldHP;});
+		//frameInfo->m_Consume.m_HP = i;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 2 ) )->IsEdited() )
@@ -1201,7 +1276,10 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		COleVariant v = propRoot->GetSubItem( 9 )->GetSubItem( 2 )->GetValue();
 		v.ChangeType( VT_INT, NULL );
 		int i = v.intVal;
-		frameInfo->m_Consume.m_MP = i;
+		int OldMP = frameInfo->m_Consume.m_MP;
+		command->AddRedoFunction([=](){frameInfo->m_Consume.m_MP = i;});
+		command->AddUndoFunction([=](){frameInfo->m_Consume.m_MP = OldMP;});
+		//frameInfo->m_Consume.m_MP = i;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 3 ) )->IsEdited() )
@@ -1214,7 +1292,10 @@ void CPropertiesWnd::UpdatePropList_Frame()
 
 		if ( g_ActiveFramesMap->find( FrameName ) != g_ActiveFramesMap->end() )
 		{
-			frameInfo->m_Consume.m_NotEnoughFrameName = FrameName;
+			std::string OldFrameName = frameInfo->m_Consume.m_NotEnoughFrameName;
+			command->AddRedoFunction([=](){frameInfo->m_Consume.m_NotEnoughFrameName = FrameName;});
+			command->AddUndoFunction([=](){frameInfo->m_Consume.m_NotEnoughFrameName = OldFrameName;});
+			//frameInfo->m_Consume.m_NotEnoughFrameName = FrameName;
 		}
 		else
 		{
@@ -1234,7 +1315,10 @@ void CPropertiesWnd::UpdatePropList_Frame()
 
 		if ( i < ( *g_ActiveFramesMap )[frameInfo->m_Consume.m_NotEnoughFrameName].size() && i > -1 )
 		{
-			frameInfo->m_Consume.m_NotEnoughFrame = i;
+			int OldFrameIndex = frameInfo->m_Consume.m_NotEnoughFrame;
+			command->AddRedoFunction([=](){frameInfo->m_Consume.m_NotEnoughFrame = i;});
+			command->AddUndoFunction([=](){frameInfo->m_Consume.m_NotEnoughFrame = OldFrameIndex;});
+			//frameInfo->m_Consume.m_NotEnoughFrame = i;
 		}
 		else
 		{
@@ -1251,7 +1335,10 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		COleVariant v = propRoot->GetSubItem( 10 )->GetSubItem( 0 )->GetValue();
 		v.ChangeType( VT_R4, NULL );
 		float i = v.fltVal;
-		frameInfo->m_DVX = i;
+		float OldDVX = frameInfo->m_DVX;
+		command->AddRedoFunction([=](){frameInfo->m_DVX = i;});
+		command->AddUndoFunction([=](){frameInfo->m_DVX = OldDVX;});
+		//frameInfo->m_DVX = i;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 1 ) )->IsEdited() )
@@ -1259,7 +1346,10 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		COleVariant v = propRoot->GetSubItem( 10 )->GetSubItem( 1 )->GetValue();
 		v.ChangeType( VT_R4, NULL );
 		float i = v.fltVal;
-		frameInfo->m_DVY = i;
+		float OldDVY = frameInfo->m_DVY;
+		command->AddRedoFunction([=](){frameInfo->m_DVY = i;});
+		command->AddUndoFunction([=](){frameInfo->m_DVY = OldDVY;});
+		//frameInfo->m_DVY = i;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 9 )->GetSubItem( 2 ) )->IsEdited() )
@@ -1267,8 +1357,13 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		COleVariant v = propRoot->GetSubItem( 10 )->GetSubItem( 2 )->GetValue();
 		v.ChangeType( VT_R4, NULL );
 		float i = v.fltVal;
-		frameInfo->m_DVZ = i;
+		float OldDVZ = frameInfo->m_DVZ;
+		command->AddRedoFunction([=](){frameInfo->m_DVZ = i;});
+		command->AddUndoFunction([=](){frameInfo->m_DVZ = OldDVZ;});
+		//frameInfo->m_DVZ = i;
 	}
+
+	m_CommandManager.CallCommand(command);
 }
 
 void CPropertiesWnd::RefreshPropList_Body( int index )
@@ -1314,33 +1409,82 @@ void CPropertiesWnd::UpdateBody()
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
 	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
 	int n = propRoot->GetSubItem( 0 )->GetSubItemsCount();
+	CommandLambda* command = new CommandLambda();
 
 	for ( int i = 0 ; i < n ; i++ )
 	{
 		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->IsEdited() )
 		{
-			frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x( propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue().fltVal);
+			COleVariant v = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue();
+			v.ChangeType( VT_R4, NULL );
+			float var = v.fltVal;
+			float OldX = frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x();
+			command->AddRedoFunction([=](){
+				frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x( var);
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint( i );
+			});
+			command->AddUndoFunction([=](){
+				frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x( OldX);
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint( i );
+			});
+
+			/*frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x( propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue().fltVal);
 			//Refresh
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint( i );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint( i );*/
 		}
 
 		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->IsEdited() )
 		{
-			frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y( -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal);
+			COleVariant v = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue();
+			v.ChangeType( VT_R4, NULL );
+			float var = v.fltVal;
+			float OldY = frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y();
+			command->AddRedoFunction([=](){
+				frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y( -var);
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint( i );
+			});
+			command->AddUndoFunction([=](){
+				frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y( OldY);
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint( i );
+			});
+			/*frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y( -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal);
 			//Refresh
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint( i );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint( i );*/
 		}
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->IsEdited() )
 	{
-		frameInfo->m_Bodys[m_Index].m_ZWidth = propRoot->GetSubItem( 1 )->GetValue().fltVal;
+		COleVariant v = propRoot->GetSubItem( 1 )->GetValue();
+		v.ChangeType( VT_R4, NULL );
+		float var = v.fltVal;
+		float OldZWidth = frameInfo->m_Bodys[m_Index].m_ZWidth;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Bodys[m_Index].m_ZWidth = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Bodys[m_Index].m_ZWidth = OldZWidth;
+		});
+		//frameInfo->m_Bodys[m_Index].m_ZWidth = propRoot->GetSubItem( 1 )->GetValue().fltVal;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->IsEdited() )
 	{
-		frameInfo->m_Bodys[m_Index].m_Kind = propRoot->GetSubItem( 2 )->GetValue().intVal;
+		COleVariant v = propRoot->GetSubItem( 2 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+
+		int OldKind = frameInfo->m_Bodys[m_Index].m_Kind;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Bodys[m_Index].m_Kind = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Bodys[m_Index].m_Kind = OldKind;
+		});
+		//frameInfo->m_Bodys[m_Index].m_Kind = propRoot->GetSubItem( 2 )->GetValue().intVal;
 	}
+
+	m_CommandManager.CallCommand(command);
 }
 
 void CPropertiesWnd::RefreshPropList_Attack( int index )
@@ -1396,83 +1540,244 @@ void CPropertiesWnd::UpdateAttack()
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
 	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
 	int n = propRoot->GetSubItem( 0 )->GetSubItemsCount();
+	CommandLambda* command = new CommandLambda();
 
 	for ( int i = 0 ; i < n ; i++ )
 	{
 		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->IsEdited() )
 		{
-			frameInfo->m_Attacks[m_Index].m_Area.Points()[i].x( propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue().fltVal);
+			COleVariant v = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue();
+			v.ChangeType( VT_R4, NULL );
+			float var = v.fltVal;
+			float OldX = frameInfo->m_Attacks[m_Index].m_Area.Points()[i].x();
+			command->AddRedoFunction([=](){
+				frameInfo->m_Attacks[m_Index].m_Area.Points()[i].x( var);
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint( i );
+			});
+			command->AddUndoFunction([=](){
+				frameInfo->m_Attacks[m_Index].m_Area.Points()[i].x( OldX);
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint( i );
+			});
+
+			/*frameInfo->m_Attacks[m_Index].m_Area.Points()[i].x( propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue().fltVal);
 			//Refresh
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint( i );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint( i );*/
 		}
 
 		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->IsEdited() )
 		{
-			frameInfo->m_Attacks[m_Index].m_Area.Points()[i].y( -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal);
+			COleVariant v = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue();
+			v.ChangeType( VT_R4, NULL );
+			float var = v.fltVal;
+			float OldY = frameInfo->m_Attacks[m_Index].m_Area.Points()[i].y();
+			command->AddRedoFunction([=](){
+				frameInfo->m_Attacks[m_Index].m_Area.Points()[i].y( -var);
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint( i );
+			});
+			command->AddUndoFunction([=](){
+				frameInfo->m_Attacks[m_Index].m_Area.Points()[i].y( OldY);
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint( i );
+			});
+
+			/*frameInfo->m_Attacks[m_Index].m_Area.Points()[i].y( -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal);
 			//Refresh
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint( i );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint( i );*/
 		}
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_Kind = propRoot->GetSubItem( 1 )->GetValue().intVal;
+		COleVariant v = propRoot->GetSubItem( 1 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+		int OldKind = frameInfo->m_Attacks[m_Index].m_Kind;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_Kind = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_Kind = OldKind;
+		});
+
+		//frameInfo->m_Attacks[m_Index].m_Kind = propRoot->GetSubItem( 1 )->GetValue().intVal;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_Effect = propRoot->GetSubItem( 2 )->GetValue().intVal;
+		COleVariant v = propRoot->GetSubItem( 2 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+		int OldEffect = frameInfo->m_Attacks[m_Index].m_Effect;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_Effect = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_Effect = OldEffect;
+		});
+
+		//frameInfo->m_Attacks[m_Index].m_Effect = propRoot->GetSubItem( 2 )->GetValue().intVal;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_ZWidth = propRoot->GetSubItem( 3 )->GetValue().fltVal;
+		COleVariant v = propRoot->GetSubItem( 3 )->GetValue();
+		v.ChangeType( VT_R4, NULL );
+		float var = v.fltVal;
+		float OldZWidth = frameInfo->m_Attacks[m_Index].m_ZWidth;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_ZWidth = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_ZWidth = OldZWidth;
+		});
+
+		//frameInfo->m_Attacks[m_Index].m_ZWidth = propRoot->GetSubItem( 3 )->GetValue().fltVal;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_Strength = propRoot->GetSubItem( 4 )->GetValue().intVal;
+		COleVariant v = propRoot->GetSubItem( 4 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+		int OldStrength = frameInfo->m_Attacks[m_Index].m_Strength;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_Strength = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_Strength = OldStrength;
+		});
+
+		//frameInfo->m_Attacks[m_Index].m_Strength = propRoot->GetSubItem( 4 )->GetValue().intVal;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_Injury = propRoot->GetSubItem( 5 )->GetValue().intVal;
+		COleVariant v = propRoot->GetSubItem( 5 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+		int OldInjury = frameInfo->m_Attacks[m_Index].m_Injury;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_Injury = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_Injury = OldInjury;
+		});
+
+		//frameInfo->m_Attacks[m_Index].m_Injury = propRoot->GetSubItem( 5 )->GetValue().intVal;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 6 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_Fall = propRoot->GetSubItem( 6 )->GetValue().intVal;
+		COleVariant v = propRoot->GetSubItem( 6 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+		int OldFall = frameInfo->m_Attacks[m_Index].m_Fall;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_Fall = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_Fall = OldFall;
+		});
+
+		//frameInfo->m_Attacks[m_Index].m_Fall = propRoot->GetSubItem( 6 )->GetValue().intVal;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 7 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_BreakDefend = propRoot->GetSubItem( 7 )->GetValue().intVal;
+		COleVariant v = propRoot->GetSubItem( 7 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+		int OldBreakDefend = frameInfo->m_Attacks[m_Index].m_BreakDefend;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_BreakDefend = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_BreakDefend = OldBreakDefend;
+		});
+
+		//frameInfo->m_Attacks[m_Index].m_BreakDefend = propRoot->GetSubItem( 7 )->GetValue().intVal;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 8 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_AttackRest = propRoot->GetSubItem( 8 )->GetValue().intVal;
+		COleVariant v = propRoot->GetSubItem( 8 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+		int OldAttackRest = frameInfo->m_Attacks[m_Index].m_AttackRest;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_AttackRest = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_AttackRest = OldAttackRest;
+		});
+
+		//frameInfo->m_Attacks[m_Index].m_AttackRest = propRoot->GetSubItem( 8 )->GetValue().intVal;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 9 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_ReAttackRest = propRoot->GetSubItem( 9 )->GetValue().intVal;
+		COleVariant v = propRoot->GetSubItem( 9 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+		int OldReAttackRest = frameInfo->m_Attacks[m_Index].m_ReAttackRest;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_ReAttackRest = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_ReAttackRest = OldReAttackRest;
+		});
+
+		//frameInfo->m_Attacks[m_Index].m_ReAttackRest = propRoot->GetSubItem( 9 )->GetValue().intVal;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 0 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_DVX = propRoot->GetSubItem( 10 )->GetSubItem( 0 )->GetValue().fltVal;
+		COleVariant v = propRoot->GetSubItem( 10 )->GetSubItem( 0 )->GetValue();
+		v.ChangeType( VT_R4, NULL );
+		float var = v.fltVal;
+		float OldDVX = frameInfo->m_Attacks[m_Index].m_DVX;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_DVX = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_DVX = OldDVX;
+		});
+
+		//frameInfo->m_Attacks[m_Index].m_DVX = propRoot->GetSubItem( 10 )->GetSubItem( 0 )->GetValue().fltVal;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 1 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_DVY = propRoot->GetSubItem( 10 )->GetSubItem( 1 )->GetValue().fltVal;
+		COleVariant v = propRoot->GetSubItem( 10 )->GetSubItem( 1 )->GetValue();
+		v.ChangeType( VT_R4, NULL );
+		float var = v.fltVal;
+		float OldDVY = frameInfo->m_Attacks[m_Index].m_DVY;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_DVY = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_DVY = OldDVY;
+		});
+
+		//frameInfo->m_Attacks[m_Index].m_DVY = propRoot->GetSubItem( 10 )->GetSubItem( 1 )->GetValue().fltVal;
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 2 ) )->IsEdited() )
 	{
-		frameInfo->m_Attacks[m_Index].m_DVZ = propRoot->GetSubItem( 10 )->GetSubItem( 2 )->GetValue().fltVal;
+		COleVariant v = propRoot->GetSubItem( 10 )->GetSubItem( 2 )->GetValue();
+		v.ChangeType( VT_R4, NULL );
+		float var = v.fltVal;
+		float OldDVZ = frameInfo->m_Attacks[m_Index].m_DVZ;
+		command->AddRedoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_DVZ = var;
+		});
+		command->AddUndoFunction([=](){
+			frameInfo->m_Attacks[m_Index].m_DVZ = OldDVZ;
+		});
+
+		//frameInfo->m_Attacks[m_Index].m_DVZ = propRoot->GetSubItem( 10 )->GetSubItem( 2 )->GetValue().fltVal;
 	}
+
+	m_CommandManager.CallCommand(command);
 }
 
 void CPropertiesWnd::RefreshPropList_HitData( int index )
@@ -1561,23 +1866,52 @@ void CPropertiesWnd::UpdateCatch()
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
 	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
 	int n = propRoot->GetSubItem( 0 )->GetSubItemsCount();
+	CommandLambda* command = new CommandLambda();
 
 	for ( int i = 0 ; i < n ; i++ )
 	{
 		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->IsEdited() )
 		{
-			frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x( propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue().fltVal);
+			COleVariant v = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue();
+			v.ChangeType( VT_R4, NULL );
+			float var = v.fltVal;
+			float OldX = frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x();
+			command->AddRedoFunction([=](){
+				frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x( var);
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );
+			});
+			command->AddUndoFunction([=](){
+				frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x( OldX);
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );
+			});
+
+			/*frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x( propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue().fltVal);
 			//Refresh
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );*/
 		}
 
 		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->IsEdited() )
 		{
-			frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y( -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal);
+			COleVariant v = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue();
+			v.ChangeType( VT_R4, NULL );
+			float var = v.fltVal;
+			float OldY = frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y();
+			command->AddRedoFunction([=](){
+				frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y( -var);
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );
+			});
+			command->AddUndoFunction([=](){
+				frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y( OldY);
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );
+			});
+
+			/*frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y( -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal);
 			//Refresh
-			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );*/
 		}
 	}
+
+	m_CommandManager.CallCommand(command);
 }
 
 void CPropertiesWnd::RefreshPropList_BloodInfo( int index )
@@ -1646,85 +1980,80 @@ void CPropertiesWnd::RefreshPropList_PictureData( int index )
 void CPropertiesWnd::UpdatePictureData()
 {
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+	CommandLambda* command = new CommandLambda();
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 )->GetSubItem( 0 ) )->IsEdited() )
 	{
-		g_HeroInfo->m_PictureDatas[m_Index].m_Row = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
+		COleVariant v = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+		int OldRow = g_HeroInfo->m_PictureDatas[m_Index].m_Row;
+		command->AddRedoFunction([=](){
+			g_HeroInfo->m_PictureDatas[m_Index].m_Row = var;
+			( ( CMainFrame* )( this->GetParentFrame() ) )->UpdatePicture( m_Index );
+		});
+		command->AddUndoFunction([=](){
+			g_HeroInfo->m_PictureDatas[m_Index].m_Row = OldRow;
+			( ( CMainFrame* )( this->GetParentFrame() ) )->UpdatePicture( m_Index );
+		});
+
+		/*g_HeroInfo->m_PictureDatas[m_Index].m_Row = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
 		//Refresh
-		( ( CMainFrame* )( this->GetParentFrame() ) )->UpdatePicture( m_Index );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->UpdatePicture( m_Index );*/
 	}
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 )->GetSubItem( 1 ) )->IsEdited() )
 	{
-		g_HeroInfo->m_PictureDatas[m_Index].m_Column = propRoot->GetSubItem( 2 )->GetSubItem( 1 )->GetValue().intVal;
+		COleVariant v = propRoot->GetSubItem( 2 )->GetSubItem( 1 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+		int OldColumn = g_HeroInfo->m_PictureDatas[m_Index].m_Column;
+		command->AddRedoFunction([=](){
+			g_HeroInfo->m_PictureDatas[m_Index].m_Column = var;
+			( ( CMainFrame* )( this->GetParentFrame() ) )->UpdatePicture( m_Index );
+		});
+		command->AddUndoFunction([=](){
+			g_HeroInfo->m_PictureDatas[m_Index].m_Column = OldColumn;
+			( ( CMainFrame* )( this->GetParentFrame() ) )->UpdatePicture( m_Index );
+		});
+
+		/*g_HeroInfo->m_PictureDatas[m_Index].m_Column = propRoot->GetSubItem( 2 )->GetSubItem( 1 )->GetValue().intVal;
 		//Refresh
-		( ( CMainFrame* )( this->GetParentFrame() ) )->UpdatePicture( m_Index );
+		( ( CMainFrame* )( this->GetParentFrame() ) )->UpdatePicture( m_Index );*/
 	}
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 3 )->GetSubItem( 0 ) )->IsEdited() )
 	{
-		g_HeroInfo->m_PictureDatas[m_Index].m_Width = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
+		COleVariant v = propRoot->GetSubItem( 3 )->GetSubItem( 0 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+		int OldWidth = g_HeroInfo->m_PictureDatas[m_Index].m_Width;
+		command->AddRedoFunction([=](){
+			g_HeroInfo->m_PictureDatas[m_Index].m_Width = var;
+		});
+		command->AddUndoFunction([=](){
+			g_HeroInfo->m_PictureDatas[m_Index].m_Width = OldWidth;
+		});
+
+		//g_HeroInfo->m_PictureDatas[m_Index].m_Width = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
 	}
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 3 )->GetSubItem( 1 ) )->IsEdited() )
 	{
-		g_HeroInfo->m_PictureDatas[m_Index].m_Height = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
-	}
-}
+		COleVariant v = propRoot->GetSubItem( 3 )->GetSubItem( 1 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+		int OldHeight = g_HeroInfo->m_PictureDatas[m_Index].m_Height;
+		command->AddRedoFunction([=](){
+			g_HeroInfo->m_PictureDatas[m_Index].m_Height = var;
+		});
+		command->AddUndoFunction([=](){
+			g_HeroInfo->m_PictureDatas[m_Index].m_Height = OldHeight;
+		});
 
-const CString CPropertiesWnd::actionMap[MAX_ACTIONS] =
-{
-	CString( "STANDING" ),
-	CString( "WALKING" ),
-	CString( "RUNNING" ),
-	CString( "STOP_RUNNING" ),
-	CString( "HEAVY_WEAPON_WALK" ),
-	CString( "HEAVY_WEAPON_RUN" ),
-	CString( "LIGHT_WEAPON_STAND_ATTACK" ),
-	CString( "LIGHT_WEAPON_JUMP_ATTACK" ),
-	CString( "LIGHT_WEAPON_RUN_ATTACK" ),
-	CString( "LIGHT_WEAPON_DASH_ATTACK" ),
-	CString( "LIGHT_WEAPON_THROW" ),
-	CString( "HEAVY_WEAPON_THROW" ),
-	CString( "LIGHT_WEAPON_JUMP_THROW" ),
-	CString( "HEAVY_WEAPON_JUMP_THROW" ),
-	CString( "DRINK" ),
-	CString( "BEFORE_ATTACK" ),
-	CString( "ATTACKING" ),
-	CString( "AFTER_ATTACK" ),
-	CString( "BEFORE_SUPER_ATTACK" ),
-	CString( "SUPER_ATTACKING" ),
-	CString( "AFTER_SUPER_ATTACK" ),
-	CString( "BEFORE_JUMP_ATTACK" ),
-	CString( "JUMP_ATTACKING" ),
-	CString( "AFTER_JUMP_ATTACK" ),
-	CString( "BEFORE_RUN_ATTACK" ),
-	CString( "RUN_ATTACKING" ),
-	CString( "AFTER_RUN_ATTACK" ),
-	CString( "BEFORE_DASH_ATTACK" ),
-	CString( "DASH_ATTACKING" ),
-	CString( "AFTER_DASH_ATTACK" ),
-	CString( "FLIP" ),
-	CString( "ROLLING" ),
-	CString( "DEFEND" ),
-	CString( "DEFEND_PUNCH" ),
-	CString( "DEFEND_KICK" ),
-	CString( "CATCHING" ),
-	CString( "CAUGHT" ),
-	CString( "FALLING" ),
-	CString( "JUMP" ),
-	CString( "DASH" ),
-	CString( "CROUCH" ),
-	CString( "INJURED" ),
-	CString( "FORWARD_LYING" ),
-	CString( "BACKWARD_LYING" ),
-	CString( "IN_THE_AIR" ),
-	CString( "BEFORE_SKILL" ),
-	CString( "AFTER_SKILL" ),
-	CString( "AIR_SKILL" ),
-	CString( "X_AXIS_SKILL" ),
-	CString( "Z_AXIS_SKILL" ),
-	CString( "GROUND_SKILL" ),
-	CString( "UNIQUE_SKILL" ),
-};
+		//g_HeroInfo->m_PictureDatas[m_Index].m_Height = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
+	}
+
+	m_CommandManager.CallCommand(command);
+}
 
 VARIANT CPropertiesWnd::varFloat( float _value )
 {
