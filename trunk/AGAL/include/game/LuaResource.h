@@ -111,6 +111,51 @@ std::vector<std::string> LoadMusic( std::string musicType )
 	return data;
 
 }
+
+bool loadKeyMap(KeyMap& rmap){
+	static LuaCell_Sptr luaResource, luaKeyMap;
+	int idx;// luaResource's array index
+	char uku,ukd,dku,dkd,lku,lkd,rku,rkd;	//KeyMap «Øºc°Ñ¼Æ
+
+	// avoid load luaResource again
+	if ( luaResource.get() == NULL )
+	{
+		luaResource = LuaCell_Sptr( new LuaCell );
+		luaKeyMap = LuaCell_Sptr( new LuaCell );
+		if ( !luaResource->InputLuaFile( "Script/luaResource.lua" ) ||
+			!luaResource->HasValue("keymap") ||
+			!luaKeyMap->InputLuaFile(luaResource->GetLua<const char*>("keymap"))
+			)
+		{
+			return false;//inputLua fail. So return empty vector.
+		}
+	}
+
+	// Load Lua data
+	ukd = *luaKeyMap->GetLua<const char*>( "keymap/UP/1");
+	uku = *luaKeyMap->GetLua<const char*>( "keymap/UP/2");
+	dkd = *luaKeyMap->GetLua<const char*>( "keymap/DOWN/1");
+	dku = *luaKeyMap->GetLua<const char*>( "keymap/DOWN/2");
+	lkd = *luaKeyMap->GetLua<const char*>( "keymap/LEFT/1");
+	lku = *luaKeyMap->GetLua<const char*>( "keymap/LEFT/2");
+	rkd = *luaKeyMap->GetLua<const char*>( "keymap/RIGHT/1");
+	rku = *luaKeyMap->GetLua<const char*>( "keymap/RIGHT/2");
+	rmap = KeyMap(ukd,uku,dkd,dku,lkd,lku,rkd,rku);
+	idx = 1;// Lua array begin is 1
+	while ( luaKeyMap->HasValue( "keymap/SKey/%d", idx ) )
+	{
+		char tUp,tDn;
+		std::string tsn;
+		tDn = *luaKeyMap->GetLua<const char*>( "keymap/SKey/%d/1", idx );
+		tUp = *luaKeyMap->GetLua<const char*>( "keymap/SKey/%d/2", idx );
+		tsn = luaKeyMap->GetLua<const char*>( "keymap/SKey/%d/3", idx );
+		std::wstring twn(tsn.begin(), tsn.end());
+		rmap.pushKeyMap(tDn,tUp,twn);
+		idx++;
+	}
+	return true;
+}
+
 }
 
 

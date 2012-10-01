@@ -873,6 +873,8 @@ void InitDirect3DApp::LoadData()
 		WAVpath.pop_back();
 	}
 	
+	//KeyMap
+	LuaResource::loadKeyMap(g_KeyMap);
 
 	//*test
 		g_BackgroundManager.SetCurrentBackground( Backgrounds.back()->m_Name );//set last element be current background

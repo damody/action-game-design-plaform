@@ -1,5 +1,6 @@
 #pragma once
 #include <boost/bind.hpp>
+#include <boost/dynamic_bitset.hpp>
 #include <deque>
 #include "DX11\Vertex.h"
 #include "DX11\TextureManager.h"
@@ -54,8 +55,9 @@ private:
 	FrameInfo*	m_FrameInfo;
 	float		m_Angle;
 	bool		m_FaceSide;		//true 右, false 左
-	int		d_run;			//判定跑步用，右正左負
-	std::bitset<4>	d_key;			//判斷非方向按鍵作用與否，1表示已作用，0則否，0:atk1, 1:atk2, 2:j, 3:d
+	int			d_run;			//判定跑步用，右正左負
+	//判斷非方向按鍵作用與否，1表示已作用，0則否，0:atk1, 1:atk2, 2:j, 3:d
+	boost::dynamic_bitset<byte> d_key;
 	bool		d_Ground;		//判斷是否在地面上
 	int		m_Team;			//0為不分
 	int		m_MaxRecoverHP;		//最大恢復血量
