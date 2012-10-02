@@ -40,17 +40,19 @@ std::vector< boost::shared_ptr<T> > LoadLua( std::wstring objectType )
 	}
 	// Load Lua data
 	idx = 1;// Lua array begin is 1
-	while ( luaResource->HasValue( "%s/%d", std::string(objectType.begin(), objectType.end()).c_str(), idx ) )
+	std::string sot(objectType.begin(), objectType.end());
+	while ( luaResource->HasValue( "%s/%d", sot.c_str(), idx ) )
 	{
 		// initialize ptr
 		luaTemp = LuaCell_Sptr( new LuaCell );
 		dataTemp = boost::shared_ptr<T>( new T );
 		// get lua path
-		const char * tcs = luaResource->GetLua<const char*>( "%s/%d", std::string(objectType.begin(), objectType.end()).c_str(), idx );
+		const char* tcs = luaResource->GetLua<const char*>( "%s/%d", sot.c_str(), idx );
 		luaPath = std::wstring(tcs, tcs + strlen(tcs));
 		// set lua file
 		if( !luaTemp->InputLuaFile( luaPath.c_str() ) )
 		{
+			wprintf(L"§ä¤£¨ì %s",luaPath.c_str());
 			std::vector< boost::shared_ptr<T> > t;
 			return t;
 		}

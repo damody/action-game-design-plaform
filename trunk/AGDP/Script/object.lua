@@ -1,21 +1,21 @@
-count = -1;
+ï»¿count = -1;
 function GetEnum()
 	count = count + 1;
 	return count;
 end
 
 ObjectType = {};
-ObjectType.CHEE = GetEnum();   --®ğ¥\
-ObjectType.STATIC = GetEnum(); --³õ¦aÀRºAª«¥ó
-ObjectType.LIGHT = GetEnum();  --»´«¬¹D¨ã
-ObjectType.HEAVY = GetEnum();  --­««¬¹D¨ã
-ObjectType.SUPPLE = GetEnum(); --¸Éµ¹«~
+ObjectType.CHEE = GetEnum();   --æ°£åŠŸ
+ObjectType.STATIC = GetEnum(); --å ´åœ°éœæ…‹ç‰©ä»¶
+ObjectType.LIGHT = GetEnum();  --è¼•å‹é“å…·
+ObjectType.HEAVY = GetEnum();  --é‡å‹é“å…·
+ObjectType.SUPPLE = GetEnum(); --è£œçµ¦å“
 
 count = -1;
 Flyingtype={};
-Flyingtype.DEFAULT = GetEnum(); 		 	--¨ü­«¤O
-Flyingtype.BEZIERCURVE_PATH = GetEnum();	--¦Û­q¸ô®|-BezierCurve¤º´¡
-Flyingtype.BSPLINECURVE_PATH = GetEnum();	--¦Û­q¸ô®|-BsplineCurve¤º´¡
-Flyingtype.HSPLINECURVE_PATH = GetEnum();	--¦Û­q¸ô®|-HSplineCurve¤º´¡
-Flyingtype.LINEARLINE_PATH = GetEnum();	    --¦Û­q¸ô®|-LinearLine¤º´¡
-Flyingtype.CHASE = GetEnum();				--°lÂÜ
+Flyingtype.DEFAULT = GetEnum(); 		 	--å—é‡åŠ›
+Flyingtype.BEZIERCURVE_PATH = GetEnum();	--è‡ªè¨‚è·¯å¾‘-BezierCurveå…§æ’
+Flyingtype.BSPLINECURVE_PATH = GetEnum();	--è‡ªè¨‚è·¯å¾‘-BsplineCurveå…§æ’
+Flyingtype.HSPLINECURVE_PATH = GetEnum();	--è‡ªè¨‚è·¯å¾‘-HSplineCurveå…§æ’
+Flyingtype.LINEARLINE_PATH = GetEnum();	    --è‡ªè¨‚è·¯å¾‘-LinearLineå…§æ’
+Flyingtype.CHASE = GetEnum();				--è¿½è¹¤
