@@ -924,8 +924,9 @@ void CD3DPanelView::Refresh()
 				Cross cross;
 				cross.SetPosition(it_cr->x,-it_cr->y);
 				cross.SetColor(1,0,0);
-				m_D3DApp.m_Creation.push_back(cross);
+				m_D3DApp.m_CreationPos.push_back(cross);
 			}
+			m_D3DApp.SetCreation(m_FrameInfo->m_Creations);
 
 			m_D3DApp.buildPoint();
 			m_D3DApp.DrawScene();

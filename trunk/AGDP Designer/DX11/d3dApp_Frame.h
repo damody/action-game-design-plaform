@@ -6,6 +6,7 @@
 #include "Timer.h"
 #include "Vertex.h"
 #include "game/PictureData.h"
+#include <game/Creation.h>
 #include "DX11/TextureManager.h"
 #include "PointManager.h"
 
@@ -17,7 +18,8 @@ public:
 	Area  m_Attack;
 	Area  m_Catch;
 	Cross m_Center;
-	Crosses m_Creation;
+	Creations m_Creation;
+	Crosses m_CreationPos;
 
 	TextureManager& GetTextureManager()
 	{ return *m_TextureManager;}
@@ -26,7 +28,6 @@ private:
 	PictureData*  m_Pic;
 	float         m_picX, m_picY;
 	Texture*      m_Templete;
-
 	
 	bool	      m_ShowCross;
 public:
@@ -43,7 +44,7 @@ public:
 	void LoadBlend();
 	void buildShaderFX();
 	void buildPoint();
-
+	void SetCreation(Creations& creation);
 	void SetPic( PictureData*  pic, float x, float y );
 	void SwitchShowCrossOn();
 	void SwitchShowCrossOff();
@@ -111,6 +112,20 @@ protected:
 	ID3DX11EffectScalarVariable*	m_Pics_OffsetY;
 	ID3DX11EffectShaderResourceVariable*  m_PMap_Pics;
 	ID3DX11EffectShaderResourceVariable*  m_BMap_Pics;
+
+	GamePictureVertices		m_CreationsVertics;
+	DrawVertexGroups		m_DrawVertexGroups;
+	ID3DX11Effect*			m_Effect_GPics;
+	ID3D11Buffer*			m_Buffer_GPics;
+	ID3DX11EffectTechnique*		m_PTech_GPics;
+	ID3D11InputLayout*		m_PLayout_GPics;
+	ID3DX11EffectScalarVariable*	m_GPics_Width;
+	ID3DX11EffectScalarVariable*	m_GPics_Height;
+	ID3DX11EffectScalarVariable*	m_GPics_Scale;
+	ID3DX11EffectScalarVariable*	m_GPics_OffsetX;
+	ID3DX11EffectScalarVariable*	m_GPics_OffsetY;
+	ID3DX11EffectShaderResourceVariable*  m_PMap_GPics;
+	ID3DX11EffectShaderResourceVariable*  m_BMap_GPics;
 
 	D3D11_BUFFER_DESC		m_vbd;
 	// Derived class should set these in derived constructor to customize starting values.

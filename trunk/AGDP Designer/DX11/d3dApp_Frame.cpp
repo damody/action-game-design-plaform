@@ -30,6 +30,12 @@ D3DApp_Frame::D3DApp_Frame()
 	m_PLayout_Pics = NULL;
 	m_Pics_Width = NULL;
 	m_Pics_Height = NULL;
+	m_Buffer_GPics = NULL;
+	m_Effect_GPics = NULL;
+	m_PTech_GPics = NULL;
+	m_PLayout_GPics = NULL;
+	m_GPics_Width = NULL;
+	m_GPics_Height = NULL;
 	m_Buffer_Pics = NULL;
 	m_hAppInst   = GetModuleHandle( NULL );
 	m_AppPaused  = false;
@@ -59,6 +65,7 @@ D3DApp_Frame::~D3DApp_Frame()
 
 	if ( m_TextureManager ) { delete m_TextureManager; }
 }
+
 HINSTANCE D3DApp_Frame::getAppInst()
 {
 	return m_hAppInst;
@@ -128,7 +135,6 @@ void D3DApp_Frame::initDirect3D()
 	m_Templete = m_TextureManager->GetTexture( t ).get();
 }
 
-
 void D3DApp_Frame::OnResize( int w, int h )
 {
 	if ( !m_d3dDevice ) { return; }
@@ -190,6 +196,12 @@ void D3DApp_Frame::OnResize( int w, int h )
 		m_Pics_Width->SetFloat( ( float )mClientWidth );
 		m_Pics_Height->SetFloat( ( float )mClientHeight );
 	}
+
+	if ( m_GPics_Width != NULL && m_GPics_Height != NULL )
+	{
+		m_GPics_Width->SetFloat( ( float )mClientWidth );
+		m_GPics_Height->SetFloat( ( float )mClientHeight );
+	}
 }
 
 void D3DApp_Frame::DrawScene()
@@ -209,6 +221,22 @@ void D3DApp_Frame::DrawScene()
 		m_BMap_Pics->SetResource( m_Templete->texture );
 		m_PTech_Pics->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
 		m_DeviceContext->Draw( 1, 0 );
+	}
+
+	//Creations
+	UINT offset = 0;
+	UINT stride2 = sizeof( GamePictureVertex );
+	m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
+	m_DeviceContext->IASetInputLayout( m_PLayout_GPics );
+	m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_GPics, &stride2, &offset );
+	for ( DrawVertexGroups::iterator it = m_DrawVertexGroups.begin(); it != m_DrawVertexGroups.end(); ++it )
+	{
+		if ( it->texture.get() )
+		{
+			m_PMap_GPics->SetResource( *( it->texture ) );
+			m_PTech_GPics->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
+			m_DeviceContext->Draw( it->VertexCount, it->StartVertexLocation );
+		}
 	}
 
 	if ( m_LineVertices.size() > 0 )
@@ -262,6 +290,7 @@ void D3DApp_Frame::buildShaderFX()
 	D3DX11_PASS_DESC PassDesc;
 	m_PTech_Points->GetPassByIndex( 0 )->GetDesc( &PassDesc );
 	HR( m_d3dDevice->CreateInputLayout( VertexDesc_PointVertex, 3, PassDesc.pIAInputSignature, PassDesc.IAInputSignatureSize, &m_PLayout_Points ) );
+
 	hr = 0;
 	hr = D3DX11CompileFromFile( _T( "shader\\Line.fx" ), NULL, NULL, NULL,
 	                            "fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS | D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
@@ -284,6 +313,8 @@ void D3DApp_Frame::buildShaderFX()
 	D3DX11_PASS_DESC PassDesc_Line;
 	m_PTech_Lines->GetPassByIndex( 0 )->GetDesc( &PassDesc_Line );
 	HR( m_d3dDevice->CreateInputLayout( VertexDesc_LineVertex, 2, PassDesc_Line.pIAInputSignature, PassDesc_Line.IAInputSignatureSize, &m_PLayout_Lines ) );
+
+	//Main Picture
 	hr = 0;
 	hr = D3DX11CompileFromFile( _T( "shader\\picture.fx" ), NULL, NULL, NULL,
 	                            "fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS | D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
@@ -308,6 +339,32 @@ void D3DApp_Frame::buildShaderFX()
 	D3DX11_PASS_DESC PassDesc_Pic;
 	m_PTech_Pics->GetPassByIndex( 0 )->GetDesc( &PassDesc_Pic );
 	HR( m_d3dDevice->CreateInputLayout( VertexDesc_PICVertex, 3, PassDesc_Pic.pIAInputSignature, PassDesc_Pic.IAInputSignatureSize, &m_PLayout_Pics ) );
+
+	//Creation
+	hr = 0;
+	hr = D3DX11CompileFromFile( _T( "shader\\gamepicture.fx" ), NULL, NULL, NULL,
+		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS | D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
+
+	if ( FAILED( hr ) )
+	{
+		if ( pError )
+		{
+			MessageBoxA( 0, ( char* )pError->GetBufferPointer(), 0, 0 );
+			ReleaseCOM( pError );
+		}
+
+		DXTrace( __FILE__, __LINE__, hr, _T( "D3DX11CreateEffectFromFile" ), TRUE );
+	}
+
+	HR( D3DX11CreateEffectFromMemory( pCode->GetBufferPointer(), pCode->GetBufferSize(), NULL, m_d3dDevice, &m_Effect_GPics ) );
+	m_PTech_GPics = m_Effect_GPics->GetTechniqueByName( "PointTech" );
+	m_GPics_Width = m_Effect_GPics->GetVariableByName( "sceneW" )->AsScalar();
+	m_GPics_Height = m_Effect_GPics->GetVariableByName( "sceneH" )->AsScalar();
+	m_PMap_GPics = m_Effect_GPics->GetVariableByName( "gMap" )->AsShaderResource();
+	D3DX11_PASS_DESC PassDesc_GPic;
+	m_PTech_GPics->GetPassByIndex( 0 )->GetDesc( &PassDesc_GPic );
+	HR( m_d3dDevice->CreateInputLayout( VertexDesc_GPICVertex, 5, PassDesc_GPic.pIAInputSignature, PassDesc_GPic.IAInputSignatureSize, &m_PLayout_GPics ) );
+
 	m_vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_vbd.CPUAccessFlags = 0;
@@ -369,7 +426,7 @@ void D3DApp_Frame::buildPoint()
 		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
 	}
 
-	for(Crosses::iterator it = m_Creation.begin(); it != m_Creation.end(); ++it)
+	for(Crosses::iterator it = m_CreationPos.begin(); it != m_CreationPos.end(); ++it)
 	{
 		LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
 		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
@@ -390,6 +447,8 @@ void D3DApp_Frame::buildPoint()
 		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Lines ) );
 	}
 
+	//Main Picture
+	ReleaseCOM( m_Buffer_Pics );
 	if ( m_Pic != NULL )
 	{
 		PictureVertex pv;
@@ -408,6 +467,72 @@ void D3DApp_Frame::buildPoint()
 		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Pics ) );
 	}
 
+	//Creation
+	ReleaseCOM( m_Buffer_GPics );
+	m_CreationsVertics.clear();
+	m_DrawVertexGroups.clear();
+	for (Creations::iterator it = m_Creation.begin(); it != m_Creation.end(); ++it)
+	{
+		GamePictureVertex gpv;
+		gpv.position.x = it->x + g_Frame_OffsetX;
+		gpv.position.y = - it->y - g_Frame_OffsetY;
+		gpv.faceside = it->facing;
+
+		ObjectInfoMap::iterator it_Object = g_ObjectInfoMap.find(it->name);
+
+		int count = 0;
+		if (it_Object!=g_ObjectInfoMap.end())
+		{
+			FramesMap::iterator it_Frame = it_Object->second->m_FramesMap.find(it->frame);
+			if (it_Frame != it_Object->second->m_FramesMap.end())
+			{
+				if (it->frameID > -1 && it->frameID < it_Frame->second.size())
+				{
+					FrameInfo frameInfo = it_Frame->second[it->frameID];
+ 					gpv.center.x = frameInfo.m_CenterX;
+ 					gpv.center.y = -frameInfo.m_CenterY;
+
+					PictureData *pic = &it_Object->second->m_PictureDatas[frameInfo.m_PictureID];
+					gpv.size.x = pic->m_Width * g_Frame_Scale;
+					gpv.size.y = pic->m_Height * g_Frame_Scale;
+					gpv.picpos.x = frameInfo.m_PictureX;
+					gpv.picpos.y = frameInfo.m_PictureY;
+					gpv.picpos.z = pic->m_Row;
+					gpv.picpos.w = pic->m_Column;
+					m_CreationsVertics.push_back(gpv);
+					int textureID = g_TextureManagerFrame->AddTexture(pic->m_Path);
+
+					if(!m_DrawVertexGroups.empty() && m_DrawVertexGroups.back().texture == g_TextureManagerFrame->GetTexture(textureID))
+					{
+						m_DrawVertexGroups.back().VertexCount++;
+					}else
+					{
+						DrawVertexGroup dvg;
+						dvg.StartVertexLocation = count;
+						dvg.VertexCount = 1;
+						dvg.texture = g_TextureManagerFrame->GetTexture(textureID);
+						m_DrawVertexGroups.push_back(dvg);
+					}
+					count++;
+				}
+			}
+		}
+
+		HeroInfoMap::iterator it_Hero = g_HeroInfoMap.find(it->name);
+		if (it_Hero!=g_HeroInfoMap.end())
+		{
+
+		}
+	}
+	if(!m_CreationsVertics.empty())
+	{
+		m_vbd.ByteWidth = ( UINT )( sizeof( GamePictureVertex ) );
+		m_vbd.StructureByteStride = sizeof( GamePictureVertex );
+		D3D11_SUBRESOURCE_DATA vinitData;
+		vinitData.pSysMem = &m_CreationsVertics;
+		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_GPics ) );
+	}
+	
 	m_DeviceContext->OMSetDepthStencilState( m_pDepthStencil_ZWriteON, 0 );
 }
 
@@ -480,7 +605,9 @@ void D3DApp_Frame::Init()
 	m_Attack.clear();
 	m_Catch.clear();
 	m_Center.Clear();
+	m_CreationPos.clear();
 	m_Creation.clear();
+	m_DrawVertexGroups.clear();
 	m_Pic = NULL;
 	m_picX = 1;
 	m_picY = 1;
@@ -499,4 +626,9 @@ void D3DApp_Frame::SwitchShowCrossOff()
 void D3DApp_Frame::SwitchShowCrossOn()
 {
 	m_ShowCross = true;
+}
+
+void D3DApp_Frame::SetCreation( Creations& creation )
+{
+	m_Creation.assign(creation.begin(),creation.end());
 }

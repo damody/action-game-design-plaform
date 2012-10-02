@@ -152,3 +152,67 @@ bool LuaMap::WriteLua( std::wstring path, std::string formatString, ... )
 	fclose( _file );
 	return TRUE;
 }
+
+bool KeyMap::isSKey(char r){
+	for(_KeyMaps::iterator i = SKeys.begin(); i != SKeys.end(); i ++ ){
+		if(i->keyDown == r){
+			return true;
+		}
+	}
+	return false;
+}
+
+bool KeyMap::isKeyUp(char r){
+	if(r == up.keyUp) return true;
+	if(r == down.keyUp) return true;
+	if(r == left.keyUp) return true;
+	if(r == right.keyUp) return true;
+	for(_KeyMaps::iterator i = SKeys.begin(); i != SKeys.end(); i ++ ){
+		if(i->keyUp == r){
+			return true;
+		}
+	}
+	return false;
+}
+
+bool KeyMap::isKeyExist(char r){
+	if(r == up.keyUp || r == up.keyDown) return true;
+	if(r == down.keyUp || r == down.keyDown) return true;
+	if(r == left.keyUp || r == left.keyDown) return true;
+	if(r == right.keyUp || r == right.keyDown) return true;
+	for(_KeyMaps::iterator i = SKeys.begin(); i != SKeys.end(); i ++ ){
+		if(i->keyUp == r || i->keyDown == r){
+			return true;
+		}
+	}
+	return false;
+}
+
+std::wstring KeyMap::keyName(char r){
+	if(r == up.keyUp)		return L"↑ 放開";
+	if(r == up.keyDown)		return L"↑ 按下";
+	if(r == down.keyUp)		return L"↓ 放開";
+	if(r == down.keyDown)	return L"↓ 按下";
+	if(r == left.keyUp)		return L"← 放開";
+	if(r == left.keyDown)	return L"← 按下";
+	if(r == right.keyUp)	return L"→ 放開";
+	if(r == right.keyDown)	return L"→ 按下";
+	for(_KeyMaps::iterator i = SKeys.begin(); i != SKeys.end(); i ++ ){
+		if(i->keyUp == r){
+			return i->keyName + L"放開";
+		}
+		if(i->keyDown == r){
+			return i->keyName + L"按下";
+		}
+	}
+	return L"沒這個鍵！";
+}
+
+void KeyMap::pushKeyMap(char down,char up,std::wstring name){
+	_KeyMap s(down,up,name);
+	SKeys.push_back(s);
+}
+
+size_t KeyMap::sKeySize(){
+	return SKeys.size();
+}

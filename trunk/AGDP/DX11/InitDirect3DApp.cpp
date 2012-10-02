@@ -873,6 +873,8 @@ void InitDirect3DApp::LoadData()
 		WAVpath.pop_back();
 	}
 	
+	//KeyMap
+	LuaResource::loadKeyMap(g_KeyMap);
 
 	//*test
 		g_BackgroundManager.SetCurrentBackground( Backgrounds.back()->m_Name );//set last element be current background
@@ -1463,7 +1465,13 @@ void InitDirect3DApp::InitPlayer()
 	m_Player.m_Keyboard.SetCtrlKey( KEY_T, key );
 	m_Player.SetHero( L"Davis" );
 	m_Player.SetTeam( 0 );
-	m_Player.m_Hero = g_HeroManager.Create( m_Player.HeroName(), Vector3( 500, 500, 50 ) );
-	g_HeroManager.Create( m_Player.HeroName(), Vector3( 100, 500, 50 ) ,1 );
+	m_Player.m_Hero = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) );
+	Record *sr = new Record();
+	sr->team = 0;
+	m_Player.m_Hero->SetRecord( Record_Sptr(sr));
 	m_Player.SetUserName( L"<こんにちは測試人-Testing...>" );
+	sr = new Record();
+	sr->team = 1;
+	Hero *sh = g_HeroManager.Create( m_Player.HeroName(), Vector3( 500, 500, 100 ) ,1 );
+	sh->SetRecord(Record_Sptr(sr));
 }

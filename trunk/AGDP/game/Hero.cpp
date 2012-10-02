@@ -21,82 +21,10 @@
 #include "math/Quaternion.h"
 #include "global.h"
 
-bool isKeyUp( char r )
-{
-	switch ( r )
-	{
-		case '^': case 'v': case '<': case '>': case 'A': case 'B': case 'J': case 'D':
-			return false;
-
-		case '8': case '2': case '4': case '6': case 'a': case 'b': case 'j': case 'd':
-			return true;
-
-		default:
-			throw "wrong hit key";
-			return false;
-	}
-}
-
-inline char keyTrans( CtrlKey::v r )
-{
-	switch ( r )
-	{
-		case CtrlKey::ATK1: return 'A';
-
-		case CtrlKey::ATK2: return 'B';
-
-		case CtrlKey::DEF: return 'D';
-
-		case CtrlKey::JUMP: return 'J';
-
-		case CtrlKey::ATK1_KEYUP: return 'a';
-
-		case CtrlKey::ATK2_KEYUP: return 'b';
-
-		case CtrlKey::DEF_KEYUP: return 'd';
-
-		case CtrlKey::JUMP_KEYUP: return 'j';
-
-		case CtrlKey::UP: return '^';
-
-		case CtrlKey::DOWN: return 'v';
-
-		case CtrlKey::LEFT: return '<';
-
-		case CtrlKey::RIGHT: return '>';
-
-		case CtrlKey::UP_KEYUP: return '8';
-
-		case CtrlKey::DOWN_KEYUP: return '2';
-
-		case CtrlKey::LEFT_KEYUP: return '4';
-
-		case CtrlKey::RIGHT_KEYUP: return '6';
-
-		default: throw "error: wrong key";
-	}
-}
-
-bool isSKey( char r )
-{
-	switch ( r )
-	{
-		case 'A': return true;
-
-		case 'B': return true;
-
-		case 'J': return true;
-
-		case 'D': return true;
-
-		default: return false;
-	}
-}
-
 Hero::Hero() {}
 
 Hero::Hero( std::wstring h ):
-	hero( h ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 ), d_run( 0 ), m_Effect( EffectType::NONE ), m_EffectScale( 1.0f ), d_key(), m_Fall( 70 ), m_FrontDefence( 0 ), m_BackDefence( 0 )
+	hero( h ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 ), d_run( 0 ), m_Effect( EffectType::NONE ), m_EffectScale( 1.0f ), d_key(g_KeyMap.sKeySize()), m_Fall( 70 ), m_FrontDefence( 0 ), m_BackDefence( 0 )
 {
 	m_HeroInfo = g_HeroInfoManager.GetHeroInfo( hero );
 	m_Record = Record_Sptr( new Record() );
@@ -709,7 +637,7 @@ bool Hero::ScanKeyQue()
 			int nKey = rHit - pHit;
 			rHit--;
 
-			if ( nKey == 1 && isSKey( *rHit ) && isKeyUsed( *rHit ) ) { continue;}
+			if ( nKey == 1 && g_KeyMap.isSKey( *rHit ) && isKeyUsed( *rHit ) ) { continue;}
 
 			while ( riKey != m_KeyQue.rend() && rHit + 1 != pHit && flag )
 			{
@@ -804,7 +732,7 @@ bool Hero::ScanKeyQue()
 							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::UP_KEYUP; ch++ );
 
 							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::UP_KEYUP ||
-							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
 							{	flag = false;	}
 						}
 
@@ -827,7 +755,7 @@ bool Hero::ScanKeyQue()
 							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DOWN_KEYUP; ch++ );
 
 							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DOWN_KEYUP ||
-							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
 							{	flag = false;	}
 						}
 
@@ -848,7 +776,7 @@ bool Hero::ScanKeyQue()
 							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP; ch++ );
 
 							if ( ch == m_KeyQue.rend() || ( ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP ) ||
-							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
 							{	flag = false;	}
 						}
 
@@ -869,7 +797,7 @@ bool Hero::ScanKeyQue()
 							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK1_KEYUP; ch++ );
 
 							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK1_KEYUP ||
-							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
 							{	flag = false;	}
 						}
 
@@ -890,7 +818,7 @@ bool Hero::ScanKeyQue()
 							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK2_KEYUP; ch++ );
 
 							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK2_KEYUP ||
-							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
 							{	flag = false;	}
 						}
 
@@ -911,7 +839,7 @@ bool Hero::ScanKeyQue()
 							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::JUMP_KEYUP; ch++ );
 
 							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::JUMP_KEYUP ||
-							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
 							{	flag = false;	}
 						}
 
@@ -932,7 +860,7 @@ bool Hero::ScanKeyQue()
 							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DEF_KEYUP; ch++ );
 
 							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DEF_KEYUP ||
-							                ( ( isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
+							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
 							{	flag = false;	}
 						}
 
@@ -948,7 +876,7 @@ bool Hero::ScanKeyQue()
 				nFrame = hit[i].m_FrameName;
 				nFramID = hit[i].m_FrameOffset;
 
-				if ( nKey == 1 && isSKey( *pHit ) )
+				if ( nKey == 1 && g_KeyMap.isSKey( *pHit ) )
 				{
 					keyUsed( *pHit );
 				}
