@@ -525,6 +525,15 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 			fwprintf( file, L"clear_key_queue = %d, ", frameInfo->m_ClearKeyQueue );
 			fwprintf( file, L"\n" );
 
+			//----consume----
+			fwprintf(file, L"\tconsume = { ");
+			fwprintf(file, L"rule = %d, ", frameInfo->m_Consume.m_JumpRule);
+			fwprintf(file, L"HP = %d, ", frameInfo->m_Consume.m_HP);
+			fwprintf(file, L"MP = %d, ", frameInfo->m_Consume.m_MP);
+			fwprintf(file, L"backFrame = %d, ", frameInfo->m_Consume.m_NotEnoughFrameName);
+			fwprintf(file, L"backFrameID = %d, ", frameInfo->m_Consume.m_NotEnoughFrame);
+			fwprintf(file, L"},\n");
+
 			//----Bodys----
 			if ( !frameInfo->m_Bodys.empty() )
 			{
