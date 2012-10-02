@@ -17,7 +17,7 @@ const char* b = cell.getLua<const char*>("table2\\table23\\table2\\1");
 #endif
 
 typedef std::vector<std::string> strings;
-
+typedef std::vector<std::wstring> wstrings;
 
 class LuaCell
 {

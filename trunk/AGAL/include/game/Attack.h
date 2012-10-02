@@ -56,17 +56,17 @@ struct Attack
 };
 typedef std::vector<Attack> Attacks;
 
-const std::string effectTable[] =
+const std::wstring effectTable[] =
 {
-	"Fire",
-	"BlackFire",
-	"PurpleFire",
-	"Freeze",
-	"IceSlow",
-	"Punch",
-	"Knife",
-	"Thunder",
-	"Palsy",
-	"Faint",
-	"End"
+	L"Fire",
+	L"BlackFire",
+	L"PurpleFire",
+	L"Freeze",
+	L"IceSlow",
+	L"Punch",
+	L"Knife",
+	L"Thunder",
+	L"Palsy",
+	L"Faint",
+	L"End"
 };

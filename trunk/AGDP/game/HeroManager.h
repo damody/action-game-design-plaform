@@ -25,7 +25,7 @@ public:
 	void Update( float dt );
 	void UpdateDataToDraw();
 
-	Hero* Create( const std::string& hero, const Vector3& pos, int team = 0 );
+	Hero* Create( const std::wstring& hero, const Vector3& pos, int team = 0 );
 	void Destory( Heroes::iterator it, int time = 0 );
 	void Destory( Hero_RawPtr hero, int time = 0 );
 	void Clear();

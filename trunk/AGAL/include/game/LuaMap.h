@@ -8,14 +8,14 @@ class LuaMap : public std::map<int, std::string>
 public:
 	LuaMap() {}
 	LuaMap( LuaCell_Sptr lsptr, std::string tableName );
-	LuaMap( std::string path, std::string tableName );
+	LuaMap( std::wstring path, std::string tableName );
 	~LuaMap() {}
 
 	void LoadData( LuaCell_Sptr lsptr, std::string tableName );
-	void LoadData( std::string path, std::string tableName );
+	void LoadData( std::wstring path, std::string tableName );
 
 	int FindKey( std::string strValue );
-	static bool WriteLua ( std::string path, std::string formatString, ... );
+	static bool WriteLua ( std::wstring path, std::string formatString, ... );
 };
 //typedef LuaMap HeroAction;
 

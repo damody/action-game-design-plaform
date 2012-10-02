@@ -11,14 +11,14 @@ BackgroundManager::~BackgroundManager( void )
 {
 }
 
-unsigned int BackgroundManager::AddBackground( const std::string& name, Background_Sptr bg )
+unsigned int BackgroundManager::AddBackground( const std::wstring& name, Background_Sptr bg )
 {
 	m_BackgroundList.push_back( name );
 	m_BackgroundMaps[name] = bg;
 	return m_BackgroundList.size() - 1;
 }
 
-std::vector<std::string> BackgroundManager::GetBackgroundList()
+std::vector<std::wstring> BackgroundManager::GetBackgroundList()
 {
 	return m_BackgroundList;
 }
@@ -28,12 +28,12 @@ Background* BackgroundManager::GetCurrentBackground()
 	return m_Current_Background;
 }
 
-void BackgroundManager::SetCurrentBackground( const std::string& name )
+void BackgroundManager::SetCurrentBackground( const std::wstring& name )
 {
 	m_Current_Background = m_BackgroundMaps[name].get();
 }
 
-void BackgroundManager::Set_BGM_PathList( const std::vector<std::string>& list )
+void BackgroundManager::Set_BGM_PathList( const std::vector<std::wstring>& list )
 {
 	m_BGM_PathList.assign( list.begin(), list.end() );
 }

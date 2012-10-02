@@ -15,11 +15,11 @@ namespace boost {namespace serialization {class access;}}
 struct HeroInfo
 {
 	//¤Hª«¦WºÙ
-	std::string	m_Name;
+	std::wstring	m_Name;
 	//head picture
-	std::string	m_Headpic;
+	std::wstring	m_Headpic;
 	//small picture
-	std::string	m_Smallpic;
+	std::wstring	m_Smallpic;
 	//action picture
 	PictureDatas	m_PictureDatas;
 	//frame inforamtion
@@ -110,5 +110,5 @@ public:
 };
 SHARE_PTR( HeroInfo );
 
-typedef std::map<std::string, HeroInfo_Sptr> HeroInfoMap;
-typedef std::map<std::string, HeroInfo_RawPtr> HeroInfoRMap;
+typedef std::map<std::wstring, HeroInfo_Sptr> HeroInfoMap;
+typedef std::map<std::wstring, HeroInfo_RawPtr> HeroInfoRMap;

@@ -13,7 +13,7 @@ LuaMap::LuaMap( LuaCell_Sptr lsptr, std::string tableName )
 	}
 }
 
-LuaMap::LuaMap( std::string path, std::string tableName )
+LuaMap::LuaMap( std::wstring path, std::string tableName )
 {
 	LuaCell_Sptr lsptr = LuaCell_Sptr( new LuaCell );
 	lsptr->InputLuaFile( path.c_str() );
@@ -39,7 +39,7 @@ void LuaMap::LoadData( LuaCell_Sptr lsptr, std::string tableName )
 	}
 }
 
-void LuaMap::LoadData( std::string path, std::string tableName )
+void LuaMap::LoadData( std::wstring path, std::string tableName )
 {
 	LuaCell_Sptr lsptr = LuaCell_Sptr( new LuaCell );
 	lsptr->InputLuaFile( path.c_str() );
@@ -62,7 +62,7 @@ int LuaMap::FindKey( std::string strValue )
 	return -1;
 }
 
-bool LuaMap::WriteLua( std::string path, std::string formatString, ... )
+bool LuaMap::WriteLua( std::wstring path, std::string formatString, ... )
 {
 	//
 	if ( !( path.size() >= 4 &&
@@ -77,10 +77,10 @@ bool LuaMap::WriteLua( std::string path, std::string formatString, ... )
 		path[path.size() - 2] = 'u';
 		path[path.size() - 1] = 'a';
 	}
-	FILE* _file = fopen( path.c_str(), "w" );
+	FILE* _file = _wfopen( path.c_str(), L"w" );
 
-	fprintf( _file, "function protect_table (tbl)\n\treturn setmetatable ({},\n\t{\n\t__index = tbl,\n\t__newindex = funtion (t, n, v)\n\tend=n=t})\nend\n" );
-	fprintf( _file, "count = -1;\nfunction GetEnum()\n\tcount = count + 1;\n\treturn count;\nend\n" );
+	fwprintf( _file, L"function protect_table (tbl)\n\treturn setmetatable ({},\n\t{\n\t__index = tbl,\n\t__newindex = funtion (t, n, v)\n\tend=n=t})\nend\n" );
+	fwprintf( _file, L"count = -1;\nfunction ResetEnum()\n\tcount = 1-;\n\treturn 0;\nend\nfunction GetEnum()\n\tcount = count + 1;\n\treturn count;\nend\n" );
 
 	const char* _formatString = formatString.c_str();
 	int argc = 0;
@@ -120,7 +120,7 @@ bool LuaMap::WriteLua( std::string path, std::string formatString, ... )
 		}
 		else if( _formatString[i] == '%' && i+1 < formatString.length() && _formatString[i+1] == 'm')
 		{
-			fprintf( _file, "count = -1;\n");
+			fprintf( _file, "ResetEnum();\n");
 			LuaMap _tableMap = *va_arg( _formatVa, LuaMap* );
 
 			std::string _preName( "" );

@@ -1,7 +1,7 @@
 #include "game\HeroInfoManager.h"
 #include "global.h"
 
-void HeroInfoManager::AddHeroInfo( std::string name, HeroInfo_Sptr info )
+void HeroInfoManager::AddHeroInfo( std::wstring name, HeroInfo_Sptr info )
 {
 	for ( unsigned int i = 0 ; i < info->m_PictureDatas.size(); ++i )
 	{
@@ -12,7 +12,7 @@ void HeroInfoManager::AddHeroInfo( std::string name, HeroInfo_Sptr info )
 	m_HeroInfoMaps[name] = info;
 }
 
-HeroInfo_Sptr HeroInfoManager::GetHeroInfo( std::string name )
+HeroInfo_Sptr HeroInfoManager::GetHeroInfo( std::wstring name )
 {
 	HeroInfoMap::iterator i = m_HeroInfoMaps.find( name );
 
@@ -24,7 +24,7 @@ HeroInfo_Sptr HeroInfoManager::GetHeroInfo( std::string name )
 	return i->second;
 }
 
-const std::vector<std::string> HeroInfoManager::GetList()
+const std::vector<std::wstring> HeroInfoManager::GetList()
 {
-	return ( const std::vector<std::string> )m_List;
+	return ( const std::vector<std::wstring> )m_List;
 }

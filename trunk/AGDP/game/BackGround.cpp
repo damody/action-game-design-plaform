@@ -120,8 +120,10 @@ bool Background::CheckDataVaild( LuaCell_Sptr luadata )
 
 void Background::LoadData( LuaCell_Sptr luadata )
 {
+	const char* tcs;
 	m_LuaCell	= luadata;
-	m_Name		= luadata->GetLua<const char*>( "name" );
+	tcs = luadata->GetLua<const char*>( "name" );
+	m_Name		= std::wstring(tcs, tcs + strlen(tcs));
 	m_Width		= ( float )luadata->GetLua<double>( "width" );
 	m_TimeLine	= luadata->GetLua<int>( "timeline" );
 	m_Gravity	= ( float )luadata->GetLua<double>( "gravity" );
@@ -173,20 +175,21 @@ void Background::LoadData( LuaCell_Sptr luadata )
 		if ( luadata->HasValue( "layer/%d/picture_path", i ) )
 		{
 			BGLayer bgl;
-			bgl.m_PicturePath	= luadata->GetLua<const char*>( "layer/%d/picture_path", i );
-			bgl.m_Rotation.x        = ( float )luadata->GetLua<double>( "layer/%d/rx", i );
-			bgl.m_Rotation.y        = ( float )luadata->GetLua<double>( "layer/%d/ry", i );
-			bgl.m_Rotation.z        = ( float )luadata->GetLua<double>( "layer/%d/rz", i );
+			tcs = luadata->GetLua<const char*>( "layer/%d/picture_path", i );
+			bgl.m_PicturePath	= std::wstring(tcs, tcs + strlen(tcs));
+			bgl.m_Rotation.x    = ( float )luadata->GetLua<double>( "layer/%d/rx", i );
+			bgl.m_Rotation.y    = ( float )luadata->GetLua<double>( "layer/%d/ry", i );
+			bgl.m_Rotation.z    = ( float )luadata->GetLua<double>( "layer/%d/rz", i );
 			bgl.m_Position.x	= ( float )luadata->GetLua<double>( "layer/%d/x", i );
 			bgl.m_Position.y	= ( float )luadata->GetLua<double>( "layer/%d/y", i );
 			bgl.m_Position.z	= ( float )luadata->GetLua<double>( "layer/%d/z", i );
-			bgl.m_Width		= ( float )luadata->GetLua<double>( "layer/%d/w", i );
+			bgl.m_Width			= ( float )luadata->GetLua<double>( "layer/%d/w", i );
 			bgl.m_Height		= ( float )luadata->GetLua<double>( "layer/%d/h", i );
 			bgl.m_LoopDistance	= ( float )luadata->GetLua<int>( "layer/%d/loop_distance", i );
 			bgl.m_TimeLine		= luadata->GetLua<int>( "layer/%d/timeline", i );
 			bgl.m_TimeStart		= luadata->GetLua<int>( "layer/%d/time_start", i );
 			bgl.m_TimeEnd		= luadata->GetLua<int>( "layer/%d/time_end", i );
-			bgl.m_PicID		= g_TextureManager.AddTexture( bgl.m_PicturePath );
+			bgl.m_PicID			= g_TextureManager.AddTexture( bgl.m_PicturePath );
 			m_BGLayers.push_back( bgl );
 		}
 		else
@@ -211,8 +214,8 @@ void Background::LoadData( LuaCell_Sptr luadata )
 			cr.m_Position.x	= ( float )luadata->GetLua<double>( "color_rect/%d/x", i );
 			cr.m_Position.y	= ( float )luadata->GetLua<double>( "color_rect/%d/y", i );
 			cr.m_Position.z	= ( float )luadata->GetLua<double>( "color_rect/%d/z", i );
-			cr.m_Width	= ( float )luadata->GetLua<double>( "color_rect/%d/w", i );
-			cr.m_Height	= ( float )luadata->GetLua<double>( "color_rect/%d/h", i );
+			cr.m_Width		= ( float )luadata->GetLua<double>( "color_rect/%d/w", i );
+			cr.m_Height		= ( float )luadata->GetLua<double>( "color_rect/%d/h", i );
 			m_ColorRects.push_back( cr );
 		}
 		else

@@ -40,9 +40,9 @@ struct CatchInfo
 };
 typedef std::vector<CatchInfo> CatchInfos;
 
-const std::string CatchPositionTable[] =
+const std::wstring CatchPositionTable[] =
 {
-	"Neck",
-	"LEG",
-	"WAIST"
+	L"Neck",
+	L"LEG",
+	L"WAIST"
 };

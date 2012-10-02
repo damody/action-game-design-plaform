@@ -24,7 +24,7 @@ void Player::UpdateInput()
 	}
 }
 
-void Player::SetHero( const std::string& name )
+void Player::SetHero( const std::wstring& name )
 {
 	m_HeroName = name;
 }
@@ -35,7 +35,7 @@ void Player::SetTeam( int team )
 	m_UserName.SetForeColor( TEAMCOLOR[m_Team][0], TEAMCOLOR[m_Team][1], TEAMCOLOR[m_Team][2] );
 }
 
-std::string Player::HeroName()
+std::wstring Player::HeroName()
 {
 	return m_HeroName;
 }

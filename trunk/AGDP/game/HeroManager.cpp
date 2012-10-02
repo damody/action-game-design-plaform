@@ -44,7 +44,7 @@ void HeroManager::UpdateDataToDraw()
 	std::stable_sort( m_Heroes.begin(), m_Heroes.end(), SortHero );
 }
 
-Hero* HeroManager::Create( const std::string& hero, const Vector3& pos, int team/*=0*/ )
+Hero* HeroManager::Create( const std::wstring& hero, const Vector3& pos, int team/*=0*/ )
 {
 	Hero_RawPtr h = Hero_RawPtr( new Hero( hero ) );
 	h->SetPosition( pos );

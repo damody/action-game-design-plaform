@@ -10,7 +10,7 @@ public:
 	ObjectInfoManager( void );
 	~ObjectInfoManager( void );
 
-	void AddObjectInfo( std::string name, ObjectInfo_Sptr info );
-	ObjectInfo_Sptr GetObjectInfo( std::string name );
+	void AddObjectInfo( std::wstring name, ObjectInfo_Sptr info );
+	ObjectInfo_Sptr GetObjectInfo( std::wstring name );
 };
 

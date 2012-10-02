@@ -6,7 +6,7 @@ Weapon::Weapon( void )
 {
 }
 
-Weapon::Weapon( std::string w ):
+Weapon::Weapon( std::wstring w ):
 	m_WeaponName( w ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 )
 {
 	m_ObjectInfo = g_ObjectInfoManager.GetObjectInfo( m_WeaponName );
@@ -17,7 +17,7 @@ Weapon::Weapon( std::string w ):
 	}
 	else
 	{
-		std::cout << "Cannot find " << w << std::endl;
+		std::wcout << L"Cannot find " << w << std::endl;
 	}
 }
 
@@ -30,9 +30,13 @@ void Weapon::Init()
 {
 	m_Angle = 0;
 	m_HP = m_ObjectInfo->m_MaxHP;
-	m_Frame = "default";
+	m_Frame = L"default";
 	m_FrameID = 0;
-	FrameInfo* f = &m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID];
+	FramesMap::iterator i = m_ObjectInfo->m_FramesMap.find(m_Frame);
+	if( i == m_ObjectInfo->m_FramesMap.end()) {
+		throw "error: Object can't find default frame";
+	}
+	FrameInfo* f = &i->second[m_FrameID];
 	m_PicID = f->m_PictureID;
 	m_PicX = f->m_PictureX;
 	m_PicY = f->m_PictureY;

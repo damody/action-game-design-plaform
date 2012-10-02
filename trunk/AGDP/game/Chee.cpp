@@ -6,7 +6,7 @@ Chee::Chee( void )
 {
 }
 
-Chee::Chee( std::string c ):
+Chee::Chee( std::wstring c ):
 	chee( c ), m_Position( Vector3( 0, 0, 0 ) ), m_Vel( Vector3( 0, 0, 0 ) ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 )
 {
 	m_ObjectInfo = g_ObjectInfoManager.GetObjectInfo( chee );
@@ -17,7 +17,7 @@ Chee::Chee( std::string c ):
 	}
 	else
 	{
-		std::cout << "Cannot find " << c << std::endl;
+		std::wcout << L"Cannot find " << c << std::endl;
 	}
 }
 
@@ -30,7 +30,7 @@ void Chee::Init()
 {
 	m_Angle = 0;
 	m_HP = m_ObjectInfo->m_MaxHP;
-	m_Frame = "default";
+	m_Frame = L"default";
 	m_FrameID = 0;
 	FrameInfo* f = &m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID];
 	m_PicID = f->m_PictureID;
