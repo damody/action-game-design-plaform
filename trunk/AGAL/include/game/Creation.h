@@ -1,4 +1,5 @@
 #pragma once
+#include <math\Vector3.h>
 #include<vector>
 #include<string>
 
@@ -22,5 +23,4 @@ struct Creation
 	Vector3 v0;
 	//ai
 };
-
 typedef std::vector<Creation> Creations;

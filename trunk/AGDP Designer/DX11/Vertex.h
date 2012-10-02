@@ -34,7 +34,18 @@ struct PictureVertex
 };
 typedef std::vector<PictureVertex> PictureVertices;
 
+struct GamePictureVertex
+{
+	D3DXVECTOR2 position;
+	D3DXVECTOR2 size;
+	D3DXVECTOR4 picpos;
+	float	    faceside;
+	D3DXVECTOR2 center;
+};
+typedef std::vector<GamePictureVertex> GamePictureVertices;
+
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_PointVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_LineVertex[];
 extern D3D11_INPUT_ELEMENT_DESC VertexDesc_PICVertex[];
+extern D3D11_INPUT_ELEMENT_DESC VertexDesc_GPICVertex[];
 #endif // VERTEX_H
