@@ -40,13 +40,13 @@ class TextureManager
 public:
 	TextureManager( ID3D11Device* device );
 	~TextureManager( void );
-	int AddTexture( std::string path );
-	int AddTexture( std::string name , Texture_Sptr texture );
-	int Find( std::string path );
+	int AddTexture( std::wstring path );
+	int AddTexture( std::wstring name , Texture_Sptr texture );
+	int Find( std::wstring path );
 	Texture_Sptr GetTexture( unsigned int index );
 private:
 	Textures	m_Textures;
-	std::vector<std::string> m_List;
+	std::vector<std::wstring> m_List;
 	int		m_index;
 	ID3D11Device*	m_d3dDevice;
 };

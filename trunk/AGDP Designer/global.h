@@ -10,7 +10,7 @@
 
 extern HeroInfo* g_HeroInfo;
 
-extern std::string g_FrameName;
+extern std::wstring g_FrameName;
 extern int	g_FrameIndex;
 extern FramesMap* g_ActiveFramesMap;
 

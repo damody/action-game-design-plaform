@@ -138,6 +138,7 @@ public:
 	}
 
 	void InitPropList();
+	void InitPropList_Hero();
 	void InitPropList_Frame();
 	void InitPropList_Body() {InitPropList_Body( 0 );}
 	void InitPropList_Body( int polygonCount );

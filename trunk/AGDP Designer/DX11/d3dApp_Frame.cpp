@@ -131,7 +131,7 @@ void D3DApp_Frame::initDirect3D()
 	m_vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_vbd.CPUAccessFlags = 0;
 	m_vbd.MiscFlags = 0;
-	int t = m_TextureManager->AddTexture( "media\\Tamplete.png" );
+	int t = m_TextureManager->AddTexture( L"media\\Tamplete.png" );
 	m_Templete = m_TextureManager->GetTexture( t ).get();
 }
 
