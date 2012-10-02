@@ -23,6 +23,9 @@ std::vector< boost::shared_ptr<T> > LoadLua( std::wstring objectType )
 		luaResource = LuaCell_Sptr( new LuaCell );
 		if ( !luaResource->InputLuaFile( L"Script/luaResource.lua" ) )
 		{
+			printf("fatal error: can't find Script/luaResource.lua");
+			system("pause");
+			throw "can't find luaResource";
 			return data;//inputLua fail. So return empty vector.
 		}
 	}
@@ -52,9 +55,8 @@ std::vector< boost::shared_ptr<T> > LoadLua( std::wstring objectType )
 		// set lua file
 		if( !luaTemp->InputLuaFile( luaPath.c_str() ) )
 		{
-			wprintf(L"找不到 %s",luaPath.c_str());
-			std::vector< boost::shared_ptr<T> > t;
-			return t;
+			wprintf(L"error: 找不到 %s",luaPath.c_str());
+			continue;
 		}
 		// load lua's content
 		dataTemp->LoadData( luaTemp );
@@ -84,6 +86,9 @@ std::vector<std::wstring> LoadMusic( std::wstring musicType )
 		luaResource = LuaCell_Sptr( new LuaCell );
 		if ( !luaResource->InputLuaFile( L"Script/luaResource.lua" ) )
 		{
+			printf("fatal error: can't find Script/luaResource.lua");
+			system("pause");
+			throw "can't find luaResource";
 			return data;//inputLua fail. So return empty vector.
 		}
 	}
@@ -131,11 +136,30 @@ bool loadKeyMap(KeyMap& rmap){
 			!luaKeyMap->InputLuaFile(luaResource->GetLua<const char*>("keymap"))
 			)
 		{
+			printf("fatal error: 找不到 keymap\n");
+			system("pause");
+			throw "找不到 keymap";
 			return false;//inputLua fail. So return empty vector.
 		}
 	}
 
 	// Load Lua data
+	bool avali = true;
+	avali &= luaKeyMap->HasValue("keymap/UP/1");
+	avali &= luaKeyMap->HasValue("keymap/UP/2");
+	avali &= luaKeyMap->HasValue("keymap/DOWN/1");
+	avali &= luaKeyMap->HasValue("keymap/DOWN/2");
+	avali &= luaKeyMap->HasValue("keymap/LEFT/1");
+	avali &= luaKeyMap->HasValue("keymap/LEFT/2");
+	avali &= luaKeyMap->HasValue("keymap/RIGHT/1");
+	avali &= luaKeyMap->HasValue("keymap/RIGHT/2");
+	if(!avali){
+		printf("fatal error: keymap 格式錯誤\n");
+		system("pause");
+		throw "keymap 格式錯誤";
+		return false;
+	}
+
 	ukd = *luaKeyMap->GetLua<const char*>( "keymap/UP/1");
 	uku = *luaKeyMap->GetLua<const char*>( "keymap/UP/2");
 	dkd = *luaKeyMap->GetLua<const char*>( "keymap/DOWN/1");
