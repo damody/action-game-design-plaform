@@ -256,7 +256,7 @@ void Background::Update( float dt )
 void Background::BuildPoint()
 {
 	m_CRVerteices.clear();
-	float cut = g_Camera->Offsidelength() * 0.19;
+	float cut =(float) g_Camera->Offsidelength() * 0.19;
 
 	for ( ColorRects::iterator it = m_ColorRects.begin(); it != m_ColorRects.end(); it++ )
 	{

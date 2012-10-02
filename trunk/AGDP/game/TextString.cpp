@@ -5,7 +5,7 @@
 const float TextString::m_OFFSET = 0.1f;
 
 TextString::TextString():
-	m_Size( 50 ), m_OnGround( false ), m_Composition( Composition::LEFT ),
+	m_Size( 35 ), m_OnGround( false ), m_Composition( Composition::LEFT ),
 	m_Position( Vector3( 0, 0, 0 ) ), m_ForeColor( Vector3( 0, 0, 0 ) )
 {
 }

@@ -44,7 +44,7 @@ void InitDirect3DApp::initApp( int argc, char* argv[] )
 	D3DApp::initApp();
 	InitTexture();
 	LoadBlend();
-	g_Camera = Camera_Sptr( new Camera( ( float )m_ClientWidth, 0, 1000, 800, 0, 45 ) );
+	g_Camera = Camera_Sptr( new Camera( ( float )m_ClientWidth, 0, 1000, 800, 0, 25 ) );
 	g_WavPlayer.Initialize( getMainWnd() );
 	g_TextGenarator.Initialize();
 	g_TextManager.Initialize();
@@ -520,8 +520,6 @@ void InitDirect3DApp::buildPointFX()
 	m_vbd.MiscFlags = 0;
 }
 
-
-
 void InitDirect3DApp::buildPoint()
 {
 	ReleaseCOM( m_Buffer_Entity );
@@ -982,7 +980,6 @@ void InitDirect3DApp::PrintInfo()
 	}
 }
 
-
 void InitDirect3DApp::InitTexture()
 {
 	ID3D11Texture2D* tex1, *tex2, *tesres;
@@ -1190,26 +1187,9 @@ void InitDirect3DApp::ReflashTowerState()
 {
 }
 
-
-
 void InitDirect3DApp::UpdateCamera()
 {
-	if ( m_Player.m_Hero->Position().x < m_ClientWidth )
-	{
-		float m = m_ClientWidth - g_Camera->LookAt().x;
-		g_Camera->MoveX( m * 0.05f );
-	}
-	else if ( m_Player.m_Hero->Position().x > g_BackgroundManager.GetCurrentBackground()->Width() - m_ClientWidth )
-	{
-		float m = g_BackgroundManager.GetCurrentBackground()->Width() - m_ClientWidth - g_Camera->LookAt().x;
-		g_Camera->MoveX( m * 0.05f );
-	}
-	else
-	{
-		float m = m_Player.m_Hero->Position().x - g_Camera->LookAt().x;
-		g_Camera->MoveX( m * 0.05f );
-	}
-
+	g_Camera->TrackHero(*(m_Player.m_Hero),0,g_BackgroundManager.GetCurrentBackground()->Width(),m_ClientWidth);
 	m_Entity_cLootAt->SetRawValue( g_Camera->GetLookAt(), 0, sizeof( float ) * 3 );
 	m_Entity_cPos->SetRawValue( ( void* )g_Camera->GetCPos(), 0, sizeof( float ) * 3 );
 	m_Chee_cLootAt->SetRawValue( g_Camera->GetLookAt(), 0, sizeof( float ) * 3 );

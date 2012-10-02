@@ -168,7 +168,7 @@ void Hero::Update( float dt )
 	}
 	else
 	{
-		m_BodyAABB.SetBounding(-1e20);
+		m_BodyAABB.SetBounding((float)-1e20);
 	}
 
 	const Attacks& attacks = GetAttacks();
@@ -188,7 +188,7 @@ void Hero::Update( float dt )
 	}
 	else
 	{
-		m_AttackAABB.SetBounding(1e20);
+		m_AttackAABB.SetBounding((float)1e20);
 	}
 }
 
