@@ -1415,9 +1415,12 @@ void CPropertiesWnd::UpdateBody()
 	{
 		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->IsEdited() )
 		{
+			COleVariant v = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue();
+			v.ChangeType( VT_R4, NULL );
+			float var = v.fltVal;
 			float OldX = frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x();
 			command->AddRedoFunction([=](){
-				frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x( propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue().fltVal);
+				frameInfo->m_Bodys[m_Index].m_Area.Points()[i].x( var);
 				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint( i );
 			});
 			command->AddUndoFunction([=](){
@@ -1432,9 +1435,12 @@ void CPropertiesWnd::UpdateBody()
 
 		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->IsEdited() )
 		{
+			COleVariant v = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue();
+			v.ChangeType( VT_R4, NULL );
+			float var = v.fltVal;
 			float OldY = frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y();
 			command->AddRedoFunction([=](){
-				frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y( -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal);
+				frameInfo->m_Bodys[m_Index].m_Area.Points()[i].y( -var);
 				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditBodyPoint( i );
 			});
 			command->AddUndoFunction([=](){
@@ -1449,9 +1455,12 @@ void CPropertiesWnd::UpdateBody()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 1 )->GetValue();
+		v.ChangeType( VT_R4, NULL );
+		float var = v.fltVal;
 		float OldZWidth = frameInfo->m_Bodys[m_Index].m_ZWidth;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Bodys[m_Index].m_ZWidth = propRoot->GetSubItem( 1 )->GetValue().fltVal;
+			frameInfo->m_Bodys[m_Index].m_ZWidth = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Bodys[m_Index].m_ZWidth = OldZWidth;
@@ -1461,9 +1470,13 @@ void CPropertiesWnd::UpdateBody()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 2 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
+
 		int OldKind = frameInfo->m_Bodys[m_Index].m_Kind;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Bodys[m_Index].m_Kind = propRoot->GetSubItem( 2 )->GetValue().intVal;
+			frameInfo->m_Bodys[m_Index].m_Kind = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Bodys[m_Index].m_Kind = OldKind;
@@ -1533,9 +1546,12 @@ void CPropertiesWnd::UpdateAttack()
 	{
 		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->IsEdited() )
 		{
+			COleVariant v = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue();
+			v.ChangeType( VT_R4, NULL );
+			float var = v.fltVal;
 			float OldX = frameInfo->m_Attacks[m_Index].m_Area.Points()[i].x();
 			command->AddRedoFunction([=](){
-				frameInfo->m_Attacks[m_Index].m_Area.Points()[i].x( propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue().fltVal);
+				frameInfo->m_Attacks[m_Index].m_Area.Points()[i].x( var);
 				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint( i );
 			});
 			command->AddUndoFunction([=](){
@@ -1550,9 +1566,12 @@ void CPropertiesWnd::UpdateAttack()
 
 		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->IsEdited() )
 		{
+			COleVariant v = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue();
+			v.ChangeType( VT_R4, NULL );
+			float var = v.fltVal;
 			float OldY = frameInfo->m_Attacks[m_Index].m_Area.Points()[i].y();
 			command->AddRedoFunction([=](){
-				frameInfo->m_Attacks[m_Index].m_Area.Points()[i].y( -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal);
+				frameInfo->m_Attacks[m_Index].m_Area.Points()[i].y( -var);
 				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditAttackPoint( i );
 			});
 			command->AddUndoFunction([=](){
@@ -1568,9 +1587,12 @@ void CPropertiesWnd::UpdateAttack()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 1 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
 		int OldKind = frameInfo->m_Attacks[m_Index].m_Kind;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_Kind = propRoot->GetSubItem( 1 )->GetValue().intVal;
+			frameInfo->m_Attacks[m_Index].m_Kind = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Attacks[m_Index].m_Kind = OldKind;
@@ -1581,9 +1603,12 @@ void CPropertiesWnd::UpdateAttack()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 2 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
 		int OldEffect = frameInfo->m_Attacks[m_Index].m_Effect;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_Effect = propRoot->GetSubItem( 2 )->GetValue().intVal;
+			frameInfo->m_Attacks[m_Index].m_Effect = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Attacks[m_Index].m_Effect = OldEffect;
@@ -1594,9 +1619,12 @@ void CPropertiesWnd::UpdateAttack()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 3 )->GetValue();
+		v.ChangeType( VT_R4, NULL );
+		float var = v.fltVal;
 		float OldZWidth = frameInfo->m_Attacks[m_Index].m_ZWidth;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_ZWidth = propRoot->GetSubItem( 3 )->GetValue().fltVal;
+			frameInfo->m_Attacks[m_Index].m_ZWidth = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Attacks[m_Index].m_ZWidth = OldZWidth;
@@ -1607,9 +1635,12 @@ void CPropertiesWnd::UpdateAttack()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 4 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
 		int OldStrength = frameInfo->m_Attacks[m_Index].m_Strength;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_Strength = propRoot->GetSubItem( 4 )->GetValue().intVal;
+			frameInfo->m_Attacks[m_Index].m_Strength = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Attacks[m_Index].m_Strength = OldStrength;
@@ -1620,9 +1651,12 @@ void CPropertiesWnd::UpdateAttack()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 5 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
 		int OldInjury = frameInfo->m_Attacks[m_Index].m_Injury;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_Injury = propRoot->GetSubItem( 5 )->GetValue().intVal;
+			frameInfo->m_Attacks[m_Index].m_Injury = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Attacks[m_Index].m_Injury = OldInjury;
@@ -1633,9 +1667,12 @@ void CPropertiesWnd::UpdateAttack()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 6 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 6 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
 		int OldFall = frameInfo->m_Attacks[m_Index].m_Fall;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_Fall = propRoot->GetSubItem( 6 )->GetValue().intVal;
+			frameInfo->m_Attacks[m_Index].m_Fall = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Attacks[m_Index].m_Fall = OldFall;
@@ -1646,9 +1683,12 @@ void CPropertiesWnd::UpdateAttack()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 7 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 7 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
 		int OldBreakDefend = frameInfo->m_Attacks[m_Index].m_BreakDefend;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_BreakDefend = propRoot->GetSubItem( 7 )->GetValue().intVal;
+			frameInfo->m_Attacks[m_Index].m_BreakDefend = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Attacks[m_Index].m_BreakDefend = OldBreakDefend;
@@ -1659,9 +1699,12 @@ void CPropertiesWnd::UpdateAttack()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 8 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 8 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
 		int OldAttackRest = frameInfo->m_Attacks[m_Index].m_AttackRest;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_AttackRest = propRoot->GetSubItem( 8 )->GetValue().intVal;
+			frameInfo->m_Attacks[m_Index].m_AttackRest = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Attacks[m_Index].m_AttackRest = OldAttackRest;
@@ -1672,9 +1715,12 @@ void CPropertiesWnd::UpdateAttack()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 9 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 9 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
 		int OldReAttackRest = frameInfo->m_Attacks[m_Index].m_ReAttackRest;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_ReAttackRest = propRoot->GetSubItem( 9 )->GetValue().intVal;
+			frameInfo->m_Attacks[m_Index].m_ReAttackRest = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Attacks[m_Index].m_ReAttackRest = OldReAttackRest;
@@ -1685,9 +1731,12 @@ void CPropertiesWnd::UpdateAttack()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 0 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 10 )->GetSubItem( 0 )->GetValue();
+		v.ChangeType( VT_R4, NULL );
+		float var = v.fltVal;
 		float OldDVX = frameInfo->m_Attacks[m_Index].m_DVX;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_DVX = propRoot->GetSubItem( 10 )->GetSubItem( 0 )->GetValue().fltVal;
+			frameInfo->m_Attacks[m_Index].m_DVX = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Attacks[m_Index].m_DVX = OldDVX;
@@ -1698,9 +1747,12 @@ void CPropertiesWnd::UpdateAttack()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 1 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 10 )->GetSubItem( 1 )->GetValue();
+		v.ChangeType( VT_R4, NULL );
+		float var = v.fltVal;
 		float OldDVY = frameInfo->m_Attacks[m_Index].m_DVY;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_DVY = propRoot->GetSubItem( 10 )->GetSubItem( 1 )->GetValue().fltVal;
+			frameInfo->m_Attacks[m_Index].m_DVY = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Attacks[m_Index].m_DVY = OldDVY;
@@ -1711,9 +1763,12 @@ void CPropertiesWnd::UpdateAttack()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 10 )->GetSubItem( 2 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 10 )->GetSubItem( 2 )->GetValue();
+		v.ChangeType( VT_R4, NULL );
+		float var = v.fltVal;
 		float OldDVZ = frameInfo->m_Attacks[m_Index].m_DVZ;
 		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_DVZ = propRoot->GetSubItem( 10 )->GetSubItem( 2 )->GetValue().fltVal;
+			frameInfo->m_Attacks[m_Index].m_DVZ = var;
 		});
 		command->AddUndoFunction([=](){
 			frameInfo->m_Attacks[m_Index].m_DVZ = OldDVZ;
@@ -1817,9 +1872,12 @@ void CPropertiesWnd::UpdateCatch()
 	{
 		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->IsEdited() )
 		{
+			COleVariant v = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue();
+			v.ChangeType( VT_R4, NULL );
+			float var = v.fltVal;
 			float OldX = frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x();
 			command->AddRedoFunction([=](){
-				frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x( propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 )->GetValue().fltVal);
+				frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x( var);
 				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );
 			});
 			command->AddUndoFunction([=](){
@@ -1834,13 +1892,16 @@ void CPropertiesWnd::UpdateCatch()
 
 		if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->IsEdited() )
 		{
+			COleVariant v = propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue();
+			v.ChangeType( VT_R4, NULL );
+			float var = v.fltVal;
 			float OldY = frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y();
 			command->AddRedoFunction([=](){
-				frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y( -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal);
+				frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y( -var);
 				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );
 			});
 			command->AddUndoFunction([=](){
-				frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y( -propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 )->GetValue().fltVal);
+				frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y( OldY);
 				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.EditCatchPoint( i );
 			});
 
@@ -1923,9 +1984,12 @@ void CPropertiesWnd::UpdatePictureData()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 )->GetSubItem( 0 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
 		int OldRow = g_HeroInfo->m_PictureDatas[m_Index].m_Row;
 		command->AddRedoFunction([=](){
-			g_HeroInfo->m_PictureDatas[m_Index].m_Row = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
+			g_HeroInfo->m_PictureDatas[m_Index].m_Row = var;
 			( ( CMainFrame* )( this->GetParentFrame() ) )->UpdatePicture( m_Index );
 		});
 		command->AddUndoFunction([=](){
@@ -1939,9 +2003,12 @@ void CPropertiesWnd::UpdatePictureData()
 	}
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 )->GetSubItem( 1 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 2 )->GetSubItem( 1 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
 		int OldColumn = g_HeroInfo->m_PictureDatas[m_Index].m_Column;
 		command->AddRedoFunction([=](){
-			g_HeroInfo->m_PictureDatas[m_Index].m_Column = propRoot->GetSubItem( 2 )->GetSubItem( 1 )->GetValue().intVal;
+			g_HeroInfo->m_PictureDatas[m_Index].m_Column = var;
 			( ( CMainFrame* )( this->GetParentFrame() ) )->UpdatePicture( m_Index );
 		});
 		command->AddUndoFunction([=](){
@@ -1956,9 +2023,12 @@ void CPropertiesWnd::UpdatePictureData()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 3 )->GetSubItem( 0 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 3 )->GetSubItem( 0 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
 		int OldWidth = g_HeroInfo->m_PictureDatas[m_Index].m_Width;
 		command->AddRedoFunction([=](){
-			g_HeroInfo->m_PictureDatas[m_Index].m_Width = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
+			g_HeroInfo->m_PictureDatas[m_Index].m_Width = var;
 		});
 		command->AddUndoFunction([=](){
 			g_HeroInfo->m_PictureDatas[m_Index].m_Width = OldWidth;
@@ -1968,9 +2038,12 @@ void CPropertiesWnd::UpdatePictureData()
 	}
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 3 )->GetSubItem( 1 ) )->IsEdited() )
 	{
+		COleVariant v = propRoot->GetSubItem( 3 )->GetSubItem( 1 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int var = v.intVal;
 		int OldHeight = g_HeroInfo->m_PictureDatas[m_Index].m_Height;
 		command->AddRedoFunction([=](){
-			g_HeroInfo->m_PictureDatas[m_Index].m_Height = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
+			g_HeroInfo->m_PictureDatas[m_Index].m_Height = var;
 		});
 		command->AddUndoFunction([=](){
 			g_HeroInfo->m_PictureDatas[m_Index].m_Height = OldHeight;
