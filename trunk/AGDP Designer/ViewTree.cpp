@@ -83,11 +83,9 @@ void CViewTree::OnEndLabelEdit( NMHDR* pNMHDR, LRESULT* pResult )
 	}
 
 	CString str( this->GetItemText( item ) );
-	CT2CA pszConvertedAnsiString ( str );
-	std::string origFrameName( pszConvertedAnsiString );
+	std::wstring origFrameName( str.GetBuffer(0) );
 	str = CString( pTVDispInfo->item.pszText );
-	CT2CA pszConvertedAnsiString2 ( str );
-	std::string newFrameName( pszConvertedAnsiString2 );
+	std::wstring newFrameName( str.GetBuffer(0) );
 
 	if ( g_ActiveFramesMap->find( newFrameName ) != g_ActiveFramesMap->end() )
 	{

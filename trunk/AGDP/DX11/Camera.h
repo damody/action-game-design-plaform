@@ -5,7 +5,7 @@
 #include <d3dx9.h>
 #include "math\Vector3.h"
 #include "common\shared_ptr.h"
-
+#include "Game\Hero.h"
 #define PI 3.14159
 
 class Camera
@@ -27,6 +27,7 @@ private:
 
 	float m_Thita_R;
 	float m_ScreenW, m_ScreenH;
+	bool  m_Trackable;
 public:
 	Camera();
 	Camera( float xlook, float ylook, float zlook, float r, float thita, float alpha );
@@ -38,6 +39,7 @@ public:
 	void MoveX( float index );
 	void MoveY( float index );
 	void Rotate( float inX, float inY ); //¨¤«×
+	void TrackHero( Hero& hero, float left, float right ,float width );
 
 	//¼x¹ïCamera Position
 	void Zoom( float index );
@@ -53,7 +55,6 @@ public:
 
 	float* GetLookAt();
 	float* GetCPos();
-
 };
 SHARE_PTR( Camera );
 

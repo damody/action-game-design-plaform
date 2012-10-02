@@ -1,7 +1,7 @@
 #include "StdGame.h"
 #include "Camera.h"
 
-Camera::Camera(): m_LookAt( Vector3( 0, 0, 0 ) ), m_Radius( 0 ), m_Thita( 0 ), m_Alpha( 0 ), m_ScreenW( 0 ), m_ScreenH( 0 )
+Camera::Camera(): m_LookAt( Vector3( 0, 0, 0 ) ), m_Radius( 0 ), m_Thita( 0 ), m_Alpha( 0 ), m_ScreenW( 0 ), m_ScreenH( 0 ),m_Trackable(true)
 {
 	m_Thita_R = ( float )cos( -m_Thita * 3.14159 / 180.0f );
 }
@@ -111,5 +111,24 @@ float Camera::Offsidelength()
 	return 4 * m_ScreenW;
 }
 
+void Camera::TrackHero( Hero& hero, float left, float right ,float width )
+{
+	if(!hero.IsAlive() || !m_Trackable)return;
+	if (hero.Position().x < width - left )
+	{
+		float m = width -left - m_LookAt.x;
+		MoveX( m * 0.05f );
+	}
+	else if ( hero.Position().x > right - width )
+	{
+		float m = right - width - m_LookAt.x;
+		MoveX( m * 0.05f );
+	}
+	else
+	{
+		float m = hero.Position().x - m_LookAt.x;
+		MoveX( m * 0.05f );
+	}
+}
 
 

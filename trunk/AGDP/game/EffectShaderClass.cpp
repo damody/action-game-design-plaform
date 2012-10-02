@@ -230,13 +230,13 @@ bool EffectShaderClass::SetEffectVariableByName()
 	m_alphaTexture = m_Effect->GetVariableByName( "alphaTexture" )->AsShaderResource();
 	m_frameTime = m_Effect->GetVariableByName( "frameTime" )->AsScalar();
 
-	for ( int i = 0; i < m_LuaTextureNames.size(); i++ )
+	for (unsigned int i = 0; i < m_LuaTextureNames.size(); i++ )
 	{
 		m_EffectShaderResource[ m_LuaTextureNames[i] ] =
 		        m_Effect->GetVariableByName( m_LuaTextureNames[i].c_str() )->AsShaderResource();
 	}
 
-	for ( int i = 0; i < m_LuaShaderParameterNames.size(); i++ )
+	for (unsigned int i = 0; i < m_LuaShaderParameterNames.size(); i++ )
 	{
 		std::string variableType;
 		//Check value

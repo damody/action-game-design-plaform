@@ -530,9 +530,7 @@ void CMainFrame::OnFileNew()
 		if ( fileNew.m_Type == 0 )
 		{
 			HeroInfo_RawPtr hero = HeroInfo_RawPtr( new HeroInfo );
-			char buff[1000];
-			ConvStr::WcharToChar( fileNew.m_Name.GetBuffer( 0 ), buff );
-			hero->m_Name = std::string( buff );
+			hero->m_Name = std::wstring( fileNew.m_Name.GetBuffer( 0 ) );
 			m_wndFileView.AddFile( hero );
 		}
 	}

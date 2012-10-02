@@ -10,7 +10,7 @@ TextureManager::~TextureManager( void )
 {
 }
 
-int TextureManager::AddTexture( std::string path )
+int TextureManager::AddTexture( std::wstring path )
 {
 	int index = Find( path );
 
@@ -25,7 +25,7 @@ int TextureManager::AddTexture( std::string path )
 	return m_index;
 }
 
-int TextureManager::AddTexture( std::string name , Texture_Sptr texture )
+int TextureManager::AddTexture( std::wstring name , Texture_Sptr texture )
 {
 	m_Textures.push_back( texture );
 	m_List.push_back( name );
@@ -43,11 +43,11 @@ Texture_Sptr TextureManager::GetTexture( unsigned int index )
 	else { return Texture_Sptr(); }
 }
 
-int TextureManager::Find( std::string path )
+int TextureManager::Find( std::wstring path )
 {
 	int index = -1;
 
-	for ( std::vector<std::string>::iterator it = m_List.begin(); it != m_List.end(); it++ )
+	for ( std::vector<std::wstring>::iterator it = m_List.begin(); it != m_List.end(); it++ )
 	{
 		index++;
 

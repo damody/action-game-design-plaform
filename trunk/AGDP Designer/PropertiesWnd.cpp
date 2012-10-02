@@ -1004,12 +1004,11 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		char buff[1000];
 		COleVariant v = propRoot->GetSubItem( 2 )->GetValue();
 		v.ChangeType( VT_BSTR, NULL );
-		ConvStr::WcharToChar( CString( v ).GetBuffer( 0 ), buff );
-		std::string FrameName( buff );
+		std::wstring FrameName( CString( v ).GetBuffer( 0 ) );
 
 		if ( g_ActiveFramesMap->find( FrameName ) != g_ActiveFramesMap->end() )
 		{
-			std::string OldFrameName = frameInfo->m_NextFrameName;
+			std::wstring OldFrameName = frameInfo->m_NextFrameName;
 			command->AddRedoFunction([=](){frameInfo->m_NextFrameName = FrameName;});
 			command->AddUndoFunction([=](){frameInfo->m_NextFrameName = OldFrameName;});
 			//frameInfo->m_NextFrameName = FrameName;
@@ -1287,12 +1286,11 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		char buff[1000];
 		COleVariant v = propRoot->GetSubItem( 9 )->GetSubItem( 3 )->GetValue();
 		v.ChangeType( VT_BSTR, NULL );
-		ConvStr::WcharToChar( CString( v ).GetBuffer( 0 ), buff );
-		std::string FrameName( buff );
+		std::wstring FrameName( CString( v ).GetBuffer( 0 ) );
 
 		if ( g_ActiveFramesMap->find( FrameName ) != g_ActiveFramesMap->end() )
 		{
-			std::string OldFrameName = frameInfo->m_Consume.m_NotEnoughFrameName;
+			std::wstring OldFrameName = frameInfo->m_Consume.m_NotEnoughFrameName;
 			command->AddRedoFunction([=](){frameInfo->m_Consume.m_NotEnoughFrameName = FrameName;});
 			command->AddUndoFunction([=](){frameInfo->m_Consume.m_NotEnoughFrameName = OldFrameName;});
 			//frameInfo->m_Consume.m_NotEnoughFrameName = FrameName;

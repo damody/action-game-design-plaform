@@ -314,17 +314,17 @@ int num = 0;
 void CClassView::OnAnimationAdd()
 {
 	HTREEITEM root = m_wndClassView.GetRootItem();
-	char buff[100];
-	sprintf( buff, "Default%d", num );
+	wchar_t buff[100];
+	wsprintf( buff, L"default%d", num );
 	CString str( buff );
-	std::string frameName( buff );
+	std::wstring frameName( buff );
 
 	if ( g_ActiveFramesMap != NULL )
 	{
 		( *g_ActiveFramesMap )[frameName] = FrameInfos();
 		HTREEITEM item = m_wndClassView.InsertItem( str, 1, 1, root );
 		( *g_ActiveFramesMap )[frameName].push_back( defaultFrameInfo( item ) );
-		sprintf( buff, "%d", 0 );
+		wsprintf( buff, L"%d", 0 );
 		CString str( buff );
 		HTREEITEM hClass =  m_wndClassView.InsertItem( str, 3, 3, item );
 		m_wndClassView.InsertItem( _T( "Bodys" ), 3, 3, hClass );
@@ -365,8 +365,7 @@ void CClassView::OnAnimationDelete()
 
 	if ( item != NULL )
 	{
-		CT2CA pszConvertedAnsiString ( m_wndClassView.GetItemText( item ) );
-		std::string str( pszConvertedAnsiString );
+		std::wstring str( m_wndClassView.GetItemText( item ) );
 		g_ActiveFramesMap->erase( g_ActiveFramesMap->find( str ) );
 		HTREEITEM hNextItem;
 		HTREEITEM hChildItem = m_wndClassView.GetChildItem( item );
@@ -384,7 +383,7 @@ void CClassView::OnAnimationDelete()
 		//Clear
 		if ( g_FrameName == str )
 		{
-			g_FrameName = "";
+			g_FrameName = L"";
 			g_FrameIndex = -1;
 			( ( CMainFrame* )this->GetParentFrame() )->Clear();
 		}
@@ -397,8 +396,7 @@ void CClassView::OnFrameAdd()
 
 	if ( item != NULL )
 	{
-		CT2CA pszConvertedAnsiString ( m_wndClassView.GetItemText( item ) );
-		std::string frameName( pszConvertedAnsiString );
+		std::wstring frameName( m_wndClassView.GetItemText( item ) );
 		int index = ( *g_ActiveFramesMap )[frameName].size();
 		FrameInfo fi = defaultFrameInfo( item );
 		fi.m_FrameIndex = index;
@@ -425,8 +423,7 @@ void CClassView::OnFrameDelete()
 {
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
 	int count = _ttoi( m_wndClassView.GetItemText( item ) );
-	CT2CA pszConvertedAnsiString ( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( item ) ) );
-	std::string frameName( pszConvertedAnsiString );
+	std::wstring frameName(  m_wndClassView.GetItemText( m_wndClassView.GetParentItem( item ) )  );
 	( *g_ActiveFramesMap )[frameName].erase( ( *g_ActiveFramesMap )[frameName].begin() + count );
 
 	if ( item != NULL )
@@ -526,9 +523,7 @@ void CClassView::OnSelectItem( HTREEITEM item )
 			{
 				HTREEITEM FrameIndex = m_wndClassView.GetParentItem( pItem );
 				HTREEITEM Frame	     = m_wndClassView.GetParentItem( FrameIndex );
-				char buff[1000];
-				ConvStr::WcharToChar( m_wndClassView.GetItemText( Frame ).GetBuffer( 0 ), buff );
-				std::string FrameName( buff );
+				std::wstring FrameName(  m_wndClassView.GetItemText( Frame ).GetBuffer( 0 ) );
 
 				if ( g_FrameName != FrameName || g_FrameIndex != _ttoi( m_wndClassView.GetItemText( FrameIndex ) ) )
 				{
@@ -543,9 +538,7 @@ void CClassView::OnSelectItem( HTREEITEM item )
 			{
 				HTREEITEM FrameIndex = m_wndClassView.GetParentItem( pItem );
 				HTREEITEM Frame	     = m_wndClassView.GetParentItem( FrameIndex );
-				char buff[1000];
-				ConvStr::WcharToChar( m_wndClassView.GetItemText( Frame ).GetBuffer( 0 ), buff );
-				std::string FrameName( buff );
+				std::wstring FrameName( m_wndClassView.GetItemText( Frame ).GetBuffer( 0 ) );
 
 				if ( g_FrameName != FrameName || g_FrameIndex != _ttoi( m_wndClassView.GetItemText( FrameIndex ) ) )
 				{
@@ -563,9 +556,7 @@ void CClassView::OnSelectItem( HTREEITEM item )
 			{
 				HTREEITEM FrameIndex = m_wndClassView.GetParentItem( pItem );
 				HTREEITEM Frame	     = m_wndClassView.GetParentItem( FrameIndex );
-				char buff[1000];
-				ConvStr::WcharToChar( m_wndClassView.GetItemText( Frame ).GetBuffer( 0 ), buff );
-				std::string FrameName( buff );
+				std::wstring FrameName(  m_wndClassView.GetItemText( Frame ).GetBuffer( 0 ) );
 
 				if ( g_FrameName != FrameName || g_FrameIndex != _ttoi( m_wndClassView.GetItemText( FrameIndex ) ) )
 				{
@@ -583,9 +574,7 @@ void CClassView::OnSelectItem( HTREEITEM item )
 			{
 				HTREEITEM FrameIndex = m_wndClassView.GetParentItem( pItem );
 				HTREEITEM Frame	     = m_wndClassView.GetParentItem( FrameIndex );
-				char buff[1000];
-				ConvStr::WcharToChar( m_wndClassView.GetItemText( Frame ).GetBuffer( 0 ), buff );
-				std::string FrameName( buff );
+				std::wstring FrameName( m_wndClassView.GetItemText( Frame ).GetBuffer( 0 ) );
 
 				if ( g_FrameName != FrameName || g_FrameIndex != _ttoi( m_wndClassView.GetItemText( FrameIndex ) ) )
 				{
@@ -598,9 +587,7 @@ void CClassView::OnSelectItem( HTREEITEM item )
 			}
 			else
 			{
-				char buff[1000];
-				ConvStr::WcharToChar( text.GetBuffer( 0 ), buff );
-				std::string FrameName( buff );
+				std::wstring FrameName( text.GetBuffer( 0 ) );
 
 				if ( g_ActiveFramesMap->find( FrameName ) != g_ActiveFramesMap->end() )
 				{
@@ -751,8 +738,7 @@ void CClassView::Refresh()
 
 FrameInfo CClassView::defaultFrameInfo( HTREEITEM item )
 {
-	CT2CA pszConvertedAnsiString ( m_wndClassView.GetItemText( item ) );
-	std::string str2( pszConvertedAnsiString );
+	std::wstring str2( m_wndClassView.GetItemText( item ) );
 	FrameInfo fi;
 	fi.m_FrameName = str2;
 	fi.m_FrameIndex = 0;
@@ -782,14 +768,13 @@ void CClassView::OnBodyAdd()
 	// TODO: 在此加入您的命令處理常式程式碼
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
 	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( item ) ) );
-	char buff[100];
-	ConvStr::WcharToChar( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ), buff );
-	std::string frameName( buff );
+	std::wstring frameName( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) );
 	Body body;
 	body.m_Kind = 1;
 	body.m_ZWidth = 1;
 	( *g_ActiveFramesMap )[frameName][frameIndex].m_Bodys.push_back( body );
-	sprintf( buff, "%d", ( *g_ActiveFramesMap )[frameName][frameIndex].m_Bodys.size() - 1 );
+	wchar_t buff[100];
+	wsprintf( buff, L"%d", ( *g_ActiveFramesMap )[frameName][frameIndex].m_Bodys.size() - 1 );
 	CString str( buff );
 	m_wndClassView.InsertItem( str , 3, 3, item );
 	m_wndClassView.Expand( item, TVE_EXPAND );
@@ -809,9 +794,7 @@ void CClassView::OnBodyDelete()
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
 	int count = _ttoi( m_wndClassView.GetItemText( item ) );
 	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) );
-	char buff[100];
-	ConvStr::WcharToChar( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) ), buff );
-	std::string frameName( buff );
+	std::wstring frameName(  m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) ) );
 	( *g_ActiveFramesMap )[frameName][frameIndex].m_Bodys.erase( ( *g_ActiveFramesMap )[frameName][frameIndex].m_Bodys.begin() + count );
 
 	if ( item != NULL )
@@ -854,9 +837,7 @@ void CClassView::OnAttackDelete()
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
 	int count = _ttoi( m_wndClassView.GetItemText( item ) );
 	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) );
-	char buff[100];
-	ConvStr::WcharToChar( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) ), buff );
-	std::string frameName( buff );
+	std::wstring frameName( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) ) );
 	( *g_ActiveFramesMap )[frameName][frameIndex].m_Attacks.erase( ( *g_ActiveFramesMap )[frameName][frameIndex].m_Attacks.begin() + count );
 
 	if ( item != NULL )
@@ -898,9 +879,7 @@ void CClassView::OnAttackAdd()
 	// TODO: 在此加入您的命令處理常式程式碼
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
 	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( item ) ) );
-	char buff[100];
-	ConvStr::WcharToChar( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ), buff );
-	std::string frameName( buff );
+	std::wstring frameName( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) );
 	Attack atk;
 	atk.m_Kind = 1;
 	atk.m_ZWidth = 1;
@@ -915,7 +894,8 @@ void CClassView::OnAttackAdd()
 	atk.m_BreakDefend = 0;
 	atk.m_Strength = 0;
 	( *g_ActiveFramesMap )[frameName][frameIndex].m_Attacks.push_back( atk );
-	sprintf( buff, "%d", ( *g_ActiveFramesMap )[frameName][frameIndex].m_Attacks.size() - 1 );
+	wchar_t buff[100];
+	wsprintf( buff, L"%d", ( *g_ActiveFramesMap )[frameName][frameIndex].m_Attacks.size() - 1 );
 	CString str( buff );
 	m_wndClassView.InsertItem( str , 3, 3, item );
 	m_wndClassView.Expand( item, TVE_EXPAND );
@@ -947,9 +927,7 @@ void CClassView::OnCatchAdd()
 	// TODO: 在此加入您的命令處理常式程式碼
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
 	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( item ) ) );
-	char buff[100];
-	ConvStr::WcharToChar( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ), buff );
-	std::string frameName( buff );
+	std::wstring frameName( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) );
 	CatchInfo c;
 	c.m_Kind = 0;
 	c.m_ZWidth = 1;
@@ -959,7 +937,8 @@ void CClassView::OnCatchAdd()
 	c.m_CatchPosition.y = 0;
 	c.m_CatchWhere = CatchInfo::CatchPosition::NECK;
 	( *g_ActiveFramesMap )[frameName][frameIndex].m_Catchs.push_back( c );
-	sprintf( buff, "%d", ( *g_ActiveFramesMap )[frameName][frameIndex].m_Catchs.size() - 1 );
+	wchar_t buff[100];
+	wsprintf( buff, L"%d", ( *g_ActiveFramesMap )[frameName][frameIndex].m_Catchs.size() - 1 );
 	CString str( buff );
 	m_wndClassView.InsertItem( str , 3, 3, item );
 	m_wndClassView.Expand( item, TVE_EXPAND );
@@ -980,9 +959,7 @@ void CClassView::OnCatchDelete()
 	HTREEITEM item = m_wndClassView.GetSelectedItem();
 	int count = _ttoi( m_wndClassView.GetItemText( item ) );
 	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) );
-	char buff[100];
-	ConvStr::WcharToChar( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) ), buff );
-	std::string frameName( buff );
+	std::wstring frameName( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) ) );
 	( *g_ActiveFramesMap )[frameName][frameIndex].m_Catchs.erase( ( *g_ActiveFramesMap )[frameName][frameIndex].m_Catchs.begin() + count );
 
 	if ( item != NULL )

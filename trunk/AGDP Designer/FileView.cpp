@@ -213,11 +213,11 @@ void CFileView::OnFileOpen()
 				( ( CMainFrame* )this->GetParentFrame() )->NewHeroViews( hero );
 				for ( unsigned int i = 0; i < hero->m_PictureDatas.size(); i++ )
 				{
-					std::string pic = hero->m_PictureDatas[i].m_Path;
+					std::wstring pic = hero->m_PictureDatas[i].m_Path;
 					size_t found;
 					found = pic.rfind( '\\' );
-					char buff[100];
-					sprintf( buff, "%s", pic.substr( found + 1, pic.length() ).c_str() );
+					wchar_t buff[100];
+					wsprintf( buff, L"%s", pic.substr( found + 1, pic.length() ).c_str() );
 					CString str( buff );
 					m_wndFileView.InsertItem( str, 2, 2, hHero );
 					hero->m_PictureDatas[i].m_TextureID = g_TextureManagerFrame->AddTexture( hero->m_PictureDatas[i].m_Path );
@@ -228,7 +228,7 @@ void CFileView::OnFileOpen()
 				g_HeroInfoMap[hero->m_Name] = HeroInfo_Sptr(hero);
 				m_wndFileView.Expand( hHeroDoc, TVE_EXPAND );
 				g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
-				g_FrameName = "";
+				g_FrameName = L" ";
 				g_FrameIndex = -1;
 				( ( CMainFrame* )this->GetParentFrame() )->m_wndClassView.Refresh();
 				( ( CMainFrame* )this->GetParentFrame() )->Clear();
@@ -315,17 +315,17 @@ void CFileView::OnSelectItem( HTREEITEM item )
 	{
 		g_HeroInfo = it->second;
 		g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
-		g_FrameName = "";
+		g_FrameName = L" ";
 		g_FrameIndex = -1;
 		if (( ( CMainFrame* )this->GetParentFrame() )->NewHeroViews( it->second ))
 		{
 			for ( unsigned int i = 0; i < it->second->m_PictureDatas.size(); i++ )
 			{
-				std::string pic = it->second->m_PictureDatas[i].m_Path;
+				std::wstring pic = it->second->m_PictureDatas[i].m_Path;
 				size_t found;
 				found = pic.rfind( '\\' );
-				char buff[100];
-				sprintf( buff, "%s", pic.substr( found + 1, pic.length() ).c_str() );
+				wchar_t buff[100];
+				wsprintf( buff, L"%s", pic.substr( found + 1, pic.length() ).c_str() );
 				CString str( buff );
 				m_wndFileView.InsertItem( str, 2, 2, item );
 				it->second ->m_PictureDatas[i].m_TextureID = g_TextureManagerFrame->AddTexture( it->second ->m_PictureDatas[i].m_Path );
@@ -364,8 +364,7 @@ void CFileView::OnPicturedataAdd()
 
 		PictureData pic;
 		char buff[1000];
-		ConvStr::WcharToChar( dlgFile.GetPathName().GetBuffer( 0 ), buff );
-		std::string path( buff );
+		std::wstring path( dlgFile.GetPathName().GetBuffer( 0 ) );
 		pic.m_Path = path;
 		pic.m_TextureID = g_TextureManagerFrame->AddTexture( path );
 		pic.m_Width  = 128;
@@ -387,11 +386,11 @@ void CFileView::AddFile( HeroInfo* hero )
 	{
 		for ( unsigned int i = 0; i < hero->m_PictureDatas.size(); i++ )
 		{
-			std::string pic = hero->m_PictureDatas[i].m_Path;
+			std::wstring pic = hero->m_PictureDatas[i].m_Path;
 			size_t found;
 			found = pic.rfind( '\\' );
-			char buff[100];
-			sprintf( buff, "%s", pic.substr( found + 1, pic.length() ).c_str() );
+			wchar_t buff[100];
+			wsprintf( buff, L"%s", pic.substr( found + 1, pic.length() ).c_str() );
 			CString str( buff );
 			m_wndFileView.InsertItem( str, 2, 2, hHero );
 			hero->m_PictureDatas[i].m_TextureID = g_TextureManagerFrame->AddTexture( hero->m_PictureDatas[i].m_Path );
@@ -401,7 +400,7 @@ void CFileView::AddFile( HeroInfo* hero )
 		m_HeroInfoMap[hHero] = hero;
 		m_wndFileView.Expand( hHeroDoc, TVE_EXPAND );
 		g_ActiveFramesMap = &g_HeroInfo->m_FramesMap;
-		g_FrameName = "";
+		g_FrameName = L"";
 		g_FrameIndex = -1;
 		( ( CMainFrame* )this->GetParentFrame() )->m_wndClassView.Refresh();
 		( ( CMainFrame* )this->GetParentFrame() )->Clear();
@@ -413,7 +412,7 @@ void CFileView::LoadData()
 	g_Actions.LoadData(L"Script\\Action.lua","Action");
 
 	std::vector<HeroInfo_Sptr> heroInfos;
-	heroInfos = LuaResource::LoadLua<HeroInfo>( "hero" );
+	heroInfos = LuaResource::LoadLua<HeroInfo>( L"hero" );
 	for (unsigned int idx = 0; idx < heroInfos.size(); idx++ )
 	{
 		g_HeroInfoMap[heroInfos[idx]->m_Name] = heroInfos[idx];
@@ -422,7 +421,7 @@ void CFileView::LoadData()
 	}
 
 	std::vector<ObjectInfo_Sptr> objectInfos;
-	objectInfos = LuaResource::LoadLua<ObjectInfo>( "object" );
+	objectInfos = LuaResource::LoadLua<ObjectInfo>( L"object" );
 	for (unsigned int idx = 0; idx < objectInfos.size(); idx++ )
 	{
 		g_ObjectInfoMap[objectInfos[idx]->m_Name]=objectInfos[idx];

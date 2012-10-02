@@ -3,7 +3,7 @@
 HeroInfo* g_HeroInfo = NULL;
 
 FramesMap*	g_ActiveFramesMap = NULL;
-std::string	g_FrameName = std::string( "" );
+std::wstring	g_FrameName = std::wstring( L"" );
 int		g_FrameIndex = -1;
 
 float g_Frame_Scale = 1.0f;
