@@ -1048,11 +1048,9 @@ void CPropertiesWnd::UpdatePropList_Frame()
 
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->IsEdited() )
 	{
-		char buff[100];
 		COleVariant v = propRoot->GetSubItem( 4 )->GetValue();
 		v.ChangeType( VT_BSTR, NULL );
-		ConvStr::WcharToChar( CString( v ).GetBuffer( 0 ), buff );
-		std::string action( buff );
+		std::wstring action( CString( v ).GetBuffer( 0 ) );
 		int key = g_Actions.FindKey(action);
 		if (key != -1)
 		{

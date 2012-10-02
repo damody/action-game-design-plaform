@@ -404,6 +404,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 {
 	FILE* file = _wfopen(  filePath.c_str() , L"w" );
 	wstrings frameTable;
+	LuaMap am(L"Script/Action.lua", "Action");
 
 	//判斷結尾是否有.lua 沒有則加上
 	if ( !( filePath.size() >= 4 &&
@@ -468,7 +469,6 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 	fwprintf( file, L"rowing_distance      = %f\n", hero->m_RowingDistance );
 	fwprintf( file, L"\n" );
 	//-------------------------------------
-	LuaMap am(L"Script/Action.lua", "Action");
 	fwprintf(file,L"air_crouch_map = {\n");
 	//*
 	for(CrouchMap::iterator icm = hero->m_CrouchMap.begin(); icm != hero->m_CrouchMap.end(); icm ++){
@@ -505,7 +505,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 			//----pic_y----
 			fwprintf( file, L"pic_y = %d, ", frameInfo->m_PictureY );
 			//----state----
-			fwprintf( file, L"state = Action.%s, ", HeroActionTable[frameInfo->m_HeroAction].c_str() );
+			fwprintf( file, L"state = Action.%s, ", am[frameInfo->m_HeroAction].c_str());//HeroActionTable[frameInfo->m_HeroAction].c_str() );
 			//----wait----
 			fwprintf( file, L"wait = %d, ", frameInfo->m_Wait );
 			//----next----
@@ -530,7 +530,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 			fwprintf(file, L"rule = %d, ", frameInfo->m_Consume.m_JumpRule);
 			fwprintf(file, L"HP = %d, ", frameInfo->m_Consume.m_HP);
 			fwprintf(file, L"MP = %d, ", frameInfo->m_Consume.m_MP);
-			fwprintf(file, L"backFrame = %d, ", frameInfo->m_Consume.m_NotEnoughFrameName);
+			fwprintf(file, L"backFrame = \"%s\", ", frameInfo->m_Consume.m_NotEnoughFrameName.c_str());
 			fwprintf(file, L"backFrameID = %d, ", frameInfo->m_Consume.m_NotEnoughFrame);
 			fwprintf(file, L"},\n");
 
@@ -605,7 +605,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 				for ( HitDatas::iterator hitIter = frameInfo->m_HitDatas.begin(); hitIter != frameInfo->m_HitDatas.end(); ++hitIter )
 				{
 					fwprintf( file, L"{" );
-					fwprintf( file, L"\"%s\", ", hitIter->m_KeyQueue.c_str() );
+					fwprintf( file, L"\"%s\", ", std::wstring(hitIter->m_KeyQueue.begin(), hitIter->m_KeyQueue.end()).c_str() );
 					fwprintf( file, L"\"%s\", ", hitIter->m_FrameName.c_str() );
 					fwprintf( file, L"%d ", hitIter->m_FrameOffset );
 					fwprintf( file, L"}, " );

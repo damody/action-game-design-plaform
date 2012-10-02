@@ -3,7 +3,7 @@
 #include <map>
 #include "Lua/LuaCell.h"
 
-class LuaMap : public std::map<int, std::string>
+class LuaMap : public std::map<int, std::wstring>
 {
 public:
 	LuaMap() {}
@@ -14,8 +14,8 @@ public:
 	void LoadData( LuaCell_Sptr lsptr, std::string tableName );
 	void LoadData( std::wstring path, std::string tableName );
 
-	int FindKey( std::string strValue );
-	static bool WriteLua ( std::wstring path, std::string formatString, ... );
+	int FindKey( std::wstring strValue );
+	static bool WriteLua ( std::wstring path, std::wstring formatString, ... );
 };
 
 class KeyMap{

@@ -9,7 +9,7 @@ LuaMap::LuaMap( LuaCell_Sptr lsptr, std::string tableName )
 	for ( int i = 0; i < ( int )keys.size(); i++ )
 	{
 		int _tmpKey = lsptr->GetLua<int>( "%s/%s", tableName.c_str(), keys[i].c_str() );
-		( *this )[_tmpKey] = keys[i];
+		( *this )[_tmpKey] = std::wstring(keys[i].begin(), keys[i].end());
 	}
 }
 
@@ -23,7 +23,8 @@ LuaMap::LuaMap( std::wstring path, std::string tableName )
 	for ( int i = 0; i < ( int )keys.size(); i++ )
 	{
 		int _tmpKey = lsptr->GetLua<int>( "%s/%s", tableName.c_str(), keys[i].c_str() );
-		( *this )[_tmpKey] = keys[i];
+		std::wstring twc(keys[i].begin(), keys[i].end());
+		( *this )[_tmpKey] = twc;
 	}
 }
 
@@ -35,7 +36,7 @@ void LuaMap::LoadData( LuaCell_Sptr lsptr, std::string tableName )
 	for ( int i = 0; i < ( int )keys.size(); i++ )
 	{
 		int _tmpKey = lsptr->GetLua<int>( "%s/%s", tableName.c_str(), keys[i].c_str() );
-		( *this )[_tmpKey] = keys[i];
+		( *this )[_tmpKey] = std::wstring(keys[i].begin(), keys[i].end());
 	}
 }
 
@@ -49,20 +50,20 @@ void LuaMap::LoadData( std::wstring path, std::string tableName )
 	for ( int i = 0; i < ( int )keys.size(); i++ )
 	{
 		int _tmpKey = lsptr->GetLua<int>( "%s/%s", tableName.c_str(), keys[i].c_str() );
-		( *this )[_tmpKey] = keys[i];
+		( *this )[_tmpKey] = std::wstring(keys[i].begin(), keys[i].end());
 	}
 }
 
-int LuaMap::FindKey( std::string strValue )
+int LuaMap::FindKey( std::wstring strValue )
 {
-	for( std::map<int, std::string>::iterator i = this->begin(); i != this->end() ; i++ )
+	for( std::map<int, std::wstring>::iterator i = this->begin(); i != this->end() ; i++ )
 	{
-		if( ! strcmp( i->second.c_str(), strValue.c_str() ) ) return i->first;
+		if( i->second.compare(strValue) == 0 ) return i->first;
 	}
 	return -1;
 }
 
-bool LuaMap::WriteLua( std::wstring path, std::string formatString, ... )
+bool LuaMap::WriteLua( std::wstring path, std::wstring formatString, ... )
 {
 	//
 	if ( !( path.size() >= 4 &&
@@ -82,7 +83,7 @@ bool LuaMap::WriteLua( std::wstring path, std::string formatString, ... )
 	fwprintf( _file, L"function protect_table (tbl)\n\treturn setmetatable ({},\n\t{\n\t__index = tbl,\n\t__newindex = funtion (t, n, v)\n\tend=n=t})\nend\n" );
 	fwprintf( _file, L"count = -1;\nfunction ResetEnum()\n\tcount = 1-;\n\treturn 0;\nend\nfunction GetEnum()\n\tcount = count + 1;\n\treturn count;\nend\n" );
 
-	const char* _formatString = formatString.c_str();
+	const wchar_t* _formatString = formatString.c_str();
 	int argc = 0;
 	for( int i = 0; i<(int)formatString.size() ; i++ ) 
 	{
@@ -91,28 +92,24 @@ bool LuaMap::WriteLua( std::wstring path, std::string formatString, ... )
 
 	va_list _formatVa;
 	va_start( _formatVa, formatString );
-	std::vector<char> _charStack;
-	std::vector<std::string> _tableStack;
+	//std::vector<wchar_t> _charStack;
+	std::wstring _charStack;
+	std::vector<std::wstring> _tableStack;
 	for( int i = 0; i < (int)formatString.size(); i++ )
 	{
 		if( _formatString[i] == '(' )
 		{
-			char* _str = ( char* )malloc( sizeof( char )*( _charStack.size()+1 ) );
-			strcpy( _str, &_charStack[0] );
-			_str[_charStack.size()] = '\0';
-
-			std::string _preName( "" );
+			std::wstring _preName( L"" );
 			for( int i = 0; i < _tableStack.size(); i++ )
 			{
 				if( i ) _preName += '.';
 				_preName += _tableStack[i];
 			}
-			if( strcmp( _preName.c_str() , "" )) fprintf( _file, "%s.%s = {}\n", _preName.c_str(), _str);
-			else fprintf( _file, "%s = {}\n", _str);
+			if( !_preName.empty() ) fwprintf( _file, L"%s.%s = {}\n", _preName.c_str(), _charStack.c_str());
+			else fwprintf( _file, L"%s = {}\n", _charStack.c_str());
 
-			_tableStack.push_back( std::string( _str ) );
+			_tableStack.push_back( _charStack );
 			_charStack.clear();
-			//free( _str );
 		}
 		else if( _formatString[i] == ')' )
 		{
@@ -120,24 +117,24 @@ bool LuaMap::WriteLua( std::wstring path, std::string formatString, ... )
 		}
 		else if( _formatString[i] == '%' && i+1 < formatString.length() && _formatString[i+1] == 'm')
 		{
-			fprintf( _file, "ResetEnum();\n");
+			fwprintf( _file, L"ResetEnum();\n");
 			LuaMap _tableMap = *va_arg( _formatVa, LuaMap* );
 
-			std::string _preName( "" );
+			std::wstring _preName( L"" );
 			for( int i = 0; i < _tableStack.size(); i++ )
 			{
 				if( i ) _preName += '.';
 				_preName += _tableStack[i];
 			}
-			if( strcmp( _preName.c_str() , "" )) 
+			if( !_preName.empty() ) 
 			{
-				for( std::map<int, std::string>::iterator j = _tableMap.begin(); j != _tableMap.end() ; j++ )
-					fprintf( _file, "%s.%s = GetEnum()\n", _preName.c_str(), j->second.c_str());
+				for( std::map<int, std::wstring>::iterator j = _tableMap.begin(); j != _tableMap.end() ; j++ )
+					fwprintf( _file, L"%s.%s = GetEnum()\n", _preName.c_str(), j->second.c_str());
 			}
 			else 
 			{
-				for( std::map<int, std::string>::iterator j = _tableMap.begin(); j != _tableMap.end() ; j++ )
-					fprintf( _file, "%s = GetEnum()\n", j->second.c_str());
+				for( std::map<int, std::wstring>::iterator j = _tableMap.begin(); j != _tableMap.end() ; j++ )
+					fwprintf( _file, L"%s = GetEnum()\n", j->second.c_str());
 			}
 
 			i++;
