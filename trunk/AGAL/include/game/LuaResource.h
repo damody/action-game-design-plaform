@@ -7,12 +7,12 @@
 namespace LuaResource
 {
 template <class T>
-std::vector< boost::shared_ptr<T> > LoadLua( std::string objectType )
+std::vector< boost::shared_ptr<T> > LoadLua( std::wstring objectType )
 	//if load fail , this function will return empty vector
 {
 	static LuaCell_Sptr luaResource;
 	int idx;// luaResource's array index
-	std::string luaPath;// loaded path    ex: hero[0] , object[1] ...
+	std::wstring luaPath;// loaded path    ex: hero[0] , object[1] ...
 	std::vector< boost::shared_ptr<T> > data;// returned data
 	boost::shared_ptr<T> dataTemp;// data's temp
 	LuaCell_Sptr luaTemp;// lua's temp
@@ -21,7 +21,7 @@ std::vector< boost::shared_ptr<T> > LoadLua( std::string objectType )
 	if ( luaResource.get() == NULL )
 	{
 		luaResource = LuaCell_Sptr( new LuaCell );
-		if ( !luaResource->InputLuaFile( "Script/luaResource.lua" ) )
+		if ( !luaResource->InputLuaFile( L"Script/luaResource.lua" ) )
 		{
 			return data;//inputLua fail. So return empty vector.
 		}
@@ -40,13 +40,14 @@ std::vector< boost::shared_ptr<T> > LoadLua( std::string objectType )
 	}
 	// Load Lua data
 	idx = 1;// Lua array begin is 1
-	while ( luaResource->HasValue( "%s/%d", objectType.c_str(), idx ) )
+	while ( luaResource->HasValue( "%s/%d", std::string(objectType.begin(), objectType.end()).c_str(), idx ) )
 	{
 		// initialize ptr
 		luaTemp = LuaCell_Sptr( new LuaCell );
 		dataTemp = boost::shared_ptr<T>( new T );
 		// get lua path
-		luaPath = luaResource->GetLua<const char*>( "%s/%d", objectType.c_str(), idx );
+		const char * tcs = luaResource->GetLua<const char*>( "%s/%d", std::string(objectType.begin(), objectType.end()).c_str(), idx );
+		luaPath = std::wstring(tcs, tcs + strlen(tcs));
 		// set lua file
 		if( !luaTemp->InputLuaFile( luaPath.c_str() ) )
 		{
@@ -62,15 +63,15 @@ std::vector< boost::shared_ptr<T> > LoadLua( std::string objectType )
 
 	return data;
 }
-std::vector<std::string> LoadMusic( std::string musicType )
+std::vector<std::wstring> LoadMusic( std::wstring musicType )
 	//musicType: "mp3" or "wav"
 {
 	static LuaCell_Sptr luaResource;
 	int idx;// luaResource's array index
-	std::vector<std::string> data;
+	std::vector<std::wstring> data;
 
 	// if musicType isn't mp3 or wav, return empty data
-	if( musicType != "mp3" && musicType != "wav" )
+	if( musicType != L"mp3" && musicType != L"wav" )
 	{
 		return data;
 	}
@@ -79,7 +80,7 @@ std::vector<std::string> LoadMusic( std::string musicType )
 	if ( luaResource.get() == NULL )
 	{
 		luaResource = LuaCell_Sptr( new LuaCell );
-		if ( !luaResource->InputLuaFile( "Script/luaResource.lua" ) )
+		if ( !luaResource->InputLuaFile( L"Script/luaResource.lua" ) )
 		{
 			return data;//inputLua fail. So return empty vector.
 		}
@@ -100,10 +101,11 @@ std::vector<std::string> LoadMusic( std::string musicType )
 
 	// Load Lua data
 	idx = 1;// Lua array begin is 1
-	while ( luaResource->HasValue( "%s/%d", musicType.c_str(), idx ) )
+	while ( luaResource->HasValue( "%s/%d", std::string(musicType.begin(), musicType.end()).c_str(), idx ) )
 	{
-		std::string pathTemp;
-		pathTemp = luaResource->GetLua<const char*>( "%s/%d", musicType.c_str(), idx );
+		std::wstring pathTemp;
+		const char* tcs = luaResource->GetLua<const char*>( "%s/%d", std::string(musicType.begin(), musicType.end()).c_str(), idx );
+		pathTemp = std::wstring(tcs, tcs + strlen(tcs));
 		data.push_back( pathTemp );
 		idx++;
 	}

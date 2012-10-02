@@ -10,12 +10,12 @@ class HeroInfoManager
 public:
 	HeroInfoManager( void ) {}
 	~HeroInfoManager( void ) {}
-	void AddHeroInfo( std::string name, HeroInfo_Sptr info );
-	HeroInfo_Sptr GetHeroInfo( std::string name );
-	const std::vector<std::string> GetList();
+	void AddHeroInfo( std::wstring name, HeroInfo_Sptr info );
+	HeroInfo_Sptr GetHeroInfo( std::wstring name );
+	const std::vector<std::wstring> GetList();
 
 private:
-	std::vector<std::string> m_List;
+	std::vector<std::wstring> m_List;
 	HeroInfoMap		 m_HeroInfoMaps;
 
 	friend class boost::serialization::access;

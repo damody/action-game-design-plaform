@@ -35,8 +35,8 @@ public:
 	void Update( float dt );
 	void UpdateDataToDraw();
 
-	Chee** CreateChee( const std::string& chee, const Vector3& pos, const Vector3& vel, int num = 1, int team = 0 );
-	Weapon** CreateWeapon( const std::string& weapon, const Vector3& pos, int num = 1, int team = 0 );
+	Chee** CreateChee( const std::wstring& chee, const Vector3& pos, const Vector3& vel, int num = 1, int team = 0 );
+	Weapon** CreateWeapon( const std::wstring& weapon, const Vector3& pos, int num = 1, int team = 0 );
 	void Destory( Chee_RawPtr chee, int time = 0 );
 	void Destory( Weapon_RawPtr weapon, int time = 0 );
 	void Destory( Chees::iterator it, int time = 0 );

@@ -16,7 +16,7 @@ private:
 	ClipVertex		m_Pic;
 	ObjectInfo_Sptr m_ObjectInfo;
 	int 			m_Action;//當下動作狀態
-	std::string     m_Frame;//Current Frame
+	std::wstring    m_Frame;//Current Frame
 	int				m_FrameID;//Current Frame ID
 
 	int				m_Texture;//Current Texture ID
@@ -42,9 +42,9 @@ protected:
 	void Init();
 	void NextFrame();
 public:
-	std::string chee;
+	std::wstring chee;
 	Chee( void );
-	Chee( std::string c );
+	Chee( std::wstring c );
 	~Chee( void );
 
 	void Update( float dt );

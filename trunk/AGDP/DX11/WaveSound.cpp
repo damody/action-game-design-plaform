@@ -1092,7 +1092,7 @@ bool WavSound::isExist( int index )
 }
 
 
-int WavPlayer::CreatSound( const std::string& filename, int dupnum )
+int WavPlayer::CreatSound( const std::wstring& filename, int dupnum )
 {
 	dsDuplicate* newdupsound = new dsDuplicate();
 
@@ -1104,7 +1104,7 @@ int WavPlayer::CreatSound( const std::string& filename, int dupnum )
 		}
 	}
 
-	if ( !newdupsound->Duplicate( ConvStr::GetWstr( filename ).c_str(), DSBCAPS_CTRLFREQUENCY | DSBCAPS_CTRLVOLUME |
+	if ( !newdupsound->Duplicate( filename.c_str(), DSBCAPS_CTRLFREQUENCY | DSBCAPS_CTRLVOLUME |
 	                              DSBCAPS_CTRLPAN , dupnum, m_DS ) )
 	{
 		return -1;
@@ -1365,11 +1365,11 @@ LONG WavPlayer::GetVolume()
 	return m_SoundVolume;
 }
 
-int WavPlayer::GetIndex( std::string name )
+int WavPlayer::GetIndex( std::wstring name )
 {
 	int index = -1;
 
-	for ( std::vector<std::string>::iterator it = m_List.begin(); it != m_List.end(); it++ )
+	for ( std::vector<std::wstring>::iterator it = m_List.begin(); it != m_List.end(); it++ )
 	{
 		index++;
 

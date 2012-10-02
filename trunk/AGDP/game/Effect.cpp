@@ -36,7 +36,7 @@ bool Effect::Initialize( HWND hwnd )
 
 	//Set this effect texture info
 	m_Texture = Texture_Sptr( new Texture( m_RenderTexture->GetShaderResourceView() ) );
-	m_TextureID = g_TextureManager.AddTexture( "EffectTexture", m_Texture );
+	m_TextureID = g_TextureManager.AddTexture( L"EffectTexture", m_Texture );
 	//
 	m_vEffect.resize( effectShaders.size() );
 	return true;

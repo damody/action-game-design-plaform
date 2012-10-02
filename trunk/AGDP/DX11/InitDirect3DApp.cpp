@@ -836,7 +836,7 @@ void InitDirect3DApp::LoadData()
 {
 	//AddHeroInfo
 	std::vector<HeroInfo_Sptr> heroInfos;
-	heroInfos = LuaResource::LoadLua<HeroInfo>( "hero" );
+	heroInfos = LuaResource::LoadLua<HeroInfo>( L"hero" );
 
 	for ( int idx = 0; idx < heroInfos.size(); idx++ )
 	{
@@ -844,7 +844,7 @@ void InitDirect3DApp::LoadData()
 	}
 	//AddBG
 	std::vector<Background_Sptr> Backgrounds;
-	Backgrounds = LuaResource::LoadLua<Background>( "background" );
+	Backgrounds = LuaResource::LoadLua<Background>( L"background" );
 
 	for ( int idx = 0; idx < Backgrounds.size(); idx++ )
 	{
@@ -853,18 +853,18 @@ void InitDirect3DApp::LoadData()
 	
 	//AddObjectInfo
 	std::vector<ObjectInfo_Sptr> objectInfos;
-	objectInfos = LuaResource::LoadLua<ObjectInfo>( "object" );
+	objectInfos = LuaResource::LoadLua<ObjectInfo>( L"object" );
 	for ( int idx = 0; idx < objectInfos.size(); idx++ )
 	{
 		g_ObjectInfoManager.AddObjectInfo( objectInfos[idx]->m_Name, objectInfos[idx] );
 	}
 	
 	//Add Background Music
-	std::vector<std::string> BGMpath = LuaResource::LoadMusic("mp3");
+	std::vector<std::wstring> BGMpath = LuaResource::LoadMusic(L"mp3");
 	g_BackgroundManager.Set_BGM_PathList(BGMpath);
 	
 	//Add Sound
-	std::vector<std::string> WAVpath = LuaResource::LoadMusic("wav");
+	std::vector<std::wstring> WAVpath = LuaResource::LoadMusic(L"wav");
 	while (!WAVpath.empty())
 	{
 		g_WavPlayer.CreatSound(WAVpath.back());
@@ -877,7 +877,7 @@ void InitDirect3DApp::LoadData()
 	//*test
 		g_BackgroundManager.SetCurrentBackground( Backgrounds.back()->m_Name );//set last element be current background
 		//g_BackgroundManager.Set_BGM_Play(0);
-		g_ObjectManager.CreateWeapon( "Bat", Vector3( 600, 0, 600 ) );
+		g_ObjectManager.CreateWeapon( L"Bat", Vector3( 600, 0, 600 ) );
 	//*/
 }
 
@@ -1270,12 +1270,12 @@ void InitDirect3DApp::TestChee()
 {
 	if ( InputStateS::instance().isKeyDown( KEY_1 ) )
 	{
-		g_ObjectManager.CreateChee( "davis_ball", Vector3( 100, 80, 1000 ), Vector3( 0, 0, 0 ) );
+		g_ObjectManager.CreateChee( L"davis_ball", Vector3( 100, 80, 1000 ), Vector3( 0, 0, 0 ) );
 	}
 
 	if ( InputStateS::instance().isKeyDown( KEY_2 ) )
 	{
-		g_ObjectManager.CreateChee( "davis_ball", Vector3( 1000, 80, 1000 ), Vector3( -10, 0, 0 ) );
+		g_ObjectManager.CreateChee( L"davis_ball", Vector3( 1000, 80, 1000 ), Vector3( -10, 0, 0 ) );
 	}
 }
 
@@ -1443,7 +1443,7 @@ void InitDirect3DApp::InitPlayer()
 	key.push_back( CtrlKey::UP );
 	key.push_back( CtrlKey::ATK1 );
 	m_Player.m_Keyboard.SetCtrlKey( KEY_T, key );
-	m_Player.SetHero( "Davis" );
+	m_Player.SetHero( L"Davis" );
 	m_Player.SetTeam( 0 );
 	m_Player.m_Hero = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) );
 	Record *sr = new Record();

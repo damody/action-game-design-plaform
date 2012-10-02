@@ -38,7 +38,7 @@ private:
 	ClipVertex	m_Pic;
 	HeroInfo_Sptr   m_HeroInfo;
 	int		m_Action;		//當下動作狀態
-	std::string     m_Frame;		//Current Frame
+	std::wstring     m_Frame;		//Current Frame
 	int		m_FrameID;		//Current Frame ID
 
 	int		m_Texture;		//Current Texture ID
@@ -106,10 +106,10 @@ private:
 	}
 
 public:
-	const std::string hero;
+	const std::wstring hero;
 
 	Hero();
-	Hero( std::string h );
+	Hero( std::wstring h );
 	void	Update( float dt );
 	void	UpdateDataToDraw();	//Data To m_Pic
 	int	GetTextureID();
@@ -150,8 +150,8 @@ public:
 protected:
 	void Init();
 	void NextFrame();
-	void SwitchFrame( std::string rFrame, int rFrameID );
-	FrameInfo* FindFrame( std::string rframe, int rframeID );
+	void SwitchFrame( std::wstring rFrame, int rFrameID );
+	FrameInfo* FindFrame( std::wstring rframe, int rframeID );
 	bool ScanKeyQue();	//false無控制動作
 	void ClearKeyQue();
 	void Flicker();		//閃爍

@@ -18,8 +18,8 @@ namespace boost {namespace serialization {class access;}}
 struct BGLayer
 {
 
-	std::string	m_PicturePath;
-	int		m_PicID;
+	std::wstring	m_PicturePath;
+	int			m_PicID;
 	Vector3		m_Position;
 	float		m_Width;
 	float		m_Height;
@@ -94,7 +94,7 @@ public:
 	Background() {}
 	~Background() {}
 
-	std::string	 m_Name;
+	std::wstring	 m_Name;
 	BGVerteices	 m_BGVerteices;
 	CRVerteices	 m_CRVerteices;
 	DrawVertexGroups m_DrawVertexGroups;
@@ -112,7 +112,7 @@ public:
 
 	bool    InSpace( const Vector3& pIn ); //判斷vIn是否在地圖的可行範圍
 	Vector3	AlignmentSpace( const Vector3& pIn ); //判斷vIn是否在地圖的可行範圍，並校正
-	int    AboveSpaceBottom( const Vector3& pIn );
+	int		AboveSpaceBottom( const Vector3& pIn );
 
 
 	bool    InBan( const Vector3& pIn ); //判斷vIn是否在地圖的禁足範圍
@@ -126,4 +126,4 @@ public:
 };
 SHARE_PTR( Background );
 
-typedef std::map<std::string, Background_Sptr> BackgroundMaps;
+typedef std::map<std::wstring, Background_Sptr> BackgroundMaps;

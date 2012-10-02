@@ -14,7 +14,7 @@ private:
 	ClipVertex		m_Pic;
 	ObjectInfo_Sptr m_ObjectInfo;
 	int				m_Action;//當下動作狀態
-	std::string     m_Frame;//Current Frame
+	std::wstring    m_Frame;//Current Frame
 	int				m_FrameID;//Current Frame ID
 
 	int				m_Texture;//Current Texture ID
@@ -38,10 +38,10 @@ protected:
 	void Init();
 	void NextFrame();
 public:
-	const std::string m_WeaponName;
+	const std::wstring m_WeaponName;
 
 	Weapon( void );
-	Weapon( std::string w );
+	Weapon( std::wstring w );
 	~Weapon( void );
 
 	void Update( float dt );

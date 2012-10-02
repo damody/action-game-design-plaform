@@ -8,7 +8,7 @@ struct HitData
 	//ex. d>a
 	std::string	m_KeyQueue;
 	//ex. super_punch
-	std::string	m_FrameName;
+	std::wstring	m_FrameName;
 	//ex. 1
 	int		m_FrameOffset;
 

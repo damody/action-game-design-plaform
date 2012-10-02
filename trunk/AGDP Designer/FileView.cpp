@@ -410,7 +410,7 @@ void CFileView::AddFile( HeroInfo* hero )
 
 void CFileView::LoadData()
 {
-	g_Actions.LoadData("Script\\Action.lua","Action");
+	g_Actions.LoadData(L"Script\\Action.lua","Action");
 
 	std::vector<HeroInfo_Sptr> heroInfos;
 	heroInfos = LuaResource::LoadLua<HeroInfo>( "hero" );

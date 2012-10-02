@@ -15,15 +15,15 @@ namespace boost {namespace serialization {class access;}}
 struct ObjectInfo
 {
 	//名稱
-	std::string	m_Name;
+	std::wstring	m_Name;
 	//action picture
 	PictureDatas	m_PictureDatas;
 	//frame inforamtion
-	FramesMap	m_FramesMap;
+	FramesMap		m_FramesMap;
 	//質量
-	float		m_Mess;
+	float			m_Mess;
 	//彈性
-	float		m_Elasticity;
+	float			m_Elasticity;
 	//最大血量
 	int		m_MaxHP;
 	//物件類別
@@ -37,5 +37,5 @@ public:
 	LuaCell_Sptr	m_LuaCell;
 };
 SHARE_PTR( ObjectInfo );
-typedef std::map<std::string, ObjectInfo_Sptr> ObjectInfoMap;
-typedef std::map<std::string, ObjectInfo_RawPtr> ObjectInfoRMap;
+typedef std::map<std::wstring, ObjectInfo_Sptr> ObjectInfoMap;
+typedef std::map<std::wstring, ObjectInfo_RawPtr> ObjectInfoRMap;

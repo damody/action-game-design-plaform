@@ -23,7 +23,7 @@
 
 Hero::Hero() {}
 
-Hero::Hero( std::string h ):
+Hero::Hero( std::wstring h ):
 	hero( h ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 ), d_run( 0 ), m_Effect( EffectType::NONE ), m_EffectScale( 1.0f ), d_key(g_KeyMap.sKeySize()), m_Fall( 70 ), m_FrontDefence( 0 ), m_BackDefence( 0 )
 {
 	m_HeroInfo = g_HeroInfoManager.GetHeroInfo( hero );
@@ -35,7 +35,7 @@ Hero::Hero( std::string h ):
 	}
 	else
 	{
-		std::cout << "Cannot find " << h << std::endl;
+		std::wcout << L"Cannot find " << h << std::endl;
 	}
 }
 
@@ -45,7 +45,7 @@ void Hero::Init()
 	m_HP = m_HeroInfo->m_MaxHP;
 	m_MaxRecoverHP = m_HeroInfo->m_MaxHP;
 	m_MP = m_HeroInfo->m_MaxMP;
-	m_Frame = "default";
+	m_Frame = L"default";
 	m_FrameID = 0;
 	FrameInfo* f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
 	m_PicID = f->m_PictureID;
@@ -115,7 +115,7 @@ void Hero::Update( float dt )
 				}
 				else
 				{
-					SwitchFrame( "crouch", 0 );
+					SwitchFrame( L"crouch", 0 );
 				}
 			}
 		}
@@ -147,7 +147,7 @@ void Hero::Update( float dt )
 		//掉落
 		if ( m_Action == 0 ) //HeroAction::STANDING )
 		{
-			SwitchFrame( "in_the_air", 0 );
+			SwitchFrame( L"in_the_air", 0 );
 		}
 	}
 
@@ -228,7 +228,7 @@ NextLoop:
 
 	if ( iframe == m_HeroInfo->m_FramesMap.end() || ( int )iframe->second.size() <= m_FrameID )
 	{
-		printf( "fatal error: can't find next frame \"%s\"[%d] !\n", m_Frame.c_str(), m_FrameID );
+		wprintf( L"fatal error: can't find next frame \"%s\"[%d] !\n", m_Frame.c_str(), m_FrameID );
 		system( "pause" );
 		throw "No such frame";
 	}
@@ -237,7 +237,7 @@ NextLoop:
 
 	if ( f->m_Consume.m_JumpRule <= 0 && f->m_Consume.m_HP != 0 && f->m_Consume.m_MP != 0)
 	{
-		printf( "MaxHP:%d\tHP:%d\tMP:%d\n", m_MaxRecoverHP, m_HP, m_MP );
+		wprintf( L"MaxHP:%d\tHP:%d\tMP:%d\n", m_MaxRecoverHP, m_HP, m_MP );
 
 		if ( m_HP >= f->m_Consume.m_HP && m_MP >= f->m_Consume.m_MP )
 		{
@@ -322,13 +322,13 @@ NextLoop:
  * rFrame	:目標 Frame 名稱
  * rFrameID	:目標 Frame 序號
  */
-void Hero::SwitchFrame( std::string rFrame, int rFrameID )
+void Hero::SwitchFrame( std::wstring rFrame, int rFrameID )
 {
 	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find( rFrame );
 
 	if ( iframe == m_HeroInfo->m_FramesMap.end() || ( int )iframe->second.size() <= rFrameID )
 	{
-		printf( "fatal error: can't find next frame \"%s\"[%d] !\n", rFrame.c_str(), rFrameID );
+		wprintf( L"fatal error: can't find next frame \"%s\"[%d] !\n", rFrame.c_str(), rFrameID );
 		system( "pause" );
 		throw "No such frame";
 	}
@@ -385,7 +385,7 @@ void Hero::SwitchFrame( std::string rFrame, int rFrameID )
 
 bool Hero::ScanKeyQue()
 {
-	std::string nFrame;
+	std::wstring nFrame;
 	int nFramID = 0;
 	KeyQueue::iterator i = m_KeyQue.begin();
 	int dx = 0, dz = 0;
@@ -405,12 +405,12 @@ bool Hero::ScanKeyQue()
 	{
 		if ( dz > 0 )
 		{
-			nFrame = "walking";
+			nFrame = L"walking";
 			m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
 		}
 		else if ( dz < 0 )
 		{
-			nFrame = "walking";
+			nFrame = L"walking";
 			m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
 		}
 
@@ -419,13 +419,13 @@ bool Hero::ScanKeyQue()
 			if ( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide )
 			{
 				//跑
-				nFrame = "running";
+				nFrame = L"running";
 				m_Vel.x = m_HeroInfo->m_RunningSpeed;
 			}
 			else
 			{
 				//走
-				nFrame = "walking";
+				nFrame = L"walking";
 				m_Vel.x = m_HeroInfo->m_WalkingSpeed;
 				m_FaceSide = true;
 			}
@@ -435,13 +435,13 @@ bool Hero::ScanKeyQue()
 			if ( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide )
 			{
 				//跑
-				nFrame = "running";
+				nFrame = L"running";
 				m_Vel.x = -m_HeroInfo->m_RunningSpeed;
 			}
 			else
 			{
 				//走
-				nFrame = "walking";
+				nFrame = L"walking";
 				m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
 				m_FaceSide = false;
 			}
@@ -451,13 +451,13 @@ bool Hero::ScanKeyQue()
 	{
 		if ( dz > 0 )
 		{
-			if ( m_TimeTik == 0 ) { nFrame = "walking"; }
+			if ( m_TimeTik == 0 ) { nFrame = L"walking"; }
 
 			m_Vel.z = m_HeroInfo->m_WalkingSpeedZ;
 		}
 		else if ( dz < 0 )
 		{
-			if ( m_TimeTik == 0 ) { nFrame = "walking"; }
+			if ( m_TimeTik == 0 ) { nFrame = L"walking"; }
 
 			m_Vel.z = -m_HeroInfo->m_WalkingSpeedZ;
 		}
@@ -467,13 +467,13 @@ bool Hero::ScanKeyQue()
 			if ( d_run != 0 && g_Time - d_run < WAIT_FOR_KEY_RUN && m_FaceSide )
 			{
 				//跑
-				nFrame = "running";
+				nFrame = L"running";
 				m_Vel.x = m_HeroInfo->m_RunningSpeed;
 			}
 			else
 			{
 				//走
-				if ( m_TimeTik == 0 ) { nFrame = "walking"; }
+				if ( m_TimeTik == 0 ) { nFrame = L"walking"; }
 
 				m_Vel.x = m_HeroInfo->m_WalkingSpeed;
 				m_FaceSide = true;
@@ -484,13 +484,13 @@ bool Hero::ScanKeyQue()
 			if ( d_run != 0 && g_Time + d_run < WAIT_FOR_KEY_RUN && !m_FaceSide )
 			{
 				//跑
-				nFrame = "running";
+				nFrame = L"running";
 				m_Vel.x = -m_HeroInfo->m_RunningSpeed;
 			}
 			else
 			{
 				//走
-				if ( m_TimeTik == 0 ) { nFrame = "walking"; }
+				if ( m_TimeTik == 0 ) { nFrame = L"walking"; }
 
 				m_Vel.x = -m_HeroInfo->m_WalkingSpeed;
 				m_FaceSide = false;
@@ -517,7 +517,7 @@ bool Hero::ScanKeyQue()
 
 		if ( ( dx > 0 && !m_FaceSide ) || ( dx < 0 && m_FaceSide ) )
 		{
-			nFrame = "stop_running";
+			nFrame = L"stop_running";
 			nFramID = 0;
 			d_run = 0;
 		}
@@ -550,14 +550,14 @@ bool Hero::ScanKeyQue()
 		{
 			m_FaceSide = false;
 
-			if ( m_Frame.compare( "dash_front" ) == 0 )
+			if ( m_Frame.compare( L"dash_front" ) == 0 )
 			{
-				nFrame = "dash_back";
+				nFrame = L"dash_back";
 				nFramID = m_FrameID;
 			}
-			else if ( m_Frame.compare( "dash_back" ) == 0 )
+			else if ( m_Frame.compare( L"dash_back" ) == 0 )
 			{
-				nFrame = "dash_front";
+				nFrame = L"dash_front";
 				nFramID = m_FrameID;
 			}
 		}
@@ -565,14 +565,14 @@ bool Hero::ScanKeyQue()
 		{
 			m_FaceSide = true;
 
-			if ( m_Frame.compare( "dash_front" ) == 0 )
+			if ( m_Frame.compare( L"dash_front" ) == 0 )
 			{
-				nFrame = "dash_back";
+				nFrame = L"dash_back";
 				nFramID = m_FrameID;
 			}
-			else if ( m_Frame.compare( "dash_back" ) == 0 )
+			else if ( m_Frame.compare( L"dash_back" ) == 0 )
 			{
-				nFrame = "dash_front";
+				nFrame = L"dash_front";
 				nFramID = m_FrameID;
 			}
 		}
@@ -583,7 +583,7 @@ bool Hero::ScanKeyQue()
 		{
 			return false;
 		}
-		else if ( m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2] && m_Frame.compare( "crouch" ) == 0 )
+		else if ( m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2] && m_Frame.compare( L"crouch" ) == 0 )
 		{
 			d_key[2] = true;
 
@@ -592,28 +592,28 @@ bool Hero::ScanKeyQue()
 				//dash
 				if ( dx != 0 )
 				{
-					nFrame = "dash_front";
+					nFrame = L"dash_front";
 					m_FaceSide = dx > 0;
 				}
 				else if ( m_Vel.x != 0 )
 				{
 					if ( ( m_Vel.x > 0 ) == m_FaceSide )
 					{
-						nFrame = "dash_front";
+						nFrame = L"dash_front";
 					}
 					else
 					{
-						nFrame = "dash_back";
+						nFrame = L"dash_back";
 					}
 				}
 				else
 				{
-					nFrame = "jump";
+					nFrame = L"jump";
 				}
 			}
 			else
 			{
-				nFrame = "jump";
+				nFrame = L"jump";
 			}
 		}
 	}
@@ -915,7 +915,7 @@ KeyLoop:
 
 	if ( iframe == m_HeroInfo->m_FramesMap.end() || ( int )iframe->second.size() <= nFramID )
 	{
-		printf( "error: can't find frame \"%s\"[%d] !\n", nFrame.c_str(), nFramID );
+		wprintf( L"error: can't find frame \"%s\"[%d] !\n", nFrame.c_str(), nFramID );
 		return false;
 	}
 	else
@@ -928,7 +928,7 @@ KeyLoop:
 		//消耗
 		if ( f->m_Consume.m_JumpRule >= 0 )
 		{
-			printf( "MaxHP:%d\tHP:%d\tMP:%d\n", m_MaxRecoverHP, m_HP, m_MP );
+			wprintf( L"MaxHP:%d\tHP:%d\tMP:%d\n", m_MaxRecoverHP, m_HP, m_MP );
 
 			//printf("consume: rule=%d, MP=%d, HP=%d, backFrame=%s, backFrameID=%d\n",f->m_Consume.m_JumpRule,f->m_Consume.m_MP,f->m_Consume.m_HP,f->m_Consume.m_NotEnoughFrameName.c_str(),f->m_Consume.m_NotEnoughFrame);
 			if ( m_HP >= f->m_Consume.m_HP && m_MP >= f->m_Consume.m_MP )
@@ -938,7 +938,7 @@ KeyLoop:
 			}
 			else
 			{
-				if ( f->m_Consume.m_NotEnoughFrameName.compare( "default" ) == 0 )
+				if ( f->m_Consume.m_NotEnoughFrameName.compare( L"default" ) == 0 )
 				{	return false;	}
 
 				nFrame = f->m_Consume.m_NotEnoughFrameName;
@@ -1055,13 +1055,13 @@ void Hero::UpdateVel( int dx, int dz )
 	}
 }
 
-FrameInfo* Hero::FindFrame( std::string rframe, int rframeID )
+FrameInfo* Hero::FindFrame( std::wstring rframe, int rframeID )
 {
 	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find( rframe );
 
 	if ( iframe == m_HeroInfo->m_FramesMap.end() || ( int )iframe->second.size() <= rframeID )
 	{
-		printf( "error: can't find frame \"%s\"[%d] !\n", rframe.c_str(), rframeID );
+		wprintf( L"error: can't find frame \"%s\"[%d] !\n", rframe.c_str(), rframeID );
 		return NULL;
 	}
 
@@ -1305,7 +1305,7 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3&
 		m_Vel.x += rAtk.m_DVX * ( rFace ? 1.0f : -1.0f );
 		m_Vel.y += rAtk.m_DVY;
 		m_Vel.z += rAtk.m_DVZ;
-		std::string nFrame;
+		std::wstring nFrame;
 		int nFrameID = 0;
 
 		if ( ( hitPos.x > m_Position.x && m_FaceSide ) || ( hitPos.x < m_Position.x && !m_FaceSide ) )
@@ -1323,7 +1323,7 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3&
 				m_HP -= rAtk.m_Injury;
 				m_MaxRecoverHP -= rAtk.m_Injury / 3;
 				m_Fall -= rAtk.m_Fall;
-				nFrame = "injured";
+				nFrame = L"injured";
 				nFrameID = 0;
 				rHero->Attack += rAtk.m_Injury;
 			}
@@ -1331,7 +1331,7 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3&
 			//倒下
 			if ( m_HP <= 0 || m_Fall <= 0 )
 			{
-				nFrame = "falling_back";
+				nFrame = L"falling_back";
 				nFrameID = 0;
 				m_Vel.y += 2;
 			}
@@ -1351,7 +1351,7 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3&
 				m_HP -= rAtk.m_Injury;
 				m_MaxRecoverHP -= rAtk.m_Injury / 3;
 				m_Fall -= rAtk.m_Fall;
-				nFrame = "injured";
+				nFrame = L"injured";
 				nFrameID = 0;
 				rHero->Attack += rAtk.m_Injury;
 			}
@@ -1359,12 +1359,12 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3&
 			//倒下
 			if ( m_HP <= 0 || m_Fall <= 0 )
 			{
-				nFrame = "falling_front";
+				nFrame = L"falling_front";
 				nFrameID = 0;
 				m_Vel.y += 2;
 			}
 		}
-		printf("beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
+		wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
 		//切換 Frame
 		if ( !nFrame.empty() )
 		{
@@ -1617,11 +1617,11 @@ bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Spt
 {
 	if ( obj.amount <= 0 )
 	{
-		printf( "you just want to creat nothing!\n" );
+		wprintf( L"you just want to creat nothing!\n" );
 		return true;
 	}
 
-	std::string u = obj.name;
+	std::wstring u = obj.name;
 	bool f = face ^ ( obj.facing > 0 );
 
 	if ( g_HeroInfoManager.GetHeroInfo( u ) != HeroInfo_Sptr() )
@@ -1683,7 +1683,7 @@ bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Spt
 	}
 	else
 	{
-		printf( "error: can't find %s\n", u.c_str() );
+		wprintf( L"error: can't find %s\n", u.c_str() );
 		return false;
 	}
 }

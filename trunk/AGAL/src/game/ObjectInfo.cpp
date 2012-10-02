@@ -7,8 +7,10 @@ bool	ObjectInfo::CheckObjectDataVaild( LuaCell_Sptr luadata )
 
 void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 {
+	const char* tcp;	//temp char pointer
 	m_LuaCell	= luadata;
-	m_Name		= luadata->GetLua<const char*>( "name" );
+	tcp = luadata->GetLua<const char*>( "name" );		//str to wstr
+	m_Name		= std::wstring( tcp, tcp + strlen(tcp));
 	m_MaxHP		= luadata->GetLua<int>( "hp" );
 	m_Mess		= ( float )luadata->GetLua<int>( "mess" );
 	m_Elasticity	= ( float )luadata->GetLua<double>( "elasticity" );
@@ -21,7 +23,8 @@ void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 		if ( luadata->HasValue( "file/%d/path", i ) )
 		{
 			PictureData pd;
-			pd.m_Path	= luadata->GetLua<const char*>( "file/%d/path", i );
+			tcp = luadata->GetLua<const char*>( "file/%d/path", i );	//str to wstr
+			pd.m_Path	= std::wstring(tcp, tcp + strlen(tcp));
 			pd.m_AutoClip	= !!luadata->GetLua<int>( "file/%d/autoclip", i );
 			pd.m_Width	= luadata->GetLua<int>( "file/%d/w", i );
 			pd.m_Height	= luadata->GetLua<int>( "file/%d/h", i );
@@ -36,8 +39,11 @@ void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 		}
 	}
 
-	strings actions;
-	actions = luadata->GetLuaTableKeys( "frame" );
+	strings tac = luadata->GetLuaTableKeys( "frame" );
+	wstrings actions;
+	for(strings::iterator i = tac.begin(); i != tac.end(); i++ ){
+		actions.push_back( std::wstring(i->begin(), i->end()) );
+	}
 
 	for ( int i = 0; i < ( int )actions.size(); ++i )
 	{
@@ -49,17 +55,20 @@ void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 		for ( int frameCount = 0;; frameCount++ )
 		{
 			FrameInfo newData;
-			const char* frameName	= actions[i].c_str();
+			std::string sfm = std::string(actions[i].begin(), actions[i].end());
+			const char* frameName	= sfm.c_str();
 
 			if ( !luadata->HasValue( "frame/%s/%d/pic_id", frameName, frameCount ) ) { break; }
 
-			newData.m_FrameName	= frameName;
+			newData.m_FrameName	= actions[i];
+			newData.m_FrameIndex = frameCount;
 			newData.m_PictureID	= luadata->GetLua<int>( "frame/%s/%d/pic_id", frameName, frameCount );
 			newData.m_PictureX	= luadata->GetLua<int>( "frame/%s/%d/pic_x", frameName, frameCount );
 			newData.m_PictureY	= luadata->GetLua<int>( "frame/%s/%d/pic_y", frameName, frameCount );
 			newData.m_HeroAction	= luadata->GetLua<int>( "frame/%s/%d/state", frameName, frameCount );
 			newData.m_Wait		= luadata->GetLua<int>( "frame/%s/%d/wait", frameName, frameCount );
-			newData.m_NextFrameName	= luadata->GetLua<const char*>( "frame/%s/%d/next/1", frameName, frameCount );
+			tcp = luadata->GetLua<const char*>( "frame/%s/%d/next/1", frameName, frameCount );
+			newData.m_NextFrameName	= std::wstring(tcp, tcp + strlen(tcp));
 			newData.m_NextFrameIndex = luadata->GetLua<int>( "frame/%s/%d/next/2", frameName, frameCount );
 			newData.m_DVX		= ( float )luadata->GetLua<double>( "frame/%s/%d/dvx", frameName, frameCount );
 			newData.m_DVY		= ( float )luadata->GetLua<double>( "frame/%s/%d/dvy", frameName, frameCount );
@@ -76,7 +85,8 @@ void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 					// get hit key action "d>a"
 					hitData.m_KeyQueue	= luadata->GetLua<const char*>( "frame/%s/%d/hit/%d/1", frameName, frameCount, hitCount );
 					// get action name "many_punch"
-					hitData.m_FrameName	= luadata->GetLua<const char*>( "frame/%s/%d/hit/%d/2", frameName, frameCount, hitCount );
+					tcp = luadata->GetLua<const char*>( "frame/%s/%d/hit/%d/2", frameName, frameCount, hitCount );
+					hitData.m_FrameName	= std::wstring(tcp, tcp + strlen(tcp));
 					// get frame offset
 					hitData.m_FrameOffset	= luadata->GetLua<int>( "frame/%s/%d/hit/%d/3", frameName, frameCount, hitCount );
 					newData.m_HitDatas.push_back( hitData );

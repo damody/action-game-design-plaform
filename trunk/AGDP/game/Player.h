@@ -24,7 +24,7 @@ namespace boost {namespace serialization {class access;}}
 class Player
 {
 private:
-	std::string	m_HeroName;
+	std::wstring	m_HeroName;
 	int		m_Team;
 
 
@@ -47,10 +47,10 @@ public:
 	Hero*		m_Hero;
 	Keyboard	m_Keyboard;
 
-	std::string HeroName();
+	std::wstring HeroName();
 
 	void SetUserName( const std::wstring& name );
-	void SetHero( const std::string& name );
+	void SetHero( const std::wstring& name );
 	void SetTeam( int team );
 
 

@@ -43,7 +43,7 @@ void ObjectManager::UpdateDataToDraw()
 	}
 }
 
-Chee** ObjectManager::CreateChee( const std::string& chee, const Vector3& pos, const Vector3& vel, int num/*=1*/, int team/*=0*/ )
+Chee** ObjectManager::CreateChee( const std::wstring& chee, const Vector3& pos, const Vector3& vel, int num/*=1*/, int team/*=0*/ )
 {
 	Chee_RawPtr* c = new Chee_RawPtr [num];
 
@@ -59,7 +59,7 @@ Chee** ObjectManager::CreateChee( const std::string& chee, const Vector3& pos, c
 	return c;
 }
 
-Weapon** ObjectManager::CreateWeapon( const std::string& weapon, const Vector3& pos, int num/*=1*/, int team/*=0*/ )
+Weapon** ObjectManager::CreateWeapon( const std::wstring& weapon, const Vector3& pos, int num/*=1*/, int team/*=0*/ )
 {
 	Weapon_RawPtr* w = new Weapon_RawPtr [num];
 

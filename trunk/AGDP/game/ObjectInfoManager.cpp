@@ -10,7 +10,7 @@ ObjectInfoManager::~ObjectInfoManager( void )
 {
 }
 
-void ObjectInfoManager::AddObjectInfo( std::string name, ObjectInfo_Sptr info )
+void ObjectInfoManager::AddObjectInfo( std::wstring name, ObjectInfo_Sptr info )
 {
 	for ( unsigned int i = 0 ; i < info->m_PictureDatas.size(); ++i )
 	{
@@ -20,7 +20,7 @@ void ObjectInfoManager::AddObjectInfo( std::string name, ObjectInfo_Sptr info )
 	m_ObjectInfoMap[name] = info;
 }
 
-ObjectInfo_Sptr ObjectInfoManager::GetObjectInfo( std::string name )
+ObjectInfo_Sptr ObjectInfoManager::GetObjectInfo( std::wstring name )
 {
 	ObjectInfoMap::iterator i = m_ObjectInfoMap.find( name );
 

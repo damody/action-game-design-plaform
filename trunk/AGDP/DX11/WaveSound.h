@@ -152,7 +152,7 @@ private:
 	LPDIRECTSOUND8 m_DS;
 	int m_SoundVolume;
 
-	std::vector<std::string> m_List;
+	std::vector<std::wstring> m_List;
 	std::vector<dsDuplicate*> m_DupSounds;
 	std::vector<dsDuplicate*> m_mDupSound;
 
@@ -161,7 +161,7 @@ public:
 	void Initialize( HWND hWnd , DWORD Channels = 2 , DWORD Freq =  22050 , DWORD BitRate = 16 );
 	~WavPlayer();
 
-	int CreatSound( const std::string& filename, int dupnum = 20 );
+	int CreatSound( const std::wstring& filename, int dupnum = 20 );
 
 	void StopDevice();
 	void PauseDevice();
@@ -183,5 +183,5 @@ public:
 	void SetVolume( int index, LONG Volume );
 	void SetVolume( LONG Volume );
 
-	int GetIndex( std::string name );
+	int GetIndex( std::wstring name );
 };
