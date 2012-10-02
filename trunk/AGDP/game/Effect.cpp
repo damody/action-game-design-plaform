@@ -53,7 +53,7 @@ void Effect::Updata( float dt )
 	}
 }
 
-bool Effect::CreateEffect( EffectType::e type, EffectData* ed )
+bool Effect::CreateEffect( EffectType type, EffectData* ed )
 {
 	if ( Overflow() ) { return false; }
 
@@ -62,11 +62,11 @@ bool Effect::CreateEffect( EffectType::e type, EffectData* ed )
 
 	switch ( type )
 	{
-	case	EffectType::FIRE:
-		m_vEffect[EffectType::FIRE].push_back( *ed );
+	case	0:
+		m_vEffect[type].push_back( *ed );
 		break;
 
-	case	EffectType::POISON:
+	case	1:
 		break;
 	}
 
@@ -90,7 +90,7 @@ bool Effect::Overflow()
 	return ( m_SerialNum >= ( PIC_H / PASTE_H ) * ( PIC_W / PASTE_W ) );
 }
 
-bool Effect::Check( EffectType::e type, EffectData* ed )
+bool Effect::Check( EffectType type, EffectData* ed )
 {
 	for ( unsigned int i = 0; i < m_vEffect.size(); i++ )
 	{
@@ -167,7 +167,7 @@ EffectManager::EffectManager( HWND hwnd ): m_Page( 0 ), m_Size( 4 )
 	}
 }
 
-int EffectManager::CreateEffect( EffectType::e type, int textureID, Vector4* picpos )
+int EffectManager::CreateEffect( EffectType type, int textureID, Vector4* picpos )
 {
 	EffectData ed;
 	ed.m_TextureID = textureID;
@@ -231,11 +231,11 @@ ID3D11ShaderResourceView* EffectManager::Test_GetNowTexture()
 	return NULL;
 }
 
-float EffectManager::EffectScale( EffectType::e type )
+float EffectManager::EffectScale( EffectType type )
 {
 	switch ( type )
 	{
-	case EffectType::FIRE:
+	case 0://fire
 		return 2.0f;
 
 	default:
