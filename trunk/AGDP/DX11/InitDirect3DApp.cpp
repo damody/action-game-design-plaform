@@ -1382,8 +1382,8 @@ void InitDirect3DApp::ParseCommandLine( int argc, char* argv[] )
 				temp->LoadHeroData( hero );
 				g_HeroInfoManager.AddHeroInfo( temp->m_Name, temp );
 			}*/
-			std::string heroStr( argv[current] );
-			heroStr.append( ".lua" );
+			std::wstring heroStr( argv[current], argv[current] + strlen(argv[current]) );
+			//heroStr.append( ".lua" );
 			LuaCell_Sptr hero = LuaCell_Sptr( new LuaCell );
 			hero->InputLuaFile( heroStr.c_str() );
 			HeroInfo_Sptr temp = HeroInfo_Sptr( new HeroInfo );
