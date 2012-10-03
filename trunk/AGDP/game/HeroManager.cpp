@@ -23,12 +23,12 @@ void HeroManager::Update( float dt )
 		( *it )->Update( dt );
 		
 		auto t_colis = BodysCollision.GetCollision<Hero*, GetAttackAABB2D>(*it);
-		Attacks atks = (*it)->GetAttacks();
+		const Attacks& atks = (*it)->GetAttacks();
 		for(auto it_coli = t_colis.begin();it_coli != t_colis.end(); ++it_coli)
 		{
 			std::cout << "be hit" << std::endl;
 			for( Heroes::iterator iHero = it_coli->victims.begin(); iHero != it_coli->victims.end(); iHero ++ ){
-				(*iHero)->beAttack(atks[it_coli->hitter], (*it)->GetRecord(), (*it)->Position(), (*it)->GetFace());
+				(*iHero)->beAttack(&atks[it_coli->hitter], *it, (*it)->Position(), (*it)->GetFace());
 			}
 		}
 	}

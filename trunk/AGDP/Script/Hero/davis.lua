@@ -1175,7 +1175,7 @@ frame.dash_kick[5] =
 
 frame.front_flip[0] =
 {
-   pic_id = 1, pic_x = 8, pic_y = 5, state = Action.FrontFlip, wait = 6, next = {"front_flip", 1},
+   pic_id = 1, pic_x = 8, pic_y = 5, state = Action.Fliping, wait = 6, next = {"front_flip", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 42,  centery = 72,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -1188,7 +1188,7 @@ frame.front_flip[0] =
 
 frame.front_flip[1] =
 {
-   pic_id = 1, pic_x = 9, pic_y = 5, state = Action.FrontFlip, wait = 12, next = {"front_flip", 1},
+   pic_id = 1, pic_x = 9, pic_y = 5, state = Action.Fliping, wait = 12, next = {"front_flip", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -1199,7 +1199,7 @@ frame.front_flip[1] =
 
 frame.back_flip[0] =
 {
-   pic_id = 0, pic_x = 7, pic_y = 7, state = Action.BackFlip, wait = 4, next = {"back_flip", 1},
+   pic_id = 0, pic_x = 7, pic_y = 7, state = Action.Fliping, wait = 4, next = {"back_flip", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 40,  centery = 80,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -1212,7 +1212,7 @@ frame.back_flip[0] =
 
 frame.back_flip[1] =
 {
-   pic_id = 0, pic_x = 6, pic_y = 7, state = Action.BackFlip, wait = 12, next = {"back_flip", 1},
+   pic_id = 0, pic_x = 6, pic_y = 7, state = Action.Fliping, wait = 12, next = {"back_flip", 1},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 79,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -1445,6 +1445,7 @@ frame.falling_back[0] =
 {
 	pic_id = 0, pic_x = 1, pic_y = 4, state = Action.FallingBack, wait = 1, next = { "falling_back", 0},
 	dvx = 0, dvy = 0, dvz = 0, centerx = 37, centery = 79, clear_key_queue = 0,
+	consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
 	hit = {{"J", "back_flip", 0}},
 	attack={
 		{
@@ -1465,6 +1466,7 @@ frame.falling_back[1] =
 {
 	pic_id = 0, pic_x = 2, pic_y = 4, state = Action.FallingBack, wait = 1, next = { "falling_back", 1},
 	dvx = 0, dvy = 0, dvz = 0, centerx = 37, centery = 85, clear_key_queue = 0,
+	consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
 	hit = {{"J", "back_flip", 0}},
 	attack={
 		{
@@ -1491,6 +1493,7 @@ frame.falling_back[2] =
 {
 	pic_id = 0, pic_x = 3, pic_y = 4, state = Action.FallingBack, wait = 1, next = { "falling_back", 2},
 	dvx = 0, dvy = 0, dvz = 0, centerx = 39, centery = 79, clear_key_queue = 0,
+	consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
 	hit = {{"J", "back_flip", 0}},
 	attack={
 		{
@@ -1510,6 +1513,7 @@ frame.falling_back[3] =
 {
 	pic_id = 0, pic_x = 4, pic_y = 4, state = Action.FallingBack, wait = 1, next = { "falling_back", 3},
 	dvx = 0, dvy = 0, dvz = 0, centerx = 39, centery = 79, clear_key_queue = 0,
+	consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
 	hit = {{"J", "back_flip", 0}},
 	attack={
 		{
@@ -1536,12 +1540,14 @@ frame.falling_back[4] =
 {
 	pic_id = 0, pic_x = 5, pic_y = 4, state = Action.FallingBack, wait = 1, next = { "falling_back", 4},
 	dvx = 0, dvy = 0, dvz = 0, centerx = 39, centery = 66, clear_key_queue = 0,
+	consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
 }
 
 frame.falling_back[5] =
 {
 	pic_id = 0, pic_x = 6, pic_y = 4, state = Action.FallingBack, wait = 1, next = { "falling_back", 5},
 	dvx = 0, dvy = 0, dvz = 0, centerx = 39, centery = 79, clear_key_queue = 0,
+	consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
 }
 
 frame.injured[0] =

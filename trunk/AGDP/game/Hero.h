@@ -36,50 +36,55 @@ typedef std::vector <Condition> Conditions;
 
 class Hero
 {
+public:
+	struct AttackRest{
+		const Attack *a;	//attack
+		const Hero *d;		//敵人
+		int t;				//time
+	};
 private:
-	int		m_TimeTik;		//Count down TimeTik from Frame Wait
-	ClipVertex	m_Pic;
+	int				m_TimeTik;		//Count down TimeTik from Frame Wait
+	ClipVertex		m_Pic;
 	HeroInfo_Sptr   m_HeroInfo;
-	int		m_Action;		//當下動作狀態
-	std::wstring     m_Frame;		//Current Frame
-	int		m_FrameID;		//Current Frame ID
+	int				m_Action;		//當下動作狀態
+	std::wstring    m_Frame;		//Current Frame
+	int				m_FrameID;		//Current Frame ID
 
-	int		m_Texture;		//Current Texture ID
-	int		m_PicID;
-	int		m_PicW;			//W截切次數
-	int		m_PicH;			//H截切次數
-	int		m_PicX;
-	int		m_PicY;
+	int				m_Texture;		//Current Texture ID
+	int				m_PicID;
+	int				m_PicW;			//W截切次數
+	int				m_PicH;			//H截切次數
+	int				m_PicX;
+	int				m_PicY;
 
-	Vector3		m_Position;
-	Vector3		m_Vel;
-	float		m_CenterX;
-	float		m_CenterY;
-	FrameInfo*	m_FrameInfo;
-	float		m_Angle;
-	bool		m_FaceSide;		//true 右, false 左
-	int			d_run;			//判定跑步用，右正左負
+	Vector3			m_Position;
+	Vector3			m_Vel;
+	float			m_CenterX;
+	float			m_CenterY;
+	FrameInfo*		m_FrameInfo;
+	float			m_Angle;
+	bool			m_FaceSide;		//true 右, false 左
+	int				d_run;			//判定跑步用，右正左負
+	bool			d_Ground;		//判斷是否在地面上
+	int				m_Team;			//0為不分
+	int				m_MaxRecoverHP;	//最大恢復血量
+	int				m_HP;
+	int				m_MP;
+	//EffectType::e   m_Effect;
+	float			m_EffectScale;
+	Record_Sptr     m_Record;
+	AABB2D			m_BodyAABB;
+	AABB2D			m_AttackAABB;
+	AABB2D			m_CatchAABB;
+
+	int				m_FrontDefence;
+	int				m_BackDefence;
+	int				m_Fall;
+	AttackRest		m_AtkRest;
+	KeyQueue		m_KeyQue;
+	Conditions		m_Conditions;
 	//判斷非方向按鍵作用與否，1表示已作用，0則否，0:atk1, 1:atk2, 2:j, 3:d
 	boost::dynamic_bitset<byte> d_key;
-	bool		d_Ground;		//判斷是否在地面上
-	int		m_Team;			//0為不分
-	int		m_MaxRecoverHP;		//最大恢復血量
-	int		m_HP;
-	int		m_MP;
-	//EffectType::e   m_Effect;
-	float		m_EffectScale;
-	Record_Sptr     m_Record;
-	AABB2D		m_BodyAABB;
-	AABB2D		m_AttackAABB;
-	AABB2D		m_CatchAABB;
-
-	int		m_FrontDefence;
-	int		m_BackDefence;
-	int		m_Fall;
-
-	KeyQueue	m_KeyQue;
-
-	Conditions m_Conditions;
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -115,58 +120,58 @@ public:
 
 	Hero();
 	Hero( std::wstring h );
-	void	Update( float dt );
-	void	UpdateDataToDraw();	//Data To m_Pic
-	int	GetTextureID();
-	int	Team() const;
-	ClipVertex	GetPic();
-	Texture_Sptr	GetTexture();
-	const Vector3&	Position();
-	const Vector3&	Velocity();
-	bool		IsAlive();
-	bool		GetFace();
-	AABB2D&		GetBodyAABB();
-	AABB2D&		GetAttackAABB();
-	AABB2D&		GetCatchAABB();
-	Bodys&		GetBodys( );
-	Attacks&	GetAttacks( );
-	CatchInfos&	GetCatches( );
-	Record_Sptr	GetRecord();
-	void		SetRecord( Record_Sptr r );
-	void		SetTeam( int team );
-	void		SetPosition( const Vector3& pos );
-	//void		SetEffect( EffectType::e effect );
-	void		PushKey( KeyInfo& k );
-	PolygonVerteices GetPolygonVerteices();
-	PolygonVerteices GetPolygonLineVerteices();
+	void			Update( float dt );
+	void			UpdateDataToDraw();	//Data To m_Pic
+	int				GetTextureID() const;
+	int				Team() const;
+	ClipVertex		GetPic() const;
+	Texture_Sptr	GetTexture() const;
+	const Vector3&	Position() const;
+	const Vector3&	Velocity() const;
+	bool			IsAlive() const;
+	bool			GetFace() const;
+	AABB2D&			GetBodyAABB();
+	AABB2D&			GetAttackAABB();
+	AABB2D&			GetCatchAABB();
+	Bodys&			GetBodys( ) const;
+	Attacks&		GetAttacks( ) const;
+	CatchInfos&		GetCatches( ) const;
+	Record_Sptr		GetRecord() const;
+	void			SetRecord( Record_Sptr r );
+	void			SetTeam( int team );
+	void			SetPosition( const Vector3& pos );
+	//void			SetEffect( EffectType::e effect );
+	void			PushKey( KeyInfo& k );
+	PolygonVerteices GetPolygonVerteices() const;
+	PolygonVerteices GetPolygonLineVerteices() const;
 	//狀態
-	bool AddCondition( int effectIndex , float time , std::string name );
-	void ConditionUpdate( float dt );
+	bool			AddCondition( int effectIndex , float time , std::string name );
+	void			ConditionUpdate( float dt );
 	//創造物件
-	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
+	friend bool			Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 	//碰撞判定用
-	friend Polygon2Ds GetHeroBodys( const Hero& r );
-	friend Polygon2Ds GetHeroAttacks( const Hero& r );
-	friend Polygon2Ds GetHeroCatches( const Hero& r );
+	friend Polygon2Ds	GetHeroBodys( const Hero& r );
+	friend Polygon2Ds	GetHeroAttacks( const Hero& r );
+	friend Polygon2Ds	GetHeroCatches( const Hero& r );
 	void beCaught( const CatchInfo& rCatch, const Vector3& hitPos, bool rFace );
-	void beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3& hitPos, bool rFace );
+	void beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPos, bool rFace );
 	//void beHit(const )
 
 protected:
-	void Init();
-	void NextFrame();
-	void SwitchFrame( std::wstring rFrame, int rFrameID );
-	FrameInfo* FindFrame( std::wstring rframe, int rframeID );
-	bool ScanKeyQue();	//false無控制動作
-	void ClearKeyQue();
-	void Flicker();		//閃爍
-	void Recover();		//回血、氣、破防值.....
-	void CreateEffect();
-	void UpdateVel( int dx, int dz );
+	void		Init();
+	void		NextFrame();
+	void		SwitchFrame( std::wstring rFrame, int rFrameID );
+	FrameInfo*	FindFrame( std::wstring rframe, int rframeID );
+	bool		ScanKeyQue();	//false無控制動作
+	void		ClearKeyQue();
+	void		Flicker();		//閃爍
+	void		Recover();		//回血、氣、破防值.....
+	void		CreateEffect();
+	void		UpdateVel( int dx, int dz );
 
-	bool isKeyUsed( char );
-	void keyUsed( char );
-	void newKey( char );
+	bool		isKeyUsed( char ) const;
+	void		keyUsed( char );
+	void		newKey( char );
 };
 SHARE_PTR( Hero );
 typedef std::vector <Hero_RawPtr> Heroes;
