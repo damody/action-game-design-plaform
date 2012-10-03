@@ -176,6 +176,7 @@ public:
 	void RefreshBodyPoint( int i );
 	void RefreshAttackPoint( int i );
 	void RefreshCatchPoint( int i );
+	void RefreshCreationPoint(  );
 public:
 	void Update();
 	void UpdatePropList_Frame();
@@ -183,5 +184,6 @@ public:
 	void UpdateAttack();
 	void UpdateCatch();
 	void UpdatePictureData();
+	void UpdateCreation();
 	//void DeleteProperty(CMFCPropertyGridProperty* pProp);
 };

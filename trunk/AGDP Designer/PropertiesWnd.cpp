@@ -443,7 +443,7 @@ void CPropertiesWnd::InitPropList_Frame()
 	pProp = new CMFCPropertyGridProperty( _T( "Frame Index" ), varInt(), _T( "表示在這個 Frame 的哪一格" ) );
 	pProp->AllowEdit( FALSE );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "Next Frame Name" ), _T( "standing" ), _T( "表示跳到哪一個 Frame" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Next Frame Name" ), _T( "default" ), _T( "表示跳到哪一個 Frame" ) );
 	AddNormalActionDcase( pProp );
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Next Frame Index" ), varInt(), _T( "表示跳到 Frame 的哪一格" ) );
@@ -702,6 +702,14 @@ void CPropertiesWnd::InitPropList_Creation()
 	CMFCPropertyGridProperty* pProp;
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Name" ), _T(""), _T( "創造物名稱" ) );
 	pPropMain->AddSubItem( pProp );
+	for (HeroInfoMap::iterator it = g_HeroInfoMap.begin(); it != g_HeroInfoMap.end(); it++)
+	{
+		pProp->AddOption( it->second->m_Name.c_str() );
+	}
+	for (ObjectInfoMap::iterator it = g_ObjectInfoMap.begin(); it != g_ObjectInfoMap.end(); it++)
+	{
+		pProp->AddOption( it->second->m_Name.c_str() );
+	}
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame" ), _T(""), _T( "創造物初始動作" ) );
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame Index" ), varInt(), _T( "創造物初始動作影格" ) );
@@ -761,6 +769,24 @@ void CPropertiesWnd::RefreshPropList_Creation( int index )
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
 	
 	( ( CMFCPropItem* )propRoot->GetSubItem( 0 ) )->SetValue( CString( frameInfo.m_Creations[index].name.c_str() ) );
+
+	ObjectInfoMap::iterator it_Object = g_ObjectInfoMap.find(frameInfo.m_Creations[index].name);
+	if (it_Object != g_ObjectInfoMap.end())
+	{
+		for ( FramesMap::iterator it = it_Object->second->m_FramesMap.begin(); it != it_Object->second->m_FramesMap.end() ; it++ )
+		{
+			propRoot->GetSubItem( 1 )->AddOption( it->first.c_str() );
+		}
+	}
+	HeroInfoMap::iterator it_Hero = g_HeroInfoMap.find(frameInfo.m_Creations[index].name);
+	if (it_Hero != g_HeroInfoMap.end())
+	{
+		for ( FramesMap::iterator it = it_Hero->second->m_FramesMap.begin(); it != it_Hero->second->m_FramesMap.end() ; it++ )
+		{
+			propRoot->GetSubItem( 1 )->AddOption( it->first.c_str() );
+		}
+	}
+	
 	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( CString( frameInfo.m_Creations[index].frame.c_str()) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt(frameInfo.m_Creations[index].frameID) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varInt(frameInfo.m_Creations[index].amount) );
@@ -771,6 +797,11 @@ void CPropertiesWnd::RefreshPropList_Creation( int index )
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.y) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.z) );
 	
+}
+
+void CPropertiesWnd::UpdateCreation()
+{
+
 }
 
 void CPropertiesWnd::InitPropList_PictureData()
@@ -846,10 +877,7 @@ void CPropertiesWnd::AddNormalActionDcase( CMFCPropertyGridProperty* pProp )
 	{
 		for ( FramesMap::iterator it = g_ActiveFramesMap->begin(); it != g_ActiveFramesMap->end() ; it++ )
 		{
-			char buff[100];
-			sprintf( buff, "%s", it->first.c_str() );
-			CString str( buff );
-			pProp->AddOption( str );
+			pProp->AddOption( CString( it->first.c_str() ) );
 		}
 	}
 }
@@ -2145,6 +2173,15 @@ void CPropertiesWnd::RefreshCatchPoint( int i )
 	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo->m_Catchs[m_Index].m_Area.Points()[i].x() ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 0 )->GetSubItem( i )->GetSubItem( 1 ) )->SetValue( varFloat( -frameInfo->m_Catchs[m_Index].m_Area.Points()[i].y() ) );
 }
+
+void CPropertiesWnd::RefreshCreationPoint(  )
+{
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo->m_Creations[m_Index].x ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 1 ) )->SetValue( varFloat( -frameInfo->m_Creations[m_Index].y ) );
+}
+
 
 
 

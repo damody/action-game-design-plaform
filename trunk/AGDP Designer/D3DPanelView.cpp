@@ -1187,9 +1187,6 @@ void CD3DPanelView::EditCatchPoint( int id )
 	m_D3DApp.DrawScene();
 }
 
-
-
-
 void CD3DPanelView::OnButtonPointAdd()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
@@ -1216,7 +1213,6 @@ void CD3DPanelView::OnButtonPointAdd()
 		}
 	}
 }
-
 
 void CD3DPanelView::OnButtonPointSub()
 {
@@ -1276,4 +1272,5 @@ void CD3DPanelView::UpdateCreationPos( float x, float y )
 		m_FrameInfo->m_Creations[m_CreationID].y = -y;
 	}
 
+	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshCreationPoint();
 }

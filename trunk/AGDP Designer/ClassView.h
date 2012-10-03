@@ -69,7 +69,7 @@ public:
 	virtual BOOL PreTranslateMessage( MSG* pMsg );
 
 protected:
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
+	afx_msg int  OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnSize( UINT nType, int cx, int cy );
 	afx_msg void OnLButtonUp( UINT nFlags, CPoint point );
 	afx_msg void OnContextMenu( CWnd* pWnd, CPoint point );
