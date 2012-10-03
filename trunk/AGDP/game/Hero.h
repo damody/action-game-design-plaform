@@ -29,7 +29,7 @@ namespace boost {namespace serialization {class access;}}
 struct Condition
 {
 	int m_effectIndex;
-	float m_time;
+	int m_time;//ex:2秒就是2*60
 	std::string m_name;
 };
 typedef std::vector <Condition> Conditions;
@@ -145,8 +145,8 @@ public:
 	PolygonVerteices GetPolygonVerteices() const;
 	PolygonVerteices GetPolygonLineVerteices() const;
 	//狀態
-	bool			AddCondition( int effectIndex , float time , std::string name );
-	void			ConditionUpdate( float dt );
+	bool		AddCondition( int effectIndex , int time , std::string name );
+	void		ConditionUpdate( float dt );
 	//創造物件
 	friend bool			Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 	//碰撞判定用

@@ -1782,14 +1782,15 @@ AABB2D& Hero::GetCatchAABB()
 	return m_CatchAABB;
 }
 
-bool Hero::AddCondition( int effectIndex , float time , std::string name )
+bool Hero::AddCondition( int effectIndex , int time , std::string name )
 {
 	if( m_Conditions.size() >= CONDITION_MAX)
 	{
 		std::cout<<"Condition Full"<<std::endl;
 		return false;
 	}
-	Condition temp = {effectIndex,time,"Fire"};
+	/*update time is 1/60*/
+	Condition temp = {effectIndex,time*60,"Fire"};
 	m_Conditions.push_back(temp);
 	return true;
 }
@@ -1797,8 +1798,7 @@ void Hero::ConditionUpdate( float dt )
 {
 	for( unsigned int idx = 0;idx<m_Conditions.size();idx++ )
 	{
-		m_Conditions[idx].m_time -= dt;
-		std::cout<<"time = "<<m_Conditions[idx].m_time<<std::endl;
+		m_Conditions[idx].m_time--;
 		//call Lua to do something
 
 		//----------------------

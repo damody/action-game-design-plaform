@@ -125,9 +125,9 @@ void InitDirect3DApp::UpdateScene( float dt )
 
 			buildPoint();
 			//Hero Update
-			g_HeroManager.Update( dt );
+			g_HeroManager.Update( g_TimeSpeed );
 			//Chee Update
-			g_ObjectManager.Update( dt );
+			g_ObjectManager.Update( g_TimeSpeed );
 			m_Player.Update();
 
 			//Background Update
@@ -1318,7 +1318,7 @@ void InitDirect3DApp::TestFire()
 
 	if ( InputStateS::instance().isKeyDown( KEY_F ) )
 	{
-		m_Player.m_Hero->AddCondition(0 , 0.15f ,"Fire");
+		m_Player.m_Hero->AddCondition(0 , 2 ,"Fire");
 		/*lua_State *L = luaL_newstate();
 		luaL_openlibs(L);
 		luabind::open(L);
