@@ -2,7 +2,7 @@
 #include <vector>
 #include "math\Vector2.h"
 #include "math\Vector4.h"
-
+/*
 struct EffectType
 {
 	enum e
@@ -13,7 +13,7 @@ struct EffectType
 	        FREEZE
 	};
 };
-
+*/
 struct EffectData
 {
 	int	m_TextureID;

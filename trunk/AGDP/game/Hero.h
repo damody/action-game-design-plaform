@@ -22,6 +22,7 @@
 #define FRICTION 0.5f
 #define G_ACCE g_BackgroundManager.GetCurrentBackground()->Gravity()
 #define SCALE 3.0f
+#define CONDITION_MAX 20
 
 namespace boost {namespace serialization {class access;}}
 
@@ -29,7 +30,9 @@ struct Condition
 {
 	int m_effectIndex;
 	float m_time;
+	std::string m_name;
 };
+typedef std::vector <Condition> Conditions;
 
 class Hero
 {
@@ -63,7 +66,7 @@ private:
 	int		m_MaxRecoverHP;		//最大恢復血量
 	int		m_HP;
 	int		m_MP;
-	EffectType::e   m_Effect;
+	//EffectType::e   m_Effect;
 	float		m_EffectScale;
 	Record_Sptr     m_Record;
 	AABB2D		m_BodyAABB;
@@ -75,6 +78,8 @@ private:
 	int		m_Fall;
 
 	KeyQueue	m_KeyQue;
+
+	Conditions m_Conditions;
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -130,13 +135,13 @@ public:
 	void		SetRecord( Record_Sptr r );
 	void		SetTeam( int team );
 	void		SetPosition( const Vector3& pos );
-	void		SetEffect( EffectType::e effect );
+	//void		SetEffect( EffectType::e effect );
 	void		PushKey( KeyInfo& k );
 	PolygonVerteices GetPolygonVerteices();
 	PolygonVerteices GetPolygonLineVerteices();
 	//狀態
-	void AddCondition(int effectIndex);
-	void ConditionUpdate();
+	bool AddCondition( int effectIndex , float time , std::string name );
+	void ConditionUpdate( float dt );
 	//創造物件
 	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 	//碰撞判定用

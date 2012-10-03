@@ -1313,12 +1313,13 @@ void InitDirect3DApp::TestFire()
 {
 	if ( InputStateS::instance().isKeyDown( KEY_D ) )
 	{
-		m_Player.m_Hero->SetEffect( EffectType::NONE );
+		//m_Player.m_Hero->SetEffect( EffectType::NONE );
 	}
 
 	if ( InputStateS::instance().isKeyDown( KEY_F ) )
 	{
-		lua_State *L = luaL_newstate();
+		m_Player.m_Hero->AddCondition(0 , 0.15f ,"Fire");
+		/*lua_State *L = luaL_newstate();
 		luaL_openlibs(L);
 		luabind::open(L);
 
@@ -1326,7 +1327,7 @@ void InitDirect3DApp::TestFire()
 		luabind::module(L)
 			[
 				luabind::class_<Hero>("Hero")
-				.def("SetEffect", &Hero::SetEffect)
+				.def("AddCondition", &Hero::AddCondition)
 			];
 		if (luaL_dofile(L, "Script/Shader/ShaderActive.lua")) {
 			std::cout << "We hit a little snug: " << lua_tostring(L, -1) << std::endl;// Print out the error message
@@ -1340,7 +1341,7 @@ void InitDirect3DApp::TestFire()
 
 
 		lua_close(L);
-
+		*/
 		//m_Player.m_Hero->SetEffect( EffectType::FIRE );
 		//m_Player.m_Hero->SetEffect(EffectType::POISON);
 	}

@@ -14,7 +14,7 @@ const int PASTE_W = 256;
 
 //ShaderClass不用每張EFFECT都創 可以直接放在effectMG內 已經改好effectShaders. 不然火焰shader會重複創4次 by holyk
 typedef std::vector<EffectShaderClass*> EffectShaders;
-
+typedef int EffectType;
 //const int EFFECT_SHADER_SIZE = 3;//n種效果
 
 
@@ -36,9 +36,9 @@ public:
 	void Updata( float dt );
 	void SetFireParameters();
 
-	bool CreateEffect( EffectType::e type, EffectData* ed ); //直接改ed回傳
+	bool CreateEffect( EffectType type, EffectData* ed ); //直接改ed回傳
 	void Clear();//清除 EffectDatas
-	bool Check( EffectType::e type, EffectData* ed ); //判斷是否有重複的圖
+	bool Check( EffectType type, EffectData* ed ); //判斷是否有重複的圖
 	bool Overflow();//貼圖溢位
 
 	int  GetTextureID();
@@ -61,12 +61,12 @@ public:
 	EffectManager( HWND hwnd );
 	~EffectManager( void );
 
-	int CreateEffect( EffectType::e type, int textureID, Vector4* picpos ); //直接改texture & picpos回傳
+	int CreateEffect( EffectType type, int textureID, Vector4* picpos ); //直接改texture & picpos回傳
 
 	void Update( ID3D11RenderTargetView* originRTV );
 	void OnResize( int W, int H );
 
-	float	EffectScale( EffectType::e type );
+	float	EffectScale( EffectType type );
 
 	ID3D11ShaderResourceView* Test_GetNowTexture();
 };
