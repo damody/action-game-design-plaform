@@ -700,9 +700,9 @@ void CPropertiesWnd::InitPropList_Creation()
 	m_wndPropList.MarkModifiedProperties();
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
 	CMFCPropertyGridProperty* pProp;
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "Name" ), varFloat(), _T( "創造物名稱" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Name" ), _T(""), _T( "創造物名稱" ) );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame" ), varFloat(), _T( "創造物初始動作" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame" ), _T(""), _T( "創造物初始動作" ) );
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame Index" ), varInt(), _T( "創造物初始動作影格" ) );
 	pPropMain->AddSubItem( pProp );
@@ -759,6 +759,7 @@ void CPropertiesWnd::RefreshPropList_Creation( int index )
 	}
 	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
 	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+	
 	( ( CMFCPropItem* )propRoot->GetSubItem( 0 ) )->SetValue( CString( frameInfo.m_Creations[index].name.c_str() ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( CString( frameInfo.m_Creations[index].frame.c_str()) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt(frameInfo.m_Creations[index].frameID) );
@@ -769,7 +770,7 @@ void CPropertiesWnd::RefreshPropList_Creation( int index )
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 0 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.x) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.y) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.z) );
-
+	
 }
 
 void CPropertiesWnd::InitPropList_PictureData()

@@ -18,11 +18,12 @@ private:
 	int m_BodyID;
 	int m_AttackID;
 	int m_CatchID;
+	int m_CreationID;
 
 	FrameInfo* m_FrameInfo;
 
-	int m_PointIndex;
-	float m_RecordX, m_RecordY;
+	int	m_PointIndex;
+	float	m_RecordX, m_RecordY;
 public:
 	void Clear()
 	{
@@ -40,11 +41,13 @@ public:
 	void EditCatchPoint( int id );
 	void EditableCenter();
 	void EditCenter( float x, float y );
+	void EditCreation( int id );
 	void SetPic( PictureData*  pic, float x, float y );
 private:
 	void InitEdit();
 	void StopEdit();
 
+	void UpdateCreationPos( float x, float y );
 	void UpdateCenter( float x, float y );
 	void UpdateBody();
 	void UpdateBody( int index );

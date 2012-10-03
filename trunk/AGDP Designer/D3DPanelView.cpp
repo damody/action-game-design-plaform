@@ -16,7 +16,7 @@
 IMPLEMENT_DYNAMIC( CD3DPanelView, CDockablePane )
 
 CD3DPanelView::CD3DPanelView( CWnd* pParent /*=NULL*/ ): m_TrackMouse( true ), m_LMouseHold( false ), m_MMouseHold( false ), m_CtrlPress( false ), m_KeyAPress( false ), m_EnableCtrlCenter( false ), m_ShiftPress( false ),
-	m_RecordX( 0 ), m_RecordY( 0 ), m_BodyID( -1 ), m_AttackID( -1 ), m_CatchID( -1 ), m_FrameInfo( NULL ), m_PointIndex( -1 )
+	m_RecordX( 0 ), m_RecordY( 0 ), m_BodyID( -1 ), m_AttackID( -1 ), m_CatchID( -1 ), m_FrameInfo( NULL ), m_PointIndex( -1 ),m_CreationID(-1)
 {
 	this->Init();
 }
@@ -121,7 +121,7 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 	// 	CString str(buff);
 	// 	AfxMessageBox(str);
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
-	if ( m_CtrlPress && m_EnableCtrlCenter )
+	if (m_EnableCtrlCenter )
 	{
 		switch ( nChar )
 		{
@@ -143,6 +143,35 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		case KEY_DOWN:
 			m_D3DApp.m_Center.Translate(0,1);
 			UpdateCenter( m_D3DApp.m_Center.x, m_D3DApp.m_Center.y );
+			break;
+		}
+
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
+
+	if (m_CreationID > -1)
+	{
+		switch ( nChar )
+		{
+		case KEY_LEFT:
+			m_D3DApp.m_CreationPos[m_CreationID].Translate(-1,0);
+			UpdateCenter(m_D3DApp.m_CreationPos[m_CreationID].x,m_D3DApp.m_CreationPos[m_CreationID].y);
+			break;
+
+		case KEY_UP:
+			m_D3DApp.m_CreationPos[m_CreationID].Translate(0,-1);
+			UpdateCenter(m_D3DApp.m_CreationPos[m_CreationID].x,m_D3DApp.m_CreationPos[m_CreationID].y);
+			break;
+
+		case KEY_RIGHT:
+			m_D3DApp.m_CreationPos[m_CreationID].Translate(1,0);
+			UpdateCenter(m_D3DApp.m_CreationPos[m_CreationID].x,m_D3DApp.m_CreationPos[m_CreationID].y);
+			break;
+
+		case KEY_DOWN:
+			m_D3DApp.m_CreationPos[m_CreationID].Translate(0,1);
+			UpdateCenter(m_D3DApp.m_CreationPos[m_CreationID].x,m_D3DApp.m_CreationPos[m_CreationID].y);
 			break;
 		}
 
@@ -450,6 +479,15 @@ void CD3DPanelView::OnLButtonDown( UINT nFlags, CPoint point )
 	if ( m_EnableCtrlCenter && m_CtrlPress )
 	{
 		m_D3DApp.m_Center.SetPosition( point.x, point.y );
+		UpdateCenter( point.x, point.y );
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
+
+	if ( m_CreationID > -1 && m_CtrlPress )
+	{
+		m_D3DApp.m_CreationPos[m_CreationID].SetPosition( point.x, point.y );
+		UpdateCreationPos(point.x,point.y);
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 	}
@@ -642,6 +680,14 @@ void CD3DPanelView::OnMouseMove( UINT nFlags, CPoint point )
 		m_D3DApp.DrawScene();
 	}
 
+	if ( m_CreationID > -1 && m_CtrlPress && m_LMouseHold )
+	{
+		m_D3DApp.m_CreationPos[m_CreationID].SetPosition( point.x, point.y );
+		UpdateCreationPos( point.x, point.y );
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+	}
+
 	if ( m_MMouseHold )
 	{
 		g_Frame_OffsetX += dx;
@@ -770,6 +816,14 @@ void CD3DPanelView::StopEdit()
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 		m_EnableCtrlCenter = false;
+	}
+
+	if ( m_CreationID > -1)
+	{
+		m_D3DApp.m_CreationPos[m_CreationID].SetColor(1,0,0);
+		m_D3DApp.buildPoint();
+		m_D3DApp.DrawScene();
+		m_CreationID = -1;
 	}
 }
 
@@ -1201,5 +1255,25 @@ void CD3DPanelView::EditableCenter()
 	m_D3DApp.buildPoint();
 	m_D3DApp.DrawScene();
 	m_EnableCtrlCenter = true;
+
+}
+
+void CD3DPanelView::EditCreation( int id )
+{
+	StopEdit();
+	m_CreationID = id;
+	m_D3DApp.m_CreationPos[m_CreationID].SetColor(0,0,0);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
+	
+}
+
+void CD3DPanelView::UpdateCreationPos( float x, float y )
+{
+	if ( m_FrameInfo != NULL )
+	{
+		m_FrameInfo->m_Creations[m_CreationID].x = x;
+		m_FrameInfo->m_Creations[m_CreationID].y = -y;
+	}
 
 }

@@ -76,6 +76,7 @@ public:
 	}
 	void EditCreation( int id )
 	{
+		m_D3DFrameView.EditCreation(id);
 		m_wndProperties.RefreshPropList_Creation(id);
 	}
 	void SetStatus( const CString& str )
