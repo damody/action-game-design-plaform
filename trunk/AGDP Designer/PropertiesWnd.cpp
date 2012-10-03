@@ -1141,16 +1141,16 @@ void CPropertiesWnd::UpdatePropList_Frame()
 					frameInfo->m_PictureID = i;
 					frameInfo->m_PictureX  = 1;
 					frameInfo->m_PictureY  = 1;
-					( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varInt( 1 ) );
-					( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varInt( 1 ) );
+					( ( CMFCPropItem* )m_wndPropList.GetProperty( 0 )->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varInt( 1 ) );
+					( ( CMFCPropItem* )m_wndPropList.GetProperty( 0 )->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varInt( 1 ) );
 					( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();
 			});
 			command->AddUndoFunction([=](){
 				frameInfo->m_PictureID = OldPictureID;
 				frameInfo->m_PictureX  = OldPictureX;
-				frameInfo->m_PictureY  = OldPictureY;
-				( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varInt( OldPictureX ) );
-				( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varInt( OldPictureY ) );
+				frameInfo->m_PictureY  = OldPictureY;m_wndPropList.GetProperty( 0 );
+				( ( CMFCPropItem* )m_wndPropList.GetProperty( 0 )->GetSubItem( 7 )->GetSubItem( 1 ) )->SetValue( varInt( OldPictureX ) );
+				( ( CMFCPropItem* )m_wndPropList.GetProperty( 0 )->GetSubItem( 7 )->GetSubItem( 2 ) )->SetValue( varInt( OldPictureY ) );
 				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.Refresh();
 			});
 			/*frameInfo->m_PictureID = i;

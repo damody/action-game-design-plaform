@@ -592,12 +592,12 @@ void CMainFrame::OnButtonRun()
 	// TODO: 在此加入您的命令處理常式程式碼
 	if ( g_HeroInfo != NULL )
 	{
-		HeroInfo::WriteLua( g_HeroInfo, std::wstring( _T( "AGDP\\Script\\temp.lua" ) ) );
+		HeroInfo::WriteLua( g_HeroInfo, std::wstring( _T( "Script\\Hero\\temp.lua" ) ) );
 		//執行AGDP.exe
 #ifdef _DEBUG
-		system( "..\\Bin\\ActionGameDesignPlaform.exe -hero temp" );
+		system( "start ../Bin/ActionGameDesignPlaform.exe -hero ..\\AGDP Designer\\Script\\Hero\\temp.lua" );
 #else
-		system( "ActionGameDesignPlaform.exe -hero temp" );
+		system( "start ActionGameDesignPlaform.exe -hero Script\\Hero\\temp.lua" );
 #endif
 	}
 	else

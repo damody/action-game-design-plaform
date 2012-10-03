@@ -24,7 +24,7 @@
 Hero::Hero() {}
 
 Hero::Hero( std::wstring h ):
-	hero( h ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 ), d_run( 0 ), m_EffectScale( 1.0f ), d_key(g_KeyMap.sKeySize()), m_Fall( 70 ), m_FrontDefence( 0 ), m_BackDefence( 0 )
+	hero( h ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 ), d_run( 0 ), m_EffectScale( 1.0f ), d_key(g_KeyMap.sKeySize()), m_Fall( 70 ), m_FrontDefence( 0 ), m_BackDefence( 0 ), m_AtkRest()
 {
 	m_HeroInfo = g_HeroInfoManager.GetHeroInfo( hero );
 	m_Record = Record_Sptr( new Record() );
@@ -85,6 +85,15 @@ void Hero::Update( float dt )
 	//m_Position += m_Vel;
 	bool pastInAir = false;
 	bool inAir = false;
+
+	//reAttack
+	if(m_AtkRest.a != NULL){
+		m_AtkRest.t --;
+		if(m_AtkRest.t == 0){
+			m_AtkRest.a = NULL;
+			m_AtkRest.d = NULL;
+		}
+	}
 
 	//場地限制
 	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
@@ -212,14 +221,14 @@ void Hero::UpdateDataToDraw()
 	m_Pic.faceside = ( float )( m_FaceSide ? 1 : -1 );
 }
 
-Texture_Sptr Hero::GetTexture()
+Texture_Sptr Hero::GetTexture() const
 {
 	return g_TextureManager.GetTexture( m_Texture );
 }
 
-ClipVertex Hero::GetPic() {	return m_Pic; }
+ClipVertex Hero::GetPic() const {	return m_Pic; }
 
-int Hero::GetTextureID() {	return m_Texture; }
+int Hero::GetTextureID() const {	return m_Texture; }
 
 void Hero::NextFrame()
 {
@@ -1298,37 +1307,39 @@ void Hero::Recover()
  * hitPos	:擊中點(重疊範圍中心，只重視 X 軸精確度)
  * FaceSide	:攻擊者的面向(若為氣功則為氣功波的面向)
  */
-void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3& hitPos, bool rFace )
+void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPos, bool rFace )
 {
-	if ( rAtk.m_Kind == 0 ) 				//普通攻擊形式，套用 effect 擊中特效
+	if ( rAtk->m_Kind == 0 ) 				//普通攻擊形式，套用 effect 擊中特效
 	{
-		if ( rHero->team == m_Team ) 		//普通形式的攻擊對同隊無效
+		if ( rHero->m_Team == m_Team || 		//普通形式的攻擊對同隊無效
+			(rAtk == m_AtkRest.a && rHero == m_AtkRest.d) )			//重複擊中免疫時間
 		{	return;	}
 
-		m_Vel.x += rAtk.m_DVX * ( rFace ? 1.0f : -1.0f );
-		m_Vel.y += rAtk.m_DVY;
-		m_Vel.z += rAtk.m_DVZ;
+		m_Vel.x += rAtk->m_DVX * ( rFace ? 1.0f : -1.0f );
+		m_Vel.y += rAtk->m_DVY;
+		m_Vel.z += rAtk->m_DVZ;
 		std::wstring nFrame;
 		int nFrameID = 0;
+		Record_Sptr rHeroRec = rHero->GetRecord();
 
 		if ( ( hitPos.x > m_Position.x && m_FaceSide ) || ( hitPos.x < m_Position.x && !m_FaceSide ) )
 		{
 			//擊中點在人前方
 			if ( m_FrontDefence > 0 ) 		//前方有剛體保護
 			{
-				m_FrontDefence -= rAtk.m_BreakDefend;
-				m_HP -= rAtk.m_Injury / 10;
-				m_MaxRecoverHP -= rAtk.m_Injury / 30;
-				rHero->Attack += rAtk.m_Injury / 10;
+				m_FrontDefence -= rAtk->m_BreakDefend;
+				m_HP -= rAtk->m_Injury / 10;
+				m_MaxRecoverHP -= rAtk->m_Injury / 30;
+				rHeroRec->Attack += rAtk->m_Injury / 10;
 			}
 			else
 			{
-				m_HP -= rAtk.m_Injury;
-				m_MaxRecoverHP -= rAtk.m_Injury / 3;
-				m_Fall -= rAtk.m_Fall;
+				m_HP -= rAtk->m_Injury;
+				m_MaxRecoverHP -= rAtk->m_Injury / 3;
+				m_Fall -= rAtk->m_Fall;
 				nFrame = L"injured";
 				nFrameID = 0;
-				rHero->Attack += rAtk.m_Injury;
+				rHeroRec->Attack += rAtk->m_Injury;
 			}
 
 			//倒下
@@ -1344,19 +1355,19 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3&
 			//擊中點在人後方
 			if ( m_BackDefence > 0 ) 		//後方有剛體保護
 			{
-				m_FrontDefence -= rAtk.m_BreakDefend;
-				m_HP -= rAtk.m_Injury / 10;
-				m_MaxRecoverHP -= rAtk.m_Injury / 30;
-				rHero->Attack += rAtk.m_Injury / 10;
+				m_FrontDefence -= rAtk->m_BreakDefend;
+				m_HP -= rAtk->m_Injury / 10;
+				m_MaxRecoverHP -= rAtk->m_Injury / 30;
+				rHeroRec->Attack += rAtk->m_Injury / 10;
 			}
 			else
 			{
-				m_HP -= rAtk.m_Injury;
-				m_MaxRecoverHP -= rAtk.m_Injury / 3;
-				m_Fall -= rAtk.m_Fall;
+				m_HP -= rAtk->m_Injury;
+				m_MaxRecoverHP -= rAtk->m_Injury / 3;
+				m_Fall -= rAtk->m_Fall;
 				nFrame = L"injured";
 				nFrameID = 0;
-				rHero->Attack += rAtk.m_Injury;
+				rHeroRec->Attack += rAtk->m_Injury;
 			}
 
 			//倒下
@@ -1368,6 +1379,10 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3&
 			}
 		}
 		wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
+		//設定 reAttackRest
+		m_AtkRest.a = rAtk;
+		m_AtkRest.d = rHero;
+		m_AtkRest.t = rAtk->m_ReAttackRest;
 		//切換 Frame
 		if ( !nFrame.empty() )
 		{
@@ -1379,7 +1394,7 @@ void Hero::beAttack( const Attack& rAtk, const Record_Sptr rHero, const Vector3&
 
 void Hero::SetTeam( int team ) { m_Team = team; }
 
-const Vector3& Hero::Position() { return m_Position; }
+const Vector3& Hero::Position() const { return m_Position; }
 
 int Hero::Team() const { return m_Team; }
 
@@ -1419,7 +1434,7 @@ void Hero::CreateEffect()
 	
 }
 
-PolygonVerteices Hero::GetPolygonVerteices()
+PolygonVerteices Hero::GetPolygonVerteices() const
 {
 	PolygonVerteices pvs;
 	PolygonVertex pv;
@@ -1501,7 +1516,7 @@ PolygonVerteices Hero::GetPolygonVerteices()
 	return pvs;
 }
 
-PolygonVerteices Hero::GetPolygonLineVerteices()
+PolygonVerteices Hero::GetPolygonLineVerteices() const
 {
 	PolygonVerteices pvs;
 	PolygonVertex pv;
@@ -1607,30 +1622,30 @@ PolygonVerteices Hero::GetPolygonLineVerteices()
 	return pvs;
 }
 
-const Vector3& Hero::Velocity() { return m_Vel; }
+const Vector3& Hero::Velocity() const { return m_Vel; }
 
-Bodys& Hero::GetBodys( )
+Bodys& Hero::GetBodys( ) const
 {
 	return m_FrameInfo->m_Bodys;
 }
-Attacks& Hero::GetAttacks( )
+Attacks &Hero::GetAttacks( ) const
 {
 	return m_FrameInfo->m_Attacks;
 }
-CatchInfos& Hero::GetCatches( )
+CatchInfos& Hero::GetCatches( ) const
 {
 	return m_FrameInfo->m_Catchs;
 }
-Record_Sptr Hero::GetRecord()
+Record_Sptr Hero::GetRecord() const
 {
 	return m_Record;
 }
-bool Hero::GetFace()
+bool Hero::GetFace() const
 {
 	return m_FaceSide;
 }
 
-bool Hero::IsAlive()
+bool Hero::IsAlive() const
 {
 	return m_HP > 0;
 }
@@ -1710,7 +1725,7 @@ bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Spt
 	}
 }
 
-bool Hero::isKeyUsed( char r )
+bool Hero::isKeyUsed( char r ) const
 {
 	switch ( r )
 	{
@@ -1767,14 +1782,15 @@ AABB2D& Hero::GetCatchAABB()
 	return m_CatchAABB;
 }
 
-bool Hero::AddCondition( int effectIndex , float time , std::string name )
+bool Hero::AddCondition( int effectIndex , int time , std::string name )
 {
 	if( m_Conditions.size() >= CONDITION_MAX)
 	{
 		std::cout<<"Condition Full"<<std::endl;
 		return false;
 	}
-	Condition temp = {effectIndex,time,"Fire"};
+	/*update time is 1/60*/
+	Condition temp = {effectIndex,time*60,"Fire"};
 	m_Conditions.push_back(temp);
 	return true;
 }
@@ -1782,8 +1798,7 @@ void Hero::ConditionUpdate( float dt )
 {
 	for( unsigned int idx = 0;idx<m_Conditions.size();idx++ )
 	{
-		m_Conditions[idx].m_time -= dt;
-		std::cout<<"time = "<<m_Conditions[idx].m_time<<std::endl;
+		m_Conditions[idx].m_time--;
 		//call Lua to do something
 
 		//----------------------
