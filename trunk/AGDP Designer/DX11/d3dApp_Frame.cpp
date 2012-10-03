@@ -224,18 +224,21 @@ void D3DApp_Frame::DrawScene()
 	}
 
 	//Creations
-	UINT offset = 0;
-	UINT stride2 = sizeof( GamePictureVertex );
-	m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
-	m_DeviceContext->IASetInputLayout( m_PLayout_GPics );
-	m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_GPics, &stride2, &offset );
-	for ( DrawVertexGroups::iterator it = m_DrawVertexGroups.begin(); it != m_DrawVertexGroups.end(); ++it )
+	if ( m_CreationsVertics.size() > 0 )
 	{
-		if ( it->texture.get() )
+		UINT offset = 0;
+		UINT stride2 = sizeof( GamePictureVertex );
+		m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
+		m_DeviceContext->IASetInputLayout( m_PLayout_GPics );
+		m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_GPics, &stride2, &offset );
+		for ( DrawVertexGroups::iterator it = m_DrawVertexGroups.begin(); it != m_DrawVertexGroups.end(); ++it )
 		{
-			m_PMap_GPics->SetResource( *( it->texture ) );
-			m_PTech_GPics->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
-			m_DeviceContext->Draw( it->VertexCount, it->StartVertexLocation );
+			if ( it->texture.get() )
+			{
+				m_PMap_GPics->SetResource( *( it->texture ) );
+				m_PTech_GPics->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
+				m_DeviceContext->Draw( it->VertexCount, it->StartVertexLocation );
+			}
 		}
 	}
 
@@ -342,7 +345,7 @@ void D3DApp_Frame::buildShaderFX()
 
 	//Creation
 	hr = 0;
-	hr = D3DX11CompileFromFile( _T( "shader\\gamepicture.fx" ), NULL, NULL, NULL,
+	hr = D3DX11CompileFromFile( _T( "shader\\GamePicture.fx" ), NULL, NULL, NULL,
 		"fx_5_0", D3D10_SHADER_ENABLE_STRICTNESS | D3D10_SHADER_DEBUG, NULL, NULL, &pCode, &pError, NULL );
 
 	if ( FAILED( hr ) )
@@ -476,7 +479,7 @@ void D3DApp_Frame::buildPoint()
 		GamePictureVertex gpv;
 		gpv.position.x = it->x + g_Frame_OffsetX;
 		gpv.position.y = - it->y - g_Frame_OffsetY;
-		gpv.faceside = it->facing;
+		gpv.faceside = (it->facing? -1:1);
 
 		ObjectInfoMap::iterator it_Object = g_ObjectInfoMap.find(it->name);
 
@@ -526,10 +529,10 @@ void D3DApp_Frame::buildPoint()
 	}
 	if(!m_CreationsVertics.empty())
 	{
-		m_vbd.ByteWidth = ( UINT )( sizeof( GamePictureVertex ) );
+		m_vbd.ByteWidth = ( UINT )( sizeof( GamePictureVertex ) * m_CreationsVertics.size());
 		m_vbd.StructureByteStride = sizeof( GamePictureVertex );
 		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &m_CreationsVertics;
+		vinitData.pSysMem = &m_CreationsVertics[0];
 		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_GPics ) );
 	}
 	

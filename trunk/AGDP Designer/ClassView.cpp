@@ -667,15 +667,13 @@ void CClassView::Refresh()
 	{
 		m_wndClassView.DeleteItem( m_wndClassView.GetRootItem() );
 		char buff[100];
-		sprintf( buff, "%s", g_HeroInfo->m_Name.c_str() );
-		CString str( buff );
+		CString str( g_HeroInfo->m_Name.c_str() );
 		HTREEITEM hRoot = m_wndClassView.InsertItem( str, 0, 0 );
 		m_wndClassView.SetItemState( hRoot, TVIS_BOLD, TVIS_BOLD );
 
 		for ( FramesMap::iterator it_FrameMap = g_HeroInfo->m_FramesMap.begin(); it_FrameMap != g_HeroInfo->m_FramesMap.end() ; it_FrameMap++ )
 		{
-			sprintf( buff, "%s", it_FrameMap->first.c_str() );
-			str = CString( buff );
+			str = CString( it_FrameMap->first.c_str() );
 			HTREEITEM hChild = m_wndClassView.InsertItem( str, 1, 1, hRoot );
 
 			for ( unsigned int i = 0; i < it_FrameMap->second.size() ; i++ )
