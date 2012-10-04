@@ -1312,32 +1312,24 @@ void InitDirect3DApp::TestFire()
 
 	if ( InputStateS::instance().isKeyDown( KEY_F ) )
 	{
-		m_Player.m_Hero->AddCondition(0 , 2 ,"Fire");
-		/*lua_State *L = luaL_newstate();
-		luaL_openlibs(L);
-		luabind::open(L);
-
-		luabind::disable_super_deprecation();
-		luabind::module(L)
-			[
-				luabind::class_<Hero>("Hero")
-				.def("AddCondition", &Hero::AddCondition)
-			];
-		if (luaL_dofile(L, "Script/Shader/ShaderActive.lua")) {
-			std::cout << "We hit a little snug: " << lua_tostring(L, -1) << std::endl;// Print out the error message
+		static LuaCell_Sptr testLua;
+		if ( testLua.get() == NULL )
+		{
+			testLua = LuaCell_Sptr( new LuaCell );
+			if ( !testLua->InputLuaFile( L"Script/Hero/HeroFunction.lua" ) )
+			{
+				printf("fatal error: can't Script/Hero/HeroFunction.lua");
+				system("pause");
+				throw "can't find luaResource";
+			}
 		}
-		//call function
+		Hero::RegisterFunctionToLua( testLua );
 		try {
-			luabind::call_function<int>(L, "test",m_Player.m_Hero,EffectType::FIRE);
+			luabind::call_function<int>(testLua->GetLuaState(), "AddCondition",m_Player.m_Hero,0,2);
 		}catch(luabind::error& e){
 			std::cout << "Catch Exception: " << e.what() << std::endl;
 		}
 
-
-		lua_close(L);
-		*/
-		//m_Player.m_Hero->SetEffect( EffectType::FIRE );
-		//m_Player.m_Hero->SetEffect(EffectType::POISON);
 	}
 }
 

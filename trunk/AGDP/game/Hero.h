@@ -31,7 +31,6 @@ struct Condition
 {
 	int m_effectIndex;
 	int m_time;//ex:2秒就是2*60
-	std::string m_name;
 };
 typedef std::vector <Condition> Conditions;
 
@@ -146,8 +145,8 @@ public:
 	PolygonVerteices GetPolygonVerteices() const;
 	PolygonVerteices GetPolygonLineVerteices() const;
 	//狀態
-	void		RegisterFunctionToLua( LuaCell_Sptr luadata );
-	bool		AddCondition( int effectIndex , int time , std::string name );
+	static void	RegisterFunctionToLua( LuaCell_Sptr luadata );
+	bool		AddCondition( int effectIndex , int time );
 	void		ConditionUpdate( float dt );
 	//創造物件
 	friend bool			Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );

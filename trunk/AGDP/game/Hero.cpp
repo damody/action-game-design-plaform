@@ -1764,10 +1764,11 @@ void Hero::RegisterFunctionToLua( LuaCell_Sptr luadata )
 		[
 			luabind::class_<Hero>("Hero")
 			.def(luabind::constructor<>())
+			//Register Hero member function to luabind
 			.def("AddCondition", &Hero::AddCondition)
 		];
 }
-bool Hero::AddCondition( int effectIndex , int time , std::string name )
+bool Hero::AddCondition( int effectIndex , int time )
 {
 	if( m_Conditions.size() >= CONDITION_MAX)
 	{
@@ -1775,7 +1776,7 @@ bool Hero::AddCondition( int effectIndex , int time , std::string name )
 		return false;
 	}
 	/*update time is 1/60*/
-	Condition temp = {effectIndex,time*60,"Fire"};
+	Condition temp = {effectIndex,time*60};
 	m_Conditions.push_back(temp);
 	return true;
 }
