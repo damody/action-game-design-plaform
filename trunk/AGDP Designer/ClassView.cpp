@@ -736,11 +736,10 @@ void CClassView::Refresh()
 
 FrameInfo CClassView::defaultFrameInfo( HTREEITEM item )
 {
-	std::wstring str2( m_wndClassView.GetItemText( item ) );
 	FrameInfo fi;
-	fi.m_FrameName = str2;
+	fi.m_FrameName = std::wstring( m_wndClassView.GetItemText( item ) );;
 	fi.m_FrameIndex = 0;
-	fi.m_NextFrameName = fi.m_FrameName;
+	fi.m_NextFrameName = L"default";
 	fi.m_NextFrameIndex = 0;
 	fi.m_HeroAction = 0;
 	fi.m_Wait = 1;
@@ -751,9 +750,9 @@ FrameInfo CClassView::defaultFrameInfo( HTREEITEM item )
 	fi.m_PictureX = 1;
 	fi.m_PictureY = 1;
 	fi.m_Consume.m_JumpRule = 0;
-	fi.m_Consume.m_HP = 1;
-	fi.m_Consume.m_MP = 1;
-	fi.m_Consume.m_NotEnoughFrameName = fi.m_FrameName;
+	fi.m_Consume.m_HP = 0;
+	fi.m_Consume.m_MP = 0;
+	fi.m_Consume.m_NotEnoughFrameName = L"default";
 	fi.m_Consume.m_NotEnoughFrame = 0;
 	fi.m_DVX = 0.0f;
 	fi.m_DVY = 0.0f;

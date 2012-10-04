@@ -167,6 +167,7 @@ void CAGDPDesignerView::AddPicturedata( CString name, PictureData* pic, int inde
 		g_NewPictureView->m_PictureID = index;
 		g_NewPictureView->OnInitialUpdate();
 		g_NewPictureView->Refresh( pic );
+		SetActiveView(index);
 		m_ViewMap[pic] = g_NewPictureView;
 	}
 }

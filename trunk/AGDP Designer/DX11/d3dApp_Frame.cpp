@@ -477,8 +477,8 @@ void D3DApp_Frame::buildPoint()
 	for (Creations::iterator it = m_Creation.begin(); it != m_Creation.end(); ++it)
 	{
 		GamePictureVertex gpv;
-		gpv.position.x = it->x + g_Frame_OffsetX;
-		gpv.position.y = - it->y - g_Frame_OffsetY;
+		gpv.position.x = it->x * g_Frame_Scale + g_Frame_OffsetX ;
+		gpv.position.y = it->y * g_Frame_Scale - g_Frame_OffsetY ;
 		gpv.faceside = (it->facing? -1:1);
 
 		ObjectInfoMap::iterator it_Object = g_ObjectInfoMap.find(it->name);
@@ -492,8 +492,8 @@ void D3DApp_Frame::buildPoint()
 				if (it->frameID > -1 && it->frameID < it_Frame->second.size())
 				{
 					FrameInfo frameInfo = it_Frame->second[it->frameID];
- 					gpv.center.x = frameInfo.m_CenterX;
- 					gpv.center.y = -frameInfo.m_CenterY;
+ 					gpv.center.x = frameInfo.m_CenterX * g_Frame_Scale;
+ 					gpv.center.y = -frameInfo.m_CenterY * g_Frame_Scale;
 
 					PictureData *pic = &it_Object->second->m_PictureDatas[frameInfo.m_PictureID];
 					gpv.size.x = pic->m_Width * g_Frame_Scale;

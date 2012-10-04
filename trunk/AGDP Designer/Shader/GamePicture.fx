@@ -40,7 +40,7 @@ VS_OUT VS(VS_IN vIn)
 	VS_OUT vOut;
 	vOut.pos= float4(vIn.position.xy,0.0,1.0);	
 	//vOut.pos= float4(0,0,0.0,1.0);
-	vOut.pos =float4(vOut.pos.x-vIn.faceside*vIn.center.x,vOut.pos.y+vIn.center.y,0.0,1.0);	
+	vOut.pos =float4(vOut.pos.x-vIn.faceside*vIn.center.x,vOut.pos.y-vIn.center.y,0.0,1.0);	
 	vOut.size = vIn.size;
 	vOut.picpos = vIn.picpos;
 	vOut.faceside = vIn.faceside;
@@ -62,49 +62,55 @@ void gs_main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triStream)
 	proj[0]=float4(w,0,0,0);
 	proj[1]=float4(0,h,0,0);
 	proj[2]=float4(0,0,1,0);
-	proj[3]=float4(1,-1,0,1);
+	proj[3]=float4(-1,1,0,1);
 
 	GS_OUT out5;
-	out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,0), mat),0,1);
+	//out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,0), mat),0,1);
+	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x*input[0].faceside,0),0,1);
 	out5.posH=mul(out5.posH,proj);
 	//out5.texcoord=(1,1);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y-1));
-	out5.posH.xy = float2(-1,-1);
+	//out5.posH.xy = float2(-1,-1);
 	triStream.Append( out5 );
 
-	out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat),0,1);
+	//out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat),0,1);
+	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x*input[0].faceside,input[0].size.y),0,1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
 	//out5.texcoord=(1,0);
-	out5.posH.xy = float2(-1,1);
+	//out5.posH.xy = float2(-1,1);
 	triStream.Append( out5 );
 
-	out5.posH=float4(input[0].pos.xy-mul(float2(0,0), mat),0,1);
+	//out5.posH=float4(input[0].pos.xy-mul(float2(0,0), mat),0,1);
+	out5.posH=float4(input[0].pos.xy-float2( 0,0),0,1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
 	//out5.texcoord=(0,1);
-	out5.posH.xy = float2(1,-1);
+	//out5.posH.xy = float2(1,-1);
 	triStream.Append( out5 );
 
-	out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat),0,1);
+	//out5.posH=float4(input[0].pos.xy-mul(float2(-input[0].size.x,input[0].size.y), mat),0,1);
+	out5.posH=float4(input[0].pos.xy-float2(-input[0].size.x*input[0].faceside,input[0].size.y),0,1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x), texsize.y*(input[0].picpos.y));
 	//out5.texcoord=(1,0);
-	out5.posH.xy = float2(-1,1);
+	//out5.posH.xy = float2(-1,1);
 	triStream.Append( out5 );
 
-	out5.posH=float4(input[0].pos.xy-mul(float2( 0,0), mat),0,1);
+	//out5.posH=float4(input[0].pos.xy-mul(float2( 0,0), mat),0,1);
+	out5.posH=float4(input[0].pos.xy-float2( 0,0),0,1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y-1));
 	//out5.texcoord=(0,1);
-	out5.posH.xy = float2(1,-1);
+	//out5.posH.xy = float2(1,-1);
 	triStream.Append( out5 );
 
-	out5.posH=float4(input[0].pos.xy-mul(float2( 0,input[0].size.y), mat),0,1);
+	//out5.posH=float4(input[0].pos.xy-mul(float2( 0,input[0].size.y), mat),0,1);
+	out5.posH=float4(input[0].pos.xy-float2( 0,input[0].size.y),0,1);
 	out5.posH=mul(out5.posH,proj);
 	out5.texcoord = float2( texsize.x*(input[0].picpos.x-1), texsize.y*(input[0].picpos.y));
 	//out5.texcoord=(0,0);
-	out5.posH.xy = float2(1,1);
+	//out5.posH.xy = float2(1,1);
 	triStream.Append( out5 );
 
 	triStream.RestartStrip( );

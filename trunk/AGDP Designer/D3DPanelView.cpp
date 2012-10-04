@@ -156,22 +156,22 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		{
 		case KEY_LEFT:
 			m_D3DApp.m_CreationPos[m_CreationID].Translate(-1,0);
-			UpdateCenter(m_D3DApp.m_CreationPos[m_CreationID].x,m_D3DApp.m_CreationPos[m_CreationID].y);
+			UpdateCreationPos(m_D3DApp.m_CreationPos[m_CreationID].x,m_D3DApp.m_CreationPos[m_CreationID].y);
 			break;
 
 		case KEY_UP:
 			m_D3DApp.m_CreationPos[m_CreationID].Translate(0,-1);
-			UpdateCenter(m_D3DApp.m_CreationPos[m_CreationID].x,m_D3DApp.m_CreationPos[m_CreationID].y);
+			UpdateCreationPos(m_D3DApp.m_CreationPos[m_CreationID].x,m_D3DApp.m_CreationPos[m_CreationID].y);
 			break;
 
 		case KEY_RIGHT:
 			m_D3DApp.m_CreationPos[m_CreationID].Translate(1,0);
-			UpdateCenter(m_D3DApp.m_CreationPos[m_CreationID].x,m_D3DApp.m_CreationPos[m_CreationID].y);
+			UpdateCreationPos(m_D3DApp.m_CreationPos[m_CreationID].x,m_D3DApp.m_CreationPos[m_CreationID].y);
 			break;
 
 		case KEY_DOWN:
 			m_D3DApp.m_CreationPos[m_CreationID].Translate(0,1);
-			UpdateCenter(m_D3DApp.m_CreationPos[m_CreationID].x,m_D3DApp.m_CreationPos[m_CreationID].y);
+			UpdateCreationPos(m_D3DApp.m_CreationPos[m_CreationID].x,m_D3DApp.m_CreationPos[m_CreationID].y);
 			break;
 		}
 
@@ -1271,6 +1271,8 @@ void CD3DPanelView::UpdateCreationPos( float x, float y )
 		m_FrameInfo->m_Creations[m_CreationID].x = x;
 		m_FrameInfo->m_Creations[m_CreationID].y = -y;
 	}
-
+	m_D3DApp.SetCreation(m_FrameInfo->m_Creations);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
 	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshCreationPoint();
 }
