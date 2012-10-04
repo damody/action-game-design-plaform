@@ -1,72 +1,54 @@
 #pragma once
 #include <string>
-#include "game\Chee.h"
-#include "game\Weapon.h"
+#include "game\Object.h"
 
 class ObjectManager
 {
 public:
-	struct CTrash
+	struct Trash
 	{
-		Chee* m_Trash;
+		Object* m_Trash;
 		int m_Time;
 	};
-	typedef std::vector<CTrash> CTrashCan;
+	typedef std::vector<Trash> TrashCan;
 
-	struct WTrash
-	{
-		Weapon* m_Trash;
-		int m_Time;
-	};
-	typedef std::vector<WTrash> WTrashCan;
 private:
-	Chees   m_Chees;
-	Weapons m_Weapons;
+	Objects   m_Objects;
 
-	CTrashCan m_CTrashCan;
-	WTrashCan m_WTrashCan;
+	TrashCan m_TrashCan;
 public:
 	ObjectManager( void );
 	~ObjectManager( void );
 
-	Chees& GetChees() {return m_Chees;}
-	Weapons& GetWeapons() {return m_Weapons;}
+	Objects GetChees();
+	Objects GetObjects();
 
 	void Update( float dt );
 	void UpdateDataToDraw();
 
-	Chee** CreateChee( const std::wstring& chee, const Vector3& pos, const Vector3& vel, int num = 1, int team = 0 );
-	Weapon** CreateWeapon( const std::wstring& weapon, const Vector3& pos, int num = 1, int team = 0 );
-	void Destory( Chee_RawPtr chee, int time = 0 );
-	void Destory( Weapon_RawPtr weapon, int time = 0 );
-	void Destory( Chees::iterator it, int time = 0 );
-	void Destory( Weapons::iterator it, int time = 0 );
+	Object** CreateObject( const std::wstring& obj, const Vector3& pos, const Vector3& vel, int num = 1, int team = 0 );
+
+	void Destory( Object* obj, int time = 0 );
 	void Clear();
-	void ClearChee();
-	void ClearWeapon();
 
-	bool CheeEmpty();
-	bool WeaponEmpty();
+	bool ObjectEmpty();
+	int  Amount();
 	int  AmountChee();
-	int  AmountWeapons();
-	Chees::iterator CheeVectorBegin();
-	Chees::iterator CheeVectorEnd();
-	Weapons::iterator WeaponVectorBegin();
-	Weapons::iterator WeaponVectorEnd();
+	
+	Objects::iterator ObjectVectorBegin();
+	Objects::iterator ObjectVectorEnd();
 
-	Chee* GetClosestChee( const Vector3& pos );
-	Chee* GetClosestCheeFromFriend( const Vector3& pos, int team );
-	Chee* GetClosestCheeFromEnemy( const Vector3& pos, int team );
+	Object* GetClosestChee( const Vector3& pos );
+	Object* GetClosestCheeFromFriend( const Vector3& pos, int team );
+	Object* GetClosestCheeFromEnemy( const Vector3& pos, int team );
 
-	Weapon* GetClosestWeaponOnFloor( const Vector3& pos ); //Undo
-	Weapon* GetClosestThrownWeaponFromFriend( const Vector3& pos, int team ); //Undo
-	Weapon* GetClosestThrownWeaponFromEnemy( const Vector3& pos, int team ); //Undo
+	Object* GetClosestWeaponOnFloor( const Vector3& pos ); //Undo
+	Object* GetClosestThrownWeaponFromFriend( const Vector3& pos, int team ); //Undo
+	Object* GetClosestThrownWeaponFromEnemy( const Vector3& pos, int team ); //Undo
 
 protected:
 	void CleanTrashCan();
-	bool InCTrashCan( Chee_RawPtr chee );
-	bool InWTrashCan( Weapon_RawPtr weapon );
-	Chees::iterator GetCheeIt( Chee* chee );
-	Weapons::iterator GetWeaponIt( Weapon* weapon );
+	bool InTrashCan( Object*  obj );
+	Objects::iterator GetObjectIt( Object*  obj );
 };
 

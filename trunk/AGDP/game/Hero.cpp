@@ -1007,7 +1007,7 @@ KeyLoop:
 			while ( ic != f->m_Creations.end() )
 			{
 				Vector3 pos( df * ( ic->x - m_CenterX ) * SCALE + m_Position.x, ( ic->y + m_CenterY ) * SCALE + m_Position.y, m_Position.z ); //vel(ic->dvx,ic->dvy,ic->dvz);
-				g_ObjectManager.CreateChee( ic->name, pos, ic->v0, ic->amount, m_Team );
+				Creat( pos, *ic, m_FaceSide, m_Record );
 				ic++;
 			}
 		}
@@ -1679,44 +1679,20 @@ bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Spt
 	}
 	else if ( g_ObjectInfoManager.GetObjectInfo( u ) != ObjectInfo_Sptr() )
 	{
-		Chee** s;
-		Weapon** w;
+		Object** object;
 
-		switch ( g_ObjectInfoManager.GetObjectInfo( u )->m_Type )
+		object = g_ObjectManager.CreateObject( u, pos, obj.v0 , obj.amount, owner == Record_Sptr() ? 0 : owner->team );
+
+		for ( int i = 0; i < obj.amount; i++ )
 		{
-			case ObjectType::CHEE:
-				s = g_ObjectManager.CreateChee( u, pos, obj.v0, obj.amount, owner == Record_Sptr() ? 0 : owner->team );
-
-				for ( int i = 0; i < obj.amount; i++ )
-				{
-					s[i]->m_FaceSide = f;
-					s[i]->m_Frame = obj.frame;
-					s[i]->m_FrameID = obj.frameID;
-					s[i]->m_HP = obj.HP;
-					s[i]->m_Record = owner;
-				}
-
-				return true;
-
-			case ObjectType::STATIC:
-				//todo: »\¤è¶ô
-				return false;
-
-			default:
-				w = g_ObjectManager.CreateWeapon( u, pos, obj.amount, owner == Record_Sptr() ? 0 : owner->team );
-
-				for ( int i = 0; i < obj.amount; i++ )
-				{
-					w[i]->m_FaceSide = f;
-					w[i]->SetVelocity( obj.v0 );
-					w[i]->m_Frame = obj.frame;
-					w[i]->m_FrameID = obj.frameID;
-					w[i]->m_HP = obj.HP;
-				}
-
-				return true;
-				//(*s)->owner = owner;
+			object[i]->m_FaceSide = f;
+			object[i]->SetVelocity( obj.v0 );
+			object[i]->m_Frame = obj.frame;
+			object[i]->m_FrameID = obj.frameID;
+			object[i]->m_HP = obj.HP;
 		}
+		return true;
+				//(*s)->owner = owner;
 	}
 	else
 	{

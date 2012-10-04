@@ -128,12 +128,6 @@
     <ClCompile Include="game\BGManager.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
-    <ClCompile Include="game\Weapon.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\Chee.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
     <ClCompile Include="game\ObjectManager.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
@@ -177,6 +171,9 @@
       <Filter>src\DX11</Filter>
     </ClCompile>
     <ClCompile Include="game\CollisionFunction.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Object.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
   </ItemGroup>

@@ -92,6 +92,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\AGDP\game\Object.h" />
     <ClInclude Include="include\auto_link_agal.hpp" />
     <ClInclude Include="include\game\Attack.h" />
     <ClInclude Include="include\game\BeCatch.h" />

@@ -95,7 +95,7 @@ void Object::Update( float dt )
 		m_FaceSide = true;
 	}//*/
 
-	/*
+	
 	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
 	{
 		if ( !g_BackgroundManager.GetCurrentBackground()->InSpace( m_Position ) )
@@ -103,7 +103,7 @@ void Object::Update( float dt )
 			g_ObjectManager.Destory( this, 6 );
 		}
 	}
-	*/
+	
 	m_Position += m_Vel;
 }
 

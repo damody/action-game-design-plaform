@@ -96,15 +96,15 @@ void Chee::Update( float dt )
 		m_FaceSide = true;
 	}//*/
 
-	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
-	{
-		if ( !g_BackgroundManager.GetCurrentBackground()->InSpace( m_Position ) )
-		{
-			g_ObjectManager.Destory( this, 6 );
-		}
-	}
+// 	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
+// 	{
+// 		if ( !g_BackgroundManager.GetCurrentBackground()->InSpace( m_Position ) )
+// 		{
+// 			g_ObjectManager.Destory( this, 6 );
+// 		}
+// 	}
 
-	m_Position += m_Vel;
+	//m_Position += m_Vel;
 }
 
 void Chee::UpdateDataToDraw()
