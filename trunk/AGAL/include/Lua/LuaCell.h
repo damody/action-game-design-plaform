@@ -7,6 +7,9 @@ const char* b = cell.getLua<const char*>("table2\\table23\\table2\\1");
 */
 #pragma once
 #include "lua.hpp"
+#include <auto_link_luajit.hpp>
+#include <auto_link_luabind.hpp>
+#include <luabind/luabind.hpp>
 #include <string>
 #include <cstdarg>
 #include <vector>
@@ -46,6 +49,7 @@ public:
 	void LuaYield();
 	void LuaResume();
 	strings GetLuaTableKeys( const char* pathString, ... );
+	lua_State* GetLuaState();
 private:
 	void 		SetValueUsePath( const char* pathString, int type, void* data );
 	void*		GetValueUsePath( const char* pathString, int type );

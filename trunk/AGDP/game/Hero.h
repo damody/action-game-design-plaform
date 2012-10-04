@@ -12,6 +12,7 @@
 #include "CtrlKey.h"
 #include "game\HeroInfo.h"
 #include "game\Record.h"
+#include "Lua/LuaCell.h"
 #include <string>
 #include <cmath>
 #include <cstdlib>
@@ -145,6 +146,7 @@ public:
 	PolygonVerteices GetPolygonVerteices() const;
 	PolygonVerteices GetPolygonLineVerteices() const;
 	//狀態
+	void		RegisterFunctionToLua( LuaCell_Sptr luadata );
 	bool		AddCondition( int effectIndex , int time , std::string name );
 	void		ConditionUpdate( float dt );
 	//創造物件

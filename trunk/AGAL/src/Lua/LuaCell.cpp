@@ -771,3 +771,8 @@ void LuaCell::LuaResume()
 		}
 	}
 }
+
+lua_State* LuaCell::GetLuaState()
+{
+	return m_LuaState;
+}

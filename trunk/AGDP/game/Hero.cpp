@@ -1781,7 +1781,16 @@ AABB2D& Hero::GetCatchAABB()
 {
 	return m_CatchAABB;
 }
-
+void Hero::RegisterFunctionToLua( LuaCell_Sptr luadata )
+{
+	luabind::open(luadata->GetLuaState());
+	luabind::module(luadata->GetLuaState())
+		[
+			luabind::class_<Hero>("Hero")
+			.def(luabind::constructor<>())
+			.def("AddCondition", &Hero::AddCondition)
+		];
+}
 bool Hero::AddCondition( int effectIndex , int time , std::string name )
 {
 	if( m_Conditions.size() >= CONDITION_MAX)

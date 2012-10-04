@@ -5,59 +5,60 @@
 #include <iostream>
 using std::cout;
 using std::endl;
-class TestClass
-{
-public:
-	TestClass(int a)
-	{
-		this->a = a;
-	}
-	TestClass(luabind::object b, int a)
-	{
-		this->a = a;
-
-		// get our lua-derived object instance for record
-		m_self = b;
-	}
-	int get() const
-	{
-		return a;
-	}
-	void set(int a)
-	{
-		this->a = a;
-	}
-	// retrieve the interface to the derived lua object instance
-	luabind::object getSelf()
-	{
-		return m_self;
-	}
-
-	// this would be called by the SceneManager
-	void Tick()
-	{
-		luabind::call_member<int>(m_self, "Tick");
-	}
-
-private:
-	int a;
-
-	luabind::object m_self;
-};
-
-int Cpassthrough(luabind::object b)
-{
-	TestClass *C;
-
-	C = luabind::object_cast<TestClass*>(b);
-	C->set(2);
-
-	luabind::call_member<int>(b, "member_func");
-
-	
-
-	return false;
-}
+// class TestClass
+// {
+// public:
+// 	TestClass(int a)
+// 	{
+// 		this->a = a;
+// 	}
+// 	TestClass(luabind::object b, int a)
+// 	{
+// 		this->a = a;
+// 
+// 		// get our lua-derived object instance for record
+// 		m_self = b;
+// 	}
+// 	int get() const
+// 	{
+// 		return a;
+// 	}
+// 	void set(int a)
+// 	{
+// 		this->a = a;
+// 	}
+// 	// retrieve the interface to the derived lua object instance
+// 	luabind::object getSelf()
+// 	{
+// 		return m_self;
+// 	}
+// 
+// 	// this would be called by the SceneManager
+// 	void Tick()
+// 	{
+// 		luabind::call_member<int>(m_self, "Tick");
+// 	}
+// 
+// private:
+// 	int a;
+// 
+// 	luabind::object m_self;
+// };
+// 
+// int Cpassthrough(luabind::object b)
+// {
+// 	TestClass *C;
+// 
+// 	C = luabind::object_cast<TestClass*>(b);
+// 	C->set(2);
+// 
+// 	luabind::call_member<int>(b, "member_func");
+// 
+// 	
+// 
+// 	return false;
+// }
+/*
 int main()
 {
 	lua_State *L = luaL_newstate();
@@ -65,6 +66,7 @@ int main()
 	luabind::open(L);
 	
 	luabind::disable_super_deprecation();
+
 	luabind::module(L)
 		[
 			luabind::class_<TestClass>("Test")
@@ -100,3 +102,4 @@ int main()
 	system("pause");
 	return 0;
 }
+*/

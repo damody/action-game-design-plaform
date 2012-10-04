@@ -121,7 +121,7 @@ std::vector<std::wstring> LoadMusic( std::wstring musicType )
 
 }
 
-bool loadKeyMap(KeyMap& rmap){
+bool LoadKeyMap(KeyMap& rmap){
 	static LuaCell_Sptr luaResource, luaKeyMap;
 	int idx;// luaResource's array index
 	char uku,ukd,dku,dkd,lku,lkd,rku,rkd;	//KeyMap «Øºc°Ñ¼Æ
