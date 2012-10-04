@@ -714,12 +714,12 @@ void CPropertiesWnd::InitPropList_Creation()
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame Index" ), varInt(), _T( "創造物初始動作影格" ) );
 	pPropMain->AddSubItem( pProp );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Same Faceside" ), varBool(), _T( "創造物面向" ) );
+	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Amount" ), varInt(), _T( "創造物數量" ) );
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Hp" ), varInt(), _T( "創造物血量" ) );
-	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "AI" ), varInt(), _T( "創造物AI" ) );
-	pPropMain->AddSubItem( pProp );
+	pPropMain->AddSubItem( pProp );	
 	CMFCPropertyGridProperty* pPosition = new CMFCPropertyGridProperty( _T( "Position" ), 0, TRUE );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "X" ), varFloat(), _T( "X" ) );
 	pPosition->AddSubItem( pProp );
@@ -789,8 +789,9 @@ void CPropertiesWnd::RefreshPropList_Creation( int index )
 	
 	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( CString( frameInfo.m_Creations[index].frame.c_str()) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt(frameInfo.m_Creations[index].frameID) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varInt(frameInfo.m_Creations[index].amount) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue(varInt(frameInfo.m_Creations[index].HP) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varBool(frameInfo.m_Creations[index].facing) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue( varInt(frameInfo.m_Creations[index].amount) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue(varInt(frameInfo.m_Creations[index].HP) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 0 ) )->SetValue( varFloat(frameInfo.m_Creations[index].x) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 1 ) )->SetValue( varFloat(-frameInfo.m_Creations[index].y) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem( 0 ) )->SetValue( varFloat(frameInfo.m_Creations[index].v0.x) );
@@ -801,7 +802,145 @@ void CPropertiesWnd::RefreshPropList_Creation( int index )
 
 void CPropertiesWnd::UpdateCreation()
 {
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+	CommandLambda* command = new CommandLambda();
 
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 ) )->IsEdited() )
+	{
+		std::wstring name( propRoot->GetSubItem( 0 )->GetValue().bstrVal );
+		if (g_ObjectInfoMap.find(name) != g_ObjectInfoMap.end() || g_HeroInfoMap.find(name) != g_HeroInfoMap.end())
+		{
+			frameInfo->m_Creations[m_Index].name = name;
+			frameInfo->m_Creations[m_Index].frame = std::wstring(L"default");
+			frameInfo->m_Creations[m_Index].frameID = 0;
+			( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( _T("default") );
+			propRoot->GetSubItem( 1 )->RemoveAllOptions();
+			ObjectInfoMap::iterator it_Object = g_ObjectInfoMap.find(name);
+			if (it_Object != g_ObjectInfoMap.end())
+			{
+				for ( FramesMap::iterator it = it_Object->second->m_FramesMap.begin(); it != it_Object->second->m_FramesMap.end() ; it++ )
+				{
+					propRoot->GetSubItem( 1 )->AddOption( it->first.c_str() );
+				}
+			}
+			HeroInfoMap::iterator it_Hero = g_HeroInfoMap.find(name);
+			if (it_Hero != g_HeroInfoMap.end())
+			{
+				for ( FramesMap::iterator it = it_Hero->second->m_FramesMap.begin(); it != it_Hero->second->m_FramesMap.end() ; it++ )
+				{
+					propRoot->GetSubItem( 1 )->AddOption( it->first.c_str() );
+				}
+			}
+			( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt(0) );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.RefreshCreation();
+		}else{
+			AfxMessageBox(_T("The Object does Not exist!"));
+		}
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->IsEdited() )
+	{
+		std::wstring framename( propRoot->GetSubItem( 1 )->GetValue().bstrVal );
+		ObjectInfoMap::iterator it_Object = g_ObjectInfoMap.find(frameInfo->m_Creations[m_Index].name.c_str());
+		if (it_Object != g_ObjectInfoMap.end())
+		{
+			if(it_Object->second->m_FramesMap.find(framename)!=it_Object->second->m_FramesMap.end())
+			{
+				frameInfo->m_Creations[m_Index].frame = framename;
+				frameInfo->m_Creations[m_Index].frameID = 0;
+				( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt(0) );
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.RefreshCreation();
+			}else{
+				AfxMessageBox(_T("The Frame does Not exist in the Object!"));
+			}
+		}
+		HeroInfoMap::iterator it_Hero = g_HeroInfoMap.find(frameInfo->m_Creations[m_Index].name.c_str());
+		if (it_Hero != g_HeroInfoMap.end())
+		{
+			if(it_Hero->second->m_FramesMap.find(framename)!=it_Hero->second->m_FramesMap.end())
+			{
+				frameInfo->m_Creations[m_Index].frame = framename;
+				frameInfo->m_Creations[m_Index].frameID = 0;
+				( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt(0) );
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.RefreshCreation();
+			}else{
+				AfxMessageBox(_T("The Frame does Not exist in the Object!"));
+			}
+		}
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->IsEdited() )
+	{
+		int frameIdx( propRoot->GetSubItem( 2 )->GetValue().intVal );
+		ObjectInfoMap::iterator it_Object = g_ObjectInfoMap.find(frameInfo->m_Creations[m_Index].name.c_str());
+		if (it_Object != g_ObjectInfoMap.end())
+		{
+			if(frameIdx>-1 && frameIdx < it_Object->second->m_FramesMap[frameInfo->m_Creations[m_Index].frame].size())
+			{
+				frameInfo->m_Creations[m_Index].frameID = frameIdx;
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.RefreshCreation();
+			}else{
+				AfxMessageBox(_T("The Index does Not exist in the Frame!"));
+			}
+		}
+		HeroInfoMap::iterator it_Hero = g_HeroInfoMap.find(frameInfo->m_Creations[m_Index].name.c_str());
+		if (it_Hero != g_HeroInfoMap.end())
+		{
+			if(frameIdx>-1 && frameIdx < it_Hero->second->m_FramesMap[frameInfo->m_Creations[m_Index].frame].size())
+			{
+				frameInfo->m_Creations[m_Index].frameID = frameIdx;
+				( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.RefreshCreation();
+			}else{
+				AfxMessageBox(_T("The Index does Not exist in the Frame!"));
+			}
+		}
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->IsEdited() )
+	{
+		frameInfo->m_Creations[m_Index].facing = propRoot->GetSubItem( 3 )->GetValue().boolVal;
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.RefreshCreation();
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->IsEdited() )
+	{
+		frameInfo->m_Creations[m_Index].amount = propRoot->GetSubItem( 4 )->GetValue().intVal;
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->IsEdited() )
+	{
+		frameInfo->m_Creations[m_Index].HP = propRoot->GetSubItem( 5 )->GetValue().intVal;
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem(0) )->IsEdited() )
+	{
+		frameInfo->m_Creations[m_Index].x = propRoot->GetSubItem( 6 )->GetSubItem(0)->GetValue().fltVal;
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.RefreshCreation();
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem(1) )->IsEdited() )
+	{
+		frameInfo->m_Creations[m_Index].y = -propRoot->GetSubItem( 6 )->GetSubItem(1)->GetValue().fltVal;
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.RefreshCreation();
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem(0) )->IsEdited() )
+	{
+		frameInfo->m_Creations[m_Index].v0.x = -propRoot->GetSubItem( 7 )->GetSubItem(0)->GetValue().fltVal;
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.RefreshCreation();
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem(1) )->IsEdited() )
+	{
+		frameInfo->m_Creations[m_Index].v0.y = -propRoot->GetSubItem( 7 )->GetSubItem(1)->GetValue().fltVal;
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_D3DFrameView.RefreshCreation();
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 7 )->GetSubItem(2) )->IsEdited() )
+	{
+		frameInfo->m_Creations[m_Index].v0.z = -propRoot->GetSubItem( 7 )->GetSubItem(2)->GetValue().fltVal;
+	}
 }
 
 void CPropertiesWnd::InitPropList_PictureData()
@@ -2127,11 +2266,16 @@ void CPropertiesWnd::Update()
 
 	case 4:
 		UpdateAttack();
-
+		break;
 	case 6:
 		UpdateCatch();
+		break;
+	case 7:
+		UpdateCreation();
+		break;
 	case 8:
 		UpdatePictureData();
+		break;
 	}
 }
 

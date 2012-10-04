@@ -524,7 +524,39 @@ void D3DApp_Frame::buildPoint()
 		HeroInfoMap::iterator it_Hero = g_HeroInfoMap.find(it->name);
 		if (it_Hero!=g_HeroInfoMap.end())
 		{
+			FramesMap::iterator it_Frame = it_Hero->second->m_FramesMap.find(it->frame);
+			if (it_Frame != it_Hero->second->m_FramesMap.end())
+			{
+				if (it->frameID > -1 && it->frameID < it_Frame->second.size())
+				{
+					FrameInfo frameInfo = it_Frame->second[it->frameID];
+					gpv.center.x = frameInfo.m_CenterX * g_Frame_Scale;
+					gpv.center.y = -frameInfo.m_CenterY * g_Frame_Scale;
 
+					PictureData *pic = &it_Hero->second->m_PictureDatas[frameInfo.m_PictureID];
+					gpv.size.x = pic->m_Width * g_Frame_Scale;
+					gpv.size.y = pic->m_Height * g_Frame_Scale;
+					gpv.picpos.x = frameInfo.m_PictureX;
+					gpv.picpos.y = frameInfo.m_PictureY;
+					gpv.picpos.z = pic->m_Row;
+					gpv.picpos.w = pic->m_Column;
+					m_CreationsVertics.push_back(gpv);
+					int textureID = g_TextureManagerFrame->AddTexture(pic->m_Path);
+
+					if(!m_DrawVertexGroups.empty() && m_DrawVertexGroups.back().texture == g_TextureManagerFrame->GetTexture(textureID))
+					{
+						m_DrawVertexGroups.back().VertexCount++;
+					}else
+					{
+						DrawVertexGroup dvg;
+						dvg.StartVertexLocation = count;
+						dvg.VertexCount = 1;
+						dvg.texture = g_TextureManagerFrame->GetTexture(textureID);
+						m_DrawVertexGroups.push_back(dvg);
+					}
+					count++;
+				}
+			}
 		}
 	}
 	if(!m_CreationsVertics.empty())

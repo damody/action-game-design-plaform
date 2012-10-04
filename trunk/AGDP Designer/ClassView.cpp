@@ -1009,10 +1009,77 @@ void CClassView::OnBloodinfoDelete()
 void CClassView::OnCreationAdd()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( item ) ) );
+	std::wstring frameName( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) );
+	Creation c;
+	c.name = g_HeroInfo->m_Name;
+	c.frame = L"default";
+	c.frameID = 0;
+	c.facing = 0;
+	c.HP = 1;
+	c.amount = 1;
+	c.x = 0;
+	c.y = 0;
+	c.v0.x = 0;
+	c.v0.y = 0;
+	c.v0.z = 0;
+	( *g_ActiveFramesMap )[frameName][frameIndex].m_Creations.push_back( c );
+	wchar_t buff[100];
+	wsprintf( buff, L"%d", ( *g_ActiveFramesMap )[frameName][frameIndex].m_Creations.size() - 1 );
+	CString str( buff );
+	m_wndClassView.InsertItem( str , 3, 3, item );
+	m_wndClassView.Expand( item, TVE_EXPAND );
+
+	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
+	{
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
+		{
+			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
+		}
+	}
 }
 
 
 void CClassView::OnCreationDelete()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
+	HTREEITEM item = m_wndClassView.GetSelectedItem();
+	int count = _ttoi( m_wndClassView.GetItemText( item ) );
+	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) );
+	std::wstring frameName( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) ) );
+	( *g_ActiveFramesMap )[frameName][frameIndex].m_Creations.erase( ( *g_ActiveFramesMap )[frameName][frameIndex].m_Creations.begin() + count );
+
+	if ( item != NULL )
+	{
+		HTREEITEM tmp_item = m_wndClassView.GetNextSiblingItem( item );
+
+		for ( int i = count;; i++ )
+		{
+			if ( tmp_item != NULL )
+			{
+				TCHAR num_str[10];
+				wsprintf( num_str, _T( "%d" ), i );
+				m_wndClassView.SetItemText( tmp_item, num_str );
+				tmp_item = m_wndClassView.GetNextSiblingItem( tmp_item );
+			}
+			else { break; }
+		}
+
+		m_wndClassView.DeleteItem( item );
+
+		//Clear
+		if ( g_FrameName == frameName && g_FrameIndex == count )
+		{
+			( ( CMainFrame* )this->GetParentFrame() )->Clear();
+		}
+	}
+
+	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
+	{
+		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
+		{
+			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
+		}
+	}
 }
