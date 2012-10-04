@@ -161,4 +161,5 @@ public:
 	afx_msg void OnUpdateCheckProperty( CCmdUI* pCmdUI );
 	afx_msg void OnButtonRun();
 	afx_msg void OnClose();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };

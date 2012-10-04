@@ -61,6 +61,7 @@ BEGIN_MESSAGE_MAP( CMainFrame, CMDIFrameWndEx )
 	ON_WM_KEYDOWN()
 	ON_COMMAND( ID_BUTTON_RUN, &CMainFrame::OnButtonRun )
 	ON_WM_CLOSE()
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 // CMainFrame 建構/解構
@@ -176,6 +177,8 @@ int CMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	// 在視窗標題列上切換文件名稱與應用程式名稱的順序。
 	// 這可提升工具列的可用性，因為文件名稱會隨著縮圖顯示。
 	ModifyStyle( 0, FWS_PREFIXTITLE );
+
+	SetTimer(1,16,0);
 	return 0;
 }
 
@@ -620,4 +623,12 @@ void CMainFrame::OpenPictureView( CString& name, PictureData* pic, int index, He
 	{
 		it->second->AddPicturedata( name, pic, index );
 	}
+}
+
+
+void CMainFrame::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	m_D3DFrameView.NextFrame();
+	CMDIFrameWndEx::OnTimer(nIDEvent);
 }

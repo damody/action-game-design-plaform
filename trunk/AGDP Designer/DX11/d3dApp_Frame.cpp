@@ -5,6 +5,8 @@
 
 D3DApp_Frame::D3DApp_Frame()
 {
+	m_PlayingFrame = NULL;
+	m_IsPlaying = false;
 	m_TextureManager = NULL;
 	m_d3dDevice = NULL;
 	m_SwapChain = NULL;
@@ -210,60 +212,74 @@ void D3DApp_Frame::DrawScene()
 	m_DeviceContext->ClearDepthStencilView( m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0 );
 	m_DeviceContext->OMSetDepthStencilState( m_pDepthStencil_ZWriteOFF, 0 );
 
-	if ( m_Pic != NULL )
-	{
-		UINT offset = 0;
-		UINT stride2 = sizeof( PictureVertex );
-		m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
-		m_DeviceContext->IASetInputLayout( m_PLayout_Pics );
-		m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_Pics, &stride2, &offset );
-		m_PMap_Pics->SetResource( GetTextureManager().GetTexture( m_Pic->m_TextureID )->texture );
-		m_BMap_Pics->SetResource( m_Templete->texture );
-		m_PTech_Pics->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
-		m_DeviceContext->Draw( 1, 0 );
-	}
-
-	//Creations
-	if ( m_CreationsVertics.size() > 0 )
-	{
-		UINT offset = 0;
-		UINT stride2 = sizeof( GamePictureVertex );
-		m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
-		m_DeviceContext->IASetInputLayout( m_PLayout_GPics );
-		m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_GPics, &stride2, &offset );
-		for ( DrawVertexGroups::iterator it = m_DrawVertexGroups.begin(); it != m_DrawVertexGroups.end(); ++it )
+	if( !m_IsPlaying){
+		if ( m_Pic != NULL )
 		{
-			if ( it->texture.get() )
+			UINT offset = 0;
+			UINT stride2 = sizeof( PictureVertex );
+			m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
+			m_DeviceContext->IASetInputLayout( m_PLayout_Pics );
+			m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_Pics, &stride2, &offset );
+			m_PMap_Pics->SetResource( GetTextureManager().GetTexture( m_Pic->m_TextureID )->texture );
+			m_BMap_Pics->SetResource( m_Templete->texture );
+			m_PTech_Pics->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
+			m_DeviceContext->Draw( 1, 0 );
+		}
+
+		//Creations
+		if ( m_CreationsVertics.size() > 0 )
+		{
+			UINT offset = 0;
+			UINT stride2 = sizeof( GamePictureVertex );
+			m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
+			m_DeviceContext->IASetInputLayout( m_PLayout_GPics );
+			m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_GPics, &stride2, &offset );
+			for ( DrawVertexGroups::iterator it = m_DrawVertexGroups.begin(); it != m_DrawVertexGroups.end(); ++it )
 			{
-				m_PMap_GPics->SetResource( *( it->texture ) );
-				m_PTech_GPics->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
-				m_DeviceContext->Draw( it->VertexCount, it->StartVertexLocation );
+				if ( it->texture.get() )
+				{
+					m_PMap_GPics->SetResource( *( it->texture ) );
+					m_PTech_GPics->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
+					m_DeviceContext->Draw( it->VertexCount, it->StartVertexLocation );
+				}
 			}
 		}
-	}
 
-	if ( m_LineVertices.size() > 0 )
+		if ( m_LineVertices.size() > 0 )
+		{
+			UINT offset = 0;
+			UINT stride2 = sizeof( LineVertex );
+			m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_LINELIST );
+			m_DeviceContext->IASetInputLayout( m_PLayout_Lines );
+			m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_Lines, &stride2, &offset );
+			m_PTech_Lines->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
+			m_DeviceContext->Draw( ( UINT )m_LineVertices.size(), 0 );
+		}
+
+		if ( m_PointVertices.size() > 0 )
+		{
+			UINT offset = 0;
+			UINT stride2 = sizeof( PointVertex );
+			m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
+			m_DeviceContext->IASetInputLayout( m_PLayout_Points );
+			m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_Points, &stride2, &offset );
+			m_PTech_Points->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
+			m_DeviceContext->Draw( ( UINT )m_PointVertices.size(), 0 );
+		}
+	}else
 	{
-		UINT offset = 0;
-		UINT stride2 = sizeof( LineVertex );
-		m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_LINELIST );
-		m_DeviceContext->IASetInputLayout( m_PLayout_Lines );
-		m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_Lines, &stride2, &offset );
-		m_PTech_Lines->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
-		m_DeviceContext->Draw( ( UINT )m_LineVertices.size(), 0 );
+		if(m_PlayingFrame!=NULL)
+		{
+			UINT offset = 0;
+			UINT stride2 = sizeof( GamePictureVertex );
+			m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
+			m_DeviceContext->IASetInputLayout( m_PLayout_GPics );
+			m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_GPics, &stride2, &offset );
+			m_PMap_GPics->SetResource( g_TextureManagerFrame->GetTexture(g_HeroInfo->m_PictureDatas[m_PlayingFrame->m_PictureID].m_TextureID)->texture );
+			m_PTech_GPics->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
+			m_DeviceContext->Draw( 1, 0 );
+		}
 	}
-
-	if ( m_PointVertices.size() > 0 )
-	{
-		UINT offset = 0;
-		UINT stride2 = sizeof( PointVertex );
-		m_DeviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
-		m_DeviceContext->IASetInputLayout( m_PLayout_Points );
-		m_DeviceContext->IASetVertexBuffers( 0, 1, &m_Buffer_Points, &stride2, &offset );
-		m_PTech_Points->GetPassByIndex( 0 )->Apply( 0, m_DeviceContext );
-		m_DeviceContext->Draw( ( UINT )m_PointVertices.size(), 0 );
-	}
-
 	m_SwapChain->Present( 0, 0 );
 }
 
@@ -376,198 +392,226 @@ void D3DApp_Frame::buildShaderFX()
 
 void D3DApp_Frame::buildPoint()
 {
-	//Point
-	ReleaseCOM( m_Buffer_Points );
-	m_PointVertices.clear();
-
-	for ( Area::iterator it = m_Body.begin(); it != m_Body.end(); ++it )
+	if(!m_IsPlaying)
 	{
-		PointVertices pvs = it->BuildPoint( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
-		m_PointVertices.insert( m_PointVertices.end(), pvs.begin(), pvs.end() );
-	}
+		//Point
+		ReleaseCOM( m_Buffer_Points );
+		m_PointVertices.clear();
 
-	for ( Area::iterator it = m_Attack.begin(); it != m_Attack.end(); ++it )
-	{
-		PointVertices pvs = it->BuildPoint( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
-		m_PointVertices.insert( m_PointVertices.end(), pvs.begin(), pvs.end() );
-	}
-
-	for ( Area::iterator it = m_Catch.begin(); it != m_Catch.end(); ++it )
-	{
-		PointVertices pvs = it->BuildPoint( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
-		m_PointVertices.insert( m_PointVertices.end(), pvs.begin(), pvs.end() );
-	}
-
-	if ( !m_PointVertices.empty() )
-	{
-		m_vbd.ByteWidth = ( UINT )( sizeof( PointVertex ) * m_PointVertices.size() );
-		m_vbd.StructureByteStride = sizeof( PointVertex );
-		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &m_PointVertices[0];
-		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Points ) );
-	}
-
-	//Line
-	ReleaseCOM( m_Buffer_Lines );
-	m_LineVertices.clear();
-
-	for ( Area::iterator it = m_Body.begin(); it != m_Body.end(); ++it )
-	{
-		LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
-		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
-	}
-
-	for ( Area::iterator it = m_Attack.begin(); it != m_Attack.end(); ++it )
-	{
-		LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
-		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
-	}
-
-	for ( Area::iterator it = m_Catch.begin(); it != m_Catch.end(); ++it )
-	{
-		LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
-		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
-	}
-
-	for(Crosses::iterator it = m_CreationPos.begin(); it != m_CreationPos.end(); ++it)
-	{
-		LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
-		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
-	}
-
-	if (m_ShowCross)
-	{
-		LineVertices lvs = m_Center.BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY);
-		m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
-	}
-	
-	if ( !m_LineVertices.empty() )
-	{
-		m_vbd.ByteWidth = ( UINT )( sizeof( LineVertex ) * m_LineVertices.size() );
-		m_vbd.StructureByteStride = sizeof( LineVertex );
-		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &m_LineVertices[0];
-		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Lines ) );
-	}
-
-	//Main Picture
-	ReleaseCOM( m_Buffer_Pics );
-	if ( m_Pic != NULL )
-	{
-		PictureVertex pv;
-		pv.position.x = g_Frame_OffsetX;
-		pv.position.y = -g_Frame_OffsetY;
-		pv.size.x = m_Pic->m_Width * g_Frame_Scale;
-		pv.size.y = m_Pic->m_Height * g_Frame_Scale;
-		pv.picpos.x = m_picX;
-		pv.picpos.y = m_picY;
-		pv.picpos.z = m_Pic->m_Row;
-		pv.picpos.w = m_Pic->m_Column;
-		m_vbd.ByteWidth = ( UINT )( sizeof( PictureVertex ) );
-		m_vbd.StructureByteStride = sizeof( PictureVertex );
-		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &pv;
-		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Pics ) );
-	}
-
-	//Creation
-	ReleaseCOM( m_Buffer_GPics );
-	m_CreationsVertics.clear();
-	m_DrawVertexGroups.clear();
-	for (Creations::iterator it = m_Creation.begin(); it != m_Creation.end(); ++it)
-	{
-		GamePictureVertex gpv;
-		gpv.position.x = it->x * g_Frame_Scale + g_Frame_OffsetX ;
-		gpv.position.y = it->y * g_Frame_Scale - g_Frame_OffsetY ;
-		gpv.faceside = (it->facing? -1:1);
-
-		ObjectInfoMap::iterator it_Object = g_ObjectInfoMap.find(it->name);
-
-		int count = 0;
-		if (it_Object!=g_ObjectInfoMap.end())
+		for ( Area::iterator it = m_Body.begin(); it != m_Body.end(); ++it )
 		{
-			FramesMap::iterator it_Frame = it_Object->second->m_FramesMap.find(it->frame);
-			if (it_Frame != it_Object->second->m_FramesMap.end())
+			PointVertices pvs = it->BuildPoint( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
+			m_PointVertices.insert( m_PointVertices.end(), pvs.begin(), pvs.end() );
+		}
+
+		for ( Area::iterator it = m_Attack.begin(); it != m_Attack.end(); ++it )
+		{
+			PointVertices pvs = it->BuildPoint( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
+			m_PointVertices.insert( m_PointVertices.end(), pvs.begin(), pvs.end() );
+		}
+
+		for ( Area::iterator it = m_Catch.begin(); it != m_Catch.end(); ++it )
+		{
+			PointVertices pvs = it->BuildPoint( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
+			m_PointVertices.insert( m_PointVertices.end(), pvs.begin(), pvs.end() );
+		}
+
+		if ( !m_PointVertices.empty() )
+		{
+			m_vbd.ByteWidth = ( UINT )( sizeof( PointVertex ) * m_PointVertices.size() );
+			m_vbd.StructureByteStride = sizeof( PointVertex );
+			D3D11_SUBRESOURCE_DATA vinitData;
+			vinitData.pSysMem = &m_PointVertices[0];
+			HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Points ) );
+		}
+
+		//Line
+		ReleaseCOM( m_Buffer_Lines );
+		m_LineVertices.clear();
+
+		for ( Area::iterator it = m_Body.begin(); it != m_Body.end(); ++it )
+		{
+			LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
+			m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
+		}
+
+		for ( Area::iterator it = m_Attack.begin(); it != m_Attack.end(); ++it )
+		{
+			LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
+			m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
+		}
+
+		for ( Area::iterator it = m_Catch.begin(); it != m_Catch.end(); ++it )
+		{
+			LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
+			m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
+		}
+
+		for(Crosses::iterator it = m_CreationPos.begin(); it != m_CreationPos.end(); ++it)
+		{
+			LineVertices lvs = it->BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY );
+			m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
+		}
+
+		if (m_ShowCross)
+		{
+			LineVertices lvs = m_Center.BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY);
+			m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
+		}
+
+		if ( !m_LineVertices.empty() )
+		{
+			m_vbd.ByteWidth = ( UINT )( sizeof( LineVertex ) * m_LineVertices.size() );
+			m_vbd.StructureByteStride = sizeof( LineVertex );
+			D3D11_SUBRESOURCE_DATA vinitData;
+			vinitData.pSysMem = &m_LineVertices[0];
+			HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Lines ) );
+		}
+
+		//Main Picture
+		ReleaseCOM( m_Buffer_Pics );
+		if ( m_Pic != NULL )
+		{
+			PictureVertex pv;
+			pv.position.x = g_Frame_OffsetX;
+			pv.position.y = -g_Frame_OffsetY;
+			pv.size.x = m_Pic->m_Width * g_Frame_Scale;
+			pv.size.y = m_Pic->m_Height * g_Frame_Scale;
+			pv.picpos.x = m_picX;
+			pv.picpos.y = m_picY;
+			pv.picpos.z = m_Pic->m_Row;
+			pv.picpos.w = m_Pic->m_Column;
+			m_vbd.ByteWidth = ( UINT )( sizeof( PictureVertex ) );
+			m_vbd.StructureByteStride = sizeof( PictureVertex );
+			D3D11_SUBRESOURCE_DATA vinitData;
+			vinitData.pSysMem = &pv;
+			HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Pics ) );
+		}
+
+		//Creation
+		ReleaseCOM( m_Buffer_GPics );
+		m_CreationsVertics.clear();
+		m_DrawVertexGroups.clear();
+		for (Creations::iterator it = m_Creation.begin(); it != m_Creation.end(); ++it)
+		{
+			GamePictureVertex gpv;
+			gpv.position.x = it->x * g_Frame_Scale + g_Frame_OffsetX ;
+			gpv.position.y = it->y * g_Frame_Scale - g_Frame_OffsetY ;
+			gpv.faceside = (it->facing? -1:1);
+
+			ObjectInfoMap::iterator it_Object = g_ObjectInfoMap.find(it->name);
+
+			int count = 0;
+			if (it_Object!=g_ObjectInfoMap.end())
 			{
-				if (it->frameID > -1 && it->frameID < it_Frame->second.size())
+				FramesMap::iterator it_Frame = it_Object->second->m_FramesMap.find(it->frame);
+				if (it_Frame != it_Object->second->m_FramesMap.end())
 				{
-					FrameInfo frameInfo = it_Frame->second[it->frameID];
- 					gpv.center.x = frameInfo.m_CenterX * g_Frame_Scale;
- 					gpv.center.y = -frameInfo.m_CenterY * g_Frame_Scale;
-
-					PictureData *pic = &it_Object->second->m_PictureDatas[frameInfo.m_PictureID];
-					gpv.size.x = pic->m_Width * g_Frame_Scale;
-					gpv.size.y = pic->m_Height * g_Frame_Scale;
-					gpv.picpos.x = frameInfo.m_PictureX;
-					gpv.picpos.y = frameInfo.m_PictureY;
-					gpv.picpos.z = pic->m_Row;
-					gpv.picpos.w = pic->m_Column;
-					m_CreationsVertics.push_back(gpv);
-					int textureID = g_TextureManagerFrame->AddTexture(pic->m_Path);
-
-					if(!m_DrawVertexGroups.empty() && m_DrawVertexGroups.back().texture == g_TextureManagerFrame->GetTexture(textureID))
+					if (it->frameID > -1 && it->frameID < it_Frame->second.size())
 					{
-						m_DrawVertexGroups.back().VertexCount++;
-					}else
-					{
-						DrawVertexGroup dvg;
-						dvg.StartVertexLocation = count;
-						dvg.VertexCount = 1;
-						dvg.texture = g_TextureManagerFrame->GetTexture(textureID);
-						m_DrawVertexGroups.push_back(dvg);
+						FrameInfo frameInfo = it_Frame->second[it->frameID];
+						gpv.center.x = frameInfo.m_CenterX * g_Frame_Scale;
+						gpv.center.y = -frameInfo.m_CenterY * g_Frame_Scale;
+
+						PictureData *pic = &it_Object->second->m_PictureDatas[frameInfo.m_PictureID];
+						gpv.size.x = pic->m_Width * g_Frame_Scale;
+						gpv.size.y = pic->m_Height * g_Frame_Scale;
+						gpv.picpos.x = frameInfo.m_PictureX;
+						gpv.picpos.y = frameInfo.m_PictureY;
+						gpv.picpos.z = pic->m_Row;
+						gpv.picpos.w = pic->m_Column;
+						m_CreationsVertics.push_back(gpv);
+						int textureID = g_TextureManagerFrame->AddTexture(pic->m_Path);
+
+						if(!m_DrawVertexGroups.empty() && m_DrawVertexGroups.back().texture == g_TextureManagerFrame->GetTexture(textureID))
+						{
+							m_DrawVertexGroups.back().VertexCount++;
+						}else
+						{
+							DrawVertexGroup dvg;
+							dvg.StartVertexLocation = count;
+							dvg.VertexCount = 1;
+							dvg.texture = g_TextureManagerFrame->GetTexture(textureID);
+							m_DrawVertexGroups.push_back(dvg);
+						}
+						count++;
 					}
-					count++;
+				}
+			}
+
+			HeroInfoMap::iterator it_Hero = g_HeroInfoMap.find(it->name);
+			if (it_Hero!=g_HeroInfoMap.end())
+			{
+				FramesMap::iterator it_Frame = it_Hero->second->m_FramesMap.find(it->frame);
+				if (it_Frame != it_Hero->second->m_FramesMap.end())
+				{
+					if (it->frameID > -1 && it->frameID < it_Frame->second.size())
+					{
+						FrameInfo frameInfo = it_Frame->second[it->frameID];
+						gpv.center.x = frameInfo.m_CenterX * g_Frame_Scale;
+						gpv.center.y = -frameInfo.m_CenterY * g_Frame_Scale;
+
+						PictureData *pic = &it_Hero->second->m_PictureDatas[frameInfo.m_PictureID];
+						gpv.size.x = pic->m_Width * g_Frame_Scale;
+						gpv.size.y = pic->m_Height * g_Frame_Scale;
+						gpv.picpos.x = frameInfo.m_PictureX;
+						gpv.picpos.y = frameInfo.m_PictureY;
+						gpv.picpos.z = pic->m_Row;
+						gpv.picpos.w = pic->m_Column;
+						m_CreationsVertics.push_back(gpv);
+						int textureID = g_TextureManagerFrame->AddTexture(pic->m_Path);
+
+						if(!m_DrawVertexGroups.empty() && m_DrawVertexGroups.back().texture == g_TextureManagerFrame->GetTexture(textureID))
+						{
+							m_DrawVertexGroups.back().VertexCount++;
+						}else
+						{
+							DrawVertexGroup dvg;
+							dvg.StartVertexLocation = count;
+							dvg.VertexCount = 1;
+							dvg.texture = g_TextureManagerFrame->GetTexture(textureID);
+							m_DrawVertexGroups.push_back(dvg);
+						}
+						count++;
+					}
 				}
 			}
 		}
-
-		HeroInfoMap::iterator it_Hero = g_HeroInfoMap.find(it->name);
-		if (it_Hero!=g_HeroInfoMap.end())
+		if(!m_CreationsVertics.empty())
 		{
-			FramesMap::iterator it_Frame = it_Hero->second->m_FramesMap.find(it->frame);
-			if (it_Frame != it_Hero->second->m_FramesMap.end())
+			m_vbd.ByteWidth = ( UINT )( sizeof( GamePictureVertex ) * m_CreationsVertics.size());
+			m_vbd.StructureByteStride = sizeof( GamePictureVertex );
+			D3D11_SUBRESOURCE_DATA vinitData;
+			vinitData.pSysMem = &m_CreationsVertics[0];
+			HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_GPics ) );
+		}
+	}else
+	{
+		if (m_PlayingFrame != NULL)
+		{
+			ReleaseCOM( m_Buffer_GPics );
+			if ( m_Pic != NULL )
 			{
-				if (it->frameID > -1 && it->frameID < it_Frame->second.size())
-				{
-					FrameInfo frameInfo = it_Frame->second[it->frameID];
-					gpv.center.x = frameInfo.m_CenterX * g_Frame_Scale;
-					gpv.center.y = -frameInfo.m_CenterY * g_Frame_Scale;
-
-					PictureData *pic = &it_Hero->second->m_PictureDatas[frameInfo.m_PictureID];
-					gpv.size.x = pic->m_Width * g_Frame_Scale;
-					gpv.size.y = pic->m_Height * g_Frame_Scale;
-					gpv.picpos.x = frameInfo.m_PictureX;
-					gpv.picpos.y = frameInfo.m_PictureY;
-					gpv.picpos.z = pic->m_Row;
-					gpv.picpos.w = pic->m_Column;
-					m_CreationsVertics.push_back(gpv);
-					int textureID = g_TextureManagerFrame->AddTexture(pic->m_Path);
-
-					if(!m_DrawVertexGroups.empty() && m_DrawVertexGroups.back().texture == g_TextureManagerFrame->GetTexture(textureID))
-					{
-						m_DrawVertexGroups.back().VertexCount++;
-					}else
-					{
-						DrawVertexGroup dvg;
-						dvg.StartVertexLocation = count;
-						dvg.VertexCount = 1;
-						dvg.texture = g_TextureManagerFrame->GetTexture(textureID);
-						m_DrawVertexGroups.push_back(dvg);
-					}
-					count++;
-				}
+				GamePictureVertex gpv;
+				gpv.position.x =   100 + g_Frame_OffsetX;
+				gpv.position.y =  -200 - g_Frame_OffsetY;
+				gpv.faceside = 1;
+				gpv.size.x = g_HeroInfo->m_PictureDatas[m_PlayingFrame->m_PictureID].m_Width * g_Frame_Scale;
+				gpv.size.y = g_HeroInfo->m_PictureDatas[m_PlayingFrame->m_PictureID].m_Height * g_Frame_Scale;
+				gpv.picpos.x = m_PlayingFrame->m_PictureX;
+				gpv.picpos.y = m_PlayingFrame->m_PictureY;
+				gpv.picpos.z = g_HeroInfo->m_PictureDatas[m_PlayingFrame->m_PictureID].m_Row;
+				gpv.picpos.w = g_HeroInfo->m_PictureDatas[m_PlayingFrame->m_PictureID].m_Column;
+				gpv.center.x = m_PlayingFrame->m_CenterX * g_Frame_Scale;
+				gpv.center.y = -m_PlayingFrame->m_CenterY * g_Frame_Scale;
+				m_vbd.ByteWidth = ( UINT )( sizeof( GamePictureVertex ));
+				m_vbd.StructureByteStride = sizeof( GamePictureVertex );
+				D3D11_SUBRESOURCE_DATA vinitData;
+				vinitData.pSysMem = &gpv;
+				HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_GPics ) );
 			}
 		}
 	}
-	if(!m_CreationsVertics.empty())
-	{
-		m_vbd.ByteWidth = ( UINT )( sizeof( GamePictureVertex ) * m_CreationsVertics.size());
-		m_vbd.StructureByteStride = sizeof( GamePictureVertex );
-		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = &m_CreationsVertics[0];
-		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_GPics ) );
-	}
-	
 	m_DeviceContext->OMSetDepthStencilState( m_pDepthStencil_ZWriteON, 0 );
 }
 
@@ -651,6 +695,8 @@ void D3DApp_Frame::Init()
 	m_Center.SetColor(0,0,1);
 	m_Center.SetPosition(0,0);
 	SwitchShowCrossOff();
+	m_PlayingFrame = NULL;
+	m_IsPlaying = false;
 }
 
 void D3DApp_Frame::SwitchShowCrossOff()
@@ -666,4 +712,18 @@ void D3DApp_Frame::SwitchShowCrossOn()
 void D3DApp_Frame::SetCreation( Creations& creation )
 {
 	m_Creation.assign(creation.begin(),creation.end());
+}
+
+void D3DApp_Frame::PlayFrame( FrameInfo &frame )
+{
+	m_IsPlaying = true;
+	m_PlayingFrame = &frame;
+	buildPoint();
+	DrawScene();
+}
+
+void D3DApp_Frame::StopPlayFrame()
+{
+	m_IsPlaying = false;
+	m_PlayingFrame = NULL;
 }
