@@ -42,6 +42,7 @@ public:
 	void EditableCenter();
 	void EditCenter( float x, float y );
 	void EditCreation( int id );
+	void RefreshCreation();
 	void SetPic( PictureData*  pic, float x, float y );
 private:
 	void InitEdit();

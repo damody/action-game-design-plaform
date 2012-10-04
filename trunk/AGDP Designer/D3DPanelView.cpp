@@ -1260,8 +1260,7 @@ void CD3DPanelView::EditCreation( int id )
 	m_CreationID = id;
 	m_D3DApp.m_CreationPos[m_CreationID].SetColor(0,0,0);
 	m_D3DApp.buildPoint();
-	m_D3DApp.DrawScene();
-	
+	m_D3DApp.DrawScene();	
 }
 
 void CD3DPanelView::UpdateCreationPos( float x, float y )
@@ -1275,4 +1274,13 @@ void CD3DPanelView::UpdateCreationPos( float x, float y )
 	m_D3DApp.buildPoint();
 	m_D3DApp.DrawScene();
 	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshCreationPoint();
+}
+
+void CD3DPanelView::RefreshCreation()
+{
+	if (m_FrameInfo==NULL){return;}
+	m_D3DApp.SetCreation( m_FrameInfo->m_Creations );
+	m_D3DApp.m_CreationPos[m_CreationID].SetPosition(m_FrameInfo->m_Creations[m_CreationID].x,-m_FrameInfo->m_Creations[m_CreationID].y);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
 }
