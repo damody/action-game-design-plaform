@@ -4,8 +4,7 @@
 
 ObjectManager::ObjectManager( void )
 {
-	m_CTrashCan.clear();
-	m_WTrashCan.clear();
+	m_TrashCan.clear();
 }
 
 
@@ -17,12 +16,7 @@ void ObjectManager::Update( float dt )
 {
 	CleanTrashCan();
 
-	for ( Chees::iterator it = m_Chees.begin(); it != m_Chees.end(); it++ )
-	{
-		( *it )->Update( dt );
-	}
-
-	for ( Weapons::iterator it = m_Weapons.begin(); it != m_Weapons.end(); it++ )
+	for ( Objects::iterator it = m_Objects.begin(); it != m_Objects.end(); it++ )
 	{
 		( *it )->Update( dt );
 	}
@@ -30,103 +24,57 @@ void ObjectManager::Update( float dt )
 
 void ObjectManager::UpdateDataToDraw()
 {
-	for ( Chees::iterator it = m_Chees.begin(); it != m_Chees.end(); it++ )
-	{
-		( *it )->UpdateDataToDraw();
-	}
-
-	std::stable_sort( m_Weapons.begin(), m_Weapons.end(), SortWeapon );
-
-	for ( Weapons::iterator it = m_Weapons.begin(); it != m_Weapons.end(); it++ )
+	for ( Objects::iterator it = m_Objects.begin(); it != m_Objects.end(); it++ )
 	{
 		( *it )->UpdateDataToDraw();
 	}
 }
 
-Chee** ObjectManager::CreateChee( const std::wstring& chee, const Vector3& pos, const Vector3& vel, int num/*=1*/, int team/*=0*/ )
+Object** ObjectManager::CreateObject( const std::wstring& obj, const Vector3& pos, const Vector3& vel, int num/*=1*/, int team/*=0*/ )
 {
-	Chee_RawPtr* c = new Chee_RawPtr [num];
+	Object_RawPtr* object = new Object_RawPtr [num];
 
 	for ( int i = 0; i < num; i++ )
 	{
-		c[i] = Chee_RawPtr( new Chee( chee ) );
-		c[i]->SetPosition( pos );
-		c[i]->SetVelocity( vel );
-		c[i]->SetTeam( team );
-		m_Chees.push_back( c[i] );
+		object[i] = Object_RawPtr( new Object( obj ) );
+		object[i]->SetPosition( pos );
+		object[i]->SetVelocity( vel );
+		object[i]->SetTeam( team );
+		m_Objects.push_back( object[i] );
 	}
 
-	return c;
-}
-
-Weapon** ObjectManager::CreateWeapon( const std::wstring& weapon, const Vector3& pos, int num/*=1*/, int team/*=0*/ )
-{
-	Weapon_RawPtr* w = new Weapon_RawPtr [num];
-
-	for ( int i = 0; i < num; i++ )
-	{
-		w[i] = Weapon_RawPtr( new Weapon( weapon ) );
-		w[i]->SetPosition( pos );
-		w[i]->SetTeam( team );
-		m_Weapons.push_back( w[i] );
-	}
-
-	return w;
+	return object;
 }
 
 void ObjectManager::Clear()
 {
-	m_Chees.clear();
-	m_Weapons.clear();
+	m_Objects.clear();
 }
 
-void ObjectManager::ClearChee()
+bool ObjectManager::ObjectEmpty()
 {
-	m_Chees.clear();
+	return m_Objects.empty();
 }
 
-void ObjectManager::ClearWeapon()
+
+Objects::iterator ObjectManager::ObjectVectorBegin()
 {
-	m_Weapons.clear();
+	return m_Objects.begin();
 }
 
-bool ObjectManager::CheeEmpty()
+Objects::iterator ObjectManager::ObjectVectorEnd()
 {
-	return m_Chees.empty();
+	return m_Objects.end();
 }
 
-bool ObjectManager::WeaponEmpty()
-{
-	return m_Weapons.empty();
-}
-
-Chees::iterator ObjectManager::CheeVectorBegin()
-{
-	return m_Chees.begin();
-}
-
-Chees::iterator ObjectManager::CheeVectorEnd()
-{
-	return m_Chees.end();
-}
-
-Weapons::iterator ObjectManager::WeaponVectorBegin()
-{
-	return m_Weapons.begin();
-}
-
-Weapons::iterator ObjectManager::WeaponVectorEnd()
-{
-	return m_Weapons.end();
-}
-
-Chee* ObjectManager::GetClosestChee( const Vector3& pos )
+Object* ObjectManager::GetClosestChee( const Vector3& pos )
 {
 	float d = 99999;
-	Chee* c = NULL;
+	Object* c = NULL;
 
-	for ( Chees::iterator it = m_Chees.begin(); it != m_Chees.end(); it++ )
+	for ( Objects::iterator it = m_Objects.begin(); it != m_Objects.end(); it++ )
 	{
+		if(( *it )->ObjectType()!=ObjectType::CHEE)continue;
 		if ( ( *it )->Position().distance( pos ) < d )
 		{
 			d = ( *it )->Position().distance( pos );
@@ -137,13 +85,14 @@ Chee* ObjectManager::GetClosestChee( const Vector3& pos )
 	return c;
 }
 
-Chee* ObjectManager::GetClosestCheeFromFriend( const Vector3& pos, int team )
+Object* ObjectManager::GetClosestCheeFromFriend( const Vector3& pos, int team )
 {
 	float d = 99999;
-	Chee* c = NULL;
+	Object* c = NULL;
 
-	for ( Chees::iterator it = m_Chees.begin(); it != m_Chees.end(); it++ )
+	for ( Objects::iterator it = m_Objects.begin(); it != m_Objects.end(); it++ )
 	{
+		if(( *it )->ObjectType()!=ObjectType::CHEE)continue;
 		if ( ( *it )->Team() == 0 || ( *it )->Team() != team )
 		{
 			continue;
@@ -159,13 +108,14 @@ Chee* ObjectManager::GetClosestCheeFromFriend( const Vector3& pos, int team )
 	return c;
 }
 
-Chee* ObjectManager::GetClosestCheeFromEnemy( const Vector3& pos, int team )
+Object* ObjectManager::GetClosestCheeFromEnemy( const Vector3& pos, int team )
 {
 	float d = 99999;
-	Chee* c = NULL;
+	Object* c = NULL;
 
-	for ( Chees::iterator it = m_Chees.begin(); it != m_Chees.end(); it++ )
+	for ( Objects::iterator it = m_Objects.begin(); it != m_Objects.end(); it++ )
 	{
+		if(( *it )->ObjectType()!=ObjectType::CHEE)continue;
 		if ( ( *it )->Team() != 0 && ( *it )->Team() == team )
 		{
 			continue;
@@ -200,77 +150,41 @@ Weapon* ObjectManager::GetClosestThrownWeaponFromEnemy(const Vector3& pos,int te
 
 int ObjectManager::AmountChee()
 {
-	return m_Chees.size();
-}
-
-int ObjectManager::AmountWeapons()
-{
-	return m_Weapons.size();
-}
-
-void ObjectManager::Destory( Chee_RawPtr chee, int time/*=0*/ )
-{
-	if ( !InCTrashCan( chee ) )
+	int i=0,a=0;
+	while(i < m_Objects.size())
 	{
-		Chees::iterator it = GetCheeIt( chee );
+		if(m_Objects[i]->ObjectType()==ObjectType::CHEE)
+		{a++;}
+		i++;
+	}
+	return a;
+}
 
-		if ( it != m_Chees.end() )
+void ObjectManager::Destory(  Object* obj, int time/*=0*/ )
+{
+	if ( !InTrashCan( obj ) )
+	{
+		Objects::iterator it = GetObjectIt( obj );
+
+		if ( it != m_Objects.end() )
 		{
-			CTrash th;
-			th.m_Trash = chee;
+			Trash th;
+			th.m_Trash = obj;
 			th.m_Time = time;
-			m_CTrashCan.push_back( th );
+			m_TrashCan.push_back( th );
 		}
-	}
-}
-
-void ObjectManager::Destory( Weapon_RawPtr weapon, int time/*=0*/ )
-{
-	if ( !InWTrashCan( weapon ) )
-	{
-		Weapons::iterator it = GetWeaponIt( weapon );
-
-		if ( it != m_Weapons.end() )
-		{
-			WTrash th;
-			th.m_Trash = weapon;
-			th.m_Time = time;
-			m_WTrashCan.push_back( th );
-		}
-	}
-}
-
-void ObjectManager::Destory( Chees::iterator it, int time/*=0*/ )
-{
-	if ( !InCTrashCan( *it ) )
-	{
-		CTrash th;
-		th.m_Trash = *it;
-		th.m_Time = time;
-		m_CTrashCan.push_back( th );
-	}
-}
-
-void ObjectManager::Destory( Weapons::iterator it, int time/*=0*/ )
-{
-	if ( !InWTrashCan( *it ) )
-	{
-		WTrash th;
-		th.m_Trash = *it;
-		th.m_Time = time;
-		m_WTrashCan.push_back( th );
 	}
 }
 
 void ObjectManager::CleanTrashCan()
 {
-	for ( CTrashCan::iterator it = m_CTrashCan.begin(); it != m_CTrashCan.end(); )
+	for ( TrashCan::iterator it = m_TrashCan.begin(); it != m_TrashCan.end(); )
 	{
 		if ( it->m_Time <= 0 )
 		{
-			m_Chees.erase( GetCheeIt( it->m_Trash ) );
+			m_Objects.erase( GetObjectIt( it->m_Trash ) );
 			delete( it->m_Trash  );
-			it = m_CTrashCan.erase( it );
+			it = m_TrashCan.erase( it );
 		}
 		else
 		{
@@ -279,27 +193,13 @@ void ObjectManager::CleanTrashCan()
 		}
 	}
 
-	for ( WTrashCan::iterator it = m_WTrashCan.begin(); it != m_WTrashCan.end(); )
-	{
-		if ( it->m_Time <= 0 )
-		{
-			m_Weapons.erase( GetWeaponIt( it->m_Trash ) );
-			delete( it->m_Trash );
-			it = m_WTrashCan.erase( it );
-		}
-		else
-		{
-			it->m_Time--;
-			it++;
-		}
-	}
 }
 
-bool ObjectManager::InCTrashCan( Chee_RawPtr chee )
+bool ObjectManager::InTrashCan( Object* obj )
 {
-	for ( CTrashCan::iterator it = m_CTrashCan.begin(); it != m_CTrashCan.end(); it++ )
+	for ( TrashCan::iterator it = m_TrashCan.begin(); it != m_TrashCan.end(); it++ )
 	{
-		if ( it->m_Trash == chee )
+		if ( it->m_Trash == obj )
 		{
 			return true;
 		}
@@ -308,41 +208,13 @@ bool ObjectManager::InCTrashCan( Chee_RawPtr chee )
 	return false;
 }
 
-bool ObjectManager::InWTrashCan( Weapon_RawPtr weapon )
+Objects::iterator ObjectManager::GetObjectIt( Object* obj )
 {
-	for ( WTrashCan::iterator it = m_WTrashCan.begin(); it != m_WTrashCan.end(); it++ )
+	Objects::iterator it;
+
+	for ( it = m_Objects.begin(); it != m_Objects.end(); it++ )
 	{
-		if ( it->m_Trash == weapon )
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
-Chees::iterator ObjectManager::GetCheeIt( Chee* chee )
-{
-	Chees::iterator it;
-
-	for ( it = m_Chees.begin(); it != m_Chees.end(); it++ )
-	{
-		if ( *it == chee )
-		{
-			break;
-		}
-	}
-
-	return it;
-}
-
-Weapons::iterator ObjectManager::GetWeaponIt( Weapon* weapon )
-{
-	Weapons::iterator it;
-
-	for ( it = m_Weapons.begin(); it != m_Weapons.end(); it++ )
-	{
-		if ( *it == weapon )
+		if ( *it == obj )
 		{
 			break;
 		}

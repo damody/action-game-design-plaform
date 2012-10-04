@@ -105,6 +105,9 @@
     <ClInclude Include="include\game\LuaResource.h">
       <Filter>標頭檔\game</Filter>
     </ClInclude>
+    <ClInclude Include="..\AGDP\game\Object.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\FlyingPath.cpp">

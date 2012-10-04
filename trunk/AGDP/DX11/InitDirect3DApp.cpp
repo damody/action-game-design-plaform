@@ -562,12 +562,16 @@ void InitDirect3DApp::buildPoint()
 		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Background ) );
 	}
 
-	// set heroes and weapons
+	// set heroes and weapons and Chee
 	m_EntityVertex.clear();
 	m_DrawVertexGroups.clear();
+	m_CheeVertex.clear();
+	m_CheeDrawVertexGroups.clear();
+
 	g_HeroManager.UpdateDataToDraw();
 	g_ObjectManager.UpdateDataToDraw();
 	int vertexCount = 0, count = 0;
+	int vertexCount_Chee = 0, count_Chee = 0;
 
 	if ( !g_HeroManager.Empty() )
 	{
@@ -600,35 +604,62 @@ void InitDirect3DApp::buildPoint()
 		}
 	}
 
-	if ( !g_ObjectManager.WeaponEmpty() )
+	if ( !g_ObjectManager.ObjectEmpty() )
 	{
-		for ( Weapons::iterator it = g_ObjectManager.WeaponVectorBegin(); it != g_ObjectManager.WeaponVectorEnd(); )
+		for ( Objects::iterator it = g_ObjectManager.ObjectVectorBegin(); it != g_ObjectManager.ObjectVectorEnd(); )
 		{
-			DrawVertexGroup dvg = {};
-			dvg.texture = ( *it )->GetTexture();
-			vertexCount = 0;
-			dvg.StartVertexLocation = count;
+			if ((*it)->ObjectType()==ObjectType::CHEE){
+				DrawVertexGroup dvg = {};
+				dvg.texture = ( *it )->GetTexture();
+				vertexCount = 0;
+				dvg.StartVertexLocation = count_Chee;
 
-			do
-			{
-				if ( !g_Camera->Visable( ( *it )->Position() ) )
+				do
 				{
+					if ( !g_Camera->Visable( ( *it )->Position() ) )
+					{
+						it++;
+						continue;
+					}
+
+					//save vertex points
+					m_CheeVertex.push_back( ( *it )->GetPic() );
 					it++;
-					continue;
+					++vertexCount_Chee;
+					++count_Chee;
 				}
+				while ( it != g_ObjectManager.ObjectVectorEnd() && dvg.texture == ( *it )->GetTexture() );
 
-				//save vertex points
-				m_EntityVertex.push_back( ( *it )->GetPic() );
-				it++;
-				++vertexCount;
-				++count;
+				dvg.VertexCount = vertexCount_Chee;
+				//save dvg
+				m_CheeDrawVertexGroups.push_back( dvg );
+			}else{
+				DrawVertexGroup dvg = {};
+				dvg.texture = ( *it )->GetTexture();
+				vertexCount = 0;
+				dvg.StartVertexLocation = count;
+
+				do
+				{
+					if ( !g_Camera->Visable( ( *it )->Position() ) )
+					{
+						it++;
+						continue;
+					}
+
+					//save vertex points
+					m_EntityVertex.push_back( ( *it )->GetPic() );
+					it++;
+					++vertexCount;
+					++count;
+				}
+				while ( it != g_ObjectManager.ObjectVectorEnd() && dvg.texture == ( *it )->GetTexture() );
+
+				dvg.VertexCount = vertexCount;
+
+				//save dvg
+				if ( dvg.VertexCount != 0 ) { m_DrawVertexGroups.push_back( dvg ); }
 			}
-			while ( it != g_ObjectManager.WeaponVectorEnd() && dvg.texture == ( *it )->GetTexture() );
-
-			dvg.VertexCount = vertexCount;
-
-			//save dvg
-			if ( dvg.VertexCount != 0 ) { m_DrawVertexGroups.push_back( dvg ); }
 		}
 	}
 
@@ -640,44 +671,6 @@ void InitDirect3DApp::buildPoint()
 		vinitData.pSysMem = &m_EntityVertex[0];
 		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Entity ) );
 	}
-
-	// Chee
-	m_CheeVertex.clear();
-	m_CheeDrawVertexGroups.clear();
-	vertexCount = 0;
-	count = 0;
-
-	if ( !g_ObjectManager.CheeEmpty() )
-	{
-		for ( Chees::iterator it = g_ObjectManager.CheeVectorBegin(); it != g_ObjectManager.CheeVectorEnd(); )
-		{
-			DrawVertexGroup dvg = {};
-			dvg.texture = ( *it )->GetTexture();
-			vertexCount = 0;
-			dvg.StartVertexLocation = count;
-
-			do
-			{
-				if ( !g_Camera->Visable( ( *it )->Position() ) )
-				{
-					it++;
-					continue;
-				}
-
-				//save vertex points
-				m_CheeVertex.push_back( ( *it )->GetPic() );
-				it++;
-				++vertexCount;
-				++count;
-			}
-			while ( it != g_ObjectManager.CheeVectorEnd() && dvg.texture == ( *it )->GetTexture() );
-
-			dvg.VertexCount = vertexCount;
-			//save dvg
-			m_CheeDrawVertexGroups.push_back( dvg );
-		}
-	}
-
 	if ( m_CheeVertex.size() > 0 )
 	{
 		m_vbd.ByteWidth = ( UINT )( sizeof( ClipVertex ) * m_CheeVertex.size() );
@@ -687,6 +680,7 @@ void InitDirect3DApp::buildPoint()
 		HR( m_d3dDevice->CreateBuffer( &m_vbd, &vinitData, &m_Buffer_Chee ) );
 	}
 
+	//Polygon
 	m_PolygonVerteices.clear();
 	m_PolygonLineVerteices.clear();
 	count = 0;
@@ -877,7 +871,7 @@ void InitDirect3DApp::LoadData()
 	//*test
 		g_BackgroundManager.SetCurrentBackground( Backgrounds.back()->m_Name );//set last element be current background
 		//g_BackgroundManager.Set_BGM_Play(0);
-		g_ObjectManager.CreateWeapon( L"Bat", Vector3( 600, 0, 600 ) );
+		g_ObjectManager.CreateObject( L"Bat", Vector3( 600, 0, 600 ),Vector3( 0, 0, 0 ));
 	//*/
 }
 
@@ -1270,12 +1264,12 @@ void InitDirect3DApp::TestChee()
 {
 	if ( InputStateS::instance().isKeyDown( KEY_1 ) )
 	{
-		g_ObjectManager.CreateChee( L"davis_ball", Vector3( 100, 80, 1000 ), Vector3( 0, 0, 0 ) );
+		g_ObjectManager.CreateObject( L"davis_ball", Vector3( 100, 80, 1000 ), Vector3( 0, 0, 0 ) );
 	}
 
 	if ( InputStateS::instance().isKeyDown( KEY_2 ) )
 	{
-		g_ObjectManager.CreateChee( L"davis_ball", Vector3( 1000, 80, 1000 ), Vector3( -10, 0, 0 ) );
+		g_ObjectManager.CreateObject( L"davis_ball", Vector3( 1000, 80, 1000 ), Vector3( -10, 0, 0 ) );
 	}
 }
 

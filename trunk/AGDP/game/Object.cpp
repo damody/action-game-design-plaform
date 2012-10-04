@@ -1,15 +1,14 @@
-#include "StdGame.h"
-#include "Chee.h"
+#include "Object.h"
 #include "global.h"
 
-Chee::Chee( void )
+Object::Object( void )
 {
 }
 
-Chee::Chee( std::wstring c ):
-	chee( c ), m_Position( Vector3( 0, 0, 0 ) ), m_Vel( Vector3( 0, 0, 0 ) ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 )
+Object::Object( std::wstring obj ):
+	m_ObjectName( obj ), m_Position( Vector3( 0, 0, 0 ) ), m_Vel( Vector3( 0, 0, 0 ) ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 )
 {
-	m_ObjectInfo = g_ObjectInfoManager.GetObjectInfo( chee );
+	m_ObjectInfo = g_ObjectInfoManager.GetObjectInfo( m_ObjectName );
 
 	if ( m_ObjectInfo.get() )
 	{
@@ -17,16 +16,16 @@ Chee::Chee( std::wstring c ):
 	}
 	else
 	{
-		std::wcout << L"Cannot find " << c << std::endl;
+		std::wcout << L"Cannot find " << obj << std::endl;
 	}
 }
 
 
-Chee::~Chee( void )
+Object::~Object( void )
 {
 }
 
-void Chee::Init()
+void Object::Init()
 {
 	m_Angle = 0;
 	m_HP = m_ObjectInfo->m_MaxHP;
@@ -47,7 +46,7 @@ void Chee::Init()
 }
 
 
-void Chee::NextFrame()
+void Object::NextFrame()
 {
 	FrameInfo* f = &m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID];
 	m_Frame = f->m_NextFrameName;
@@ -78,7 +77,7 @@ void Chee::NextFrame()
 	}
 }
 
-void Chee::Update( float dt )
+void Object::Update( float dt )
 {
 	if ( m_TimeTik <= 0 )
 	{
@@ -96,18 +95,19 @@ void Chee::Update( float dt )
 		m_FaceSide = true;
 	}//*/
 
-// 	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
-// 	{
-// 		if ( !g_BackgroundManager.GetCurrentBackground()->InSpace( m_Position ) )
-// 		{
-// 			g_ObjectManager.Destory( this, 6 );
-// 		}
-// 	}
-
-	//m_Position += m_Vel;
+	
+	if ( g_BackgroundManager.GetCurrentBackground() != NULL )
+	{
+		if ( !g_BackgroundManager.GetCurrentBackground()->InSpace( m_Position ) )
+		{
+			g_ObjectManager.Destory( this, 6 );
+		}
+	}
+	
+	m_Position += m_Vel;
 }
 
-void Chee::UpdateDataToDraw()
+void Object::UpdateDataToDraw()
 {
 	float scale = 3.0f;
 	m_Pic.position.x = m_Position.x;
@@ -125,64 +125,54 @@ void Chee::UpdateDataToDraw()
 	m_Pic.faceside = ( float )( m_FaceSide ? 1 : -1 );
 }
 
-void Chee::SetTeam( int index )
+void Object::SetTeam( int index )
 {
 	m_Team = index;
 }
 
-void Chee::SetPosition( Vector3 p )
+void Object::SetPosition( Vector3 p )
 {
 	m_Position = p;
 }
 
-void Chee::Translation( Vector3 t )
+void Object::Translation( Vector3 t )
 {
 	m_Position += t;
 }
 
-void Chee::SetVelocity( Vector3 v )
+void Object::SetVelocity( Vector3 v )
 {
 	m_Vel = v;
 }
 
-int Chee::GetTextureID()
+int Object::GetTextureID()
 {
 	return m_Texture;
 }
 
-Texture_Sptr Chee::GetTexture()
+Texture_Sptr Object::GetTexture()
 {
 	return g_TextureManager.GetTexture( m_Texture );
 }
 
-ClipVertex Chee::GetPic()
+ClipVertex Object::GetPic()
 {
 	return m_Pic;
 }
 
-int Chee::Team()
-{
-	return m_Team;
-}
-
-Vector3 Chee::Position()
+Vector3 Object::Position()
 {
 	return m_Position;
 }
 
-Vector3 Chee::BackPosition( float back )
+ObjectType::e Object::ObjectType()
 {
-	Vector3 v = m_Position;
-
-	if ( m_FaceSide ) { v.x -= back; }
-	else	{ v.x += back; }
-
-	return v;
+	return m_ObjectInfo->m_Type;
 }
 
-
-
-bool SortChee( Chee_RawPtr a, Chee_RawPtr b )
+bool SortObject( Object_RawPtr a, Object_RawPtr b )
 {
 	return a->GetTextureID() < b->GetTextureID();
 }
+
+
