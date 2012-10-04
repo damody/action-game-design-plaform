@@ -1679,7 +1679,7 @@ frame.injured[9] =
 
 frame.lying[0] =
 {
-   pic_id = 0, pic_x = 5, pic_y = 4, state = Action.Lying, wait = 30, next = {"crouch", 0},
+   pic_id = 0, pic_x = 5, pic_y = 4, state = Action.Lying, wait = 60, next = {"crouch", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 38,  centery = 73,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -1689,7 +1689,7 @@ frame.lying[0] =
 
 frame.lying[1] =
 {
-   pic_id = 0, pic_x = 5, pic_y = 5, state = Action.Lying, wait = 30, next = {"crouch", 0},
+   pic_id = 0, pic_x = 5, pic_y = 5, state = Action.Lying, wait = 60, next = {"crouch", 0},
    dvx = 0, dvy = 0,  dvz = 0,  centerx = 39,  centery = 75,  clear_key_queue = 0,
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
@@ -2027,7 +2027,7 @@ frame.many_punch[1] =
    blood = {},
    attack={
 		{
-		kind = 0, effect = Effect.Punch,
+		kind = 10, effect = Effect.Punch,
 		points = {{63,-9}, {63,-76}, {79,-76}, {79,-9}}, zwidth = 8,
 		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
 		arest = 8, reAttackRest = 14,
@@ -2052,7 +2052,7 @@ frame.many_punch[2] =
    hit = {},
    blood = {},
    attack={
-		{kind = 0, effect = Effect.Punch,
+		{kind = 10, effect = Effect.Punch,
 		points = {{49,-9}, {49,-73}, {67,-73}, {67,-9}}, zwidth = 8,
 		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
 		arest = 8, reAttackRest = 14,
@@ -2073,7 +2073,7 @@ frame.many_punch[3] =
    blood = {},
    attack={
 		{
-		kind = 0, effect = Effect.Punch,
+		kind = 10, effect = Effect.Punch,
 		points = {{57,-9}, {57,-76}, {75,-76}, {75,-9}}, zwidth = 8,
 		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
 		arest = 8, reAttackRest = 14,
@@ -2098,7 +2098,7 @@ frame.many_punch[4] =
    hit = {},
    blood = {},
    attack={
-		{kind = 0, effect = Effect.Punch,
+		{kind = 10, effect = Effect.Punch,
 		points = {{49,-9}, {49,-73}, {67,-73}, {67,-9}}, zwidth = 8,
 		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
 		arest = 8, reAttackRest = 14,
@@ -2117,7 +2117,7 @@ frame.many_punch[5] =
    hit = {},
    blood = {},
    attack={
-		{kind = 0, effect = Effect.Punch,
+		{kind = 10, effect = Effect.Punch,
 		points = {{49,-9}, {49,-73}, {67,-73}, {67,-9}}, zwidth = 8,
 		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
 		arest = 8, reAttackRest = 14,
@@ -2138,7 +2138,7 @@ frame.many_punch[6] =
    blood = {},
    attack={
 		{
-		kind = 0, effect = Effect.Punch,
+		kind = 10, effect = Effect.Punch,
 		points = {{64,-10}, {64,-78}, {82,-78}, {82,-10}}, zwidth = 8,
 		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
 		arest = 8, reAttackRest = 14,
@@ -2163,7 +2163,7 @@ frame.many_punch[7] =
    hit = {},
    blood = {},
    attack={
-		{kind = 0, effect = Effect.Punch,
+		{kind = 10, effect = Effect.Punch,
 		points = {{49,-9}, {49,-73}, {67,-73}, {67,-9}}, zwidth = 8,
 		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
 		arest = 8, reAttackRest = 14,
@@ -2182,7 +2182,7 @@ frame.many_punch[8] =
    hit = {{"D^A", "singlong", 0}},
    blood = {},
    attack={
-		{kind = 0, effect = Effect.Punch,
+		{kind = 10, effect = Effect.Punch,
 		points = {{49,-9}, {49,-73}, {67,-73}, {67,-9}}, zwidth = 8,
 		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
 		arest = 8, reAttackRest = 14,
@@ -2201,7 +2201,7 @@ frame.many_punch[9] =
    hit = {{"D^A", "singlong", 0}},
    blood = {},
    attack={
-		{kind = 0, effect = Effect.Punch,
+		{kind = 10, effect = Effect.Punch,
 		points = {{49,-9}, {49,-73}, {67,-73}, {67,-9}}, zwidth = 8,
 		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
 		arest = 8, reAttackRest = 14,
@@ -2221,7 +2221,7 @@ frame.many_punch[10] =
    blood = {},
    attack={
 		{
-		kind = 0, effect = Effect.Punch,
+		kind = 10, effect = Effect.Punch,
 		points = {{10,-2}, {10,-70}, {85,-70}, {85,-2}}, zwidth = 8,
 		dvx = 12, dvy = 0, dvz = 0, fall = 70, breakDefend = 16,
 		arest = 8, reAttackRest = 14,
@@ -2355,8 +2355,8 @@ frame.singlong[1] =
 		{kind = 0, effect = Effect.Punch,
 		points = {{10,-3}, {10,-78}, {82,-78}, {82,-3}}, zwidth = 8,
 		dvx = 7, dvy = 39, dvz = 0, fall = 70, breakDefend = 60,
-		arest = 8, reAttackRest = 20},
-		injury = 85, strength = 50,
+		arest = 8, reAttackRest = 20,
+		injury = 85, strength = 50,}
 	},
    body = {
    },
@@ -2375,8 +2375,8 @@ frame.singlong[2] =
 		{kind = 0, effect = Effect.Punch,
 		points = {{13,1}, {13,-79}, {80,-79}, {80,1}}, zwidth = 8,
 		dvx = 7, dvy = 33, dvz = 0, fall = 70, breakDefend = 60,
-		arest = 8, reAttackRest = 20},
-		injury = 60, strength = 50,
+		arest = 8, reAttackRest = 20,
+		injury = 60, strength = 50,}
 	},
    body = {
    {kind = 0, points = {{19,-7}, {19,-78}, {55,-78}, {55,-7}}, zwidth = 8}
@@ -2394,8 +2394,8 @@ frame.singlong[3] =
 		{kind = 0, effect = Effect.Punch,
 		points = {{11,2}, {11,-78}, {74,-78}, {74,2}}, zwidth = 8,
 		dvx = 7, dvy = 27, dvz = 0, fall = 70, breakDefend = 60,
-		arest = 8, reAttackRest = 20},
-		injury = 45, strength = 50,
+		arest = 8, reAttackRest = 20,
+		injury = 45, strength = 50,}
 	},
    body = {
    {kind = 0, points = {{22,-6}, {22,-75}, {52,-75}, {52,-6}}, zwidth = 8}
@@ -2413,8 +2413,8 @@ frame.singlong[4] =
 		{kind = 0, effect = Effect.Punch,
 		points = {{19,-1}, {19,-81}, {80,-81}, {80,-1}}, zwidth = 8,
 		dvx = 7, dvy = 21, dvz = 0, fall = 70, breakDefend = 60,
-		arest = 8, reAttackRest = 20},
-		injury = 30, strength = 50,
+		arest = 8, reAttackRest = 20,
+		injury = 30, strength = 50,}
 	},
    body = {
    {kind = 0, points = {{28,-12}, {28,-78}, {57,-78}, {57,-12}}, zwidth = 8}

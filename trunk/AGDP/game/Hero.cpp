@@ -87,10 +87,9 @@ void Hero::Update( float dt )
 	bool inAir = false;
 
 	//reAttack
-	if(m_AtkRest.a != NULL){
+	if(m_AtkRest.d != NULL){
 		m_AtkRest.t --;
 		if(m_AtkRest.t == 0){
-			m_AtkRest.a = NULL;
 			m_AtkRest.d = NULL;
 		}
 	}
@@ -1312,7 +1311,7 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 	if ( rAtk->m_Kind == 0 ) 				//普通攻擊形式，套用 effect 擊中特效
 	{
 		if ( rHero->m_Team == m_Team || 		//普通形式的攻擊對同隊無效
-			(rAtk == m_AtkRest.a && rHero == m_AtkRest.d) )			//重複擊中免疫時間
+			 rHero == m_AtkRest.d )			//重複擊中免疫時間
 		{	return;	}
 
 		m_Vel.x += rAtk->m_DVX * ( rFace ? 1.0f : -1.0f );
@@ -1380,7 +1379,6 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 		}
 		wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
 		//設定 reAttackRest
-		m_AtkRest.a = rAtk;
 		m_AtkRest.d = rHero;
 		m_AtkRest.t = rAtk->m_ReAttackRest;
 		//切換 Frame

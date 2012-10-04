@@ -39,7 +39,6 @@ class Hero
 {
 public:
 	struct AttackRest{
-		const Attack *a;	//attack
 		const Hero *d;		//¼Ä¤H
 		int t;				//time
 	};
