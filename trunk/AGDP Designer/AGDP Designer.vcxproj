@@ -152,6 +152,7 @@
     <None Include="res\Toolbar256.bmp" />
     <None Include="res\writelarge.bmp" />
     <None Include="res\writesmall.bmp" />
+    <None Include="Shader\GamePicture.fx" />
     <None Include="Shader\Line.fx" />
     <None Include="Shader\picture.fx" />
     <None Include="Shader\point.fx" />

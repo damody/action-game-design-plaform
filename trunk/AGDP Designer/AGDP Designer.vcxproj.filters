@@ -154,6 +154,9 @@
     <None Include="Shader\point.fx">
       <Filter>shader</Filter>
     </None>
+    <None Include="Shader\GamePicture.fx">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
