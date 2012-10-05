@@ -213,3 +213,65 @@ void KeyMap::pushKeyMap(char down,char up,std::wstring name){
 size_t KeyMap::sKeySize(){
 	return SKeys.size();
 }
+
+char KeyMap::FindKeyDown( const std::wstring& name )
+{
+	for(_KeyMaps::iterator i = SKeys.begin(); i != SKeys.end(); i ++ ){
+		if(i->keyName == name){
+			return i->keyDown;
+		}
+	}
+
+	if (up.keyName == name)
+	{
+		return up.keyDown;
+	}
+
+	if (down.keyName == name)
+	{
+		return down.keyDown;
+	}
+
+	if (right.keyName == name)
+	{
+		return right.keyDown;
+	}
+
+	if (left.keyName == name)
+	{
+		return left.keyDown;
+	}
+	
+	return ' ';
+}
+
+char KeyMap::FindKeyUp( const std::wstring& name )
+{
+	for(_KeyMaps::iterator i = SKeys.begin(); i != SKeys.end(); i ++ ){
+		if(i->keyName == name){
+			return i->keyUp;
+		}
+	}
+
+	if (up.keyName == name)
+	{
+		return up.keyUp;
+	}
+
+	if (down.keyName == name)
+	{
+		return down.keyUp;
+	}
+
+	if (right.keyName == name)
+	{
+		return right.keyUp;
+	}
+
+	if (left.keyName == name)
+	{
+		return left.keyUp;
+	}
+
+	return ' ';
+}

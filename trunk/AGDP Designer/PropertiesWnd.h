@@ -185,5 +185,6 @@ public:
 	void UpdateCatch();
 	void UpdatePictureData();
 	void UpdateCreation();
+	void UpdateHitData();
 	//void DeleteProperty(CMFCPropertyGridProperty* pProp);
 };

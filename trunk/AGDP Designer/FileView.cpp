@@ -427,5 +427,7 @@ void CFileView::LoadData()
 		g_ObjectInfoMap[objectInfos[idx]->m_Name]=objectInfos[idx];
 		m_wndFileView.InsertItem(CString(objectInfos[idx]->m_Name.c_str()),2,2,hResourceObjectDoc);
 	}
+
+	LuaResource::LoadKeyMap(g_KeyMap);
 }
 

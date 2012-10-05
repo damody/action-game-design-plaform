@@ -603,16 +603,61 @@ void CPropertiesWnd::InitPropList_HitData()
 	m_wndPropList.EnableDescriptionArea();
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
-	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
+
+	CMFCPropertyGridProperty* pPropKey = new CMFCPropertyGridProperty( _T( "按鍵索引" ) );
 	CMFCPropertyGridProperty* pProp;
+
+	CMFCPropertyGridProperty* pKeyName = new CMFCPropertyGridProperty( CString(g_KeyMap.UpKey().keyName.c_str()) , 0, TRUE );
+	pProp = new CMFCPropertyGridProperty( _T( "Key Down" ), CString(g_KeyMap.UpKey().keyDown), _T( "表示這個 上鍵 按下時的索引" ) );
+	pProp->AllowEdit( FALSE );
+	pKeyName->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty( _T( "Key Up" ), CString(g_KeyMap.UpKey().keyUp), _T( "表示這個 上鍵 放開時的索引" ) );
+	pProp->AllowEdit( FALSE );
+	pKeyName->AddSubItem(pProp);
+	pPropKey->AddSubItem( pKeyName );
+
+	pKeyName = new CMFCPropertyGridProperty( CString(g_KeyMap.DownKey().keyName.c_str()) , 0, TRUE );
+	pProp = new CMFCPropertyGridProperty( _T( "Key Down" ), CString(g_KeyMap.DownKey().keyDown), _T( "表示這個 下鍵 按下時的索引" ) );
+	pProp->AllowEdit( FALSE );
+	pKeyName->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty( _T( "Key Up" ), CString(g_KeyMap.DownKey().keyUp), _T( "表示這個 下鍵 放開時的索引" ) );
+	pProp->AllowEdit( FALSE );
+	pKeyName->AddSubItem(pProp);
+	pPropKey->AddSubItem( pKeyName );
+
+	pKeyName = new CMFCPropertyGridProperty( CString(g_KeyMap.RightKey().keyName.c_str()) , 0, TRUE );
+	pProp = new CMFCPropertyGridProperty( _T( "Key Down" ), CString(g_KeyMap.RightKey().keyDown), _T( "表示這個 右鍵 按下時的索引" ) );
+	pProp->AllowEdit( FALSE );
+	pKeyName->AddSubItem(pProp);
+	pProp = new CMFCPropertyGridProperty( _T( "Key Up" ), CString(g_KeyMap.RightKey().keyUp), _T( "表示這個 右鍵 放開時的索引" ) );
+	pProp->AllowEdit( FALSE );
+	pKeyName->AddSubItem(pProp);
+	pPropKey->AddSubItem( pKeyName );
+
+	for (unsigned int i=0; i < g_KeyMap.SKeyMap().size();i++)
+	{
+		pKeyName = new CMFCPropertyGridProperty( CString(g_KeyMap.SKeyMap()[i].keyName.c_str()), 0, TRUE );
+		pProp = new CMFCPropertyGridProperty( _T( "Key Down" ), CString(g_KeyMap.SKeyMap()[i].keyDown), _T( "表示這個 KeyName 按下時的索引" ) );
+		pProp->AllowEdit( FALSE );
+		pKeyName->AddSubItem(pProp);
+		pProp = new CMFCPropertyGridProperty( _T( "Key Up" ), CString(g_KeyMap.SKeyMap()[i].keyUp), _T( "表示這個 KeyName 放開時的索引" ) );
+		pProp->AllowEdit( FALSE );
+		pKeyName->AddSubItem(pProp);
+		pPropKey->AddSubItem( pKeyName );
+	}
+	pPropKey->Expand(false);
+	m_wndPropList.AddProperty( pPropKey );
+
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_KeyQueue" ), _T( "" ), _T( "m_KeyQueue" ) );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_FrameName" ), _T( "none" ), _T( "m_FrameName" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_FrameName" ), _T( "default" ), _T( "m_FrameName" ) );
+	AddNormalActionDcase( pProp );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_FrameOffest" ), varInt(), _T( "m_FrameOffest" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_FrameOffest" ), varInt(0), _T( "m_FrameOffest" ) );
 	pPropMain->AddSubItem( pProp );
+	pPropMain->Expand();
 	m_wndPropList.AddProperty( pPropMain );
-	m_wndPropList.ExpandAll();
 }
 
 void CPropertiesWnd::InitPropList_CatchInfo( int polygonCount )
@@ -1948,9 +1993,10 @@ void CPropertiesWnd::RefreshPropList_HitData( int index )
 {
 	if ( m_EditProp != 5 )
 	{
-		InitPropList_Body();
+		InitPropList_HitData();
 		m_EditProp = 5;
 	}
+	m_Index = index;
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) == g_ActiveFramesMap->end() )
 	{
@@ -1972,12 +2018,68 @@ void CPropertiesWnd::RefreshPropList_HitData( int index )
 	}
 
 	FrameInfo frameInfo = ( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
-	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 0 );
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 1 );
 	CString _tmpstr; _tmpstr = frameInfo.m_HitDatas[index].m_KeyQueue.c_str();
 	( ( CMFCPropItem* )propRoot->GetSubItem( 0 ) )->SetValue( _tmpstr );
 	_tmpstr = frameInfo.m_HitDatas[index].m_FrameName.c_str();
 	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( _tmpstr );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_HitDatas[index].m_FrameOffset ) );
+}
+
+void CPropertiesWnd::UpdateHitData()
+{
+	CMFCPropertyGridProperty* propRoot =  m_wndPropList.GetProperty( 1 );
+	FrameInfo* frameInfo = &( *g_ActiveFramesMap )[g_FrameName][g_FrameIndex];
+
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 0 ))->IsEdited() )
+	{
+		char buff[1000];
+		COleVariant v = propRoot->GetSubItem( 0 )->GetValue();
+		v.ChangeType( VT_BSTR, NULL );
+		frameInfo->m_HitDatas[m_Index].m_KeyQueue = ConvStr::GetStr(CString( v ).GetBuffer( 0 ) ) ;
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 1 ))->IsEdited() )
+	{
+		char buff[1000];
+		COleVariant v = propRoot->GetSubItem( 1 )->GetValue();
+		v.ChangeType( VT_BSTR, NULL );
+		std::wstring FrameName( CString( v ).GetBuffer( 0 ) );
+
+		if ( g_ActiveFramesMap->find( FrameName ) != g_ActiveFramesMap->end() )
+		{
+			frameInfo->m_HitDatas[m_Index].m_FrameName =FrameName;
+		}
+		else
+		{
+			char buff[100];
+			sprintf( buff, "Properties: Frame[%s] does not exist", FrameName.c_str() );
+			CString str( buff );
+			AfxMessageBox( str );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		}
+	}
+
+	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 ))->IsEdited() )
+	{
+		COleVariant v = propRoot->GetSubItem( 3 )->GetValue();
+		v.ChangeType( VT_INT, NULL );
+		int i = v.intVal;
+
+		if ( i < ( *g_ActiveFramesMap )[frameInfo->m_HitDatas[m_Index].m_FrameName].size() && i > -1 )
+		{
+			frameInfo->m_HitDatas[m_Index].m_FrameOffset = i;
+		}
+		else
+		{
+			char buff[100];
+			sprintf( buff, "Properties: Frame[%s][%d] does not exist", frameInfo->m_NextFrameName.c_str(), i );
+			CString str( buff );
+			AfxMessageBox( str );
+			( ( CMainFrame* )( this->GetParentFrame() ) )->AddStrToOutputBuild( str );
+		}
+	}
 }
 
 void CPropertiesWnd::RefreshPropList_CatchInfo( int index )
@@ -2115,13 +2217,10 @@ void CPropertiesWnd::RefreshPropList_BloodInfo( int index )
 
 void CPropertiesWnd::RefreshPropList_PictureData( int index )
 {
-	if ( m_EditProp != 8 )
-	{
-		InitPropList_PictureData();
-		m_EditProp = 8;
-		m_Index = index;
-	}
+	InitPropList_PictureData();
+	m_EditProp = 8;	
 
+	m_Index = index;
 	if (g_HeroInfo == NULL)
 	{
 		AfxMessageBox(_T("No Target"));
@@ -2259,13 +2358,14 @@ void CPropertiesWnd::Update()
 	case 2:
 		UpdatePropList_Frame();
 		break;
-
 	case 3:
 		UpdateBody();
 		break;
-
 	case 4:
 		UpdateAttack();
+		break;
+	case 5:
+		UpdateHitData();
 		break;
 	case 6:
 		UpdateCatch();
@@ -2325,6 +2425,9 @@ void CPropertiesWnd::RefreshCreationPoint(  )
 	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo->m_Creations[m_Index].x ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 1 ) )->SetValue( varFloat( -frameInfo->m_Creations[m_Index].y ) );
 }
+
+
+
 
 
 

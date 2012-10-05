@@ -24,3 +24,4 @@ extern HeroInfoMap g_HeroInfoMap;
 extern ObjectInfoMap g_ObjectInfoMap;
 
 extern LuaMap g_Actions;
+extern KeyMap g_KeyMap;	
