@@ -1,5 +1,6 @@
 #include "game\LuaMap.h"
 
+const KeyMap::_KeyMap KeyMap::noKey;
 
 LuaMap::LuaMap( LuaCell_Sptr lsptr, std::string tableName )
 {
@@ -274,4 +275,45 @@ char KeyMap::FindKeyUp( const std::wstring& name )
 	}
 
 	return ' ';
+}
+
+char KeyMap::FindKeyDown(char rup){
+	if(rup == up.keyUp)		return up.keyDown;
+	if(rup == down.keyUp)	return down.keyDown;
+	if(rup == left.keyUp)	return left.keyDown;
+	if(rup == right.keyUp)	return right.keyDown;
+	for(_KeyMaps::iterator i = SKeys.begin(); i != SKeys.end(); i ++ ){
+		if(i->keyUp == rup){
+			return i->keyDown;
+		}
+	}
+	
+	return 0;
+}
+
+char KeyMap::FindKeyUp(char rdown){
+	if(rdown == up.keyDown)		return up.keyUp;
+	if(rdown == down.keyDown)	return down.keyUp;
+	if(rdown == left.keyDown)	return left.keyUp;
+	if(rdown == right.keyDown)	return right.keyUp;
+	for(_KeyMaps::iterator i = SKeys.begin(); i != SKeys.end(); i ++ ){
+		if(i->keyDown == rdown){
+			return i->keyUp;
+		}
+	}
+	
+	return 0;
+}
+
+const KeyMap::_KeyMap& KeyMap::operator[](std::wstring rkn){
+	if(rkn.compare(L"Up") == 0) return up;
+	else if(rkn.compare(L"Down") == 0) return down;
+	else if(rkn.compare(L"Left") == 0) return left;
+	else if(rkn.compare(L"Right") == 0) return right;
+	else {
+		for(int i=0;i<SKeys.size();i++){
+			if(rkn.compare(SKeys[i].keyName) == 0) return SKeys[i];
+		}
+		return noKey;
+	}
 }

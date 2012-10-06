@@ -1409,35 +1409,14 @@ void InitDirect3DApp::TestGameSpeed()
 void InitDirect3DApp::InitPlayer()
 {
 	//player init
-	CtrlKeys key;
-	key.push_back( CtrlKey::UP );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_UP, key );
-	key.clear();
-	key.push_back( CtrlKey::DOWN );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_DOWN, key );
-	key.clear();
-	key.push_back( CtrlKey::RIGHT );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_RIGHT, key );
-	key.clear();
-	key.push_back( CtrlKey::LEFT );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_LEFT, key );
-	key.clear();
-	key.push_back( CtrlKey::DEF );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_Q, key );
-	key.clear();
-	key.push_back( CtrlKey::JUMP );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_W, key );
-	key.clear();
-	key.push_back( CtrlKey::ATK1 );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_E, key );
-	key.clear();
-	key.push_back( CtrlKey::ATK2 );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_R, key );
-	key.clear();
-	key.push_back( CtrlKey::DEF );
-	key.push_back( CtrlKey::UP );
-	key.push_back( CtrlKey::ATK1 );
-	m_Player.m_Keyboard.SetCtrlKey( KEY_T, key );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_UP, g_KeyMap.UpKey() );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_DOWN, g_KeyMap.DownKey() );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_RIGHT, g_KeyMap.RightKey() );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_LEFT, g_KeyMap.LeftKey() );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_Q, g_KeyMap[L"DEFEND"] );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_W, g_KeyMap[L"JUMP"] );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_E, g_KeyMap[L"ATTACK1"] );
+	m_Player.m_Keyboard.SetCtrlKey( KEY_R, g_KeyMap[L"ATTACK2"] );
 	m_Player.SetHero( L"Davis" );
 	m_Player.SetTeam( 0 );
 	m_Player.m_Hero = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) );

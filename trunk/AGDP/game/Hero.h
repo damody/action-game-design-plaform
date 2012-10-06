@@ -18,13 +18,6 @@
 #include <cstdlib>
 #include <bitset>
 
-#define KEYLIFE_AFTER_KEYUP 120
-#define WAIT_FOR_KEY_RUN 30
-#define FRICTION 0.5f
-#define G_ACCE g_BackgroundManager.GetCurrentBackground()->Gravity()
-#define SCALE 3.0f
-#define CONDITION_MAX 20
-
 namespace boost {namespace serialization {class access;}}
 
 struct Condition
