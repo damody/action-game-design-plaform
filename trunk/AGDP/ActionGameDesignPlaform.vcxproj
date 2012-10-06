@@ -85,8 +85,8 @@
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SDKs)luabind-0.9.1;$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;lib\;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SDKs)luabind-0.9.1;$(DXSDK_DIR)Samples\C++\Effects11\debug;lib\;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Release;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(SDKs)luabind-0.9.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\clibrary\luabind-0.9.1;$(SDKs)luabind-0.9.1;$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;lib\;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SDKs)luabind-0.9.1;$(DXSDK_DIR)Samples\C++\Effects11\debug;lib\;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Release;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(SDKs)luabind-0.9.1\lib;C:\clibrary\luabind-0.9.1\lib;$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SDKs)luabind-0.9.1;$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;lib\;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SDKs)luabind-0.9.1;$(DXSDK_DIR)Samples\C++\Effects11\debug;lib\;$(DXSDK_DIR)Lib\x86;$(DXSDK_DIR)Samples\C++\Effects11\Release;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(SDKs)luabind-0.9.1\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -275,6 +275,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="game\Replay.cpp" />
     <ClCompile Include="game\TestRenderEffect.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -457,6 +458,7 @@
     <ClInclude Include="game\Hero.h" />
     <ClInclude Include="game\Player.h" />
     <ClInclude Include="game\RenderTextureClass.h" />
+    <ClInclude Include="game\Replay.h" />
     <ClInclude Include="game\TestRenderEffect.h" />
     <ClInclude Include="game\TextString.h" />
     <ClInclude Include="game\Weapon.h" />
