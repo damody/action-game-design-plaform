@@ -1047,6 +1047,37 @@ void CPropertiesWnd::InitPropList_Actions()
 	m_wndPropList.ExpandAll();
 }
 
+void CPropertiesWnd::InitPropList_PrebuildFrame()
+{
+	m_EditProp = 9;
+	m_wndPropList.RemoveAll();
+	SetPropListFont();
+	m_wndPropList.EnableHeaderCtrl( FALSE );
+	m_wndPropList.EnableDescriptionArea();
+	m_wndPropList.SetVSDotNetLook();
+	m_wndPropList.MarkModifiedProperties();
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "預設影格" ) );
+	for (unsigned int i =0; i < m_Preframes.size(); i++)
+	{
+		CMFCPropertyGridProperty* pProp;
+		CMFCPropertyGridProperty* frameInfo = new CMFCPropertyGridProperty( varInt(i), 0, TRUE );
+		CMFCPropertyGridProperty* picture = new CMFCPropertyGridProperty( _T(" "), 0, TRUE );
+		pProp = new CMFCPropItem( &m_wndPropList, _T( "Picture" ), varInt(m_Preframes[i].m_PictureID), _T( "圖片ID" ) );
+		picture->AddSubItem(pProp);
+		pProp = new CMFCPropItem( &m_wndPropList, _T( "PictureX" ), varInt(m_Preframes[i].m_PictureX), _T( "圖片行位置" ) );
+		picture->AddSubItem(pProp);
+		pProp = new CMFCPropItem( &m_wndPropList, _T( "PictureY" ), varInt(m_Preframes[i].m_PictureY), _T( "圖片列位置" ) );
+		picture->AddSubItem(pProp);
+		picture->Expand(FALSE);
+		frameInfo->AddSubItem(picture);
+		pProp = new CMFCPropItem( &m_wndPropList, _T( "Wait" ), varInt(m_Preframes[i].m_Wait), _T( "影格等待時間" ) );
+		frameInfo->AddSubItem(pProp);
+		pPropMain->AddSubItem(frameInfo);
+	}
+	
+	m_wndPropList.AddProperty( pPropMain );
+}
+
 void CPropertiesWnd::AddNormalActionUcase( CMFCPropertyGridProperty* pProp )
 {
 	for (LuaMap::iterator it = g_Actions.begin(); it != g_Actions.end(); it++)
@@ -2425,6 +2456,21 @@ void CPropertiesWnd::RefreshCreationPoint(  )
 	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 0 ) )->SetValue( varFloat( frameInfo->m_Creations[m_Index].x ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 6 )->GetSubItem( 1 ) )->SetValue( varFloat( -frameInfo->m_Creations[m_Index].y ) );
 }
+
+void CPropertiesWnd::PreBuild( FrameInfo& fi )
+{
+	if (m_EditProp!=9){m_Preframes.clear();}
+	m_Preframes.push_back(fi);
+	InitPropList_PrebuildFrame();
+}
+
+
+
+
+
+
+
+
 
 
 

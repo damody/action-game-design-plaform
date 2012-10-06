@@ -26,7 +26,7 @@ private:
 	int   m_CutR;
 	int   m_CutC;
 public:
-	int m_PictureID;
+	int		m_PictureID;
 	HWND		m_hWndDX11;
 	D3DApp_Picture	m_D3DApp;
 
@@ -36,6 +36,7 @@ protected:
 	void InitDx11( HWND hWnd );
 private:
 	void Update( int x, int y );
+	void PreBuild( int x,int y);
 protected:
 	CD3DpictureView();           // 動態建立所使用的保護建構函式
 	virtual ~CD3DpictureView();

@@ -5,7 +5,7 @@
 #include "AGDP Designer.h"
 #include "D3DpictureView.h"
 #include "MainFrm.h"
-
+#include "game/FrameInfo.h"
 // CD3DpictureView
 
 
@@ -104,7 +104,13 @@ void CD3DpictureView::OnLButtonDown( UINT nFlags, CPoint point )
 	}
 	else
 	{
-		Update( point.x, point.y );
+		if (m_CtrlPress)
+		{
+			PreBuild(point.x,point.y);
+		}else{
+			Update( point.x, point.y );
+		}
+		
 	}
 
 	CView::OnLButtonDown( nFlags, point );
@@ -353,6 +359,32 @@ void CD3DpictureView::AssertValid() const
 void CD3DpictureView::Dump( CDumpContext& dc ) const
 {
 	CView::Dump( dc );
+}
+
+void CD3DpictureView::PreBuild( int x,int y )
+{
+	FrameInfo fi;
+	fi.m_FrameName = L"default";
+	fi.m_FrameIndex = 0;
+	fi.m_NextFrameName = L"default";
+	fi.m_NextFrameIndex = 0;
+	fi.m_HeroAction = 0;
+	fi.m_Wait = 1;
+	fi.m_ClearKeyQueue = false;
+	fi.m_PictureID = m_PictureID;
+	fi.m_CenterX = 0.0f;
+	fi.m_CenterY = 0.0f;
+	fi.m_PictureX = x;
+	fi.m_PictureY = y;
+	fi.m_Consume.m_JumpRule = 0;
+	fi.m_Consume.m_HP = 0;
+	fi.m_Consume.m_MP = 0;
+	fi.m_Consume.m_NotEnoughFrameName = L"default";
+	fi.m_Consume.m_NotEnoughFrame = 0;
+	fi.m_DVX = 0.0f;
+	fi.m_DVY = 0.0f;
+	fi.m_DVZ = 0.0f;
+	( ( CMainFrame* )( this->GetParent()->GetParent()->GetParent()->GetParentFrame() ) )->m_wndProperties.PreBuild(fi);
 }
 
 #endif

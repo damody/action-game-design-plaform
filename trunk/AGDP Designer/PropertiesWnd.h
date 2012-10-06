@@ -13,8 +13,7 @@
 #include "Resource.h"
 #include "Edit/CommandManager.h"
 #include "Edit/CommandLambda.h"
-
-#define MAX_ACTIONS 52
+#include "game/FrameInfo.h"
 
 class CPropertiesToolBar : public CMFCToolBar
 {
@@ -79,8 +78,9 @@ public:
 class CPropertiesWnd : public CDockablePane
 {
 private:
-	int m_EditProp;// 0-None 1-Basic 2-Frame 3-Bodys 4-Attack 5-Hit 6-Catch 7-Creation 8-PictureData
+	int m_EditProp;// 0-None 1-Basic 2-Frame 3-Bodys 4-Attack 5-Hit 6-Catch 7-Creation 8-PictureData 9-Prebuild Frame
 	int m_Index;
+	FrameInfos m_Preframes;
 	CommandManager m_CommandManager;
 // «Øºc
 public:
@@ -151,6 +151,7 @@ public:
 	void InitPropList_Creation();
 	void InitPropList_PictureData();
 	void InitPropList_Actions();
+	void InitPropList_PrebuildFrame();
 
 	void RefreshPropList();
 	void RefreshPropList_Frame();
@@ -166,6 +167,7 @@ public:
 	void RefreshPropList_BloodInfo( int index );
 	void RefreshPropList_Creation( int index );
 	void RefreshPropList_PictureData( int index );
+	
 
 	void SetPropListFont();
 	static void AddNormalActionUcase( CMFCPropertyGridProperty* pProp );
@@ -177,6 +179,8 @@ public:
 	void RefreshAttackPoint( int i );
 	void RefreshCatchPoint( int i );
 	void RefreshCreationPoint(  );
+
+	void PreBuild(FrameInfo& fi);
 public:
 	void Update();
 	void UpdatePropList_Frame();
