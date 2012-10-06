@@ -27,6 +27,7 @@ public:
 	};
 	typedef std::vector<_KeyMap> _KeyMaps;
 
+
 	KeyMap(char upKeyDown, char upKeyUp, char downKeyDown, char downKeyUp, char leftKeyDown, char leftKeyUp, char rightKeyDown, char rightKeyUp)
 		:up( upKeyDown, upKeyUp, L"Up" ), down(downKeyDown, downKeyUp, L"Down"), left(leftKeyDown, leftKeyUp, L"Left"), right(rightKeyDown, rightKeyUp, L"Right")
 	{}
@@ -35,6 +36,13 @@ public:
 	bool isKeyUp(char);
 	bool isKeyExist(char);
 	size_t sKeySize();
+	char FindKeyDown(const std::wstring& name);
+	char FindKeyUp(const std::wstring& name);
+	const _KeyMaps& SKeyMap(){return SKeys; }
+	const _KeyMap& UpKey(){return up;}
+	const _KeyMap& DownKey(){return down;}
+	const _KeyMap& RightKey(){return right;}
+	const _KeyMap& LeftKey(){return left;}
 	std::wstring keyName(char);
 private:
 	_KeyMaps SKeys;

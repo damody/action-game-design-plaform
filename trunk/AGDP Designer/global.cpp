@@ -16,3 +16,4 @@ HeroInfoMap g_HeroInfoMap;
 ObjectInfoMap g_ObjectInfoMap;
 
 LuaMap g_Actions;
+KeyMap g_KeyMap('^','8','v','2','<','4','>','6');;
