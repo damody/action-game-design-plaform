@@ -9,6 +9,7 @@
 #include <game/Creation.h>
 #include "DX11/TextureManager.h"
 #include "PointManager.h"
+#include "game\FrameInfo.h"
 
 //人物的身體選取應該要有魔術棒之類的功能
 class D3DApp_Frame
@@ -20,7 +21,8 @@ public:
 	Cross m_Center;
 	Creations m_Creation;
 	Crosses m_CreationPos;
-
+	
+	bool	      m_IsPlaying;
 	TextureManager& GetTextureManager()
 	{ return *m_TextureManager;}
 private:
@@ -28,8 +30,11 @@ private:
 	PictureData*  m_Pic;
 	float         m_picX, m_picY;
 	Texture*      m_Templete;
-	
+
 	bool	      m_ShowCross;
+
+	FrameInfo*   m_PlayingFrame;
+	
 public:
 	D3DApp_Frame();
 	~D3DApp_Frame();
@@ -48,6 +53,8 @@ public:
 	void SetPic( PictureData*  pic, float x, float y );
 	void SwitchShowCrossOn();
 	void SwitchShowCrossOff();
+	void PlayFrame(FrameInfo &frame);
+	void StopPlayFrame();
 	ID3D11Device* GetDevice()
 	{
 		return m_d3dDevice;

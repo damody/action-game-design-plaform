@@ -1,4 +1,4 @@
-function protect_table (tbl)
+﻿function protect_table (tbl)
   return setmetatable ({},
     {
     __index = tbl,  -- read access gets original table item

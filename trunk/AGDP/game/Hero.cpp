@@ -21,6 +21,13 @@
 #include "math/Quaternion.h"
 #include "global.h"
 
+#define KEYLIFE_AFTER_KEYUP 60
+#define WAIT_FOR_KEY_RUN 30
+#define FRICTION 0.5f
+#define G_ACCE g_BackgroundManager.GetCurrentBackground()->Gravity()
+#define SCALE 3.0f
+#define CONDITION_MAX 20
+
 Hero::Hero() {}
 
 Hero::Hero( std::wstring h ):
@@ -87,10 +94,9 @@ void Hero::Update( float dt )
 	bool inAir = false;
 
 	//reAttack
-	if(m_AtkRest.a != NULL){
+	if(m_AtkRest.d != NULL){
 		m_AtkRest.t --;
 		if(m_AtkRest.t == 0){
-			m_AtkRest.a = NULL;
 			m_AtkRest.d = NULL;
 		}
 	}
@@ -302,10 +308,10 @@ NextLoop:
 
 	while ( i != m_KeyQue.end() )
 	{
-		if ( i->key == CtrlKey::LEFT ) { dx = -1;}
-		else if ( i->key == CtrlKey::RIGHT ) { dx = +1;}
-		else if ( i->key == CtrlKey::UP ) { dz = +1;}
-		else if ( i->key == CtrlKey::DOWN ) { dz = -1;}
+		if ( i->key == g_KeyMap.LeftKey().keyDown ) { dx = -1;}
+		else if ( i->key == g_KeyMap.RightKey().keyDown ) { dx = +1;}
+		else if ( i->key == g_KeyMap.UpKey().keyDown ) { dz = +1;}
+		else if ( i->key == g_KeyMap.DownKey().keyDown ) { dz = -1;}
 
 		i++;
 	}
@@ -404,10 +410,10 @@ bool Hero::ScanKeyQue()
 
 	while ( i != m_KeyQue.end() )
 	{
-		if ( i->key == CtrlKey::LEFT ) { dx = -1; }
-		else if ( i->key == CtrlKey::RIGHT ) { dx = +1; }
-		else if ( i->key == CtrlKey::UP ) { dz = +1; }
-		else if ( i->key == CtrlKey::DOWN ) { dz = -1; }
+		if ( i->key == g_KeyMap.LeftKey().keyDown ) { dx = -1;}
+		else if ( i->key == g_KeyMap.RightKey().keyDown ) { dx = +1;}
+		else if ( i->key == g_KeyMap.UpKey().keyDown ) { dz = +1;}
+		else if ( i->key == g_KeyMap.DownKey().keyDown ) { dz = -1;}
 
 		i++;
 	}
@@ -595,7 +601,7 @@ bool Hero::ScanKeyQue()
 		{
 			return false;
 		}
-		else if ( m_KeyQue.back().key == CtrlKey::JUMP && !d_key[2] && m_Frame.compare( L"crouch" ) == 0 )
+		else if ( m_KeyQue.back().key == g_KeyMap.FindKeyDown(L"JUMP") && !isKeyUsed(m_KeyQue.back().key) && m_Frame.compare( L"crouch" ) == 0 )
 		{
 			d_key[2] = true;
 
@@ -639,247 +645,63 @@ bool Hero::ScanKeyQue()
 
 		for ( unsigned int i = 0; i < hit.size(); i++ )
 		{
-			KeyQueue::reverse_iterator riKey = m_KeyQue.rbegin();
-			const char* pHit = hit[i].m_KeyQueue.c_str(), *rHit = pHit;
+			KeyQueue::reverse_iterator riKey = m_KeyQue.rbegin();		//倒著走 keyQue
+			const char* pHit = hit[i].m_KeyQueue.c_str(), *rHit = pHit;	//pHit = hit 頭，rHit 倒著走 hit
 			bool flag = true;
 
 			//char *rHit = pHit[0];
 			while ( *rHit != 0 ) { rHit ++; }
 
-			int nKey = rHit - pHit;
+			int nKey = rHit - pHit, hoKeyUpT = -1;			//hoKeyUpT: 前一個 KeyUp 時間
 			rHit--;
 
 			if ( nKey == 1 && g_KeyMap.isSKey( *rHit ) && isKeyUsed( *rHit ) ) { continue;}
 
 			while ( riKey != m_KeyQue.rend() && rHit + 1 != pHit && flag )
 			{
-				//*old
-				KeyQueue::reverse_iterator ho, ch;
-
-				switch ( *rHit )
-				{
-					case '^':
-						if ( riKey->key != CtrlKey::UP && riKey->key != CtrlKey::UP_KEYUP )
-						{
-							flag = false;
-						}
-
+				if(g_KeyMap.isKeyUp(*rHit)){
+					char rhd = g_KeyMap.FindKeyDown(*rHit);
+					if( rhd == 0){
+						wprintf(L"錯誤：hit 使用了不存在的按鍵\n");
+						wprintf(L"frame: %s, frameID: %d, ", m_Frame, m_FrameID);
+						printf("hit: %s\n", pHit);
+						system("pause");
+						flag = false;
 						break;
+					}
+					if(riKey == m_KeyQue.rbegin()){
+						KeyQueue::reverse_iterator ch;
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != rhd; ch++);
 
-					case 'v':
-						if ( riKey->key != CtrlKey::DOWN && riKey->key != CtrlKey::DOWN_KEYUP )
-						{
-							flag = false;
-						}
+						if( ch == m_KeyQue.rend() || ch->key != rhd){ flag = false; }
+						else { hoKeyUpT = ch->timeUp;}
+					}
+					else{
+						KeyQueue::reverse_iterator ch, ho = riKey - 1;
+						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != rhd; ch++);
 
+						if( ch == m_KeyQue.rend() || ch->key != rhd ||
+							(g_KeyMap.isKeyUp(rHit[1]) ? ch->timeUp > hoKeyUpT : ch->timeUp > ho->timeUp ) ) 
+						{ flag = false; }
+						else { hoKeyUpT = ch->timeUp;}
+					}
+				}
+				else{
+					char rhu = g_KeyMap.FindKeyUp(*rHit);
+					if( rhu == 0){
+						wprintf(L"錯誤：hit 使用了不存在的按鍵\n");
+						wprintf(L"frame: %s, frameID: %d, ", m_Frame, m_FrameID);
+						printf("hit: %s\n", pHit);
+						system("pause");
+						flag = false;
 						break;
-
-						/*case '<':
-							if(riKey->key != CtrlKey::LEFT && riKey->key != CtrlKey::LEFT_KEYUP){
-								flag = false;
-							}
-							break;//*/
-					case '>':
-						if ( riKey->key == CtrlKey::RIGHT || riKey->key == CtrlKey::RIGHT_KEYUP )
-						{
-							cface = 1;
-						}
-						else if ( riKey->key == CtrlKey::LEFT || riKey->key == CtrlKey::LEFT_KEYUP )
-						{
-							cface = -1;
-						}
-						else
-						{
-							flag = false;
-						}
-
-						break;
-
-					case 'A':
-						if ( riKey->key != CtrlKey::ATK1 && riKey->key != CtrlKey::ATK1_KEYUP )
-						{
-							flag = false;
-						}
-
-						break;
-
-					case 'B':
-						if ( riKey->key != CtrlKey::ATK2 && riKey->key != CtrlKey::ATK2_KEYUP )
-						{
-							flag = false;
-						}
-
-						break;
-
-					case 'J':
-						if ( riKey->key != CtrlKey::JUMP && riKey->key != CtrlKey::JUMP_KEYUP )
-						{
-							flag = false;
-						}
-
-						break;
-
-					case 'D':
-						if ( riKey->key != CtrlKey::DEF && riKey->key != CtrlKey::DEF_KEYUP )
-						{
-							flag = false;
-						}
-
-						break;
-
-					case '8':	//UP_KEYUP
-						if ( riKey == m_KeyQue.rbegin() )
-						{
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::UP_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::UP_KEYUP )
-							{
-								flag = false;
-							}
-						}
-						else
-						{
-							ho = riKey - 1;
-
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::UP_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::UP_KEYUP ||
-							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-							{	flag = false;	}
-						}
-
-						break;
-
-					case '2':	//DOWN_KEYUP
-						if ( riKey == m_KeyQue.rbegin() )
-						{
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DOWN_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DOWN_KEYUP )
-							{
-								flag = false;
-							}
-						}
-						else
-						{
-							ho = riKey - 1;
-
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DOWN_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DOWN_KEYUP ||
-							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-							{	flag = false;	}
-						}
-
-						break;
-
-					case '6':	//RIGHT_KEYUP
-						if ( riKey == m_KeyQue.rbegin() )
-						{
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ( ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP ) )
-							{	flag = false;	}
-						}
-						else
-						{
-							ho = riKey - 1;
-
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ( ch->key != CtrlKey::RIGHT_KEYUP && ch->key != CtrlKey::LEFT_KEYUP ) ||
-							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-							{	flag = false;	}
-						}
-
-						break;
-
-					case 'a':
-						if ( riKey == m_KeyQue.rbegin() )
-						{
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK1_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK1_KEYUP )
-							{	flag = false;	}
-						}
-						else
-						{
-							ho = riKey - 1;
-
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK1_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK1_KEYUP ||
-							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-							{	flag = false;	}
-						}
-
-						break;
-
-					case 'b':
-						if ( riKey == m_KeyQue.rbegin() )
-						{
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK2_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK2_KEYUP )
-							{	flag = false;	}
-						}
-						else
-						{
-							ho = riKey - 1;
-
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::ATK2_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::ATK2_KEYUP ||
-							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-							{	flag = false;	}
-						}
-
-						break;
-
-					case 'j':
-						if ( riKey == m_KeyQue.rbegin() )
-						{
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::JUMP_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::JUMP_KEYUP )
-							{	flag = false;	}
-						}
-						else
-						{
-							ho = riKey - 1;
-
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::JUMP_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::JUMP_KEYUP ||
-							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-							{	flag = false;	}
-						}
-
-						break;
-
-					case 'd':
-						if ( riKey == m_KeyQue.rbegin() )
-						{
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DEF_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DEF_KEYUP )
-							{	flag = false;	}
-						}
-						else
-						{
-							ho = riKey - 1;
-
-							for ( ch = riKey; ch != m_KeyQue.rend() && ch->key != CtrlKey::DEF_KEYUP; ch++ );
-
-							if ( ch == m_KeyQue.rend() || ch->key != CtrlKey::DEF_KEYUP ||
-							                ( ( g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->timeUp ) || ( !g_KeyMap.isKeyUp( rHit[1] ) && ch->timeUp > ho->time ) ) )
-							{	flag = false;	}
-						}
-
-						break;
+					}
+					if(*rHit != riKey->key && rhu != riKey->key){
+						flag = false;
+					}
+					riKey ++;
 				}
 
-				riKey ++;
 				rHit --;
 			}
 
@@ -904,18 +726,17 @@ bool Hero::ScanKeyQue()
 
 	//清理佇列
 	i = m_KeyQue.begin();
-
+	printf("keymap: ");
 	while ( i != m_KeyQue.end() )
 	{
-		/*  i->key > CtrlKey::ATK2 ：特殊按鍵放開事件要處理
-		 *  i->key >=CtrlKey::DEF  ：特殊按鍵放開事件不處理 */
-		if ( i->key >= CtrlKey::ATK2 && g_Time - i->time > KEYLIFE_AFTER_KEYUP )
+		printf("%c, %d, %d\t",i->key,i->time,i->timeUp);
+		if ( g_KeyMap.isKeyUp(i->key) && g_Time - i->timeUp > KEYLIFE_AFTER_KEYUP )
 		{
 			i = m_KeyQue.erase( i );
 		}
 		else { i++; }
 	}
-
+	putchar('\n');
 	//下個影格
 	if ( nFrame.empty() )
 	{
@@ -1087,187 +908,63 @@ void Hero::SetRecord( Record_Sptr r ) { m_Record = r; }
 
 void Hero::PushKey( KeyInfo& k )
 {
-	KeyQueue::iterator i;
+	if(g_KeyMap.isKeyUp(k.key)){
+		char kdn = g_KeyMap.FindKeyDown(k.key);
+		if(kdn != 0){
+			KeyQueue::iterator i;
+			for(i = m_KeyQue.begin(); i != m_KeyQue.end(); i++){
+				if(kdn == i->key){
+					i->key = k.key;
+					i->timeUp = k.time;
 
-	/*if(k.key >= CtrlKey::DEF_KEYUP){
-		//忽略特殊按鍵放開事件
-		return;
-	}
-	//*特殊按鍵放開*/
-	if ( k.key == CtrlKey::ATK1_KEYUP )
-	{
-		//printf("ATK1_KEYUP\n");
-		for ( i = m_KeyQue.begin(); i != m_KeyQue.end(); i++ )
-		{
-			if ( i->key == CtrlKey::ATK1 )
-			{
-				i->key = k.key;
-				i->timeUp = k.time;
-				break;
-			}
-		}
-	}
-	else if ( k.key == CtrlKey::ATK2_KEYUP )
-	{
-		//printf("ATK2_KEYUP\n");
-		for ( i = m_KeyQue.begin(); i != m_KeyQue.end(); i++ )
-		{
-			if ( i->key == CtrlKey::ATK2 )
-			{
-				i->key = k.key;
-				i->timeUp = k.time;
-				break;
-			}
-		}
-	}
-	else if ( k.key == CtrlKey::DEF_KEYUP )
-	{
-		//printf("DEF_KEYUP\n");
-		for ( i = m_KeyQue.begin(); i != m_KeyQue.end(); i++ )
-		{
-			if ( i->key == CtrlKey::DEF )
-			{
-				i->key = k.key;
-				i->timeUp = k.time;
-				break;
-			}
-		}
-	}
-	else if ( k.key == CtrlKey::JUMP_KEYUP )
-	{
-		//printf("JUMP_KEYUP\n");
-		for ( i = m_KeyQue.begin(); i != m_KeyQue.end(); i++ )
-		{
-			if ( i->key == CtrlKey::JUMP )
-			{
-				i->key = k.key;
-				i->timeUp = k.time;
-				break;
-			}
-		}
-	}//特殊按鍵放開*/
-	else if ( k.key == CtrlKey::LEFT_KEYUP )
-	{
-		//printf("LEFT_KEYUP\n");
-		for ( i = m_KeyQue.begin(); i != m_KeyQue.end(); i++ )
-		{
-			if ( i->key == CtrlKey::LEFT )
-			{
-				d_run = -i->time;
-				i->key = k.key;
-				i->timeUp = k.time;
-				break;
-			}
-		}
-	}
-	else if ( k.key == CtrlKey::RIGHT_KEYUP )
-	{
-		//printf("RIGHT_KEYUP\n");
-		for ( i = m_KeyQue.begin(); i != m_KeyQue.end(); i++ )
-		{
-			if ( i->key == CtrlKey::RIGHT )
-			{
-				d_run = i->time;
-				i->key = k.key;
-				i->timeUp = k.time;
-				break;
-			}
-		}
-	}
-	else if ( k.key == CtrlKey::UP_KEYUP )
-	{
-		//printf("UP_KEYUP\n");
-		for ( i = m_KeyQue.begin(); i != m_KeyQue.end(); i++ )
-		{
-			if ( i->key == CtrlKey::UP )
-			{
-				i->key = k.key;
-				i->timeUp = k.time;
-				break;
-			}
-		}
-	}
-	else if ( k.key == CtrlKey::DOWN_KEYUP )
-	{
-		//printf("DOWN_KEYUP\n");
-		for ( i = m_KeyQue.begin(); i != m_KeyQue.end(); i++ )
-		{
-			if ( i->key == CtrlKey::DOWN )
-			{
-				i->key = k.key;
-				i->timeUp = k.time;
-				break;
-			}
-		}
-	}
-	else
-	{
-		m_KeyQue.push_back( k );
-
-		//若非方向鍵，將判斷非方向鍵之值歸零
-		if ( k.key == CtrlKey::ATK1 )
-		{
-			d_key[0] = false;
-		}
-		else if ( k.key == CtrlKey::ATK2 )
-		{
-			d_key[1] = false;
-		}
-		else if ( k.key == CtrlKey::JUMP )
-		{
-			d_key[2] = false;
-		}
-		else if ( k.key == CtrlKey::DEF )
-		{
-			d_key[3] = false;
-		}
-		//若是方向鍵，將與其相反方向的按鍵事件取消
-		else if ( k.key == CtrlKey::UP )
-		{
-			for ( i = m_KeyQue.begin(); i != m_KeyQue.end(); i++ )
-			{
-				if ( i->key == CtrlKey::DOWN )
-				{
-					m_KeyQue.erase( i );
+					if(k.key == g_KeyMap.LeftKey().keyUp) d_run = -i->time;
+					else if(k.key == g_KeyMap.RightKey().keyUp) d_run = i->time;
 					break;
 				}
 			}
 		}
-		else if ( k.key == CtrlKey::DOWN )
-		{
-			for ( i = m_KeyQue.begin(); i != m_KeyQue.end(); i++ )
-			{
-				if ( i->key == CtrlKey::UP )
-				{
-					m_KeyQue.erase( i );
+		else{
+			printf("收到不存在的按鍵 %c\n", k.key);
+		}
+	}
+	else{
+		m_KeyQue.push_back(k);
+		
+		if(g_KeyMap.isSKey(k.key)){
+			newKey(k.key);
+		}
+		else if( k.key == g_KeyMap.UpKey().keyDown){
+			for(KeyQueue::iterator i = m_KeyQue.begin(); i!= m_KeyQue.end(); i++){
+				if(i->key == g_KeyMap.DownKey().keyDown){
+					m_KeyQue.erase(i);
 					break;
 				}
 			}
 		}
-		else if ( k.key == CtrlKey::LEFT )
-		{
-			for ( i = m_KeyQue.begin(); i != m_KeyQue.end(); i++ )
-			{
-				if ( i->key == CtrlKey::RIGHT )
-				{
-					m_KeyQue.erase( i );
+		else if( k.key == g_KeyMap.DownKey().keyDown){
+			for(KeyQueue::iterator i = m_KeyQue.begin(); i!= m_KeyQue.end(); i++){
+				if(i->key == g_KeyMap.UpKey().keyDown){
+					m_KeyQue.erase(i);
 					break;
 				}
 			}
 		}
-		else if ( k.key == CtrlKey::RIGHT )
-		{
-			for ( i = m_KeyQue.begin(); i != m_KeyQue.end(); i++ )
-			{
-				if ( i->key == CtrlKey::LEFT )
-				{
-					m_KeyQue.erase( i );
+		else if( k.key == g_KeyMap.LeftKey().keyDown){
+			for(KeyQueue::iterator i = m_KeyQue.begin(); i!= m_KeyQue.end(); i++){
+				if(i->key == g_KeyMap.RightKey().keyDown){
+					m_KeyQue.erase(i);
 					break;
 				}
 			}
 		}
-
-		//*/
+		else if( k.key == g_KeyMap.RightKey().keyDown){
+			for(KeyQueue::iterator i = m_KeyQue.begin(); i!= m_KeyQue.end(); i++){
+				if(i->key == g_KeyMap.LeftKey().keyDown){
+					m_KeyQue.erase(i);
+					break;
+				}
+			}
+		}
 	}
 }
 
@@ -1312,7 +1009,7 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 	if ( rAtk->m_Kind == 0 ) 				//普通攻擊形式，套用 effect 擊中特效
 	{
 		if ( rHero->m_Team == m_Team || 		//普通形式的攻擊對同隊無效
-			(rAtk == m_AtkRest.a && rHero == m_AtkRest.d) )			//重複擊中免疫時間
+			 rHero == m_AtkRest.d )			//重複擊中免疫時間
 		{	return;	}
 
 		m_Vel.x += rAtk->m_DVX * ( rFace ? 1.0f : -1.0f );
@@ -1380,7 +1077,6 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 		}
 		wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
 		//設定 reAttackRest
-		m_AtkRest.a = rAtk;
 		m_AtkRest.d = rHero;
 		m_AtkRest.t = rAtk->m_ReAttackRest;
 		//切換 Frame

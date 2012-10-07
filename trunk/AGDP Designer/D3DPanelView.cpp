@@ -16,7 +16,7 @@
 IMPLEMENT_DYNAMIC( CD3DPanelView, CDockablePane )
 
 CD3DPanelView::CD3DPanelView( CWnd* pParent /*=NULL*/ ): m_TrackMouse( true ), m_LMouseHold( false ), m_MMouseHold( false ), m_CtrlPress( false ), m_KeyAPress( false ), m_EnableCtrlCenter( false ), m_ShiftPress( false ),
-	m_RecordX( 0 ), m_RecordY( 0 ), m_BodyID( -1 ), m_AttackID( -1 ), m_CatchID( -1 ), m_FrameInfo( NULL ), m_PointIndex( -1 ),m_CreationID(-1)
+	m_RecordX( 0 ), m_RecordY( 0 ), m_BodyID( -1 ), m_AttackID( -1 ), m_CatchID( -1 ), m_FrameInfo( NULL ), m_PointIndex( -1 ),m_CreationID(-1),m_TimeTik(0),m_Timer(-1)
 {
 	this->Init();
 }
@@ -45,6 +45,7 @@ BEGIN_MESSAGE_MAP( CD3DPanelView, CDockablePane )
 	ON_WM_MOUSELEAVE()
 	ON_COMMAND( IDC_BUTTON_POINTADD, &CD3DPanelView::OnButtonPointAdd )
 	ON_COMMAND( IDC_BUTTON_POINTSUB, &CD3DPanelView::OnButtonPointSub )
+	ON_COMMAND(ID_PLAYFRAME_BUTTON, &CD3DPanelView::OnPlayframeButton)
 END_MESSAGE_MAP()
 
 
@@ -1260,8 +1261,7 @@ void CD3DPanelView::EditCreation( int id )
 	m_CreationID = id;
 	m_D3DApp.m_CreationPos[m_CreationID].SetColor(0,0,0);
 	m_D3DApp.buildPoint();
-	m_D3DApp.DrawScene();
-	
+	m_D3DApp.DrawScene();	
 }
 
 void CD3DPanelView::UpdateCreationPos( float x, float y )
@@ -1275,4 +1275,43 @@ void CD3DPanelView::UpdateCreationPos( float x, float y )
 	m_D3DApp.buildPoint();
 	m_D3DApp.DrawScene();
 	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshCreationPoint();
+}
+
+void CD3DPanelView::RefreshCreation()
+{
+	if (m_FrameInfo==NULL){return;}
+	m_D3DApp.SetCreation( m_FrameInfo->m_Creations );
+	m_D3DApp.m_CreationPos[m_CreationID].SetPosition(m_FrameInfo->m_Creations[m_CreationID].x,-m_FrameInfo->m_Creations[m_CreationID].y);
+	m_D3DApp.buildPoint();
+	m_D3DApp.DrawScene();
+}
+
+void CD3DPanelView::OnPlayframeButton()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	if(g_ActiveFramesMap==NULL)return;
+
+	FramesMap::iterator it = g_ActiveFramesMap->find(g_FrameName);
+
+	if(it == g_ActiveFramesMap->end())return;
+	if(g_FrameIndex < 0 || g_FrameIndex >= it->second.size())return;
+
+	m_FrameInfo = &it->second[g_FrameIndex];
+	m_TimeTik = m_FrameInfo->m_Wait;
+	m_D3DApp.PlayFrame(*m_FrameInfo);
+}
+
+void CD3DPanelView::NextFrame()
+{
+	if(!m_D3DApp.m_IsPlaying)return;
+
+	if(m_TimeTik > 0)
+	{
+		m_TimeTik--;
+	}else
+	{
+		m_FrameInfo = &(*g_ActiveFramesMap)[m_FrameInfo->m_NextFrameName][m_FrameInfo->m_NextFrameIndex];
+		m_TimeTik = m_FrameInfo->m_Wait;
+		m_D3DApp.PlayFrame(*m_FrameInfo);
+	}
 }

@@ -1,7 +1,8 @@
-loadpackage = 0;
+﻿loadpackage = 0;
 
 hero = {
 "Script\\Hero\\davis.lua",
+--"Script\\Hero\\行涅.lua",
 }
 
 

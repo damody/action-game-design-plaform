@@ -2,25 +2,20 @@
 #include <deque>
 #include <vector>
 #include<map>
+#include "game/LuaMap.h"
 
-#define KEYUP 8
 namespace boost {namespace serialization {class access;}}
-struct CtrlKey
-{
-	enum v
-	{
-	        UP, DOWN, RIGHT, LEFT, DEF, JUMP, ATK1, ATK2,
-	        UP_KEYUP, DOWN_KEYUP, RIGHT_KEYUP, LEFT_KEYUP, DEF_KEYUP, JUMP_KEYUP, ATK1_KEYUP, ATK2_KEYUP //Key Up
-	};
-};
-typedef std::vector<CtrlKey::v> CtrlKeys;
-typedef std::map<int, CtrlKeys>	CtrlKeyMap;
+
+typedef std::vector<char> CtrlKeys;
+typedef std::map<int, KeyMap::_KeyMap>	CtrlKeyMap;
 
 struct KeyInfo
 {
-	CtrlKey::v key;
+	char key;
 	int time;
 	int timeUp;
+
+	//KeyInfo():key(0),time(0),timeUp(0) {}
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -44,7 +39,7 @@ public:
 	~Keyboard() {};
 
 	KeyQueue Update();
-	void SetCtrlKey( int index, CtrlKeys keys );
+	void SetCtrlKey( int index, const KeyMap::_KeyMap& key );
 };
 
 

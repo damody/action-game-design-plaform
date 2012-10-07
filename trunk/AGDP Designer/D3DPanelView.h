@@ -8,6 +8,8 @@ class CD3DPanelView : public CDockablePane
 {
 	DECLARE_DYNAMIC( CD3DPanelView )
 private:
+	int  m_Timer;
+	int  m_TimeTik;
 	bool m_TrackMouse;
 	bool m_LMouseHold;
 	bool m_MMouseHold;
@@ -42,7 +44,10 @@ public:
 	void EditableCenter();
 	void EditCenter( float x, float y );
 	void EditCreation( int id );
+	void RefreshCreation();
 	void SetPic( PictureData*  pic, float x, float y );
+
+	void NextFrame();
 private:
 	void InitEdit();
 	void StopEdit();
@@ -91,6 +96,7 @@ public:
 	afx_msg void OnMouseLeave();
 	afx_msg void OnButtonPointAdd();
 	afx_msg void OnButtonPointSub();
+	afx_msg void OnPlayframeButton();
 };
 
 
