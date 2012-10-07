@@ -225,7 +225,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="game\CollisionFunction.cpp" />
+    <ClCompile Include="game\CollisionFunction.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="game\Condition.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="game\CtrlKey.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -447,6 +454,7 @@
     <ClInclude Include="game\Chee.h" />
     <ClInclude Include="game\CollisionFunction.h" />
     <ClInclude Include="game\ColorRect.h" />
+    <ClInclude Include="game\Condition.h" />
     <ClInclude Include="game\CtrlKey.h" />
     <ClInclude Include="game\Effect.h" />
     <ClInclude Include="game\EffectShaderClass.h" />

@@ -1471,7 +1471,7 @@ bool Hero::AddCondition( int effectIndex , int time )
 		std::cout<<"Condition Full"<<std::endl;
 		return false;
 	}
-	/*update time is 1/60*/
+	/* update time is 1/60 */
 	Condition temp = {effectIndex,time*60};
 	m_Conditions.push_back(temp);
 	return true;

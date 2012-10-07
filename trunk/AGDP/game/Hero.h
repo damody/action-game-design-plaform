@@ -13,6 +13,7 @@
 #include "game\HeroInfo.h"
 #include "game\Record.h"
 #include "Lua/LuaCell.h"
+#include "game/Condition.h"
 #include <string>
 #include <cmath>
 #include <cstdlib>
@@ -20,12 +21,6 @@
 
 namespace boost {namespace serialization {class access;}}
 
-struct Condition
-{
-	int m_effectIndex;
-	int m_time;//ex:2¬í´N¬O2*60
-};
-typedef std::vector <Condition> Conditions;
 
 class Hero
 {

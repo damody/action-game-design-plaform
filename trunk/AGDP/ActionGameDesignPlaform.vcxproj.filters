@@ -179,6 +179,9 @@
     <ClCompile Include="game\Replay.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="game\Condition.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -347,6 +350,9 @@
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\Replay.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Condition.h">
       <Filter>inc\game</Filter>
     </ClInclude>
   </ItemGroup>
