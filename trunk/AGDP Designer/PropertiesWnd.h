@@ -14,6 +14,7 @@
 #include "Edit/CommandManager.h"
 #include "Edit/CommandLambda.h"
 #include "game/FrameInfo.h"
+#include <functional>
 
 class CPropertiesToolBar : public CMFCToolBar
 {
@@ -29,11 +30,11 @@ public:
 class CMFCPropertyGridPropertyButton : public CMFCPropertyGridProperty
 {
 private:
+	std::function<void(void)> m_Func;
 	CBrush m_Brush;
 	CString m_Text;
 	CMFCPropertyGridCtrl* m_MotherGrid;
 public:
-	int	m_Count;
 	CMFCPropertyGridPropertyButton( CMFCPropertyGridCtrl* grid, const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData );
 	virtual ~CMFCPropertyGridPropertyButton() {}
 	DECLARE_DYNAMIC( CMFCPropertyGridPropertyButton )
@@ -48,7 +49,7 @@ public:
 		pDC->TextOut( rect.left + 2, rect.top + 2, m_Text );
 	}
 	void OnClickName( CPoint point );
-
+	void SetFunction(void (*func)());
 };
 
 class CMFCPropItem : public CMFCPropertyGridProperty

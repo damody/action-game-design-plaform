@@ -31,7 +31,7 @@ CMFCPropertyGridPropertyButton::CMFCPropertyGridPropertyButton( CMFCPropertyGrid
                 const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData )
 	: CMFCPropertyGridProperty( strName, data, lpszDescr, dwData )
 {
-	m_Count = 3;
+	m_Func = [](){};
 	m_MotherGrid = grid;
 	m_Text = strName;
 	AllowEdit( false );
@@ -39,31 +39,14 @@ CMFCPropertyGridPropertyButton::CMFCPropertyGridPropertyButton( CMFCPropertyGrid
 
 void CMFCPropertyGridPropertyButton::OnClickName( CPoint point )
 {
-	CString _name = this->GetName();
-
-	if ( !_name.Compare( CString( "Add point" ) ) )
-	{
-		wchar_t tbuffer[10];
-		wsprintf( tbuffer, L"%d", m_Count++ );
-		CMFCPropertyGridProperty* pProp1 = new CMFCPropertyGridProperty( tbuffer, 0, TRUE );
-		CMFCPropertyGridProperty* pProp;
-		this->GetParent()->AddSubItem( pProp1 );
-		pProp = new CMFCPropertyGridProperty( _T( "X" ), CPropertiesWnd::varFloat( 0.0f ), _T( "X¦ì¸m" ) );
-		pProp1->AddSubItem( pProp );
-		pProp = new CMFCPropertyGridProperty( _T( "Y" ), CPropertiesWnd::varFloat( 0.0f ), _T( "Y¦ì¸m" ) );
-		pProp1->AddSubItem( pProp );
-		pProp = new CMFCPropertyGridPropertyButton( m_MotherGrid, _T( "Delete point" ), _T( "" ), _T( "Delete point" ), 0 );
-		pProp1->AddSubItem( pProp );
-		m_MotherGrid->AdjustLayout();
-	}
-	else if ( !_name.Compare( CString( "Delete point" ) ) )
-	{
-		CMFCPropertyGridProperty* _tmp = this->GetParent();
-		//_tmp = CMFCPropItem(m_MotherGrid, _T("Delete point"), _T(""), _T("Delete point"));
-		//_tmp->
-		//m_MotherGrid->DeleteProperty(_tmp);
-	}
+	m_Func();
 }
+
+void CMFCPropertyGridPropertyButton::SetFunction( void (*func)() )
+{
+		m_Func = func;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 IMPLEMENT_DYNAMIC( CMFCPropItem, CMFCPropertyGridProperty )
 
