@@ -112,6 +112,25 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\Bin\shader\Background.fx" />
+    <None Include="..\Bin\shader\Body.fx" />
+    <None Include="..\Bin\shader\bullet.fx" />
+    <None Include="..\Bin\shader\Chee.fx" />
+    <None Include="..\Bin\shader\ColorRect.fx" />
+    <None Include="..\Bin\shader\FireShaderOrigin.fx" />
+    <None Include="..\Bin\shader\FireShaderScale.fx" />
+    <None Include="..\Bin\shader\GamePicture.fx" />
+    <None Include="..\Bin\shader\Hero-ver2.fx" />
+    <None Include="..\Bin\shader\Hero.fx" />
+    <None Include="..\Bin\shader\Line.fx" />
+    <None Include="..\Bin\shader\Name.fx" />
+    <None Include="..\Bin\shader\picture.fx" />
+    <None Include="..\Bin\shader\point.fx" />
+    <None Include="..\Bin\shader\SceneText.fx" />
+    <None Include="..\Bin\shader\Shadow.fx" />
+    <None Include="..\Bin\shader\TestRenderEffect.fx" />
+    <None Include="..\Bin\shader\TextString.fx" />
+    <None Include="..\Bin\shader\TextString_Screen.fx" />
     <None Include="ReadMe.txt" />
     <None Include="res\AGDP Designer.ico" />
     <None Include="res\AGDP DesignerDoc.ico" />
@@ -152,13 +171,9 @@
     <None Include="res\Toolbar256.bmp" />
     <None Include="res\writelarge.bmp" />
     <None Include="res\writesmall.bmp" />
-    <None Include="Shader\GamePicture.fx" />
-    <None Include="Shader\Line.fx" />
-    <None Include="Shader\picture.fx" />
-    <None Include="Shader\point.fx" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ActionListDialog.h" />
+    <ClInclude Include="ListDialog.h" />
     <ClInclude Include="AGDP Designer.h" />
     <ClInclude Include="AGDP DesignerDoc.h" />
     <ClInclude Include="AGDP DesignerView.h" />
@@ -195,7 +210,7 @@
     <ClInclude Include="ViewTree.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ActionListDialog.cpp" />
+    <ClCompile Include="ListDialog.cpp" />
     <ClCompile Include="AGDP Designer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>

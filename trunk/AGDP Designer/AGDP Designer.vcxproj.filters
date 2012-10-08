@@ -145,16 +145,61 @@
     <None Include="res\Toolbar256.bmp">
       <Filter>資源檔</Filter>
     </None>
-    <None Include="Shader\Line.fx">
+    <None Include="..\Bin\shader\GamePicture.fx">
       <Filter>shader</Filter>
     </None>
-    <None Include="Shader\picture.fx">
+    <None Include="..\Bin\shader\Hero.fx">
       <Filter>shader</Filter>
     </None>
-    <None Include="Shader\point.fx">
+    <None Include="..\Bin\shader\Hero-ver2.fx">
       <Filter>shader</Filter>
     </None>
-    <None Include="Shader\GamePicture.fx">
+    <None Include="..\Bin\shader\Line.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\Name.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\picture.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\point.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\SceneText.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\Shadow.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\TestRenderEffect.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\TextString.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\TextString_Screen.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\Background.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\Body.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\bullet.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\Chee.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\ColorRect.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\FireShaderOrigin.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\FireShaderScale.fx">
       <Filter>shader</Filter>
     </None>
   </ItemGroup>
@@ -261,7 +306,7 @@
     <ClInclude Include="Edit\CommandLambda.h">
       <Filter>Edit</Filter>
     </ClInclude>
-    <ClInclude Include="ActionListDialog.h">
+    <ClInclude Include="ListDialog.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
@@ -359,7 +404,7 @@
     <ClCompile Include="Edit\CommandLambda.cpp">
       <Filter>Edit</Filter>
     </ClCompile>
-    <ClCompile Include="ActionListDialog.cpp">
+    <ClCompile Include="ListDialog.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
   </ItemGroup>
