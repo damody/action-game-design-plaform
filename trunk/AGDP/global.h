@@ -11,6 +11,7 @@
 #include "game/ObjectInfoManager.h"
 #include "game/BGManager.h"
 #include "game/Effect.h"
+#include "game/Replay.h"
 #include "DX11/Camera.h"
 
 extern TextureManager		g_TextureManager;
@@ -32,6 +33,7 @@ extern int					g_Time;
 extern Camera_Sptr			g_Camera;
 
 extern KeyMap				g_KeyMap;
+//extern Replay				g_Replay;
 
 //HolyK
 extern bool					g_TestViewEffect;//觀看2048*2048 Effect用的bool
