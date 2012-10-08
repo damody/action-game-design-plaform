@@ -238,10 +238,16 @@ const unsigned int KEY_E	= 69;
 const unsigned int KEY_ADD	= 107;
 const unsigned int KEY_SUB	= 109;
 const unsigned int KEY_EQUAL	= 187;
+const unsigned int KEY_ENTER	= 13;
 
 void CD3DpictureView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+// 	char buff[100];
+// 	sprintf(buff, "%d", nChar);
+// 	CString str(buff);
+// 	AfxMessageBox(str);
+
 	if ( nChar == KEY_CTRL )
 	{
 		m_CtrlPress = true;
@@ -250,6 +256,11 @@ void CD3DpictureView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 	if ( nChar == KEY_SHIFT )
 	{
 		m_ShiftPress = true;
+	}
+
+	if ( nChar == KEY_ENTER )
+	{
+		( ( CMainFrame* )( this->GetParent()->GetParent()->GetParent()->GetParentFrame() ) )->m_wndProperties.BuildPrebBuild();
 	}
 
 	CView::OnKeyDown( nChar, nRepCnt, nFlags );
@@ -317,7 +328,7 @@ void CD3DpictureView::Update( int x, int y )
 
 	if ( it_FrameInfos != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < it_FrameInfos->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < (int)it_FrameInfos->second.size() )
 		{
 			it_FrameInfos->second[g_FrameIndex].m_PictureID = m_PictureID;
 			it_FrameInfos->second[g_FrameIndex].m_PictureX = x;
@@ -345,22 +356,6 @@ void CD3DpictureView::Update( int x, int y )
 	}
 }
 
-
-
-// CD3DpictureView 診斷
-
-#ifdef _DEBUG
-void CD3DpictureView::AssertValid() const
-{
-	CView::AssertValid();
-}
-
-#ifndef _WIN32_WCE
-void CD3DpictureView::Dump( CDumpContext& dc ) const
-{
-	CView::Dump( dc );
-}
-
 void CD3DpictureView::PreBuild( int x,int y )
 {
 	FrameInfo fi;
@@ -369,7 +364,7 @@ void CD3DpictureView::PreBuild( int x,int y )
 	fi.m_NextFrameName = L"default";
 	fi.m_NextFrameIndex = 0;
 	fi.m_HeroAction = 0;
-	fi.m_Wait = 1;
+	fi.m_Wait = 3;
 	fi.m_ClearKeyQueue = false;
 	fi.m_PictureID = m_PictureID;
 	fi.m_CenterX = 0.0f;
@@ -386,6 +381,22 @@ void CD3DpictureView::PreBuild( int x,int y )
 	fi.m_DVZ = 0.0f;
 	( ( CMainFrame* )( this->GetParent()->GetParent()->GetParent()->GetParentFrame() ) )->m_wndProperties.PreBuild(fi);
 }
+
+// CD3DpictureView 診斷
+
+#ifdef _DEBUG
+void CD3DpictureView::AssertValid() const
+{
+	CView::AssertValid();
+}
+
+#ifndef _WIN32_WCE
+void CD3DpictureView::Dump( CDumpContext& dc ) const
+{
+	CView::Dump( dc );
+}
+
+
 
 #endif
 #endif //_DEBUG

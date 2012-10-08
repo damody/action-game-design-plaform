@@ -920,11 +920,11 @@ void CD3DPanelView::Refresh()
 
 	if ( it_FrameInfos != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < it_FrameInfos->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < (int)it_FrameInfos->second.size() )
 		{
 			m_FrameInfo = &it_FrameInfos->second[g_FrameIndex];
 
-			if ( g_HeroInfo->m_PictureDatas.empty() || m_FrameInfo->m_PictureID >= g_HeroInfo->m_PictureDatas.size() )
+			if ( g_HeroInfo->m_PictureDatas.empty() || m_FrameInfo->m_PictureID >= (int)g_HeroInfo->m_PictureDatas.size() )
 			{
 				AfxMessageBox( _T( "Picture Data does not existed" ) );
 			}
@@ -1294,7 +1294,7 @@ void CD3DPanelView::OnPlayframeButton()
 	FramesMap::iterator it = g_ActiveFramesMap->find(g_FrameName);
 
 	if(it == g_ActiveFramesMap->end())return;
-	if(g_FrameIndex < 0 || g_FrameIndex >= it->second.size())return;
+	if(g_FrameIndex < 0 || g_FrameIndex >= (int)it->second.size())return;
 
 	m_FrameInfo = &it->second[g_FrameIndex];
 	m_TimeTik = m_FrameInfo->m_Wait;

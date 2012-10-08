@@ -363,7 +363,6 @@ void CFileView::OnPicturedataAdd()
 		if ( it_Hero == m_HeroInfoMap.end() ) { return; }
 
 		PictureData pic;
-		char buff[1000];
 		std::wstring path( dlgFile.GetPathName().GetBuffer( 0 ) );
 		pic.m_Path = path;
 		pic.m_TextureID = g_TextureManagerFrame->AddTexture( path );

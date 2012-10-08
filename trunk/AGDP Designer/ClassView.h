@@ -62,6 +62,8 @@ protected:
 	TreeItemMap	m_propMap;
 	FramesMap	m_FrameMap;
 
+	HTREEITEM m_hTreeItem;
+
 	void FillClassView();
 
 // ÂÐ¼g
@@ -99,5 +101,6 @@ public:
 	afx_msg void OnBloodinfoDelete();
 	afx_msg void OnCreationAdd();
 	afx_msg void OnCreationDelete();
+	afx_msg void OnAddtocrouch();
 };
 

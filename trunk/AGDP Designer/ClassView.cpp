@@ -16,6 +16,7 @@
 #include <comutil.h>
 #include "ConvStr.h"
 #include "ClassView.h"
+#include "ActionListDialog.h"
 
 CClassView* CClassView::instance = NULL;
 
@@ -85,6 +86,7 @@ BEGIN_MESSAGE_MAP( CClassView, CDockablePane )
 	ON_COMMAND( ID_BLOODINFO_DELETE, &CClassView::OnBloodinfoDelete )
 	ON_COMMAND( ID_CREATION_ADD, &CClassView::OnCreationAdd )
 	ON_COMMAND( ID_CREATION_DELETE, &CClassView::OnCreationDelete )
+	ON_COMMAND(ID_ADDTOCROUCH, &CClassView::OnAddtocrouch)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -166,7 +168,7 @@ void CClassView::OnContextMenu( CWnd* pWnd, CPoint point )
 		return;
 	}
 
-	HTREEITEM hTreeItem = NULL;
+	m_hTreeItem = NULL;
 
 	if ( point != CPoint( -1, -1 ) )
 	{
@@ -174,74 +176,74 @@ void CClassView::OnContextMenu( CWnd* pWnd, CPoint point )
 		CPoint ptTree = point;
 		pWndTree->ScreenToClient( &ptTree );
 		UINT flags = 0;
-		hTreeItem = pWndTree->HitTest( ptTree, &flags );
+		m_hTreeItem = pWndTree->HitTest( ptTree, &flags );
 	}
 	else
 	{
-		hTreeItem = pWndTree->GetSelectedItem();
+		m_hTreeItem = pWndTree->GetSelectedItem();
 	}
 
-	if ( hTreeItem != NULL )
+	if ( m_hTreeItem != NULL )
 	{
-		pWndTree->SelectItem( hTreeItem );
+		pWndTree->SelectItem( m_hTreeItem );
 
-		if ( pWndTree->GetRootItem() == hTreeItem )
+		if ( pWndTree->GetRootItem() == m_hTreeItem )
 		{
 			menu.LoadMenu( IDR_POPUP_CHARACTER_EDIT );
 		}
-		else if ( IsAnAnimation( pWndTree, hTreeItem ) )
+		else if ( IsAnAnimation( pWndTree, m_hTreeItem ) )
 		{
 			menu.LoadMenu( IDR_POPUP_ANIMATION_EDIT );
 		}
-		else if ( IsAnAnimation( pWndTree, m_wndClassView.GetParentItem( hTreeItem ) ) )
+		else if ( IsAnAnimation( pWndTree, m_wndClassView.GetParentItem( m_hTreeItem ) ) )
 		{
 			menu.LoadMenu( IDR_POPUP_FRAME_EDIT );
 		}
-		else if ( pWndTree->GetItemText( hTreeItem ) == CString( "Bodys" ) )
+		else if ( pWndTree->GetItemText( m_hTreeItem ) == CString( "Bodys" ) )
 		{
 			menu.LoadMenu( IDR_POPUP_BODYADD );
 		}
-		else if ( pWndTree->GetItemText( hTreeItem ) == CString( "Attacks" ) )
+		else if ( pWndTree->GetItemText( m_hTreeItem ) == CString( "Attacks" ) )
 		{
 			menu.LoadMenu( IDR_POPUP_ATTACKADD );
 		}
-		else if ( pWndTree->GetItemText( hTreeItem ) == CString( "HitDatas" ) )
+		else if ( pWndTree->GetItemText( m_hTreeItem ) == CString( "HitDatas" ) )
 		{
 			menu.LoadMenu( IDR_POPUP_HITDATAADD );
 		}
-		else if ( pWndTree->GetItemText( hTreeItem ) == CString( "Catchs" ) )
+		else if ( pWndTree->GetItemText( m_hTreeItem ) == CString( "Catchs" ) )
 		{
 			menu.LoadMenu( IDR_POPUP_CATCHADD );
 		}
-		else if ( pWndTree->GetItemText( hTreeItem ) == CString( "BloodInfos" ) )
+		else if ( pWndTree->GetItemText( m_hTreeItem ) == CString( "BloodInfos" ) )
 		{
 			menu.LoadMenu( IDR_POPUP_BLOODINFOADD );
 		}
-		else if ( pWndTree->GetItemText( hTreeItem ) == CString( "Creations" ) )
+		else if ( pWndTree->GetItemText( m_hTreeItem ) == CString( "Creations" ) )
 		{
 			menu.LoadMenu( IDR_POPUP_CREATIONADD );
 		}
-		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString( "Bodys" ) )
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( m_hTreeItem ) ) == CString( "Bodys" ) )
 		{
 			menu.LoadMenu( IDR_POPUP_BODYDELETE );
 		}
-		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString( "Attacks" ) )
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( m_hTreeItem ) ) == CString( "Attacks" ) )
 		{
 			menu.LoadMenu( IDR_POPUP_ATTACKDELETE );
 		}
-		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString( "HitDatas" ) )
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( m_hTreeItem ) ) == CString( "HitDatas" ) )
 		{
 			menu.LoadMenu( IDR_POPUP_HITDATADELETE );
 		}
-		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString( "Catchs" ) )
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( m_hTreeItem ) ) == CString( "Catchs" ) )
 		{
 			menu.LoadMenu( IDR_POPUP_CATCHDELETE );
 		}
-		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString( "BloodInfos" ) )
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( m_hTreeItem ) ) == CString( "BloodInfos" ) )
 		{
 			menu.LoadMenu( IDR_POPUP_BLOODINFODELETE );
 		}
-		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( hTreeItem ) ) == CString( "Creations" ) )
+		else if ( pWndTree->GetItemText( m_wndClassView.GetParentItem( m_hTreeItem ) ) == CString( "Creations" ) )
 		{
 			menu.LoadMenu( IDR_POPUP_CREATIONDELETE );
 		}
@@ -510,6 +512,7 @@ void CClassView::OnSelectItem( HTREEITEM item )
 	{
 		m_wndClassView.SelectItem( item );
 		m_wndClassView.SetFocus();
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.InitPropList_Hero();
 	}
 	else if ( IsNumber( m_wndClassView.GetItemText( item ) ) )
 	{
@@ -790,7 +793,7 @@ void CClassView::OnBodyAdd()
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < (int)g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -833,7 +836,7 @@ void CClassView::OnBodyDelete()
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < (int)g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -876,7 +879,7 @@ void CClassView::OnAttackDelete()
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < (int)g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -911,7 +914,7 @@ void CClassView::OnAttackAdd()
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < (int)g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -937,7 +940,7 @@ void CClassView::OnHitdataAdd()
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < (int)g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -981,7 +984,7 @@ void CClassView::OnHitdataDelete()
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < (int)g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -1012,7 +1015,7 @@ void CClassView::OnCatchAdd()
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < (int)g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -1056,7 +1059,7 @@ void CClassView::OnCatchDelete()
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < (int)g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -1103,7 +1106,7 @@ void CClassView::OnCreationAdd()
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < (int)g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
@@ -1147,9 +1150,25 @@ void CClassView::OnCreationDelete()
 
 	if ( g_ActiveFramesMap->find( g_FrameName ) != g_ActiveFramesMap->end() )
 	{
-		if ( g_FrameIndex > -1 && g_FrameIndex < g_ActiveFramesMap->find( g_FrameName )->second.size() )
+		if ( g_FrameIndex > -1 && g_FrameIndex < (int)g_ActiveFramesMap->find( g_FrameName )->second.size() )
 		{
 			( ( CMainFrame* )this->GetParentFrame() )->m_D3DFrameView.Refresh();
 		}
 	}
 }
+
+
+void CClassView::OnAddtocrouch()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	CActionListDialog actions;
+	if (actions.DoModal()==IDOK)
+	{
+		HTREEITEM pItem = m_wndClassView.GetParentItem( m_hTreeItem );
+		g_HeroInfo->m_CrouchMap[actions.m_Target] = CrouchData();
+		g_HeroInfo->m_CrouchMap[actions.m_Target].m_FrameName =  std::wstring(m_wndClassView.GetItemText( pItem ).GetBuffer(0));
+		g_HeroInfo->m_CrouchMap[actions.m_Target].m_FrameOffset = _ttoi(m_wndClassView.GetItemText( m_hTreeItem ));
+		( ( CMainFrame* )this->GetParentFrame() )->m_wndProperties.InitPropList_Hero();
+	}
+}
+

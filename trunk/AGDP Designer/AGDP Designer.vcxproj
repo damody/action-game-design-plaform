@@ -158,6 +158,7 @@
     <None Include="Shader\point.fx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ActionListDialog.h" />
     <ClInclude Include="AGDP Designer.h" />
     <ClInclude Include="AGDP DesignerDoc.h" />
     <ClInclude Include="AGDP DesignerView.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="ViewTree.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ActionListDialog.cpp" />
     <ClCompile Include="AGDP Designer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>

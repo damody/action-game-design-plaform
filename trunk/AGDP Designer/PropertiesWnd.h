@@ -181,6 +181,9 @@ public:
 	void RefreshCreationPoint(  );
 
 	void PreBuild(FrameInfo& fi);
+	void ClearPreBuild();
+	void BuildPrebBuild();
+
 public:
 	void Update();
 	void UpdatePropList_Frame();
@@ -190,5 +193,6 @@ public:
 	void UpdatePictureData();
 	void UpdateCreation();
 	void UpdateHitData();
+	void UpdateHero();
 	//void DeleteProperty(CMFCPropertyGridProperty* pProp);
 };
