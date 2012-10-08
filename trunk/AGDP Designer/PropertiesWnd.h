@@ -15,7 +15,8 @@
 #include "Edit/CommandLambda.h"
 #include "game/FrameInfo.h"
 #include <functional>
-
+class CPropertiesWnd;
+typedef void (CPropertiesWnd::*_Func)(void);
 class CPropertiesToolBar : public CMFCToolBar
 {
 public:
@@ -30,12 +31,12 @@ public:
 class CMFCPropertyGridPropertyButton : public CMFCPropertyGridProperty
 {
 private:
-	std::function<void(void)> m_Func;
+	_Func m_Func;
+	CPropertiesWnd* m_PropWnd;
 	CBrush m_Brush;
 	CString m_Text;
-	CMFCPropertyGridCtrl* m_MotherGrid;
 public:
-	CMFCPropertyGridPropertyButton( CMFCPropertyGridCtrl* grid, const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData );
+	CMFCPropertyGridPropertyButton(CPropertiesWnd* propWnd,const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData );
 	virtual ~CMFCPropertyGridPropertyButton() {}
 	DECLARE_DYNAMIC( CMFCPropertyGridPropertyButton )
 	void OnDrawName( CDC* pDC, CRect rect )
@@ -49,7 +50,7 @@ public:
 		pDC->TextOut( rect.left + 2, rect.top + 2, m_Text );
 	}
 	void OnClickName( CPoint point );
-	void SetFunction(void (*func)());
+	void SetFunction(_Func func);
 };
 
 class CMFCPropItem : public CMFCPropertyGridProperty
@@ -169,7 +170,6 @@ public:
 	void RefreshPropList_Creation( int index );
 	void RefreshPropList_PictureData( int index );
 	
-
 	void SetPropListFont();
 	static void AddNormalActionUcase( CMFCPropertyGridProperty* pProp );
 	static void AddNormalActionDcase( CMFCPropertyGridProperty* pProp );
@@ -185,6 +185,7 @@ public:
 	void ClearPreBuild();
 	void BuildPrebBuild();
 
+	void RemoveCrouch();
 public:
 	void Update();
 	void UpdatePropList_Frame();

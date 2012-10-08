@@ -17,6 +17,7 @@
 #include "AGDP Designer.h"
 #include "global.h"
 #include "ConvStr.h"
+#include "ListDialog.h"
 #include <functional>
 
 #ifdef _DEBUG
@@ -27,24 +28,22 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC( CMFCPropertyGridPropertyButton, CMFCPropertyGridProperty )
 
-CMFCPropertyGridPropertyButton::CMFCPropertyGridPropertyButton( CMFCPropertyGridCtrl* grid,
-                const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData )
-	: CMFCPropertyGridProperty( strName, data, lpszDescr, dwData )
+CMFCPropertyGridPropertyButton::CMFCPropertyGridPropertyButton(CPropertiesWnd* propWnd,const CString& strName, const COleVariant& data, LPCTSTR lpszDescr, DWORD_PTR dwData )
+: CMFCPropertyGridProperty( strName, data, lpszDescr, dwData )
 {
-	m_Func = [](){};
-	m_MotherGrid = grid;
+	m_PropWnd = propWnd;
 	m_Text = strName;
 	AllowEdit( false );
 }
 
 void CMFCPropertyGridPropertyButton::OnClickName( CPoint point )
 {
-	m_Func();
+	(m_PropWnd->*m_Func)();
 }
 
-void CMFCPropertyGridPropertyButton::SetFunction( void (*func)() )
+void CMFCPropertyGridPropertyButton::SetFunction( void (CPropertiesWnd::*func)(void) )
 {
-		m_Func = func;
+	m_Func = func;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -471,6 +470,9 @@ void CPropertiesWnd::InitPropList_Hero()
 	m_wndPropList.AddProperty( pPropMain );
 
 	pPropMain = new CMFCPropertyGridProperty( _T( "Crouch Map" ) );
+	CMFCPropertyGridPropertyButton* func = new CMFCPropertyGridPropertyButton(this,_T( "Remve" ), _T(""), _T( "" ),0);
+	func->SetFunction(&CPropertiesWnd::RemoveCrouch);
+	pPropMain->AddSubItem(func);
 	int i=0;
 	for (CrouchMap::iterator it = g_HeroInfo->m_CrouchMap.begin(); it != g_HeroInfo->m_CrouchMap.end(); it++)
 	{
@@ -925,7 +927,17 @@ void CPropertiesWnd::InitPropList_PrebuildFrame()
 	m_wndPropList.EnableDescriptionArea();
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
+
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "預設影格" ) );
+	CMFCPropertyGridProperty* button = new CMFCPropertyGridProperty(_T("功能"),0,FALSE );
+	CMFCPropertyGridPropertyButton* func = new CMFCPropertyGridPropertyButton(this,_T( "Build" ), _T(""), _T( "" ),0);
+	func->SetFunction(&CPropertiesWnd::BuildPrebBuild);
+	button->AddSubItem(func);
+	func = new CMFCPropertyGridPropertyButton(this,_T( "Clear" ), _T(""), _T( "" ),0);
+	func->SetFunction(&CPropertiesWnd::ClearPreBuild);
+	button->AddSubItem(func);
+	pPropMain->AddSubItem(button);
+
 	for (unsigned int i =0; i < m_Preframes.size(); i++)
 	{
 		CMFCPropertyGridProperty* pProp;
@@ -2578,7 +2590,7 @@ int actionNum=0;
 void CPropertiesWnd::BuildPrebBuild()
 {
 	wchar_t buff[100];
-	wsprintf( buff, L"action%d", actionNum );
+	wsprintf( buff, L"Animation%d", actionNum );
 	std::wstring frameName( buff );
 	actionNum++;
 
@@ -2591,10 +2603,29 @@ void CPropertiesWnd::BuildPrebBuild()
 	
 	(*g_ActiveFramesMap)[frameName].assign(m_Preframes.begin(),m_Preframes.end());
 
+	AfxMessageBox(CString(buff));
+
 	ClearPreBuild();
 	InitPropList_PrebuildFrame();
 	
 	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndClassView.Refresh();
+}
+
+void CPropertiesWnd::RemoveCrouch()
+{
+	CListDialog actions = new CListDialog();
+	for (CrouchMap::iterator it = g_HeroInfo->m_CrouchMap.begin(); it != g_HeroInfo->m_CrouchMap.end(); it++)
+	{
+		actions.AddList(g_Actions[it->first]);
+	}
+
+	if (actions.DoModal()==IDOK)
+	{
+		int idx = g_Actions.FindKey(actions.m_Select);
+		if (idx==-1)return;
+		g_HeroInfo->m_CrouchMap.erase(g_HeroInfo->m_CrouchMap.find(idx));
+		( ( CMainFrame* )this->GetParentFrame() )->m_wndProperties.InitPropList_Hero();
+	}
 }
 
 

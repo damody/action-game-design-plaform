@@ -18,9 +18,6 @@
     <Filter Include="inc\stage">
       <UniqueIdentifier>{d4d88258-9754-41fc-bc61-66db80967602}</UniqueIdentifier>
     </Filter>
-    <Filter Include="shader">
-      <UniqueIdentifier>{48239bf5-90c2-4fbb-bcc3-dc1fe596d254}</UniqueIdentifier>
-    </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{7bd9ddc8-59c8-46bf-8b91-94809fd6b6c8}</UniqueIdentifier>
     </Filter>
@@ -35,6 +32,9 @@
     </Filter>
     <Filter Include="inc\memory">
       <UniqueIdentifier>{cd19a7f0-b0bc-4ac2-a6ca-64d55bf26430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader">
+      <UniqueIdentifier>{242a231e-c966-49cd-8873-b7cee7432aa8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -357,31 +357,61 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader\bullet.fx">
+    <None Include="..\Bin\shader\TestRenderEffect.fx">
       <Filter>shader</Filter>
     </None>
-    <None Include="shader\point.fx">
+    <None Include="..\Bin\shader\TextString.fx">
       <Filter>shader</Filter>
     </None>
-    <None Include="screen.fx">
+    <None Include="..\Bin\shader\TextString_Screen.fx">
       <Filter>shader</Filter>
     </None>
-    <None Include="shader\Hero.fx">
+    <None Include="..\Bin\shader\Background.fx">
       <Filter>shader</Filter>
     </None>
-    <None Include="shader\Background.fx">
+    <None Include="..\Bin\shader\Body.fx">
       <Filter>shader</Filter>
     </None>
-    <None Include="shader\ColorRect.fx">
+    <None Include="..\Bin\shader\bullet.fx">
       <Filter>shader</Filter>
     </None>
-    <None Include="shader\Shadow.fx">
+    <None Include="..\Bin\shader\Chee.fx">
       <Filter>shader</Filter>
     </None>
-    <None Include="shader\Chee.fx">
+    <None Include="..\Bin\shader\ColorRect.fx">
       <Filter>shader</Filter>
     </None>
-    <None Include="shader\Body.fx">
+    <None Include="..\Bin\shader\FireShaderOrigin.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\FireShaderScale.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\GamePicture.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\Hero.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\Hero-ver2.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\Line.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\Name.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\picture.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\point.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\SceneText.fx">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\Bin\shader\Shadow.fx">
       <Filter>shader</Filter>
     </None>
   </ItemGroup>

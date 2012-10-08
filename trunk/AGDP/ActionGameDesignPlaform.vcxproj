@@ -502,21 +502,31 @@
     <ClInclude Include="memory\VMemPool.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader\Background.fx" />
-    <None Include="shader\Body.fx" />
-    <None Include="shader\bullet.fx" />
-    <None Include="shader\Chee.fx" />
-    <None Include="shader\ColorRect.fx" />
-    <None Include="shader\Hero.fx" />
-    <None Include="shader\point.fx" />
-    <None Include="screen.fx" />
-    <None Include="shader\Shadow.fx" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ShootingGameAlgorithmLibrary\ShootingGameAlgorithmLibrary.vcxproj">
       <Project>{8865d97c-215d-45f7-924d-f053ec2b57a5}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Bin\shader\Background.fx" />
+    <None Include="..\Bin\shader\Body.fx" />
+    <None Include="..\Bin\shader\bullet.fx" />
+    <None Include="..\Bin\shader\Chee.fx" />
+    <None Include="..\Bin\shader\ColorRect.fx" />
+    <None Include="..\Bin\shader\FireShaderOrigin.fx" />
+    <None Include="..\Bin\shader\FireShaderScale.fx" />
+    <None Include="..\Bin\shader\GamePicture.fx" />
+    <None Include="..\Bin\shader\Hero-ver2.fx" />
+    <None Include="..\Bin\shader\Hero.fx" />
+    <None Include="..\Bin\shader\Line.fx" />
+    <None Include="..\Bin\shader\Name.fx" />
+    <None Include="..\Bin\shader\picture.fx" />
+    <None Include="..\Bin\shader\point.fx" />
+    <None Include="..\Bin\shader\SceneText.fx" />
+    <None Include="..\Bin\shader\Shadow.fx" />
+    <None Include="..\Bin\shader\TestRenderEffect.fx" />
+    <None Include="..\Bin\shader\TextString.fx" />
+    <None Include="..\Bin\shader\TextString_Screen.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

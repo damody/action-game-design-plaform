@@ -16,7 +16,7 @@
 #include <comutil.h>
 #include "ConvStr.h"
 #include "ClassView.h"
-#include "ActionListDialog.h"
+#include "ListDialog.h"
 
 CClassView* CClassView::instance = NULL;
 
@@ -1161,13 +1161,20 @@ void CClassView::OnCreationDelete()
 void CClassView::OnAddtocrouch()
 {
 	// TODO: 在此加入您的命令處理常式程式碼
-	CActionListDialog actions;
+	CListDialog actions = new CListDialog();
+	for (LuaMap::iterator it = g_Actions.begin(); it != g_Actions.end(); it++)
+	{
+		actions.AddList(it->second);
+	}
+	
 	if (actions.DoModal()==IDOK)
 	{
+		int idx = g_Actions.FindKey(actions.m_Select);
+		if (idx==-1)return;
 		HTREEITEM pItem = m_wndClassView.GetParentItem( m_hTreeItem );
-		g_HeroInfo->m_CrouchMap[actions.m_Target] = CrouchData();
-		g_HeroInfo->m_CrouchMap[actions.m_Target].m_FrameName =  std::wstring(m_wndClassView.GetItemText( pItem ).GetBuffer(0));
-		g_HeroInfo->m_CrouchMap[actions.m_Target].m_FrameOffset = _ttoi(m_wndClassView.GetItemText( m_hTreeItem ));
+ 		g_HeroInfo->m_CrouchMap[idx] = CrouchData();
+ 		g_HeroInfo->m_CrouchMap[idx].m_FrameName =  std::wstring(m_wndClassView.GetItemText( pItem ).GetBuffer(0));
+ 		g_HeroInfo->m_CrouchMap[idx].m_FrameOffset = _ttoi(m_wndClassView.GetItemText( m_hTreeItem ));
 		( ( CMainFrame* )this->GetParentFrame() )->m_wndProperties.InitPropList_Hero();
 	}
 }
