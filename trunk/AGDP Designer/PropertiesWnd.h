@@ -85,7 +85,6 @@ private:
 	int m_Index;
 	FrameInfos m_Preframes;
 	std::map<HTREEITEM, CommandManager*> m_CommandManagers;
-	CommandManager* m_CommandManager;
 // «Øºc
 public:
 	CPropertiesWnd();
@@ -102,6 +101,7 @@ public:
 // ÄÝ©Ê
 public:
 	HTREEITEM m_lastSelectedItem;
+	CommandManager* m_CommandManager;
 protected:
 	static CPropertiesWnd* instance;
 	CFont m_fntPropList;

@@ -136,6 +136,7 @@ void CMFCPropItem::SetValue( const COleVariant&  varValue )
 
 	if ( m_varValue.vt != VT_EMPTY && m_varValue.vt != varValue.vt )
 	{
+		if(((m_varValue.vt == VT_I4 && varValue.vt == VT_INT) || (m_varValue.vt == VT_INT && varValue.vt == VT_I4)) != TRUE)
 		ASSERT( FALSE );
 		return;
 	}
@@ -1230,7 +1231,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->IsEdited() )
 	{
 		COleVariant v = propRoot->GetSubItem( 5 )->GetValue();
-		v.ChangeType( VT_INT, NULL );
+		//v.ChangeType( VT_INT, NULL );
 		int i = v.intVal;
 
 		int OldWait = frameInfo->m_Wait;
@@ -1521,6 +1522,9 @@ void CPropertiesWnd::UpdatePropList_Frame()
 	}
 
 	m_CommandManager->CallCommand(command);
+
+	command->AddRedoFunction([=](){((CMainFrame*)this->GetParentFrame())->RefreshFrameEdit();});
+	command->AddUndoFunction([=](){((CMainFrame*)this->GetParentFrame())->RefreshFrameEdit();});
 }
 
 void CPropertiesWnd::RefreshPropList_Body( int index )
