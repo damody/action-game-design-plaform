@@ -62,6 +62,7 @@ BEGIN_MESSAGE_MAP( CMainFrame, CMDIFrameWndEx )
 	ON_COMMAND( ID_BUTTON_RUN, &CMainFrame::OnButtonRun )
 	ON_WM_CLOSE()
 	ON_WM_TIMER()
+	ON_COMMAND(ID_BUTTONHISTORY, &CMainFrame::OnButtonhistory)
 END_MESSAGE_MAP()
 
 // CMainFrame 建構/解構
@@ -631,4 +632,10 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
 	m_D3DFrameView.NextFrame();
 	CMDIFrameWndEx::OnTimer(nIDEvent);
+}
+
+
+void CMainFrame::OnButtonhistory()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
 }

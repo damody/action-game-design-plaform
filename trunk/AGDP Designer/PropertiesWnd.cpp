@@ -167,6 +167,7 @@ CPropertiesWnd::CPropertiesWnd(): m_EditProp( 0 ), m_Index( 0 )
 {
 	instance = this;
 	m_lastSelectedItem = NULL;
+	m_CommandManager = NULL;
 }
 
 CPropertiesWnd::~CPropertiesWnd()
@@ -188,6 +189,10 @@ BEGIN_MESSAGE_MAP( CPropertiesWnd, CDockablePane )
 	ON_WM_SETTINGCHANGE()
 	ON_WM_MOUSEMOVE()
 	ON_WM_TIMER()
+	ON_COMMAND(ID_BUTTON_UNDO, &CPropertiesWnd::OnButtonUndo)
+	ON_COMMAND(ID_BUTTON_REDO, &CPropertiesWnd::OnButtonRedo)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_UNDO, &CPropertiesWnd::OnUpdateButtonUndo)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_REDO, &CPropertiesWnd::OnUpdateButtonRedo)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1515,7 +1520,7 @@ void CPropertiesWnd::UpdatePropList_Frame()
 		//frameInfo->m_DVZ = i;
 	}
 
-	m_CommandManager.CallCommand(command);
+	m_CommandManager->CallCommand(command);
 }
 
 void CPropertiesWnd::RefreshPropList_Body( int index )
@@ -1636,7 +1641,7 @@ void CPropertiesWnd::UpdateBody()
 		//frameInfo->m_Bodys[m_Index].m_Kind = propRoot->GetSubItem( 2 )->GetValue().intVal;
 	}
 
-	m_CommandManager.CallCommand(command);
+	m_CommandManager->CallCommand(command);
 }
 
 void CPropertiesWnd::RefreshPropList_Attack( int index )
@@ -1929,7 +1934,7 @@ void CPropertiesWnd::UpdateAttack()
 		//frameInfo->m_Attacks[m_Index].m_DVZ = propRoot->GetSubItem( 10 )->GetSubItem( 2 )->GetValue().fltVal;
 	}
 
-	m_CommandManager.CallCommand(command);
+	m_CommandManager->CallCommand(command);
 }
 
 void CPropertiesWnd::RefreshPropList_HitData( int index )
@@ -2118,7 +2123,7 @@ void CPropertiesWnd::UpdateCatch()
 		}
 	}
 
-	m_CommandManager.CallCommand(command);
+	m_CommandManager->CallCommand(command);
 }
 
 void CPropertiesWnd::RefreshPropList_BloodInfo( int index )
@@ -2256,7 +2261,7 @@ void CPropertiesWnd::UpdatePictureData()
 		//g_HeroInfo->m_PictureDatas[m_Index].m_Height = propRoot->GetSubItem( 2 )->GetSubItem( 0 )->GetValue().intVal;
 	}
 
-	m_CommandManager.CallCommand(command);
+	m_CommandManager->CallCommand(command);
 }
 
 void CPropertiesWnd::RefreshPropList_Creation( int index )
@@ -2628,27 +2633,72 @@ void CPropertiesWnd::RemoveCrouch()
 	}
 }
 
+void CPropertiesWnd::SwitchCommandManager( HTREEITEM item )
+{
+	if(item == NULL)
+	{
+		m_CommandManager = NULL;
+	}
+	else
+	{
+		if(m_CommandManagers.find(item) != m_CommandManagers.end())
+		{
+			m_CommandManager = m_CommandManagers[item];
+		}
+		else
+		{
+			m_CommandManager = new CommandManager();
+			m_CommandManagers[item] = m_CommandManager;
+		}
+	}
+
+	CMFCRibbonButton* undo = (CMFCRibbonButton*)((CMainFrame*)this->GetParentFrame())->m_wndRibbonBar.FindByID(ID_BUTTON_UNDO);
+	CMFCRibbonButton* redo = (CMFCRibbonButton*)((CMainFrame*)this->GetParentFrame())->m_wndRibbonBar.FindByID(ID_BUTTON_REDO);
+	undo->Redraw();
+	redo->Redraw();
+
+	((CMainFrame*)this->GetParentFrame())->m_wndRibbonBar.UpdateWindow();
+}
+
+void CPropertiesWnd::OnButtonUndo()
+{
+	if(m_CommandManager != NULL)
+	{
+		if(m_CommandManager->CanUndo())
+		{
+			m_CommandManager->Undo();
+		}
+	}
+}
 
 
+void CPropertiesWnd::OnButtonRedo()
+{
+	if(m_CommandManager != NULL)
+	{
+		if(m_CommandManager->CanRedo())
+		{
+			m_CommandManager->Redo();
+		}
+	}
+}
 
 
+void CPropertiesWnd::OnUpdateButtonUndo(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(TRUE);
+	if(m_CommandManager != NULL)
+		pCmdUI->Enable(m_CommandManager->CanUndo());
+	else
+		pCmdUI->Enable(FALSE);
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void CPropertiesWnd::OnUpdateButtonRedo(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(TRUE);
+	if(m_CommandManager != NULL)
+		pCmdUI->Enable(m_CommandManager->CanRedo());
+	else
+		pCmdUI->Enable(FALSE);
+}

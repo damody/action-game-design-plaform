@@ -506,7 +506,16 @@ void CClassView::OnChangeVisualStyle()
 void CClassView::OnSelectItem( HTREEITEM item )
 {
 	CPropertiesWnd* _propWnd = CPropertiesWnd::GetInstance();
+
+	if(item == NULL)
+	{
+		_propWnd->SwitchCommandManager(item);
+		return;
+	}
+
 	HTREEITEM pItem = m_wndClassView.GetParentItem( item );
+
+	_propWnd->SwitchCommandManager(item);
 
 	if ( m_wndClassView.GetRootItem() == item )
 	{
