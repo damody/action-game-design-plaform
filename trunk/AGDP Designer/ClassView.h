@@ -101,5 +101,6 @@ public:
 	afx_msg void OnCreationAdd();
 	afx_msg void OnCreationDelete();
 	afx_msg void OnAddtocrouch();
+	afx_msg void OnAddnewhero();
 };
 

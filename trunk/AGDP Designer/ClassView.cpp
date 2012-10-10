@@ -87,6 +87,7 @@ BEGIN_MESSAGE_MAP( CClassView, CDockablePane )
 	ON_COMMAND( ID_CREATION_ADD, &CClassView::OnCreationAdd )
 	ON_COMMAND( ID_CREATION_DELETE, &CClassView::OnCreationDelete )
 	ON_COMMAND(ID_ADDTOCROUCH, &CClassView::OnAddtocrouch)
+	ON_COMMAND(ID_ADDNEWHERO, &CClassView::OnAddnewhero)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1188,3 +1189,10 @@ void CClassView::OnAddtocrouch()
 	}
 }
 
+
+
+void CClassView::OnAddnewhero()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	( ( CMainFrame* )this->GetParentFrame() )->OnFileNew();
+}
