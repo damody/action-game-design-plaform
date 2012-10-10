@@ -15,26 +15,38 @@ KeyQueue Keyboard::Update()
 
 	for ( CtrlKeyMap::iterator it_map = m_CtrlKeyMap.begin() ; it_map != m_CtrlKeyMap.end() ; it_map++ )
 	{
-		/*if ( InputStateS::instance().isKeyDown( it_map->first ) && it_map->second.keyDown == )
+		if ( !g_Replay.replayMode )
 		{
-			
-			continue;
-		}*/
-		if ( InputStateS::instance().isKeyDown( it_map->first ) )
-		{
-			KeyInfo info = {};
-			info.key = it_map->second.keyDown;
-			info.time = g_Time;
-			keyQue.push_back( info );
-			//g_Replay.PushKeyInfo( info );
+			//while ( g_Replay.rkqIt->first < g_Time ) { g_Replay.rkqIt++; }
+
+			if ( g_Replay.rkqIt->first == g_Time && ( g_Replay.rkqIt->second & 0x00FF ) == it_map->first )
+			{
+				KeyInfo info = {};
+				info.key = ( g_Replay.rkqIt->second & 0xF000 ) ? it_map->second.keyDown: it_map->second.keyUp;
+				info.time = g_Time;
+				keyQue.push_back( info );
+				g_Replay.rkqIt++;
+				break;
+			}
 		}
-		if ( InputStateS::instance().isKeyUp( it_map->first ) )
+		else
 		{
-			KeyInfo info = {};
-			info.key = it_map->second.keyUp;
-			info.time = g_Time;
-			keyQue.push_back( info );
-			//g_Replay.PushKeyInfo( info );
+			if ( InputStateS::instance().isKeyDown( it_map->first ) )
+			{
+				KeyInfo info = {};
+				info.key = it_map->second.keyDown;
+				info.time = g_Time;
+				keyQue.push_back( info );
+				if( g_Replay.replayMode ) { g_Replay.PushKeyInfo( it_map->first, g_Time, 'd' ); }
+			}
+			if ( InputStateS::instance().isKeyUp( it_map->first ) )
+			{
+				KeyInfo info = {};
+				info.key = it_map->second.keyUp;
+				info.time = g_Time;
+				keyQue.push_back( info );
+				if( g_Replay.replayMode ) { g_Replay.PushKeyInfo( it_map->first, g_Time, 'u' ); }
+			}
 		}
 	}
 

@@ -6,12 +6,28 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/string.hpp>
 
-void Replay::PushKeyInfo( KeyInfo ki )
+void Replay::PushKeyInfo( int key, int _g_time, int state )
 {
-	repalyKeyQueue.push_back( ki );
+	repalyKeyQueue[ _g_time ] = state? 0x1000 | key: key;
 }
 
-bool Replay::WriteToFile( std::wstring path )
+void Replay::PushKeyInfo( int key, int _g_time, char state )
+{
+	repalyKeyQueue[ _g_time ] = state=='d'? 0x1000 | key: key;
+}
+
+Replay::Replay()
+{
+	repalyKeyQueue.clear(); 
+	replayMode = 1; 
+	repalyKeyQueue[0] = 0x10CB; 
+	repalyKeyQueue[2] = 0x00CB; 
+	repalyKeyQueue[4] = 0x10CB; 
+	repalyKeyQueue[6] = 0x00CB; 
+	rkqIt = repalyKeyQueue.begin();
+}
+
+/*bool Replay::WriteToFile( std::wstring path )
 {
 	std::string _spath = ConvStr::GetStr( path );
 
@@ -25,4 +41,4 @@ bool Replay::WriteToFile( std::wstring path )
 	}
 	ofs.close();
 	return 1;
-}
+}*/

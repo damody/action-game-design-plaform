@@ -34,7 +34,6 @@ extern Camera_Sptr			g_Camera;
 
 extern KeyMap				g_KeyMap;
 extern Replay				g_Replay;
-extern int					g_ReplayMode;
 
 //HolyK
 extern bool					g_TestViewEffect;//觀看2048*2048 Effect用的bool

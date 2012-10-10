@@ -17,7 +17,6 @@ int						g_Time = 0;
 Camera_Sptr				g_Camera;
 KeyMap					g_KeyMap('^','8','v','2','<','4','>','6');
 Replay					g_Replay = Replay();
-int						g_ReplayMode = 0;
 
 //test
 bool					g_TestViewEffect;
