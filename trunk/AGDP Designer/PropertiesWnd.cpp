@@ -2598,26 +2598,33 @@ void CPropertiesWnd::ClearPreBuild()
 int actionNum=0;
 void CPropertiesWnd::BuildPrebBuild()
 {
-	wchar_t buff[100];
-	wsprintf( buff, L"Animation%d", actionNum );
-	std::wstring frameName( buff );
-	actionNum++;
-
-	(*g_ActiveFramesMap)[frameName] = FrameInfos();
-	for (unsigned int i=0; i<m_Preframes.size()-1; i++)
+	CListDialog dialog;
+	for (FramesMap::iterator it = g_ActiveFramesMap->begin(); it != g_ActiveFramesMap->end(); it++)
 	{
-		m_Preframes[i].m_NextFrameName = frameName;
-		m_Preframes[i].m_NextFrameIndex = i+1;
+		dialog.AddList(std::wstring(it->first.c_str()));
 	}
 	
-	(*g_ActiveFramesMap)[frameName].assign(m_Preframes.begin(),m_Preframes.end());
+	if (dialog.DoModal() == IDOK)
+	{
 
-	AfxMessageBox(CString(buff));
+		(*g_ActiveFramesMap)[dialog.m_Select] = FrameInfos();
 
-	ClearPreBuild();
-	InitPropList_PrebuildFrame();
+		for (unsigned int i=0; i<m_Preframes.size()-1; i++)
+		{
+			m_Preframes[i].m_NextFrameName = dialog.m_Select;
+			m_Preframes[i].m_NextFrameIndex = i+1;
+		}
+
+		(*g_ActiveFramesMap)[dialog.m_Select].insert((*g_ActiveFramesMap)[dialog.m_Select].end(),m_Preframes.begin(),m_Preframes.end());
+
+		AfxMessageBox(CString("Success"));
+
+		ClearPreBuild();
+		InitPropList_PrebuildFrame();
+
+		( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndClassView.Refresh();
+	}
 	
-	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndClassView.Refresh();
 }
 
 void CPropertiesWnd::RemoveCrouch()

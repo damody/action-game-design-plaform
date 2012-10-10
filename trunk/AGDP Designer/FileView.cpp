@@ -49,6 +49,7 @@ BEGIN_MESSAGE_MAP( CFileView, CDockablePane )
 	ON_WM_SETFOCUS()
 	//ON_COMMAND(ID_PictureData_Add, &CFileView::OnPicturedataAdd)
 	ON_COMMAND( ID_PICTUREDATA_ADD, &CFileView::OnPicturedataAdd )
+	ON_COMMAND(ID_ADDNEWHERO, &CFileView::OnAddnewhero)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -430,3 +431,11 @@ void CFileView::LoadData()
 	LuaResource::LoadKeyMap(g_KeyMap);
 }
 
+
+
+void CFileView::OnAddnewhero()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+	( ( CMainFrame* )this->GetParentFrame() )->OnFileNew();
+
+}

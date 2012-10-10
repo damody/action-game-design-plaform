@@ -17,6 +17,7 @@
 #include "ConvStr.h"
 #include "ClassView.h"
 #include "ListDialog.h"
+#include "AddListDialog.h"
 
 CClassView* CClassView::instance = NULL;
 
@@ -87,7 +88,6 @@ BEGIN_MESSAGE_MAP( CClassView, CDockablePane )
 	ON_COMMAND( ID_CREATION_ADD, &CClassView::OnCreationAdd )
 	ON_COMMAND( ID_CREATION_DELETE, &CClassView::OnCreationDelete )
 	ON_COMMAND(ID_ADDTOCROUCH, &CClassView::OnAddtocrouch)
-	ON_COMMAND(ID_ADDNEWHERO, &CClassView::OnAddnewhero)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -316,35 +316,41 @@ void CClassView::OnUpdateSort( CCmdUI* pCmdUI )
 int num = 0;
 void CClassView::OnAnimationAdd()
 {
-	HTREEITEM root = m_wndClassView.GetRootItem();
-	wchar_t buff[100];
-	wsprintf( buff, L"default%d", num );
-	CString str( buff );
-	std::wstring frameName( buff );
-
-	if ( g_ActiveFramesMap != NULL )
+	CAddListDialog dialog;
+	if (dialog.DoModal() == IDOK)
 	{
-		( *g_ActiveFramesMap )[frameName] = FrameInfos();
-		HTREEITEM item = m_wndClassView.InsertItem( str, 1, 1, root );
-		( *g_ActiveFramesMap )[frameName].push_back( defaultFrameInfo( item ) );
-		wsprintf( buff, L"%d", 0 );
-		CString str( buff );
-		HTREEITEM hClass =  m_wndClassView.InsertItem( str, 3, 3, item );
-		m_wndClassView.InsertItem( _T( "Bodys" ), 3, 3, hClass );
-		m_wndClassView.InsertItem( _T( "Attacks" ), 3, 3, hClass );
-		m_wndClassView.InsertItem( _T( "HitDatas" ), 3, 3, hClass );
-		m_wndClassView.InsertItem( _T( "Catchs" ), 3, 3, hClass );
-		m_wndClassView.InsertItem( _T( "BloodInfos" ), 3, 3, hClass );
-		m_wndClassView.InsertItem( _T( "Creations" ), 3, 3, hClass );
-		m_wndClassView.Expand( root, TVE_EXPAND );
-		m_wndClassView.ModifyStyle( 0, TVS_EDITLABELS );
-		m_wndClassView.EditLabel( item );
-		num++;
-		//Refresh
-		g_FrameName = frameName;
-		g_FrameIndex = 0;
-		( ( CMainFrame* )this->GetParentFrame() )->RefreshFrameEdit();
-		( ( CMainFrame* )this->GetParentFrame() )->m_wndProperties.RefreshPropList_Frame();
+		if (g_ActiveFramesMap->find(dialog.m_Text)==g_ActiveFramesMap->end())
+		{
+			HTREEITEM root = m_wndClassView.GetRootItem();
+			std::wstring frameName = dialog.m_Text;
+			if ( g_ActiveFramesMap != NULL )
+			{
+				( *g_ActiveFramesMap )[frameName] = FrameInfos();
+				HTREEITEM item = m_wndClassView.InsertItem( CString(frameName.c_str()), 1, 1, root );
+				( *g_ActiveFramesMap )[frameName].push_back( defaultFrameInfo( item ) );
+				wchar_t buff[100];
+				wsprintf( buff, L"%d", 0 );
+				CString str( buff );
+				HTREEITEM hClass =  m_wndClassView.InsertItem( str, 3, 3, item );
+				m_wndClassView.InsertItem( _T( "Bodys" ), 3, 3, hClass );
+				m_wndClassView.InsertItem( _T( "Attacks" ), 3, 3, hClass );
+				m_wndClassView.InsertItem( _T( "HitDatas" ), 3, 3, hClass );
+				m_wndClassView.InsertItem( _T( "Catchs" ), 3, 3, hClass );
+				m_wndClassView.InsertItem( _T( "BloodInfos" ), 3, 3, hClass );
+				m_wndClassView.InsertItem( _T( "Creations" ), 3, 3, hClass );
+				m_wndClassView.Expand( root, TVE_EXPAND );
+				m_wndClassView.ModifyStyle( 0, TVS_EDITLABELS );
+				m_wndClassView.EditLabel( item );
+				num++;
+				//Refresh
+				g_FrameName = frameName;
+				g_FrameIndex = 0;
+				( ( CMainFrame* )this->GetParentFrame() )->RefreshFrameEdit();
+				( ( CMainFrame* )this->GetParentFrame() )->m_wndProperties.RefreshPropList_Frame();
+			}
+		}else{
+			AfxMessageBox(L"SAME Animation Name");
+		}
 	}
 }
 
@@ -1187,12 +1193,4 @@ void CClassView::OnAddtocrouch()
  		g_HeroInfo->m_CrouchMap[idx].m_FrameOffset = _ttoi(m_wndClassView.GetItemText( m_hTreeItem ));
 		( ( CMainFrame* )this->GetParentFrame() )->m_wndProperties.InitPropList_Hero();
 	}
-}
-
-
-
-void CClassView::OnAddnewhero()
-{
-	// TODO: 在此加入您的命令處理常式程式碼
-	( ( CMainFrame* )this->GetParentFrame() )->OnFileNew();
 }

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "AGDP Designer.h"
 #include "ListDialog.h"
+#include "AddListDialog.h"
 #include "afxdialogex.h"
 #include "global.h"
 
@@ -43,6 +44,7 @@ void CListDialog::AddList( std::wstring& str )
 }
 
 BEGIN_MESSAGE_MAP(CListDialog, CDialogEx)
+	ON_BN_CLICKED(IDC_ADDLIST, &CListDialog::OnBnClickedAddlist)
 END_MESSAGE_MAP()
 
 BOOL CListDialog::OnInitDialog()
@@ -60,10 +62,16 @@ BOOL CListDialog::OnInitDialog()
 	return reasult;
 }
 
-
-
-
-
 // CActionListDialog 訊息處理常式
 
-
+void CListDialog::OnBnClickedAddlist()
+{
+	// TODO: 在此加入控制項告知處理常式程式碼
+	CAddListDialog dialog;
+	if (dialog.DoModal()==IDOK)
+	{
+		CComboBox* cb = ( CComboBox* )GetDlgItem( IDC_CB_LIST );
+		cb->AddString( CString( dialog.m_Text.c_str() ) );
+		cb->SetCurSel(cb->FindString(0,CString( dialog.m_Text.c_str() )));
+	}
+}

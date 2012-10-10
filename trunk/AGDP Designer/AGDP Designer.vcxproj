@@ -173,6 +173,7 @@
     <None Include="res\writesmall.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddListDialog.h" />
     <ClInclude Include="ListDialog.h" />
     <ClInclude Include="AGDP Designer.h" />
     <ClInclude Include="AGDP DesignerDoc.h" />
@@ -210,6 +211,7 @@
     <ClInclude Include="ViewTree.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddListDialog.cpp" />
     <ClCompile Include="ListDialog.cpp" />
     <ClCompile Include="AGDP Designer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>

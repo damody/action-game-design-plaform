@@ -77,5 +77,6 @@ protected:
 public:
 	//afx_msg void OnPicturedataAdd();
 	afx_msg void OnPicturedataAdd();
+	afx_msg void OnAddnewhero();
 };
 

@@ -21,4 +21,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV ¤ä´©
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedAddlist();
 };
