@@ -106,7 +106,7 @@ public:
 	void SwitchPictureView( int index );
 	void UpdatePicture(int index);
 	void OpenPictureView( CString& name, PictureData* pic, int index, HeroInfo* info);	
-	
+	FrameInfo DefaultFrameInfo(std::wstring& framename);
 public:  // 控制列內嵌的成員
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;

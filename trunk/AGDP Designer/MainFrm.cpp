@@ -534,6 +534,16 @@ void CMainFrame::OnFileNew()
 		{
 			HeroInfo_RawPtr hero = HeroInfo_RawPtr( new HeroInfo );
 			hero->m_Name = std::wstring( fileNew.m_Name.GetBuffer( 0 ) );
+			hero->m_FramesMap[std::wstring(L"default")].push_back(DefaultFrameInfo(std::wstring(L"default")));
+			hero->m_FramesMap[std::wstring(L"standing")].push_back(DefaultFrameInfo(std::wstring(L"standing")));
+			hero->m_FramesMap[std::wstring(L"walking")].push_back(DefaultFrameInfo(std::wstring(L"walking")));
+			hero->m_FramesMap[std::wstring(L"in_the_air")].push_back(DefaultFrameInfo(std::wstring(L"in_the_air")));
+			hero->m_FramesMap[std::wstring(L"injured")].push_back(DefaultFrameInfo(std::wstring(L"injured")));
+			hero->m_FramesMap[std::wstring(L"lying")].push_back(DefaultFrameInfo(std::wstring(L"lying")));
+			hero->m_FramesMap[std::wstring(L"injured")].push_back(DefaultFrameInfo(std::wstring(L"injured")));
+			hero->m_FramesMap[std::wstring(L"falling_front")].push_back(DefaultFrameInfo(std::wstring(L"falling_front")));
+			hero->m_FramesMap[std::wstring(L"falling_back")].push_back(DefaultFrameInfo(std::wstring(L"falling_back")));
+			hero->m_FramesMap[std::wstring(L"crouch")].push_back(DefaultFrameInfo(std::wstring(L"crouch")));
 			m_wndFileView.AddFile( hero );
 		}
 	}
@@ -631,4 +641,30 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
 	m_D3DFrameView.NextFrame();
 	CMDIFrameWndEx::OnTimer(nIDEvent);
+}
+
+FrameInfo CMainFrame::DefaultFrameInfo(std::wstring& frameName)
+{
+	FrameInfo fi;
+	fi.m_FrameName = frameName ;
+	fi.m_FrameIndex = 0;
+	fi.m_NextFrameName = L"default";
+	fi.m_NextFrameIndex = 0;
+	fi.m_HeroAction = 0;
+	fi.m_Wait = 1;
+	fi.m_ClearKeyQueue = false;
+	fi.m_PictureID = 0;
+	fi.m_CenterX = 0.0f;
+	fi.m_CenterY = 0.0f;
+	fi.m_PictureX = 1;
+	fi.m_PictureY = 1;
+	fi.m_Consume.m_JumpRule = 0;
+	fi.m_Consume.m_HP = 0;
+	fi.m_Consume.m_MP = 0;
+	fi.m_Consume.m_NotEnoughFrameName = L"default";
+	fi.m_Consume.m_NotEnoughFrame = 0;
+	fi.m_DVX = 0.0f;
+	fi.m_DVY = 0.0f;
+	fi.m_DVZ = 0.0f;
+	return fi;
 }

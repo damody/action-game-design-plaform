@@ -60,7 +60,6 @@ protected:
 	FrameInfo defaultFrameInfo( HTREEITEM item );
 
 	TreeItemMap	m_propMap;
-	FramesMap	m_FrameMap;
 
 	HTREEITEM m_hTreeItem;
 
