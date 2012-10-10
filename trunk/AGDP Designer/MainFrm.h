@@ -162,4 +162,9 @@ public:
 	afx_msg void OnButtonRun();
 	afx_msg void OnClose();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnButtonhistory();
+	afx_msg void OnButtonUndo();
+	afx_msg void OnButtonRedo();
+	afx_msg void OnUpdateButtonUndo(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateButtonRedo(CCmdUI *pCmdUI);
 };

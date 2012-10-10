@@ -184,7 +184,7 @@ void CViewTree::OnLButtonDblClk( UINT nFlags, CPoint point )
 	UINT flags = 0;
 	HTREEITEM hTreeItem = this->HitTest( pt, &flags );
 
-	if ( hTreeItem != NULL )
+	//if ( hTreeItem != NULL )
 	{
 		( ( CClassView* )this->GetParent() )->OnSelectItem( hTreeItem );
 	}

@@ -62,6 +62,11 @@ BEGIN_MESSAGE_MAP( CMainFrame, CMDIFrameWndEx )
 	ON_COMMAND( ID_BUTTON_RUN, &CMainFrame::OnButtonRun )
 	ON_WM_CLOSE()
 	ON_WM_TIMER()
+	ON_COMMAND(ID_BUTTONHISTORY, &CMainFrame::OnButtonhistory)
+	ON_COMMAND(ID_BUTTON_UNDO, &CMainFrame::OnButtonUndo)
+	ON_COMMAND(ID_BUTTON_REDO, &CMainFrame::OnButtonRedo)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_UNDO, &CMainFrame::OnUpdateButtonUndo)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_REDO, &CMainFrame::OnUpdateButtonRedo)
 END_MESSAGE_MAP()
 
 // CMainFrame 建構/解構
@@ -642,6 +647,58 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	m_D3DFrameView.NextFrame();
 	CMDIFrameWndEx::OnTimer(nIDEvent);
 }
+void CMainFrame::OnButtonhistory()
+{
+	// TODO: 在此加入您的命令處理常式程式碼
+}
+
+
+void CMainFrame::OnButtonUndo()
+{
+	CPropertiesWnd* pWnd = CPropertiesWnd::GetInstance();
+	if(pWnd->m_CommandManager != NULL)
+	{
+		if(pWnd->m_CommandManager->CanUndo())
+		{
+			pWnd->m_CommandManager->Undo();
+		}
+	}
+}
+
+
+void CMainFrame::OnButtonRedo()
+{
+	CPropertiesWnd* pWnd = CPropertiesWnd::GetInstance();
+	if(pWnd->m_CommandManager != NULL)
+	{
+		if(pWnd->m_CommandManager->CanRedo())
+		{
+			pWnd->m_CommandManager->Redo();
+		}
+	}
+}
+
+
+void CMainFrame::OnUpdateButtonUndo(CCmdUI *pCmdUI)
+{
+	CPropertiesWnd* pWnd = CPropertiesWnd::GetInstance();
+
+	if(pWnd->m_CommandManager != NULL)
+		pCmdUI->Enable(pWnd->m_CommandManager->CanUndo());
+	else
+		pCmdUI->Enable(FALSE);
+}
+
+
+void CMainFrame::OnUpdateButtonRedo(CCmdUI *pCmdUI)
+{
+	CPropertiesWnd* pWnd = CPropertiesWnd::GetInstance();
+
+	if(pWnd->m_CommandManager != NULL)
+		pCmdUI->Enable(pWnd->m_CommandManager->CanRedo());
+	else
+		pCmdUI->Enable(FALSE);
+}
 
 FrameInfo CMainFrame::DefaultFrameInfo(std::wstring& frameName)
 {
@@ -668,3 +725,5 @@ FrameInfo CMainFrame::DefaultFrameInfo(std::wstring& frameName)
 	fi.m_DVZ = 0.0f;
 	return fi;
 }
+
+

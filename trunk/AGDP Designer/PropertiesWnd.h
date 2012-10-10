@@ -15,6 +15,7 @@
 #include "Edit/CommandLambda.h"
 #include "game/FrameInfo.h"
 #include <functional>
+#include <map>
 class CPropertiesWnd;
 typedef void (CPropertiesWnd::*_Func)(void);
 class CPropertiesToolBar : public CMFCToolBar
@@ -83,7 +84,7 @@ private:
 	int m_EditProp;// 0-None 1-Basic 2-Frame 3-Bodys 4-Attack 5-Hit 6-Catch 7-Creation 8-PictureData 9-Prebuild Frame
 	int m_Index;
 	FrameInfos m_Preframes;
-	CommandManager m_CommandManager;
+	std::map<HTREEITEM, CommandManager*> m_CommandManagers;
 // «Øºc
 public:
 	CPropertiesWnd();
@@ -100,6 +101,7 @@ public:
 // ÄÝ©Ê
 public:
 	HTREEITEM m_lastSelectedItem;
+	CommandManager* m_CommandManager;
 protected:
 	static CPropertiesWnd* instance;
 	CFont m_fntPropList;
@@ -197,4 +199,10 @@ public:
 	void UpdateHitData();
 	void UpdateHero();
 	//void DeleteProperty(CMFCPropertyGridProperty* pProp);
+
+	void SwitchCommandManager(HTREEITEM item);
+	afx_msg void OnButtonUndo();
+	afx_msg void OnButtonRedo();
+	afx_msg void OnUpdateButtonUndo(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateButtonRedo(CCmdUI *pCmdUI);
 };

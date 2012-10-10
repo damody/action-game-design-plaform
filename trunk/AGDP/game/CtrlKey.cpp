@@ -15,12 +15,18 @@ KeyQueue Keyboard::Update()
 
 	for ( CtrlKeyMap::iterator it_map = m_CtrlKeyMap.begin() ; it_map != m_CtrlKeyMap.end() ; it_map++ )
 	{
+		/*if ( InputStateS::instance().isKeyDown( it_map->first ) && it_map->second.keyDown == )
+		{
+			
+			continue;
+		}*/
 		if ( InputStateS::instance().isKeyDown( it_map->first ) )
 		{
 			KeyInfo info = {};
 			info.key = it_map->second.keyDown;
 			info.time = g_Time;
 			keyQue.push_back( info );
+			//g_Replay.PushKeyInfo( info );
 		}
 		if ( InputStateS::instance().isKeyUp( it_map->first ) )
 		{
@@ -28,6 +34,7 @@ KeyQueue Keyboard::Update()
 			info.key = it_map->second.keyUp;
 			info.time = g_Time;
 			keyQue.push_back( info );
+			//g_Replay.PushKeyInfo( info );
 		}
 	}
 
