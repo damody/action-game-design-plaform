@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "game/CtrlKey.h"
-#include "global.h"
+//#include "global.h"
 
 namespace boost {namespace serialization {class access;}}
 
