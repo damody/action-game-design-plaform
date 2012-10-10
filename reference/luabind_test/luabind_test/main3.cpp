@@ -16,12 +16,11 @@ public:
 	{
 		return m_num;
 	}
-	void Set(int n)
+	inline void Set(int n)
 	{
 		m_num = n;
 	}
 };
-
 
 typedef void (TestClass::*MFPTR)(int);
 template <class T>
