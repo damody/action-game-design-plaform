@@ -69,7 +69,7 @@ private:
 	int				m_Fall;
 	AttackRest		m_AtkRest;
 	KeyQueue		m_KeyQue;
-	Conditions		m_Conditions;
+	Condition*	m_Condition;
 	//判斷非方向按鍵作用與否，1表示已作用，0則否，0:atk1, 1:atk2, 2:j, 3:d
 	boost::dynamic_bitset<byte> d_key;
 
@@ -102,6 +102,8 @@ private:
 		ar& 	m_KeyQue;
 	}
 
+	//ConditionUpdate
+	inline void ConditionUpdate( float dt );
 public:
 	const std::wstring hero;
 
@@ -133,8 +135,7 @@ public:
 	PolygonVerteices GetPolygonLineVerteices() const;
 	//狀態
 	static void	RegisterFunctionToLua( LuaCell_Sptr luadata );
-	bool		AddCondition( int effectIndex , int time );
-	void		ConditionUpdate( float dt );
+	inline void	AddCondition( int effectIndex , int time );
 	//創造物件
 	friend bool			Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 	//碰撞判定用

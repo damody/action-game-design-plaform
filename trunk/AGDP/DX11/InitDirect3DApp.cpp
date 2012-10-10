@@ -1322,8 +1322,8 @@ void InitDirect3DApp::TestFire()
 				system("pause");
 				throw "can't find luaResource";
 			}
+			Hero::RegisterFunctionToLua( testLua );
 		}
-		Hero::RegisterFunctionToLua( testLua );
 		try {
 			luabind::call_function<int>(testLua->GetLuaState(), "AddCondition",m_Player.m_Hero,0,2);
 		}catch(luabind::error& e){

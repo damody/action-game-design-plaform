@@ -31,10 +31,11 @@
 Hero::Hero() {}
 
 Hero::Hero( std::wstring h ):
-	hero( h ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 ), d_run( 0 ), m_EffectScale( 1.0f ), d_key(g_KeyMap.sKeySize()), m_Fall( 70 ), m_FrontDefence( 0 ), m_BackDefence( 0 ), m_AtkRest()
+	hero( h ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 ), d_run( 0 ), m_EffectScale( 1.0f ), d_key(g_KeyMap.sKeySize()), m_Fall( 70 ), m_FrontDefence( 0 ), m_BackDefence( 0 ), m_AtkRest(),m_Condition(0)
 {
 	m_HeroInfo = g_HeroInfoManager.GetHeroInfo( hero );
 	m_Record = Record_Sptr( new Record() );
+	
 
 	if ( m_HeroInfo.get() )
 	{
@@ -66,6 +67,12 @@ void Hero::Init()
 	m_FrameInfo = f;
 	m_CenterX = f->m_CenterX;
 	m_CenterY = f->m_CenterY;
+	//Creat Condition Object
+	if( !m_Condition )
+	{
+		m_Condition = new Condition();
+	}
+
 }
 
 void Hero::Update( float dt )
@@ -1098,16 +1105,17 @@ int Hero::Team() const { return m_Team; }
 
 void Hero::CreateEffect()
 {
-	if( m_Conditions.size() == 0 )
+	
+	if( m_Condition->Test()==false )
 	{
 		m_EffectScale = 1.0f;
 	}
 	else
 	{
-		for( unsigned int idx = 0;idx<m_Conditions.size();idx++ )
+		for( unsigned int idx = 0;idx<1;idx++ )
 		{
 			Vector4 v = Vector4( ( float )m_PicX, ( float )m_PicY, ( float )m_PicH, ( float )m_PicW );
-			m_Texture = g_EffectManager->CreateEffect( m_Conditions[idx].m_effectIndex , m_Texture, &v );
+			m_Texture = g_EffectManager->CreateEffect( idx , m_Texture, &v );
 			m_PicX = ( int )v.x;
 			m_PicY = ( int )v.y;
 			m_PicH = ( int )v.z;
@@ -1464,34 +1472,13 @@ void Hero::RegisterFunctionToLua( LuaCell_Sptr luadata )
 			.def("AddCondition", &Hero::AddCondition)
 		];
 }
-bool Hero::AddCondition( int effectIndex , int time )
+inline void Hero::AddCondition( int effectIndex , int time )
 {
-	if( m_Conditions.size() >= CONDITION_MAX)
-	{
-		std::cout<<"Condition Full"<<std::endl;
-		return false;
-	}
-	/* update time is 1/60 */
-	Condition temp = {effectIndex,time*60};
-	m_Conditions.push_back(temp);
-	return true;
+	m_Condition->Add(effectIndex,time);
 }
-void Hero::ConditionUpdate( float dt )
+inline void Hero::ConditionUpdate( float dt )
 {
-	for( unsigned int idx = 0;idx<m_Conditions.size();idx++ )
-	{
-		m_Conditions[idx].m_time--;
-		//call Lua to do something
-
-		//----------------------
-
-		//time to remove it
-		if( m_Conditions[idx].m_time < 0 )
-		{
-			m_Conditions.erase( m_Conditions.begin() + idx , m_Conditions.begin() + idx + 1 );
-			idx--;
-		}
-	}
+	m_Condition->Update( dt );
 }
 
 bool SortHero( Hero_RawPtr a, Hero_RawPtr b )
