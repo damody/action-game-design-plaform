@@ -6,25 +6,32 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/string.hpp>
 
-void Replay::PushKeyInfo( int key, int _g_time, int state )
+#define INT_MAX       2147483647
+
+Replay::Replay( int arge )
 {
-	repalyKeyQueue[ _g_time ] = state? 0x1000 | key: key;
+	RepalyKeyQueue.clear(); 
+	if ( arge == ReplayArg::REPLAY_TEST )
+	{ 
+		replayMode = ReplayArg::REPLAY_PLAY;
+		RepalyKeyQueue[50] = 0x10C8;
+		RepalyKeyQueue[70] = 0x00C8;
+		RepalyKeyQueue[100] = 0x10CB; 
+		RepalyKeyQueue[102] = 0x00CB; 
+		RepalyKeyQueue[104] = 0x10CB; 
+		RepalyKeyQueue[106] = 0x00CB; 
+		RepalyKeyQueue[ReplayArg::RKQIT_LAST] = 0xFFFF;
+	}
+	else
+	{
+		replayMode = arge;
+	}
+	RkqIt = RepalyKeyQueue.begin();
 }
 
-void Replay::PushKeyInfo( int key, int _g_time, char state )
+Replay::~Replay()
 {
-	repalyKeyQueue[ _g_time ] = state=='d'? 0x1000 | key: key;
-}
-
-Replay::Replay()
-{
-	repalyKeyQueue.clear(); 
-	replayMode = 1; 
-	repalyKeyQueue[0] = 0x10CB; 
-	repalyKeyQueue[2] = 0x00CB; 
-	repalyKeyQueue[4] = 0x10CB; 
-	repalyKeyQueue[6] = 0x00CB; 
-	rkqIt = repalyKeyQueue.begin();
+	RepalyKeyQueue[ReplayArg::RKQIT_LAST] = 0xFFFF;
 }
 
 /*bool Replay::WriteToFile( std::wstring path )

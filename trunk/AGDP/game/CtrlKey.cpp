@@ -15,17 +15,17 @@ KeyQueue Keyboard::Update()
 
 	for ( CtrlKeyMap::iterator it_map = m_CtrlKeyMap.begin() ; it_map != m_CtrlKeyMap.end() ; it_map++ )
 	{
-		if ( !g_Replay.replayMode )
+		if ( !g_Replay.GetReplayMode() && !g_Replay.IsRkqitEnd() )
 		{
 			//while ( g_Replay.rkqIt->first < g_Time ) { g_Replay.rkqIt++; }
 
-			if ( g_Replay.rkqIt->first == g_Time && ( g_Replay.rkqIt->second & 0x00FF ) == it_map->first )
+			if ( g_Replay.GetRkqItTime() == g_Time && g_Replay.GetRkqItKeyIndex() == it_map->first )
 			{
 				KeyInfo info = {};
-				info.key = ( g_Replay.rkqIt->second & 0xF000 ) ? it_map->second.keyDown: it_map->second.keyUp;
+				info.key = g_Replay.GetRkqItKeyState() ? it_map->second.keyDown: it_map->second.keyUp;
 				info.time = g_Time;
 				keyQue.push_back( info );
-				g_Replay.rkqIt++;
+				g_Replay.RkqItAdd();
 				break;
 			}
 		}
@@ -37,7 +37,7 @@ KeyQueue Keyboard::Update()
 				info.key = it_map->second.keyDown;
 				info.time = g_Time;
 				keyQue.push_back( info );
-				if( g_Replay.replayMode ) { g_Replay.PushKeyInfo( it_map->first, g_Time, 'd' ); }
+				g_Replay.PushKeyInfo( it_map->first, g_Time, 'd' );
 			}
 			if ( InputStateS::instance().isKeyUp( it_map->first ) )
 			{
@@ -45,7 +45,7 @@ KeyQueue Keyboard::Update()
 				info.key = it_map->second.keyUp;
 				info.time = g_Time;
 				keyQue.push_back( info );
-				if( g_Replay.replayMode ) { g_Replay.PushKeyInfo( it_map->first, g_Time, 'u' ); }
+				g_Replay.PushKeyInfo( it_map->first, g_Time, 'u' );
 			}
 		}
 	}
