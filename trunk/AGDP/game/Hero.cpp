@@ -123,22 +123,23 @@ void Hero::Update( float dt )
 		//落地判定
 		if ( m_Action != 51 ) //HeroAction::UNIQUE_SKILL
 		{
-			//m_Position.y = 0;
 			m_Vel.y = 0;
 
-			if ( pastInAir )
-			{
+			if ( pastInAir ){
 				//Frame 改到 CrouchMap 中對應的 Frame
 				CrouchMap::iterator icm = m_HeroInfo->m_CrouchMap.find( m_Action );
 
-				if ( icm != m_HeroInfo->m_CrouchMap.end() )
-				{
+				if ( icm != m_HeroInfo->m_CrouchMap.end() ){
 					SwitchFrame( icm->second.m_FrameName, icm->second.m_FrameOffset );
 				}
-				else
-				{
+				else{
 					SwitchFrame( L"crouch", 0 );
 				}
+
+				if(m_Vel.x > 7.0) m_Vel.x = 7.0;
+				else if(m_Vel.x < -7.0) m_Vel.x = -7.0;
+				if(m_Vel.z > 7.0) m_Vel.z = 7.0;
+				else if(m_Vel.z < -7.0) m_Vel.z = -7.0;
 			}
 		}
 		else { m_Position = pastPos + m_Vel; }
@@ -245,9 +246,17 @@ int Hero::GetTextureID() const {	return m_Texture; }
 
 void Hero::NextFrame()
 {
-	FrameInfo* f = &m_HeroInfo->m_FramesMap[m_Frame][m_FrameID];
-	m_Frame = f->m_NextFrameName;
-	m_FrameID = f->m_NextFrameIndex;
+	FrameInfo *f = m_FrameInfo;
+	if(m_Action == 33 || m_Action == 34){
+		if( m_Vel.y < 10.0 && m_Vel.y > 5.0 && m_FrameID != 1 ) m_FrameID = 1;
+		else if( m_Vel.y < 5.0 && m_Vel.y > -7.0 && m_FrameID != 2 ) m_FrameID = 2;
+		else if( m_Vel.y < -7.0 && m_FrameID != 3 ) m_FrameID = 3;
+		else return;
+	}
+	else {
+		m_Frame = f->m_NextFrameName;
+		m_FrameID = f->m_NextFrameIndex;
+	}
 NextLoop:
 	FramesMap::iterator iframe = m_HeroInfo->m_FramesMap.find( m_Frame );
 
@@ -286,11 +295,6 @@ NextLoop:
 	else if ( f->m_ClearKeyQueue == 2 )
 	{
 		m_KeyQue.clear();
-	}
-
-	if ( m_Action == 40 && f->m_HeroAction != m_Action )
-	{
-		m_Vel = Vector3( 0, 0, 0 );
 	}
 
 	//sound
@@ -1051,7 +1055,7 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 			{
 				nFrame = L"falling_back";
 				nFrameID = 0;
-				m_Vel.y += 2;
+				if(m_Vel.y < 10) m_Vel.y += 10;
 			}
 		}
 		else
@@ -1079,7 +1083,7 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 			{
 				nFrame = L"falling_front";
 				nFrameID = 0;
-				m_Vel.y += 2;
+				if(m_Vel.y < 10) m_Vel.y += 10;
 			}
 		}
 		wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
