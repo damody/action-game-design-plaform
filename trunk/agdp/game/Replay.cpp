@@ -11,15 +11,6 @@
 Replay::Replay()
 {
 	RepalyKeyQueue.clear(); 
-	
-	//RepalyKeyQueue[50] = 0x10C8;
-	//RepalyKeyQueue[70] = 0x00C8;
-	//RepalyKeyQueue[100] = 0x10CB; 
-	//RepalyKeyQueue[102] = 0x00CB; 
-	//RepalyKeyQueue[104] = 0x10CB; 
-	//RepalyKeyQueue[106] = 0x00CB; 
-	//RepalyKeyQueue[ReplayArg::RKQIT_LAST] = 0xFFFF;
-
 	RecordState = 0;
 	PlayState = 0;
 	StartTime = 0;
@@ -90,7 +81,7 @@ bool Replay::IsRecord()
 void Replay::StartPlay()
 {
 	StartTime = g_Time;
-	if ( !RecordState ) { PlayState = 1; }
+	if ( !RecordState && !RepalyKeyQueue.empty() ) { PlayState = 1; }
 }
 
 void Replay::StopPlay()
@@ -100,7 +91,7 @@ void Replay::StopPlay()
 
 bool Replay::IsPlay()
 {
-	return ( PlayState? TRUE: FALSE );
+	return ( PlayState && !RepalyKeyQueue.empty() ? TRUE: FALSE );
 }
 
 int Replay::GetStartTime()

@@ -16,7 +16,8 @@ KeyQueue Keyboard::Update()
 	{
 		g_Replay.ResetRkqIt();
 		g_Replay.StartPlay();
-		std::cout << "test: play start\n";
+		if ( g_Replay.IsPlay() ) { std::cout << "test: play start\n"; }
+		else { std::cout << "test: play error\n"; }
 	}
 	else if ( InputStateS::instance().isKeyDown( KEY_P ) )
 	{
@@ -27,7 +28,8 @@ KeyQueue Keyboard::Update()
 	{
 		g_Replay = Replay();
 		g_Replay.StartRecord();
-		std::cout << "test: record start\n";
+		if ( g_Replay.IsRecord() ) { std::cout << "test: record start\n"; }
+		else { std::cout << "test: record error\n"; }
 	}
 	else if ( InputStateS::instance().isKeyDown( KEY_RBRACKET ) )
 	{

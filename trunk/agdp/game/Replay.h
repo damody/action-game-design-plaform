@@ -33,11 +33,11 @@ public:
 	void		PushKeyInfo( int key, int _g_time, char state);
 	void		ResetRkqIt();
 	void		RkqItAdd();
-	int		GetRkqItTime();
-	int		GetStartTime();
-	int		GetRkqItKeyIndex();
+	int			GetRkqItTime();
+	int			GetStartTime();
+	int			GetRkqItKeyIndex();
 	//down 1, up 0
-	int		GetRkqItKeyState();
+	int			GetRkqItKeyState();
 	//record 1, play 0
 	//inline int		GetReplayMode();
 	bool		IsRkqitEnd();
