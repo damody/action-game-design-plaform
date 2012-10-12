@@ -16,7 +16,7 @@ float					g_TimeSpeed = 1.f / 60.f;
 int						g_Time = 0;
 Camera_Sptr				g_Camera;
 KeyMap					g_KeyMap('^','8','v','2','<','4','>','6');
-Replay					g_Replay = Replay(Replay::ReplayArg::REPLAY_TEST);
+Replay					g_Replay = Replay();
 
 //test
 bool					g_TestViewEffect;

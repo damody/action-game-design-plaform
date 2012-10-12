@@ -737,17 +737,17 @@ bool Hero::ScanKeyQue()
 
 	//清理佇列
 	i = m_KeyQue.begin();
-	printf("keymap: ");
+	//printf("keymap: ");
 	while ( i != m_KeyQue.end() )
 	{
-		printf("%c, %d, %d\t",i->key,i->time,i->timeUp);
+		//printf("%c, %d, %d\t",i->key,i->time,i->timeUp);
 		if ( g_KeyMap.isKeyUp(i->key) && g_Time - i->timeUp > KEYLIFE_AFTER_KEYUP )
 		{
 			i = m_KeyQue.erase( i );
 		}
 		else { i++; }
 	}
-	putchar('\n');
+	//putchar('\n');
 	//下個影格
 	if ( nFrame.empty() )
 	{

@@ -4,6 +4,7 @@
 #include <map>
 #include "game/CtrlKey.h"
 //#include "global.h"
+extern int	g_Time;
 
 namespace boost {namespace serialization {class access;}}
 
@@ -12,8 +13,10 @@ class Replay
 private:
 	std::map< int, int > RepalyKeyQueue;
 	std::map< int, int >::iterator RkqIt;
-	int	replayMode; //record 1, play 0
-	int nextKeyTime;
+	//int	ReplayMode; //record 1, play 0
+	int RecordState; //record 1, stop 0
+	int PlayState; //play 1, stop 0
+	int StartTime;
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -22,30 +25,29 @@ private:
 		ar&		repalyKeyQueue;
 	}
 public:
-	Replay( int arge );
+	Replay();
 	~Replay();
 
 	//state: down 1, up 0
-	inline void		PushKeyInfo( int key, int _g_time, int state) { RepalyKeyQueue[ _g_time ] = state? 0x1000 | key: key; }
-	inline void		PushKeyInfo( int key, int _g_time, char state) { RepalyKeyQueue[ _g_time ] = state=='d'? 0x1000 | key: key; }
-	inline void		ResetRkqIt() { RkqIt = RepalyKeyQueue.begin(); }
-	inline void		RkqItAdd() { RkqIt++; }
-	inline int		GetRkqItTime() { return RkqIt->first; }
-	inline int		GetRkqItKeyIndex() { return ( RkqIt->second & 0x00FF ); }
+	void		PushKeyInfo( int key, int _g_time, int state);
+	void		PushKeyInfo( int key, int _g_time, char state);
+	void		ResetRkqIt();
+	void		RkqItAdd();
+	int		GetRkqItTime();
+	int		GetStartTime();
+	int		GetRkqItKeyIndex();
 	//down 1, up 0
-	inline int		GetRkqItKeyState() { return ( RkqIt->second & 0xF000 ); }
+	int		GetRkqItKeyState();
 	//record 1, play 0
-	inline int		GetReplayMode() { return replayMode; }
-	inline bool		IsRkqitEnd() { return ( RkqIt->first == ReplayArg::RKQIT_LAST ); }
+	//inline int		GetReplayMode();
+	bool		IsRkqitEnd();
 
-	enum ReplayArg
-	{
-		REPLAY_TEST = -1,
-		REPLAY_PLAY = 0,
-		REPLAY_RECORD = 1,
-
-		RKQIT_LAST = 2147483647
-	};
+	void		StartRecord();
+	void		StopRecord();
+	bool		IsRecord();
+	void		StartPlay();
+	void		StopPlay();
+	bool		IsPlay();
 
 	//bool WriteToFile( std::wstring path );
 };
