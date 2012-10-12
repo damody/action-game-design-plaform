@@ -476,7 +476,7 @@ void CPropertiesWnd::InitPropList_Hero()
 	m_wndPropList.AddProperty( pPropMain );
 
 	pPropMain = new CMFCPropertyGridProperty( _T( "Crouch Map" ) );
-	CMFCPropertyGridPropertyButton* func = new CMFCPropertyGridPropertyButton(this,_T( "Remve" ), _T(""), _T( "" ),0);
+	CMFCPropertyGridPropertyButton* func = new CMFCPropertyGridPropertyButton(this,_T( "Remove" ), _T(""), _T( "" ),0);
 	func->SetFunction(&CPropertiesWnd::RemoveCrouch);
 	pPropMain->AddSubItem(func);
 	int i=0;
@@ -725,12 +725,12 @@ void CPropertiesWnd::InitPropList_HitData()
 	m_wndPropList.AddProperty( pPropKey );
 
 	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "主要屬性" ) );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_KeyQueue" ), _T( "" ), _T( "m_KeyQueue" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Key Queue" ), _T( "" ), _T( "組合鍵配置" ) );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_FrameName" ), _T( "default" ), _T( "m_FrameName" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame Name" ), _T( "default" ), _T( "切換到的動作" ) );
 	AddNormalActionDcase( pProp );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_FrameOffest" ), varInt(0), _T( "m_FrameOffest" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Frame Index" ), varInt(0), _T( "影格索引" ) );
 	pPropMain->AddSubItem( pProp );
 	pPropMain->Expand();
 	m_wndPropList.AddProperty( pPropMain );
@@ -764,19 +764,19 @@ void CPropertiesWnd::InitPropList_CatchInfo( int polygonCount )
 	}
 
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_ZWidth" ), varFloat(), _T( "m_ZWidth" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Z Width" ), varFloat(), _T( "攻擊在Z軸上的厚度" ) );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_Injury" ), varInt(), _T( "m_Injury" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Injury" ), varInt(), _T( "受攻擊方的損傷" ) );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_Kind" ), varInt(), _T( "m_Kind" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Kind" ), varInt(), _T( "抓技種類" ) );
 	pPropMain->AddSubItem( pProp );
-	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty( _T( "m_CatchPosition" ), 0, TRUE );
+	CMFCPropertyGridProperty* pDirectionVector = new CMFCPropertyGridProperty( _T( "Catch Position" ), 0, TRUE );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "X" ), varFloat(), _T( "X" ) );
 	pDirectionVector->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Y" ), varFloat(), _T( "Y" ) );
 	pDirectionVector->AddSubItem( pProp );
 	pPropMain->AddSubItem( pDirectionVector );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "m_CatchWhere" ), _T( "NECK" ), _T( "m_CatchWhere" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Catch Where" ), _T( "NECK" ), _T( "抓取位置" ) );
 	pProp->AddOption( _T( "NECK" ) );
 	pProp->AddOption( _T( "LEG" ) );
 	pProp->AddOption( _T( "WAIST" ) );
