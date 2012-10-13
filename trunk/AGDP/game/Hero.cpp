@@ -1029,6 +1029,7 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 		std::wstring nFrame;
 		int nFrameID = 0;
 		Record_Sptr rHeroRec = rHero->GetRecord();
+		int effect = -1;
 
 		if ( ( hitPos.x > m_Position.x && m_FaceSide ) || ( hitPos.x < m_Position.x && !m_FaceSide ) )
 		{
@@ -1045,6 +1046,7 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 				m_HP -= rAtk->m_Injury;
 				m_MaxRecoverHP -= rAtk->m_Injury / 3;
 				m_Fall -= rAtk->m_Fall;
+				effect = rAtk->m_Effect;
 				nFrame = L"injured";
 				nFrameID = 0;
 				rHeroRec->Attack += rAtk->m_Injury;
@@ -1073,6 +1075,7 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 				m_HP -= rAtk->m_Injury;
 				m_MaxRecoverHP -= rAtk->m_Injury / 3;
 				m_Fall -= rAtk->m_Fall;
+				effect = rAtk->m_Effect;
 				nFrame = L"injured";
 				nFrameID = 0;
 				rHeroRec->Attack += rAtk->m_Injury;
@@ -1087,6 +1090,10 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 			}
 		}
 		wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
+		//effect
+		if(effect >=0 ){
+			//將 EFFECT 套用，應套用之 EFFECT 即 effect 之值所代表的項目
+		}
 		//設定 reAttackRest
 		m_AtkRest.d = rHero;
 		m_AtkRest.t = rAtk->m_ReAttackRest;

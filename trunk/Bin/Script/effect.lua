@@ -19,7 +19,7 @@ function GetEnum()
 end
 
 Effect = {}
-Effect.Fire	= GetEnum()
+Effect.Fire		= GetEnum()
 Effect.BlackFire	= GetEnum()
 Effect.PurpleFire	= GetEnum()
 Effect.Freeze	= GetEnum()
