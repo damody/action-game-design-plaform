@@ -135,28 +135,26 @@ void Hero::Update( float dt )
 				else{
 					SwitchFrame( L"crouch", 0 );
 				}
-
-				if(m_Vel.x > 7.0) m_Vel.x = 7.0;
-				else if(m_Vel.x < -7.0) m_Vel.x = -7.0;
-				if(m_Vel.z > 7.0) m_Vel.z = 7.0;
-				else if(m_Vel.z < -7.0) m_Vel.z = -7.0;
 			}
 		}
 		else { m_Position = pastPos + m_Vel; }
-
+		//蹲與躺
+		if(m_Action == 40 || m_Action == 42){
+			if(m_Vel.x > 7.0) m_Vel.x = 7.0;
+			else if(m_Vel.x < -7.0) m_Vel.x = -7.0;
+			if(m_Vel.z > 7.0) m_Vel.z = 7.0;
+			else if(m_Vel.z < -7.0) m_Vel.z = -7.0;
+		}
 		//X方向摩擦力計算
 		float sign = m_Vel.x / abs( m_Vel.x );
 		m_Vel.x = abs( m_Vel.x );
 		m_Vel.x -= FRICTION;
-
 		if ( m_Vel.x < 0 ) { m_Vel.x = 0; }
 		else { m_Vel.x *= sign; }
-
 		//Z方向摩擦力計算
 		sign = m_Vel.z / abs( m_Vel.z );
 		m_Vel.z = abs( m_Vel.z );
 		m_Vel.z -= FRICTION;
-
 		if ( m_Vel.z < 0 ) { m_Vel.z = 0; }
 		else { m_Vel.z *= sign; }
 	}
@@ -680,6 +678,10 @@ bool Hero::ScanKeyQue()
 						flag = false;
 						break;
 					}
+					if(!m_FaceSide){
+						if(rhd == g_KeyMap.LeftKey().keyDown) rhd = g_KeyMap.RightKey().keyDown;
+						else if( rhd == g_KeyMap.RightKey().keyDown) rhd = g_KeyMap.LeftKey().keyDown;
+					}
 					if(riKey == m_KeyQue.rbegin()){
 						KeyQueue::reverse_iterator ch;
 						for(ch = riKey; ch != m_KeyQue.rend() && ch->key != rhd; ch++);
@@ -698,17 +700,43 @@ bool Hero::ScanKeyQue()
 					}
 				}
 				else{
-					char rhu = g_KeyMap.FindKeyUp(*rHit);
-					if( rhu == 0){
-						wprintf(L"錯誤：hit 使用了不存在的按鍵\n");
-						wprintf(L"frame: %s, frameID: %d, ", m_Frame, m_FrameID);
-						printf("hit: %s\n", pHit);
-						system("pause");
-						flag = false;
-						break;
+					if(*rHit == g_KeyMap.LeftKey().keyDown){
+						//反向方向鍵
+						char up, dn;
+						if(!m_FaceSide){
+							up = g_KeyMap.RightKey().keyUp;
+							dn = g_KeyMap.RightKey().keyDown;
+						}
+						else{
+							up = g_KeyMap.LeftKey().keyUp;
+							dn = g_KeyMap.LeftKey().keyDown;
+						}
+						if(riKey->key != dn && riKey->key != up ){ flag = false; }
 					}
-					if(*rHit != riKey->key && rhu != riKey->key){
-						flag = false;
+					else if(*rHit == g_KeyMap.RightKey().keyDown){
+						//正向方向鍵
+						char up, dn;
+						if(m_FaceSide){
+							up = g_KeyMap.RightKey().keyUp;
+							dn = g_KeyMap.RightKey().keyDown;
+						}
+						else{
+							up = g_KeyMap.LeftKey().keyUp;
+							dn = g_KeyMap.LeftKey().keyDown;
+						}
+						if(riKey->key != dn && riKey->key != up ){ flag = false; }
+					}
+					else {
+						char rhu = g_KeyMap.FindKeyUp(*rHit);
+						if( rhu == 0){
+							wprintf(L"錯誤：hit 使用了不存在的按鍵\n");
+							wprintf(L"frame: %s, frameID: %d, ", m_Frame, m_FrameID);
+							printf("hit: %s\n", pHit);
+							system("pause");
+							flag = false;
+							break;
+						}
+						if(*rHit != riKey->key && rhu != riKey->key){ flag = false; }
 					}
 					riKey ++;
 				}
@@ -737,17 +765,17 @@ bool Hero::ScanKeyQue()
 
 	//清理佇列
 	i = m_KeyQue.begin();
-	//printf("keymap: ");
+	printf("keymap: ");
 	while ( i != m_KeyQue.end() )
 	{
-		//printf("%c, %d, %d\t",i->key,i->time,i->timeUp);
+		printf("%c, %d, %d\t",i->key,i->time,i->timeUp);
 		if ( g_KeyMap.isKeyUp(i->key) && g_Time - i->timeUp > KEYLIFE_AFTER_KEYUP )
 		{
 			i = m_KeyQue.erase( i );
 		}
 		else { i++; }
 	}
-	//putchar('\n');
+	putchar('\n');
 	//下個影格
 	if ( nFrame.empty() )
 	{
