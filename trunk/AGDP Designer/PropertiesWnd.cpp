@@ -2607,12 +2607,11 @@ void CPropertiesWnd::BuildPrebBuild()
 	if (dialog.DoModal() == IDOK)
 	{
 
-		(*g_ActiveFramesMap)[dialog.m_Select] = FrameInfos();
-
 		for (unsigned int i=0; i<m_Preframes.size()-1; i++)
 		{
 			m_Preframes[i].m_NextFrameName = dialog.m_Select;
-			m_Preframes[i].m_NextFrameIndex = i+1;
+			m_Preframes[i].m_NextFrameIndex = (*g_ActiveFramesMap)[dialog.m_Select].size()+i+1;
+
 		}
 
 		(*g_ActiveFramesMap)[dialog.m_Select].insert((*g_ActiveFramesMap)[dialog.m_Select].end(),m_Preframes.begin(),m_Preframes.end());

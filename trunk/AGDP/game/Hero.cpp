@@ -1147,8 +1147,8 @@ PolygonVerteices Hero::GetPolygonVerteices() const
 	PolygonVerteices pvs;
 	PolygonVertex pv;
 	Polygon2Ds bodys = GetHeroBodys( *this );
-	pv.color.x = 1.0;
-	pv.color.y = 1.0;
+	pv.color.x = 0.0;
+	pv.color.y = 0.0;
 	pv.color.z = 1.0;
 	pv.color.w = 0.5;
 
@@ -1172,9 +1172,9 @@ PolygonVerteices Hero::GetPolygonVerteices() const
 	}
 
 	Polygon2Ds  atks = GetHeroAttacks( *this );
-	pv.color.x = 0.0;
+	pv.color.x = 1.0;
 	pv.color.y = 0.0;
-	pv.color.z = 1.0;
+	pv.color.z = 0.0;
 	pv.color.w = 0.5;
 
 	for ( Polygon2Ds::iterator it = atks.begin(); it != atks.end(); it++ )
@@ -1229,8 +1229,8 @@ PolygonVerteices Hero::GetPolygonLineVerteices() const
 	PolygonVerteices pvs;
 	PolygonVertex pv;
 	Polygon2Ds bodys = GetHeroBodys( *this );
-	pv.color.x = 1.0;
-	pv.color.y = 1.0;
+	pv.color.x = 0.0;
+	pv.color.y = 0.0;
 	pv.color.z = 1.0;
 	pv.color.w = 0.5;
 
@@ -1262,9 +1262,9 @@ PolygonVerteices Hero::GetPolygonLineVerteices() const
 	}
 
 	Polygon2Ds atks = GetHeroAttacks( *this );
-	pv.color.x = 0.0;
+	pv.color.x = 1.0;
 	pv.color.y = 0.0;
-	pv.color.z = 1.0;
+	pv.color.z = 0.0;
 	pv.color.w = 0.5;
 
 	for ( Polygon2Ds::iterator it = atks.begin(); it != atks.end(); it++ )

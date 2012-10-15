@@ -7,6 +7,7 @@ ptrManager<Hero*, GetAttackAABB2D> AttacksCollision;
 
 HeroManager::HeroManager( void )
 {
+	m_Heroes.clear();
 }
 
 

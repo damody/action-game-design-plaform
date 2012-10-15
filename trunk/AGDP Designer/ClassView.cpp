@@ -798,6 +798,7 @@ void CClassView::OnBodyAdd()
 	int frameIndex = _ttoi( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( item ) ) );
 	std::wstring frameName( m_wndClassView.GetItemText( m_wndClassView.GetParentItem( m_wndClassView.GetParentItem( item ) ) ) );
 	Body body;
+	body.m_Area.Clear();
 	body.m_Kind = 1;
 	body.m_ZWidth = 1;
 	( *g_ActiveFramesMap )[frameName][frameIndex].m_Bodys.push_back( body );

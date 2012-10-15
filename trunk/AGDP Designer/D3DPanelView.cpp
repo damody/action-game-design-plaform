@@ -127,23 +127,23 @@ void CD3DPanelView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		switch ( nChar )
 		{
 		case KEY_LEFT:
-			m_D3DApp.m_Center.Translate(-1,0);
-			UpdateCenter( m_D3DApp.m_Center.x, m_D3DApp.m_Center.y );
+			m_D3DApp.SetCenterPos(m_D3DApp.m_CenterPos.x-1,m_D3DApp.m_CenterPos.y);
+			UpdateCenter( m_D3DApp.m_CenterPos.x, m_D3DApp.m_CenterPos.y );
 			break;
 
 		case KEY_UP:
-			m_D3DApp.m_Center.Translate(0,-1);
-			UpdateCenter( m_D3DApp.m_Center.x, m_D3DApp.m_Center.y );
+			m_D3DApp.SetCenterPos(m_D3DApp.m_CenterPos.x,m_D3DApp.m_CenterPos.y-1);
+			UpdateCenter( m_D3DApp.m_CenterPos.x, m_D3DApp.m_CenterPos.y );
 			break;
 
 		case KEY_RIGHT:
-			m_D3DApp.m_Center.Translate(1,0);
-			UpdateCenter( m_D3DApp.m_Center.x, m_D3DApp.m_Center.y );
+			m_D3DApp.SetCenterPos(m_D3DApp.m_CenterPos.x+1,m_D3DApp.m_CenterPos.y);
+			UpdateCenter( m_D3DApp.m_CenterPos.x, m_D3DApp.m_CenterPos.y );
 			break;
 
 		case KEY_DOWN:
-			m_D3DApp.m_Center.Translate(0,1);
-			UpdateCenter( m_D3DApp.m_Center.x, m_D3DApp.m_Center.y );
+			m_D3DApp.SetCenterPos(m_D3DApp.m_CenterPos.x,m_D3DApp.m_CenterPos.y+1);
+			UpdateCenter( m_D3DApp.m_CenterPos.x, m_D3DApp.m_CenterPos.y );
 			break;
 		}
 
@@ -479,7 +479,7 @@ void CD3DPanelView::OnLButtonDown( UINT nFlags, CPoint point )
 
 	if ( m_EnableCtrlCenter && m_CtrlPress )
 	{
-		m_D3DApp.m_Center.SetPosition( point.x, point.y );
+		m_D3DApp.SetCenterPos( point.x, point.y );
 		UpdateCenter( point.x, point.y );
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
@@ -675,7 +675,7 @@ void CD3DPanelView::OnMouseMove( UINT nFlags, CPoint point )
 
 	if ( m_EnableCtrlCenter && m_CtrlPress && m_LMouseHold )
 	{
-		m_D3DApp.m_Center.SetPosition( point.x, point.y );
+		m_D3DApp.SetCenterPos( point.x, point.y );
 		UpdateCenter( point.x, point.y );
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
@@ -813,7 +813,7 @@ void CD3DPanelView::StopEdit()
 
 	if (m_EnableCtrlCenter)
 	{
-		m_D3DApp.m_Center.SetColor(0,0,1);
+		m_D3DApp.m_Center.SetLineColor(0,0,1);
 		m_D3DApp.buildPoint();
 		m_D3DApp.DrawScene();
 		m_EnableCtrlCenter = false;
@@ -900,7 +900,7 @@ void CD3DPanelView::EditCatch( int id )
 void CD3DPanelView::EditCenter( float x, float y )
 {
 	
-	m_D3DApp.m_Center.SetPosition( x, y );
+	m_D3DApp.SetCenterPos( x, y );
 	m_D3DApp.buildPoint();
 	m_D3DApp.DrawScene();
 }
@@ -933,7 +933,7 @@ void CD3DPanelView::Refresh()
 				m_D3DApp.SetPic( &g_HeroInfo->m_PictureDatas[m_FrameInfo->m_PictureID], m_FrameInfo->m_PictureX, m_FrameInfo->m_PictureY );
 			}
 			m_D3DApp.SwitchShowCrossOn();
-			m_D3DApp.m_Center.SetPosition( m_FrameInfo->m_CenterX, m_FrameInfo->m_CenterY );
+			m_D3DApp.SetCenterPos( m_FrameInfo->m_CenterX, m_FrameInfo->m_CenterY );
 
 			for ( Bodys::iterator it_body = m_FrameInfo->m_Bodys.begin(); it_body != m_FrameInfo->m_Bodys.end(); it_body++ )
 			{
@@ -1248,7 +1248,7 @@ void CD3DPanelView::OnButtonPointSub()
 void CD3DPanelView::EditableCenter()
 {
 	StopEdit();
-	m_D3DApp.m_Center.SetColor(0,0,0);
+	m_D3DApp.m_Center.SetLineColor(0,0,0);
 	m_D3DApp.buildPoint();
 	m_D3DApp.DrawScene();
 	m_EnableCtrlCenter = true;
@@ -1310,8 +1310,24 @@ void CD3DPanelView::NextFrame()
 		m_TimeTik--;
 	}else
 	{
-		m_FrameInfo = &(*g_ActiveFramesMap)[m_FrameInfo->m_NextFrameName][m_FrameInfo->m_NextFrameIndex];
-		m_TimeTik = m_FrameInfo->m_Wait;
-		m_D3DApp.PlayFrame(*m_FrameInfo);
+		FramesMap::iterator frame = g_ActiveFramesMap->find(m_FrameInfo->m_NextFrameName);
+		if (frame !=g_ActiveFramesMap->end())
+		{
+			if (m_FrameInfo->m_NextFrameIndex>-1 && m_FrameInfo->m_NextFrameIndex<frame->second.size())
+			{
+				m_FrameInfo = &(*g_ActiveFramesMap)[m_FrameInfo->m_NextFrameName][m_FrameInfo->m_NextFrameIndex];
+				m_TimeTik = m_FrameInfo->m_Wait;
+				m_D3DApp.PlayFrame(*m_FrameInfo);
+			}else{
+				wchar_t buff[100];
+				wprintf(buff,L"Error: Next Frame of %s",frame->first);
+				AfxMessageBox(CString(buff));
+			}
+		}else{
+			wchar_t buff[100];
+			wprintf(buff,L"Error: Next Frame of %s",frame->first);
+			AfxMessageBox(CString(buff));
+		}
+		
 	}
 }

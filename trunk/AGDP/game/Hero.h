@@ -51,22 +51,22 @@ private:
 	FrameInfo*		m_FrameInfo;
 	float			m_Angle;
 	bool			m_FaceSide;		//true 右, false 左
-	int				d_run;			//判定跑步用，右正左負
+	int			d_run;			//判定跑步用，右正左負
 	bool			d_Ground;		//判斷是否在地面上
-	int				m_Team;			//0為不分
-	int				m_MaxRecoverHP;	//最大恢復血量
-	int				m_HP;
-	int				m_MP;
+	int			m_Team;			//0為不分
+	int			m_MaxRecoverHP;	//最大恢復血量
+	int			m_HP;
+	int			m_MP;
 	//EffectType::e   m_Effect;
 	float			m_EffectScale;
-	Record_Sptr     m_Record;
+	Record_Sptr		m_Record;
 	AABB2D			m_BodyAABB;
 	AABB2D			m_AttackAABB;
 	AABB2D			m_CatchAABB;
 
-	int				m_FrontDefence;
-	int				m_BackDefence;
-	int				m_Fall;
+	int			m_FrontDefence;
+	int			m_BackDefence;
+	int			m_Fall;
 	AttackRest		m_AtkRest;
 	KeyQueue		m_KeyQue;
 	Condition*	m_Condition;

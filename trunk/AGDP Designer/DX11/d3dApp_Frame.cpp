@@ -53,6 +53,8 @@ D3DApp_Frame::D3DApp_Frame()
 	mClientWidth    = 1440;
 	mClientHeight   = 900;
 	Init();
+
+	
 }
 
 D3DApp_Frame::~D3DApp_Frame()
@@ -455,7 +457,7 @@ void D3DApp_Frame::buildPoint()
 
 		if (m_ShowCross)
 		{
-			LineVertices lvs = m_Center.BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY);
+			LineVertices lvs = m_Center.BuildLine( g_Frame_Scale, g_Frame_OffsetX, g_Frame_OffsetY, false);
 			m_LineVertices.insert( m_LineVertices.end(), lvs.begin(), lvs.end() );
 		}
 
@@ -691,12 +693,16 @@ void D3DApp_Frame::Init()
 	m_picX = 1;
 	m_picY = 1;
 	m_ShowCross = false;
-	m_Center = Cross();
-	m_Center.SetColor(0,0,1);
-	m_Center.SetPosition(0,0);
 	SwitchShowCrossOff();
 	m_PlayingFrame = NULL;
 	m_IsPlaying = false;
+	m_Center.Add(-20,0);
+	m_Center.Add(20,0);
+	m_Center.Add(0,0);
+	m_Center.Add(0,-10);
+	m_Center.Add(0,10);
+	m_Center.SetLineColor(0,0,1);
+	m_CenterPos = Vector2(0,0);
 }
 
 void D3DApp_Frame::SwitchShowCrossOff()
@@ -726,4 +732,10 @@ void D3DApp_Frame::StopPlayFrame()
 {
 	m_IsPlaying = false;
 	m_PlayingFrame = NULL;
+}
+
+void D3DApp_Frame::SetCenterPos( float x ,float y )
+{
+	m_Center.Transale(x-m_CenterPos.x,y-m_CenterPos.y);
+	m_CenterPos = Vector2(x,y);
 }

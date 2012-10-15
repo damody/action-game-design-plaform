@@ -252,8 +252,8 @@ frame.ball[14] =
 	},
 	newobjects = {
 		{
-		name = "davis_ball", amount = 1, x = 90, y = -43, facing = 0, 
-		frame = "flying", frameID = 0, hp = 10, dvx = 0, dvy = 0, dvz = 0, 
+		name = "Davis", amount = 1, x = 96, y = -61, facing = 0, 
+		frame = "rolling", frameID = 0, hp = 10, dvx = 0, dvy = 0, dvz = 0, 
 		},
 	},
 }
@@ -1000,7 +1000,7 @@ frame.jump_kick[3] =
 		{
 		kind = 0, effect = Effect.Punch,
 		points = { {17,-37}, {17,-54}, {69,-54}, {69,-37}, }, zwidth = 8,
-		dvx = 9, dvy = 15, dvz = 0, fall = 70, breakDefend = 30, 
+		dvx = 9, dvy = 5, dvz = 0, fall = 70, breakDefend = 30, 
 		arest = 8, reAttackRest = 30, injury = 60, strength = 50, 
 		},
 	},
@@ -1018,7 +1018,7 @@ frame.jump_kick[4] =
 		{
 		kind = 0, effect = Effect.Punch,
 		points = { {32,-40}, {32,-56}, {68,-56}, {68,-40}, }, zwidth = 8,
-		dvx = 9, dvy = 15, dvz = 0, fall = 70, breakDefend = 30, 
+		dvx = 9, dvy = 5, dvz = 0, fall = 70, breakDefend = 30, 
 		arest = 8, reAttackRest = 30, injury = 60, strength = 50, 
 		},
 	},
@@ -1494,7 +1494,7 @@ frame.run_punch[2] =
 		{
 		kind = 0, effect = Effect.Punch,
 		points = { {-18,-24}, {-18,-54}, {70,-54}, {70,-24}, }, zwidth = 8,
-		dvx = 20, dvy = 0, dvz = 0, fall = 70, breakDefend = 60, 
+		dvx = 30, dvy = 0, dvz = 0, fall = 70, breakDefend = 60, 
 		arest = 8, reAttackRest = 14, injury = 55, strength = 50, 
 		},
 	},
@@ -1513,7 +1513,7 @@ frame.run_punch[3] =
 		{
 		kind = 0, effect = Effect.Punch,
 		points = { {28,-25}, {28,-52}, {71,-52}, {71,-25}, }, zwidth = 8,
-		dvx = 17, dvy = 0, dvz = 0, fall = 70, breakDefend = 60, 
+		dvx = 26, dvy = 0, dvz = 0, fall = 70, breakDefend = 60, 
 		arest = 8, reAttackRest = 20, injury = 40, strength = 50, 
 		},
 	},

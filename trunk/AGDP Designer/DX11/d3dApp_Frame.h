@@ -18,7 +18,8 @@ public:
 	Area  m_Body;
 	Area  m_Attack;
 	Area  m_Catch;
-	Cross m_Center;
+	Vector2 m_CenterPos;
+	PointManager m_Center;
 	Creations m_Creation;
 	Crosses m_CreationPos;
 	
@@ -30,9 +31,7 @@ private:
 	PictureData*  m_Pic;
 	float         m_picX, m_picY;
 	Texture*      m_Templete;
-
 	bool	      m_ShowCross;
-
 	FrameInfo*   m_PlayingFrame;
 	
 public:
@@ -51,6 +50,7 @@ public:
 	void buildPoint();
 	void SetCreation(Creations& creation);
 	void SetPic( PictureData*  pic, float x, float y );
+	void SetCenterPos( float x ,float y);
 	void SwitchShowCrossOn();
 	void SwitchShowCrossOff();
 	void PlayFrame(FrameInfo &frame);
