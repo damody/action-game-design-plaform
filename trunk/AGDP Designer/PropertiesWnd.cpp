@@ -479,6 +479,9 @@ void CPropertiesWnd::InitPropList_Hero()
 	CMFCPropertyGridPropertyButton* func = new CMFCPropertyGridPropertyButton(this,_T( "Remove" ), _T(""), _T( "" ),0);
 	func->SetFunction(&CPropertiesWnd::RemoveCrouch);
 	pPropMain->AddSubItem(func);
+	func = new CMFCPropertyGridPropertyButton(this,_T( "Create" ), _T(""), _T( "" ),0);
+	func->SetFunction(&CPropertiesWnd::CreateCrouch);
+	pPropMain->AddSubItem(func);
 	int i=0;
 	for (CrouchMap::iterator it = g_HeroInfo->m_CrouchMap.begin(); it != g_HeroInfo->m_CrouchMap.end(); it++)
 	{
@@ -2711,4 +2714,23 @@ void CPropertiesWnd::OnUpdateButtonRedo(CCmdUI *pCmdUI)
 		pCmdUI->Enable(m_CommandManager->CanRedo());
 	else
 		pCmdUI->Enable(FALSE);
+}
+
+void CPropertiesWnd::CreateCrouch()
+{
+		CListDialog actions = new CListDialog();
+		for (LuaMap::iterator it = g_Actions.begin(); it != g_Actions.end(); it++)
+		{
+				actions.AddList(it->second);
+		}
+
+		if (actions.DoModal()==IDOK)
+		{
+				int idx = g_Actions.FindKey(actions.m_Select);
+				if (idx==-1)return;
+				g_HeroInfo->m_CrouchMap[idx] = CrouchData();
+				g_HeroInfo->m_CrouchMap[idx].m_FrameName =  L"default";
+				g_HeroInfo->m_CrouchMap[idx].m_FrameOffset = 0;
+				( ( CMainFrame* )this->GetParentFrame() )->m_wndProperties.InitPropList_Hero();
+		}
 }

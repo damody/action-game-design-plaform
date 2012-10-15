@@ -188,6 +188,7 @@ public:
 	void BuildPrebBuild();
 
 	void RemoveCrouch();
+	void CreateCrouch();
 public:
 	void Update();
 	void UpdatePropList_Frame();
