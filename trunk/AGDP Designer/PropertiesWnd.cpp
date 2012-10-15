@@ -18,6 +18,7 @@
 #include "global.h"
 #include "ConvStr.h"
 #include "ListDialog.h"
+#include "PointAddDiolog.h"
 #include <functional>
 
 #ifdef _DEBUG
@@ -2601,23 +2602,47 @@ void CPropertiesWnd::ClearPreBuild()
 int actionNum=0;
 void CPropertiesWnd::BuildPrebBuild()
 {
-	CListDialog dialog;
+	CListDialog dialog_list;
 	for (FramesMap::iterator it = g_ActiveFramesMap->begin(); it != g_ActiveFramesMap->end(); it++)
 	{
-		dialog.AddList(std::wstring(it->first.c_str()));
+		dialog_list.AddList(std::wstring(it->first.c_str()));
 	}
 	
-	if (dialog.DoModal() == IDOK)
+	if (dialog_list.DoModal() == IDOK)
 	{
+		CPointAddDiolog dialog_center;
+		if (dialog_center.DoModal() == IDOK)
+		{
+				for (unsigned int i=0; i<m_Preframes.size(); i++)
+				{
+						m_Preframes[i].m_CenterX = dialog_center.x;
+						m_Preframes[i].m_CenterY = dialog_center.y;
+				}
+		}
+
+		CListDialog dialog_actions = new CListDialog();
+		dialog_actions.SetTitle(std::wstring(L"³]©w Hero Action"));
+		for (LuaMap::iterator it = g_Actions.begin(); it != g_Actions.end(); it++)
+		{
+				dialog_actions.AddList(it->second);
+		}
+
+		if (dialog_actions.DoModal()==IDOK)
+		{
+				int idx = g_Actions.FindKey(dialog_actions.m_Select);
+				for (unsigned int i=0; i<m_Preframes.size(); i++)
+				{
+						m_Preframes[i].m_HeroAction = idx;
+				}
+		}
 
 		for (unsigned int i=0; i<m_Preframes.size()-1; i++)
 		{
-			m_Preframes[i].m_NextFrameName = dialog.m_Select;
-			m_Preframes[i].m_NextFrameIndex = (*g_ActiveFramesMap)[dialog.m_Select].size()+i+1;
-
+			m_Preframes[i].m_NextFrameName = dialog_list.m_Select;
+			m_Preframes[i].m_NextFrameIndex = (*g_ActiveFramesMap)[dialog_list.m_Select].size()+i+1;
 		}
 
-		(*g_ActiveFramesMap)[dialog.m_Select].insert((*g_ActiveFramesMap)[dialog.m_Select].end(),m_Preframes.begin(),m_Preframes.end());
+		(*g_ActiveFramesMap)[dialog_list.m_Select].insert((*g_ActiveFramesMap)[dialog_list.m_Select].end(),m_Preframes.begin(),m_Preframes.end());
 
 		AfxMessageBox(CString("Success"));
 

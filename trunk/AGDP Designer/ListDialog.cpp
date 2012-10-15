@@ -15,7 +15,7 @@ IMPLEMENT_DYNAMIC(CListDialog, CDialogEx)
 CListDialog::CListDialog(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CListDialog::IDD, pParent)
 {
-
+		m_Title = std::wstring(L"List");
 }
 
 CListDialog::~CListDialog()
@@ -49,7 +49,7 @@ END_MESSAGE_MAP()
 
 BOOL CListDialog::OnInitDialog()
 {
-	
+	SetWindowText(CString(m_Title.c_str()));
 	CComboBox* cb = ( CComboBox* )GetDlgItem( IDC_CB_LIST );
 
 	for ( int i = 0 ; i < (int)m_List.size() ; i++ )
@@ -74,4 +74,9 @@ void CListDialog::OnBnClickedAddlist()
 		cb->AddString( CString( dialog.m_Text.c_str() ) );
 		cb->SetCurSel(cb->FindString(0,CString( dialog.m_Text.c_str() )));
 	}
+}
+
+void CListDialog::SetTitle( std::wstring& title )
+{
+		m_Title = title;
 }
