@@ -509,7 +509,7 @@ void CD3DPanelView::OnLButtonDown( UINT nFlags, CPoint point )
 			if ( m_PointIndex < 0 )
 			{
 				m_PointIndex = m_D3DApp.m_Body[m_BodyID].Select_GetIndex( point.x, point.y );
-				m_D3DApp.m_Body[m_BodyID].ChangeColor( m_PointIndex, 1.0f, 1.0f, 0.0f );
+				if (m_PointIndex > -1)m_D3DApp.m_Body[m_BodyID].ChangeColor( m_PointIndex, 1.0f, 1.0f, 0.0f );
 			}
 			else
 			{
@@ -538,7 +538,7 @@ void CD3DPanelView::OnLButtonDown( UINT nFlags, CPoint point )
 			if ( m_PointIndex < 0 )
 			{
 				m_PointIndex = m_D3DApp.m_Attack[m_AttackID].Select_GetIndex( point.x, point.y );
-				m_D3DApp.m_Attack[m_AttackID].ChangeColor( m_PointIndex, 1.0f, 1.0f, 0.0f );
+				if (m_PointIndex > -1)m_D3DApp.m_Attack[m_AttackID].ChangeColor( m_PointIndex, 1.0f, 1.0f, 0.0f );
 			}
 			else
 			{
@@ -567,7 +567,7 @@ void CD3DPanelView::OnLButtonDown( UINT nFlags, CPoint point )
 			if ( m_PointIndex < 0 )
 			{
 				m_PointIndex = m_D3DApp.m_Catch[m_CatchID].Select_GetIndex( point.x, point.y );
-				m_D3DApp.m_Catch[m_CatchID].ChangeColor( m_PointIndex, 1.0f, 1.0f, 0.0f );
+				if (m_PointIndex > -1)m_D3DApp.m_Catch[m_CatchID].ChangeColor( m_PointIndex, 1.0f, 1.0f, 0.0f );
 			}
 			else
 			{
