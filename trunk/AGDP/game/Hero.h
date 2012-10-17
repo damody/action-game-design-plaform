@@ -61,8 +61,14 @@ private:
 	float			m_EffectScale;
 	Record_Sptr		m_Record;
 	AABB2D			m_BodyAABB;
+	float			m_BodyMaxZ;
+	float			m_BodyMinZ;
 	AABB2D			m_AttackAABB;
+	float			m_AttackMaxZ;
+	float			m_AttackMinZ;
 	AABB2D			m_CatchAABB;
+	float			m_CatchMaxZ;
+	float			m_CatchMinZ;
 
 	int			m_FrontDefence;
 	int			m_BackDefence;

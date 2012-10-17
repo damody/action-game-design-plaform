@@ -40,7 +40,7 @@ struct axis_y_greater
 	bool operator()( const _Ty& _Left, const _Ty& _Right ) const
 	{
 		// apply operator> to operands
-		return *_Left.m_y > *_Right.m_y;
+		return *_Left.m_y >= *_Right.m_y;
 	}
 };
 

@@ -186,6 +186,7 @@ void Hero::Update( float dt )
 		if (!m_FaceSide) m_BodyAABB.ChangeFace();
 		m_BodyAABB.Scale(SCALE);
 		m_BodyAABB.Move(m_Position.x, m_Position.y);
+		printf("bodys: %f\t%f\n", m_BodyAABB.m_Max.x, m_BodyAABB.m_Min.x);
 	}
 	else
 	{
@@ -206,6 +207,7 @@ void Hero::Update( float dt )
 		if (!m_FaceSide) m_AttackAABB.ChangeFace();
 		m_AttackAABB.Scale(SCALE);
 		m_AttackAABB.Move(m_Position.x, m_Position.y);
+		printf("attck: %f\t%f\n", m_AttackAABB.m_Max.x, m_AttackAABB.m_Min.x);
 	}
 	else
 	{
@@ -765,7 +767,7 @@ bool Hero::ScanKeyQue()
 
 	//清理佇列
 	i = m_KeyQue.begin();
-	printf("keymap: ");
+	//printf("keymap: ");
 	while ( i != m_KeyQue.end() )
 	{
 		printf("%c, %d, %d\t",i->key,i->time,i->timeUp);
@@ -775,7 +777,7 @@ bool Hero::ScanKeyQue()
 		}
 		else { i++; }
 	}
-	putchar('\n');
+	//putchar('\n');
 	//下個影格
 	if ( nFrame.empty() )
 	{
