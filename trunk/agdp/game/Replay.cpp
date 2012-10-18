@@ -10,11 +10,11 @@
 
 Replay::Replay()
 {
-	RepalyKeyQueue.clear(); 
+	ReplayKeyQueue.clear(); 
 	RecordState = 0;
 	PlayState = 0;
-	StartTime = 0;
-	RkqIt = RepalyKeyQueue.begin();
+	StartOffsetTime = 0;
+	RKQIt = ReplayKeyQueue.begin();
 }
 
 Replay::~Replay()
@@ -24,47 +24,55 @@ Replay::~Replay()
 
 void Replay::PushKeyInfo( int key, int _g_time, int state )
 {
-	RepalyKeyQueue[ _g_time - StartTime ] = state? 0x1000 | key: key;
+	ReplayKeyInfo _tmpRKI;
+	_tmpRKI.keyTime = _g_time - StartOffsetTime;
+	_tmpRKI.keyIndex = key;
+	_tmpRKI.keyState = state;
+	ReplayKeyQueue.push_back( _tmpRKI );
 }
 
 void Replay::PushKeyInfo( int key, int _g_time, char state )
 {
-	RepalyKeyQueue[ _g_time - StartTime ] = state=='d'? 0x1000 | key: key;
+	ReplayKeyInfo _tmpRKI;
+	_tmpRKI.keyTime = _g_time - StartOffsetTime;
+	_tmpRKI.keyIndex = key;
+	_tmpRKI.keyState = ( state == 'd' )? 1: 0;
+	ReplayKeyQueue.push_back( _tmpRKI );
 }
 
-void Replay::ResetRkqIt()
+void Replay::ResetRKQIt()
 {
-	RkqIt = RepalyKeyQueue.begin();
+	RKQIt = ReplayKeyQueue.begin();
 }
 
-void Replay::RkqItAdd()
+void Replay::RKQItAdd()
 {
-	RkqIt++;
+	RKQIt++;
 }
 
-int Replay::GetRkqItTime()
+int Replay::GetRKQItKeyTime()
 {
-	return RkqIt->first;
+	return RKQIt->keyTime;
 }
 
-int Replay::GetRkqItKeyIndex()
+int Replay::GetRKQItKeyIndex()
 {
-	return ( RkqIt->second & 0x00FF );
+	return RKQIt->keyIndex;
 }
 
-int Replay::GetRkqItKeyState()
+int Replay::GetRKQItKeyState()
 {
-	return ( RkqIt->second & 0xF000 );
+	return RKQIt->keyState;
 }
 
-bool Replay::IsRkqitEnd()
+bool Replay::IsRKQItEnd()
 {
-	return ( RkqIt == RepalyKeyQueue.end() );
+	return ( RKQIt == ReplayKeyQueue.end() );
 }
 
 void Replay::StartRecord()
 {
-	StartTime = g_Time;
+	StartOffsetTime = g_Time;
 	if ( !PlayState ) { RecordState = 1; }
 }
 
@@ -80,8 +88,8 @@ bool Replay::IsRecord()
 
 void Replay::StartPlay()
 {
-	StartTime = g_Time;
-	if ( !RecordState && !RepalyKeyQueue.empty() ) { PlayState = 1; }
+	StartOffsetTime = g_Time;
+	if ( !RecordState && !ReplayKeyQueue.empty() ) { PlayState = 1; }
 }
 
 void Replay::StopPlay()
@@ -91,12 +99,12 @@ void Replay::StopPlay()
 
 bool Replay::IsPlay()
 {
-	return ( PlayState && !RepalyKeyQueue.empty() ? TRUE: FALSE );
+	return ( PlayState && !ReplayKeyQueue.empty() ? TRUE: FALSE );
 }
 
-int Replay::GetStartTime()
+int Replay::GetStartOffsetTime()
 {
-	return StartTime;
+	return StartOffsetTime;
 }
 
 /*bool Replay::WriteToFile( std::wstring path )
