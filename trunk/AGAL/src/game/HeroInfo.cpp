@@ -417,6 +417,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 	FILE* file = _wfopen(  filePath.c_str() , L"w" );
 	wstrings frameTable;
 	LuaMap am(L"Script/Action.lua", "Action");
+	LuaMap em(L"Script/effect.lua", "Effect");
 
 	//判斷結尾是否有.lua 沒有則加上
 	if ( !( filePath.size() >= 4 &&
@@ -581,7 +582,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 					const auto vec2sTemp = attackIter->m_Area.Points();
 					fwprintf( file, L"\t\t{\n\t\t" );
 					fwprintf( file, L"kind = %d, ", attackIter->m_Kind );
-					fwprintf( file, L"effect = Effect.%s,", effectTable[attackIter->m_Effect].c_str() );
+					fwprintf( file, L"effect = Effect.%s,", em[attackIter->m_Effect].c_str() );
 					fwprintf( file, L"\n\t\t" );
 					fwprintf( file, L"points = { " );
 

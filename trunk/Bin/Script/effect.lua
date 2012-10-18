@@ -32,7 +32,7 @@ Effect.Faint	= GetEnum()
 Effect.End		= GetEnum()
 
 -- protect my table now
-Effect = protect_table (Effect)
+--Effect = protect_table (Effect)
 
 
 --Effect.Fire = 44  --> Error: attempting to change constant WIDTH to 44
