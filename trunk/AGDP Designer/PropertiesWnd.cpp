@@ -423,6 +423,16 @@ void CPropertiesWnd::AddNormalActionUcase( CMFCPropertyGridProperty* pProp )
 	}
 }
 
+
+void CPropertiesWnd::AddNormalEffectDcase( CMFCPropertyGridProperty* pProp )
+{
+	for (LuaMap::iterator it = g_Effects.begin(); it != g_Effects.end(); it++)
+	{
+		pProp->AddOption( CString( it->second.c_str() ) );
+	}
+}
+
+
 void CPropertiesWnd::AddNormalActionDcase( CMFCPropertyGridProperty* pProp )
 {
 	if ( g_ActiveFramesMap != NULL )
@@ -645,7 +655,8 @@ void CPropertiesWnd::InitPropList_Attack( int polygonCount )
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Kind" ), varInt(), _T( "攻擊種類" ) );
 	pPropMain->AddSubItem( pProp );
-	pProp = new CMFCPropItem( &m_wndPropList, _T( "Effect" ), varInt(), _T( "攻擊效果" ) );
+	pProp = new CMFCPropItem( &m_wndPropList, _T( "Effect" ), _T(""), _T( "攻擊效果" ) );
+	AddNormalEffectDcase(pProp);
 	pPropMain->AddSubItem( pProp );
 	pProp = new CMFCPropItem( &m_wndPropList, _T( "Z Width" ), varFloat(), _T( "攻擊在Z軸上的厚度" ) );
 	pPropMain->AddSubItem( pProp );
@@ -927,6 +938,32 @@ void CPropertiesWnd::InitPropList_Actions()
 	m_wndPropList.AddProperty( pPropMain );
 	m_wndPropList.ExpandAll();
 }
+
+
+void CPropertiesWnd::InitPropList_Effects()
+{
+	m_wndPropList.RemoveAll();
+	SetPropListFont();
+	ClearPreBuild();
+	m_wndPropList.EnableHeaderCtrl( FALSE );
+	m_wndPropList.EnableDescriptionArea();
+	m_wndPropList.SetVSDotNetLook();
+	m_wndPropList.MarkModifiedProperties();
+
+	CMFCPropertyGridProperty* pPropMain = new CMFCPropertyGridProperty( _T( "攻擊效果" ) );
+	CMFCPropertyGridProperty* pProp;
+
+	for (LuaMap::iterator it = g_Effects.begin(); it != g_Effects.end(); it++)
+	{
+		pProp = new CMFCPropertyGridProperty( CString(it->second.c_str()), varInt(it->first), _T( "效果及編碼" ) );
+		pProp->AllowEdit( FALSE );
+		pPropMain->AddSubItem( pProp );
+	}
+
+	m_wndPropList.AddProperty( pPropMain );
+	m_wndPropList.ExpandAll();
+}
+
 
 void CPropertiesWnd::InitPropList_PrebuildFrame()
 {
@@ -1687,7 +1724,7 @@ void CPropertiesWnd::RefreshPropList_Attack( int index )
 	}
 
 	( ( CMFCPropItem* )propRoot->GetSubItem( 1 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Kind ) );
-	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Effect ) );
+	( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->SetValue( CString(g_Effects[frameInfo.m_Attacks[index].m_Effect].c_str()));
 	( ( CMFCPropItem* )propRoot->GetSubItem( 3 ) )->SetValue( varFloat( frameInfo.m_Attacks[index].m_ZWidth ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 4 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Strength ) );
 	( ( CMFCPropItem* )propRoot->GetSubItem( 5 ) )->SetValue( varInt( frameInfo.m_Attacks[index].m_Injury ) );
@@ -1769,16 +1806,19 @@ void CPropertiesWnd::UpdateAttack()
 	if ( ( ( CMFCPropItem* )propRoot->GetSubItem( 2 ) )->IsEdited() )
 	{
 		COleVariant v = propRoot->GetSubItem( 2 )->GetValue();
-		v.ChangeType( VT_INT, NULL );
-		int var = v.intVal;
-		int OldEffect = frameInfo->m_Attacks[m_Index].m_Effect;
-		command->AddRedoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_Effect = var;
-		});
-		command->AddUndoFunction([=](){
-			frameInfo->m_Attacks[m_Index].m_Effect = OldEffect;
-		});
-
+		v.ChangeType( VT_BSTR, NULL );
+		std::wstring effect( CString( v ).GetBuffer( 0 ) );
+		int var = g_Effects.FindKey(effect);
+		if (var != -1)
+		{
+			int OldEffect = frameInfo->m_Attacks[m_Index].m_Effect;
+			command->AddRedoFunction([=](){
+				frameInfo->m_Attacks[m_Index].m_Effect = var;
+			});
+			command->AddUndoFunction([=](){
+				frameInfo->m_Attacks[m_Index].m_Effect = OldEffect;
+			});
+		}
 		//frameInfo->m_Attacks[m_Index].m_Effect = propRoot->GetSubItem( 2 )->GetValue().intVal;
 	}
 

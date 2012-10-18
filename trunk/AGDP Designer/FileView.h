@@ -62,6 +62,7 @@ private:
 	HTREEITEM hResourceHeroDoc;
 	HTREEITEM hResourceObjectDoc;
 	HTREEITEM hAction;
+	HTREEITEM hEffect;
 	HeroInfoHMap m_HeroInfoMap;
 
 
