@@ -398,6 +398,18 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 			fFrame->push_back( newData );
 		}
 	}
+	//holyk
+	//Load Hero Function Lua path
+	if ( luadata->HasValue( "heroFunctionLuaPath" ) )
+	{
+		tchars = luadata->GetLua<const char*>( "heroFunctionLuaPath" );
+		m_HeroFunctionLuaPath = std::wstring(tchars, tchars + strlen(tchars));
+	}
+	else
+	{
+		m_HeroFunctionLuaPath = L"Script\\Hero\\HeroFunction.lua";
+	}
+	
 }
 
 void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )

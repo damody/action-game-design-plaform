@@ -72,6 +72,20 @@ void Hero::Init()
 	{
 		m_Condition = new Condition();
 	}
+	//Get Hero Function Lua
+	if( m_HeroFunctionLua.get() == NULL )
+	{
+		m_HeroFunctionLua = LuaCell_Sptr( new LuaCell );
+		if ( !m_HeroFunctionLua->InputLuaFile( m_HeroInfo->m_HeroFunctionLuaPath.c_str() ) )
+		{
+			printf("fatal error: can't load lua file %s" , m_HeroInfo->m_HeroFunctionLuaPath.c_str());
+			system("pause");
+			throw "can't load lua file";
+		}
+	}
+	//Register Hero Function to Lua
+	RegisterFunctionToLua(m_HeroFunctionLua);
+	
 
 }
 
@@ -186,7 +200,8 @@ void Hero::Update( float dt )
 		if (!m_FaceSide) m_BodyAABB.ChangeFace();
 		m_BodyAABB.Scale(SCALE);
 		m_BodyAABB.Move(m_Position.x, m_Position.y);
-		printf("bodys: %f\t%f\n", m_BodyAABB.m_Max.x, m_BodyAABB.m_Min.x);
+		//printf("bodys: %f\t%f\n", m_BodyAABB.m_Max.x, m_BodyAABB.m_Min.x);
+		//以後開printf或者cout 請在push前關掉
 	}
 	else
 	{
@@ -207,7 +222,8 @@ void Hero::Update( float dt )
 		if (!m_FaceSide) m_AttackAABB.ChangeFace();
 		m_AttackAABB.Scale(SCALE);
 		m_AttackAABB.Move(m_Position.x, m_Position.y);
-		printf("attck: %f\t%f\n", m_AttackAABB.m_Max.x, m_AttackAABB.m_Min.x);
+		//printf("attck: %f\t%f\n", m_AttackAABB.m_Max.x, m_AttackAABB.m_Min.x);
+		//以後開printf或者cout 請在push前關掉
 	}
 	else
 	{
@@ -770,7 +786,7 @@ bool Hero::ScanKeyQue()
 	//printf("keymap: ");
 	while ( i != m_KeyQue.end() )
 	{
-		printf("%c, %d, %d\t",i->key,i->time,i->timeUp);
+		//printf("%c, %d, %d\t",i->key,i->time,i->timeUp);
 		if ( g_KeyMap.isKeyUp(i->key) && g_Time - i->timeUp > KEYLIFE_AFTER_KEYUP )
 		{
 			i = m_KeyQue.erase( i );
@@ -1121,8 +1137,22 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 		}
 		wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
 		//effect
-		if(effect >=0 ){
+		if( effect >= 0 ){
 			//將 EFFECT 套用，應套用之 EFFECT 即 effect 之值所代表的項目
+			//holyk
+			//std::cout<<std::endl<<"effect:"<<effect<<std::endl;
+			switch ( effect )
+			{
+				case 0://fire
+					luabind::call_function<int>(m_HeroFunctionLua->GetLuaState(), "AddCondition",this,effect,2);
+					break;
+				default:
+					//nothing to do
+					break;
+					
+			}
+			
+			//holyk
 		}
 		//設定 reAttackRest
 		m_AtkRest.d = rHero;
@@ -1146,17 +1176,19 @@ int Hero::Team() const { return m_Team; }
 
 void Hero::CreateEffect()
 {
-	
-	if( m_Condition->Test()==false )
+	if( m_Condition->IsEnable()==false )
 	{
 		m_EffectScale = 1.0f;
 	}
 	else
 	{
-		for( unsigned int idx = 0;idx<1;idx++ )
+		static std::vector<int> presentCondition;
+		presentCondition = m_Condition->GetPresentConditionIndex();
+		for( unsigned int idx = 0;idx<presentCondition.size();idx++ )
 		{
 			Vector4 v = Vector4( ( float )m_PicX, ( float )m_PicY, ( float )m_PicH, ( float )m_PicW );
-			m_Texture = g_EffectManager->CreateEffect( idx , m_Texture, &v );
+			m_Texture = g_EffectManager->CreateEffect( presentCondition[idx] , m_Texture, &v );
+			//holyk test 現在目前只有火焰是屬於"特效"需要放大  例如punch就不用 先標記
 			m_PicX = ( int )v.x;
 			m_PicY = ( int )v.y;
 			m_PicH = ( int )v.z;

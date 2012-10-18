@@ -1312,24 +1312,6 @@ void InitDirect3DApp::TestFire()
 
 	if ( InputStateS::instance().isKeyDown( KEY_F ) )
 	{
-		static LuaCell_Sptr testLua;
-		if ( testLua.get() == NULL )
-		{
-			testLua = LuaCell_Sptr( new LuaCell );
-			if ( !testLua->InputLuaFile( L"Script/Hero/HeroFunction.lua" ) )
-			{
-				printf("fatal error: can't Script/Hero/HeroFunction.lua");
-				system("pause");
-				throw "can't find luaResource";
-			}
-			Hero::RegisterFunctionToLua( testLua );
-		}
-		try {
-			luabind::call_function<int>(testLua->GetLuaState(), "AddCondition",m_Player.m_Hero,0,2);
-		}catch(luabind::error& e){
-			std::cout << "Catch Exception: " << e.what() << std::endl;
-		}
-
 	}
 }
 

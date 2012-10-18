@@ -8,10 +8,13 @@ public:
 	ConditionClass();
 	void Add( const int effectIndex , const int time );
 	void Update( float dt );
-	bool Test()
+	bool IsEnable()
 	{
 		return m_Enable;
 	}
+	std::vector<int>& GetPresentConditionIndex();
+private:
+	
 private:
 	struct ConditionData
 	{
@@ -20,7 +23,7 @@ private:
 	};typedef std::vector <ConditionData> ConditionDatas;
 
 	bool m_Enable;
+	std::vector<int> m_PresentCondition;
 	ConditionDatas m_ConditionDatas;
 };
 typedef ConditionClass Condition;
-typedef std::vector <Condition> Conditions;
