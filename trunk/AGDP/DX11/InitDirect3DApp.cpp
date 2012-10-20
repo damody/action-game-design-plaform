@@ -1411,13 +1411,13 @@ void InitDirect3DApp::InitPlayer()
 	m_Player.m_Keyboard.SetCtrlKey( KEY_R, g_KeyMap[L"ATTACK2"] );
 	m_Player.SetHero( L"Davis" );
 	m_Player.SetTeam( 0 );
-	m_Player.m_Hero = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000, 500, 100 ) );
+	m_Player.m_Hero = g_HeroManager.Create( m_Player.HeroName(), Vector3( 600, 500, 150 ) );
 	Record *sr = new Record();
 	sr->team = 0;
 	m_Player.m_Hero->SetRecord( Record_Sptr(sr));
 	m_Player.SetUserName( L"<こんにちは測試人-Testing...>" );
 	sr = new Record();
 	sr->team = 1;
-	Hero *sh = g_HeroManager.Create( m_Player.HeroName(), Vector3( 500, 500, 100 ) ,1 );
+	Hero *sh = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000, 500, 150 ) ,1 );
 	sh->SetRecord(Record_Sptr(sr));
 }
