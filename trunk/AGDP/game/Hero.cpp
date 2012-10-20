@@ -137,18 +137,27 @@ void Hero::Update( float dt )
 		//落地判定
 		if ( m_Action != 51 ) //HeroAction::UNIQUE_SKILL
 		{
-			m_Vel.y = 0;
-
-			if ( pastInAir ){
+			bool flag = false;
+			if( (m_Action == 33 || m_Action == 34) && m_Vel.y < -10.0){
+				//摔落地面
+				m_Vel.y = 5;
+				m_Vel.x /= 2;
+				SwitchFrame( m_Frame, 5);
+				flag = true;
+			}
+			else{
 				//Frame 改到 CrouchMap 中對應的 Frame
 				CrouchMap::iterator icm = m_HeroInfo->m_CrouchMap.find( m_Action );
 
 				if ( icm != m_HeroInfo->m_CrouchMap.end() ){
+					m_Vel.y = 0;
 					SwitchFrame( icm->second.m_FrameName, icm->second.m_FrameOffset );
+					flag = true;
 				}
-				else{
-					SwitchFrame( L"crouch", 0 );
-				}
+			}
+			if ( pastInAir && !flag ){
+				m_Vel.y = 0;
+				SwitchFrame( L"crouch", 0 );
 			}
 		}
 		else { m_Position = pastPos + m_Vel; }
@@ -263,7 +272,7 @@ int Hero::GetTextureID() const {	return m_Texture; }
 void Hero::NextFrame()
 {
 	FrameInfo *f = m_FrameInfo;
-	if(m_Action == 33 || m_Action == 34){
+	if( (m_Action == 33 || m_Action == 34) && m_FrameID != 5){
 		if( m_Vel.y < 10.0 && m_Vel.y > 5.0 && m_FrameID != 1 ) m_FrameID = 1;
 		else if( m_Vel.y < 5.0 && m_Vel.y > -7.0 && m_FrameID != 2 ) m_FrameID = 2;
 		else if( m_Vel.y < -7.0 && m_FrameID != 3 ) m_FrameID = 3;
@@ -542,7 +551,7 @@ bool Hero::ScanKeyQue()
 			}
 		}
 
-		if ( !nFrame.empty() )
+		if ( nFrame.compare(L"walking") == 0 )
 		{
 			nFramID = ( m_FrameID + 1 ) % ( m_HeroInfo->m_FramesMap[nFrame].size() );
 		}
