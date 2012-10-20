@@ -364,7 +364,7 @@ void CD3DpictureView::PreBuild( int x,int y )
 	fi.m_NextFrameName = L"default";
 	fi.m_NextFrameIndex = 0;
 	fi.m_HeroAction = 0;
-	fi.m_Wait = 3;
+	fi.m_Wait = 10;
 	fi.m_ClearKeyQueue = false;
 	fi.m_PictureID = m_PictureID;
 	fi.m_CenterX = 0.0f;

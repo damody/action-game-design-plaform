@@ -1125,7 +1125,7 @@ void CD3DPanelView::UpdateAddition_AttackPoint( float x, float y )
 {
 	if ( m_FrameInfo == NULL ) { return; }
 
-	m_FrameInfo->m_Attacks[m_AttackID].m_Area.AddPoint( x, y );
+	m_FrameInfo->m_Attacks[m_AttackID].m_Area.AddPoint( x, -y );
 	//Refresh
 	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_Attack( m_AttackID );
 }
@@ -1159,7 +1159,7 @@ void CD3DPanelView::UpdateAddition_CatchPoint( float x, float y )
 {
 	if ( m_FrameInfo == NULL ) { return; }
 
-	m_FrameInfo->m_Catchs[m_CatchID].m_Area.AddPoint( x, y );
+	m_FrameInfo->m_Catchs[m_CatchID].m_Area.AddPoint( x, -y );
 	//Refresh
 	( ( CMainFrame* )( this->GetParentFrame() ) )->m_wndProperties.RefreshPropList_CatchInfo( m_CatchID );
 }

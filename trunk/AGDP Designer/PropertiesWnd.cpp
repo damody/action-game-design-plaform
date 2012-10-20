@@ -967,9 +967,8 @@ void CPropertiesWnd::InitPropList_Effects()
 
 void CPropertiesWnd::InitPropList_PrebuildFrame()
 {
+	Clear();
 	m_EditProp = 9;
-	m_wndPropList.RemoveAll();
-	SetPropListFont();
 	m_wndPropList.EnableHeaderCtrl( FALSE );
 	m_wndPropList.EnableDescriptionArea();
 	m_wndPropList.SetVSDotNetLook();

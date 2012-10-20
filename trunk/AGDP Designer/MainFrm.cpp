@@ -539,6 +539,10 @@ void CMainFrame::OnFileNew()
 		{
 			HeroInfo_RawPtr hero = HeroInfo_RawPtr( new HeroInfo );
 			hero->m_Name = std::wstring( fileNew.m_Name.GetBuffer( 0 ) );
+			hero->m_WalkingSpeed=0;
+			hero->m_WalkingSpeedZ=0;
+			hero->m_RunningSpeed=0;
+			hero->m_RunningSpeedZ=0;
 			hero->m_FramesMap[std::wstring(L"default")].push_back(DefaultFrameInfo(std::wstring(L"default")));
 			hero->m_FramesMap[std::wstring(L"standing")].push_back(DefaultFrameInfo(std::wstring(L"standing")));
 			hero->m_FramesMap[std::wstring(L"walking")].push_back(DefaultFrameInfo(std::wstring(L"walking")));
