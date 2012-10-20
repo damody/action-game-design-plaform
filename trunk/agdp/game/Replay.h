@@ -3,26 +3,32 @@
 #include <vector>
 #include <map>
 #include "game/CtrlKey.h"
-//#include "global.h"
 extern int	g_Time;
 
 namespace boost {namespace serialization {class access;}}
 
 class Replay
 {
+public:
+	struct ReplayKeyInfo{
+		int keyTime;
+		int keyIndex;
+		int keyState;
+	};
+	typedef std::vector< ReplayKeyInfo > RKIVector;
 private:
-	std::map< int, int > RepalyKeyQueue;
-	std::map< int, int >::iterator RkqIt;
+	RKIVector ReplayKeyQueue;
+	RKIVector::iterator RKQIt;
 	//int	ReplayMode; //record 1, play 0
 	int RecordState; //record 1, stop 0
 	int PlayState; //play 1, stop 0
-	int StartTime;
+	int StartOffsetTime;
 
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize( Archive& ar, const unsigned int version )
 	{
-		ar&		repalyKeyQueue;
+		ar&		RepalyKeyQueue;
 	}
 public:
 	Replay();
@@ -31,16 +37,16 @@ public:
 	//state: down 1, up 0
 	void		PushKeyInfo( int key, int _g_time, int state);
 	void		PushKeyInfo( int key, int _g_time, char state);
-	void		ResetRkqIt();
-	void		RkqItAdd();
-	int			GetRkqItTime();
-	int			GetStartTime();
-	int			GetRkqItKeyIndex();
+	void		ResetRKQIt();
+	void		RKQItAdd();
+	int			GetStartOffsetTime();
+	int			GetRKQItKeyTime();
+	int			GetRKQItKeyIndex();
 	//down 1, up 0
-	int			GetRkqItKeyState();
+	int			GetRKQItKeyState();
 	//record 1, play 0
 	//inline int		GetReplayMode();
-	bool		IsRkqitEnd();
+	bool		IsRKQItEnd();
 
 	void		StartRecord();
 	void		StopRecord();

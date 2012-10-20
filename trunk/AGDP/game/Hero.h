@@ -61,8 +61,14 @@ private:
 	float			m_EffectScale;
 	Record_Sptr		m_Record;
 	AABB2D			m_BodyAABB;
+	float			m_BodyMaxZ;
+	float			m_BodyMinZ;
 	AABB2D			m_AttackAABB;
+	float			m_AttackMaxZ;
+	float			m_AttackMinZ;
 	AABB2D			m_CatchAABB;
+	float			m_CatchMaxZ;
+	float			m_CatchMinZ;
 
 	int			m_FrontDefence;
 	int			m_BackDefence;
@@ -70,6 +76,8 @@ private:
 	AttackRest		m_AtkRest;
 	KeyQueue		m_KeyQue;
 	Condition*	m_Condition;
+	LuaCell_Sptr	m_HeroFunctionLua; //存放關於HeroFunction的luastate
+
 	//判斷非方向按鍵作用與否，1表示已作用，0則否，0:atk1, 1:atk2, 2:j, 3:d
 	boost::dynamic_bitset<byte> d_key;
 

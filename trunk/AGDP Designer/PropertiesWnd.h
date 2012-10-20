@@ -155,6 +155,7 @@ public:
 	void InitPropList_Creation();
 	void InitPropList_PictureData();
 	void InitPropList_Actions();
+	void InitPropList_Effects();
 	void InitPropList_PrebuildFrame();
 
 	void RefreshPropList();
@@ -175,6 +176,7 @@ public:
 	void SetPropListFont();
 	static void AddNormalActionUcase( CMFCPropertyGridProperty* pProp );
 	static void AddNormalActionDcase( CMFCPropertyGridProperty* pProp );
+	static void AddNormalEffectDcase( CMFCPropertyGridProperty* pProp );
 	static void AddPointXY( CMFCPropertyGridProperty*& pProp );
 
 	void RefreshCenter();

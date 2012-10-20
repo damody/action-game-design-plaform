@@ -20,19 +20,29 @@ void ConditionClass::Add( const int effectIndex , const int time )
 void ConditionClass::Update( float dt )
 {
 	m_Enable = false;
-	for( ConditionDatas::iterator cIter = m_ConditionDatas.begin() ; cIter != m_ConditionDatas.end() ; ++cIter )
+	if( !m_PresentCondition.empty() )
+	{
+		m_PresentCondition.clear();
+	}
+	for( unsigned int idx = 0; idx<CONDITION_MAX_SIZE ;idx++ )
 	{
 		//call Lua to do something
 
 		//----------------------
 		//time to remove it
-		if( cIter->m_time <= 0 )
-		{
-			cIter->m_time = 0;
-		}else
+		if( m_ConditionDatas[idx].m_time > 0 )
 		{
 			m_Enable = true;
-			cIter->m_time--;
+			m_PresentCondition.push_back(idx);
+			m_ConditionDatas[idx].m_time--;
+		}else
+		{
+			m_ConditionDatas[idx].m_time = 0;
 		}
 	}
+}
+
+std::vector<int>& ConditionClass::GetPresentConditionIndex()
+{
+	return m_PresentCondition;
 }

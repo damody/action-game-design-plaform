@@ -101,6 +101,7 @@ void CFileView::FillFileView()
 {
 	HTREEITEM hResourceDoc  = m_wndFileView.InsertItem( _T( "Resource ¸ê®Æ" ), 0, 0 );
 	hAction = m_wndFileView.InsertItem( _T("Action"), 2, 2, hResourceDoc );
+	hEffect = m_wndFileView.InsertItem( _T("Effect"), 2, 2, hResourceDoc );
 	hResourceHeroDoc   = m_wndFileView.InsertItem(_T("Hero"), 0, 0, hResourceDoc );
 	hResourceObjectDoc = m_wndFileView.InsertItem(_T("Object"), 0, 0, hResourceDoc );
 	m_wndFileView.SetItemState( hResourceDoc, TVIS_BOLD, TVIS_BOLD );
@@ -310,6 +311,11 @@ void CFileView::OnSelectItem( HTREEITEM item )
 		return;
 	}
 
+	if ( item == hEffect){
+		( ( CMainFrame* )this->GetParentFrame() )->m_wndProperties.InitPropList_Effects(); 
+		return;
+	}
+
 	HeroInfoHMap::iterator it = m_HeroInfoMap.find( item );
 
 	if ( it != m_HeroInfoMap.end() )
@@ -410,6 +416,7 @@ void CFileView::AddFile( HeroInfo* hero )
 void CFileView::LoadData()
 {
 	g_Actions.LoadData(L"Script\\Action.lua","Action");
+	g_Effects.LoadData(L"Script\\effect.lua","Effect");
 
 	std::vector<HeroInfo_Sptr> heroInfos;
 	heroInfos = LuaResource::LoadLua<HeroInfo>( L"hero" );

@@ -93,7 +93,6 @@ WeaponAction.Break = GetEnum()
 WeaponAction.Hit = GetEnum()
 WeaponAction.Throw = GetEnum()
 -- protect my table now
-Effect = protect_table (Effect)
 Body = protect_table (Body)
 
 

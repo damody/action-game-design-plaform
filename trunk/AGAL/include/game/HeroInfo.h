@@ -64,6 +64,8 @@ struct HeroInfo
 	float		m_AntiMagic;
 	//Å]ªk´î¶Ë%¼Æ
 	float		m_AntiMagicPercent;
+	//HeroFunction¸ô®|
+	std::wstring	m_HeroFunctionLuaPath;
 
 	friend class boost::serialization::access;
 	template<class Archive>

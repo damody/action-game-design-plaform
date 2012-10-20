@@ -14,7 +14,7 @@ KeyQueue Keyboard::Update()
 	}
 	if ( InputStateS::instance().isKeyDown( KEY_O ) )
 	{
-		g_Replay.ResetRkqIt();
+		g_Replay.ResetRKQIt();
 		g_Replay.StartPlay();
 		if ( g_Replay.IsPlay() ) { std::cout << "test: play start\n"; }
 		else { std::cout << "test: play error\n"; }
@@ -41,17 +41,35 @@ KeyQueue Keyboard::Update()
 	{
 		if ( g_Replay.IsPlay() )
 		{
-			//while ( g_Replay.rkqIt->first < g_Time ) { g_Replay.rkqIt++; }
-
-			if ( g_Replay.GetRkqItTime() + g_Replay.GetStartTime() == g_Time && g_Replay.GetRkqItKeyIndex() == it_map->first )
-			{
-				KeyInfo info = {};
-				info.key = g_Replay.GetRkqItKeyState() ? it_map->second.keyDown: it_map->second.keyUp;
-				info.time = g_Time;
-				keyQue.push_back( info );
-				g_Replay.RkqItAdd();
-				if ( g_Replay.IsRkqitEnd() ) { g_Replay.StopPlay(); }
+			if ( g_Replay.IsRKQItEnd() ) 
+			{ 
+				g_Replay.StopPlay(); 
 				break;
+			}
+			else
+			{
+				while ( g_Replay.GetRKQItKeyTime() + g_Replay.GetStartOffsetTime() < g_Time ) 
+				{ 
+					g_Replay.RKQItAdd(); 
+					if ( g_Replay.IsRKQItEnd() ) 
+					{ 
+						g_Replay.StopPlay(); 
+						break;
+					}
+				}
+				while ( g_Replay.GetRKQItKeyTime() + g_Replay.GetStartOffsetTime() == g_Time && g_Replay.GetRKQItKeyIndex() == it_map->first )
+				{
+					KeyInfo info = {};
+					info.key = g_Replay.GetRKQItKeyState() ? it_map->second.keyDown: it_map->second.keyUp;
+					info.time = g_Time;
+					keyQue.push_back( info );
+					g_Replay.RKQItAdd();
+					if ( g_Replay.IsRKQItEnd() ) 
+					{ 
+						g_Replay.StopPlay(); 
+						break;
+					}
+				}
 			}
 		}
 		else

@@ -25,7 +25,7 @@ public:
 
 private:
 	ParentPtrs m_ParentPtrs;
-	MyAxis_binds mXbinds, mYbinds;
+	MyAxis_binds mXbinds, mYbinds, mZbinds;
 
 private:
 	void DoubleCheck( ParentPtrs& pps ) //check and correct when this vector have the same element
@@ -67,7 +67,7 @@ public:
 
 		if ( aabb.m_Min.x > 1e19 ) { return res; }
 
-		MyAxis_binds::iterator x_index_max, x_index_min, tmp;
+		MyAxis_binds::iterator x_index_max, x_index_min, tmp, tmp2;
 		x_index_max = std::upper_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( aabb.m_Max ), Compare_x<MyAxis_bind> );
 		x_index_min = std::lower_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( aabb.m_Min ), Compare_x<MyAxis_bind> );
 		//std::cout << "attack min x:" << aabb.m_Min.x << ", max x:" << aabb.m_Max.x << std::endl;
@@ -76,32 +76,33 @@ public:
 		{
 			mYbinds.clear();
 			std::copy( x_index_min, x_index_max, std::back_inserter( mYbinds ) );
-			tmp = std::partition( mYbinds.begin(), mYbinds.end(),        // range
-			                      std::bind2nd( axis_y_greater<MyAxis_bind>(), MyAxis_bind( aabb.m_Min ) ) ); // criterion
-			tmp = std::partition( mYbinds.begin(), tmp,      // range
-			                      std::bind2nd( axis_y_less<MyAxis_bind>(), MyAxis_bind( aabb.m_Max ) ) );
-
-			if ( tmp - mYbinds.begin() > 0 )
+			//無法判斷大於aabb的範圍
+// 			tmp = std::partition( mYbinds.begin(), mYbinds.end(),      // range
+// 			                      std::bind2nd( axis_y_less<MyAxis_bind>(), MyAxis_bind( aabb.m_Max ) ) );
+// 			tmp = std::partition( mYbinds.begin(), tmp,        // range
+// 			                       std::bind2nd( axis_y_greater<MyAxis_bind>(), MyAxis_bind( aabb.m_Min ) ) ); // criterion
+// 
+// 			if ( tmp - mYbinds.begin() > 0 )
+// 			{
+// 				for ( MyAxis_binds::iterator it = mYbinds.begin(); it != tmp; it++ )
+// 				{
+// 					collision co;
+// 					co.victims.push_back( it->m_ParentPtr );
+// 					co.hitter = 0;
+// 					res.push_back( co );
+// 				}
+// 			}
+// 			else
 			{
-				for ( MyAxis_binds::iterator it = mYbinds.begin(); it != tmp; it++ )
+				for ( MyAxis_binds::iterator it = mYbinds.begin(); it != mYbinds.end(); it++ )
 				{
-					collision co;
-					co.victims.push_back( it->m_ParentPtr );
-					co.hitter = 0;
-					res.push_back( co );
-				}
-			}
-			else
-			{
-				AABB2D& ab = GetAABB()( tmp->m_ParentPtr );
-				std::cout << "body min x:" << ab.m_Min.x << ", max x:" << ab.m_Max.x << std::endl;
-
-				if ( GetAABB()( tmp->m_ParentPtr ).IsCollision( aabb ) )
-				{
-					collision co;
-					co.victims.push_back( tmp->m_ParentPtr );
-					co.hitter = 0;
-					res.push_back( co );
+					if ( GetAABB()( it->m_ParentPtr ).IsCollision( aabb ) )
+					{
+						collision co;
+						co.victims.push_back( it->m_ParentPtr );
+						co.hitter = 0;
+						res.push_back( co );
+					}
 				}
 			}
 		}
@@ -111,8 +112,8 @@ public:
 	void AddPtr( ParentPtr p )
 	{
 		m_ParentPtrs.push_back( p );
-		mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), GetAABB()( p ).m_Max  ) );
-		mXbinds.push_back( MyAxis_bind( m_ParentPtrs.back(), GetAABB()( p ).m_Min  ) );
+		mXbinds.push_back( MyAxis_bind( p, GetAABB()( p ).m_Max  ) );
+		mXbinds.push_back( MyAxis_bind( p, GetAABB()( p ).m_Min  ) );
 	}
 	void AddPtrs( const ParentPtrs& ps )
 	{
