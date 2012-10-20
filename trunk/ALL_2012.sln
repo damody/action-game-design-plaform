@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ActionGameDesignPlaform", "AGDP\ActionGameDesignPlaform.vcxproj", "{327F11B9-87EF-4C02-80E6-35CB8BDB597F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ActionGameDesignPlaform", "AGDP\ActionGameDesignPlaform_2012.vcxproj", "{327F11B9-87EF-4C02-80E6-35CB8BDB597F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{43DFA141-55D8-4FEE-8456-1AADFC38E1D8} = {43DFA141-55D8-4FEE-8456-1AADFC38E1D8}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShootingGameAlgorithmLibrary", "SGAL\ShootingGameAlgorithmLibrary.vcxproj", "{8865D97C-215D-45F7-924D-F053EC2B57A5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShootingGameAlgorithmLibrary", "SGAL\ShootingGameAlgorithmLibrary_2012.vcxproj", "{8865D97C-215D-45F7-924D-F053EC2B57A5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ActionGameAlgorithmLibrary", "AGAL\ActionGameAlgorithmLibrary.vcxproj", "{43DFA141-55D8-4FEE-8456-1AADFC38E1D8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ActionGameAlgorithmLibrary", "AGAL\ActionGameAlgorithmLibrary_2012.vcxproj", "{43DFA141-55D8-4FEE-8456-1AADFC38E1D8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8865D97C-215D-45F7-924D-F053EC2B57A5} = {8865D97C-215D-45F7-924D-F053EC2B57A5}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AGDP Designer", "AGDP Designer\AGDP Designer.vcxproj", "{74BF8BA0-344E-433B-9516-6F68993079AC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AGDP Designer", "AGDP Designer\AGDP Designer_2012.vcxproj", "{74BF8BA0-344E-433B-9516-6F68993079AC}"
 	ProjectSection(ProjectDependencies) = postProject
 		{43DFA141-55D8-4FEE-8456-1AADFC38E1D8} = {43DFA141-55D8-4FEE-8456-1AADFC38E1D8}
 		{8865D97C-215D-45F7-924D-F053EC2B57A5} = {8865D97C-215D-45F7-924D-F053EC2B57A5}

@@ -770,7 +770,7 @@ frame.in_the_air[0] =
 
 frame.injured[0] =
 {
-	pic_id = 1, pic_x = 1, pic_y = 6, state = Action.Injured, wait = 4, next = { "super_punch", 0},
+	pic_id = 1, pic_x = 1, pic_y = 6, state = Action.Injured, wait = 4, next = { "injured", 1},
 	dvx = 0, dvy = 0, dvz = 0, centerx = 35, centery = 79, clear_key_queue = 0,
 	consume = { rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
 	body = {
@@ -791,7 +791,7 @@ frame.injured[1] =
 
 frame.injured[2] =
 {
-	pic_id = 1, pic_x = 4, pic_y = 6, state = Action.Injured, wait = 4, next = { "super_punch", 0},
+	pic_id = 1, pic_x = 4, pic_y = 6, state = Action.Injured, wait = 4, next = { "injured", 3},
 	dvx = 0, dvy = 0, dvz = 0, centerx = 36, centery = 79, clear_key_queue = 0,
 	consume = { rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
 	body = {
@@ -813,7 +813,7 @@ frame.injured[3] =
 
 frame.injured[4] =
 {
-	pic_id = 1, pic_x = 1, pic_y = 7, state = Action.Injured, wait = 4, next = { "super_punch", 0},
+	pic_id = 1, pic_x = 1, pic_y = 7, state = Action.Injured, wait = 4, next = { "injured", 5},
 	dvx = 0, dvy = 0, dvz = 0, centerx = 43, centery = 76, clear_key_queue = 0,
 	consume = { rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
 	body = {
@@ -833,7 +833,7 @@ frame.injured[5] =
 
 frame.injured[6] =
 {
-	pic_id = 1, pic_x = 1, pic_y = 6, state = Action.Injured, wait = 12, next = { "super_punch", 0},
+	pic_id = 1, pic_x = 1, pic_y = 6, state = Action.Injured, wait = 12, next = { "injured", 7},
 	dvx = 0, dvy = 0, dvz = 0, centerx = 39, centery = 79, clear_key_queue = 0,
 	consume = { rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
 	body = {
@@ -1376,7 +1376,7 @@ frame.punch[1] =
 		kind = 0, effect = Effect.Punch,
 		points = { {21,-31}, {21,-49}, {64,-49}, {64,-31}, }, zwidth = 8,
 		dvx = 2, dvy = 0, dvz = 0, fall = 20, breakDefend = 16,
-		arest = 8, reAttackRest = 20, injury = 20, strength = 50,
+		arest = 8, reAttackRest = 10, injury = 20, strength = 50,
 		},
 	},
 }
