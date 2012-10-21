@@ -67,24 +67,24 @@ void Hero::Init()
 	m_FrameInfo = f;
 	m_CenterX = f->m_CenterX;
 	m_CenterY = f->m_CenterY;
-	//Creat Condition Object
-	if( !m_Condition )
-	{
-		m_Condition = new Condition();
-	}
 	//Get Hero Function Lua
 	if( m_HeroFunctionLua.get() == NULL )
 	{
 		m_HeroFunctionLua = LuaCell_Sptr( new LuaCell );
 		if ( !m_HeroFunctionLua->InputLuaFile( m_HeroInfo->m_HeroFunctionLuaPath.c_str() ) )
 		{
-			printf("fatal error: can't load lua file %s" , m_HeroInfo->m_HeroFunctionLuaPath.c_str());
+			wprintf(L"fatal error: can't load lua file. m_HeroFunctionLuaPath: %s" , m_HeroInfo->m_HeroFunctionLuaPath.c_str());
 			system("pause");
 			throw "can't load lua file";
 		}
 	}
 	//Register Hero Function to Lua
 	RegisterFunctionToLua(m_HeroFunctionLua);
+	//Creat Condition Object
+	if( !m_Condition )
+	{
+		m_Condition = new Condition( this , m_HeroFunctionLua );
+	}
 	
 
 }
@@ -241,6 +241,8 @@ void Hero::Update( float dt )
 
 	//Condition Update
 	ConditionUpdate(dt);
+
+	wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
 }
 
 void Hero::UpdateDataToDraw()
@@ -1144,16 +1146,17 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 				if(m_Vel.y < 10) m_Vel.y += 10;
 			}
 		}
-		wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
+		//wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
 		//effect
-		if( effect >= 0 ){
+		luabind::call_function<int>(m_HeroFunctionLua->GetLuaState(), "AddCondition",this,effect);
+		/*if( effect >= 0 ){
 			//將 EFFECT 套用，應套用之 EFFECT 即 effect 之值所代表的項目
 			//holyk
 			//std::cout<<std::endl<<"effect:"<<effect<<std::endl;
 			switch ( effect )
 			{
 				case 0://fire
-					luabind::call_function<int>(m_HeroFunctionLua->GetLuaState(), "AddCondition",this,effect,2);
+					luabind::call_function<int>(m_HeroFunctionLua->GetLuaState(), "AddCondition",this,effect);
 					break;
 				default:
 					//nothing to do
@@ -1162,7 +1165,7 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 			}
 			
 			//holyk
-		}
+		}*/
 		//設定 reAttackRest
 		m_AtkRest.d = rHero;
 		m_AtkRest.t = rAtk->m_ReAttackRest;
@@ -1552,6 +1555,7 @@ void Hero::RegisterFunctionToLua( LuaCell_Sptr luadata )
 			.def(luabind::constructor<>())
 			//Register Hero member function to luabind
 			.def("AddCondition", &Hero::AddCondition)
+			.def("ModifyHP", &Hero::ModifyHP)
 		];
 }
 inline void Hero::AddCondition( int effectIndex , int time )
@@ -1561,6 +1565,11 @@ inline void Hero::AddCondition( int effectIndex , int time )
 inline void Hero::ConditionUpdate( float dt )
 {
 	m_Condition->Update( dt );
+}
+
+void Hero::ModifyHP( int delta )
+{
+	m_HP += delta;
 }
 
 bool SortHero( Hero_RawPtr a, Hero_RawPtr b )

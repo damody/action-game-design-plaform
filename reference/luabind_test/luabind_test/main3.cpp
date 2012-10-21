@@ -1,4 +1,4 @@
-#include <auto_link_luajit.hpp>
+/*#include <auto_link_luajit.hpp>
 #include <auto_link_luabind.hpp>
 #include <luabind/luabind.hpp>
 #include <iostream>
@@ -20,6 +20,7 @@ public:
 	{
 		m_num = n;
 	}
+	int kk;
 };
 
 typedef void (TestClass::*MFPTR)(int);
@@ -66,4 +67,4 @@ int main()
 
 	system("pause");
 	return 0;
-}
+}*/

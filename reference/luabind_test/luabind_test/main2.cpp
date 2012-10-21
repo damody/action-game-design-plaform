@@ -5,60 +5,60 @@
 #include <iostream>
 using std::cout;
 using std::endl;
-// class TestClass
-// {
-// public:
-// 	TestClass(int a)
-// 	{
-// 		this->a = a;
-// 	}
-// 	TestClass(luabind::object b, int a)
-// 	{
-// 		this->a = a;
-// 
-// 		// get our lua-derived object instance for record
-// 		m_self = b;
-// 	}
-// 	int get() const
-// 	{
-// 		return a;
-// 	}
-// 	void set(int a)
-// 	{
-// 		this->a = a;
-// 	}
-// 	// retrieve the interface to the derived lua object instance
-// 	luabind::object getSelf()
-// 	{
-// 		return m_self;
-// 	}
-// 
-// 	// this would be called by the SceneManager
-// 	void Tick()
-// 	{
-// 		luabind::call_member<int>(m_self, "Tick");
-// 	}
-// 
-// private:
-// 	int a;
-// 
-// 	luabind::object m_self;
-// };
-// 
-// int Cpassthrough(luabind::object b)
-// {
-// 	TestClass *C;
-// 
-// 	C = luabind::object_cast<TestClass*>(b);
-// 	C->set(2);
-// 
-// 	luabind::call_member<int>(b, "member_func");
-// 
-// 	
-// 
-// 	return false;
-// }
-/*
+ class TestClass
+ {
+ public:
+ 	TestClass(int a)
+ 	{
+ 		this->a = a;
+ 	}
+ 	TestClass(luabind::object b, int a)
+ 	{
+ 		this->a = a;
+ 
+ 		// get our lua-derived object instance for record
+ 		m_self = b;
+ 	}
+ 	int get() const
+ 	{
+ 		return a;
+ 	}
+ 	void set(int a)
+ 	{
+ 		this->a = a;
+ 	}
+ 	// retrieve the interface to the derived lua object instance
+ 	luabind::object getSelf()
+ 	{
+ 		return m_self;
+ 	}
+ 
+ 	// this would be called by the SceneManager
+ 	void Tick()
+ 	{
+ 		luabind::call_member<int>(m_self, "Tick");
+ 	}
+	int kk;
+ private:
+ 	int a;
+ 
+ 	luabind::object m_self;
+ };
+ 
+ int Cpassthrough(luabind::object b)
+ {
+ 	TestClass *C;
+ 
+ 	C = luabind::object_cast<TestClass*>(b);
+ 	C->set(2);
+ 
+ 	luabind::call_member<int>(b, "member_func");
+ 
+ 	
+ 
+ 	return false;
+ }
+
 int main()
 {
 	lua_State *L = luaL_newstate();
@@ -73,7 +73,8 @@ int main()
 			.def(luabind::constructor<luabind::object, int>())
 			.def("get", &TestClass::get)
 			.def("set", &TestClass::set)
-			.def("getSelf", &TestClass::getSelf),
+			.def("getSelf", &TestClass::getSelf)
+			.def("kk", &TestClass::kk),
 			luabind::def("Cpassthrough", &Cpassthrough)
 		];
 
@@ -89,6 +90,7 @@ int main()
 		TestClass *C = new TestClass(543);
 		luabind::call_function<int>(L, "tt",C);
 		std::cout << "C = " << C->get() <<std::endl;
+		std::cout << "kk = " << C->kk <<std::endl;
 // 		std::cout << "Result: " 
 // 		<<luabind::call_function<int>(L, "f", 2)//多個參數就是(L, "f", 2,a,b,...)
 // 		<<std::endl;
@@ -102,4 +104,3 @@ int main()
 	system("pause");
 	return 0;
 }
-*/

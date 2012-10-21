@@ -48,4 +48,5 @@ end
 
 function tt(o)
 	o:set(453);
+	o:kk = 999;
 end
