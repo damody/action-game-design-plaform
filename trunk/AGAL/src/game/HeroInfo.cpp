@@ -1,5 +1,7 @@
 #include "game\HeroInfo.h"
 #include "..\..\..\AGDP\ConvStr.h"
+#include <locale> 
+#include <codecvt> 
 
 std::wstring RevisePath( std::wstring path ); //修正路徑"\\"問題
 
@@ -87,16 +89,17 @@ bool HeroInfo::CheckHeroDataVaild( LuaCell_Sptr luadata )
 void HeroInfo::LoadData( LuaCell_Sptr luadata )
 {
 	m_LuaCell	= luadata;
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> ucs2conv;
 
 	const char* tchars = luadata->GetLua<const char*>( "name" );
-	m_Name		= std::wstring(tchars, tchars + strlen(tchars));
+	m_Name		= ucs2conv.from_bytes(tchars);
 	
 	tchars = luadata->GetLua<const char*>( "head" );
-	m_Headpic	= std::wstring(tchars, tchars + strlen(tchars));
+	m_Headpic	= ucs2conv.from_bytes(tchars);
 
 	//g_TextureManager.AddTexture(m_Headpic);
 	tchars = luadata->GetLua<const char*>( "small" );
-	m_Smallpic	= std::wstring(tchars, tchars + strlen(tchars));
+	m_Smallpic	= ucs2conv.from_bytes(tchars);
 	//g_TextureManager.AddTexture(m_Smallpic);
 	m_WalkingSpeed	= ( float )luadata->GetLua<double>( "walking_speed" );
 	m_WalkingSpeedZ	= ( float )luadata->GetLua<double>( "walking_speedz" );
@@ -122,7 +125,7 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 		{
 			PictureData pd;
 			const char *tpath = luadata->GetLua<const char*>( "file/%d/path", i );
-			pd.m_Path	= std::wstring(tpath, tpath + strlen(tpath));
+			pd.m_Path = ucs2conv.from_bytes(tpath);
 			pd.m_AutoClip	= !!luadata->GetLua<int>( "file/%d/autoclip", i );
 			pd.m_Width	= luadata->GetLua<int>( "file/%d/w", i );
 			pd.m_Height	= luadata->GetLua<int>( "file/%d/h", i );
@@ -145,7 +148,7 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 			int action = luadata->GetLua<int>( "air_crouch_map/%d/1", i );
 			// get action name "many_punch"
 			tchars = luadata->GetLua<const char*>( "air_crouch_map/%d/2", i );
-			cd.m_FrameName	= std::wstring(tchars, tchars + strlen(tchars));
+			cd.m_FrameName	= ucs2conv.from_bytes(tchars);
 			// get frame offset
 			cd.m_FrameOffset = luadata->GetLua<int>( "air_crouch_map/%d/3", i );
 			m_CrouchMap[action] = cd;
@@ -159,7 +162,7 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 	strings tac = luadata->GetLuaTableKeys( "frame" );
 	wstrings actions;
 	for(strings::iterator i = tac.begin(); i != tac.end(); i++){
-		actions.push_back( std::wstring( i->begin(), i->end() ) );
+		actions.push_back( ucs2conv.from_bytes(i->c_str() ) );
 	}
 
 	for ( int i = 0; i < ( int )actions.size(); ++i )
@@ -174,9 +177,8 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 		for ( int frameCount = 0;; frameCount++ )
 		{
 			FrameInfo newData = {};
-			std::string tcs = std::string(actions[i].begin(), actions[i].end());
-			const char* frameName	= tcs.c_str();
-			const char *tmp;
+			//std::string tcs = tac[i];//std::string(actions[i].begin(), actions[i].end());
+			const char* frameName	= tac[i].c_str();
 
 			if ( !luadata->HasValue( "frame/%s/%d/pic_id", frameName, frameCount ) ) { break; }
 
@@ -187,8 +189,8 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 			newData.m_PictureY	= luadata->GetLua<int>( "frame/%s/%d/pic_y", frameName, frameCount );
 			newData.m_HeroAction	= luadata->GetLua<int>( "frame/%s/%d/state", frameName, frameCount );
 			newData.m_Wait		= luadata->GetLua<int>( "frame/%s/%d/wait", frameName, frameCount );
-			tmp = luadata->GetLua<const char*>( "frame/%s/%d/next/1", frameName, frameCount );
-			newData.m_NextFrameName	= std::wstring(tmp, tmp + strlen(tmp));
+			tchars = luadata->GetLua<const char*>( "frame/%s/%d/next/1", frameName, frameCount );
+			newData.m_NextFrameName	= ucs2conv.from_bytes(tchars);
 			newData.m_NextFrameIndex = luadata->GetLua<int>( "frame/%s/%d/next/2", frameName, frameCount );
 			newData.m_DVX		= ( float )luadata->GetLua<double>( "frame/%s/%d/dvx", frameName, frameCount );
 			newData.m_DVY		= ( float )luadata->GetLua<double>( "frame/%s/%d/dvy", frameName, frameCount );
@@ -203,7 +205,7 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 				newData.m_Consume.m_HP = luadata->GetLua<int>( "frame/%s/%d/consume/HP", frameName, frameCount );
 				newData.m_Consume.m_MP = luadata->GetLua<int>( "frame/%s/%d/consume/MP", frameName, frameCount );
 				tchars = luadata->GetLua<const char*>( "frame/%s/%d/consume/backFrame", frameName, frameCount );
-				newData.m_Consume.m_NotEnoughFrameName = std::wstring(tchars, tchars + strlen(tchars));
+				newData.m_Consume.m_NotEnoughFrameName = ucs2conv.from_bytes(tchars);
 				newData.m_Consume.m_NotEnoughFrame = luadata->GetLua<int>( "frame/%s/%d/consume/backFrameID", frameName, frameCount );
 			}
 
@@ -212,12 +214,11 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 				if ( luadata->HasValue( "frame/%s/%d/hit/%d/1", frameName, frameCount, hitCount ) )
 				{
 					HitData hitData;
-					const char *thit;
 					// get hit key action "d>a"
 					hitData.m_KeyQueue	= luadata->GetLua<const char*>( "frame/%s/%d/hit/%d/1", frameName, frameCount, hitCount );
 					// get action name "many_punch"
-					thit = luadata->GetLua<const char*>( "frame/%s/%d/hit/%d/2", frameName, frameCount, hitCount );
-					hitData.m_FrameName	= std::wstring( thit, thit + strlen(thit) );
+					tchars = luadata->GetLua<const char*>( "frame/%s/%d/hit/%d/2", frameName, frameCount, hitCount );
+					hitData.m_FrameName	= ucs2conv.from_bytes(tchars);
 					// get frame offset
 					hitData.m_FrameOffset	= luadata->GetLua<int>( "frame/%s/%d/hit/%d/3", frameName, frameCount, hitCount );
 					newData.m_HitDatas.push_back( hitData );
@@ -367,14 +368,14 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 				if ( luadata->HasValue( "frame/%s/%d/newobjects/%d/name", frameName, frameCount, objCount ) )
 				{
 					Creation obj;
-					const char* tcs = luadata->GetLua<const char*>( "frame/%s/%d/newobjects/%d/name", frameName, frameCount, objCount );
-					obj.name = std ::wstring(tcs, tcs + strlen(tcs));
+					tchars = luadata->GetLua<const char*>( "frame/%s/%d/newobjects/%d/name", frameName, frameCount, objCount );
+					obj.name = ucs2conv.from_bytes(tchars);
 					obj.amount = luadata->GetLua<int>( "frame/%s/%d/newobjects/%d/amount", frameName, frameCount, objCount );
 					obj.x = ( float )luadata->GetLua<double>( "frame/%s/%d/newobjects/%d/x", frameName, frameCount, objCount );
 					obj.y = ( float )luadata->GetLua<double>( "frame/%s/%d/newobjects/%d/y", frameName, frameCount, objCount );
 					obj.facing = luadata->GetLua<int>( "frame/%s/%d/newobjects/%d/facing", frameName, frameCount, objCount );
-					tcs = luadata->GetLua<const char*>( "frame/%s/%d/newobjects/%d/frame", frameName, frameCount, objCount );
-					obj.frame = std::wstring(tcs, tcs + strlen(tcs));
+					tchars = luadata->GetLua<const char*>( "frame/%s/%d/newobjects/%d/frame", frameName, frameCount, objCount );
+					obj.frame = ucs2conv.from_bytes(tchars);
 					obj.frameID = luadata->GetLua<int>( "frame/%s/%d/newobjects/%d/frameID", frameName, frameCount, objCount );
 					obj.HP = luadata->GetLua<int>( "frame/%s/%d/newobjects/%d/hp", frameName, frameCount, objCount );
 					obj.v0.x = ( float )luadata->GetLua<double>( "frame/%s/%d/newobjects/%d/dvx", frameName, frameCount, objCount );
@@ -403,7 +404,7 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 	if ( luadata->HasValue( "heroFunctionLuaPath" ) )
 	{
 		tchars = luadata->GetLua<const char*>( "heroFunctionLuaPath" );
-		m_HeroFunctionLuaPath = std::wstring(tchars, tchars + strlen(tchars));
+		m_HeroFunctionLuaPath = ucs2conv.from_bytes(tchars);
 	}
 	else
 	{
@@ -414,7 +415,7 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 
 void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 {
-	FILE* file = _wfopen(  filePath.c_str() , L"w" );
+	FILE* file = _wfopen(  filePath.c_str() , L"w,ccs=UTF-8" );
 	wstrings frameTable;
 	LuaMap am(L"Script/Action.lua", "Action");
 	LuaMap em(L"Script/effect.lua", "Effect");
@@ -438,9 +439,9 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 	fwprintf( file, L"require\t\"Script/action\"\n" );
 	fwprintf( file, L"\n" );
 	//-------------------------------------
-	fwprintf( file, L"name\t= \"%s\"\n", RevisePath( hero->m_Name ).c_str() );
-	fwprintf( file, L"head\t= \"%s\"\n", RevisePath( hero->m_Headpic ).c_str() );
-	fwprintf( file, L"small\t= \"%s\"\n", RevisePath( hero->m_Smallpic ).c_str() );
+	fwprintf( file, L"name\t= \"%ls\"\n", RevisePath( hero->m_Name ).c_str() );
+	fwprintf( file, L"head\t= \"%ls\"\n", RevisePath( hero->m_Headpic ).c_str() );
+	fwprintf( file, L"small\t= \"%ls\"\n", RevisePath( hero->m_Smallpic ).c_str() );
 	fwprintf( file, L"\n" );
 	//-------------------------------------
 	fwprintf( file, L"file = {\n" );
@@ -453,7 +454,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 		int h = hero->m_PictureDatas[i].m_Height;
 		int row = hero->m_PictureDatas[i].m_Row;
 		int col = hero->m_PictureDatas[i].m_Column;
-		fwprintf( file, L"{path = \"%s\", ", RevisePath( path ).c_str() );
+		fwprintf( file, L"{path = \"%ls\", ", RevisePath( path ).c_str() );
 		fwprintf( file, L"autoclip = %d, ", autoclip );
 		fwprintf( file, L"w = %d, ", w );
 		fwprintf( file, L"h = %d, ", h );
@@ -485,7 +486,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 	fwprintf(file,L"air_crouch_map = {\n");
 	//*
 	for(CrouchMap::iterator icm = hero->m_CrouchMap.begin(); icm != hero->m_CrouchMap.end(); icm ++){
-		fwprintf(file, L"{Action.%s, \"%s\", %d},\n", am[icm->first].c_str(), icm->second.m_FrameName.c_str(), icm->second.m_FrameOffset);
+		fwprintf(file, L"{Action.%ls, \"%ls\", %d},\n", am[icm->first].c_str(), icm->second.m_FrameName.c_str(), icm->second.m_FrameOffset);
 	}//*/
 	fwprintf(file, L"}\n\n");
 	//-------------------------------------
@@ -495,7 +496,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 	for ( FramesMap::iterator iter = hero->m_FramesMap.begin(); iter != hero->m_FramesMap.end() ; ++iter )
 	{
 		frameTable.push_back( iter->first );
-		fwprintf( file, L"\t%s = {},\n", iter->first.c_str() );
+		fwprintf( file, L"\t%ls = {},\n", iter->first.c_str() );
 	}
 
 	fwprintf( file, L"}\n" );
@@ -509,7 +510,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 		for ( int frameCount = 0; ( int )frameCount < hero->m_FramesMap[tableName].size(); frameCount++ )
 		{
 			FrameInfo* frameInfo = &hero->m_FramesMap[tableName][frameCount];
-			fwprintf( file, L"frame.%s[%d] =\n", frameTable[tableCount].c_str(), frameCount );
+			fwprintf( file, L"frame.%ls[%d] =\n", frameTable[tableCount].c_str(), frameCount );
 			fwprintf( file, L"{\n\t" );
 			//----pic_id----
 			fwprintf( file, L"pic_id = %d, ", frameInfo->m_PictureID );
@@ -518,11 +519,11 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 			//----pic_y----
 			fwprintf( file, L"pic_y = %d, ", frameInfo->m_PictureY );
 			//----state----
-			fwprintf( file, L"state = Action.%s, ", am[frameInfo->m_HeroAction].c_str());//HeroActionTable[frameInfo->m_HeroAction].c_str() );
+			fwprintf( file, L"state = Action.%ls, ", am[frameInfo->m_HeroAction].c_str());//HeroActionTable[frameInfo->m_HeroAction].c_str() );
 			//----wait----
 			fwprintf( file, L"wait = %d, ", frameInfo->m_Wait );
 			//----next----
-			fwprintf( file, L"next = { \"%s\", %d}, ", frameInfo->m_NextFrameName.c_str(), frameInfo->m_NextFrameIndex );
+			fwprintf( file, L"next = { \"%ls\", %d}, ", frameInfo->m_NextFrameName.c_str(), frameInfo->m_NextFrameIndex );
 			fwprintf( file, L"\n\t" );
 			//----dvx----
 			fwprintf( file, L"dvx = %g, ", frameInfo->m_DVX );
@@ -543,7 +544,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 			fwprintf(file, L"rule = %d, ", frameInfo->m_Consume.m_JumpRule);
 			fwprintf(file, L"HP = %d, ", frameInfo->m_Consume.m_HP);
 			fwprintf(file, L"MP = %d, ", frameInfo->m_Consume.m_MP);
-			fwprintf(file, L"backFrame = \"%s\", ", frameInfo->m_Consume.m_NotEnoughFrameName.c_str());
+			fwprintf(file, L"backFrame = \"%ls\", ", frameInfo->m_Consume.m_NotEnoughFrameName.c_str());
 			fwprintf(file, L"backFrameID = %d, ", frameInfo->m_Consume.m_NotEnoughFrame);
 			fwprintf(file, L"},\n");
 
@@ -582,7 +583,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 					const auto vec2sTemp = attackIter->m_Area.Points();
 					fwprintf( file, L"\t\t{\n\t\t" );
 					fwprintf( file, L"kind = %d, ", attackIter->m_Kind );
-					fwprintf( file, L"effect = Effect.%s,", em[attackIter->m_Effect].c_str() );
+					fwprintf( file, L"effect = Effect.%ls,", em[attackIter->m_Effect].c_str() );
 					fwprintf( file, L"\n\t\t" );
 					fwprintf( file, L"points = { " );
 
@@ -613,13 +614,13 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 			//----HitDatas----
 			if ( !frameInfo->m_HitDatas.empty() )
 			{
-				fprintf( file, "\thit = { " );
+				fwprintf( file, L"\thit = { " );
 
 				for ( HitDatas::iterator hitIter = frameInfo->m_HitDatas.begin(); hitIter != frameInfo->m_HitDatas.end(); ++hitIter )
 				{
 					fwprintf( file, L"{" );
-					fwprintf( file, L"\"%s\", ", std::wstring(hitIter->m_KeyQueue.begin(), hitIter->m_KeyQueue.end()).c_str() );
-					fwprintf( file, L"\"%s\", ", hitIter->m_FrameName.c_str() );
+					fwprintf( file, L"\"%ls\", ", std::wstring(hitIter->m_KeyQueue.begin(), hitIter->m_KeyQueue.end()).c_str() );
+					fwprintf( file, L"\"%ls\", ", hitIter->m_FrameName.c_str() );
 					fwprintf( file, L"%d ", hitIter->m_FrameOffset );
 					fwprintf( file, L"}, " );
 				}
@@ -640,7 +641,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 					fwprintf( file, L"strong = %d, ", catchIter->m_Strong );
 					fwprintf( file, L"catchx = %g, ", catchIter->m_CatchPosition.x );
 					fwprintf( file, L"catchy = %g, ", catchIter->m_CatchPosition.y );
-					fwprintf( file, L"where = Body.%s, ", CatchPositionTable[catchIter->m_CatchWhere].c_str() );
+					fwprintf( file, L"where = Body.%ls, ", CatchPositionTable[catchIter->m_CatchWhere].c_str() );
 					fwprintf( file, L"\n\t\t" );
 					fwprintf( file, L"points = { " );
 
@@ -663,7 +664,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 			//----BloodInfos----
 			if ( !frameInfo->m_BloodInfos.empty() )
 			{
-				fprintf( file, "\tblood = {\n" );
+				fwprintf( file, L"\tblood = {\n" );
 
 				for ( BloodInfos::iterator bloodIter = frameInfo->m_BloodInfos.begin(); bloodIter != frameInfo->m_BloodInfos.end(); ++bloodIter )
 				{
@@ -686,13 +687,13 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 				for ( Creations::iterator objIter = frameInfo->m_Creations.begin(); objIter != frameInfo->m_Creations.end(); ++objIter )
 				{
 					fwprintf( file, L"\t\t{\n\t\t" );
-					fwprintf( file, L"name = \"%s\", ", objIter->name.c_str() );
+					fwprintf( file, L"name = \"%ls\", ", objIter->name.c_str() );
 					fwprintf( file, L"amount = %d, ", objIter->amount );
 					fwprintf( file, L"x = %g, ", objIter->x );
 					fwprintf( file, L"y = %g, ", objIter->y );
 					fwprintf( file, L"facing = %d, ", objIter->facing );
 					fwprintf( file, L"\n\t\t" );
-					fwprintf( file, L"frame = \"%s\", ", objIter->frame.c_str() );
+					fwprintf( file, L"frame = \"%ls\", ", objIter->frame.c_str() );
 					fwprintf( file, L"frameID = %d, ", objIter->frameID );
 					fwprintf( file, L"hp = %d, ", objIter->HP );
 					/*AI保留*///fprintf(file, "ai\t=\t%d,\t",objIter->AI);
@@ -708,7 +709,7 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 			//----sound----
 			if ( !frameInfo->m_sound.empty() )
 			{
-				fwprintf( file, L"\tsound = \"%s\",\n", RevisePath(frameInfo->m_sound).c_str() );
+				fwprintf( file, L"\tsound = \"%ls\",\n", RevisePath(frameInfo->m_sound).c_str() );
 			}
 
 			fwprintf( file, L"}\n" );

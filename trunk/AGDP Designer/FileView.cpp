@@ -201,7 +201,7 @@ void CFileView::OnFileOpen()
 	{
 		LuaCell_Sptr data = LuaCell_Sptr( new LuaCell );
 
-		if ( data->InputLuaFile( dlgFile.GetPathName() ) )
+		if ( data->InputLuaFile( dlgFile.GetPathName().GetBuffer(0) ) )
 		{
 // 			if (HeroInfo::CheckHeroDataVaild(data))
 // 			{

@@ -137,8 +137,13 @@ bool LuaCell::InputLuaString( const char* code )
 bool LuaCell::InputLuaFile( const wchar_t* path )
 {
 	std::wstring wstr( path );
-	char* ansi = ( char* )malloc( wstr.length() + 1 );
-	wcstombs( ansi, wstr.c_str(), INT_MAX );
+	//char* ansi = ( char* )malloc( wstr.length() + 1 );
+	//wcstombs( ansi, wstr.c_str(), INT_MAX );
+
+	int size_needed = WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
+	char* ansi = (char*)malloc(size_needed+1);
+	WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), ansi, size_needed, NULL, NULL);
+	ansi[size_needed] = 0;
 
 	if ( luaL_loadfile( m_LuaState, ansi ) || lua_pcall( m_LuaState, 0, 0, 0 ) )
 	{

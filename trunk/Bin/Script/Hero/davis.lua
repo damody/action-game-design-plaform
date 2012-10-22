@@ -1,8 +1,8 @@
-require	"Script/effect"
+ï»¿require	"Script/effect"
 require	"Script/action"
 
 --heroFunctionLuaPath = "Script\\Hero\\HeroFunction.lua"
---¦pªG¨S¦³heroFunctionLuaPath ¤@«ß¨Ï¥Î¹w³]ªºHeroFunction.lua
+--å¦‚æœæ²’æœ‰heroFunctionLuaPath ä¸€å¾‹ä½¿ç”¨é è¨­çš„HeroFunction.lua
 
 name	= "Davis"
 head	= "sprite\\sys\\davis_f.bmp"

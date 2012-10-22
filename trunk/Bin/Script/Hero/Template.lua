@@ -1,4 +1,4 @@
-require	"Script/effect"
+﻿require	"Script/effect"
 require	"Script/action"
 
 name	= "Template"
@@ -6,25 +6,25 @@ head	= ""
 small	= ""
 
 file = {
-{path = "Media\\sprite\\template01.png", autoclip = 1, w = 100, h = 100, row = 10, col = 7 },
+{path = "Media\\sprite\\template_01.png", autoclip = 1, w = 200, h = 200, row = 10, col = 10 },
 }
 
 walking_speed        = 5.000000
 walking_speedz       = 5.000000
 running_speed        = 15.000000
 running_speedz       = 15.000000
-heavy_walking_speed  = -431602080.000000
-heavy_walking_speedz = -431602080.000000
-heavy_running_speed  = -431602080.000000
-heavy_running_speedz = -431602080.000000
-jump_height          = -431602080.000000
-jump_distance        = -431602080.000000
-jump_distancez       = -431602080.000000
-dash_height          = -431602080.000000
-dash_distance        = -431602080.000000
-dash_distancez       = -431602080.000000
-rowing_height        = -431602080.000000
-rowing_distance      = -431602080.000000
+heavy_walking_speed  = 0.000000
+heavy_walking_speedz = 0.000000
+heavy_running_speed  = 0.000000
+heavy_running_speedz = 0.000000
+jump_height          = 0.000000
+jump_distance        = 0.000000
+jump_distancez       = 0.000000
+dash_height          = 0.000000
+dash_distance        = 0.000000
+dash_distancez       = 0.000000
+rowing_height        = 0.000000
+rowing_distance      = 0.000000
 
 air_crouch_map = {
 }
