@@ -144,7 +144,13 @@ public:
 	//狀態
 	static void	RegisterFunctionToLua( LuaCell_Sptr luadata );
 	inline void	AddCondition( int effectIndex , int time );
+	inline void	ModifyMaxHP( int delta );
 	inline void	ModifyHP( int delta );
+	inline void	ModifyMP( int delta );
+	inline void	ModifyFall( int delta );
+	inline void	ModifyFrontDefence( int delta );
+	inline void	ModifyBackDefence( int delta );
+	inline void	ChangeTeam( int newTeam );
 	//創造物件
 	friend bool			Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 	//碰撞判定用

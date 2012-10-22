@@ -242,7 +242,7 @@ void Hero::Update( float dt )
 	//Condition Update
 	ConditionUpdate(dt);
 
-	wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
+	//wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
 }
 
 void Hero::UpdateDataToDraw()
@@ -1076,8 +1076,9 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 {
 	if ( rAtk->m_Kind == 0 ) 				//普通攻擊形式，套用 effect 擊中特效
 	{
-		if ( rHero->m_Team == m_Team || 		//普通形式的攻擊對同隊無效
-			 rHero == m_AtkRest.d )			//重複擊中免疫時間
+		if ( rHero == this ||									//普通形式的攻擊對自己無效
+			 (rHero->m_Team != 0 && rHero->m_Team == m_Team) ||	//普通形式的攻擊對同隊無效
+			 rHero == m_AtkRest.d )								//重複擊中免疫時間
 		{	return;	}
 
 		m_Vel.x += rAtk->m_DVX * ( rFace ? 1.0f : -1.0f );
@@ -1146,7 +1147,7 @@ void Hero::beAttack( const Attack *rAtk, const Hero *rHero, const Vector3& hitPo
 				if(m_Vel.y < 10) m_Vel.y += 10;
 			}
 		}
-		//wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
+		wprintf(L"beAttack MaxHP=%d\tHP=%d\tMP=%d\tFall=%d\tfrontDef=%d\tbackDef=%d\n",m_MaxRecoverHP, m_HP, m_MP, m_Fall, m_FrontDefence, m_BackDefence);
 		//effect
 		luabind::call_function<int>(m_HeroFunctionLua->GetLuaState(), "AddCondition",this,effect);
 		/*if( effect >= 0 ){
@@ -1555,7 +1556,12 @@ void Hero::RegisterFunctionToLua( LuaCell_Sptr luadata )
 			.def(luabind::constructor<>())
 			//Register Hero member function to luabind
 			.def("AddCondition", &Hero::AddCondition)
+			.def("ModifyMaxHP", &Hero::ModifyMaxHP)
 			.def("ModifyHP", &Hero::ModifyHP)
+			.def("ModifyMP", &Hero::ModifyMP)
+			.def("ModifyFall", &Hero::ModifyFall)
+			.def("ModifyFrontDefence", &Hero::ModifyFrontDefence)
+			.def("ModifyBackDefence", &Hero::ModifyBackDefence)
 		];
 }
 inline void Hero::AddCondition( int effectIndex , int time )
@@ -1567,10 +1573,23 @@ inline void Hero::ConditionUpdate( float dt )
 	m_Condition->Update( dt );
 }
 
-void Hero::ModifyHP( int delta )
-{
+void Hero::ModifyHP( int delta ){
 	m_HP += delta;
+	if(delta < 0) m_Record->HPLost += delta;
 }
+
+void Hero::ModifyMaxHP( int delta )	{
+	m_MaxRecoverHP += delta;
+	if( m_HP > m_MaxRecoverHP){
+		m_Record->HPLost = m_HP - m_MaxRecoverHP;
+		m_HP = m_MaxRecoverHP;
+	}
+}
+void Hero::ModifyMP( int delta )			{	m_MP += delta;			}
+void Hero::ModifyFall( int delta )			{	m_Fall += delta;		}
+void Hero::ModifyFrontDefence( int delta )	{	m_FrontDefence += delta;}
+void Hero::ModifyBackDefence( int delta )	{	m_BackDefence += delta;	}
+void Hero::ChangeTeam( int newTeam )		{	m_Team = newTeam, m_Record->team = newTeam;}
 
 bool SortHero( Hero_RawPtr a, Hero_RawPtr b )
 {

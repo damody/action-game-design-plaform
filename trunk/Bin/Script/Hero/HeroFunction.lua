@@ -16,7 +16,7 @@ end
 function ConditionUpdate(hero, condition_index ,_time)
 	if condition_index == Effect.Fire then
 		if (_time % 60) == 0 then
-			hero:ModifyHP( -100 );
+			hero:ModifyHP( -10 );
 		end
 	end
 end
