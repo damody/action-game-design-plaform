@@ -2,6 +2,7 @@
 
 hero = {
 "Script\\Hero\\davis.lua",
+--"Script\\Hero\\測試.lua"
 --"Script\\Hero\\行涅.lua",
 }
 

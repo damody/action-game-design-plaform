@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <locale> 
+#include <codecvt> 
 
 namespace LuaResource
 {
@@ -44,6 +46,7 @@ std::vector< boost::shared_ptr<T> > LoadLua( std::wstring objectType )
 	// Load Lua data
 	idx = 1;// Lua array begin is 1
 	std::string sot(objectType.begin(), objectType.end());
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> ucs2conv;
 	while ( luaResource->HasValue( "%s/%d", sot.c_str(), idx ) )
 	{
 		// initialize ptr
@@ -51,7 +54,7 @@ std::vector< boost::shared_ptr<T> > LoadLua( std::wstring objectType )
 		dataTemp = boost::shared_ptr<T>( new T );
 		// get lua path
 		const char* tcs = luaResource->GetLua<const char*>( "%s/%d", sot.c_str(), idx );
-		luaPath = std::wstring(tcs, tcs + strlen(tcs));
+		luaPath = ucs2conv.from_bytes(tcs);
 		// set lua file
 		if( !luaTemp->InputLuaFile( luaPath.c_str() ) )
 		{

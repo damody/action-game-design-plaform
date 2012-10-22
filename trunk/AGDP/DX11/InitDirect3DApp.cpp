@@ -1400,6 +1400,8 @@ void InitDirect3DApp::InitPlayer()
 	m_Player.SetUserName( L"<こんにちは測試人-Testing...>" );
 	sr = new Record();
 	sr->team = 1;
-	Hero *sh = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000, 500, 150 ) ,1 );
-	sh->SetRecord(Record_Sptr(sr));
+	for(int i=0;i<100;i++){
+		Hero *sh = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000+10*i, 500, 150 ) ,1 );
+		sh->SetRecord(Record_Sptr(sr));
+	}
 }

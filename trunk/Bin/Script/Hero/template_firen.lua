@@ -64,6 +64,12 @@ frame =
 	jump         = {},	--跳躍
 	dash_front   = {},	--與 dash_back 一組，預設在此 Frame 按下反向方向建會跳到 dash_back
 	dash_back    = {},	--與 dash_front 一組，見上方說明
+	defend		 = {},	--與 broken_defend 一組，預設在此 Frame 會有對前方的防禦效果，若防禦被擊破便會切換到 broken_defend
+	broken_defend= {},	--與 defend 一組，見上方說明
+	front_flip	 = {},	--給 falling_front 翻正用
+	back_flip	 = {},	--給 falling_back 翻正用
+	punch		 = {},	--普攻
+	rolling		 = {},	--滾地
 }
 
 frame.standing[1]=
