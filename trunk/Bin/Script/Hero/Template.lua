@@ -238,7 +238,7 @@ frame.walking[0] =
 	pic_id = 0, pic_x = 1, pic_y = 2, state = Action.Walking, wait = 6, next = { "default", 0}, 
 	dvx = 0, dvy = 0, dvz = 0, centerx = 115, centery = 200, clear_key_queue = 0, 
 	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
-	hit = { {"J", "jump", 0 }, },
+	hit = { {"J", "jump", 0 }, {"A", "right_punch", 0 }, },
 }
 
 frame.walking[1] =
@@ -246,7 +246,7 @@ frame.walking[1] =
 	pic_id = 0, pic_x = 2, pic_y = 2, state = Action.Walking, wait = 6, next = { "default", 0}, 
 	dvx = 0, dvy = 0, dvz = 0, centerx = 115, centery = 198, clear_key_queue = 0, 
 	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
-	hit = { {"J", "jump", 0 }, },
+	hit = { {"J", "jump", 0 }, {"A", "right_punch", 0 }, },
 }
 
 frame.walking[2] =
@@ -254,7 +254,7 @@ frame.walking[2] =
 	pic_id = 0, pic_x = 3, pic_y = 2, state = Action.Walking, wait = 6, next = { "default", 0}, 
 	dvx = 0, dvy = 0, dvz = 0, centerx = 115, centery = 199, clear_key_queue = 0, 
 	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
-	hit = { {"J", "jump", 0 }, },
+	hit = { {"J", "jump", 0 }, {"A", "right_punch", 0 }, },
 }
 
 frame.walking[3] =
@@ -262,6 +262,6 @@ frame.walking[3] =
 	pic_id = 0, pic_x = 4, pic_y = 2, state = Action.Walking, wait = 6, next = { "default", 0}, 
 	dvx = 0, dvy = 0, dvz = 0, centerx = 115, centery = 198, clear_key_queue = 0, 
 	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
-	hit = { {"J", "jump", 0 }, },
+	hit = { {"J", "jump", 0 }, {"A", "right_punch", 0 }, },
 }
 
