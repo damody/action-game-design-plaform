@@ -29,6 +29,7 @@ Effect.Knife	= GetEnum()
 Effect.Thunder	= GetEnum()
 Effect.Palsy	= GetEnum()
 Effect.Faint	= GetEnum()
+Effect.測試		= GetEnum()
 Effect.End		= GetEnum()
 
 -- protect my table now

@@ -12,7 +12,7 @@ file = {
 walking_speed        = 5.000000
 walking_speedz       = 5.000000
 running_speed        = 15.000000
-running_speedz       = 15.000000
+running_speedz       = 3.000000
 heavy_walking_speed  = 0.000000
 heavy_walking_speedz = 0.000000
 heavy_running_speed  = 0.000000
@@ -27,11 +27,17 @@ rowing_height        = 0.000000
 rowing_distance      = 0.000000
 
 air_crouch_map = {
+{Action.BeforeDashAttack, "crouch", 1},
+{Action.DashAttacking, "crouch", 1},
+{Action.AfterDashAttack, "crouch", 1},
+{Action.Dash, "crouch", 1},
 }
 
 frame = 
 {
 	crouch = {},
+	dash_back = {},
+	dash_front = {},
 	default = {},
 	falling_back = {},
 	falling_front = {},
@@ -48,8 +54,43 @@ frame =
 
 frame.crouch[0] =
 {
-	pic_id = 0, pic_x = 1, pic_y = 6, state = Action.Standing, wait = 1, next = { "default", 0}, 
+	pic_id = 0, pic_x = 1, pic_y = 6, state = Action.Crouch, wait = 10, next = { "default", 0}, 
 	dvx = 0, dvy = 0, dvz = 0, centerx = 106, centery = 200, clear_key_queue = 0, 
+	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
+}
+
+frame.crouch[1] =
+{
+	pic_id = 0, pic_x = 1, pic_y = 6, state = Action.Crouch, wait = 10, next = { "default", 0}, 
+	dvx = 0, dvy = 0, dvz = 0, centerx = 100, centery = 200, clear_key_queue = 0, 
+	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
+}
+
+frame.dash_back[0] =
+{
+	pic_id = 0, pic_x = 3, pic_y = 8, state = Action.Dash, wait = 1, next = { "dash_back", 1}, 
+	dvx = -20, dvy = 20, dvz = 0, centerx = 100, centery = 200, clear_key_queue = 0, 
+	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
+}
+
+frame.dash_back[1] =
+{
+	pic_id = 0, pic_x = 3, pic_y = 8, state = Action.Dash, wait = 10, next = { "dash_back", 1}, 
+	dvx = 0, dvy = 0, dvz = 0, centerx = 100, centery = 200, clear_key_queue = 0, 
+	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
+}
+
+frame.dash_front[0] =
+{
+	pic_id = 0, pic_x = 1, pic_y = 8, state = Action.Dash, wait = 1, next = { "dash_front", 1}, 
+	dvx = 20, dvy = 20, dvz = 0, centerx = 100, centery = 200, clear_key_queue = 0, 
+	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
+}
+
+frame.dash_front[1] =
+{
+	pic_id = 0, pic_x = 1, pic_y = 8, state = Action.Dash, wait = 10, next = { "dash_front", 1}, 
+	dvx = 0, dvy = 0, dvz = 0, centerx = 100, centery = 200, clear_key_queue = 0, 
 	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
 }
 
@@ -97,7 +138,7 @@ frame.injured[1] =
 
 frame.jump[0] =
 {
-	pic_id = 0, pic_x = 1, pic_y = 6, state = Action.Jump, wait = 6, next = { "jump", 1}, 
+	pic_id = 0, pic_x = 1, pic_y = 6, state = Action.Crouch, wait = 6, next = { "jump", 1}, 
 	dvx = 0, dvy = 0, dvz = 0, centerx = 100, centery = 200, clear_key_queue = 0, 
 	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
 }
@@ -157,6 +198,7 @@ frame.running[0] =
 	pic_id = 0, pic_x = 1, pic_y = 3, state = Action.Running, wait = 6, next = { "running", 1}, 
 	dvx = 0, dvy = 0, dvz = 0, centerx = 100, centery = 198, clear_key_queue = 0, 
 	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
+	hit = { {"J", "dash_front", 0 }, },
 }
 
 frame.running[1] =
@@ -164,6 +206,7 @@ frame.running[1] =
 	pic_id = 0, pic_x = 2, pic_y = 3, state = Action.Running, wait = 6, next = { "running", 2}, 
 	dvx = 0, dvy = 0, dvz = 0, centerx = 100, centery = 196, clear_key_queue = 0, 
 	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
+	hit = { {"J", "dash_front", 0 }, },
 }
 
 frame.running[2] =
@@ -171,6 +214,7 @@ frame.running[2] =
 	pic_id = 0, pic_x = 3, pic_y = 3, state = Action.Running, wait = 6, next = { "running", 3}, 
 	dvx = 0, dvy = 0, dvz = 0, centerx = 100, centery = 199, clear_key_queue = 0, 
 	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
+	hit = { {"J", "dash_front", 0 }, },
 }
 
 frame.running[3] =
@@ -178,6 +222,7 @@ frame.running[3] =
 	pic_id = 0, pic_x = 2, pic_y = 3, state = Action.Running, wait = 6, next = { "running", 0}, 
 	dvx = 0, dvy = 0, dvz = 0, centerx = 100, centery = 196, clear_key_queue = 0, 
 	consume = { rule = 0, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
+	hit = { {"J", "dash_front", 0 }, },
 }
 
 frame.standing[0] =

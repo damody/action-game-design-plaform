@@ -46,7 +46,7 @@ std::vector< boost::shared_ptr<T> > LoadLua( std::wstring objectType )
 	// Load Lua data
 	idx = 1;// Lua array begin is 1
 	std::string sot(objectType.begin(), objectType.end());
-	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> ucs2conv;
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> ucs2conv;	//用以將 UTF8 字串轉碼成 wchar 用的 UCS
 	while ( luaResource->HasValue( "%s/%d", sot.c_str(), idx ) )
 	{
 		// initialize ptr
@@ -111,11 +111,12 @@ std::vector<std::wstring> LoadMusic( std::wstring musicType )
 
 	// Load Lua data
 	idx = 1;// Lua array begin is 1
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> ucs2conv;	//用以將 UTF8 字串轉碼成 wchar 用的 UCS
 	while ( luaResource->HasValue( "%s/%d", std::string(musicType.begin(), musicType.end()).c_str(), idx ) )
 	{
 		std::wstring pathTemp;
 		const char* tcs = luaResource->GetLua<const char*>( "%s/%d", std::string(musicType.begin(), musicType.end()).c_str(), idx );
-		pathTemp = std::wstring(tcs, tcs + strlen(tcs));
+		pathTemp = ucs2conv.from_bytes(tcs);
 		data.push_back( pathTemp );
 		idx++;
 	}

@@ -1586,7 +1586,12 @@ void Hero::ModifyMaxHP( int delta )	{
 	}
 }
 void Hero::ModifyMP( int delta )			{	m_MP += delta;			}
-void Hero::ModifyFall( int delta )			{	m_Fall += delta;		}
+void Hero::ModifyFall( int delta )			{
+	m_Fall += delta;
+	if(m_Fall <= 0 && m_Action != 33 && m_Action != 34){
+		SwitchFrame(L"falling_front", 0);
+	}
+}
 void Hero::ModifyFrontDefence( int delta )	{	m_FrontDefence += delta;}
 void Hero::ModifyBackDefence( int delta )	{	m_BackDefence += delta;	}
 void Hero::ChangeTeam( int newTeam )		{	m_Team = newTeam, m_Record->team = newTeam;}

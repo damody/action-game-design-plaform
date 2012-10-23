@@ -1,6 +1,6 @@
---Shader ¸ô®|
+ï»¿--Shader è·¯å¾‘
 ShaderPath = "shader\\FireShaderScale.fx";
---Texture ³Ì¦h5±i
+--Texture æœ€å¤š5å¼µ
 TexturePath =
 {
 	fireTexture,
@@ -8,7 +8,7 @@ TexturePath =
 };
 TexturePath.fireTexture = "Media\\fire01.dds";
 TexturePath.noiseTexture = "Media\\noise01.dds";
---Shaderªº°Ñ¼Æ
+--Shaderçš„åƒæ•¸
 ShaderParameters =
 {
 	scrollSpeeds = {},

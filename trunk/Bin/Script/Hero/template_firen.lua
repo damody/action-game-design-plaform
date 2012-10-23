@@ -1,31 +1,31 @@
-require "effect"
+ï»¿require "effect"
 require "action"
 
-name="Firen"					--¤Hª«¦WºÙ
-head="sprite\sys\firen_f.bmp"	--¤Hª«¤jÀY¶K¹ÏÀÉ¸ô®|
-small="sprite\sys\firen_s.bmp"	--¤Hª«¤p¹Ï¹ÏÀÉ¸ô®|
+name="Firen"					--äººç‰©åç¨±
+head="sprite\sys\firen_f.bmp"	--äººç‰©å¤§é ­è²¼åœ–æª”è·¯å¾‘
+small="sprite\sys\firen_s.bmp"	--äººç‰©å°åœ–åœ–æª”è·¯å¾‘
 
---¹ÏÀÉ
+--åœ–æª”
 file = {
 	{
-		path="sprite\sys\firen_0.bmp",	--¹ÏÀÉ¸ô®|
-		autoclip=1, 					--¹ÏÀÉ¤Á³Î¤è¦¡¡A1:¦P¤j¤p¤è¶ô¦Û°Êµô¤Á
-		w=79, h=79, 					--Åã¥Üªº¼e°ª¡Aw:¼e, h:°ª
-		row=10, col=7					--¤è¶ôªº¦æ¼Æ¤Î¦C¼Æ¡Arow:ª½¦æ¼Æ, col:¾î¦C¼Æ
+		path="sprite\sys\firen_0.bmp",	--åœ–æª”è·¯å¾‘
+		autoclip=1, 					--åœ–æª”åˆ‡å‰²æ–¹å¼ï¼Œ1:åŒå¤§å°æ–¹å¡Šè‡ªå‹•è£åˆ‡
+		w=79, h=79, 					--é¡¯ç¤ºçš„å¯¬é«˜ï¼Œw:å¯¬, h:é«˜
+		row=10, col=7					--æ–¹å¡Šçš„è¡Œæ•¸åŠåˆ—æ•¸ï¼Œrow:ç›´è¡Œæ•¸, col:æ©«åˆ—æ•¸
 	},
 	{path="sprite\sys\firen_1.bmp", autoclip=1, w=79, h=79, row=10, col=7},
 	{path="sprite\sys\firen_2.bmp", autoclip=1, w=79, h=79, row=10, col=7},
 	{
-		path="sprite\sys\firen_X.bmp",	--¹ÏÀÉ¸ô®|
-		autoclip=0,						--¹ÏÀÉ¤Á³Î¤è¦¡¡A0:¥þ¦Û­q
+		path="sprite\sys\firen_X.bmp",	--åœ–æª”è·¯å¾‘
+		autoclip=0,						--åœ–æª”åˆ‡å‰²æ–¹å¼ï¼Œ0:å…¨è‡ªè¨‚
 		pic= {
-			{x=0, y=0, w=50, h=50},		--x,y: °Ñ¦ÒÂI¡A§Y¹Ï®æ¥ª¤W¨¤¡Cw,h:¹Ï®æ¼e°ª
+			{x=0, y=0, w=50, h=50},		--x,y: åƒè€ƒé»žï¼Œå³åœ–æ ¼å·¦ä¸Šè§’ã€‚w,h:åœ–æ ¼å¯¬é«˜
 			{x=40, y=40, w=50, h=50},
 		}
 	},
 }
 
---¤Hª«°ò¥»¼Æ¾Ú
+--äººç‰©åŸºæœ¬æ•¸æ“š
 walking_speed=5.000000
 walking_speedz=2.500000
 running_speed=9.600000
@@ -35,9 +35,9 @@ heavy_walking_speedz=1.850000
 heavy_running_speed=6.200000
 heavy_running_speedz=1.000000
 
---¸¨¦a¤Á´«³]©w¡A¥u­n³o¸Ì¨S³]©wªº¡A¸¨¦a®É³£¤Á´«¨ì crouch[0]
+--è½åœ°åˆ‡æ›è¨­å®šï¼Œåªè¦é€™è£¡æ²’è¨­å®šçš„ï¼Œè½åœ°æ™‚éƒ½åˆ‡æ›åˆ° crouch[0]
 air_crouch_map={
---®æ¦¡¡G { Action, Frame, FrameID }
+--æ ¼å¼ï¼š { Action, Frame, FrameID }
 {Action.InTheAir, "crouch", 0},
 {Action.Dash, "crouch", 1},
 {Action.BeforeDashAttack, "crouch", 1},
@@ -48,103 +48,103 @@ air_crouch_map={
 
 frame =
 {
-	--¥²­n Frame
-	default  = {},		--¹w³]¡A¤Hª«ªì©l Frame ¡A³q±`¤]§@¬°©Ò¦³©Û¦¡µ²§ô«á¸õÂà¹ï¶H¡A¥²¶·­n¬O Action.Standing
-	standing = {},		--¦a¤W¯¸¥ß
-	walking  = {},		--¦a¤W¦æ¨«
-	in_the_air = {},	--¥²¶·¦³ in_the_air[0]¡A¦bªÅ¤¤ªº¹w³] Frame ¡A¥u­n¦bªÅ¤¤³B©ó Action.Standing ´N·|¤Á´«¨ì in_the_air[0]
-	injured = {},		--³QÀ»¤¤
-	lying = {},			--­Ë¦a
-	falling_front = {},	--±q«á¤è³QÀ»­¸
-	falling_back = {},	--±q«e¤è³QÀ»­¸
-	crouch = {},		--¥²¶·¦³ crouch[0] µ¹¸¨¦a¤Á´«¡A¹w³]¤ä´©LF2¦¡ªº½Ä¸õ¤Á´«
-	--³q±`³£·|¦³ªº Frame
-	running      = {},	--»Pstop_running¤@²Õ¡C¹w³]«öªk¬°>>¡A¤£¾a hit ¤Á´«
-	stop_running = {},	--»Prunning¤@²Õ¡A¨£¤W¤è»¡©ú
-	jump         = {},	--¸õÅD
-	dash_front   = {},	--»P dash_back ¤@²Õ¡A¹w³]¦b¦¹ Frame «ö¤U¤Ï¦V¤è¦V«Ø·|¸õ¨ì dash_back
-	dash_back    = {},	--»P dash_front ¤@²Õ¡A¨£¤W¤è»¡©ú
-	defend		 = {},	--»P broken_defend ¤@²Õ¡A¹w³]¦b¦¹ Frame ·|¦³¹ï«e¤èªº¨¾¿m®ÄªG¡A­Y¨¾¿m³QÀ»¯}«K·|¤Á´«¨ì broken_defend
-	broken_defend= {},	--»P defend ¤@²Õ¡A¨£¤W¤è»¡©ú
-	front_flip	 = {},	--µ¹ falling_front Â½¥¿¥Î
-	back_flip	 = {},	--µ¹ falling_back Â½¥¿¥Î
-	punch		 = {},	--´¶§ð
-	rolling		 = {},	--ºu¦a
+	--å¿…è¦ Frame
+	default  = {},		--é è¨­ï¼Œäººç‰©åˆå§‹ Frame ï¼Œé€šå¸¸ä¹Ÿä½œç‚ºæ‰€æœ‰æ‹›å¼çµæŸå¾Œè·³è½‰å°è±¡ï¼Œå¿…é ˆè¦æ˜¯ Action.Standing
+	standing = {},		--åœ°ä¸Šç«™ç«‹
+	walking  = {},		--åœ°ä¸Šè¡Œèµ°
+	in_the_air = {},	--å¿…é ˆæœ‰ in_the_air[0]ï¼Œåœ¨ç©ºä¸­çš„é è¨­ Frame ï¼Œåªè¦åœ¨ç©ºä¸­è™•æ–¼ Action.Standing å°±æœƒåˆ‡æ›åˆ° in_the_air[0]
+	injured = {},		--è¢«æ“Šä¸­
+	lying = {},			--å€’åœ°
+	falling_front = {},	--å¾žå¾Œæ–¹è¢«æ“Šé£›
+	falling_back = {},	--å¾žå‰æ–¹è¢«æ“Šé£›
+	crouch = {},		--å¿…é ˆæœ‰ crouch[0] çµ¦è½åœ°åˆ‡æ›ï¼Œé è¨­æ”¯æ´LF2å¼çš„è¡è·³åˆ‡æ›
+	--é€šå¸¸éƒ½æœƒæœ‰çš„ Frame
+	running      = {},	--èˆ‡stop_runningä¸€çµ„ã€‚é è¨­æŒ‰æ³•ç‚º>>ï¼Œä¸é  hit åˆ‡æ›
+	stop_running = {},	--èˆ‡runningä¸€çµ„ï¼Œè¦‹ä¸Šæ–¹èªªæ˜Ž
+	jump         = {},	--è·³èº
+	dash_front   = {},	--èˆ‡ dash_back ä¸€çµ„ï¼Œé è¨­åœ¨æ­¤ Frame æŒ‰ä¸‹åå‘æ–¹å‘å»ºæœƒè·³åˆ° dash_back
+	dash_back    = {},	--èˆ‡ dash_front ä¸€çµ„ï¼Œè¦‹ä¸Šæ–¹èªªæ˜Ž
+	defend		 = {},	--èˆ‡ broken_defend ä¸€çµ„ï¼Œé è¨­åœ¨æ­¤ Frame æœƒæœ‰å°å‰æ–¹çš„é˜²ç¦¦æ•ˆæžœï¼Œè‹¥é˜²ç¦¦è¢«æ“Šç ´ä¾¿æœƒåˆ‡æ›åˆ° broken_defend
+	broken_defend= {},	--èˆ‡ defend ä¸€çµ„ï¼Œè¦‹ä¸Šæ–¹èªªæ˜Ž
+	front_flip	 = {},	--çµ¦ falling_front ç¿»æ­£ç”¨
+	back_flip	 = {},	--çµ¦ falling_back ç¿»æ­£ç”¨
+	punch		 = {},	--æ™®æ”»
+	rolling		 = {},	--æ»¾åœ°
 }
 
 frame.standing[1]=
 {
-	pic_id=0, pic_x=1, pic_y=2, --¹Ï¤ù¸ê°T¡Apic_id: ²Ä´X­Ó¹ÏÀÉ¡Apic_x pic_y: ¹ÏÀÉ¤¤ªº²Ä´XÄæ²Ä´X¦C
-	state=Action.Standing, 		--ª¬ºA
-	wait=60, 					--°±¯d¦b¦¹ frame ªº®É¶¡
-	next={frame.standing, 2},	--¦¹ frame µ²§ô«áªº¤U¤@­Ó frame ¤§¦WºÙ¤Î§Ç¸¹A
-	dvx=0, dvy=0, dvz=0, 		--¶i¤J¦¹ frame ®É±o¨ìªº¥[³t«×
-	centerx=39, centery=79, 	--¤Hª«¤äÂI(position)¬Û¹ï©ó¹Ï¤ù¥ª¤W¨¤ªº¦ì¸m
-	clear_key_queue=0,			--¶i¤J¦¹ frame ®É¬O§_²M°£«öÁä¦î¦C¡A0¡G§¹¥þ¤£²M°£¡A1¡G²M°£¥½¶µ¡A2¡G²MªÅ
+	pic_id=0, pic_x=1, pic_y=2, --åœ–ç‰‡è³‡è¨Šï¼Œpic_id: ç¬¬å¹¾å€‹åœ–æª”ï¼Œpic_x pic_y: åœ–æª”ä¸­çš„ç¬¬å¹¾æ¬„ç¬¬å¹¾åˆ—
+	state=Action.Standing, 		--ç‹€æ…‹
+	wait=60, 					--åœç•™åœ¨æ­¤ frame çš„æ™‚é–“
+	next={frame.standing, 2},	--æ­¤ frame çµæŸå¾Œçš„ä¸‹ä¸€å€‹ frame ä¹‹åç¨±åŠåºè™ŸA
+	dvx=0, dvy=0, dvz=0, 		--é€²å…¥æ­¤ frame æ™‚å¾—åˆ°çš„åŠ é€Ÿåº¦
+	centerx=39, centery=79, 	--äººç‰©æ”¯é»ž(position)ç›¸å°æ–¼åœ–ç‰‡å·¦ä¸Šè§’çš„ä½ç½®
+	clear_key_queue=0,			--é€²å…¥æ­¤ frame æ™‚æ˜¯å¦æ¸…é™¤æŒ‰éµä½‡åˆ—ï¼Œ0ï¼šå®Œå…¨ä¸æ¸…é™¤ï¼Œ1ï¼šæ¸…é™¤æœ«é …ï¼Œ2ï¼šæ¸…ç©º
 
-	--¶i¤J¦¹ frame ¥²¶·¥I¥Xªº¥N»ù
+	--é€²å…¥æ­¤ frame å¿…é ˆä»˜å‡ºçš„ä»£åƒ¹
 	consume = {
-		rule = 0, 				--¼Ð¥Ü¥H¦óºØ¤è¦¡¶i¤J¦¹ frame ¥²¶·¥I¥X¦¹¥N»ù¡G -1:next , 0:both , 1:hit
-		HP = 0, MP = 0,			--¥N»ù
-		backFrame = "default", backFrameID = 0			--­YµLªk¥I¥X¦¹¥N»ù¡A±N¸õ¨ì­þ­Ó frame ¡A­Y¶ñ default 0 ªí¥Ü«O«ù­ì¨Óªº frame ¤£¸õ
+		rule = 0, 				--æ¨™ç¤ºä»¥ä½•ç¨®æ–¹å¼é€²å…¥æ­¤ frame å¿…é ˆä»˜å‡ºæ­¤ä»£åƒ¹ï¼š -1:next , 0:both , 1:hit
+		HP = 0, MP = 0,			--ä»£åƒ¹
+		backFrame = "default", backFrameID = 0			--è‹¥ç„¡æ³•ä»˜å‡ºæ­¤ä»£åƒ¹ï¼Œå°‡è·³åˆ°å“ªå€‹ frame ï¼Œè‹¥å¡« default 0 è¡¨ç¤ºä¿æŒåŽŸä¾†çš„ frame ä¸è·³
 	},
 
-	--«öÁä¸õÂà¡A®æ¦¡¡G{«öÁä²Õ¦X, frame, §Ç¸¹}
+	--æŒ‰éµè·³è½‰ï¼Œæ ¼å¼ï¼š{æŒ‰éµçµ„åˆ, frame, åºè™Ÿ}
 	hit = {{"d>.a", "super_punch", 1}, {"dja", "super_punch2", 1}},
 
-	--¨­Åé½d³ò
+	--èº«é«”ç¯„åœ
 	body={
-		--®æ¦¡¡GºØÃþ, ¥Y¦hÃä§Î³»ÂI¶°¦X, z¤è¦V«p«×
+		--æ ¼å¼ï¼šç¨®é¡ž, å‡¸å¤šé‚Šå½¢é ‚é»žé›†åˆ, zæ–¹å‘åŽšåº¦
 		{kind=0, points={{0,0}, {30,50}, {80,90}}, zwidth=10},
 		{kind=1, points={{12,43}, {40,50}, {-80,60}}, zwidth=10},
 	},
 
-	--¦å¸ñ¡A®æ¦¡¡G{¤j¤p, x, y}®y¼Ð¥H¹Ï¤ù¥ª¤W¨¤¬°°ò·Ç
+	--è¡€è·¡ï¼Œæ ¼å¼ï¼š{å¤§å°, x, y}åº§æ¨™ä»¥åœ–ç‰‡å·¦ä¸Šè§’ç‚ºåŸºæº–
 	blood={{size=1.0,0,0}, {size=2.0,30,50}, {size=3.3,80,90}},
 
-	--§ðÀ»
+	--æ”»æ“Š
 	attack={
-		{kind=FOLLOW_EFFECT, 	--§ðÀ»ºØÃþ
-		effect=EFFECT_FIRE, 	--À»¤¤®ÄªG¡A¶È¦b¯S®íºØÃþ¤§§ðÀ»¦³®Ä¡A§_«h¦h¶ñ Effect.End
-		points={{0,0}, {30,50}, {80,90}}, zwidth=10,	--§ðÀ»½d³ò¡A®æ¦¡¦P body
-		dvx=10, dvy=-10, dvz=30,--³QÀ»¤¤¤èÀò±oªº¥[³t«×
-		fall=70, 				--À»­Ë­È
-		breakDefend=16,			--¯}¨¾­È
-		arest=50,				--§ðÀ»°±¹y®É¶¡
-		reAttackRest=60,		--¦A«×§P©w®É¶¡
-		injury=45, 				--§ðÀ»¤O
-		strength=50,			--§P©w±j«×
+		{kind=FOLLOW_EFFECT, 	--æ”»æ“Šç¨®é¡ž
+		effect=EFFECT_FIRE, 	--æ“Šä¸­æ•ˆæžœï¼Œåƒ…åœ¨ç‰¹æ®Šç¨®é¡žä¹‹æ”»æ“Šæœ‰æ•ˆï¼Œå¦å‰‡å¤šå¡« Effect.End
+		points={{0,0}, {30,50}, {80,90}}, zwidth=10,	--æ”»æ“Šç¯„åœï¼Œæ ¼å¼åŒ body
+		dvx=10, dvy=-10, dvz=30,--è¢«æ“Šä¸­æ–¹ç²å¾—çš„åŠ é€Ÿåº¦
+		fall=70, 				--æ“Šå€’å€¼
+		breakDefend=16,			--ç ´é˜²å€¼
+		arest=50,				--æ”»æ“Šåœé “æ™‚é–“
+		reAttackRest=60,		--å†åº¦åˆ¤å®šæ™‚é–“
+		injury=45, 				--æ”»æ“ŠåŠ›
+		strength=50,			--åˆ¤å®šå¼·åº¦
 		}
 	},
 
-	--§ìÀ»
+	--æŠ“æ“Š
 	catch={
-		{kind=0, 				--ºØÃþ
-		strong=100, 			--§P©w±j«×
-		catchx=60, catchy=-30,	--§ì¤Hªº¦ì¸m
-		where = Body.Neck		--§ì¦íªº³¡¦ì
-		points={{0,0}, {30,50}, {80,90}}, zwidth=10		--¦³®Ä½d³ò¡A®æ¦¡¦P body
+		{kind=0, 				--ç¨®é¡ž
+		strong=100, 			--åˆ¤å®šå¼·åº¦
+		catchx=60, catchy=-30,	--æŠ“äººçš„ä½ç½®
+		where = Body.Neck		--æŠ“ä½çš„éƒ¨ä½
+		points={{0,0}, {30,50}, {80,90}}, zwidth=10		--æœ‰æ•ˆç¯„åœï¼Œæ ¼å¼åŒ body
 		}
 	},
 
-	--³Ð³yª«¥ó
+	--å‰µé€ ç‰©ä»¶
 	newobjects={
-		{name="XXX", 			--±ý³Ð³yª«¥ó¤§¦WºÙ
-		amount=1, 				--³Ð³y¼Æ¶q
-		x = 60, y = 30,			--²£¥Xª«¥ó¬Û¹ï©ó¦Û¤vªº¦ì¸m
-		facing=0, 				--­±¹ï¤è¦V¡A 0:»P¦Û¤v¦P¦V¡A1:»P¦Û¤v¤Ï¦V
-		frame="fly",	 		--¸Óª«¥óªºªì©l frame ¦WºÙ
-		frameID=1,				--¸Óª«¥óªºªì©l frame §Ç¸¹
-		hp=500, 				--²£¥Xª«¥óªº¦å¶q
-		ai="XXX", 				--²£¥Xª«¥óªº ai ?
-		dvx=0, dvy=0, dvz=0		--²£¥Xª«¥óªºªì³t«×
+		{name="XXX", 			--æ¬²å‰µé€ ç‰©ä»¶ä¹‹åç¨±
+		amount=1, 				--å‰µé€ æ•¸é‡
+		x = 60, y = 30,			--ç”¢å‡ºç‰©ä»¶ç›¸å°æ–¼è‡ªå·±çš„ä½ç½®
+		facing=0, 				--é¢å°æ–¹å‘ï¼Œ 0:èˆ‡è‡ªå·±åŒå‘ï¼Œ1:èˆ‡è‡ªå·±åå‘
+		frame="fly",	 		--è©²ç‰©ä»¶çš„åˆå§‹ frame åç¨±
+		frameID=1,				--è©²ç‰©ä»¶çš„åˆå§‹ frame åºè™Ÿ
+		hp=500, 				--ç”¢å‡ºç‰©ä»¶çš„è¡€é‡
+		ai="XXX", 				--ç”¢å‡ºç‰©ä»¶çš„ ai ?
+		dvx=0, dvy=0, dvz=0		--ç”¢å‡ºç‰©ä»¶çš„åˆé€Ÿåº¦
 		},
 		{name="XXX", amount=5, facing=0, frame=1, hp=500, ai="XXX", dvx=0, dvy=0, dvz=0},
 	}
 
-	--«ù¦³ªZ¾¹
-	--¥¼§¹¦¨
+	--æŒæœ‰æ­¦å™¨
+	--æœªå®Œæˆ
 
-	--¶i¤J¦¹ frame ¼½©ñ¤§­µ®Ä¡Aª½±µ¥H¦r¦ê¿é¤J¸Ó­µ®ÄÀÉ¸ô®|
+	--é€²å…¥æ­¤ frame æ’­æ”¾ä¹‹éŸ³æ•ˆï¼Œç›´æŽ¥ä»¥å­—ä¸²è¼¸å…¥è©²éŸ³æ•ˆæª”è·¯å¾‘
 	sound = "data\\001.wav"
 }

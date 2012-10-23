@@ -1,4 +1,6 @@
 #include "game\ObjectInfo.h"
+#include <locale> 
+#include <codecvt> 
 
 bool	ObjectInfo::CheckObjectDataVaild( LuaCell_Sptr luadata )
 {
@@ -8,9 +10,10 @@ bool	ObjectInfo::CheckObjectDataVaild( LuaCell_Sptr luadata )
 void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 {
 	const char* tcp;	//temp char pointer
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> ucs2conv;	//用以將 UTF8 字串轉碼成 wchar 用的 UCS
 	m_LuaCell	= luadata;
 	tcp = luadata->GetLua<const char*>( "name" );		//str to wstr
-	m_Name		= std::wstring( tcp, tcp + strlen(tcp));
+	m_Name		= ucs2conv.from_bytes(tcp);
 	m_MaxHP		= luadata->GetLua<int>( "hp" );
 	m_Mess		= ( float )luadata->GetLua<int>( "mess" );
 	m_Elasticity	= ( float )luadata->GetLua<double>( "elasticity" );
@@ -24,7 +27,7 @@ void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 		{
 			PictureData pd;
 			tcp = luadata->GetLua<const char*>( "file/%d/path", i );	//str to wstr
-			pd.m_Path	= std::wstring(tcp, tcp + strlen(tcp));
+			pd.m_Path	= ucs2conv.from_bytes(tcp);
 			pd.m_AutoClip	= !!luadata->GetLua<int>( "file/%d/autoclip", i );
 			pd.m_Width	= luadata->GetLua<int>( "file/%d/w", i );
 			pd.m_Height	= luadata->GetLua<int>( "file/%d/h", i );
@@ -55,8 +58,7 @@ void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 		for ( int frameCount = 0;; frameCount++ )
 		{
 			FrameInfo newData;
-			std::string sfm = std::string(actions[i].begin(), actions[i].end());
-			const char* frameName	= sfm.c_str();
+			const char* frameName	= tac[i].c_str();
 
 			if ( !luadata->HasValue( "frame/%s/%d/pic_id", frameName, frameCount ) ) { break; }
 
@@ -68,7 +70,7 @@ void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 			newData.m_HeroAction	= luadata->GetLua<int>( "frame/%s/%d/state", frameName, frameCount );
 			newData.m_Wait		= luadata->GetLua<int>( "frame/%s/%d/wait", frameName, frameCount );
 			tcp = luadata->GetLua<const char*>( "frame/%s/%d/next/1", frameName, frameCount );
-			newData.m_NextFrameName	= std::wstring(tcp, tcp + strlen(tcp));
+			newData.m_NextFrameName	= ucs2conv.from_bytes(tcp);
 			newData.m_NextFrameIndex = luadata->GetLua<int>( "frame/%s/%d/next/2", frameName, frameCount );
 			newData.m_DVX		= ( float )luadata->GetLua<double>( "frame/%s/%d/dvx", frameName, frameCount );
 			newData.m_DVY		= ( float )luadata->GetLua<double>( "frame/%s/%d/dvy", frameName, frameCount );
@@ -86,7 +88,7 @@ void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 					hitData.m_KeyQueue	= luadata->GetLua<const char*>( "frame/%s/%d/hit/%d/1", frameName, frameCount, hitCount );
 					// get action name "many_punch"
 					tcp = luadata->GetLua<const char*>( "frame/%s/%d/hit/%d/2", frameName, frameCount, hitCount );
-					hitData.m_FrameName	= std::wstring(tcp, tcp + strlen(tcp));
+					hitData.m_FrameName	= ucs2conv.from_bytes(tcp);
 					// get frame offset
 					hitData.m_FrameOffset	= luadata->GetLua<int>( "frame/%s/%d/hit/%d/3", frameName, frameCount, hitCount );
 					newData.m_HitDatas.push_back( hitData );

@@ -1,4 +1,4 @@
-require "Script/object"
+﻿require "Script/object"
 require "Script/action"
 
 name = "davis_ball"

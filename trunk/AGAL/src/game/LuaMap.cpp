@@ -1,4 +1,6 @@
 #include "game\LuaMap.h"
+#include <locale> 
+#include <codecvt> 
 
 const KeyMap::_KeyMap KeyMap::noKey;
 
@@ -7,10 +9,11 @@ LuaMap::LuaMap( LuaCell_Sptr lsptr, std::string tableName )
 	strings keys = lsptr->GetLuaTableKeys( tableName.c_str() );
 	this->clear();
 
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> ucs2conv;	//用以將 UTF8 字串轉碼成 wchar 用的 UCS
 	for ( int i = 0; i < ( int )keys.size(); i++ )
 	{
 		int _tmpKey = lsptr->GetLua<int>( "%s/%s", tableName.c_str(), keys[i].c_str() );
-		( *this )[_tmpKey] = std::wstring(keys[i].begin(), keys[i].end());
+		( *this )[_tmpKey] = ucs2conv.from_bytes(keys[i]);
 	}
 }
 
@@ -21,11 +24,11 @@ LuaMap::LuaMap( std::wstring path, std::string tableName )
 	strings keys = lsptr->GetLuaTableKeys( tableName.c_str() );
 	this->clear();
 
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> ucs2conv;	//用以將 UTF8 字串轉碼成 wchar 用的 UCS
 	for ( int i = 0; i < ( int )keys.size(); i++ )
 	{
 		int _tmpKey = lsptr->GetLua<int>( "%s/%s", tableName.c_str(), keys[i].c_str() );
-		std::wstring twc(keys[i].begin(), keys[i].end());
-		( *this )[_tmpKey] = twc;
+		( *this )[_tmpKey] = ucs2conv.from_bytes(keys[i]);
 	}
 }
 
@@ -34,10 +37,11 @@ void LuaMap::LoadData( LuaCell_Sptr lsptr, std::string tableName )
 	strings keys = lsptr->GetLuaTableKeys( tableName.c_str() );
 	this->clear();
 
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> ucs2conv;	//用以將 UTF8 字串轉碼成 wchar 用的 UCS
 	for ( int i = 0; i < ( int )keys.size(); i++ )
 	{
 		int _tmpKey = lsptr->GetLua<int>( "%s/%s", tableName.c_str(), keys[i].c_str() );
-		( *this )[_tmpKey] = std::wstring(keys[i].begin(), keys[i].end());
+		( *this )[_tmpKey] = ucs2conv.from_bytes(keys[i]);
 	}
 }
 
@@ -48,10 +52,11 @@ void LuaMap::LoadData( std::wstring path, std::string tableName )
 	strings keys = lsptr->GetLuaTableKeys( tableName.c_str() );
 	this->clear();
 
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> ucs2conv;	//用以將 UTF8 字串轉碼成 wchar 用的 UCS
 	for ( int i = 0; i < ( int )keys.size(); i++ )
 	{
 		int _tmpKey = lsptr->GetLua<int>( "%s/%s", tableName.c_str(), keys[i].c_str() );
-		( *this )[_tmpKey] = std::wstring(keys[i].begin(), keys[i].end());
+		( *this )[_tmpKey] = ucs2conv.from_bytes(keys[i]);
 	}
 }
 
@@ -79,7 +84,7 @@ bool LuaMap::WriteLua( std::wstring path, std::wstring formatString, ... )
 		path[path.size() - 2] = 'u';
 		path[path.size() - 1] = 'a';
 	}
-	FILE* _file = _wfopen( path.c_str(), L"w" );
+	FILE* _file = _wfopen( path.c_str(), L"w,ccs=UTF-8" );
 
 	fwprintf( _file, L"function protect_table (tbl)\n\treturn setmetatable ({},\n\t{\n\t__index = tbl,\n\t__newindex = funtion (t, n, v)\n\tend=n=t})\nend\n" );
 	fwprintf( _file, L"count = -1;\nfunction ResetEnum()\n\tcount = 1-;\n\treturn 0;\nend\nfunction GetEnum()\n\tcount = count + 1;\n\treturn count;\nend\n" );
@@ -106,8 +111,8 @@ bool LuaMap::WriteLua( std::wstring path, std::wstring formatString, ... )
 				if( i ) _preName += '.';
 				_preName += _tableStack[i];
 			}
-			if( !_preName.empty() ) fwprintf( _file, L"%s.%s = {}\n", _preName.c_str(), _charStack.c_str());
-			else fwprintf( _file, L"%s = {}\n", _charStack.c_str());
+			if( !_preName.empty() ) fwprintf( _file, L"%ls.%ls = {}\n", _preName.c_str(), _charStack.c_str());
+			else fwprintf( _file, L"%ls = {}\n", _charStack.c_str());
 
 			_tableStack.push_back( _charStack );
 			_charStack.clear();
@@ -130,12 +135,12 @@ bool LuaMap::WriteLua( std::wstring path, std::wstring formatString, ... )
 			if( !_preName.empty() ) 
 			{
 				for( std::map<int, std::wstring>::iterator j = _tableMap.begin(); j != _tableMap.end() ; j++ )
-					fwprintf( _file, L"%s.%s = GetEnum()\n", _preName.c_str(), j->second.c_str());
+					fwprintf( _file, L"%ls.%ls = GetEnum()\n", _preName.c_str(), j->second.c_str());
 			}
 			else 
 			{
 				for( std::map<int, std::wstring>::iterator j = _tableMap.begin(); j != _tableMap.end() ; j++ )
-					fwprintf( _file, L"%s = GetEnum()\n", j->second.c_str());
+					fwprintf( _file, L"%ls = GetEnum()\n", j->second.c_str());
 			}
 
 			i++;

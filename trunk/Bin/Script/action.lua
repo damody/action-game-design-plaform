@@ -71,7 +71,8 @@ Action.ZAxisSkill 	= GetEnum()				--48Z軸技，可用方向鍵控制X方向，�
 Action.GroundSkill 	= GetEnum()				--49地面絕招，方向鍵完全無效
 Action.FreeSkill 	= GetEnum()				--50自由移動絕招，四方鍵有效，加速度以DVZ、DVX控制
 Action.UniqueSkill	= GetEnum()				--51特殊絕招，無重力且可遁地
-Action.BasicActionEnd	= GetEnum()			--52人物狀態結尾記號
+Action.測試			= GetEnum()				--52中文測試
+Action.BasicActionEnd	= GetEnum()			--53人物狀態結尾記號
 
 count = -1;
 Body = {}
