@@ -1327,6 +1327,7 @@ void InitDirect3DApp::ParseCommandLine( int argc, char* argv[] )
 {
 	int current = 1;
 	std::string mainStr;
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> ucs2conv;
 
 	while ( current < argc )
 	{
@@ -1350,8 +1351,9 @@ void InitDirect3DApp::ParseCommandLine( int argc, char* argv[] )
 				temp->LoadHeroData( hero );
 				g_HeroInfoManager.AddHeroInfo( temp->m_Name, temp );
 			}*/
-			std::wstring heroStr( argv[current], argv[current] + strlen(argv[current]) );
+			std::wstring heroStr = ucs2conv.from_bytes( argv[current] );
 			//heroStr.append( ".lua" );
+			wprintf(L"%s\t %ls\n", argv[current], heroStr.c_str());
 			LuaCell_Sptr hero = LuaCell_Sptr( new LuaCell );
 			hero->InputLuaFile( heroStr.c_str() );
 			HeroInfo_Sptr temp = HeroInfo_Sptr( new HeroInfo );
@@ -1401,7 +1403,7 @@ void InitDirect3DApp::InitPlayer()
 	sr = new Record();
 	sr->team = 1;
 	for(int i=0;i<100;i++){
-		Hero *sh = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000+10*i, 500, 150 ) ,1 );
+		Hero *sh = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000+100*i, 500, 150 ) ,1 );
 		sh->SetRecord(Record_Sptr(sr));
 	}
 }

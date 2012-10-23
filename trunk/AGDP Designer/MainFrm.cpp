@@ -617,7 +617,7 @@ void CMainFrame::OnButtonRun()
 		HeroInfo::WriteLua( g_HeroInfo, std::wstring( _T( "Script\\Hero\\temp.lua" ) ) );
 		//∞ı¶ÊAGDP.exe
 #ifdef _DEBUG
-		system( "start ../Bin/ActionGameDesignPlaform.exe -hero ..\\AGDP Designer\\Script\\Hero\\temp.lua" );
+		system( "start ActionGameDesignPlaform.exe -hero Script\\Hero\\temp.lua" );
 #else
 		system( "start ActionGameDesignPlaform.exe -hero Script\\Hero\\temp.lua" );
 #endif
