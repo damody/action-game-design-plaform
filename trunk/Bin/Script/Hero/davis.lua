@@ -75,6 +75,21 @@ frame =
 	super_kick = {},
 	super_punch = {},
 	walking = {},
+	測試 ={},
+}
+
+frame.測試[0] =
+{
+	pic_id = 0, pic_x = 7, pic_y = 7, state = Action.Fliping, wait = 4, next = { "測試", 1},
+	dvx = 0, dvy = 0, dvz = 0, centerx = 40, centery = 80, clear_key_queue = 0,
+	consume = { rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
+}
+
+frame.測試[1] =
+{
+	pic_id = 0, pic_x = 6, pic_y = 7, state = Action.Fliping, wait = 12, next = { "測試", 1},
+	dvx = 0, dvy = 0, dvz = 0, centerx = 39, centery = 79, clear_key_queue = 0,
+	consume = { rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
 }
 
 frame.back_flip[0] =
@@ -765,7 +780,7 @@ frame.in_the_air[0] =
 	body = {
 		{kind = 0, points = { {20,-11}, {20,-72}, {49,-72}, {49,-11}, }, zwidth = 8},
 	},
-	hit = { {"B", "jump_kick", 0 }, },
+	hit = { {"B", "jump_kick", 0 }, {"j", "測試", 0} },
 }
 
 frame.injured[0] =

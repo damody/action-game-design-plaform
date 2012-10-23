@@ -177,7 +177,7 @@ void HeroInfo::LoadData( LuaCell_Sptr luadata )
 		for ( int frameCount = 0;; frameCount++ )
 		{
 			FrameInfo newData = {};
-			//std::string tcs = tac[i];//std::string(actions[i].begin(), actions[i].end());
+			//std::string tcs = ucs2conv.to_bytes(actions[i].c_str());
 			const char* frameName	= tac[i].c_str();
 
 			if ( !luadata->HasValue( "frame/%s/%d/pic_id", frameName, frameCount ) ) { break; }

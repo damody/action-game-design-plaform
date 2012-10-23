@@ -174,7 +174,8 @@ bool LuaCell::IsDigitString( const char* str )
 {
 	for ( const char* pos = str; *pos != '\0'; pos++ )
 	{
-		if ( !isdigit( *pos ) )
+		//if ( !isdigit( *pos ) )
+		if( *pos < '0' || *pos > '9')
 		{
 			return false;
 		}
