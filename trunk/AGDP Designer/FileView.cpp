@@ -340,6 +340,7 @@ void CFileView::OnSelectItem( HTREEITEM item )
 			}
 		}
 		( ( CMainFrame* )this->GetParentFrame() )->m_wndClassView.Refresh();
+		//( ( CMainFrame* )this->GetParentFrame() )->m_wndProperties.SwitchCommandManager(it->second);
 		( ( CMainFrame* )this->GetParentFrame() )->Clear();
 	}
 	else

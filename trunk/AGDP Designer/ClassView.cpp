@@ -514,15 +514,15 @@ void CClassView::OnSelectItem( HTREEITEM item )
 {
 	CPropertiesWnd* _propWnd = CPropertiesWnd::GetInstance();
 
-	if(item == NULL)
+	/*if(item == NULL)
 	{
 		_propWnd->SwitchCommandManager(item);
 		return;
-	}
+	}*/
 
 	HTREEITEM pItem = m_wndClassView.GetParentItem( item );
 
-	_propWnd->SwitchCommandManager(item);
+	//_propWnd->SwitchCommandManager(item);
 
 	if ( m_wndClassView.GetRootItem() == item )
 	{
@@ -762,6 +762,7 @@ void CClassView::Refresh()
 				}
 			}
 		}
+		( ( CMainFrame* )this->GetParentFrame() )->m_wndProperties.SwitchCommandManager(g_HeroInfo);
 	}
 }
 

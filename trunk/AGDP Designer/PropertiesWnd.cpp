@@ -2710,31 +2710,31 @@ void CPropertiesWnd::RemoveCrouch()
 	}
 }
 
-void CPropertiesWnd::SwitchCommandManager( HTREEITEM item )
+void CPropertiesWnd::SwitchCommandManager( HeroInfo* info )
 {
-	if(item == NULL)
+	if(info == NULL)
 	{
 		m_CommandManager = NULL;
 	}
 	else
 	{
-		if(m_CommandManagers.find(item) != m_CommandManagers.end())
+		if(m_CommandManagers.find(info) != m_CommandManagers.end())
 		{
-			m_CommandManager = m_CommandManagers[item];
+			m_CommandManager = m_CommandManagers[info];
 		}
 		else
 		{
 			m_CommandManager = new CommandManager();
-			m_CommandManagers[item] = m_CommandManager;
+			m_CommandManagers[info] = m_CommandManager;
 		}
 	}
 
-	CMFCRibbonButton* undo = (CMFCRibbonButton*)((CMainFrame*)this->GetParentFrame())->m_wndRibbonBar.FindByID(ID_BUTTON_UNDO);
+	/*CMFCRibbonButton* undo = (CMFCRibbonButton*)((CMainFrame*)this->GetParentFrame())->m_wndRibbonBar.FindByID(ID_BUTTON_UNDO);
 	CMFCRibbonButton* redo = (CMFCRibbonButton*)((CMainFrame*)this->GetParentFrame())->m_wndRibbonBar.FindByID(ID_BUTTON_REDO);
 	undo->Redraw();
 	redo->Redraw();
 
-	((CMainFrame*)this->GetParentFrame())->m_wndRibbonBar.UpdateWindow();
+	((CMainFrame*)this->GetParentFrame())->m_wndRibbonBar.UpdateWindow();*/
 }
 
 void CPropertiesWnd::OnButtonUndo()
