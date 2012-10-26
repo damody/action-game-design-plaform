@@ -20,6 +20,9 @@ void AABB2D::AddPoint( const Vector2& p )
 	{
 		m_Min.y = p.y;
 	}
+
+	m_Len.x = std::abs(m_Max.x - m_Min.x);
+	m_Len.y = std::abs(m_Max.y - m_Min.y);;
 }
 
 void AABB2D::Larger( float val )
@@ -28,6 +31,20 @@ void AABB2D::Larger( float val )
 	m_Min.y -= val;
 	m_Max.x += val;
 	m_Max.y += val;
+
+	m_Len.x = std::abs(m_Max.x - m_Min.x);
+	m_Len.y = std::abs(m_Max.y - m_Min.y);;
+}
+
+void AABB2D::Larger( float x, float y )
+{
+	m_Min.x -= x;
+	m_Min.y -= y;
+	m_Max.x += x;
+	m_Max.y += y;
+
+	m_Len.x = std::abs(m_Max.x - m_Min.x);
+	m_Len.y = std::abs(m_Max.y - m_Min.y);;
 }
 
 void AABB2D::SetBounding( float left, float right, float top, float down )
@@ -36,6 +53,9 @@ void AABB2D::SetBounding( float left, float right, float top, float down )
 	m_Min.y = top;
 	m_Max.x = right;
 	m_Max.y = down;
+
+	m_Len.x = std::abs(m_Max.x - m_Min.x);
+	m_Len.y = std::abs(m_Max.y - m_Min.y);;
 }
 
 void AABB2D::SetBounding( float value )
@@ -44,6 +64,9 @@ void AABB2D::SetBounding( float value )
 	m_Min.y = value;
 	m_Max.x = value;
 	m_Max.y = value;
+
+	m_Len.x = std::abs(m_Max.x - m_Min.x);
+	m_Len.y = std::abs(m_Max.y - m_Min.y);;
 }
 
 bool AABB2D::IsContain( const AABB2D& rhs )
@@ -150,6 +173,9 @@ void AABB2D::AddPoint( const point2& p )
 	{
 		m_Min.y = p.y();
 	}
+
+	m_Len.x = std::abs(m_Max.x - m_Min.x);
+	m_Len.y = std::abs(m_Max.y - m_Min.y);;
 }
 
 void AABB2D::Move( float x, float y )
@@ -171,4 +197,7 @@ void AABB2D::Scale( float v )
 {
 	m_Min *= v;
 	m_Max *= v;
+
+	m_Len.x = std::abs(m_Max.x - m_Min.x);
+	m_Len.y = std::abs(m_Max.y - m_Min.y);;
 }

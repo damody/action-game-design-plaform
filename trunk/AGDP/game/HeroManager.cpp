@@ -27,9 +27,11 @@ void HeroManager::Update( float dt )
 		const Attacks& atks = (*it)->GetAttacks();
 		for(auto it_coli = t_colis.begin();it_coli != t_colis.end(); ++it_coli)
 		{
-			for( Heroes::iterator iHero = it_coli->victims.begin(); iHero != it_coli->victims.end(); iHero ++ ){
-				(*iHero)->beAttack(&atks[it_coli->hitter], *it, (*it)->Position(), (*it)->GetFace());
+			for( Heroes::iterator iHero = (*it_coli)->victims.begin(); iHero != (*it_coli)->victims.end(); iHero ++ ){
+				(*iHero)->beAttack(&atks[(*it_coli)->hitter], *it, (*it)->Position(), (*it)->GetFace());
 			}
+			
+			delete (*it_coli);
 		}
 	}
 }
