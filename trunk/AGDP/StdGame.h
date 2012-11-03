@@ -25,7 +25,7 @@
 #include <tchar.h>
 
 #include <common/shared_ptr.h>
-#include <math/AABB2D.h>
+#include <math/AABB3D.h>
 #include <math/AxisAlignedBox.h>
 #include <math/BasicMath.h>
 #include <math/Matrix3.h>

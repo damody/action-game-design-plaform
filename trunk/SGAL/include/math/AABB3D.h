@@ -25,6 +25,7 @@ public:
 	void Scale(float v);
 	void Scale( float x, float y, float z );
 	void ChangeFace();
+	void SetZWidth(float z);
 	Vector3 m_Min, m_Max, m_Len;
 };
 bool Collision( const AABB3D& lhs, const AABB3D& rhs );

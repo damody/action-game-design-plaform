@@ -283,3 +283,10 @@ void AABB3D::Scale( float x, float y, float z )
 	m_Len.y = std::abs(m_Max.y - m_Min.y);
 	m_Len.z = std::abs(m_Max.z - m_Min.z);
 }
+
+void AABB3D::SetZWidth( float z )
+{
+	m_Max.z = z / 2.0f;
+	m_Min.z = -m_Max.z;
+	m_Len.z = z;
+}

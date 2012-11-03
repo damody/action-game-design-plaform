@@ -201,14 +201,18 @@ void Hero::Update( float dt )
 	{
 		m_BodyAABB.ReBuild( bodys.front().m_Area );
 
+		float z = bodys.front ().m_ZWidth;
 		for ( auto it = ++bodys.begin(); it != bodys.end(); it++ )
 		{
 			m_BodyAABB.AddPolygon2D( it->m_Area );
+			if(it->m_ZWidth > z)
+				z = it->m_ZWidth;
 		}
-		m_BodyAABB.Move(-m_CenterX, m_CenterY);
+		m_BodyAABB.Move(-m_CenterX, m_CenterY, 0.0f);
 		if (!m_FaceSide) m_BodyAABB.ChangeFace();
+		m_BodyAABB.SetZWidth(z);
 		m_BodyAABB.Scale(SCALE);
-		m_BodyAABB.Move(m_Position.x, m_Position.y);
+		m_BodyAABB.Move(m_Position.x, m_Position.y, m_Position.z);
 		//printf("bodys: %f\t%f\n", m_BodyAABB.m_Max.x, m_BodyAABB.m_Min.x);
 		//以後開printf或者cout 請在push前關掉
 	}
@@ -223,14 +227,18 @@ void Hero::Update( float dt )
 	{
 		m_AttackAABB.ReBuild( attacks.front().m_Area );
 
+		float z = attacks.front ().m_ZWidth;
 		for ( auto it = ++attacks.begin(); it != attacks.end(); it++ )
 		{
 			m_AttackAABB.AddPolygon2D( it->m_Area );
+			if(it->m_ZWidth > z)
+				z = it->m_ZWidth;
 		}
-		m_AttackAABB.Move(-m_CenterX, m_CenterY);
+		m_AttackAABB.Move(-m_CenterX, m_CenterY, 0.0f);
 		if (!m_FaceSide) m_AttackAABB.ChangeFace();
+		m_AttackAABB.SetZWidth(z);
 		m_AttackAABB.Scale(SCALE);
-		m_AttackAABB.Move(m_Position.x, m_Position.y);
+		m_AttackAABB.Move(m_Position.x, m_Position.y, m_Position.z);
 		//printf("attck: %f\t%f\n", m_AttackAABB.m_Max.x, m_AttackAABB.m_Min.x);
 		//以後開printf或者cout 請在push前關掉
 	}
@@ -1533,17 +1541,17 @@ void Hero::newKey( char r )
 	}
 }
 
-AABB2D& Hero::GetBodyAABB()
+AABB3D& Hero::GetBodyAABB()
 {
 	return m_BodyAABB;
 }
 
-AABB2D& Hero::GetAttackAABB()
+AABB3D& Hero::GetAttackAABB()
 {
 	return m_AttackAABB;
 }
 
-AABB2D& Hero::GetCatchAABB()
+AABB3D& Hero::GetCatchAABB()
 {
 	return m_CatchAABB;
 }

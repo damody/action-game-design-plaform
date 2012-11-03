@@ -31,6 +31,10 @@ public:
 	{
 		bool operator() (ParentPtr i,ParentPtr j) { return i->GetBodyAABB().m_Len.y < j->GetBodyAABB().m_Len.y; }
 	}m_compareYLength;
+	struct compareZLength_
+	{
+		bool operator() (ParentPtr i,ParentPtr j) { return i->GetBodyAABB().m_Len.z < j->GetBodyAABB().m_Len.z; }
+	}m_compareZLength;
 
 private:
 	ParentPtrs m_ParentPtrs;
@@ -72,8 +76,8 @@ public:
 			return res;
 		}
 
-		AABB2D& aabbOrigin = GetAABB2()( obj );
-		AABB2D aabb = aabbOrigin;
+		AABB3D& aabbOrigin = GetAABB2()( obj );
+		AABB3D aabb = aabbOrigin;
 
 		if ( aabb.m_Min.x > 1e19 ) { return res; }
 
@@ -81,11 +85,15 @@ public:
 		auto maxLenIterator = std::max_element(m_ParentPtrs.begin(), m_ParentPtrs.end(), m_compareXLength);
 		float len = (*maxLenIterator)->GetBodyAABB().m_Len.x;
 		if(len > aabb.m_Len.x)
-			aabb.Larger((len - aabb.m_Len.x)/2.0f, 0.0f);
+			aabb.Larger((len - aabb.m_Len.x)/2.0f, 0.0f, 0.0f);
 		maxLenIterator = std::max_element(m_ParentPtrs.begin(), m_ParentPtrs.end(), m_compareYLength);
 		len = (*maxLenIterator)->GetBodyAABB().m_Len.y;
 		if(len > aabb.m_Len.y)
-			aabb.Larger(0.0f, (len - aabb.m_Len.y)/2.0f);
+			aabb.Larger(0.0f, (len - aabb.m_Len.y)/2.0f, 0.0f);
+		maxLenIterator = std::max_element(m_ParentPtrs.begin(), m_ParentPtrs.end(), m_compareZLength);
+		len = (*maxLenIterator)->GetBodyAABB().m_Len.z;
+		if(len > aabb.m_Len.z)
+			aabb.Larger(0.0f, 0.0f, (len - aabb.m_Len.z)/2.0f);
 
 		MyAxis_binds::iterator x_index_max, x_index_min, tmp, tmp2;
 		x_index_max = std::upper_bound( mXbinds.begin(), mXbinds.end(), MyAxis_bind( aabb.m_Max ), Compare_x<MyAxis_bind> );
@@ -104,16 +112,39 @@ public:
 
 			if ( tmp - mYbinds.begin() > 0 )
 			{
-				ParentPtrs victims;
-				for ( MyAxis_binds::iterator it = mYbinds.begin(); it != tmp; it++ )
+				mZbinds.clear();
+				std::copy( mYbinds.begin (), tmp, std::back_inserter( mZbinds ) );
+				tmp = std::partition( mZbinds.begin(), mZbinds.end(),      // range
+					std::bind2nd( axis_z_less<MyAxis_bind>(), MyAxis_bind( aabb.m_Max ) ) );
+				tmp = std::partition( mZbinds.begin(), tmp,        // range
+					std::bind2nd( axis_z_greater<MyAxis_bind>(), MyAxis_bind( aabb.m_Min ) ) ); // criterion
+
+				if ( tmp - mZbinds.begin() > 0 )
 				{
-					if(std::find(victims.begin(), victims.end(), it->m_ParentPtr) == victims.end() && obj != it->m_ParentPtr)
+					ParentPtrs victims;
+					for ( MyAxis_binds::iterator it = mZbinds.begin(); it != tmp; it++ )
 					{
-						collision* co = new collision;
-						co->victims.push_back( it->m_ParentPtr );
-						co->hitter = 0;
-						res.push_back( co );
-						victims.push_back(it->m_ParentPtr);
+						if(std::find(victims.begin(), victims.end(), it->m_ParentPtr) == victims.end() && obj != it->m_ParentPtr)
+						{
+							collision* co = new collision;
+							co->victims.push_back( it->m_ParentPtr );
+							co->hitter = 0;
+							res.push_back( co );
+							victims.push_back(it->m_ParentPtr);
+						}
+					}
+				}
+				else
+				{
+					for ( MyAxis_binds::iterator it = mYbinds.begin(); it != mYbinds.end(); it++ )
+					{
+						if ( GetAABB()( it->m_ParentPtr ).IsCollision( aabb ) )
+						{
+							collision* co = new collision;
+							co->victims.push_back( it->m_ParentPtr );
+							co->hitter = 0;
+							res.push_back( co );
+						}
 					}
 				}
 			}

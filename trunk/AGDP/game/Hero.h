@@ -60,15 +60,9 @@ private:
 	//EffectType::e   m_Effect;
 	float			m_EffectScale;
 	Record_Sptr		m_Record;
-	AABB2D			m_BodyAABB;
-	float			m_BodyMaxZ;
-	float			m_BodyMinZ;
-	AABB2D			m_AttackAABB;
-	float			m_AttackMaxZ;
-	float			m_AttackMinZ;
-	AABB2D			m_CatchAABB;
-	float			m_CatchMaxZ;
-	float			m_CatchMinZ;
+	AABB3D			m_BodyAABB;
+	AABB3D			m_AttackAABB;
+	AABB3D			m_CatchAABB;
 
 	int			m_FrontDefence;
 	int			m_BackDefence;
@@ -127,9 +121,9 @@ public:
 	const Vector3&	Velocity() const;
 	bool			IsAlive() const;
 	bool			GetFace() const;
-	AABB2D&			GetBodyAABB();
-	AABB2D&			GetAttackAABB();
-	AABB2D&			GetCatchAABB();
+	AABB3D&			GetBodyAABB();
+	AABB3D&			GetAttackAABB();
+	AABB3D&			GetCatchAABB();
 	Bodys&			GetBodys( ) const;
 	Attacks&		GetAttacks( ) const;
 	CatchInfos&		GetCatches( ) const;
@@ -183,19 +177,19 @@ typedef std::vector <Hero_RawPtr> Heroes;
 //bool Creat(Vector3 pos, Creation obj, const Hero *owner);
 bool SortHero( Hero_RawPtr a, Hero_RawPtr b );
 
-struct GetBodyAABB2D
+struct GetBodyAABB3D
 {
-	AABB2D& operator()(Hero* hero){return (hero->GetBodyAABB());}
+	AABB3D& operator()(Hero* hero){return (hero->GetBodyAABB());}
 };
 
-struct GetAttackAABB2D
+struct GetAttackAABB3D
 {
-	AABB2D& operator()(Hero* hero){return (hero->GetAttackAABB());}
+	AABB3D& operator()(Hero* hero){return (hero->GetAttackAABB());}
 };
 
-struct GetCatchAABB2D
+struct GetCatchAABB3D
 {
-	AABB2D& operator()(Hero* hero){return (hero->GetCatchAABB());}
+	AABB3D& operator()(Hero* hero){return (hero->GetCatchAABB());}
 };
 
 struct GetPolygonsFromBody

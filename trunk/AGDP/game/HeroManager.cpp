@@ -2,8 +2,8 @@
 #include "HeroManager.h"
 #include "global.h"
 #include "ptrManager.h"
-ptrManager<Hero*, GetBodyAABB2D> BodysCollision;
-ptrManager<Hero*, GetAttackAABB2D> AttacksCollision;
+ptrManager<Hero*, GetBodyAABB3D> BodysCollision;
+ptrManager<Hero*, GetAttackAABB3D> AttacksCollision;
 
 HeroManager::HeroManager( void )
 {
@@ -23,7 +23,7 @@ void HeroManager::Update( float dt )
 	{
 		( *it )->Update( dt );
 		
-		auto t_colis = BodysCollision.GetCollision<Hero*, GetAttackAABB2D>(*it);
+		auto t_colis = BodysCollision.GetCollision<Hero*, GetAttackAABB3D>(*it);
 		const Attacks& atks = (*it)->GetAttacks();
 		for(auto it_coli = t_colis.begin();it_coli != t_colis.end(); ++it_coli)
 		{
