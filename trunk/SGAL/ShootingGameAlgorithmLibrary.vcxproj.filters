@@ -137,6 +137,9 @@
     <ClCompile Include="src\path\LinearLine.cpp">
       <Filter>src\path</Filter>
     </ClCompile>
+    <ClCompile Include="src\math\AABB3D.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ball\Axis_bind.h">
@@ -267,6 +270,9 @@
     </ClInclude>
     <ClInclude Include="include\ptrManager.h">
       <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\AABB3D.h">
+      <Filter>inc\math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1372,7 +1372,7 @@ frame.punch[1] =
 	attack = {
 		{
 		kind = 0, effect = Effect.Fire,
-		points = { {21,-31}, {21,-49}, {64,-49}, {64,-31}, }, zwidth = 16,
+		points = { {21,-31}, {21,-49}, {64,-49}, {64,-31}, }, zwidth = 86,
 		dvx = 2, dvy = 0, dvz = 0, fall = 20, breakDefend = 16, 
 		arest = 8, reAttackRest = 10, injury = 20, strength = 50, 
 		},

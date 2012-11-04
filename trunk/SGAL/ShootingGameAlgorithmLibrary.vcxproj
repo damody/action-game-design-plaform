@@ -175,6 +175,7 @@
     <ClCompile Include="src\algo\SwirlWay.cpp" />
     <ClCompile Include="src\algo\TrajectoryAnimator.cpp" />
     <ClCompile Include="src\math\AABB2D.cpp" />
+    <ClCompile Include="src\math\AABB3D.cpp" />
     <ClCompile Include="src\math\AxisAlignedBox.cpp" />
     <ClCompile Include="src\math\Math.cpp" />
     <ClCompile Include="src\math\Matrix3.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="include\common\Shared_ptr.h" />
     <ClInclude Include="include\common\Utility.h" />
     <ClInclude Include="include\math\AABB2D.h" />
+    <ClInclude Include="include\math\AABB3D.h" />
     <ClInclude Include="include\math\asm_math.h" />
     <ClInclude Include="include\math\AxisAlignedBox.h" />
     <ClInclude Include="include\math\BasicMath.h" />
