@@ -254,6 +254,7 @@ void Background::Update( float dt )
 {
 	m_CurrentLight.m_Direction = m_LightPath.m_Direction.GetValue( ( float )( g_Time % m_TimeLine ) );
 	m_CurrentLight.m_LightStrength = m_LightPath.m_LightStrength.GetValue( ( float )( g_Time % m_TimeLine ) ).x;
+	m_Disaster.Update();
 }
 
 void Background::BuildPoint()

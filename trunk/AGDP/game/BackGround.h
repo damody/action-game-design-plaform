@@ -13,13 +13,14 @@
 #include "common/shared_ptr.h"
 #include "game/ColorRect.h"
 #include "path/HSplineCurve.h"
+#include "game/Disaster.h"
 
 namespace boost {namespace serialization {class access;}}
 struct BGLayer
 {
 
 	std::wstring	m_PicturePath;
-	int			m_PicID;
+	int		m_PicID;
 	Vector3		m_Position;
 	float		m_Width;
 	float		m_Height;
@@ -80,18 +81,25 @@ private:
 	AxisAlignedBoxs	m_SpaceBounding;
 	// can't move bounding
 	AxisAlignedBoxs	m_BanBounding;
+
 	BGLayers	m_BGLayers;
 	ColorRects	m_ColorRects;
+	// ¥ú½u
 	ParallelLights	m_ParallelLights;
 	LightPath	m_LightPath;
 	ParallelLight	m_CurrentLight;
+
+	Disaster m_Disaster;
 
 //	int _isOnBan(Vector3 &pos);
 //	int _isOnSpace(Vector3 &pos);
 //	int _isOnGround(Vector3 &pos);
 
 public:
-	Background() {}
+	Background() {
+		//testing
+		m_Disaster.Earthqauck(Vector3(10,1,0),10,30);
+	}
 	~Background() {}
 
 	std::wstring	 m_Name;

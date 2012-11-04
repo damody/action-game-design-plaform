@@ -45,7 +45,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\Bin</OutDir>
-    <IncludePath>$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(SDKs)luabind-0.9.1;$(IncludePath)</IncludePath>
+    <IncludePath>$(SDKs)lzma\C;$(SDKs)LuaJIT-2.0.0-beta10\src;$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(SDKs)luabind-0.9.1;$(IncludePath)</IncludePath>
     <LibraryPath>$(DXSDK_DIR)Lib\x86;$(SDKs)boost_1_50_0\stage\lib;$(SDKs)LuaJIT-2.0.0-beta10\lib;$(SDKs)luabind-0.9.1\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -114,6 +114,7 @@
     <ClInclude Include="include\game\ObjectType.h" />
     <ClInclude Include="include\game\PictureData.h" />
     <ClInclude Include="include\game\Record.h" />
+    <ClInclude Include="include\game\Shake.h" />
     <ClInclude Include="include\game\WeaponAction.h" />
     <ClInclude Include="include\Lua\CreateLua.h" />
     <ClInclude Include="include\Lua\LuaCell.h" />
@@ -124,6 +125,7 @@
     <ClCompile Include="src\game\LuaMap.cpp" />
     <ClCompile Include="src\game\HeroInfo.cpp" />
     <ClCompile Include="src\game\ObjectInfo.cpp" />
+    <ClCompile Include="src\game\Shake.cpp" />
     <ClCompile Include="src\Lua\CreateLua.cpp" />
     <ClCompile Include="src\Lua\LuaCell.cpp" />
     <ClCompile Include="StdAGAL.cpp" />

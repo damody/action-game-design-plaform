@@ -108,6 +108,9 @@
     <ClInclude Include="..\AGDP\game\Object.h">
       <Filter>標頭檔\game</Filter>
     </ClInclude>
+    <ClInclude Include="include\game\Shake.h">
+      <Filter>標頭檔\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\FlyingPath.cpp">
@@ -129,6 +132,9 @@
       <Filter>原始程式檔\Lua</Filter>
     </ClCompile>
     <ClCompile Include="src\game\LuaMap.cpp">
+      <Filter>原始程式檔\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Shake.cpp">
       <Filter>原始程式檔\game</Filter>
     </ClCompile>
   </ItemGroup>

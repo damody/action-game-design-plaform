@@ -239,6 +239,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="game\Disaster.cpp" />
     <ClCompile Include="game\Effect.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -456,6 +457,7 @@
     <ClInclude Include="game\ColorRect.h" />
     <ClInclude Include="game\Condition.h" />
     <ClInclude Include="game\CtrlKey.h" />
+    <ClInclude Include="game\Disaster.h" />
     <ClInclude Include="game\Effect.h" />
     <ClInclude Include="game\EffectShaderClass.h" />
     <ClInclude Include="game\HeroInfoManager.h" />
