@@ -1604,6 +1604,16 @@ void Hero::ModifyFrontDefence( int delta )	{	m_FrontDefence += delta;}
 void Hero::ModifyBackDefence( int delta )	{	m_BackDefence += delta;	}
 void Hero::ChangeTeam( int newTeam )		{	m_Team = newTeam, m_Record->team = newTeam;}
 
+int Hero::GetHP()
+{
+	return m_HP;
+}
+
+int Hero::GetMP()
+{
+	return m_MP;
+}
+
 bool SortHero( Hero_RawPtr a, Hero_RawPtr b )
 {
 	return a->GetTextureID() < b->GetTextureID();

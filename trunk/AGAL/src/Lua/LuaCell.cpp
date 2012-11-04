@@ -7,7 +7,6 @@
 #include <cstdlib>
 #pragma warning(disable:4996)
 #include <assert.h>
-#include <auto_link_luajit.hpp>
 
 LuaCell::LuaCell()
 {
