@@ -100,58 +100,45 @@ bool Collision( const AABB3D& lhs, const AABB3D& rhs )
 {
 	bool ret = false;
 
-	if ( lhs.m_Min.x <= rhs.m_Min.x && lhs.m_Max.x >= rhs.m_Min.x )
+	if( lhs.m_Max.x > rhs.m_Min.x && lhs.m_Max.x - rhs.m_Min.x < lhs.m_Len.x + rhs.m_Len.x )
 	{
 		ret = true;
 	}
-	else if ( lhs.m_Min.x <= rhs.m_Max.x && lhs.m_Max.x >= rhs.m_Max.x )
+	else return false;
+
+	if( lhs.m_Max.y > rhs.m_Min.y && lhs.m_Max.y - rhs.m_Min.y < lhs.m_Len.y + rhs.m_Len.y )
 	{
 		ret = true;
 	}
+	else return false;
 
-	if(ret)
+	if( lhs.m_Max.z > rhs.m_Min.z && lhs.m_Max.z - rhs.m_Min.z < lhs.m_Len.z + rhs.m_Len.z )
 	{
-		if ( lhs.m_Min.y <= rhs.m_Min.y && lhs.m_Max.y >= rhs.m_Min.y )
-		{
-			ret = true;
-		}
-		else if ( lhs.m_Min.y <= rhs.m_Max.y && lhs.m_Max.y >= rhs.m_Max.y )
-		{
-			ret = true;
-		}
-		else
-		{
-			ret = false;
-		}
+		ret = true;
 	}
-
-	if(ret)
-	{
-		if ( lhs.m_Min.z <= rhs.m_Min.z && lhs.m_Max.z >= rhs.m_Min.z )
-		{
-			ret = true;
-		}
-		else if ( lhs.m_Min.z <= rhs.m_Max.z && lhs.m_Max.z >= rhs.m_Max.z )
-		{
-			ret = true;
-		}
-		else
-		{
-			ret = false;
-		}
-	}
+	else return false;
 
 	return ret;
 }
 
 bool AABB3D::IsCollision( const AABB3D& rhs )
 {
-	if ( Collision( *this, rhs ) || Collision( rhs, *this ) )
+	if( this->m_Max.x < rhs.m_Min.x || this->m_Min.x > rhs.m_Max.x )
 	{
-		return true;
+		return false;
 	}
 
-	return false;
+	if( this->m_Max.y < rhs.m_Min.y || this->m_Min.y > rhs.m_Max.y )
+	{
+		return false;
+	}
+
+	if( this->m_Max.z < rhs.m_Min.z || this->m_Min.z > rhs.m_Max.z )
+	{
+		return false;
+	}
+
+	return true;
 }
 
 void AABB3D::ReBuild( const Polygon2D& poly )
