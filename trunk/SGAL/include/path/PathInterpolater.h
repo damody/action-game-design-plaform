@@ -34,7 +34,7 @@ typedef std::vector<PathPoint> PathPoints;
 class PathInterpolater
 {
 public:
-	PathInterpolater(): m_needsort( true ) {}
+	PathInterpolater(): m_needsort( true ),m_position(Vector3::ZERO) {}
 	Vector3 m_position;
 	void AddPoint( float time, Vector3 p );
 	virtual Vector3 GetValue( float time ) = 0;

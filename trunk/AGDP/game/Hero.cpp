@@ -980,6 +980,10 @@ FrameInfo* Hero::FindFrame( std::wstring rframe, int rframeID )
 void Hero::SetPosition( const Vector3& pos )
 {	m_Position = pos; }
 
+
+void Hero::Translate( const Vector3& vec )
+	{m_Position += vec;}
+
 void Hero::SetRecord( Record_Sptr r ) { m_Record = r; }
 
 void Hero::PushKey( KeyInfo& k )

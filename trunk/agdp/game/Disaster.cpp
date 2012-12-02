@@ -10,14 +10,25 @@ Disaster::~Disaster(void)
 {
 }
 
-void Disaster::Earthqauck( Vector3 Direction, float Frequency, float LifeCycle)
-{
-	m_Earthqauck.Add(0,Direction,Frequency,false,true,true,LifeCycle,true);
-}
 
 void Disaster::Update()
 {
 	m_Earthqauck.Update(1/60.0f);
-	g_Camera->MoveX(m_Earthqauck.GetOffset().x);
-	g_Camera->MoveY(m_Earthqauck.GetOffset().y);
+	m_Wave.Update(1/60.0f);
+	m_Wind.Update(1/60.0f);
+}
+
+void Disaster::MakeEarthqauck( float Intensity, float Frequency, float LifeTime )
+{
+	m_Earthqauck.Create(Intensity,Frequency,LifeTime);
+}
+
+void Disaster::MakeWave( float Intensity, float Frequency, float LifeTime )
+{
+	m_Wave.Create(Intensity,Frequency,LifeTime);
+}
+
+void Disaster::MakeWind( Vector3 Direction, float Intensity, float LifeTime )
+{
+	m_Wind.Create(Direction,Intensity,LifeTime);
 }

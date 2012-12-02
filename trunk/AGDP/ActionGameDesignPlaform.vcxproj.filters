@@ -185,6 +185,15 @@
     <ClCompile Include="game\Disaster.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="game\Wind.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Earthqauck.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Wave.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -359,6 +368,15 @@
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\Disaster.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Earthqauck.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Wave.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Wind.h">
       <Filter>inc\game</Filter>
     </ClInclude>
   </ItemGroup>

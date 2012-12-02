@@ -1,17 +1,32 @@
 #pragma once
 
-#include <game/Shake.h>
+#include "Earthqauck.h"
+#include "Wave.h"
+#include "Wind.h"
 
 class Disaster
 {
+public:
+	enum e{
+		EARTHQAUCK,
+		WAVE,
+		WIND,
+		RAIN,
+		SNOW,
+		FROG
+	};
 private:
-	Shake m_Earthqauck;
+	Earthqauck m_Earthqauck;
+	Wave	   m_Wave;
+	Wind	   m_Wind;
 public:
 	Disaster(void);
 	~Disaster(void);
 
 	void Update();
 
-	void Earthqauck(Vector3 Direction, float Frequency, float LifeCycle = 0.0f);
+	void MakeEarthqauck(float Intensity, float Frequency, float LifeTime);
+	void MakeWave(float Intensity, float Frequency, float LifeTime);
+	void MakeWind(Vector3 Direction, float Intensity, float LifeTime);
 };
 

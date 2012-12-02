@@ -240,6 +240,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="game\Disaster.cpp" />
+    <ClCompile Include="game\Earthqauck.cpp" />
     <ClCompile Include="game\Effect.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -296,6 +297,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="game\Wave.cpp" />
+    <ClCompile Include="game\Wind.cpp" />
     <ClCompile Include="global.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -458,6 +461,7 @@
     <ClInclude Include="game\Condition.h" />
     <ClInclude Include="game\CtrlKey.h" />
     <ClInclude Include="game\Disaster.h" />
+    <ClInclude Include="game\Earthqauck.h" />
     <ClInclude Include="game\Effect.h" />
     <ClInclude Include="game\EffectShaderClass.h" />
     <ClInclude Include="game\HeroInfoManager.h" />
@@ -471,7 +475,9 @@
     <ClInclude Include="game\Replay.h" />
     <ClInclude Include="game\TestRenderEffect.h" />
     <ClInclude Include="game\TextString.h" />
+    <ClInclude Include="game\Wave.h" />
     <ClInclude Include="game\Weapon.h" />
+    <ClInclude Include="game\Wind.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="resource.h" />

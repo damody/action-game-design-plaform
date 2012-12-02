@@ -98,7 +98,9 @@ private:
 public:
 	Background() {
 		//testing
-		m_Disaster.Earthqauck(Vector3(10,1,0),10,30);
+		//m_Disaster.MakeEarthqauck(5,10,30);
+		//m_Disaster.MakeWave(5,1,30);
+		//m_Disaster.MakeWind(Vector3(1,0,0),-1,30);
 	}
 	~Background() {}
 

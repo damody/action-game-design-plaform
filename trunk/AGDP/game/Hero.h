@@ -132,6 +132,7 @@ public:
 	void			SetRecord( Record_Sptr r );
 	void			SetTeam( int team );
 	void			SetPosition( const Vector3& pos );
+	void			Translate(const Vector3& vec);
 	//void			SetEffect( EffectType::e effect );
 	void			PushKey( KeyInfo& k );
 	PolygonVerteices GetPolygonVerteices() const;
