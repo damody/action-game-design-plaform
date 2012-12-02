@@ -115,6 +115,7 @@ public:
 
 	float   Width();
 	float   Gravity();
+	float	Friction();
 
 	ParallelLight GetParallelLight();
 
