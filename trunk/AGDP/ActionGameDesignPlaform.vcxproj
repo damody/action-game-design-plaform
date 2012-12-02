@@ -213,6 +213,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="game\AI.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="game\BackGround.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -453,6 +457,7 @@
     <ClInclude Include="DX11\TextGeneratorDX11.h" />
     <ClInclude Include="DX11\TextLetter.h" />
     <ClInclude Include="DX11\TextManager.h" />
+    <ClInclude Include="game\AI.h" />
     <ClInclude Include="game\BackGround.h" />
     <ClInclude Include="game\BGManager.h" />
     <ClInclude Include="game\Chee.h" />

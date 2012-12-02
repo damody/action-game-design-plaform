@@ -763,7 +763,7 @@ frame.in_the_air[0] =
 	body = {
 		{kind = 0, points = { {20,-11}, {20,-72}, {49,-72}, {49,-11}, }, zwidth = 16},
 	},
-	hit = { {"B", "jump_kick", 0 }, {"j", "測試", 0 }, },
+	hit = { {"B", "jump_kick", 0 }, {"DAda", "測試", 0 }, },
 }
 
 frame.injured[0] =
@@ -1372,7 +1372,7 @@ frame.punch[1] =
 	attack = {
 		{
 		kind = 0, effect = Effect.Fire,
-		points = { {21,-31}, {21,-49}, {64,-49}, {64,-31}, }, zwidth = 86,
+		points = { {21,-31}, {21,-49}, {64,-49}, {64,-31}, }, zwidth = 16,
 		dvx = 2, dvy = 0, dvz = 0, fall = 20, breakDefend = 16, 
 		arest = 8, reAttackRest = 10, injury = 20, strength = 50, 
 		},

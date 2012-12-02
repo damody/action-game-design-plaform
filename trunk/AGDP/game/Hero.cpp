@@ -23,7 +23,7 @@
 
 #define KEYLIFE_AFTER_KEYUP 60
 #define WAIT_FOR_KEY_RUN 30
-#define FRICTION 0.5f
+#define FRICTION g_BackgroundManager.GetCurrentBackground()->Friction()
 #define G_ACCE g_BackgroundManager.GetCurrentBackground()->Gravity()
 #define SCALE 3.0f
 #define CONDITION_MAX 20
@@ -1607,6 +1607,16 @@ void Hero::ModifyFall( int delta )			{
 void Hero::ModifyFrontDefence( int delta )	{	m_FrontDefence += delta;}
 void Hero::ModifyBackDefence( int delta )	{	m_BackDefence += delta;	}
 void Hero::ChangeTeam( int newTeam )		{	m_Team = newTeam, m_Record->team = newTeam;}
+
+int Hero::GetHP()
+{
+	return m_HP;
+}
+
+int Hero::GetMP()
+{
+	return m_MP;
+}
 
 bool SortHero( Hero_RawPtr a, Hero_RawPtr b )
 {

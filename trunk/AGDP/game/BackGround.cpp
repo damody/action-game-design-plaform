@@ -513,6 +513,10 @@ float Background::Gravity()
 	return m_Gravity;
 }
 
+float Background::Friction(){
+	return m_Friction;
+}
+
 ParallelLight Background::GetParallelLight()
 {
 	return m_CurrentLight;

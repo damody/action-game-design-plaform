@@ -147,6 +147,9 @@ public:
 	inline void	ModifyFrontDefence( int delta );
 	inline void	ModifyBackDefence( int delta );
 	inline void	ChangeTeam( int newTeam );
+	//Get
+	int GetHP();
+	int GetMP();
 	//創造物件
 	friend bool			Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 	//碰撞判定用

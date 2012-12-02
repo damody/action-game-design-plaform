@@ -194,6 +194,9 @@
     <ClCompile Include="game\Wave.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="game\AI.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvStr.h">
@@ -368,6 +371,9 @@
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\Disaster.h">
+      <Filter>inc\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\AI.h">
       <Filter>inc\game</Filter>
     </ClInclude>
     <ClInclude Include="game\Earthqauck.h">
