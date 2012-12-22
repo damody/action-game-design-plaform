@@ -82,8 +82,8 @@ public:
 			return res;
 		}
 
-		AABB3D& aabbOrigin = GetAABB2()(obj);
-		AABB3D aabb = aabbOrigin;
+		AABB3D<ParentPtr2>& aabbOrigin = GetAABB2()(obj);
+		AABB3D<ParentPtr2> aabb = aabbOrigin;
 
 		if (aabb.m_Min.x > 1e19) { return res; }
 

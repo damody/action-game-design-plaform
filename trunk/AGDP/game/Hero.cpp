@@ -31,7 +31,10 @@
 Hero::Hero() {}
 
 Hero::Hero( std::wstring h ):
-	hero( h ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 ), d_run( 0 ), m_EffectScale( 1.0f ), d_key(g_KeyMap.sKeySize()), m_Fall( 70 ), m_FrontDefence( 0 ), m_BackDefence( 0 ), m_AtkRest(),m_Condition(0)
+	hero( h ), m_Position( Vector3() ), m_Team( 0 ), m_FaceSide( true ), m_FrameID( 0 ), m_Texture( 0 ), m_PicID( 0 ), 
+	m_PicW( 0 ), m_PicH( 0 ), m_PicX( 0 ), m_PicY( 0 ), d_run( 0 ), m_EffectScale( 1.0f ), d_key(g_KeyMap.sKeySize()), 
+	m_Fall( 70 ), m_FrontDefence( 0 ), m_BackDefence( 0 ), m_AtkRest(), m_Condition(0), m_BodyAABB(this), m_AttackAABB(this), 
+	m_CatchAABB(this)
 {
 	m_HeroInfo = g_HeroInfoManager.GetHeroInfo( hero );
 	m_Record = Record_Sptr( new Record() );
@@ -195,6 +198,7 @@ void Hero::Update( float dt )
 		}
 	}
 
+	//AABB
 	const Bodys& bodys = GetBodys();
 
 	if ( !bodys.empty() )
@@ -1545,17 +1549,17 @@ void Hero::newKey( char r )
 	}
 }
 
-AABB3D& Hero::GetBodyAABB()
+AABB3D<Hero*>& Hero::GetBodyAABB()
 {
 	return m_BodyAABB;
 }
 
-AABB3D& Hero::GetAttackAABB()
+AABB3D<Hero*>& Hero::GetAttackAABB()
 {
 	return m_AttackAABB;
 }
 
-AABB3D& Hero::GetCatchAABB()
+AABB3D<Hero*>& Hero::GetCatchAABB()
 {
 	return m_CatchAABB;
 }
