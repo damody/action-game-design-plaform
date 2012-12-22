@@ -114,9 +114,11 @@
     <ClInclude Include="include\game\LuaResource.h" />
     <ClInclude Include="include\game\ObjectInfo.h" />
     <ClInclude Include="include\game\ObjectType.h" />
+    <ClInclude Include="include\game\OffsetCalculate.h" />
     <ClInclude Include="include\game\PictureData.h" />
     <ClInclude Include="include\game\Record.h" />
     <ClInclude Include="include\game\Shake.h" />
+    <ClInclude Include="include\game\Slide.h" />
     <ClInclude Include="include\game\WeaponAction.h" />
     <ClInclude Include="include\Lua\CreateLua.h" />
     <ClInclude Include="include\Lua\LuaCell.h" />
@@ -127,7 +129,9 @@
     <ClCompile Include="src\game\LuaMap.cpp" />
     <ClCompile Include="src\game\HeroInfo.cpp" />
     <ClCompile Include="src\game\ObjectInfo.cpp" />
+    <ClCompile Include="src\game\OffsetCalculate.cpp" />
     <ClCompile Include="src\game\Shake.cpp" />
+    <ClCompile Include="src\game\Slide.cpp" />
     <ClCompile Include="src\Lua\CreateLua.cpp" />
     <ClCompile Include="src\Lua\LuaCell.cpp" />
     <ClCompile Include="StdAGAL.cpp" />

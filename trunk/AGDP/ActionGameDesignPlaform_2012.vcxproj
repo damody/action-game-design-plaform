@@ -217,6 +217,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="game\AI.cpp" />
     <ClCompile Include="game\BackGround.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -244,6 +245,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="game\Disaster.cpp" />
+    <ClCompile Include="game\Earthqauck.cpp" />
     <ClCompile Include="game\Effect.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -300,6 +302,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdGame.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="game\Wave.cpp" />
+    <ClCompile Include="game\Wind.cpp" />
     <ClCompile Include="global.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdGame.h</PrecompiledHeaderFile>
@@ -454,6 +458,7 @@
     <ClInclude Include="DX11\TextGeneratorDX11.h" />
     <ClInclude Include="DX11\TextLetter.h" />
     <ClInclude Include="DX11\TextManager.h" />
+    <ClInclude Include="game\AI.h" />
     <ClInclude Include="game\BackGround.h" />
     <ClInclude Include="game\BGManager.h" />
     <ClInclude Include="game\Chee.h" />
@@ -462,23 +467,24 @@
     <ClInclude Include="game\Condition.h" />
     <ClInclude Include="game\CtrlKey.h" />
     <ClInclude Include="game\Disaster.h" />
+    <ClInclude Include="game\Earthqauck.h" />
     <ClInclude Include="game\Effect.h" />
     <ClInclude Include="game\EffectShaderClass.h" />
     <ClInclude Include="game\HeroInfoManager.h" />
     <ClInclude Include="game\HeroManager.h" />
     <ClInclude Include="game\ObjectInfoManager.h" />
     <ClInclude Include="game\ObjectManager.h" />
-    <ClInclude Include="game\FrameInfo.h" />
     <ClInclude Include="game\Hero.h" />
     <ClInclude Include="game\Player.h" />
     <ClInclude Include="game\RenderTextureClass.h" />
     <ClInclude Include="game\Replay.h" />
     <ClInclude Include="game\TestRenderEffect.h" />
     <ClInclude Include="game\TextString.h" />
+    <ClInclude Include="game\Wave.h" />
     <ClInclude Include="game\Weapon.h" />
+    <ClInclude Include="game\Wind.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="DX11\d3dApp.h" />
     <ClInclude Include="DX11\GetDirectXInput.h" />
     <ClInclude Include="DX11\InitDirect3DApp.h" />
