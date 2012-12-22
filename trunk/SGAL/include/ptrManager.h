@@ -12,6 +12,10 @@ public:
 	//typedef bool (*CompareBall)(const ParentPtr lhs, const ParentPtr rhs);
 	typedef Axis_bind<ParentPtr> MyAxis_bind;
 	typedef std::vector<MyAxis_bind> MyAxis_binds;
+
+	typedef AABB3D<ParentPtr> MyAABB3D;
+	typedef std::vector<MyAABB3D> MyAABB3Ds;
+
 	/*GetCollision 專用回傳結構
 	 * hitter	:傳入者的第幾個該屬性
 	 * victims	:此屬性擊中了哪些人
@@ -39,6 +43,7 @@ public:
 private:
 	ParentPtrs m_ParentPtrs;
 	MyAxis_binds mXbinds, mYbinds, mZbinds;
+	MyAABB3Ds mAABBs;
 	float	m_MaxLenX, m_MaxLenY, m_MaxLenZ;
 private:
 	void DoubleCheck(ParentPtrs& pps)   //check and correct when this vector have the same element
@@ -88,7 +93,6 @@ public:
 		if (aabb.m_Min.x > 1e19) { return res; }
 
 		//加大成最長的aabb
-
 		if (m_MaxLenX > aabb.m_Len.x)
 		{
 			aabb.Larger((m_MaxLenX - aabb.m_Len.x) * 0.5f, 0.0f, 0.0f);
@@ -103,11 +107,13 @@ public:
 		{
 			aabb.Larger(0.0f, 0.0f, (m_MaxLenZ - aabb.m_Len.z) * 0.5f);
 		}
+		//*/
 
 		MyAxis_binds::iterator x_index_max, x_index_min, tmp, tmp2;
 		x_index_max = std::upper_bound(mXbinds.begin(), mXbinds.end(), MyAxis_bind(aabb.m_Max), Compare_x<MyAxis_bind>);
 		x_index_min = std::lower_bound(mXbinds.begin(), mXbinds.end(), MyAxis_bind(aabb.m_Min), Compare_x<MyAxis_bind>);
 		//std::cout << "attack min x:" << aabb.m_Min.x << ", max x:" << aabb.m_Max.x << std::endl;
+		//std::vector<AABB3D<ParentPtr>>::iterator 
 
 		if (x_index_max - x_index_min > 0)
 		{
@@ -178,8 +184,10 @@ public:
 	void AddPtr(ParentPtr p)
 	{
 		m_ParentPtrs.push_back(p);
+		mAABBs.push_back(GetAABB()(p));
+		//*
 		mXbinds.push_back(MyAxis_bind(p, GetAABB()(p).m_Max));
-		mXbinds.push_back(MyAxis_bind(p, GetAABB()(p).m_Min));
+		mXbinds.push_back(MyAxis_bind(p, GetAABB()(p).m_Min));//*/
 	}
 	void AddPtrs(const ParentPtrs& ps)
 	{
@@ -199,6 +207,12 @@ public:
 			{
 				m_ParentPtrs.erase(it);
 				break;
+			}
+		}
+
+		for(MyAABB3Ds::iterator i = mAABBs.begin(); i != mAABBs.end(); ++i){
+			if(i->m_ParentPtr == p){
+				i = --mAABBs.erase(i);
 			}
 		}
 
