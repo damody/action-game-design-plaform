@@ -89,9 +89,9 @@ public:
 
 		//加大成最長的aabb
 
-		if (m_MaxLenZ > aabb.m_Len.x)
+		if (m_MaxLenX > aabb.m_Len.x)
 		{
-			aabb.Larger((m_MaxLenZ - aabb.m_Len.x) * 0.5f, 0.0f, 0.0f);
+			aabb.Larger((m_MaxLenX - aabb.m_Len.x) * 0.5f, 0.0f, 0.0f);
 		}
 
 		if (m_MaxLenY > aabb.m_Len.y)
