@@ -8,6 +8,7 @@
 #pragma once
 #ifndef CAMERA_H
 #define CAMERA_H
+#include <d3dx9math.h>
 
 //--------------------------------------------------------------------------------------
 class CD3DArcBall

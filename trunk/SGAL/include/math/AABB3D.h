@@ -178,22 +178,27 @@ public:
 	template<class ParentPtr2>
 	bool IsCollision( const AABB3D<ParentPtr2>& rhs )
 	{
-		if( this->m_Max.x < rhs.m_Min.x || this->m_Min.x > rhs.m_Max.x )
-		{
-			return false;
-		}
+		bool ret = false;
 
-		if( this->m_Max.y < rhs.m_Min.y || this->m_Min.y > rhs.m_Max.y )
+		if( m_Max.x > rhs.m_Min.x && m_Max.x - rhs.m_Min.x < m_Len.x + rhs.m_Len.x )
 		{
-			return false;
+			ret = true;
 		}
+		else return false;
 
-		if( this->m_Max.z < rhs.m_Min.z || this->m_Min.z > rhs.m_Max.z )
+		if( m_Max.y > rhs.m_Min.y && m_Max.y - rhs.m_Min.y < m_Len.y + rhs.m_Len.y )
 		{
-			return false;
+			ret = true;
 		}
+		else return false;
 
-		return true;
+		if( m_Max.z > rhs.m_Min.z && m_Max.z - rhs.m_Min.z < m_Len.z + rhs.m_Len.z )
+		{
+			ret = true;
+		}
+		else return false;
+
+		return ret;
 	}
 	void Move(float x, float y, float z)
 	{

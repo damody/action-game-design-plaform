@@ -81,7 +81,7 @@ public:
 	Collisions GetCollision(ParentPtr2 obj)
 	{
 		Collisions res;
-
+		
 		if (m_ParentPtrs.empty())
 		{
 			return res;
@@ -114,7 +114,7 @@ public:
 		x_index_min = std::lower_bound(mXbinds.begin(), mXbinds.end(), MyAxis_bind(aabb.m_Min), Compare_x<MyAxis_bind>);
 		//std::cout << "attack min x:" << aabb.m_Min.x << ", max x:" << aabb.m_Max.x << std::endl;
 		//std::vector<AABB3D<ParentPtr>>::iterator 
-
+		
 		if (x_index_max - x_index_min > 0)
 		{
 			mYbinds.clear();
@@ -178,7 +178,19 @@ public:
 				}
 			}
 		}
-
+		else
+		{
+			for (MyAxis_binds::iterator it = mXbinds.begin(); it != mXbinds.end(); it++)
+			{
+				if (GetAABB()(it->m_ParentPtr).IsCollision(aabb))
+				{
+					collision* co = new collision;
+					co->victims.push_back(it->m_ParentPtr);
+					co->hitter = 0;
+					res.push_back(co);
+				}
+			}
+		}
 		return res;
 	}
 	void AddPtr(ParentPtr p)
