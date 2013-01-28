@@ -178,27 +178,22 @@ public:
 	template<class ParentPtr2>
 	bool IsCollision( const AABB3D<ParentPtr2>& rhs )
 	{
-		bool ret = false;
-
-		if( m_Max.x > rhs.m_Min.x && m_Max.x - rhs.m_Min.x < m_Len.x + rhs.m_Len.x )
+		if( this->m_Max.x < rhs.m_Min.x || this->m_Min.x > rhs.m_Max.x )
 		{
-			ret = true;
+			return false;
 		}
-		else return false;
 
-		if( m_Max.y > rhs.m_Min.y && m_Max.y - rhs.m_Min.y < m_Len.y + rhs.m_Len.y )
+		if( this->m_Max.y < rhs.m_Min.y || this->m_Min.y > rhs.m_Max.y )
 		{
-			ret = true;
+			return false;
 		}
-		else return false;
 
-		if( m_Max.z > rhs.m_Min.z && m_Max.z - rhs.m_Min.z < m_Len.z + rhs.m_Len.z )
+		if( this->m_Max.z < rhs.m_Min.z || this->m_Min.z > rhs.m_Max.z )
 		{
-			ret = true;
+			return false;
 		}
-		else return false;
 
-		return ret;
+		return true;
 	}
 	void Move(float x, float y, float z)
 	{
@@ -249,25 +244,45 @@ public:
 template<class ParentPtr, class ParentPtr2>
 bool Collision( const AABB3D<ParentPtr>& lhs, const AABB3D<ParentPtr2>& rhs )
 {
-	bool ret = false;
-
-	if( lhs.m_Max.x > rhs.m_Min.x && lhs.m_Max.x - rhs.m_Min.x < lhs.m_Len.x + rhs.m_Len.x )
+	if( lhs.m_Max.x < rhs.m_Min.x || lhs.m_Min.x > rhs.m_Max.x )
 	{
-		ret = true;
+		return false;
 	}
-	else return false;
 
-	if( lhs.m_Max.y > rhs.m_Min.y && lhs.m_Max.y - rhs.m_Min.y < lhs.m_Len.y + rhs.m_Len.y )
+	if( lhs.m_Max.y < rhs.m_Min.y || lhs.m_Min.y > rhs.m_Max.y )
 	{
-		ret = true;
+		return false;
 	}
-	else return false;
 
-	if( lhs.m_Max.z > rhs.m_Min.z && lhs.m_Max.z - rhs.m_Min.z < lhs.m_Len.z + rhs.m_Len.z )
+	if( lhs.m_Max.z < rhs.m_Min.z || lhs.m_Min.z > rhs.m_Max.z )
 	{
-		ret = true;
+		return false;
 	}
-	else return false;
 
-	return ret;
+	return true;
 }
+
+template<class _Ty1, class _Ty2>
+struct AABB_is_collision
+		: public std::binary_function<_Ty1, _Ty2, bool>
+{
+	// functor for collision
+	bool operator()( const _Ty1& _Left, const _Ty2& _Right ) const
+	{
+		if( _Left->m_Max.x < _Right.m_Min.x || _Left->m_Min.x > _Right.m_Max.x )
+		{
+			return false;
+		}
+
+		if( _Left->m_Max.y < _Right.m_Min.y || _Left->m_Min.y > _Right.m_Max.y )
+		{
+			return false;
+		}
+
+		if( _Left->m_Max.z < _Right.m_Min.z || _Left->m_Min.z > _Right.m_Max.z )
+		{
+			return false;
+		}
+		return true;
+	}
+};

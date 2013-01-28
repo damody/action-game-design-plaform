@@ -14,7 +14,7 @@ public:
 	typedef std::vector<MyAxis_bind> MyAxis_binds;
 
 	typedef AABB3D<ParentPtr> MyAABB3D;
-	typedef std::vector<MyAABB3D> MyAABB3Ds;
+	typedef std::vector<MyAABB3D*> MyAABB3Ds;
 
 	/*GetCollision 專用回傳結構
 	 * hitter	:傳入者的第幾個該屬性
@@ -89,6 +89,7 @@ public:
 
 		AABB3D<ParentPtr2>& aabbOrigin = GetAABB2()(obj);
 		AABB3D<ParentPtr2> aabb = aabbOrigin;
+		MyAABB3Ds bodys = mAABBs;
 
 		if (aabb.m_Min.x > 1e19) { return res; }
 
@@ -109,94 +110,25 @@ public:
 		}
 		//*/
 
-		MyAxis_binds::iterator x_index_max, x_index_min, tmp, tmp2;
-		x_index_max = std::upper_bound(mXbinds.begin(), mXbinds.end(), MyAxis_bind(aabb.m_Max), Compare_x<MyAxis_bind>);
-		x_index_min = std::lower_bound(mXbinds.begin(), mXbinds.end(), MyAxis_bind(aabb.m_Min), Compare_x<MyAxis_bind>);
-		//std::cout << "attack min x:" << aabb.m_Min.x << ", max x:" << aabb.m_Max.x << std::endl;
-		//std::vector<AABB3D<ParentPtr>>::iterator 
+		MyAABB3Ds::iterator end_of_victims = std::partition(bodys.begin(), bodys.end(), 
+															std::bind2nd(AABB_is_collision<MyAABB3D*, AABB3D<ParentPtr2>>(), aabb));
 		
-		if (x_index_max - x_index_min > 0)
-		{
-			mYbinds.clear();
-			std::copy(x_index_min, x_index_max, std::back_inserter(mYbinds));
-			//無法判斷大於aabb的範圍
-			tmp = std::partition(mYbinds.begin(), mYbinds.end(),       // range
-			                     std::bind2nd(axis_y_less<MyAxis_bind>(), MyAxis_bind(aabb.m_Max)));
-			tmp = std::partition(mYbinds.begin(), tmp,         // range
-			                     std::bind2nd(axis_y_greater<MyAxis_bind>(), MyAxis_bind(aabb.m_Min)));      // criterion
-
-			if (tmp - mYbinds.begin() > 0)
-			{
-				mZbinds.clear();
-				std::copy(mYbinds.begin(), tmp, std::back_inserter(mZbinds));
-				tmp = std::partition(mZbinds.begin(), mZbinds.end(),       // range
-				                     std::bind2nd(axis_z_less<MyAxis_bind>(), MyAxis_bind(aabb.m_Max)));
-				tmp = std::partition(mZbinds.begin(), tmp,         // range
-				                     std::bind2nd(axis_z_greater<MyAxis_bind>(), MyAxis_bind(aabb.m_Min)));      // criterion
-
-				if (tmp - mZbinds.begin() > 0)
-				{
-					ParentPtrs victims;
-
-					for (MyAxis_binds::iterator it = mZbinds.begin(); it != tmp; it++)
-					{
-						if (std::find(victims.begin(), victims.end(), it->m_ParentPtr) == victims.end() && obj != it->m_ParentPtr)
-						{
-							collision* co = new collision;
-							co->victims.push_back(it->m_ParentPtr);
-							co->hitter = 0;
-							res.push_back(co);
-							victims.push_back(it->m_ParentPtr);
-						}
-					}
-				}
-				else
-				{
-					for (MyAxis_binds::iterator it = mYbinds.begin(); it != mYbinds.end(); it++)
-					{
-						if (GetAABB()(it->m_ParentPtr).IsCollision(aabb))
-						{
-							collision* co = new collision;
-							co->victims.push_back(it->m_ParentPtr);
-							co->hitter = 0;
-							res.push_back(co);
-						}
-					}
-				}
-			}
-			else
-			{
-				for (MyAxis_binds::iterator it = mYbinds.begin(); it != mYbinds.end(); it++)
-				{
-					if (GetAABB()(it->m_ParentPtr).IsCollision(aabb))
-					{
-						collision* co = new collision;
-						co->victims.push_back(it->m_ParentPtr);
-						co->hitter = 0;
-						res.push_back(co);
-					}
-				}
-			}
+		for(MyAABB3Ds::iterator i_vic = bodys.begin(); i_vic != end_of_victims; i_vic++){
+			//每個都是AABB已碰撞，判斷多邊形碰撞
+			//if(isCollision( i_vic->m_ParentPtr, aabb->m_ParentPtr)){
+				collision* co = new collision;
+				co->victims.push_back((*i_vic)->m_ParentPtr);
+				co->hitter = 0;
+				res.push_back(co);
+			//}
 		}
-		else
-		{
-			for (MyAxis_binds::iterator it = mXbinds.begin(); it != mXbinds.end(); it++)
-			{
-				if (GetAABB()(it->m_ParentPtr).IsCollision(aabb))
-				{
-					collision* co = new collision;
-					co->victims.push_back(it->m_ParentPtr);
-					co->hitter = 0;
-					res.push_back(co);
-				}
-			}
-		}
+
 		return res;
 	}
 	void AddPtr(ParentPtr p)
 	{
 		m_ParentPtrs.push_back(p);
-		mAABBs.push_back(GetAABB()(p));
+		mAABBs.push_back(&GetAABB()(p));
 		//*
 		mXbinds.push_back(MyAxis_bind(p, GetAABB()(p).m_Max));
 		mXbinds.push_back(MyAxis_bind(p, GetAABB()(p).m_Min));//*/
@@ -223,7 +155,7 @@ public:
 		}
 
 		for(MyAABB3Ds::iterator i = mAABBs.begin(); i != mAABBs.end(); ++i){
-			if(i->m_ParentPtr == p){
+			if((*i)->m_ParentPtr == p){
 				i = --mAABBs.erase(i);
 			}
 		}
