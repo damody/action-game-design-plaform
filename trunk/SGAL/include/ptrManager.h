@@ -67,10 +67,7 @@ public:
 	{
 		Collisions res;
 		
-		if (m_ParentPtrs.empty())
-		{
-			return res;
-		}
+		if (m_ParentPtrs.empty()) { return res; }
 
 		AABB3D<ParentPtr2>& aabbOrigin = GetAABB2()(obj);
 		AABB3D<ParentPtr2> aabb = aabbOrigin;
@@ -78,34 +75,32 @@ public:
 
 		if (aabb.m_Min.x > 1e19) { return res; }
 
-		/*加大成最長的aabb
-		if (m_MaxLenX > aabb.m_Len.x)
-		{
-			aabb.Larger((m_MaxLenX - aabb.m_Len.x) * 0.5f, 0.0f, 0.0f);
-		}
-
-		if (m_MaxLenY > aabb.m_Len.y)
-		{
-			aabb.Larger(0.0f, (m_MaxLenY - aabb.m_Len.y) * 0.5f, 0.0f);
-		}
-
-		if (m_MaxLenZ > aabb.m_Len.z)
-		{
-			aabb.Larger(0.0f, 0.0f, (m_MaxLenZ - aabb.m_Len.z) * 0.5f);
-		}
-		//*/
-
 		MyAABB3Ds::iterator end_of_victims = std::partition(bodys.begin(), bodys.end(), 
 															std::bind2nd(AABB_is_collision<MyAABB3D*, AABB3D<ParentPtr2>>(), aabb));
 		
 		for(MyAABB3Ds::iterator i_vic = bodys.begin(); i_vic != end_of_victims; i_vic++){
 			//每個都是AABB已碰撞，判斷多邊形碰撞
-			//if(isCollision( i_vic->m_ParentPtr, aabb->m_ParentPtr)){
+
+			/*※這段程式並不一般化，有違 template 本意，目前僅試作使其能達到正確的碰撞效果*/
+			Bodys& bodyData = (*i_vic)->m_ParentPtr->GetBodys();
+			for(auto i_body = bodyData.begin(); i_body != bodyData.end(); i_body ++){
+				Attacks& atkData = aabb.m_ParentPtr->GetAttacks();
+				for(int i_atk = 0; i_atk != atkData.size(); i_atk ++){
+					if(atkData[i_atk].m_Area.IsCollision(i_body->m_Area) ){
+						collision* co = new collision;
+						co->victims.push_back((*i_vic)->m_ParentPtr);
+						co->hitter = i_atk;
+						res.push_back(co);
+					}
+				}
+			}
+
+			/*if(isCollision( i_vic->m_ParentPtr, aabb->m_ParentPtr)){
 				collision* co = new collision;
 				co->victims.push_back((*i_vic)->m_ParentPtr);
 				co->hitter = 0;
 				res.push_back(co);
-			//}
+			//}*/
 		}
 
 		return res;

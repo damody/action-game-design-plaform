@@ -1315,7 +1315,7 @@ frame.many_punch[10] =
 		{
 		kind = 0, effect = Effect.Punch,
 		points = { {12,-11}, {12,-62}, {82,-62}, {82,-11}, }, zwidth = 16,
-		dvx = 7, dvy = 15, dvz = 0, fall = 70, breakDefend = 60, 
+		dvx = 7, dvy = 30, dvz = 0, fall = 70, breakDefend = 60, 
 		arest = 8, reAttackRest = 30, injury = 25, strength = 50, 
 		},
 	},
