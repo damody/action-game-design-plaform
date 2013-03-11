@@ -18,7 +18,6 @@ HeroManager::~HeroManager( void )
 void HeroManager::Update( float dt )
 {
 	CleanTrash();
-	BodysCollision.PrepareForCollision();
 	for ( Heroes::iterator it = m_Heroes.begin(); it != m_Heroes.end(); it++ )
 	{
 		( *it )->Update( dt );
