@@ -5,10 +5,12 @@
 
 void ConvStr::CharToWchar( wchar_t* unicode, const char* ansi )
 {
+	setlocale(LC_ALL, "");
 	mbstowcs( unicode, ansi, INT_MAX );
 }
 void ConvStr::WcharToChar( const wchar_t* unicode, char* ansi )
 {
+	setlocale(LC_ALL, "");
 	wcstombs( ansi, unicode, INT_MAX );
 }
 
