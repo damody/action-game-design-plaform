@@ -1,0 +1,13 @@
+﻿已經開始建置於 2013/3/11 下午 07:35:20。
+     1>節點 2 (build 目標) 上的專案 "C:\Users\Administrator\Desktop\Direct3D\Source\rain\rain.vcxproj"。
+     1>InitializeBuildStatus:
+         正在變更時間戳記 "Debug\rain.unsuccessfulbuild"。
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Rain.cpp
+         Rain.cpp
+     1>c:\users\administrator\desktop\direct3d\source\rain\rain.cpp(23): fatal error C1083: 無法開啟包含檔案: 'DXUT.h': No such file or directory
+     1>專案 "C:\Users\Administrator\Desktop\Direct3D\Source\rain\rain.vcxproj" (build 目標) 建置完成 -- 失敗。
+
+建置失敗。
+
+經過時間 00:00:00.05

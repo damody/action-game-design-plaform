@@ -2,7 +2,6 @@
 #pragma warning(disable:4819)
 #include <cmath>
 #include <algorithm>
-#include "ball/Axis_bind.h"
 
 template <class ParentPtr, class GetAABB>
 class ptrManager
@@ -10,11 +9,9 @@ class ptrManager
 public:
 	typedef std::vector<ParentPtr> ParentPtrs;
 	//typedef bool (*CompareBall)(const ParentPtr lhs, const ParentPtr rhs);
-	typedef Axis_bind<ParentPtr> MyAxis_bind;
-	typedef std::vector<MyAxis_bind> MyAxis_binds;
 
 	typedef AABB3D<ParentPtr> MyAABB3D;
-	typedef std::vector<MyAABB3D> MyAABB3Ds;
+	typedef std::vector<MyAABB3D*> MyAABB3Ds;
 
 	/*GetCollision 專用回傳結構
 	 * hitter	:傳入者的第幾個該屬性
@@ -42,9 +39,7 @@ public:
 
 private:
 	ParentPtrs m_ParentPtrs;
-	MyAxis_binds mXbinds, mYbinds, mZbinds;
 	MyAABB3Ds mAABBs;
-	float	m_MaxLenX, m_MaxLenY, m_MaxLenZ;
 private:
 	void DoubleCheck(ParentPtrs& pps)   //check and correct when this vector have the same element
 	{
@@ -67,139 +62,53 @@ public:
 	~ptrManager() {}
 	bool Empty() {return m_ParentPtrs.empty();}
 	const ParentPtrs& m() {return m_ParentPtrs;}
-	void PrepareForCollision() // every loop before you want to GetCollision
-	{
-		std::sort(mXbinds.begin(), mXbinds.end(), Compare_x<MyAxis_bind>);
-		auto maxLenIterator = std::max_element(m_ParentPtrs.begin(), m_ParentPtrs.end(), m_compareXLength);
-		m_MaxLenX = (*maxLenIterator)->GetBodyAABB().m_Len.x;
-		maxLenIterator = std::max_element(m_ParentPtrs.begin(), m_ParentPtrs.end(), m_compareYLength);
-		m_MaxLenY = (*maxLenIterator)->GetBodyAABB().m_Len.y;
-		maxLenIterator = std::max_element(m_ParentPtrs.begin(), m_ParentPtrs.end(), m_compareZLength);
-		m_MaxLenZ = (*maxLenIterator)->GetBodyAABB().m_Len.z;
-	}
 	template<class ParentPtr2, class GetAABB2>
 	Collisions GetCollision(ParentPtr2 obj)
 	{
 		Collisions res;
 		
-		if (m_ParentPtrs.empty())
-		{
-			return res;
-		}
+		if (m_ParentPtrs.empty()) { return res; }
 
 		AABB3D<ParentPtr2>& aabbOrigin = GetAABB2()(obj);
 		AABB3D<ParentPtr2> aabb = aabbOrigin;
+		MyAABB3Ds bodys = mAABBs;
 
 		if (aabb.m_Min.x > 1e19) { return res; }
 
-		//加大成最長的aabb
-		if (m_MaxLenX > aabb.m_Len.x)
-		{
-			aabb.Larger((m_MaxLenX - aabb.m_Len.x) * 0.5f, 0.0f, 0.0f);
-		}
-
-		if (m_MaxLenY > aabb.m_Len.y)
-		{
-			aabb.Larger(0.0f, (m_MaxLenY - aabb.m_Len.y) * 0.5f, 0.0f);
-		}
-
-		if (m_MaxLenZ > aabb.m_Len.z)
-		{
-			aabb.Larger(0.0f, 0.0f, (m_MaxLenZ - aabb.m_Len.z) * 0.5f);
-		}
-		//*/
-
-		MyAxis_binds::iterator x_index_max, x_index_min, tmp, tmp2;
-		x_index_max = std::upper_bound(mXbinds.begin(), mXbinds.end(), MyAxis_bind(aabb.m_Max), Compare_x<MyAxis_bind>);
-		x_index_min = std::lower_bound(mXbinds.begin(), mXbinds.end(), MyAxis_bind(aabb.m_Min), Compare_x<MyAxis_bind>);
-		//std::cout << "attack min x:" << aabb.m_Min.x << ", max x:" << aabb.m_Max.x << std::endl;
-		//std::vector<AABB3D<ParentPtr>>::iterator 
+		MyAABB3Ds::iterator end_of_victims = std::partition(bodys.begin(), bodys.end(), 
+															std::bind2nd(AABB_is_collision<MyAABB3D*, AABB3D<ParentPtr2>>(), aabb));
 		
-		if (x_index_max - x_index_min > 0)
-		{
-			mYbinds.clear();
-			std::copy(x_index_min, x_index_max, std::back_inserter(mYbinds));
-			//無法判斷大於aabb的範圍
-			tmp = std::partition(mYbinds.begin(), mYbinds.end(),       // range
-			                     std::bind2nd(axis_y_less<MyAxis_bind>(), MyAxis_bind(aabb.m_Max)));
-			tmp = std::partition(mYbinds.begin(), tmp,         // range
-			                     std::bind2nd(axis_y_greater<MyAxis_bind>(), MyAxis_bind(aabb.m_Min)));      // criterion
+		for(MyAABB3Ds::iterator i_vic = bodys.begin(); i_vic != end_of_victims; i_vic++){
+			//每個都是AABB已碰撞，判斷多邊形碰撞
 
-			if (tmp - mYbinds.begin() > 0)
-			{
-				mZbinds.clear();
-				std::copy(mYbinds.begin(), tmp, std::back_inserter(mZbinds));
-				tmp = std::partition(mZbinds.begin(), mZbinds.end(),       // range
-				                     std::bind2nd(axis_z_less<MyAxis_bind>(), MyAxis_bind(aabb.m_Max)));
-				tmp = std::partition(mZbinds.begin(), tmp,         // range
-				                     std::bind2nd(axis_z_greater<MyAxis_bind>(), MyAxis_bind(aabb.m_Min)));      // criterion
-
-				if (tmp - mZbinds.begin() > 0)
-				{
-					ParentPtrs victims;
-
-					for (MyAxis_binds::iterator it = mZbinds.begin(); it != tmp; it++)
-					{
-						if (std::find(victims.begin(), victims.end(), it->m_ParentPtr) == victims.end() && obj != it->m_ParentPtr)
-						{
-							collision* co = new collision;
-							co->victims.push_back(it->m_ParentPtr);
-							co->hitter = 0;
-							res.push_back(co);
-							victims.push_back(it->m_ParentPtr);
-						}
-					}
-				}
-				else
-				{
-					for (MyAxis_binds::iterator it = mYbinds.begin(); it != mYbinds.end(); it++)
-					{
-						if (GetAABB()(it->m_ParentPtr).IsCollision(aabb))
-						{
-							collision* co = new collision;
-							co->victims.push_back(it->m_ParentPtr);
-							co->hitter = 0;
-							res.push_back(co);
-						}
-					}
-				}
-			}
-			else
-			{
-				for (MyAxis_binds::iterator it = mYbinds.begin(); it != mYbinds.end(); it++)
-				{
-					if (GetAABB()(it->m_ParentPtr).IsCollision(aabb))
-					{
+			/*※這段程式並不一般化，有違 template 本意，目前僅試作使其能達到正確的碰撞效果*/
+			Bodys& bodyData = (*i_vic)->m_ParentPtr->GetBodys();
+			for(auto i_body = bodyData.begin(); i_body != bodyData.end(); i_body ++){
+				Attacks& atkData = aabb.m_ParentPtr->GetAttacks();
+				for(int i_atk = 0; i_atk != atkData.size(); i_atk ++){
+					if(atkData[i_atk].m_Area.IsCollision(i_body->m_Area) ){
 						collision* co = new collision;
-						co->victims.push_back(it->m_ParentPtr);
-						co->hitter = 0;
+						co->victims.push_back((*i_vic)->m_ParentPtr);
+						co->hitter = i_atk;
 						res.push_back(co);
 					}
 				}
 			}
+
+			/*if(isCollision( i_vic->m_ParentPtr, aabb->m_ParentPtr)){
+				collision* co = new collision;
+				co->victims.push_back((*i_vic)->m_ParentPtr);
+				co->hitter = 0;
+				res.push_back(co);
+			//}*/
 		}
-		else
-		{
-			for (MyAxis_binds::iterator it = mXbinds.begin(); it != mXbinds.end(); it++)
-			{
-				if (GetAABB()(it->m_ParentPtr).IsCollision(aabb))
-				{
-					collision* co = new collision;
-					co->victims.push_back(it->m_ParentPtr);
-					co->hitter = 0;
-					res.push_back(co);
-				}
-			}
-		}
+
 		return res;
 	}
 	void AddPtr(ParentPtr p)
 	{
 		m_ParentPtrs.push_back(p);
-		mAABBs.push_back(GetAABB()(p));
-		//*
-		mXbinds.push_back(MyAxis_bind(p, GetAABB()(p).m_Max));
-		mXbinds.push_back(MyAxis_bind(p, GetAABB()(p).m_Min));//*/
+		mAABBs.push_back(&GetAABB()(p));
 	}
 	void AddPtrs(const ParentPtrs& ps)
 	{
@@ -212,8 +121,7 @@ public:
 	void ErasePtr(ParentPtr p)
 	{
 		/*		bool doubleCheck = false;*/
-		for (ParentPtrs::iterator it = m_ParentPtrs.begin();
-		                it != m_ParentPtrs.end(); ++it)
+		for (ParentPtrs::iterator it = m_ParentPtrs.begin(); it != m_ParentPtrs.end(); ++it)
 		{
 			if (*it == p)
 			{
@@ -223,17 +131,8 @@ public:
 		}
 
 		for(MyAABB3Ds::iterator i = mAABBs.begin(); i != mAABBs.end(); ++i){
-			if(i->m_ParentPtr == p){
+			if((*i)->m_ParentPtr == p){
 				i = --mAABBs.erase(i);
-			}
-		}
-
-		for (MyAxis_binds::iterator it = mXbinds.begin();
-		                it != mXbinds.end(); ++it)
-		{
-			if (it->m_ParentPtr == p)
-			{
-				it = --mXbinds.erase(it);
 			}
 		}
 	}

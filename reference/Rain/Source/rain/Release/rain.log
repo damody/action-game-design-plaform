@@ -1,0 +1,22 @@
+﻿已經開始建置於 2013/3/11 下午 08:23:38。
+     1>節點 2 (build 目標) 上的專案 "C:\Users\Administrator\Desktop\Rain\Source\rain\rain.vcxproj"。
+     1>InitializeBuildStatus:
+         由於指定了 "AlwaysCreate"，因此正在建立 "Release\rain.unsuccessfulbuild"。
+       ClCompile:
+         所有輸出都是最新的。
+       Link:
+         所有輸出都是最新的。
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Administrator\Desktop\Rain\Source\Release\rain.exe" /NOLOGO dxut.lib dxutd.lib dxutopt.lib dxutoptd.lib nvut.lib nvutd.lib d3dx10.lib d3d10.lib d3dx9.lib d3d9.lib DxErr.lib comctl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\rain.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Administrator\Desktop\Rain\Source\Release\rain.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Administrator\Desktop\Rain\Source\Release\rain.lib" /MACHINE:X86 Release\Rain.obj
+         正在產生程式碼
+         已完成程式碼產生
+         rain.vcxproj -> C:\Users\Administrator\Desktop\Rain\Source\Release\rain.exe
+       Manifest:
+         c:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\Administrator\Desktop\Rain\Source\Release\rain.exe;#1" /manifest Release\rain.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         正在刪除檔案 "Release\rain.unsuccessfulbuild"。
+         正在變更時間戳記 "Release\rain.lastbuildstate"。
+     1>專案 "C:\Users\Administrator\Desktop\Rain\Source\rain\rain.vcxproj" (build 目標) 建置完成。
+
+建置成功。
+
+經過時間 00:00:00.60
