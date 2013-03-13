@@ -1,6 +1,7 @@
 #include "StdGame.h"
 #include "TextureManager.h"
 #include "global.h"
+#include <auto_link_effect11.hpp>
 
 TextureManager::TextureManager( ID3D11Device* device ): m_index( -1 ), m_d3dDevice( device )
 {
