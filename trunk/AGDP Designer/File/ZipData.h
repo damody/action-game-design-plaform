@@ -83,7 +83,7 @@ protected:
 private:
 	friend class boost::serialization::access;
 	template<class Archive>
-	void serialize( Archive& ar, const unsigned int version )
+	void serialize( Archive& ar, const int version )
 	{
 		ar& m_Name;
 		ar& m_OriginalSize;

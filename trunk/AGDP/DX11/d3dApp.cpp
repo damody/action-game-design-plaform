@@ -3,6 +3,7 @@
 #include "ui/dxut/DXUT.h"
 #include "InputState.h"
 #include "global.h"
+#include <auto_link_effect11.hpp>
 
 LRESULT CALLBACK MainWndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {

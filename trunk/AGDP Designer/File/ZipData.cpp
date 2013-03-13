@@ -180,8 +180,8 @@ bool ZipData::LzmaCompressData( CompressLevel cl )
 	bool finish = false;
 	int r;
 	int level = cl - 20;
-	unsigned int srcLen = m_OriginalSize;
-	unsigned int tmpLen = srcLen + srcLen / 3 + 128;
+	size_t srcLen = m_OriginalSize;
+	size_t tmpLen = srcLen + srcLen / 3 + 128;
 	unsigned char* tmpbuff = ( unsigned char* )malloc( tmpLen );
 	unsigned char prop[5];
 	size_t propSize;
@@ -211,8 +211,8 @@ bool ZipData::LzmaCompressData( CompressLevel cl )
 bool ZipData::LzmaUncompressData()
 {
 	bool finish = false;
-	unsigned int srcLen = m_CompressSize;
-	unsigned int tmpLen = m_OriginalSize;
+	size_t srcLen = m_CompressSize;
+	size_t tmpLen = m_OriginalSize;
 	unsigned char* tmpbuff = new unsigned char[tmpLen];
 	memset( tmpbuff, 0, tmpLen );
 
