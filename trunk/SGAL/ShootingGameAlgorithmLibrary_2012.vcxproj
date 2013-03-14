@@ -86,7 +86,9 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SDKs)boost_1_51_0;$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;$(DXSDK_DIR)Samples\C++\Effects11\Inc;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(DXSDK_DIR)Include;$(SDKs)boost_1_50_0;$(DXSDK_DIR)Samples\C++\Effects11;$(SDKs)boost_1_51_0;$(IncludePath)</IncludePath>
-  </PropertyGroup>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SDKs)boost_1_53_0;$(DXSDK_DIR)Include;$(SDKs)Effects11\Inc;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SDKs)boost_1_53_0;$(DXSDK_DIR)Include;$(SDKs)Effects11\Inc;$(IncludePath)</IncludePath>
+	</PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
