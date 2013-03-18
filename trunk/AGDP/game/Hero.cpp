@@ -88,8 +88,6 @@ void Hero::Init()
 	{
 		m_Condition = new Condition( this , m_HeroFunctionLua );
 	}
-	
-
 }
 
 void Hero::Update( float dt )
@@ -1485,11 +1483,11 @@ bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Spt
 	}
 	else if ( g_ObjectInfoManager.GetObjectInfo( u ) != ObjectInfo_Sptr() )
 	{
-		Object** object;
+		Objects object;
 
 		object = g_ObjectManager.CreateObject( u, pos, obj.v0 , obj.amount, owner == Record_Sptr() ? 0 : owner->team );
-
-		for ( int i = 0; i < obj.amount; i++ )
+		assert(obj.amount == object.size());
+		for ( int i = 0; i < object.size(); i++ )
 		{
 			object[i]->m_FaceSide = f;
 			object[i]->SetVelocity( obj.v0 );
@@ -1620,6 +1618,15 @@ int Hero::GetHP()
 int Hero::GetMP()
 {
 	return m_MP;
+}
+
+Hero::~Hero()
+{
+	if (m_Condition)
+	{
+		delete m_Condition;
+		m_Condition = NULL;
+	}
 }
 
 bool SortHero( Hero_RawPtr a, Hero_RawPtr b )

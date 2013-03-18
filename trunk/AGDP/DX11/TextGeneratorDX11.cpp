@@ -93,7 +93,7 @@ TextLetters TextGeneratorDX11::WriteEnd()
 		return textletter;
 	}
 
-	float* characterImages = new float[m_WString.length()];
+	float* characterImages;
 	CharBitmap bitmap;
 	D3D11_TEXTURE2D_DESC texDesc;
 	D3D11_SHADER_RESOURCE_VIEW_DESC srDesc;

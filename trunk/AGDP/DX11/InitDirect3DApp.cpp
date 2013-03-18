@@ -43,8 +43,6 @@ InitDirect3DApp::~InitDirect3DApp()
 		ReleaseCOM(m_SRVViewRes);
 		ReleaseCOM(m_RTVViewRes);
 
-		
-		
 		ReleaseCOM(m_Buffer_Entity);
 		ReleaseCOM(m_Effect_Entity);
 		ReleaseCOM(m_Buffer_Chee);
@@ -59,6 +57,11 @@ InitDirect3DApp::~InitDirect3DApp()
 		
 		ReleaseCOM(m_Buffer_ColorRect);
 		m_DeviceContext->ClearState();
+
+	}
+	if (g_EffectManager)
+	{
+		delete g_EffectManager;
 	}
 }
 

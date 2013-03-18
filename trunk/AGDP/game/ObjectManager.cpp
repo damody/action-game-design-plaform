@@ -30,13 +30,13 @@ void ObjectManager::UpdateDataToDraw()
 	}
 }
 
-Object** ObjectManager::CreateObject( const std::wstring& obj, const Vector3& pos, const Vector3& vel, int num/*=1*/, int team/*=0*/ )
+Objects ObjectManager::CreateObject( const std::wstring& obj, const Vector3& pos, const Vector3& vel, int num/*=1*/, int team/*=0*/ )
 {
-	Object_RawPtr* object = new Object_RawPtr [num];
+	Objects object;
 
 	for ( int i = 0; i < num; i++ )
 	{
-		object[i] = Object_RawPtr( new Object( obj ) );
+		object.push_back(Object_Sptr( new Object( obj ) ));
 		object[i]->SetPosition( pos );
 		object[i]->SetVelocity( vel );
 		object[i]->SetTeam( team );
@@ -78,7 +78,7 @@ Object* ObjectManager::GetClosestChee( const Vector3& pos )
 		if ( ( *it )->Position().distance( pos ) < d )
 		{
 			d = ( *it )->Position().distance( pos );
-			c = ( *it );
+			c = ( *it ).get();
 		}
 	}
 
@@ -101,7 +101,7 @@ Object* ObjectManager::GetClosestCheeFromFriend( const Vector3& pos, int team )
 		if ( ( *it )->Position().distance( pos ) < d )
 		{
 			d = ( *it )->Position().distance( pos );
-			c = ( *it );
+			c = ( *it ).get();
 		}
 	}
 
@@ -124,7 +124,7 @@ Object* ObjectManager::GetClosestCheeFromEnemy( const Vector3& pos, int team )
 		if ( ( *it )->Position().distance( pos ) < d )
 		{
 			d = ( *it )->Position().distance( pos );
-			c = ( *it );
+			c = ( *it ).get();
 		}
 	}
 
@@ -214,7 +214,7 @@ Objects::iterator ObjectManager::GetObjectIt( Object* obj )
 
 	for ( it = m_Objects.begin(); it != m_Objects.end(); it++ )
 	{
-		if ( *it == obj )
+		if ( (*it).get() == obj )
 		{
 			break;
 		}

@@ -62,12 +62,12 @@ bool Effect::CreateEffect( EffectType type, EffectData* ed )
 
 	switch ( type )
 	{
-	case	0:
-		m_vEffect[type].push_back( *ed );
-		break;
+		case	0:
+			m_vEffect[type].push_back( *ed );
+			break;
 
-	case	1:
-		break;
+		case	1:
+			break;
 	}
 
 	m_SerialNum++;
@@ -136,7 +136,7 @@ ID3D11ShaderResourceView* Effect::GetTexture()
 
 
 //EffectManager
-EffectManager::EffectManager(): m_Page( 0 ), m_Size( 4 )
+EffectManager::EffectManager(): m_Page( 0 ), m_Size( 4 ), m_Effect(0)
 {
 	//ªì©l¤Æ Effect
 }
@@ -151,7 +151,7 @@ EffectManager::EffectManager( HWND hwnd ): m_Page( 0 ), m_Size( 4 )
 	for ( unsigned int i = 0; i < effectShaders.size(); i++ )
 	{
 		bool result;
-		effectShaders[0] = new EffectShaderClass();
+		effectShaders[i] = new EffectShaderClass();
 		result = effectShaders[0]->Initialize( L"FireShader.lua", g_d3dDevice, g_DeviceContext, hwnd );
 
 		if ( !result )
@@ -235,11 +235,30 @@ float EffectManager::EffectScale( EffectType type )
 {
 	switch ( type )
 	{
-	case 0://fire
-		return 2.0f;
+		case 0://fire
+			return 2.0f;
 
-	default:
-		return 1.0f;
+		default:
+			return 1.0f;
+	}
+}
+
+EffectManager::~EffectManager( void )
+{
+	for ( size_t i = 0; i < effectShaders.size(); i++ )
+	{
+		delete effectShaders[i];
+	}
+	if ( m_Effect )
+	{
+		for ( int i = 0; i < m_Size; i++ )
+		{
+			delete m_Effect[i];
+			m_Effect[i] = NULL;
+		}
+
+		delete[] m_Effect;
+		m_Effect = NULL;
 	}
 }
 

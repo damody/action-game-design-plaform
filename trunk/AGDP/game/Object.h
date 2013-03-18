@@ -64,8 +64,8 @@ public:
 	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
 };
 SHARE_PTR( Object );
-typedef std::vector <Object_RawPtr> Objects;
+typedef std::vector <Object_Sptr> Objects;
 
-bool SortObject( Object_RawPtr a, Object_RawPtr b );
+bool SortObject( Object_Sptr a, Object_Sptr b );
 
 

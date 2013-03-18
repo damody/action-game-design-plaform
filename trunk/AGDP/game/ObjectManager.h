@@ -26,7 +26,7 @@ public:
 	void Update( float dt );
 	void UpdateDataToDraw();
 
-	Object** CreateObject( const std::wstring& obj, const Vector3& pos, const Vector3& vel, int num = 1, int team = 0 );
+	Objects CreateObject( const std::wstring& obj, const Vector3& pos, const Vector3& vel, int num = 1, int team = 0 );
 
 	void Destory( Object* obj, int time = 0 );
 	void Clear();
@@ -42,9 +42,9 @@ public:
 	Object* GetClosestCheeFromFriend( const Vector3& pos, int team );
 	Object* GetClosestCheeFromEnemy( const Vector3& pos, int team );
 
-	Object* GetClosestWeaponOnFloor( const Vector3& pos ); //Undo
-	Object* GetClosestThrownWeaponFromFriend( const Vector3& pos, int team ); //Undo
-	Object* GetClosestThrownWeaponFromEnemy( const Vector3& pos, int team ); //Undo
+	Object_Sptr GetClosestWeaponOnFloor( const Vector3& pos ); //Undo
+	Object_Sptr GetClosestThrownWeaponFromFriend( const Vector3& pos, int team ); //Undo
+	Object_Sptr GetClosestThrownWeaponFromEnemy( const Vector3& pos, int team ); //Undo
 
 protected:
 	void CleanTrashCan();

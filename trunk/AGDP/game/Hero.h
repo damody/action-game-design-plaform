@@ -112,6 +112,7 @@ public:
 
 	Hero();
 	Hero( std::wstring h );
+	~Hero();
 	void			Update( float dt );
 	void			UpdateDataToDraw();	//Data To m_Pic
 	int				GetTextureID() const;
