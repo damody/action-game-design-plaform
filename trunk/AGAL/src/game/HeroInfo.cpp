@@ -1,5 +1,4 @@
 #include "game\HeroInfo.h"
-#include "..\..\..\AGDP\ConvStr.h"
 #include <locale> 
 #include <codecvt> 
 

@@ -50,6 +50,7 @@ public:
 	~InitDirect3DApp();
 	static InitDirect3DApp* dxAppInstance;
 	void initApp( int argc, char* argv[] );
+	void Release();
 private:
 	void InitTexture();
 	void LoadBlend();

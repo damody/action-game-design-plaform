@@ -1,5 +1,8 @@
 #pragma once
 #pragma warning(disable:4819)
+#include <auto_link_bdwgc.hpp>
+#include "gc.h"
+
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <DxErr.h>

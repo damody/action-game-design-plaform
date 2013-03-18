@@ -74,6 +74,7 @@ Texture::Texture( std::string path ): w( 0 ), h( 0 )
 	if ( g_d3dDevice )
 	{
 		D3DX11CreateShaderResourceViewFromFileA( g_d3dDevice, path.c_str(), 0, 0, &texture, 0 );
+		DXUT_SetDebugName( texture, path.c_str() );
 	}
 
 	w = info.Width;

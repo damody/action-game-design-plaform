@@ -29,12 +29,35 @@ InitDirect3DApp::InitDirect3DApp()
 	  b_Body( false ), b_Pause( false )
 {
 	dxAppInstance = this;
+	m_DeviceContext = NULL;
 }
 
 InitDirect3DApp::~InitDirect3DApp()
 {
 	if ( m_DeviceContext )
 	{
+		ReleaseCOM(m_SRVView1);
+		ReleaseCOM(m_RTVView1);
+		ReleaseCOM(m_SRVView2);
+		ReleaseCOM(m_RTVView2);
+		ReleaseCOM(m_SRVViewRes);
+		ReleaseCOM(m_RTVViewRes);
+
+		
+		
+		ReleaseCOM(m_Buffer_Entity);
+		ReleaseCOM(m_Effect_Entity);
+		ReleaseCOM(m_Buffer_Chee);
+		ReleaseCOM(m_Effect_Chee);
+		ReleaseCOM(m_Buffer_Background);
+		ReleaseCOM(m_Effect_Background);
+		ReleaseCOM(m_Buffer_ColorRect);
+		ReleaseCOM(m_Effect_ColorRect);
+		ReleaseCOM(m_Effect_Shadow);
+		ReleaseCOM(m_Buffer_Text);
+		ReleaseCOM(m_Effect_Text);
+		
+		ReleaseCOM(m_Buffer_ColorRect);
 		m_DeviceContext->ClearState();
 	}
 }
@@ -1408,4 +1431,9 @@ void InitDirect3DApp::InitPlayer()
 		Hero *sh = g_HeroManager.Create( m_Player.HeroName(), Vector3( 1000+100*i, 500, 150 ) ,1 );
 		sh->SetRecord(Record_Sptr(sr));
 	}//*/
+}
+
+void InitDirect3DApp::Release()
+{
+
 }
