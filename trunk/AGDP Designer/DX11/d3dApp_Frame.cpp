@@ -53,8 +53,6 @@ D3DApp_Frame::D3DApp_Frame()
 	mClientWidth    = 1440;
 	mClientHeight   = 900;
 	Init();
-
-	
 }
 
 D3DApp_Frame::~D3DApp_Frame()

@@ -194,6 +194,10 @@ void D3DApp_Picture::OnResize( int w, int h )
 
 void D3DApp_Picture::DrawScene()
 {
+	if (!m_DeviceContext)
+	{
+		return;
+	}
 	m_DeviceContext->ClearRenderTargetView( m_RenderTargetView, m_ClearColor );
 	m_DeviceContext->ClearDepthStencilView( m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0 );
 	m_DeviceContext->OMSetDepthStencilState( m_pDepthStencil_ZWriteOFF, 0 );

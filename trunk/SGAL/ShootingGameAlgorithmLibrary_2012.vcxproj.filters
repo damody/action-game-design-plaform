@@ -274,5 +274,8 @@
     <ClInclude Include="include\math\AABB3D.h">
       <Filter>inc\math</Filter>
     </ClInclude>
+    <ClInclude Include="include\math\SafeNumber.hpp">
+      <Filter>inc\math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
