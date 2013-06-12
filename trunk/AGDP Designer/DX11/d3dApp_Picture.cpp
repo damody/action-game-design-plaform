@@ -141,7 +141,7 @@ void D3DApp_Picture::OnResize( int w, int h )
 	ReleaseCOM( m_DepthStencilView );
 	ReleaseCOM( m_DepthStencilBuffer );
 	// Resize the swap chain and recreate the render target view.
-	HR( m_SwapChain->ResizeBuffers( 1, mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, 0 ) );
+	HR( m_SwapChain->ResizeBuffers( 1, mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0 ) );
 	ID3D11Texture2D* backBuffer;
 	HR( m_SwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), reinterpret_cast<void**>( &backBuffer ) ) );
 	HR( m_d3dDevice->CreateRenderTargetView( backBuffer, 0, &m_RenderTargetView ) );
