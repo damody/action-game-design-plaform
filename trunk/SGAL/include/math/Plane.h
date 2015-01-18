@@ -141,7 +141,19 @@ public:
 	{
 		return ( rhs.d != d && rhs.normal != normal );
 	}
-
+	bool IntersectSegmentPlane(
+		const Vector3& a, const  Vector3& b, const Vector3& c, 
+		const Plane& p, Vector3& q)
+	{
+		Vector3 ab = b - a;
+		double t = (p.d - p.normal.dotProduct(a))/p.normal.dotProduct(ab);
+		if (t>=0 && t<=1)
+		{
+			q = a + t * ab;
+			return true;
+		}
+		return false;
+	}
 	friend std::ostream& operator<< ( std::ostream& o, const Plane& p );
 };
 

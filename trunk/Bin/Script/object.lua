@@ -1,5 +1,5 @@
-﻿count = -1;
-function GetEnum()
+﻿local count = -1;
+local function GetEnum()
 	count = count + 1;
 	return count;
 end
@@ -19,3 +19,13 @@ Flyingtype.BSPLINECURVE_PATH = GetEnum();	--自訂路徑-BsplineCurve內插
 Flyingtype.HSPLINECURVE_PATH = GetEnum();	--自訂路徑-HSplineCurve內插
 Flyingtype.LINEARLINE_PATH = GetEnum();	    --自訂路徑-LinearLine內插
 Flyingtype.CHASE = GetEnum();				--追蹤
+
+local object = {
+  _NAME = "object",
+  _VERSION = 0.1,
+  _COPYRIGHT = "Damody",
+  _DESCRIPTION = "Init Debugger for the Lua",
+}
+
+return action
+

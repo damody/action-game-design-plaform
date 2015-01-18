@@ -5,6 +5,7 @@
 #include <iostream>
 #include <locale> 
 #include <codecvt> 
+#include "../AGDP Designer/ConvStr.h"
 
 namespace LuaResource
 {
@@ -25,7 +26,7 @@ std::vector< boost::shared_ptr<T> > LoadLua( std::wstring objectType )
 		luaResource = LuaCell_Sptr( new LuaCell );
 		if ( !luaResource->InputLuaFile( L"Script/luaResource.lua" ) )
 		{
-			printf("fatal error: can't find Script/luaResource.lua");
+			printf("fatal error: can't find or compile error Script/luaResource.lua");
 			system("pause");
 			throw "can't find luaResource";
 			return data;//inputLua fail. So return empty vector.
@@ -56,9 +57,9 @@ std::vector< boost::shared_ptr<T> > LoadLua( std::wstring objectType )
 		const char* tcs = luaResource->GetLua<const char*>( "%s/%d", sot.c_str(), idx );
 		luaPath = ucs2conv.from_bytes(tcs);
 		// set lua file
-		if( !luaTemp->InputLuaFile( luaPath.c_str() ) )
+		if( !luaTemp->InputLuaFile(luaPath.c_str() ) )
 		{
-			wprintf(L"error: §ä¤£¨ì %s",luaPath.c_str());
+			wprintf(L"error:  can't find or compile error %s",luaPath.c_str());
 			continue;
 		}
 		// load lua's content

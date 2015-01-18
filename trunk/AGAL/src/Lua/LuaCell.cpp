@@ -8,773 +8,793 @@
 #pragma warning(disable:4996)
 #include <assert.h>
 
+extern "C"
+{
+#include "luasocket.h"
+#include "mime.h"
+}
+
+static luaL_Reg preload_list[] = {
+	{ "socket.core", luaopen_socket_core },
+	{ "mime.core", luaopen_mime_core },
+	{ NULL, NULL }
+};
+
 LuaCell::LuaCell()
 {
-	m_LuaState = luaL_newstate();
-	luaL_openlibs( m_LuaState );
+    m_LuaState = luaL_newstate();
+    luaL_openlibs(m_LuaState);
+	luaL_Reg* lib = preload_list;
+	lua_getglobal(m_LuaState, "package");
+	lua_getfield(m_LuaState, -1, "preload");
+	for (; lib->func; lib++)
+	{
+		lua_pushcfunction(m_LuaState, lib->func);
+		lua_setfield(m_LuaState, -2, lib->name);
+	}
+	lua_pop(m_LuaState, 2);
 }
 
 LuaCell::~LuaCell()
 {
-	lua_close( m_LuaState );
+    lua_close(m_LuaState);
 }
 
-bool LuaCell::CallLuaFunction( const char* functionName )
+bool LuaCell::CallLuaFunction(const char* functionName)
 {
-	lua_getglobal( m_LuaState, functionName );
+    lua_getglobal(m_LuaState, functionName);
 
-	if ( lua_isfunction( m_LuaState, -1 ) )
-	{
-		if ( lua_pcall( m_LuaState, 0, 0, 0 ) != 0 )
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
+    if(lua_isfunction(m_LuaState, -1))
+    {
+        if(lua_pcall(m_LuaState, 0, 0, 0) != 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
-	return false;
+    return false;
 }
 //format： callLua_Function("GetTime", "fis>ii", 1.0f, 2, "3", *int, *int);
-bool LuaCell::CallLuaFunction( const char* functionName, const char* signString, ... )
+bool LuaCell::CallLuaFunction(const char* functionName, const char* signString, ...)
 {
-	va_list v1;
-	int narg, nres;
-	va_start( v1, signString );
-	lua_getglobal( m_LuaState, functionName );
+    va_list v1;
+    int narg, nres;
+    va_start(v1, signString);
+    lua_getglobal(m_LuaState, functionName);
 
-	for ( narg = 0; *signString; narg++ )
-	{
-		luaL_checkstack( m_LuaState, 1, "too many arguments" );
+    for(narg = 0; *signString; narg++)
+    {
+        luaL_checkstack(m_LuaState, 1, "too many arguments");
 
-		switch ( *signString++ )
-		{
-		case 'f':
-			lua_pushnumber( m_LuaState, ( double )va_arg( v1, float ) );
-			break;
+        switch(*signString++)
+        {
+        case 'f':
+            lua_pushnumber(m_LuaState, (double)va_arg(v1, float));
+            break;
 
-		case 'i':
-			lua_pushinteger( m_LuaState, va_arg( v1, int ) );
-			break;
+        case 'i':
+            lua_pushinteger(m_LuaState, va_arg(v1, int));
+            break;
 
-		case 's':
-			lua_pushstring( m_LuaState, va_arg( v1, char* ) );
-			break;
+        case 's':
+            lua_pushstring(m_LuaState, va_arg(v1, char*));
+            break;
 
-		case '>':
-			goto emdargs;
+        case '>':
+            goto emdargs;
 
-		default:
+        default:
 #if _DEBUG
-			assert( 0 && "callLua_Function args error!" );
+            assert(0 && "callLua_Function args error!");
 #endif
-			break;
-		}
-	}
+            break;
+        }
+    }
 
 emdargs:
-	nres = ( int )strlen( signString );
+    nres = (int)strlen(signString);
 
-	if ( lua_pcall( m_LuaState, narg, nres, 0 ) != 0 )
-	{
-		return false;
-	}
+    if(lua_pcall(m_LuaState, narg, nres, 0) != 0)
+    {
+        return false;
+    }
 
-	nres = -nres;
+    nres = -nres;
 
-	while ( *signString )
-	{
-		switch ( *signString++ )
-		{
-		case 'f':
-			*va_arg( v1, double* ) = lua_tonumber( m_LuaState, nres );
-			break;
+    while(*signString)
+    {
+        switch(*signString++)
+        {
+        case 'f':
+            *va_arg(v1, double*) = lua_tonumber(m_LuaState, nres);
+            break;
 
-		case 'i':
-			*va_arg( v1, int* ) = ( int )lua_tointeger( m_LuaState, nres );
-			break;
+        case 'i':
+            *va_arg(v1, int*) = (int)lua_tointeger(m_LuaState, nres);
+            break;
 
-		case 's':
-			*va_arg( v1, const char** ) = lua_tostring( m_LuaState, nres );
-			break;
+        case 's':
+            *va_arg(v1, const char**) = lua_tostring(m_LuaState, nres);
+            break;
 
-		default:
-			printf( "callLua_Function result args error!\n" );
-		}
+        default:
+            printf("callLua_Function result args error!\n");
+        }
 
-		nres++;
-	}
+        nres++;
+    }
 
-	va_end( v1 );
-	return true;
+    va_end(v1);
+    return true;
 }
 //if success return true
-bool LuaCell::InputLuaFile( const char* path )
+bool LuaCell::InputLuaFile(const char* path)
 {
-	if ( luaL_loadfile( m_LuaState, path ) || lua_pcall( m_LuaState, 0, 0, 0 ) )
-	{
-		return false;
-	}
+    if(luaL_loadfile(m_LuaState, path) || lua_pcall(m_LuaState, 0, LUA_MULTRET, 0))
+    {
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
-bool LuaCell::InputLuaString( const char* code )
+bool LuaCell::InputLuaString(const char* code)
 {
-	if ( luaL_dostring( m_LuaState, code ) )
-	{
-		return false;
-	}
+    if(luaL_dostring(m_LuaState, code))
+    {
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 #if defined(WIN32) || defined(WIN64)
-bool LuaCell::InputLuaFile( const wchar_t* path )
+bool LuaCell::InputLuaFile(const wchar_t* path)
 {
-	std::wstring wstr( path );
-	int size_needed = WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
-	char* ansi = (char*)malloc(size_needed+1);
-	WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), ansi, size_needed, NULL, NULL);
-	ansi[size_needed] = 0;
+    std::wstring wstr(path);
+    int size_needed = WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
+    char* ansi = (char*)malloc(size_needed + 1);
+    WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), ansi, size_needed, NULL, NULL);
+    ansi[size_needed] = 0;
 
-	if ( luaL_loadfile( m_LuaState, ansi ) || lua_pcall( m_LuaState, 0, 0, 0 ) )
-	{
-		free( ansi );
-		return false;
-	}
+    if(luaL_loadfile(m_LuaState, ansi) || lua_pcall(m_LuaState, 0, LUA_MULTRET, 0))
+    {
+        free(ansi);
+        return false;
+    }
 
-	free( ansi );
-	return true;
+    free(ansi);
+    return true;
 }
 #endif
 //從 table1\table2\table3\varableName 這樣的路徑中得到資料的函數
 
-bool LuaCell::AddNewTable( const char* table )
+bool LuaCell::AddNewTable(const char* table)
 {
-	lua_getglobal( m_LuaState, table );
+    lua_getglobal(m_LuaState, table);
 
-	if ( lua_istable( m_LuaState, -1 ) )
-	{
-		lua_pop( m_LuaState, 1 );
-		return false;
-	}
-	else
-	{
-		lua_newtable( m_LuaState );
-		lua_setglobal( m_LuaState, table );
-		return true;
-	}
+    if(lua_istable(m_LuaState, -1))
+    {
+        lua_pop(m_LuaState, 1);
+        return false;
+    }
+    else
+    {
+        lua_newtable(m_LuaState);
+        lua_setglobal(m_LuaState, table);
+        return true;
+    }
 }
 
-bool LuaCell::IsDigitString( const char* str )
+bool LuaCell::IsDigitString(const char* str)
 {
-	for ( const char* pos = str; *pos != '\0'; pos++ )
-	{
-		//if ( !isdigit( *pos ) )
-		if( *pos < '0' || *pos > '9')
-		{
-			return false;
-		}
-	}
+    for(const char* pos = str; *pos != '\0'; pos++)
+    {
+        //if ( !isdigit( *pos ) )
+        if(*pos < '0' || *pos > '9')
+        {
+            return false;
+        }
+    }
 
-	return true;
+    return true;
 }
 
-void* LuaCell::GetValueUsePath( const char* pathString, int type )
+void* LuaCell::GetValueUsePath(const char* pathString, int type)
 {
-	void* result = m_buffer;
-	char path[250] = {0};
-	const char* pos;
-	char* target = path;
-	int pathLayer = 0;
+    void* result = m_buffer;
+    char path[250] = {0};
+    const char* pos;
+    char* target = path;
+    int pathLayer = 0;
 
-	for ( pos = pathString;; pos++ )
-	{
-		if ( *pos == '\\' || *pos == '/' ) //get Layer string
-		{
-			++pathLayer;
-			*target = '\0'; //c string end
+    for(pos = pathString;; pos++)
+    {
+        if(*pos == '\\' || *pos == '/')    //get Layer string
+        {
+            ++pathLayer;
+            *target = '\0'; //c string end
 
-			if ( pathLayer == 1 )
-			{
-				lua_getglobal( m_LuaState, path );
-			}
-			else
-			{
-				if ( IsDigitString( path ) )	//is integer index?
-				{
-					lua_pushinteger( m_LuaState, atoi( path ) );
-				}
-				else
-				{
-					lua_pushstring( m_LuaState, path );
-				}
+            if(pathLayer == 1)
+            {
+                lua_getglobal(m_LuaState, path);
+            }
+            else
+            {
+                if(IsDigitString(path))       //is integer index?
+                {
+                    lua_pushinteger(m_LuaState, atoi(path));
+                }
+                else
+                {
+                    lua_pushstring(m_LuaState, path);
+                }
 
-				lua_gettable( m_LuaState, -2 );
-			}
+                lua_gettable(m_LuaState, -2);
+            }
 
-			target = path;
-		}
-		else if ( *pos == '\0' ) //get varable string
-		{
-			++pathLayer;
-			*target = '\0'; //c string end
+            target = path;
+        }
+        else if(*pos == '\0')    //get varable string
+        {
+            ++pathLayer;
+            *target = '\0'; //c string end
 
-			if ( pathLayer == 1 ) // if varable in global
-			{
-				lua_getglobal( m_LuaState, path );
-			}
-			else
-			{
-				if ( IsDigitString( path ) )	//is integer index?
-				{
-					lua_pushinteger( m_LuaState, atoi( path ) );
-				}
-				else
-				{
-					lua_pushstring( m_LuaState, path );
-				}
+            if(pathLayer == 1)    // if varable in global
+            {
+                lua_getglobal(m_LuaState, path);
+            }
+            else
+            {
+                if(IsDigitString(path))       //is integer index?
+                {
+                    lua_pushinteger(m_LuaState, atoi(path));
+                }
+                else
+                {
+                    lua_pushstring(m_LuaState, path);
+                }
 
-				lua_gettable( m_LuaState, -2 );
-			}
+                lua_gettable(m_LuaState, -2);
+            }
 
-			switch ( type )
-			{
-			case BackType( INTEGER ):
-				*( ( int* )result ) = ( int )lua_tointeger( m_LuaState, -1 );
-				break;
+            switch(type)
+            {
+            case BackType(INTEGER):
+                *((int*)result) = (int)lua_tointeger(m_LuaState, -1);
+                break;
 
-			case BackType( LONGFLOAT ):
-				*( ( double* )result ) = lua_tonumber( m_LuaState, -1 );
-				break;
+            case BackType(LONGFLOAT):
+                *((double*)result) = lua_tonumber(m_LuaState, -1);
+                break;
 
-			case BackType( STRING ):
-				result = const_cast<char*>( lua_tostring( m_LuaState, -1 ) );
-				break;
-			}
+            case BackType(STRING):
+                result = const_cast<char*>(lua_tostring(m_LuaState, -1));
+                break;
+            }
 
-			break;
-		}
-		else
-		{
-			*target = *pos;
-			++target;
-		}
-	}
+            break;
+        }
+        else
+        {
+            *target = *pos;
+            ++target;
+        }
+    }
 
-	lua_pop( m_LuaState, pathLayer );
-	return result;
+    lua_pop(m_LuaState, pathLayer);
+    return result;
 }
 
-void LuaCell::SetValueUsePath( const char* pathString, int type, void* data )
+void LuaCell::SetValueUsePath(const char* pathString, int type, void* data)
 {
-	char path[250] = {0};
-	const char* pos;
-	char* target = path;
-	int pathLayer = 0;
+    char path[250] = {0};
+    const char* pos;
+    char* target = path;
+    int pathLayer = 0;
 
-	for ( pos = pathString;; pos++ )
-	{
-		if ( *pos == '\\' || *pos == '/' ) //get Layer string
-		{
-			++pathLayer;
-			*target = '\0'; //c string end
+    for(pos = pathString;; pos++)
+    {
+        if(*pos == '\\' || *pos == '/')    //get Layer string
+        {
+            ++pathLayer;
+            *target = '\0'; //c string end
 
-			if ( pathLayer == 1 )
-			{
-				lua_getglobal( m_LuaState, path );
-			}
-			else
-			{
-				if ( IsDigitString( path ) )	//is integer index?
-				{
-					lua_pushinteger( m_LuaState, atoi( path ) );
-				}
-				else
-				{
-					lua_pushstring( m_LuaState, path );
-				}
+            if(pathLayer == 1)
+            {
+                lua_getglobal(m_LuaState, path);
+            }
+            else
+            {
+                if(IsDigitString(path))       //is integer index?
+                {
+                    lua_pushinteger(m_LuaState, atoi(path));
+                }
+                else
+                {
+                    lua_pushstring(m_LuaState, path);
+                }
 
-				lua_gettable( m_LuaState, -2 );
-			}
+                lua_gettable(m_LuaState, -2);
+            }
 
-			target = path;
-		}
-		else if ( *pos == '\0' ) //get varable string
-		{
-			++pathLayer;
-			*target = '\0'; //c string end
+            target = path;
+        }
+        else if(*pos == '\0')    //get varable string
+        {
+            ++pathLayer;
+            *target = '\0'; //c string end
 
-			switch ( type )
-			{
-			case BackType( INTEGER ):
-				lua_pushinteger( m_LuaState, *static_cast<int*>( data ) );
-				break;
+            switch(type)
+            {
+            case BackType(INTEGER):
+                lua_pushinteger(m_LuaState, *static_cast<int*>(data));
+                break;
 
-			case BackType( LONGFLOAT ):
-				lua_pushnumber( m_LuaState, *static_cast<double*>( data ) );
-				break;
+            case BackType(LONGFLOAT):
+                lua_pushnumber(m_LuaState, *static_cast<double*>(data));
+                break;
 
-			case BackType( STRING ):
-				lua_pushstring( m_LuaState, static_cast<char*>( data ) );
-				break;
-			}
+            case BackType(STRING):
+                lua_pushstring(m_LuaState, static_cast<char*>(data));
+                break;
+            }
 
-			if ( pathLayer == 1 ) // if varable in global
-			{
-				lua_setglobal( m_LuaState, path );
-			}
-			else
-			{
-				if ( IsDigitString( path ) )	//is integer index?
-				{
-					lua_rawseti( m_LuaState, -2, atoi( path ) );
-				}
-				else
-				{
-					lua_setfield( m_LuaState, -2, path );
-				}
-			}
+            if(pathLayer == 1)    // if varable in global
+            {
+                lua_setglobal(m_LuaState, path);
+            }
+            else
+            {
+                if(IsDigitString(path))       //is integer index?
+                {
+                    lua_rawseti(m_LuaState, -2, atoi(path));
+                }
+                else
+                {
+                    lua_setfield(m_LuaState, -2, path);
+                }
+            }
 
-			break;
-		}
-		else
-		{
-			*target = *pos;
-			++target;
-		}
-	}
+            break;
+        }
+        else
+        {
+            *target = *pos;
+            ++target;
+        }
+    }
 
-	lua_pop( m_LuaState, pathLayer - 1 );
+    lua_pop(m_LuaState, pathLayer - 1);
 }
 
 template <>
 int LuaCell::GetLua<int>()
 {
-	return ( int )lua_tointeger( m_LuaState, -1 );
+    return (int)lua_tointeger(m_LuaState, -1);
 }
 template <>
 double LuaCell::GetLua<double>()
 {
-	return lua_tonumber( m_LuaState, -1 );
+    return lua_tonumber(m_LuaState, -1);
 }
 template <>
 const char* LuaCell::GetLua<const char*>()
 {
-	return lua_tostring( m_LuaState, -1 );
+    return lua_tostring(m_LuaState, -1);
 }
 
 template <class T>
-T LuaCell::GetLua( const char* pathString, ... )
+T LuaCell::GetLua(const char* pathString, ...)
 {
-	// 可變長度的字串
-	char* buffer = ( char* )malloc( 1024 );
-	va_list args;
-	va_start ( args, pathString );
-	vsprintf ( buffer, pathString, args );
-	//開始尋找變數
-	T result;
-	char path[250] = {0};
-	const char* pos;
-	char* target = path;
-	int pathLayer = 0;
+    // 可變長度的字串
+    char* buffer = (char*)malloc(1024);
+    va_list args;
+    va_start(args, pathString);
+    vsprintf(buffer, pathString, args);
+    //開始尋找變數
+    T result;
+    char path[250] = {0};
+    const char* pos;
+    char* target = path;
+    int pathLayer = 0;
 
-	for ( pos = buffer;; pos++ )
-	{
-		if ( *pos == '\\' || *pos == '/' ) //get Layer string
-		{
-			++pathLayer;
-			*target = '\0'; //c string end
+    for(pos = buffer;; pos++)
+    {
+        if(*pos == '\\' || *pos == '/')    //get Layer string
+        {
+            ++pathLayer;
+            *target = '\0'; //c string end
 
-			if ( pathLayer == 1 )
-			{
-				lua_getglobal( m_LuaState, path );
-			}
-			else
-			{
-				if ( lua_isnil( m_LuaState, -1 ) )
-				{
-					lua_pop( m_LuaState, pathLayer );
-					assert( 0 && "GetLua" );
-					return false;
-				}
+            if(pathLayer == 1)
+            {
+                lua_getglobal(m_LuaState, path);
+            }
+            else
+            {
+                if(lua_isnil(m_LuaState, -1))
+                {
+                    lua_pop(m_LuaState, pathLayer);
+                    assert(0 && "GetLua");
+                    return false;
+                }
 
-				if ( IsDigitString( path ) )	//is integer index?
-				{
-					lua_pushinteger( m_LuaState, atoi( path ) );
-				}
-				else
-				{
-					lua_pushstring( m_LuaState, path );
-				}
+                if(IsDigitString(path))       //is integer index?
+                {
+                    lua_pushinteger(m_LuaState, atoi(path));
+                }
+                else
+                {
+                    lua_pushstring(m_LuaState, path);
+                }
 
-				lua_gettable( m_LuaState, -2 );
-			}
+                lua_gettable(m_LuaState, -2);
+            }
 
-			target = path;
-		}
-		else if ( *pos == '\0' ) //get varable string
-		{
-			++pathLayer;
-			*target = '\0'; //c string end
+            target = path;
+        }
+        else if(*pos == '\0')    //get varable string
+        {
+            ++pathLayer;
+            *target = '\0'; //c string end
 
-			if ( pathLayer == 1 ) // if varable in global
-			{
-				lua_getglobal( m_LuaState, path );
-			}
-			else
-			{
-				if ( lua_isnil( m_LuaState, -1 ) )
-				{
-					lua_pop( m_LuaState, pathLayer );
-					assert( 0 && "GetLua" );
-					return false;
-				}
+            if(pathLayer == 1)    // if varable in global
+            {
+                lua_getglobal(m_LuaState, path);
+            }
+            else
+            {
+                if(lua_isnil(m_LuaState, -1))
+                {
+                    lua_pop(m_LuaState, pathLayer);
+                    assert(0 && "GetLua");
+                    return false;
+                }
 
-				if ( IsDigitString( path ) )	//is integer index?
-				{
-					lua_pushinteger( m_LuaState, atoi( path ) );
-				}
-				else
-				{
-					lua_pushstring( m_LuaState, path );
-				}
+                if(IsDigitString(path))       //is integer index?
+                {
+                    lua_pushinteger(m_LuaState, atoi(path));
+                }
+                else
+                {
+                    lua_pushstring(m_LuaState, path);
+                }
 
-				lua_gettable( m_LuaState, -2 );
-			}
+                lua_gettable(m_LuaState, -2);
+            }
 
-			result = GetLua<T>();
-			break;
-		}
-		else
-		{
-			*target = *pos;
-			++target;
-		}
-	}
+            result = GetLua<T>();
+            break;
+        }
+        else
+        {
+            *target = *pos;
+            ++target;
+        }
+    }
 
-	lua_pop( m_LuaState, pathLayer );
-	free( buffer );
-	va_end ( args );
-	return result;
+    lua_pop(m_LuaState, pathLayer);
+    free(buffer);
+    va_end(args);
+    return result;
 }
 template <>
-void LuaCell::SetLua<int>( int data )
+void LuaCell::SetLua<int>(int data)
 {
-	lua_pushinteger( m_LuaState, data );
+    lua_pushinteger(m_LuaState, data);
 }
 template <>
-void LuaCell::SetLua<double>( double data )
+void LuaCell::SetLua<double>(double data)
 {
-	lua_pushnumber( m_LuaState, data );
+    lua_pushnumber(m_LuaState, data);
 }
 template <>
-void LuaCell::SetLua<const char*>( const char* data )
+void LuaCell::SetLua<const char*>(const char* data)
 {
-	lua_pushstring( m_LuaState, data );
+    lua_pushstring(m_LuaState, data);
 }
 template <class T>
-void LuaCell::SetLua( T data, const char* pathString, ... )
+void LuaCell::SetLua(T data, const char* pathString, ...)
 {
-	// 可變長度的字串
-	char* buffer = ( char* )malloc( 1024 );
-	va_list args;
-	va_start ( args, pathString );
-	vsprintf ( buffer, pathString, args );
-	//開始尋找變數
-	char path[250] = {0};
-	const char* pos;
-	char* target = path;
-	int pathLayer = 0;
+    // 可變長度的字串
+    char* buffer = (char*)malloc(1024);
+    va_list args;
+    va_start(args, pathString);
+    vsprintf(buffer, pathString, args);
+    //開始尋找變數
+    char path[250] = {0};
+    const char* pos;
+    char* target = path;
+    int pathLayer = 0;
 
-	for ( pos = buffer;; pos++ )
-	{
-		if ( *pos == '\\' || *pos == '/' ) //get Layer string
-		{
-			++pathLayer;
-			*target = '\0'; //c string end
+    for(pos = buffer;; pos++)
+    {
+        if(*pos == '\\' || *pos == '/')    //get Layer string
+        {
+            ++pathLayer;
+            *target = '\0'; //c string end
 
-			if ( pathLayer == 1 )
-			{
-				lua_getglobal( m_LuaState, path );
-			}
-			else
-			{
-				if ( lua_isnil( m_LuaState, -1 ) )
-				{
-					lua_pop( m_LuaState, pathLayer );
-					assert( 0 && "SetLua" );
-					return ;
-				}
+            if(pathLayer == 1)
+            {
+                lua_getglobal(m_LuaState, path);
+            }
+            else
+            {
+                if(lua_isnil(m_LuaState, -1))
+                {
+                    lua_pop(m_LuaState, pathLayer);
+                    assert(0 && "SetLua");
+                    return ;
+                }
 
-				if ( IsDigitString( path ) )	//is integer index?
-				{
-					lua_pushinteger( m_LuaState, atoi( path ) );
-				}
-				else
-				{
-					lua_pushstring( m_LuaState, path );
-				}
+                if(IsDigitString(path))       //is integer index?
+                {
+                    lua_pushinteger(m_LuaState, atoi(path));
+                }
+                else
+                {
+                    lua_pushstring(m_LuaState, path);
+                }
 
-				lua_gettable( m_LuaState, -2 );
-			}
+                lua_gettable(m_LuaState, -2);
+            }
 
-			target = path;
-		}
-		else if ( *pos == '\0' ) //get varable string
-		{
-			++pathLayer;
-			*target = '\0'; //c string end
-			SetLua<T>( data );
+            target = path;
+        }
+        else if(*pos == '\0')    //get varable string
+        {
+            ++pathLayer;
+            *target = '\0'; //c string end
+            SetLua<T>(data);
 
-			if ( pathLayer == 1 ) // if varable in global
-			{
-				lua_setglobal( m_LuaState, path );
-			}
-			else
-			{
-				if ( lua_isnil( m_LuaState, -1 ) )
-				{
-					lua_pop( m_LuaState, pathLayer );
-					assert( 0 && "SetLua" );
-					return ;
-				}
+            if(pathLayer == 1)    // if varable in global
+            {
+                lua_setglobal(m_LuaState, path);
+            }
+            else
+            {
+                if(lua_isnil(m_LuaState, -1))
+                {
+                    lua_pop(m_LuaState, pathLayer);
+                    assert(0 && "SetLua");
+                    return ;
+                }
 
-				if ( IsDigitString( path ) )	//is integer index?
-				{
-					lua_rawseti( m_LuaState, -2, atoi( path ) );
-				}
-				else
-				{
-					lua_setfield( m_LuaState, -2, path );
-				}
-			}
+                if(IsDigitString(path))       //is integer index?
+                {
+                    lua_rawseti(m_LuaState, -2, atoi(path));
+                }
+                else
+                {
+                    lua_setfield(m_LuaState, -2, path);
+                }
+            }
 
-			break;
-		}
-		else
-		{
-			*target = *pos;
-			++target;
-		}
-	}
+            break;
+        }
+        else
+        {
+            *target = *pos;
+            ++target;
+        }
+    }
 
-	lua_pop( m_LuaState, pathLayer - 1 );
-	free( buffer );
-	va_end ( args );
+    lua_pop(m_LuaState, pathLayer - 1);
+    free(buffer);
+    va_end(args);
 }
 
-strings LuaCell::GetLuaTableKeys( const char* pathString, ... )
+strings LuaCell::GetLuaTableKeys(const char* pathString, ...)
 {
-	strings data;
-	// 可變長度的字串
-	char* clearlyString = ( char* )malloc( 1024 );
-	va_list args;
-	va_start ( args, pathString );
-	vsprintf ( clearlyString, pathString, args );
+    strings data;
+    // 可變長度的字串
+    char* clearlyString = (char*)malloc(1024);
+    va_list args;
+    va_start(args, pathString);
+    vsprintf(clearlyString, pathString, args);
 
-	if ( !HasValue( clearlyString ) ) { return data; }
+    if(!HasValue(clearlyString))
+    {
+        return data;
+    }
 
-	char path[250] = {0};
-	const char* pos;
-	char* target = path;
-	int pathLayer = 0;
+    char path[250] = {0};
+    const char* pos;
+    char* target = path;
+    int pathLayer = 0;
 
-	for ( pos = clearlyString;; pos++ )
-	{
-		if ( *pos == '\\' || *pos == '/' ) //get Layer string
-		{
-			++pathLayer;
-			*target = '\0'; //c string end
+    for(pos = clearlyString;; pos++)
+    {
+        if(*pos == '\\' || *pos == '/')    //get Layer string
+        {
+            ++pathLayer;
+            *target = '\0'; //c string end
 
-			if ( pathLayer == 1 )
-			{
-				lua_getglobal( m_LuaState, path );
-			}
-			else
-			{
-				if ( lua_isnil( m_LuaState, -1 ) )
-				{
-					lua_pop( m_LuaState, pathLayer );
-					assert( 0 && "GetLua" );
-					return data;
-				}
+            if(pathLayer == 1)
+            {
+                lua_getglobal(m_LuaState, path);
+            }
+            else
+            {
+                if(lua_isnil(m_LuaState, -1))
+                {
+                    lua_pop(m_LuaState, pathLayer);
+                    assert(0 && "GetLua");
+                    return data;
+                }
 
-				if ( IsDigitString( path ) )	//is integer index?
-				{
-					lua_pushinteger( m_LuaState, atoi( path ) );
-				}
-				else
-				{
-					lua_pushstring( m_LuaState, path );
-				}
+                if(IsDigitString(path))       //is integer index?
+                {
+                    lua_pushinteger(m_LuaState, atoi(path));
+                }
+                else
+                {
+                    lua_pushstring(m_LuaState, path);
+                }
 
-				lua_gettable( m_LuaState, -2 );
-			}
+                lua_gettable(m_LuaState, -2);
+            }
 
-			target = path;
-		}
-		else if ( *pos == '\0' ) //get varable string
-		{
-			++pathLayer;
-			*target = '\0'; //c string end
+            target = path;
+        }
+        else if(*pos == '\0')    //get varable string
+        {
+            ++pathLayer;
+            *target = '\0'; //c string end
 
-			if ( pathLayer == 1 ) // if varable in global
-			{
-				lua_getglobal( m_LuaState, path );
-			}
-			else
-			{
-				if ( lua_isnil( m_LuaState, -1 ) )
-				{
-					lua_pop( m_LuaState, pathLayer );
-					assert( 0 && "GetLua" );
-					return data;
-				}
+            if(pathLayer == 1)    // if varable in global
+            {
+                lua_getglobal(m_LuaState, path);
+            }
+            else
+            {
+                if(lua_isnil(m_LuaState, -1))
+                {
+                    lua_pop(m_LuaState, pathLayer);
+                    assert(0 && "GetLua");
+                    return data;
+                }
 
-				if ( IsDigitString( path ) )	//is integer index?
-				{
-					lua_pushinteger( m_LuaState, atoi( path ) );
-				}
-				else
-				{
-					lua_pushstring( m_LuaState, path );
-				}
+                if(IsDigitString(path))       //is integer index?
+                {
+                    lua_pushinteger(m_LuaState, atoi(path));
+                }
+                else
+                {
+                    lua_pushstring(m_LuaState, path);
+                }
 
-				lua_gettable( m_LuaState, -2 );
-			}
+                lua_gettable(m_LuaState, -2);
+            }
 
-			int t_idx =  lua_gettop( m_LuaState );
-			lua_pushnil( m_LuaState );
+            int t_idx =  lua_gettop(m_LuaState);
+            lua_pushnil(m_LuaState);
 
-			while ( 0 != lua_next( m_LuaState, t_idx ) )
-			{
-				data.push_back( lua_tostring( m_LuaState, -2 ) );
-				lua_pop( m_LuaState, 1 );  // 弹出 value，让 key 留在栈顶
-			}
+            while(0 != lua_next(m_LuaState, t_idx))
+            {
+                data.push_back(lua_tostring(m_LuaState, -2));
+                lua_pop(m_LuaState, 1);    // 弹出 value，让 key 留在栈顶
+            }
 
-			lua_pop( m_LuaState, pathLayer );
-			return data;
-		}
-		else
-		{
-			*target = *pos;
-			++target;
-		}
-	}
+            lua_pop(m_LuaState, pathLayer);
+            return data;
+        }
+        else
+        {
+            *target = *pos;
+            ++target;
+        }
+    }
 
-	lua_pop( m_LuaState, pathLayer );
-	free( clearlyString );
-	va_end ( args );
-	return data;
+    lua_pop(m_LuaState, pathLayer);
+    free(clearlyString);
+    va_end(args);
+    return data;
 }
 
-bool LuaCell::HasValue( const char* pathString, ... )
+bool LuaCell::HasValue(const char* pathString, ...)
 {
-	// 可變長度的字串
-	char* buffer = ( char* )malloc( 1024 );
-	va_list args;
-	va_start ( args, pathString );
-	vsprintf ( buffer, pathString, args );
-	char path[250] = {0};
-	const char* pos;
-	char* target = path;
-	int pathLayer = 0;
+    // 可變長度的字串
+    char* buffer = (char*)malloc(1024);
+    va_list args;
+    va_start(args, pathString);
+    vsprintf(buffer, pathString, args);
+    char path[250] = {0};
+    const char* pos;
+    char* target = path;
+    int pathLayer = 0;
 
-	for ( pos = buffer;; pos++ )
-	{
-		if ( *pos == '\\' || *pos == '/' || *pos == '\0' ) //get Layer string
-		{
-			++pathLayer;
-			*target = '\0'; //c string end
+    for(pos = buffer;; pos++)
+    {
+        if(*pos == '\\' || *pos == '/' || *pos == '\0')    //get Layer string
+        {
+            ++pathLayer;
+            *target = '\0'; //c string end
 
-			if ( pathLayer == 1 )
-			{
-				lua_getglobal( m_LuaState, path );
+            if(pathLayer == 1)
+            {
+                lua_getglobal(m_LuaState, path);
 
-				if ( lua_isnil( m_LuaState, -1 ) )
-				{
-					lua_pop( m_LuaState, pathLayer );
-					free( buffer );
-					return false;
-				}
-			}
-			else
-			{
-				if ( !lua_istable( m_LuaState, -1 ) )
-				{
-					lua_pop( m_LuaState, pathLayer );
-					free( buffer );
-					return false;
-				}
+                if(lua_isnil(m_LuaState, -1))
+                {
+                    lua_pop(m_LuaState, pathLayer);
+                    free(buffer);
+                    return false;
+                }
+            }
+            else
+            {
+                if(!lua_istable(m_LuaState, -1))
+                {
+                    lua_pop(m_LuaState, pathLayer);
+                    free(buffer);
+                    return false;
+                }
 
-				if ( IsDigitString( path ) )	//is integer index?
-				{
-					lua_pushinteger( m_LuaState, atoi( path ) );
-				}
-				else
-				{
-					lua_pushstring( m_LuaState, path );
-				}
+                if(IsDigitString(path))       //is integer index?
+                {
+                    lua_pushinteger(m_LuaState, atoi(path));
+                }
+                else
+                {
+                    lua_pushstring(m_LuaState, path);
+                }
 
-				lua_gettable( m_LuaState, -2 );
+                lua_gettable(m_LuaState, -2);
 
-				if ( lua_isnil( m_LuaState, -1 ) )
-				{
-					lua_pop( m_LuaState, pathLayer );
-					free( buffer );
-					return false;
-				}
-			}
+                if(lua_isnil(m_LuaState, -1))
+                {
+                    lua_pop(m_LuaState, pathLayer);
+                    free(buffer);
+                    return false;
+                }
+            }
 
-			target = path;
+            target = path;
 
-			if ( *pos == '\0' )
-			{
-				break;
-			}
-		}
-		else
-		{
-			*target = *pos;
-			++target;
-		}
-	}
+            if(*pos == '\0')
+            {
+                break;
+            }
+        }
+        else
+        {
+            *target = *pos;
+            ++target;
+        }
+    }
 
-	lua_pop( m_LuaState, pathLayer );
-	free( buffer );
-	return true;
+    lua_pop(m_LuaState, pathLayer);
+    free(buffer);
+    return true;
 }
 
-void LuaCell::RegisterFunction( std::string libname, const luaL_reg* reg )
-{
-	luaL_register( m_LuaState, libname.c_str(), reg );
-}
 
 void LuaCell::LuaYield()
 {
-	lua_yield( m_LuaState, 0 );
+	lua_yield(m_LuaState, 0);
 }
 
 void LuaCell::LuaResume()
 {
-	int status = lua_status( m_LuaState );
+	int status = lua_status(m_LuaState);
 
-	if ( status == LUA_YIELD )
+	if(status == LUA_YIELD)
 	{
-		int ret = lua_resume( m_LuaState, 0 );
+		int ret = lua_resume(m_LuaState, 0, 0);
 
-		if ( ret != 0 )
+		if(ret != 0)
 		{
-			printf( "lua_resume:%d\n", ret );
+			printf("lua_resume:%d\n", ret);
 		}
 	}
 }
 
 lua_State* LuaCell::GetLuaState()
 {
-	return m_LuaState;
+    return m_LuaState;
 }

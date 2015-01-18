@@ -90,7 +90,7 @@
     <OutDir>..\Bin</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SDKs)luabind-0.9.1;$(SDKs)lzo-2.06\include;$(SDKs)zlib-1.2.7\include;$(SDKs)lzma920\include;$(SDKs)cryptopp561\include;$(DXSDK_DIR)Include;$(SDKs)freetype-2.4.10\include;$(SDKs)boost_1_53_0;$(SDKs)Effects11\Inc;$(SDKs)LuaJIT-2.0.1\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SDKs)luabind-0.9.1\lib;$(SDKs)lzo-2.06\lib;$(SDKs)zlib-1.2.7\lib;$(SDKs)lzma920\lib;$(SDKs)cryptopp561\lib;$(DXSDK_DIR)Lib\x64;$(SDKs)freetype-2.4.10\lib;$(SDKs)boost_1_53_0\stage\lib;$(SDKs)Effects11\lib;$(SDKs)LuaJIT-2.0.1\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\Bin</OutDir>

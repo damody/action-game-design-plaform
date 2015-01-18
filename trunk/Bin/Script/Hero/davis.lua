@@ -1,5 +1,8 @@
-﻿require	"Script/effect"
-require	"Script/action"
+﻿--require("Script.mydebug").GoZeroBrane()
+--require("Script.mobdebug").start()
+
+require("Script.action")
+require("Script.effect")
 
 name	= "Davis"
 head	= "sprite\\sys\\davis_f.bmp"
@@ -72,7 +75,7 @@ frame =
 	super_kick = {},
 	super_punch = {},
 	walking = {},
-	測試 = {},
+	TTEST = {},
 }
 
 frame.back_flip[0] =
@@ -254,7 +257,7 @@ frame.ball[14] =
 	newobjects = {
 		{
 		name = "Davis", amount = 1, x = 96, y = -61, facing = 0, 
-		frame = "rolling", frameID = 0, hp = 10, dvx = 0, dvy = 0, dvz = 0, 
+		frame = "rolling", frameID = 0, hp = 10, dvx = 100, dvy = 0, dvz = 0, 
 		},
 	},
 }
@@ -763,7 +766,7 @@ frame.in_the_air[0] =
 	body = {
 		{kind = 0, points = { {20,-11}, {20,-72}, {49,-72}, {49,-11}, }, zwidth = 16},
 	},
-	hit = { {"B", "jump_kick", 0 }, {"DAda", "測試", 0 }, },
+	hit = { {"B", "jump_kick", 0 }, {"DAda", "TTEST", 0 }, },
 }
 
 frame.injured[0] =
@@ -1956,21 +1959,21 @@ frame.walking[5] =
 	},
 }
 
-frame.測試[0] =
+frame.TTEST[0] =
 {
-	pic_id = 0, pic_x = 7, pic_y = 7, state = Action.測試, wait = 4, next = { "測試", 1}, 
+	pic_id = 0, pic_x = 7, pic_y = 7, state = Action.TTEST, wait = 4, next = { "TTEST", 1}, 
 	dvx = 0, dvy = 0, dvz = 0, centerx = 40, centery = 80, clear_key_queue = 0, 
 	consume = { rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
 }
 
-frame.測試[1] =
+frame.TTEST[1] =
 {
-	pic_id = 0, pic_x = 6, pic_y = 7, state = Action.測試, wait = 12, next = { "測試", 1}, 
+	pic_id = 0, pic_x = 6, pic_y = 7, state = Action.TTEST, wait = 12, next = { "TTEST", 1}, 
 	dvx = 0, dvy = 0, dvz = 0, centerx = 39, centery = 79, clear_key_queue = 0, 
 	consume = { rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0, },
 	attack = {
 		{
-		kind = 0, effect = Effect.測試,
+		kind = 0, effect = Effect.TTEST,
 		points = { {5,-32}, {31,-83}, {57,-70}, {31,-1}, }, zwidth = 10,
 		dvx = 2, dvy = -10, dvz = 0, fall = 70, breakDefend = 60, 
 		arest = 8, reAttackRest = 20, injury = 30, strength = 50, 

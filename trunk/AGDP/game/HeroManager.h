@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "game/Hero.h"
-
+#include <windows.h>
 
 class HeroManager
 {
@@ -15,7 +15,7 @@ public:
 private:
 	Heroes m_Heroes;
 	TrashCan m_TrashCan;
-	
+	HANDLE m_UIMutex;
 public:
 	HeroManager( void );
 	~HeroManager( void );

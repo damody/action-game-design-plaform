@@ -148,6 +148,8 @@ BOOL CAGDPDesignerApp::InitInstance()
 	// 已經初始設定主視窗，所以顯示並更新該視窗
 	pMainFrame->ShowWindow( m_nCmdShow );
 	pMainFrame->UpdateWindow();
+	CleanState();
+	m_bSaveState = FALSE;
 	return TRUE;
 }
 

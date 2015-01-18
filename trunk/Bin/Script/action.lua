@@ -1,4 +1,4 @@
-﻿function protect_table (tbl)
+﻿local function protect_table (tbl)
   return setmetatable ({},
     {
     __index = tbl,  -- read access gets original table item
@@ -12,8 +12,8 @@ end -- function protect_table
 
 
 -------------------------- test -----------------
-count = -1;
-function GetEnum()
+local count = -1;
+local function GetEnum()
 	count = count + 1;
 	return count;
 end
@@ -71,7 +71,7 @@ Action.ZAxisSkill 	= GetEnum()				--48Z軸技，可用方向鍵控制X方向，�
 Action.GroundSkill 	= GetEnum()				--49地面絕招，方向鍵完全無效
 Action.FreeSkill 	= GetEnum()				--50自由移動絕招，四方鍵有效，加速度以DVZ、DVX控制
 Action.UniqueSkill	= GetEnum()				--51特殊絕招，無重力且可遁地
-Action.測試			= GetEnum()				--52中文測試
+--Action.測試			= GetEnum()				--52中文測試
 Action.BasicActionEnd	= GetEnum()			--53人物狀態結尾記號
 
 count = -1;
@@ -96,5 +96,12 @@ WeaponAction.Throw = GetEnum()
 -- protect my table now
 Body = protect_table (Body)
 
+local action = {
+  _NAME = "action",
+  _VERSION = 0.1,
+  _COPYRIGHT = "Damody",
+  _DESCRIPTION = "Init Debugger for the Lua",
+}
 
+return action
 --Effect.Fire = 44  --> Error: attempting to change constant WIDTH to 44

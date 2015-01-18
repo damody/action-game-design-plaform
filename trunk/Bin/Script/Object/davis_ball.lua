@@ -1,5 +1,8 @@
-﻿require "Script/object"
-require "Script/action"
+﻿--require("Script.mydebug").GoZeroBrane()
+--require("Script.mobdebug").start()
+
+require("Script.action")
+require("Script.object")
 
 name = "davis_ball"
 

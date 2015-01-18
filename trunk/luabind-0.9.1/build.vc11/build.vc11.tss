@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ArrayOfArrayOfArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ArrayOfArrayOfString>
+    <ArrayOfString>
+      <string>C:\clibrary\vc11-x64\luabind-0.9.1\src\class_rep.cpp</string>
+    </ArrayOfString>
+    <ArrayOfString>
+      <string>C:\clibrary\vc11-x64\luabind-0.9.1\src\create_class.cpp</string>
+    </ArrayOfString>
+    <ArrayOfString>
+      <string>C:\clibrary\vc11-x64\luabind-0.9.1\src\object_rep.cpp</string>
+    </ArrayOfString>
+    <ArrayOfString>
+      <string>C:\clibrary\vc11-x64\luabind-0.9.1\src\pcall.cpp</string>
+    </ArrayOfString>
+  </ArrayOfArrayOfString>
+</ArrayOfArrayOfArrayOfString>

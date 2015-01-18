@@ -64,7 +64,7 @@ void CD3DPanelView::OnPaint()
 		init = true;
 		OnFirstPaint();
 	}
-
+	CDockablePane::OnPaint();
 	m_D3DApp.buildPoint();
 	m_D3DApp.DrawScene();
 }

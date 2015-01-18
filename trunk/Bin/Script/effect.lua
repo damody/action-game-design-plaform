@@ -1,4 +1,4 @@
-﻿function protect_table (tbl)
+﻿local function protect_table (tbl)
   return setmetatable ({},
     {
     __index = tbl,  -- read access gets original table item
@@ -12,8 +12,8 @@ end -- function protect_table
 
 
 -------------------------- test -----------------
-count = -1;
-function GetEnum()
+local count = -1;
+local function GetEnum()
 	count = count + 1;
 	return count;
 end
@@ -29,11 +29,18 @@ Effect.Knife	= GetEnum()
 Effect.Thunder	= GetEnum()
 Effect.Palsy	= GetEnum()
 Effect.Faint	= GetEnum()
-Effect.測試		= GetEnum()
 Effect.End		= GetEnum()
+Effect.TTEST	= GetEnum()
 
 -- protect my table now
 --Effect = protect_table (Effect)
 
+local effect = {
+  _NAME = "effect",
+  _VERSION = 0.1,
+  _COPYRIGHT = "Damody",
+  _DESCRIPTION = "Init Debugger for the Lua",
+}
 
+return effect
 --Effect.Fire = 44  --> Error: attempting to change constant WIDTH to 44

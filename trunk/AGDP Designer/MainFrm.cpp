@@ -22,6 +22,8 @@
 #include "ConvStr.h"
 #include "game/HeroInfo.h"
 #include "Lua/LuaCell.h"
+#include <auto_link_luabind.hpp>
+#include <auto_link_lua53.hpp>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -163,7 +165,7 @@ int CMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	m_wndProperties.EnableDocking( CBRS_ALIGN_ANY );
 	DockPane( &m_wndProperties, 0, CRect( 0, 0, 200, 200 ) );
 	m_wndClassView.AttachToTabWnd( &m_wndFileView, DM_SHOW, TRUE, &m_AttachPane );
-	m_AttachPane->ToggleAutoHide();
+	//m_AttachPane->ToggleAutoHide();
 	CString strPropertiesWnd;
 	bNameValid = strPropertiesWnd.LoadString( IDS_VIEW_FRAMEEDIT );
 
