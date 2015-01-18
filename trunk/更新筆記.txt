@@ -1,0 +1,27 @@
+專案編譯教學
+
+先編譯 luabind-0.9.1
+
+
+lua 怎麼開debuger呢？
+先安裝 ZeroBrane 0.9
+
+ZeroBrane 打開後
+1. 按 Project=>Start Debugger Server
+2. 按 Project=>Project Directionary=>Choose
+   選擇 Bin 
+3. 打開要Debug的lua檔案
+
+4. 修改 Bin\Script\mydebug.lua
+   把 F:/ddd/agdp/trunk/Bin/Script/ 改成自己電腦裡的路徑
+   但是用了lfs後這段就不需要了 現在會自動抓路徑
+   
+5. 在你要debug的lua插入這兩行
+require("Script.mydebug").GoZeroBrane()
+require("Script.mobdebug").start()
+   
+
+新版的lua不能用中文當table key
+所以亮軒把 lua 裡面的 "測試" 都換成了 TTEST
+
+   

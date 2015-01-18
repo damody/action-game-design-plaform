@@ -10,8 +10,11 @@
 
 extern "C"
 {
+// for lua debug use
 #include "luasocket.h"
 #include "mime.h"
+// for lua get current dir use
+#include "lfs.h"
 }
 
 static luaL_Reg preload_list[] = {
@@ -24,6 +27,9 @@ LuaCell::LuaCell()
 {
     m_LuaState = luaL_newstate();
     luaL_openlibs(m_LuaState);
+	// use file system
+	luaopen_lfs(m_LuaState);
+	// setting debug infomation
 	luaL_Reg* lib = preload_list;
 	lua_getglobal(m_LuaState, "package");
 	lua_getfield(m_LuaState, -1, "preload");

@@ -112,7 +112,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_USING_V110_SDK71_;WIN32;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;include;..\LuaCell\include;..\SGAL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;include;..\LuaCell\include;..\SGAL\include;..\luabind-0.9.1;..\Lua-5.3.0\Include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BrowseInformation>true</BrowseInformation>
     </ClCompile>
@@ -155,7 +155,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_USING_V110_SDK71_;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;include;..\LuaCell\include;..\SGAL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;include;..\LuaCell\include;..\SGAL\include;..\luabind-0.9.1;..\Lua-5.3.0\Include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>

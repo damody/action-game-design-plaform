@@ -1,4 +1,7 @@
-﻿loadpackage = 0;
+﻿--require("Script.mydebug").GoZeroBrane()
+--require("Script.mobdebug").start()
+
+loadpackage = 0;
 
 hero = {
 "Script\\Hero\\davis.lua",

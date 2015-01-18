@@ -130,7 +130,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_USING_V110_SDK71_;WIN64;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\AGDP;..\AGAL\include;..\SGAL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\AGDP;..\AGAL\include;..\SGAL\include;..\luabind-0.9.1;..\Lua-5.3.0\Include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BrowseInformation>true</BrowseInformation>
     </ClCompile>
@@ -138,7 +138,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;d3dx11.lib;d3d9.lib;d3dx9.lib;DxErr.lib;dinput8.lib;d3dcompiler.lib;dxguid.lib;d3dxof.lib;winmm.lib;odbc32.lib;odbccp32.lib;dwrite.lib;D2d1.lib;imm32.lib;Version.lib;comctl32.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Bin;..\luabind-0.9.1\lib;..\Lua-5.3.0\Lib</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
@@ -193,7 +193,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_USING_V110_SDK71_;WIN64;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\AGDP;..\AGAL\include;..\SGAL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\AGDP;..\AGAL\include;..\SGAL\include;..\luabind-0.9.1;..\Lua-5.3.0\Include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -202,7 +202,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>d3d11.lib;d3dx11.lib;d3d9.lib;d3dx9.lib;DxErr.lib;dinput8.lib;d3dcompiler.lib;dxguid.lib;d3dxof.lib;winmm.lib;odbc32.lib;odbccp32.lib;dwrite.lib;D2d1.lib;imm32.lib;Version.lib;comctl32.lib;dsound.lib;windowscodecs.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Bin;..\luabind-0.9.1\lib;..\Lua-5.3.0\Lib</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>

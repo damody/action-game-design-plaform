@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="lua-5.3.0\src\lapi.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lauxlib.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lbaselib.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lbitlib.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lcode.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lcorolib.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lctype.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\ldblib.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\ldebug.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\ldo.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\ldump.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lfunc.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lgc.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\linit.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\liolib.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\llex.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lmathlib.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lmem.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\loadlib.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lobject.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lopcodes.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\loslib.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lparser.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lstate.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lstring.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lstrlib.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\ltable.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\ltablib.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\ltm.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lundump.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lvm.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lzio.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\inet.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\io.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\luasocket.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\mime.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\options.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\select.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\tcp.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\timeout.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\udp.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\wsocket.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\auxiliar.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\buffer.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket-5.2\except.c">
+      <Filter>luasocket-5.2</Filter>
+    </ClCompile>
+    <ClCompile Include="tolua-5.2.0\tolua_map.c">
+      <Filter>tolua-5.2.0</Filter>
+    </ClCompile>
+    <ClCompile Include="tolua-5.2.0\tolua_push.c">
+      <Filter>tolua-5.2.0</Filter>
+    </ClCompile>
+    <ClCompile Include="tolua-5.2.0\tolua_to.c">
+      <Filter>tolua-5.2.0</Filter>
+    </ClCompile>
+    <ClCompile Include="tolua-5.2.0\tolua_event.c">
+      <Filter>tolua-5.2.0</Filter>
+    </ClCompile>
+    <ClCompile Include="tolua-5.2.0\tolua_is.c">
+      <Filter>tolua-5.2.0</Filter>
+    </ClCompile>
+    <ClCompile Include="luafilesystem\src\lfs.c">
+      <Filter>luafilesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lua.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+    <ClCompile Include="lua-5.3.0\src\lutf8lib.c">
+      <Filter>lua-5.3.0</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lua-5.3.0\src\lapi.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lauxlib.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lcode.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lctype.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\ldebug.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\ldo.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lfunc.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lgc.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\llex.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\llimits.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lmem.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lobject.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lopcodes.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lparser.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lstate.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lstring.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\ltable.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\ltm.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lua.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lua.hpp">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\luaconf.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lualib.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lundump.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lvm.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="lua-5.3.0\src\lzio.h">
+      <Filter>lua-5.3.0</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\auxiliar.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\buffer.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\except.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\inet.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\io.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\luasocket.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\mime.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\options.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\select.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\socket.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\tcp.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\timeout.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\udp.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket-5.2\wsocket.h">
+      <Filter>luasocket-5.2</Filter>
+    </ClInclude>
+    <ClInclude Include="tolua-5.2.0\tolua.h">
+      <Filter>tolua-5.2.0</Filter>
+    </ClInclude>
+    <ClInclude Include="tolua-5.2.0\tolua_event.h">
+      <Filter>tolua-5.2.0</Filter>
+    </ClInclude>
+    <ClInclude Include="luafilesystem\src\lfs.h">
+      <Filter>luafilesystem</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lua-5.3.0\src\Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="lua-5.3.0">
+      <UniqueIdentifier>{b077d51c-bece-4c19-9818-0287d02289ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="luasocket-5.2">
+      <UniqueIdentifier>{44b1691e-69eb-4a35-89d3-a2dc2fe3bb77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tolua-5.2.0">
+      <UniqueIdentifier>{76a35f6b-e24a-4133-82b4-a12b43ba3f86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="luafilesystem">
+      <UniqueIdentifier>{0c763c86-ace0-41f4-84f8-5da87cecee6f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

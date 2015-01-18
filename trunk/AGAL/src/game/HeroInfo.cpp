@@ -434,8 +434,8 @@ void HeroInfo::WriteLua( HeroInfo* hero , std::wstring filePath )
 	}
 
 	//-------------------------------------
-	fwprintf( file, L"require\t\"Script/effect\"\n" );
-	fwprintf( file, L"require\t\"Script/action\"\n" );
+	fwprintf( file, L"require(\"Script.effect\")\n" );
+	fwprintf( file, L"require(\"Script.action\")\n" );
 	fwprintf( file, L"\n" );
 	//-------------------------------------
 	fwprintf( file, L"name\t= \"%ls\"\n", RevisePath( hero->m_Name ).c_str() );

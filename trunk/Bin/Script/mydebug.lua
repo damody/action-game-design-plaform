@@ -1,6 +1,7 @@
 
 local function GoZeroBrane()
-  local root_path = "F:/ddd/agdp/trunk/Bin/Script/"
+  local root_path = lfs.currentdir() .. "/Script/"
+  root_path = root_path:gsub("\\", "/")
   local tbl_path = {    
   root_path,
   root_path .. "luasocket52/",

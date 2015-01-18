@@ -128,7 +128,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.;..\AGDP;..\AGAL\include;..\SGAL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\AGDP;..\AGAL\include;..\SGAL\include;..\luabind-0.9.1;..\Lua-5.3.0\Include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_USING_V110_SDK71_;WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -141,7 +141,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;d3d11.lib;d3dx11.lib;d3d9.lib;d3dx9.lib;DxErr.lib;dinput8.lib;d3dcompiler.lib;dxguid.lib;d3dxof.lib;winmm.lib;odbc32.lib;odbccp32.lib;dwrite.lib;D2d1.lib;imm32.lib;Version.lib;comctl32.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Bin;..\luabind-0.9.1\lib;..\Lua-5.3.0\Lib</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
@@ -180,7 +180,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>.;..\AGDP;..\AGAL\include;..\SGAL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\AGDP;..\AGAL\include;..\SGAL\include;..\luabind-0.9.1;..\Lua-5.3.0\Include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_USING_V110_SDK71_;WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -191,7 +191,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;d3d11.lib;d3dx11.lib;d3d9.lib;d3dx9.lib;DxErr.lib;dinput8.lib;d3dcompiler.lib;dxguid.lib;d3dxof.lib;winmm.lib;odbc32.lib;odbccp32.lib;dwrite.lib;D2d1.lib;imm32.lib;Version.lib;comctl32.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Bin;..\luabind-0.9.1\lib;..\Lua-5.3.0\Lib</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
