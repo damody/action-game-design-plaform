@@ -1697,11 +1697,21 @@ bool Creat(const Vector3& pos, const Creation& obj, bool face, const Record_Sptr
 
     if(g_HeroInfoManager.GetHeroInfo(u) != HeroInfo_Sptr())
     {
+		const double vz = 10.0 / obj.amount;
         for(int i = 0; i < obj.amount; i++)
         {
             Hero* s = g_HeroManager.Create(u, pos, owner == Record_Sptr() ? 0 : owner->team);
             s->m_FaceSide = f;
             s->m_Vel = obj.v0;
+			if (!face)
+			{
+				s->m_Vel.x = -s->m_Vel.x;
+			}
+			// todo: use bad method add Z velocity
+			if(obj.amount != 1)
+			{
+				s->m_Vel.z += -5 + vz * (i + 1);
+			}
             s->m_Frame.assign(obj.frame);
             s->m_FrameID = obj.frameID;
             s->m_HP = obj.HP;
@@ -1714,13 +1724,13 @@ bool Creat(const Vector3& pos, const Creation& obj, bool face, const Record_Sptr
     else if(g_ObjectInfoManager.GetObjectInfo(u) != ObjectInfo_Sptr())
     {
         Objects object;
-
+		printf("obj.amount %d\n", obj.amount);
         object = g_ObjectManager.CreateObject(u, pos, obj.v0 , obj.amount, owner == Record_Sptr() ? 0 : owner->team);
         assert(obj.amount == object.size());
         for(int i = 0; i < object.size(); i++)
         {
             object[i]->m_FaceSide = f;
-            object[i]->SetVelocity(obj.v0);
+            object[i]->AddVelocity(obj.v0);
             object[i]->m_Frame = obj.frame;
             object[i]->m_FrameID = obj.frameID;
             object[i]->m_HP = obj.HP;

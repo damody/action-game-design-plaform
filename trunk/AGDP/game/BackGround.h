@@ -121,6 +121,8 @@ public:
 
 	ParallelLight GetParallelLight();
 
+	bool	IsOpenUpDownBounding(); //場地上下是否限制物件飛出
+	void	FixUpDownBounding(Vector3& pIn, const Vector3& vel);
 	bool    InSpace( const Vector3& pIn ); //判斷vIn是否在地圖的可行範圍
 	Vector3	AlignmentSpace( const Vector3& pIn ); //判斷vIn是否在地圖的可行範圍，並校正
 	int		AboveSpaceBottom( const Vector3& pIn );

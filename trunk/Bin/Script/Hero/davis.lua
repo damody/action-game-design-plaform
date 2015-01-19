@@ -142,7 +142,7 @@ frame.ball[4] =
 	},
 	newobjects = {
 		{
-		name = "davis_ball", amount = 1, x = 90, y = -43, facing = 0, 
+		name = "davis_ball", amount = 10, x = 90, y = -43, facing = 0, 
 		frame = "flying", frameID = 0, hp = 10, dvx = 0, dvy = 0, dvz = 0, 
 		},
 	},
@@ -199,7 +199,7 @@ frame.ball[9] =
 	},
 	newobjects = {
 		{
-		name = "davis_ball", amount = 1, x = 90, y = -43, facing = 0, 
+		name = "davis_ball", amount = 10, x = 90, y = -43, facing = 0, 
 		frame = "flying", frameID = 0, hp = 10, dvx = 0, dvy = 0, dvz = 0, 
 		},
 	},
@@ -256,7 +256,7 @@ frame.ball[14] =
 	},
 	newobjects = {
 		{
-		name = "Davis", amount = 1, x = 96, y = -61, facing = 0, 
+		name = "Davis", amount = 5, x = 96, y = -61, facing = 0, 
 		frame = "rolling", frameID = 0, hp = 10, dvx = 100, dvy = 0, dvz = 0, 
 		},
 	},

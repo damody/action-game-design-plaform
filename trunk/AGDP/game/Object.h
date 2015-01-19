@@ -56,6 +56,7 @@ public:
 	void SetPosition( Vector3 p );
 	void Translation( Vector3 t );
 	void SetVelocity( Vector3 v );
+	void AddVelocity( Vector3 v );
 
 	int GetTextureID();
 	Texture_Sptr GetTexture();
