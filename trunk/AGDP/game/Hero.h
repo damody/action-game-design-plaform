@@ -27,8 +27,9 @@ class Hero
 {
 public:
 	struct AttackRest{
-		const Hero *d;		//¼Ä¤H
-		int t;				//time
+		const Hero *d;    //¼Ä¤H
+		std::wstring atk; //§K¬Ìªº§ðÀ»
+		int t;            //time
 	};
 private:
 	int				m_TimeTik;		//Count down TimeTik from Frame Wait

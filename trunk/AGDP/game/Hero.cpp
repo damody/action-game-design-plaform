@@ -1297,9 +1297,9 @@ void Hero::beAttack(const Attack* rAtk, const Hero* rHero, const Vector3& hitPos
 {
     if(rAtk->m_Kind == 0)                    //普通攻擊形式，套用 effect 擊中特效
     {
-        if(rHero == this ||                                      //普通形式的攻擊對自己無效
-                (rHero->m_Team != 0 && rHero->m_Team == m_Team) || //普通形式的攻擊對同隊無效
-                rHero == m_AtkRest.d)                              //重複擊中免疫時間
+        if(rHero == this ||                                    //普通形式的攻擊對自己無效
+            (rHero->m_Team != 0 && rHero->m_Team == m_Team) || //普通形式的攻擊對同隊無效
+			(rHero == m_AtkRest.d && rHero->m_Frame == m_AtkRest.atk)) //重複擊中免疫時間
         {
             return;
         }
@@ -1400,8 +1400,9 @@ void Hero::beAttack(const Attack* rAtk, const Hero* rHero, const Vector3& hitPos
             //holyk
         }*/
         //設定 reAttackRest
-        m_AtkRest.d = rHero;
-        m_AtkRest.t = rAtk->m_ReAttackRest;
+        m_AtkRest.d   = rHero;
+		m_AtkRest.atk = rHero->m_Frame;
+        m_AtkRest.t   = rAtk->m_ReAttackRest;
         //切換 Frame
         if(!nFrame.empty())
         {
