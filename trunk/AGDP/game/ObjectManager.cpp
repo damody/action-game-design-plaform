@@ -33,18 +33,12 @@ void ObjectManager::UpdateDataToDraw()
 Objects ObjectManager::CreateObject(const std::wstring& obj, const Vector3& pos, const Vector3& vel, int num/*=1*/, int team/*=0*/)
 {
     Objects object;
-    const double vz = 10.0 / num;
+    
     for(int i = 0; i < num; i++)
     {
         object.push_back(Object_Sptr(new Object(obj)));
         object[i]->SetPosition(pos);
-        Vector3 tvel = vel;
-		// todo: use bad method add Z velocity
-        if(num != 1)
-        {
-            tvel.z += -5 + vz * (i + 1);
-        }
-        object[i]->SetVelocity(tvel);
+        object[i]->SetVelocity(vel);
         object[i]->SetTeam(team);
         m_Objects.push_back(object[i]);
     }

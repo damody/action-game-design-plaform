@@ -21,6 +21,8 @@ struct Creation
 	int				HP;
 	//物件初速度
 	Vector3			v0;
+	//多個物件時的扇出角
+	float fanoutZ;
 	//ai
 };
 typedef std::vector<Creation> Creations;
