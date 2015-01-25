@@ -1,8 +1,8 @@
-#include "game\HeroInfo.h"
 #include <locale>
 #include <codecvt>
+#include "game\HeroInfo.h"
+#include "game\SmallFunction.h"
 
-std::wstring RevisePath(std::wstring path);   //修正路徑"\\"問題
 
 HeroInfo::HeroInfo(): m_Name(), m_MaxHP(500), m_MaxMP(500)
 {
@@ -729,23 +729,3 @@ void HeroInfo::WriteLua(HeroInfo* hero , std::wstring filePath)
     fclose(file);
 }
 
-std::wstring RevisePath(std::wstring path)   //修正路徑"\\"問題
-{
-    int idx = 0;
-    int temp = 0;
-
-    while(true)
-    {
-        int idx = path.find(L"\\", temp);
-
-        if(idx == -1)
-        {
-            break;
-        }
-
-        path.insert(idx, L"\\");
-        temp = idx + 2;
-    }
-
-    return path;
-}

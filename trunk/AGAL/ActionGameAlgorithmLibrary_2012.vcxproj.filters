@@ -117,6 +117,9 @@
     <ClInclude Include="include\game\OffsetCalculate.h">
       <Filter>標頭檔\game</Filter>
     </ClInclude>
+    <ClInclude Include="include\game\SmallFunction.h">
+      <Filter>原始程式檔\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\FlyingPath.cpp">
@@ -147,6 +150,9 @@
       <Filter>原始程式檔\game</Filter>
     </ClCompile>
     <ClCompile Include="src\game\OffsetCalculate.cpp">
+      <Filter>原始程式檔\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\SmallFunction.cpp">
       <Filter>原始程式檔\game</Filter>
     </ClCompile>
   </ItemGroup>

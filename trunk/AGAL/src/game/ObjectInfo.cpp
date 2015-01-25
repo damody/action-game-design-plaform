@@ -1,6 +1,7 @@
-#include "game\ObjectInfo.h"
 #include <locale> 
 #include <codecvt> 
+#include "game\ObjectInfo.h"
+#include "game\SmallFunction.h"
 
 bool	ObjectInfo::CheckObjectDataVaild( LuaCell_Sptr luadata )
 {
@@ -191,4 +192,59 @@ void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 			m_FramesMap[actions[i]].push_back( newData );
 		}
 	}
+}
+
+void ObjectInfo::WriteLua(ObjectInfo* hero , std::wstring filePath)
+{
+	FILE* file = _wfopen(filePath.c_str() , L"w,ccs=UTF-8");
+	wstrings frameTable;
+	LuaMap am(L"Script/Action.lua", "Action");
+	LuaMap om(L"Script/object.lua", "ObjectType");
+	LuaMap fm(L"Script/object.lua", "FlyingType");
+
+	//判斷結尾是否有.lua 沒有則加上
+	if(!(filePath.size() >= 4 &&
+		filePath[filePath.size() - 4] == '.' &&
+		filePath[filePath.size() - 3] == 'l' &&
+		filePath[filePath.size() - 2] == 'u' &&
+		filePath[filePath.size() - 1] == 'a'))
+	{
+		filePath.resize(filePath.size() + 4);
+		filePath[filePath.size() - 4] = '.';
+		filePath[filePath.size() - 3] = 'l';
+		filePath[filePath.size() - 2] = 'u';
+		filePath[filePath.size() - 1] = 'a';
+	}
+
+	//-------------------------------------
+	fwprintf(file, L"require(\"Script.effect\")\n");
+	fwprintf(file, L"require(\"Script.object\")\n");
+	fwprintf(file, L"\n");
+	//-------------------------------------
+	fwprintf(file, L"name\t= \"%ls\"\n", RevisePath(hero->m_Name).c_str());
+	fwprintf(file, L"\n");
+	//-------------------------------------
+	fwprintf(file, L"file = {\n");
+
+	for(int i = 0; i < (int)hero->m_PictureDatas.size(); i++)
+	{
+		std::wstring path = hero->m_PictureDatas[i].m_Path;
+		bool autoclip = hero->m_PictureDatas[i].m_AutoClip;
+		int w = hero->m_PictureDatas[i].m_Width;
+		int h = hero->m_PictureDatas[i].m_Height;
+		int row = hero->m_PictureDatas[i].m_Row;
+		int col = hero->m_PictureDatas[i].m_Column;
+		fwprintf(file, L"{path = \"%ls\", ", RevisePath(path).c_str());
+		fwprintf(file, L"autoclip = %d, ", autoclip);
+		fwprintf(file, L"w = %d, ", w);
+		fwprintf(file, L"h = %d, ", h);
+		fwprintf(file, L"row = %d, ", row);
+		fwprintf(file, L"col = %d },\n", col);
+	}
+
+	fwprintf(file, L"}\n");
+	fwprintf(file, L"\n");
+	//-------------------------------------
+
+
 }

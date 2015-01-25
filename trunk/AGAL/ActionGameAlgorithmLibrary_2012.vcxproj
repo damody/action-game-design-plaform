@@ -197,6 +197,7 @@
     <ClInclude Include="include\game\Record.h" />
     <ClInclude Include="include\game\Shake.h" />
     <ClInclude Include="include\game\Slide.h" />
+    <ClInclude Include="include\game\SmallFunction.h" />
     <ClInclude Include="include\game\WeaponAction.h" />
     <ClInclude Include="include\Lua\CreateLua.h" />
     <ClInclude Include="include\Lua\LuaCell.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="src\game\OffsetCalculate.cpp" />
     <ClCompile Include="src\game\Shake.cpp" />
     <ClCompile Include="src\game\Slide.cpp" />
+    <ClCompile Include="src\game\SmallFunction.cpp" />
     <ClCompile Include="src\Lua\CreateLua.cpp" />
     <ClCompile Include="src\Lua\LuaCell.cpp" />
     <ClCompile Include="StdAGAL.cpp">
