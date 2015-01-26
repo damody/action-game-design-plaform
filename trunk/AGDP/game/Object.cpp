@@ -1,6 +1,96 @@
 #include "Object.h"
 #include "global.h"
 
+#define SCALE 3.0f
+
+
+//* 碰撞判定用函示
+Polygon2Ds GetObjectBodys(const Object& r)
+{
+	Polygon2Ds d;
+
+	for(Bodys::iterator ib = r.m_FrameInfo->m_Bodys.begin(); ib != r.m_FrameInfo->m_Bodys.end(); ib++)
+	{
+		Polygon2D s;
+
+		if(!ib->m_Area.Points().empty())
+		{
+			for(auto iv = ib->m_Area.Points().begin(); iv != ib->m_Area.Points().end(); iv++)
+			{
+				if(r.m_FaceSide)     //面向右邊
+				{
+					s.AddPoint(r.m_Position.x - (r.m_CenterX - iv->x()) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y()) * SCALE);
+				}
+				else                //面向左邊
+				{
+					s.AddPoint(r.m_Position.x + (r.m_CenterX - iv->x()) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y()) * SCALE);
+				}
+			}
+		}
+
+		s.SetZPoint(r.m_Position.z);
+		s.SetZRange(ib->m_ZWidth);
+		d.push_back(s);
+	}
+
+	return d;
+}
+
+Polygon2Ds GetObjectAttacks(const Object& r)
+{
+	Polygon2Ds d;
+
+	for(Attacks::iterator ib = r.m_FrameInfo->m_Attacks.begin(); ib != r.m_FrameInfo->m_Attacks.end(); ib++)
+	{
+		Polygon2D s;
+
+		for(auto iv = ib->m_Area.Points().begin(); iv != ib->m_Area.Points().end(); iv++)
+		{
+			if(r.m_FaceSide)     //面向右邊
+			{
+				s.AddPoint(r.m_Position.x - (r.m_CenterX - iv->x()) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y()) * SCALE);
+			}
+			else                //面向左邊
+			{
+				s.AddPoint(r.m_Position.x + (r.m_CenterX - iv->x()) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y()) * SCALE);
+			}
+		}
+
+		s.SetZPoint(r.m_Position.z);
+		s.SetZRange(ib->m_ZWidth);
+		d.push_back(s);
+	}
+
+	return d;
+}
+
+Polygon2Ds GetObjectCatches(const Object& r)
+{
+	Polygon2Ds d;
+
+	for(CatchInfos::iterator ib = r.m_FrameInfo->m_Catchs.begin(); ib != r.m_FrameInfo->m_Catchs.end(); ib++)
+	{
+		Polygon2D s;
+
+		for(auto iv = ib->m_Area.Points().begin(); iv != ib->m_Area.Points().end(); iv++)
+		{
+			if(r.m_FaceSide)     //面向右邊
+			{
+				s.AddPoint(r.m_Position.x - (r.m_CenterX - iv->x()) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y()) * SCALE);
+			}
+			else                //面向左邊
+			{
+				s.AddPoint(r.m_Position.x + (r.m_CenterX - iv->x()) * SCALE, r.m_Position.y + (r.m_CenterY + iv->y()) * SCALE);
+			}
+		}
+
+		s.SetZPoint(r.m_Position.z);
+		s.SetZRange(ib->m_ZWidth);
+		d.push_back(s);
+	}
+
+	return d;
+}
 Object::Object(void)
 {
 }
@@ -32,6 +122,7 @@ void Object::Init()
     m_Frame = L"default";
     m_FrameID = 0;
     FrameInfo* f = &m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID];
+	m_FrameInfo = f;
     m_PicID = f->m_PictureID;
     m_PicX = f->m_PictureX;
     m_PicY = f->m_PictureY;
@@ -40,7 +131,6 @@ void Object::Init()
     m_Texture = m_ObjectInfo->m_PictureDatas[m_PicID].m_TextureID;
     m_Action = f->m_HeroAction;
     m_TimeTik = f->m_Wait;
-    m_Bodys = f->m_Bodys;
     m_CenterX = f->m_CenterX;
     m_CenterY = f->m_CenterY;
 }
@@ -49,6 +139,7 @@ void Object::Init()
 void Object::NextFrame()
 {
     FrameInfo* f = &m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID];
+	m_FrameInfo = f;
     m_Frame = f->m_NextFrameName;
     m_FrameID = f->m_NextFrameIndex;
     f = &m_ObjectInfo->m_FramesMap[m_Frame][m_FrameID];
@@ -95,8 +186,8 @@ void Object::Update(float dt)
         m_FaceSide = true;
     }//*/
 
-	// 更新位置
-	m_Position += m_Vel;
+    // 更新位置
+    m_Position += m_Vel;
 
     // 判斷如果超出場景就移除物件
     Background* nowbg = g_BackgroundManager.GetCurrentBackground();
@@ -105,12 +196,12 @@ void Object::Update(float dt)
         // 如果不是開放上下空間的場地就修正位置
         if(!nowbg->IsOpenUpDownBounding())
         {
-           nowbg->FixUpDownBounding(m_Position, m_Vel);
+            nowbg->FixUpDownBounding(m_Position, m_Vel);
         }
-		if(!nowbg->InSpace(m_Position))
-		{
-			g_ObjectManager.Destory(this, 6);
-		}
+        if(!nowbg->InSpace(m_Position))
+        {
+            g_ObjectManager.Destory(this, 6);
+        }
     }
 }
 
@@ -181,6 +272,195 @@ Vector3 Object::Position()
 ObjectType::e Object::ObjectType()
 {
     return m_ObjectInfo->m_Type;
+}
+
+PolygonVerteices Object::GetPolygonLineVerteices() const
+{
+    PolygonVerteices pvs;
+    PolygonVertex pv;
+    Polygon2Ds bodys = GetObjectBodys(*this);
+    pv.color.x = 0.0;
+    pv.color.y = 0.0;
+    pv.color.z = 1.0;
+    pv.color.w = 0.5;
+
+    for(Polygon2Ds::iterator it = bodys.begin(); it != bodys.end(); it++)
+    {
+        auto points = it->Points();
+
+        for(unsigned int i = 0; i < points.size(); i++)
+        {
+            pv.position.x = points[i].x();
+            pv.position.y = points[i].y();
+            pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
+            pvs.push_back(pv);
+            pv.position.z = it->GetZPoint() + it->GetZRange() / 2;
+            pvs.push_back(pv);
+        }
+
+        pv.position.z = it->GetZPoint() + it->GetZRange() / 2;
+
+        for(unsigned int i = 0; i < points.size(); i++)
+        {
+            pv.position.x = points[i].x();
+            pv.position.y = points[i].y();
+            pvs.push_back(pv);
+            pv.position.x = points[(i + 1) % points.size()].x();
+            pv.position.y = points[(i + 1) % points.size()].y();
+            pvs.push_back(pv);
+        }
+    }
+	
+
+	Polygon2Ds atks = GetObjectAttacks(*this);
+	pv.color.x = 1.0;
+	pv.color.y = 0.0;
+	pv.color.z = 0.0;
+	pv.color.w = 0.5;
+
+	for(Polygon2Ds::iterator it = atks.begin(); it != atks.end(); it++)
+	{
+		auto points = it->Points();
+
+		for(unsigned int i = 0; i < points.size(); i++)
+		{
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
+			pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
+			pvs.push_back(pv);
+			pv.position.z = it->GetZPoint() + it->GetZRange() / 2;
+			pvs.push_back(pv);
+		}
+
+		pv.position.z = it->GetZPoint() + it->GetZRange() / 2;
+
+		for(unsigned int i = 0; i < points.size(); i++)
+		{
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
+			pvs.push_back(pv);
+			pv.position.x = points[(i + 1) % points.size()].x();
+			pv.position.y = points[(i + 1) % points.size()].y();
+			pvs.push_back(pv);
+		}
+	}
+
+	Polygon2Ds catches = GetObjectCatches(*this);
+	pv.color.x = 0.0;
+	pv.color.y = 1.0;
+	pv.color.z = 0.0;
+	pv.color.w = 0.5;
+
+	for(Polygon2Ds::iterator it = catches.begin(); it != catches.end(); it++)
+	{
+		auto points = it->Points();
+
+		for(unsigned int i = 0; i < points.size(); i++)
+		{
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
+			pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
+			pvs.push_back(pv);
+			pv.position.z = it->GetZPoint() + it->GetZRange() / 2;
+			pvs.push_back(pv);
+		}
+
+		pv.position.z = it->GetZPoint() + it->GetZRange() / 2;
+
+		for(unsigned int i = 0; i < points.size(); i++)
+		{
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
+			pvs.push_back(pv);
+			pv.position.x = points[(i + 1) % points.size()].x();
+			pv.position.y = points[(i + 1) % points.size()].y();
+			pvs.push_back(pv);
+		}
+	}
+
+    return pvs;
+}
+
+PolygonVerteices Object::GetPolygonVerteices() const
+{
+	PolygonVerteices pvs;
+	PolygonVertex pv;
+	Polygon2Ds bodys = GetObjectBodys(*this);
+	pv.color.x = 0.0;
+	pv.color.y = 0.0;
+	pv.color.z = 1.0;
+	pv.color.w = 0.5;
+
+	for(Polygon2Ds::iterator it = bodys.begin(); it != bodys.end(); it++)
+	{
+		auto points = it->Points();
+		pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
+
+		for(unsigned int i = 1; i + 1 < points.size(); i++)
+		{
+			pv.position.x = points[0].x();
+			pv.position.y = points[0].y();
+			pvs.push_back(pv);
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
+			pvs.push_back(pv);
+			pv.position.x = points[i + 1].x();
+			pv.position.y = points[i + 1].y();
+			pvs.push_back(pv);
+		}
+	}
+
+	Polygon2Ds  atks = GetObjectAttacks(*this);
+	pv.color.x = 1.0;
+	pv.color.y = 0.0;
+	pv.color.z = 0.0;
+	pv.color.w = 0.5;
+
+	for(Polygon2Ds::iterator it = atks.begin(); it != atks.end(); it++)
+	{
+		auto points = it->Points();
+		pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
+
+		for(unsigned int i = 1; i + 1 < points.size(); i++)
+		{
+			pv.position.x = points[0].x();
+			pv.position.y = points[0].y();
+			pvs.push_back(pv);
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
+			pvs.push_back(pv);
+			pv.position.x = points[i + 1].x();
+			pv.position.y = points[i + 1].y();
+			pvs.push_back(pv);
+		}
+	}
+
+	Polygon2Ds  catches = GetObjectCatches(*this);
+	pv.color.x = 0.0;
+	pv.color.y = 1.0;
+	pv.color.z = 0.0;
+	pv.color.w = 0.5;
+
+	for(Polygon2Ds::iterator it = catches.begin(); it != catches.end(); it++)
+	{
+		auto points = it->Points();
+		pv.position.z = it->GetZPoint() - it->GetZRange() / 2;
+
+		for(unsigned int i = 1; i + 1 < points.size(); i++)
+		{
+			pv.position.x = points[0].x();
+			pv.position.y = points[0].y();
+			pvs.push_back(pv);
+			pv.position.x = points[i].x();
+			pv.position.y = points[i].y();
+			pvs.push_back(pv);
+			pv.position.x = points[i + 1].x();
+			pv.position.y = points[i + 1].y();
+			pvs.push_back(pv);
+		}
+	}
+
+	return pvs;
 }
 
 bool SortObject(Object_RawPtr a, Object_RawPtr b)

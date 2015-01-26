@@ -3,6 +3,7 @@
 
 require("Script.action")
 require("Script.object")
+require("Script.effect")
 
 name = "davis_ball"
 
@@ -14,7 +15,7 @@ hp = 1
 mess = 1
 elasticity = 0.5
 objecttype = ObjectType.CHEE
-flyingtype = Flyingtype.LINEARLINE_PATH
+flyingtype = FlyingType.LINEARLINE_PATH
 
 frame =
 {
@@ -29,7 +30,17 @@ frame.default[0] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
-   body = {}
+   attack = {
+		{
+		kind = 4, effect = Effect.Punch,
+		points = { {55,-12}, {77,-12}, {77,-39}, {55,-39}, }, zwidth = 16,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10, 
+		arest = 8, reAttackRest = 20, injury = 30, strength = 50, 
+		},
+   },
+   body = {
+   {kind = 0, points = { {22,-12}, {77,-12}, {77,-39}, {22,-39}, }, zwidth = 16},
+   }
 }
 
 frame.flying[0] =
@@ -39,7 +50,17 @@ frame.flying[0] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
-   body = {}
+   attack = {
+		{
+		kind = 4, effect = Effect.Punch,
+		points = { {55,-12}, {77,-12}, {77,-39}, {55,-39}, }, zwidth = 16,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10, 
+		arest = 8, reAttackRest = 20, injury = 30, strength = 50, 
+		},
+   },
+   body = {
+   {kind = 0, points = { {22,-12}, {77,-12}, {77,-39}, {22,-39}, }, zwidth = 16},
+   }
 }
 
 frame.flying[1] =
@@ -49,7 +70,9 @@ frame.flying[1] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
-   body = {}
+   body = {
+   {kind = 0, points = { {22,-12}, {77,-12}, {77,-39}, {22,-39}, }, zwidth = 16},
+   }
 }
 
 frame.flying[2] =
@@ -59,7 +82,17 @@ frame.flying[2] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
-   body = {}
+   attack = {
+		{
+		kind = 4, effect = Effect.Punch,
+		points = { {55,-12}, {77,-12}, {77,-39}, {55,-39}, }, zwidth = 16,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10, 
+		arest = 8, reAttackRest = 20, injury = 30, strength = 50, 
+		},
+   },
+   body = {
+   {kind = 0, points = { {22,-12}, {77,-12}, {77,-39}, {22,-39}, }, zwidth = 16},
+   }
 }
 
 frame.flying[3] =
@@ -69,7 +102,17 @@ frame.flying[3] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
-   body = {}
+   attack = {
+		{
+		kind = 4, effect = Effect.Punch,
+		points = { {55,-12}, {77,-12}, {77,-39}, {55,-39}, }, zwidth = 16,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10, 
+		arest = 8, reAttackRest = 20, injury = 30, strength = 50, 
+		},
+   },
+   body = {
+   {kind = 0, points = { {22,-12}, {77,-12}, {77,-39}, {22,-39}, }, zwidth = 16},
+   }
 }
 
 frame.flying[4] =
@@ -79,7 +122,17 @@ frame.flying[4] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
-   body = {}
+   attack = {
+		{
+		kind = 4, effect = Effect.Punch,
+		points = { {55,-12}, {77,-12}, {77,-39}, {55,-39}, }, zwidth = 16,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10, 
+		arest = 8, reAttackRest = 20, injury = 30, strength = 50, 
+		},
+   },
+   body = {
+   {kind = 0, points = { {22,-12}, {77,-12}, {77,-39}, {22,-39}, }, zwidth = 16},
+   }
 }
 
 frame.flying[5] =
@@ -89,7 +142,17 @@ frame.flying[5] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
-   body = {}
+   attack = {
+		{
+		kind = 4, effect = Effect.Punch,
+		points = { {55,-12}, {77,-12}, {77,-39}, {55,-39}, }, zwidth = 16,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10, 
+		arest = 8, reAttackRest = 20, injury = 30, strength = 50, 
+		},
+   },
+   body = {
+   {kind = 0, points = { {22,-12}, {77,-12}, {77,-39}, {22,-39}, }, zwidth = 16},
+   }
 }
 
 frame.flying[6] =
@@ -99,7 +162,17 @@ frame.flying[6] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
-   body = {}
+   attack = {
+		{
+		kind = 4, effect = Effect.Punch,
+		points = { {55,-12}, {77,-12}, {77,-39}, {55,-39}, }, zwidth = 16,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10, 
+		arest = 8, reAttackRest = 20, injury = 30, strength = 50, 
+		},
+   },
+   body = {
+   {kind = 0, points = { {22,-12}, {77,-12}, {77,-39}, {22,-39}, }, zwidth = 16},
+   }
 }
 
 frame.flying[7] =
@@ -109,7 +182,17 @@ frame.flying[7] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
-   body = {}
+   attack = {
+		{
+		kind = 4, effect = Effect.Punch,
+		points = { {55,-12}, {77,-12}, {77,-39}, {55,-39}, }, zwidth = 16,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10, 
+		arest = 8, reAttackRest = 20, injury = 30, strength = 50, 
+		},
+   },
+   body = {
+   {kind = 0, points = { {22,-12}, {77,-12}, {77,-39}, {22,-39}, }, zwidth = 16},
+   }
 }
 
 frame.flying[8] =
@@ -119,7 +202,17 @@ frame.flying[8] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
-   body = {}
+   attack = {
+		{
+		kind = 4, effect = Effect.Punch,
+		points = { {55,-12}, {77,-12}, {77,-39}, {55,-39}, }, zwidth = 16,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10, 
+		arest = 8, reAttackRest = 20, injury = 30, strength = 50, 
+		},
+   },
+   body = {
+   {kind = 0, points = { {22,-12}, {77,-12}, {77,-39}, {22,-39}, }, zwidth = 16},
+   }
 }
 
 frame.flying[9] =
@@ -129,5 +222,16 @@ frame.flying[9] =
    consume = {rule = 1, HP = 0, MP = 0, backFrame = "default", backFrameID = 0},
    hit = {},
    blood = {},
-   body = {}
+   attack = {
+		{
+		kind = 4, effect = Effect.Punch,
+		points = { {55,-12}, {77,-12}, {77,-39}, {55,-39}, }, zwidth = 16,
+		dvx = 2, dvy = 0, dvz = 0, fall = 70, breakDefend = 10, 
+		arest = 8, reAttackRest = 20, injury = 30, strength = 50, 
+		},
+   },
+   body = {
+   {kind = 0, points = { {22,-12}, {77,-12}, {77,-39}, {22,-39}, }, zwidth = 16},
+   }
 }
+

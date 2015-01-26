@@ -304,7 +304,7 @@ frame.ball[18] =
 	newobjects = {
 		{
 		name = "davis_ball", amount = 1, x = 90, y = -48, facing = 0, 
-		frame = "flying", frameID = 0, hp = 10, dvx = 0, dvy = 0, dvz = 0, 
+		frame = "flying", frameID = 0, hp = 10, dvx = 0, dvy = 0, dvz = 0, fanoutZ = 10,
 		},
 	},
 }

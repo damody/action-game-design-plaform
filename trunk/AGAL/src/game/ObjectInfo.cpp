@@ -117,6 +117,50 @@ void	ObjectInfo::LoadData( LuaCell_Sptr luadata )
 				}
 			}
 
+			for(int atkCount = 1;; ++atkCount)
+			{
+				if(luadata->HasValue("frame/%s/%d/attack/%d/kind", frameName, frameCount, atkCount))
+				{
+					Attack atk;
+					atk.m_Kind  = luadata->GetLua<int>("frame/%s/%d/attack/%d/kind", frameName, frameCount, atkCount);
+					atk.m_Effect    = luadata->GetLua<int>("frame/%s/%d/attack/%d/effect", frameName, frameCount, atkCount);
+					atk.m_ZWidth    = (float)luadata->GetLua<double>("frame/%s/%d/attack/%d/zwidth", frameName, frameCount, atkCount);
+					atk.m_DVX   = (float)luadata->GetLua<double>("frame/%s/%d/attack/%d/dvx", frameName, frameCount, atkCount);
+					atk.m_DVY   = (float)luadata->GetLua<double>("frame/%s/%d/attack/%d/dvy", frameName, frameCount, atkCount);
+					atk.m_DVZ   = (float)luadata->GetLua<double>("frame/%s/%d/attack/%d/dvz", frameName, frameCount, atkCount);
+					atk.m_Fall  = luadata->GetLua<int>("frame/%s/%d/attack/%d/fall", frameName, frameCount, atkCount);
+					atk.m_BreakDefend   = luadata->GetLua<int>("frame/%s/%d/attack/%d/breakDefend", frameName, frameCount, atkCount);
+					atk.m_AttackRest    = luadata->GetLua<int>("frame/%s/%d/attack/%d/arest", frameName, frameCount, atkCount);
+					atk.m_ReAttackRest  = luadata->GetLua<int>("frame/%s/%d/attack/%d/reAttackRest", frameName, frameCount, atkCount);
+					atk.m_Injury    = luadata->GetLua<int>("frame/%s/%d/attack/%d/injury", frameName, frameCount, atkCount);
+					atk.m_Strength  = luadata->GetLua<int>("frame/%s/%d/attack/%d/strength", frameName, frameCount, atkCount);
+
+					for(int pointCount = 1;; ++pointCount)
+					{
+						if(luadata->HasValue("frame/%s/%d/attack/%d/points/%d/1",
+							frameName, frameCount, atkCount, pointCount))
+						{
+							Vector2 vec2;
+							vec2.x = (float)luadata->GetLua<double>("frame/%s/%d/attack/%d/points/%d/1",
+								frameName, frameCount, atkCount, pointCount);
+							vec2.y = (float)luadata->GetLua<double>("frame/%s/%d/attack/%d/points/%d/2",
+								frameName, frameCount, atkCount, pointCount);
+							atk.m_Area.AddPoint(vec2);
+						}
+						else
+						{
+							break;
+						}
+					}
+
+					newData.m_Attacks.push_back(atk);
+				}
+				else
+				{
+					break;
+				}
+			}
+
 			for ( int bodyCount = 1;; ++bodyCount )
 			{
 				if ( luadata->HasValue( "frame/%s/%d/body/%d/kind", frameName, frameCount, bodyCount ) )

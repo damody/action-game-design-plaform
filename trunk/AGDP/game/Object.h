@@ -14,9 +14,9 @@ private:
 	ClipVertex		m_Pic;
 	ObjectInfo_Sptr m_ObjectInfo;
 	int				m_Action;//當下動作狀態
+	FrameInfo*		m_FrameInfo;
 	std::wstring    m_Frame;//Current Frame
 	int				m_FrameID;//Current Frame ID
-
 	int				m_Texture;//Current Texture ID
 	int             m_PicID;
 	int				m_PicW;//W截切次數
@@ -27,7 +27,6 @@ private:
 	Vector3			m_Position;
 	float			m_CenterX, m_CenterY;
 	Vector3			m_Vel;
-	Bodys			m_Bodys;
 	float			m_Angle;
 	bool			m_FaceSide;//true 右, false 左
 
@@ -61,12 +60,19 @@ public:
 	int GetTextureID();
 	Texture_Sptr GetTexture();
 	ClipVertex GetPic();
+	PolygonVerteices GetPolygonLineVerteices() const;
+	PolygonVerteices GetPolygonVerteices() const;
+
 	Vector3 Position();
 	friend bool Creat( const Vector3& pos, const Creation& obj, bool face, const Record_Sptr owner );
+	friend Polygon2Ds GetObjectBodys(const Object& r);
+	friend Polygon2Ds GetObjectAttacks(const Object& r);
+	friend Polygon2Ds GetObjectCatches(const Object& r);
 };
 SHARE_PTR( Object );
 typedef std::vector <Object_Sptr> Objects;
 
 bool SortObject( Object_Sptr a, Object_Sptr b );
-
-
+Polygon2Ds GetObjectBodys(const Object& r);
+Polygon2Ds GetObjectAttacks(const Object& r);
+Polygon2Ds GetObjectCatches(const Object& r);
